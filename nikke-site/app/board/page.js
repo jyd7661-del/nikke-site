@@ -27,7 +27,10 @@ export default function BoardPage() {
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-xl font-bold">게시판</h1>
         {user ? (
-          <Link href="/board/new" className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded">
+          <Link
+            href="/board/new"
+            className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded-lg hover:brightness-110 transition"
+          >
             + 글쓰기
           </Link>
         ) : (
@@ -47,12 +50,12 @@ export default function BoardPage() {
         <p className="text-sm text-slate-500">아직 게시글이 없습니다. 첫 글을 남겨보세요!</p>
       )}
 
-      <div className="divide-y divide-slate-800 border-t border-b border-slate-800">
+      <div className="divide-y divide-slate-800 border-t border-b border-slate-800 rounded-lg overflow-hidden bg-nikke-panel/30">
         {posts.map((post) => (
           <Link
             key={post.id}
             href={`/board/${post.id}`}
-            className="flex items-center justify-between py-3 px-1 hover:bg-slate-900/40"
+            className="flex items-center justify-between py-3 px-3 hover:bg-white/5 transition-colors"
           >
             <span className="text-sm text-slate-100 truncate">{post.title}</span>
             <span className="text-xs text-slate-500 shrink-0 ml-3">
