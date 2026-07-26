@@ -1,6 +1,7 @@
 'use client';
 
 import { charMap } from '@/lib/recommend';
+import CharacterAvatar from '@/components/CharacterAvatar';
 
 function NameList({ ids }) {
   return (
@@ -11,8 +12,9 @@ function NameList({ ids }) {
         return (
           <span
             key={id}
-            className="text-xs bg-slate-800 border border-slate-700 rounded-full px-2.5 py-1 text-slate-200"
+            className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
           >
+            <CharacterAvatar character={c} size="xs" />
             {c.name}
           </span>
         );
