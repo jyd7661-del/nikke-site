@@ -1,6 +1,7 @@
 'use client';
 
 import { CHARACTERS, BURST_LABEL } from '@/data/characters';
+import CharacterAvatar from '@/components/CharacterAvatar';
 
 // 조합 등록 폼에서 최대 5명까지 캐릭터를 고르는 컴팩트한 선택기
 export default function MemberSelect({ selected, onToggle, max = 5 }) {
@@ -19,7 +20,7 @@ export default function MemberSelect({ selected, onToggle, max = 5 }) {
                   key={c.id}
                   disabled={disabled}
                   onClick={() => onToggle(c.id)}
-                  className={`text-xs px-2 py-1 rounded-full border transition ${
+                  className={`flex items-center gap-1.5 text-xs pl-1 pr-2.5 py-1 rounded-full border transition ${
                     active
                       ? 'bg-nikke-accent text-slate-900 border-nikke-accent'
                       : disabled
@@ -27,6 +28,7 @@ export default function MemberSelect({ selected, onToggle, max = 5 }) {
                       : 'border-slate-700 text-slate-300 hover:border-slate-500'
                   }`}
                 >
+                  <CharacterAvatar character={c} size="xs" />
                   {c.name}
                 </button>
               );
