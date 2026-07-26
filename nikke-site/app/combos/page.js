@@ -49,7 +49,7 @@ export default function CombosPage() {
         <h1 className="text-xl font-bold">커뮤니티 조합</h1>
         <Link
           href="/combos/new"
-          className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded"
+          className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded-lg hover:brightness-110 transition"
         >
           + 내 조합 등록
         </Link>
@@ -77,7 +77,7 @@ export default function CombosPage() {
         {combos.map((combo) => {
           const myVote = myVotes[combo.id];
           return (
-            <div key={combo.id} className="bg-nikke-panel rounded-xl p-4 border border-slate-800">
+            <div key={combo.id} className="card-hover bg-nikke-panel rounded-xl p-4 border border-slate-800">
               <div className="flex items-center justify-between flex-wrap gap-2">
                 <h3 className="font-semibold">{combo.name}</h3>
                 {combo.purpose && (
@@ -101,10 +101,10 @@ export default function CombosPage() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => handleVote(combo.id, 1)}
-                    className={`text-xs px-2 py-1 rounded border ${
+                    className={`text-xs px-2.5 py-1 rounded-lg border transition-colors ${
                       myVote === 1
                         ? 'bg-nikke-accent text-slate-900 border-nikke-accent'
-                        : 'border-slate-700 text-slate-300 hover:border-slate-500'
+                        : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-white/5'
                     }`}
                   >
                     👍 추천
@@ -112,10 +112,10 @@ export default function CombosPage() {
                   <span className="text-sm font-semibold w-6 text-center">{combo.score}</span>
                   <button
                     onClick={() => handleVote(combo.id, -1)}
-                    className={`text-xs px-2 py-1 rounded border ${
+                    className={`text-xs px-2.5 py-1 rounded-lg border transition-colors ${
                       myVote === -1
                         ? 'bg-rose-400 text-slate-900 border-rose-400'
-                        : 'border-slate-700 text-slate-300 hover:border-slate-500'
+                        : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-white/5'
                     }`}
                   >
                     👎 비추천
