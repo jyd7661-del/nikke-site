@@ -1,0 +1,136 @@
+'use client';
+
+import { useEffect, useMemo, useState } from 'react';
+import CharacterPicker from '@/components/CharacterPicker';
+import ResultPanel from '@/components/ResultPanel';
+import AdSlot from '@/components/AdSlot';
+import NicknamePrompt from '@/components/NicknamePrompt';
+import { recommend } from '@/lib/recommend';
+import { useAuth } from '@/components/AuthProvider';
+import { fetchRoster, addToRoster, removeFromRoster } from '@/lib/roster';
+import { isSupabaseConfigured } from '@/lib/supabaseClient';
+
+export default function Home() {
+  const { user, loading: authLoading } = useAuth();
+  const [ownedIds, setOwnedIds] = useState(new Set());
+  const [showResult, setShowResult] = useState(false);
+  const [rosterLoading, setRosterLoading] = useState(false);
+
+  // 로그인 상태면 저장된 보유 니케를 불러옵니다.
+  useEffect(() => {
+    if (authLoading) return;
+    if (!user) return;
+    setRosterLoading(true);
+    fetchRoster(user.id).then((ids) => {
+      setOwnedIds(new Set(ids));
+      setRosterLoading(false);
+    });
+  }, [user, authLoading]);
+
+  const toggle = (id) => {
+    setOwnedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+        if (user) removeFromRoster(user.id, id);
+      } else {
+        next.add(id);
+        if (user) addToRoster(user.id, id);
+      }
+      return next;
+    });
+  };
+
+  const clear = () => {
+    if (user && ownedIds.size > 0) {
+      // 로그인 상태에서는 하나씩 지우는 게 안전하지만, 간단히 로컬만 초기화합니다.
+      ownedIds.forEach((id) => removeFromRoster(user.id, id));
+    }
+    setOwnedIds(new Set());
+    setShowResult(false);
+  };
+
+  const result = useMemo(() => (showResult ? recommend(ownedIds) : null), [showResult, ownedIds]);
+
+  const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
+
+  return (
+    <main className="max-w-5xl mx-auto px-4 py-8">
+      <header className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+          <span className="text-nikke-accent">니케</span> 조합 추천
+        </h1>
+        <p className="text-slate-400 mt-2 text-sm">
+          보유중인 니케를 선택하면 바로 조합을 추천해드려요.
+        </p>
+      </header>
+
+      <NicknamePrompt />
+
+      {user && (
+        <div className="mb-6 text-xs text-slate-500 flex items-center gap-2 flex-wrap">
+          <span>✅ 로그인 상태 — 보유 니케가 자동 저장됩니다.</span>
+          {shareUrl && (
+            <button
+              onClick={() => navigator.clipboard?.writeText(shareUrl)}
+              className="underline hover:text-nikke-accent"
+            >
+              친구에게 내 보유 니케 공유 링크 복사
+            </button>
+          )}
+        </div>
+      )}
+      {!user && !authLoading && isSupabaseConfigured && (
+        <div className="mb-6 text-xs text-slate-500">
+          로그인하면 보유 니케가 자동 저장되고, 친구와 공유할 수 있어요. (로그인 안 해도 추천 기능은 바로 사용 가능)
+        </div>
+      )}
+
+      <div className="mb-6">
+        <AdSlot label="상단 배너 광고" size="banner" />
+      </div>
+
+      <CharacterPicker ownedIds={ownedIds} onToggle={toggle} onClear={clear} />
+
+      <div className="flex items-center justify-between mt-5 mb-6">
+        <p className="text-sm text-slate-400">
+          선택한 니케: {ownedIds.size}명{rosterLoading ? ' (불러오는 중...)' : ''}
+        </p>
+        <button
+          onClick={() => setShowResult(true)}
+          className="bg-nikke-accent text-slate-900 font-bold px-5 py-2.5 rounded-lg hover:brightness-110 transition disabled:opacity-40"
+          disabled={ownedIds.size === 0}
+        >
+          조합 추천받기
+        </button>
+      </div>
+
+      <ResultPanel result={result} />
+
+      <div className="my-8">
+        <AdSlot label="본문 하단 광고" size="rectangle" />
+      </div>
+
+      <section className="bg-nikke-panel rounded-xl p-5 border border-slate-800 border-dashed text-center">
+        <h2 className="font-semibold text-slate-200 mb-1">💬 유저들과 조합·정보 나누기</h2>
+        <p className="text-sm text-slate-500">
+          내가 쓰는 조합을 직접 등록하고 투표받거나, 게시판에서 다른 지휘관들과 이야기해보세요.
+        </p>
+        <div className="flex justify-center gap-3 mt-3">
+          <a href="/combos" className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded">
+            커뮤니티 조합 보기
+          </a>
+          <a href="/board" className="text-xs border border-slate-700 px-3 py-1.5 rounded text-slate-300 hover:border-slate-500">
+            게시판 가기
+          </a>
+        </div>
+      </section>
+
+      <footer className="text-center text-xs text-slate-600 mt-10 pb-4">
+        본 사이트는 팬 제작 비공식 정보 사이트이며, 승리의 여신: 니케의 저작권은 시프트업(SHIFT UP)에 있습니다.
+        <br />
+        조합 정보는 커뮤니티 공략을 참고해 정리한 자료로 실제 게임 밸런스와 다를 수 있습니다.
+      </footer>
+    </main>
+  );
+}
