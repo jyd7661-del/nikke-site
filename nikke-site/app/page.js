@@ -56,32 +56,33 @@ export default function Home() {
 
   return (
     <main className="max-w-5xl mx-auto px-4 py-8">
-      <header className="mb-6">
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-          <span className="text-nikke-accent">니케</span> 조합 추천
+      <header className="mb-8 pt-2">
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-nikke-accent to-teal-200 bg-clip-text text-transparent">
+          내 니케로 최고의 조합 찾기
         </h1>
-        <p className="text-slate-400 mt-2 text-sm">
-          보유중인 니케를 선택하면 바로 조합을 추천해드려요.
+        <p className="text-slate-400 mt-2.5 text-sm sm:text-base">
+          보유중인 니케를 선택하면 바로 조합을 추천해드려요. 로그인 없이도 바로 사용할 수 있어요.
         </p>
       </header>
 
       <NicknamePrompt />
 
       {user && (
-        <div className="mb-6 text-xs text-slate-500 flex items-center gap-2 flex-wrap">
-          <span>✅ 로그인 상태 — 보유 니케가 자동 저장됩니다.</span>
+        <div className="mb-6 text-xs text-slate-400 flex items-center gap-2 flex-wrap bg-nikke-panel/60 border border-slate-800 rounded-lg px-3 py-2 w-fit">
+          <span className="text-emerald-400">●</span>
+          <span>로그인 상태 — 보유 니케가 자동 저장됩니다.</span>
           {shareUrl && (
             <button
               onClick={() => navigator.clipboard?.writeText(shareUrl)}
-              className="underline hover:text-nikke-accent"
+              className="underline decoration-dotted hover:text-nikke-accent"
             >
-              친구에게 내 보유 니케 공유 링크 복사
+              친구에게 공유 링크 복사
             </button>
           )}
         </div>
       )}
       {!user && !authLoading && isSupabaseConfigured && (
-        <div className="mb-6 text-xs text-slate-500">
+        <div className="mb-6 text-xs text-slate-500 bg-nikke-panel/40 border border-slate-800/70 rounded-lg px-3 py-2 w-fit">
           로그인하면 보유 니케가 자동 저장되고, 친구와 공유할 수 있어요. (로그인 안 해도 추천 기능은 바로 사용 가능)
         </div>
       )}
@@ -111,16 +112,22 @@ export default function Home() {
         <AdSlot label="본문 하단 광고" size="rectangle" />
       </div>
 
-      <section className="bg-nikke-panel rounded-xl p-5 border border-slate-800 border-dashed text-center">
-        <h2 className="font-semibold text-slate-200 mb-1">💬 유저들과 조합·정보 나누기</h2>
+      <section className="bg-gradient-to-br from-nikke-panel to-slate-900/60 rounded-xl p-6 border border-slate-800 text-center">
+        <h2 className="font-semibold text-slate-100 mb-1.5">💬 유저들과 조합·정보 나누기</h2>
         <p className="text-sm text-slate-500">
           내가 쓰는 조합을 직접 등록하고 투표받거나, 게시판에서 다른 지휘관들과 이야기해보세요.
         </p>
-        <div className="flex justify-center gap-3 mt-3">
-          <a href="/combos" className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded">
+        <div className="flex justify-center gap-3 mt-4">
+          <a
+            href="/combos"
+            className="text-xs bg-nikke-accent text-slate-900 font-semibold px-4 py-2 rounded-lg hover:brightness-110 transition"
+          >
             커뮤니티 조합 보기
           </a>
-          <a href="/board" className="text-xs border border-slate-700 px-3 py-1.5 rounded text-slate-300 hover:border-slate-500">
+          <a
+            href="/board"
+            className="text-xs border border-slate-700 px-4 py-2 rounded-lg text-slate-300 hover:border-slate-500 hover:bg-white/5 transition"
+          >
             게시판 가기
           </a>
         </div>
