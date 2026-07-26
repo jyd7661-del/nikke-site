@@ -7,6 +7,7 @@ import { fetchCombos, fetchProfilesByIds, fetchMyVotes, voteCombo } from '@/lib/
 import { charMap } from '@/lib/recommend';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import AdSlot from '@/components/AdSlot';
+import CharacterAvatar from '@/components/CharacterAvatar';
 
 export default function CombosPage() {
   const { user } = useAuth();
@@ -89,7 +90,8 @@ export default function CombosPage() {
               {combo.description && <p className="text-sm text-slate-400 mt-1">{combo.description}</p>}
               <div className="flex flex-wrap gap-2 mt-2">
                 {combo.members.map((id) => (
-                  <span key={id} className="text-xs bg-slate-800 border border-slate-700 rounded-full px-2.5 py-1">
+                  <span key={id} className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1">
+                    <CharacterAvatar character={charMap[id]} size="xs" />
                     {charMap[id]?.name || id}
                   </span>
                 ))}
