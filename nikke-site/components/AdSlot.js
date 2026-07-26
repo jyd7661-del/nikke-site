@@ -8,7 +8,7 @@ export default function AdSlot({ label = '광고', size = 'banner' }) {
 
   return (
     <div
-      className={`w-full ${heightClass} border border-dashed border-slate-600/60 rounded-lg flex items-center justify-center text-slate-500 text-sm bg-slate-900/40`}
+      className={`w-full ${heightClass} border border-dashed border-slate-700/70 rounded-xl flex items-center justify-center text-slate-500 text-sm bg-slate-900/30`}
     >
       {/*
       <ins
