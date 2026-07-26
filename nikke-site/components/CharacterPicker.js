@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react';
 import { CHARACTERS, BURST_LABEL } from '@/data/characters';
+import CharacterAvatar from '@/components/CharacterAvatar';
 
 const TIER_COLOR = {
   T0: 'bg-amber-400 text-amber-950',
@@ -83,15 +84,18 @@ export default function CharacterPicker({ ownedIds, onToggle, onClear }) {
                   <button
                     key={c.id}
                     onClick={() => onToggle(c.id)}
-                    className={`card-hover flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm border text-left ${
+                    className={`card-hover flex items-center justify-between gap-2 rounded-lg pl-2 pr-3 py-2 text-sm border text-left ${
                       active
                         ? 'bg-nikke-accent/15 border-nikke-accent text-nikke-accent ring-1 ring-nikke-accent/40'
                         : 'bg-slate-800/40 border-slate-700 hover:border-slate-500 text-slate-200'
                     }`}
                   >
-                    <span className="truncate flex items-center gap-1.5">
-                      {active && <span className="text-nikke-accent">✓</span>}
-                      {c.name}
+                    <span className="flex items-center gap-2 min-w-0">
+                      <CharacterAvatar character={c} size="sm" />
+                      <span className="truncate flex items-center gap-1">
+                        {active && <span className="text-nikke-accent">✓</span>}
+                        {c.name}
+                      </span>
                     </span>
                     <span
                       className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${TIER_COLOR[c.tier] || 'bg-slate-600'}`}
