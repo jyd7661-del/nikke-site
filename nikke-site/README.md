@@ -73,9 +73,39 @@ npm run build
    `data-ad-client`, `data-ad-slot` 값을 채워넣기
 
 ## 데이터 업데이트
-`data/characters.js`, `data/combos.js`는 2026년 7월 기준 공개된 티어표/공략을 참고해
-정리한 초안입니다. 니케는 신규 캐릭터가 자주 추가되고 밸런스 패치가 잦으므로
-주기적으로 최신 정보를 반영해 갱신하는 것을 권장합니다.
+
+### data/characterDatabase.json (전체 캐릭터 원자료, 2026-07-26 기준 201명)
+니케 위키(Fandom)에서 수집한 전체 플레이어블 니케 원자료입니다. 사이트에서 직접 쓰는
+`data/characters.js`(58명, 추천 로직용 요약)와는 별개로, 매번 새로 조사하지 않고 참고할 수 있도록
+캐릭터별 등급/버스트/무기/제조사/스킬 3종(패시브·스킬1·버스트) 전문/스토리·보스전·PvP 티어를
+JSON으로 저장해둔 원자료입니다.
+
+각 항목 구조:
+```json
+{
+  "id": "rapi", "title": "Rapi", "name_kr": "라피",
+  "class": "attacker", "burst": "3", "element": "fire", "weapon": "ar",
+  "manufacturer": "elysion", "rarity": "SR", "releaseDate": "4 nov 2022",
+  "img": "위키 이미지 경로", "tiers": {"story": "E", "bossing": "F", "pvp": "E"},
+  "skills": [{"name": "...", "type": "Passive|Active", "cd": "20", "desc": "..."}]
+}
+```
+
+**업데이트 방법 (신규 니케 출시/밸런스 패치 시):**
+1. 니케 위키(nikke-goddess-of-victory-international.fandom.com)의 MediaWiki API로 캐릭터 원문(위키텍스트)을 가져옵니다.
+   - 전체 목록: `/api.php?action=query&list=embeddedin&eititle=Template:Playable%20Character&eilimit=500&einamespace=0&format=json`
+   - 개별/일괄(최대 50개) 원문: `/api.php?action=query&titles=A|B|C&prop=revisions&rvprop=content&rvslots=main&format=json`
+   - 각 페이지의 `{{Playable Character ...}}` 인포박스와 `{{Skill table|...}}` 블록을 파싱하면 위 구조가 나옵니다.
+2. 티어 정보는 prydwen.gg/nikke/tier-list의 STORY/BOSSING/PVP 세 탭에서
+   `.custom-tier` 요소(클래스에 티어명 포함, 예: `tier-sss`) 안의 `<img alt="캐릭터명">`을 스캔해 캐릭터명→티어 맵을 만듭니다.
+3. 위 두 데이터를 캐릭터명 기준으로 합쳐 `data/characterDatabase.json`을 새로 커밋합니다.
+4. 위키/티어 API는 브라우저(CORS `origin=*`)에서만 접근 가능하고 서버/스크립트 환경에서는 막힐 수 있으니,
+   브라우저 콘솔(또는 브라우저 자동화 도구)에서 fetch로 수집 후 결과를 저장하는 방식을 권장합니다.
+
+`data/characters.js`, `data/combos.js`는 사이트가 실제로 사용하는 축약 데이터(58명 + 조합 6종)로,
+2026년 7월 기준 공개된 티어표/공략을 참고해 정리한 초안입니다. `characterDatabase.json`이 갖춰졌으니
+앞으로는 이 원자료를 기준으로 `characters.js`를 갱신하거나, 사이트에 티어/스킬 상세 표시 기능을 추가할 때
+바로 활용할 수 있습니다.
 
 ## 다음 단계 아이디어
 - 신규 캐릭터/밸런스 패치 반영 (data/characters.js, data/combos.js 갱신)
