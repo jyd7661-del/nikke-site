@@ -16,9 +16,9 @@ function colorFor(seed) {
 }
 
 const SIZE_CLASS = {
-  xs: 'w-6 h-6 text-[9px]',
-  sm: 'w-9 h-9 text-[11px]',
-  md: 'w-12 h-12 text-sm',
+  xs: 'w-8 h-8 text-[10px]',
+  sm: 'w-12 h-12 text-xs',
+  md: 'w-16 h-16 text-base',
 };
 
 export default function CharacterAvatar({ character, size = 'sm', className = '' }) {
@@ -44,7 +44,7 @@ export default function CharacterAvatar({ character, size = 'sm', className = ''
       alt={character.name}
       loading="lazy"
       onError={() => setFailed(true)}
-      className={`rounded-full object-cover shrink-0 border border-slate-700 bg-slate-800 ${sizeClass} ${className}`}
+      className={`rounded-full object-cover object-top shrink-0 border border-slate-700 bg-slate-800 ${sizeClass} ${className}`}
     />
   );
 }
