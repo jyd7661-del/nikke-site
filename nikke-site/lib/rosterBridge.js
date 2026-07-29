@@ -15,16 +15,24 @@ const rosterIdToCdb = new Map(
     .filter(([, cdbChar]) => Boolean(cdbChar))
 );
 
-// 보유 캐릭터 id 배열을 받아 { resolved, unresolved } 반환.
+// 보유 캐릭터 id 배열(+선택적으로 애장품 장착한 id 목록)을 받아
+// { resolved, unresolved, treasureCdbIds } 반환.
 // resolved: 엔진이 바로 쓸 수 있는 characterDatabase.json 형태 객체 배열
 // unresolved: 아직 상세 데이터(스킬/티어)가 없어 엔진 분석에서 제외된 id 배열
-export function resolveRosterIdsToCdb(ownedIds) {
+// treasureCdbIds: treasureIds 중 resolved된 항목의 characterDatabase.json id 집합
+//   (lib/synergyEngine.js의 scoreTeam/recommendTeams에 그대로 전달해서 사용)
+export function resolveRosterIdsToCdb(ownedIds, treasureIds = new Set()) {
   const resolved = [];
   const unresolved = [];
+  const treasureCdbIds = new Set();
   ownedIds.forEach((id) => {
     const cdbChar = rosterIdToCdb.get(id);
-    if (cdbChar) resolved.push(cdbChar);
-    else unresolved.push(id);
+    if (cdbChar) {
+      resolved.push(cdbChar);
+      if (treasureIds.has(id)) treasureCdbIds.add(cdbChar.id);
+    } else {
+      unresolved.push(id);
+    }
   });
-  return { resolved, unresolved };
+  return { resolved, unresolved, treasureCdbIds };
 }
