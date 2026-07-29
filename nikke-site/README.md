@@ -112,3 +112,39 @@ JSON으로 저장해둔 원자료입니다.
 - 게시글/댓글 신고, 삭제 기능
 - 조합에 "보스전/캠페인/PvP" 필터 추가
 - 실제 트래픽이 생기면 AdSense 심사 신청
+
+
+## 데이터 업데이트 방법 (신규 캐릭터 출시/패치 시)
+캐릭터 정보와 조합 근거자료는 `data/characterDatabase.json`, `data/synergyNotes.json` 두 파일에 정리되어 있습니다.
+사이트 UI(`data/characters.js`)와는 별개로, 언제든 참고할 수 있는 "살아있는 자료집" 성격이므로
+새로운 정보를 알게 될 때마다 계속 갱신해야 합니다.
+
+### `data/characterDatabase.json` — 전체 캐릭터 도감
+니케 위키(Fandom)의 인포박스와 스킬 테이블을 파싱해 만든 전체 플레이 가능 캐릭터 목록입니다.
+각 항목은 `id, title, name_kr, class, burst, element, weapon, manufacturer, rarity, squad,
+releaseDate, img, tiers(story/bossing/pvp), skills[](name/type/cd/desc)` 필드를 가집니다.
+
+갱신 방법:
+1. 샌드박스 `bash`/`web_fetch`는 fandom.com에 접근할 수 없으므로, Claude-in-Chrome 브라우저 MCP로
+   실제 브라우저 안에서 `fetch()`를 실행해 MediaWiki API를 호출해야 합니다 (CORS 우회를 위해 `origin=*` 필요).
+2. 신규 캐릭터 목록: `action=query&list=embeddedin&eititle=Template:Playable Character` (공식 플레이어블 캐릭터 목록)
+3. 개별 캐릭터 원문: `action=query&prop=revisions&rvprop=content&rvslots=main&titles=...` (위키텍스트 원문, `titles`는 파이프로 최대 50개까지)
+4. 위키텍스트에서 `{{Playable Character | ... }}` 인포박스와 `{{Skill table| skillname1=... skilltype1=... skillcd1=... skilldesc1=... }}` 스킬 블록을 정규식으로 파싱
+5. 티어 정보는 prydwen.gg 티어리스트 페이지에서 `.custom-tier.tier-<티어명>` 컨테이너 안의 `<img alt="캐릭터명">` 을 DOM 기준으로 추출 (텍스트만으로는 "K", "D" 같은 실제 캐릭터명과 티어 라벨이 헷갈릴 수 있음)
+6. 큰 데이터는 OS 클립보드(`write_clipboard`/`read_clipboard`)로 브라우저 밖으로 꺼낸 뒤 파일로 저장 — 브라우저 탭을 다른 페이지로 이동시키면 그 안의 JS 전역변수(`window.__xxx`)가 모두 사라지므로, 데이터 수집용 탭은 작업이 끝날 때까지 이동시키지 말 것.
+
+### `data/synergyNotes.json` — 조합 시너지/카운터 근거자료
+prydwen.gg의 팀 빌딩 가이드, 메타팀 가이드, 팀 데이터베이스, 티어리스트 변경 이력 등을 참고해
+사람이 직접 정리·요약한(원문 그대로 베끼지 않고 우리말로 재구성한) 2차 자료입니다.
+`mechanics`(버스트 페이즈/포메이션/원소 상성/CDR 같은 객관적 게임 규칙), `archetypes`(이름 붙은 팀/듀오 조합과
+그 이유·대체 옵션), `synergyPairs`(캐릭터 간 시너지 이유), `counters`(PvP 카운터 관계)로 구성됩니다.
+장차 "조합 추천 스코어링 엔진"이 감점/가점 규칙을 정할 때 근거로 삼을 자료입니다.
+
+갱신 방법: 위 캐릭터 도감과 동일하게 Claude-in-Chrome으로 prydwen.gg 공략 페이지를 읽고,
+새로 알게 된 조합/시너지/카운터를 파일 스키마에 맞춰 항목을 추가합니다. 저작권 문제를 피하기 위해
+원문을 그대로 복사하지 말고 반드시 의미를 유지한 채 우리말로 다시 서술할 것.
+
+### 향후 계획
+사용자가 보유한 (일부/임의의) 니케만으로 실시간 최적 조합을 짜주는 "자기발전형" 추천 엔진을 목표로 하고 있습니다.
+현재는 이 두 파일로 근거자료를 축적하는 단계이며, 다음 단계는 이 자료를 바탕으로 한 규칙 기반 스코어링 +
+보유 로스터 전체 조합 탐색 로직 설계입니다 (아직 미착수).
