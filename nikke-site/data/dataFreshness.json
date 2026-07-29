@@ -1,0 +1,15 @@
+{
+  "characterDatabase": {
+    "asOf": "2026-07-26",
+    "source": "니케 위키(Fandom) 인포박스/스킬 테이블 + prydwen.gg 티어리스트",
+    "refreshMethod": "README.md '데이터 업데이트 방법' 참고 (MediaWiki API + Claude-in-Chrome)",
+    "staleAfterDays": 60
+  },
+  "synergyNotes": {
+    "asOf": "2026-07-27",
+    "source": "prydwen.gg 팀 빌딩/메타팀/팀 데이터베이스/티어 변경 이력 가이드 (2차 가공)",
+    "refreshMethod": "README.md '데이터 업데이트 방법' 참고",
+    "staleAfterDays": 60
+  },
+  "note": "사람이 정리한 커뮤니티 데이터는 정확하지만 갱신이 느리다(예: 일부 팬사이트는 1년 넘게 업데이트가 없기도 함). asOf/staleAfterDays를 기준으로 오래된 자료는 추천 이유에 신뢰도 경고를 함께 표시하고, 새 패치·신규 캐릭터·새 공략을 발견할 때마다 asOf를 갱신해야 한다."
+}
