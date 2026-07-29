@@ -1,10 +1,11 @@
 // 규칙 기반 조합 추천/채점 엔진
 //
 // 이 파일은 "AI가 임의로 정한 가중치"가 아니라, characterDatabase.json(위키+prydwen 티어)과
-// synergyNotes.json(prydwen 공략글을 사람이 재구성한 근거자료)에 이미 적혀 있는 정보를
-// 명시적인 규칙으로 그대로 옮긴 것입니다. 가중치 상수(WEIGHTS)는 "이 자료가 있으면 왜 이만큼
-// 더 좋다고 볼 수 있는지"가 각 규칙 옆 주석에 설명되어 있고, 나중에 유저 데이터(투표/채택률)가
-// 쌓이면 이 가중치들을 실측치로 교체하는 것이 다음 단계입니다(README '향후 계획' 참고).
+// synergyNotes.json(prydwen 공략글을 사람이 재구성한 근거자료), 그리고 metaStats.json(enikk.app의
+// 실제 플레이어 픽률·챔피언 아레나 승률 기록)에 이미 적혀 있는 정보를 명시적인 규칙으로 그대로
+// 옮긴 것입니다. 가중치 상수(WEIGHTS)는 "이 자료가 있으면 왜 이만큼 더 좋다고 볼 수 있는지"가 각
+// 규칙 옆 주석에 설명되어 있고, 나중에 유저 데이터(투표/채택률)가 쌓이면 이 가중치들을 실측치로
+// 교체하는 것이 다음 단계입니다(README '향후 계획' 참고).
 //
 // 핵심 설계 원칙 (사용자 요구사항 반영):
 // 1) 사람이 만든 근거자료(synergyNotes)는 정확하지만 갱신이 느리다는 한계가 있으므로,
@@ -12,11 +13,15 @@
 // 2) 보유 캐릭터(임의의 부분집합)만으로 실시간으로 최적 5인 조합을 찾아야 하므로,
 //    전수조사(nC5)가 아니라 버스트 타입별로 나눠 탐색 공간을 줄이는 방식을 쓴다.
 // 3) 추천 근거는 항상 "왜 이 조합인지"를 사람이 읽을 수 있는 문장으로 함께 반환한다(설명 가능성).
+// 4) enikk.app의 실제 기록(픽률/승률/표본수)은 커뮤니티 공략보다 최신이고 "실제로 강한 조합"을
+//    직접 보여주므로, 스킬 기반 추론에 검증 신호로 추가한다. 단, 시즌마다 메타가 바뀌므로
+//    dataFreshness와 마찬가지로 기준일을 명시하고 오래되면 경고한다.
 
 import characterDatabase from '../data/characterDatabase.json';
 import synergyNotes from '../data/synergyNotes.json';
 import dataFreshness from '../data/dataFreshness.json';
 import treasureEffects from '../data/treasureEffects.json';
+import metaStats from '../data/metaStats.json';
 
 // characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
 const TREASURE_EFFECT_BY_ID = new Map(treasureEffects.characters.map((t) => [t.characterId, t]));
@@ -31,6 +36,10 @@ const TIER_SCORE = {
   SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1,
 };
 
+// enikk.app 실사용 픽률 데이터의 S~F 등급을 점수로 변환.
+// (실제 승률이 아니라 픽률 기반 등급이라 characterDatabase 티어보다 가중치를 낮게 잡음)
+const REAL_TIER_SCORE = { S: 6, A: 4, B: 2, C: 1, D: 0, F: 0 };
+
 // 사이트 내부에서 쓰는 용도(mode) 이름을 characterDatabase.json의 tiers 키로 매핑.
 // story = 캠페인, bossing = 보스전(인터셉트/레이드 포함 근사치), pvp = 아레나/유니온레이드 근사치
 const MODE_TO_TIER_KEY = {
@@ -40,6 +49,16 @@ const MODE_TO_TIER_KEY = {
   raid: 'bossing',
   tribe_tower: 'story',
   pvp: 'pvp',
+};
+
+// mode → metaStats.usageTier의 어떤 슬라이스를 참고할지.
+const MODE_TO_META_SLICE = {
+  campaign: 'campaign',
+  story: 'campaign',
+  tribe_tower: 'campaign',
+  bossing: 'soloraid',
+  raid: 'soloraid',
+  pvp: 'arena',
 };
 
 // synergyNotes.archetypes의 mode 값 중 어떤 것이 이 추천 mode와 관련 있는지.
@@ -56,6 +75,14 @@ function tierScore(character, mode) {
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const grade = character?.tiers?.[key];
   return TIER_SCORE[grade] || 0;
+}
+
+// enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
+function realUsageTierScore(character, mode) {
+  const slice = MODE_TO_META_SLICE[mode] || 'campaign';
+  const entry = metaStats.usageTier?.[slice]?.[character.title];
+  if (!entry) return 0;
+  return REAL_TIER_SCORE[entry.tier] || 0;
 }
 
 // 스킬 설명에 쿨타임 감소(CDR) 관련 문구가 있는지로 CDR 제공 캐릭터인지 판정.
@@ -89,11 +116,59 @@ function isStale(asOfStr, staleAfterDays) {
 export function getDataFreshnessMeta() {
   const cdb = dataFreshness.characterDatabase;
   const syn = dataFreshness.synergyNotes;
+  const meta = metaStats.meta;
   return {
     characterDatabase: { ...cdb, stale: isStale(cdb.asOf, cdb.staleAfterDays) },
     synergyNotes: { ...syn, stale: isStale(syn.asOf, syn.staleAfterDays) },
+    metaStats: { asOf: meta.asOf, source: meta.source, stale: isStale(meta.asOf, meta.staleAfterDays) },
     note: dataFreshness.note,
   };
+}
+
+// ---------------------------------------------------------------------------
+// enikk.app 실전 기록(PvP 챔피언 아레나 페어/트리오/쿼드/완전 조합) 매칭 유틸
+// ---------------------------------------------------------------------------
+
+// (wr - 50) 기준으로 부호/크기가 결정되는 실전 승률 보너스. wr이 50%보다 높으면 가산,
+// 낮으면 감산 — "실제로 이겼는지"를 그대로 점수에 반영하는 가장 직접적인 신호이기 때문에
+// scale 값을 조합 크기(페어<트리오<쿼드<완전 5인)가 커질수록 키운다(더 구체적인 증거이므로).
+function wrBonus(wr, scale) {
+  return ((wr - 50) / 10) * scale;
+}
+
+function titleSetKey(titles) {
+  return titles.slice().sort().join('|');
+}
+
+function buildRealComboIndex(list) {
+  const map = new Map();
+  (list || []).forEach((entry) => {
+    map.set(titleSetKey(entry.members), entry);
+  });
+  return map;
+}
+
+const REAL_PAIR_INDEX = buildRealComboIndex(metaStats.pvp?.pairs);
+const REAL_TRIO_INDEX = buildRealComboIndex(metaStats.pvp?.trios);
+const REAL_QUAD_INDEX = buildRealComboIndex(metaStats.pvp?.quads);
+const REAL_TEAM_INDEX = buildRealComboIndex(metaStats.pvp?.topTeams);
+
+function combinationsOfTitles(titles, k) {
+  const results = [];
+  const combo = [];
+  function backtrack(start) {
+    if (combo.length === k) {
+      results.push([...combo]);
+      return;
+    }
+    for (let i = start; i < titles.length; i += 1) {
+      combo.push(titles[i]);
+      backtrack(i + 1);
+      combo.pop();
+    }
+  }
+  backtrack(0);
+  return results;
 }
 
 // ---------------------------------------------------------------------------
@@ -105,6 +180,9 @@ const WEIGHTS = {
   // 개별 캐릭터 성능(티어)의 합 — 가장 기본이 되는 축. 캐릭터 5명 티어 합이라
   // 최대 45점(SSS 5명) 수준. 아래 시너지 보너스들이 이 값과 비슷한 스케일이 되도록 맞춤.
   TIER_SUM: 1,
+  // enikk.app 실사용 픽률 등급 합산 — characterDatabase 티어(커뮤니티 공략, 갱신 느림)를
+  // 실제 플레이어 채택 데이터로 보정하는 2차 신호. 스케일을 작게 잡아 "참고용 보정"에 그치게 함.
+  REAL_USAGE_TIER_SUM: 0.5,
   // synergyNotes.archetypes에 등록된 "이름 붙은 조합"을 통째로 포함하면 강한 가산점.
   // 커뮤니티에서 반복적으로 검증된 조합이므로 개별 티어 합보다 신뢰도가 높다고 봄.
   ARCHETYPE_FULL_MATCH: 14,
@@ -120,6 +198,12 @@ const WEIGHTS = {
   FAST_BURST_CD: 2,
   // 원소 다양성: 상성 보너스는 10%로 작다고 명시돼 있으므로 가중치도 작게.
   ELEMENT_DIVERSITY: 1,
+  // enikk.app 챔피언 아레나 실전 기록(승률) 기반 보너스. 조합 크기가 클수록(더 구체적인
+  // 증거일수록) scale을 키운다. PvP 모드에서만 적용.
+  REAL_PVP_PAIR_SCALE: 1,
+  REAL_PVP_TRIO_SCALE: 1.5,
+  REAL_PVP_QUAD_SCALE: 2,
+  REAL_PVP_TEAM_SCALE: 3,
 };
 
 export function scoreTeam(members, mode = 'campaign', opts = {}) {
@@ -149,6 +233,17 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // --- 티어 합산 ---
   const tierTotal = members.reduce((sum, m) => sum + tierScore(m, mode), 0);
   score += tierTotal * WEIGHTS.TIER_SUM;
+
+  // --- 실사용 픽률 등급 합산 (enikk.app) ---
+  const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode), 0);
+  score += realTierTotal * WEIGHTS.REAL_USAGE_TIER_SUM;
+  const sTierRealMembers = members.filter((m) => realUsageTierScore(m, mode) >= REAL_TIER_SCORE.S);
+  if (sTierRealMembers.length > 0) {
+    reasons.push(
+      `[실사용 데이터] ${sTierRealMembers.map((m) => m.title).join(', ')}는(은) enikk.app 실제 플레이어 ` +
+      `기록에서도 이 모드 S등급 픽률을 보이는 검증된 채용 캐릭터입니다.`
+    );
+  }
 
   // --- 아키타입 매칭 ---
   const compatModes = MODE_COMPAT[mode] || [mode];
@@ -205,6 +300,42 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         reasons.push(`${c.unit} 보유: ${c.reason} (상대 조합에 따라 카운터로 활용 가능)`);
       }
     });
+  }
+
+  // --- enikk.app 챔피언 아레나 실전 기록 매칭 (PvP 모드 전용) ---
+  // 페어/트리오/쿼드/완전 5인 조합 중 실제로 기록이 쌓인 부분집합이 있으면, 그 승률(wr)을
+  // 그대로 점수에 반영하고 표본수(n)·채택률까지 근거 문장에 인용한다. 승률이 50%에 가까우면
+  // 정보성이 낮으므로(불확실) 근거 문장은 승률이 뚜렷하게 높거나(≥60%) 낮을 때(≤40%)만 남긴다.
+  if (mode === 'pvp' && titles.length >= 2) {
+    const seen = new Set();
+    const addRealMatch = (index, k, scale, sourceLabel) => {
+      combinationsOfTitles(titles, k).forEach((combo) => {
+        const key = titleSetKey(combo);
+        const entry = index.get(key);
+        if (!entry || seen.has(sourceLabel + ':' + key)) return;
+        seen.add(sourceLabel + ':' + key);
+        score += wrBonus(entry.wr, scale);
+        if (entry.wr >= 60 || entry.wr <= 40) {
+          reasons.push(
+            `[실전 기록] ${combo.join(' + ')} (${sourceLabel}) 조합은 챔피언 아레나 실제 대전에서 ` +
+            `승률 ${entry.wr}%(${entry.n}전, 채택률 ${entry.adoption}%)를 기록했습니다. (출처: enikk.app)`
+          );
+        }
+      });
+    };
+    addRealMatch(REAL_PAIR_INDEX, 2, WEIGHTS.REAL_PVP_PAIR_SCALE, '페어');
+    addRealMatch(REAL_TRIO_INDEX, 3, WEIGHTS.REAL_PVP_TRIO_SCALE, '트리오');
+    addRealMatch(REAL_QUAD_INDEX, 4, WEIGHTS.REAL_PVP_QUAD_SCALE, '4인 코어');
+    if (titles.length === 5) {
+      const exact = REAL_TEAM_INDEX.get(titleSetKey(titles));
+      if (exact) {
+        score += wrBonus(exact.wr, WEIGHTS.REAL_PVP_TEAM_SCALE);
+        reasons.push(
+          `[실전 기록] 이 5인 조합은 챔피언 아레나에서 실제로 승률 ${exact.wr}%(${exact.n}전, ` +
+          `채택률 ${exact.adoption}%)로 기록된 완전 일치 구성입니다. (출처: enikk.app)`
+        );
+      }
+    }
   }
 
   // --- 애장품(Treasure) 효과 ---
