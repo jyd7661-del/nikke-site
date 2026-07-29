@@ -19,6 +19,9 @@ export default function Home() {
   const [showResult, setShowResult] = useState(false);
   const [rosterLoading, setRosterLoading] = useState(false);
   const [aiMode, setAiMode] = useState('campaign');
+  // 보스전(솔로 레이드) 모드일 때 상대할 보스의 약점 속성. 지정 안 하면(null) 원소 보정 없이
+  // 기존 방식대로만 추천한다. metaStats.soloRaidByElement 키(Iron/Wind/Water/Electronic/Fire)와 일치.
+  const [bossElement, setBossElement] = useState(null);
 
   // 로그인 상태면 저장된 보유 니케(+애장품 여부)를 불러옵니다.
   useEffect(() => {
@@ -80,12 +83,14 @@ export default function Home() {
   // 규칙 기반 스코어링 엔진(lib/synergyEngine.js) 결과.
   // characterDatabase.json 상세 데이터가 있는 캐릭터만 분석 대상에 포함되며,
   // 애장품(Treasure) 표시를 해둔 캐릭터는 data/treasureEffects.json의 효과가 함께 반영됩니다.
+  // 보스전 모드에서 bossElement를 지정하면 metaStats.soloRaidByElement 실사용 데이터가
+  // 추가로 반영됩니다(엔진 내부에서 mode !== 'bossing'/'raid'일 때는 무시됨).
   const aiResult = useMemo(() => {
     if (!showResult) return null;
     const { resolved, unresolved, treasureCdbIds } = resolveRosterIdsToCdb(ownedIds, treasureIds);
-    const engineResult = recommendTeams(resolved, aiMode, { topN: 3, treasureIds: treasureCdbIds });
+    const engineResult = recommendTeams(resolved, aiMode, { topN: 3, treasureIds: treasureCdbIds, bossElement });
     return { ...engineResult, unresolvedCount: unresolved.length };
-  }, [showResult, ownedIds, treasureIds, aiMode]);
+  }, [showResult, ownedIds, treasureIds, aiMode, bossElement]);
 
   const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
 
@@ -147,7 +152,14 @@ export default function Home() {
         </button>
       </div>
 
-      <ResultPanel result={result} aiResult={aiResult} aiMode={aiMode} onAiModeChange={setAiMode} />
+      <ResultPanel
+        result={result}
+        aiResult={aiResult}
+        aiMode={aiMode}
+        onAiModeChange={setAiMode}
+        bossElement={bossElement}
+        onBossElementChange={setBossElement}
+      />
 
       <div className="my-8">
         <AdSlot label="본문 하단 광고" size="rectangle" />
