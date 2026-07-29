@@ -18,7 +18,7 @@ const BURST_ACCENT = {
   3: 'bg-rose-400',
 };
 
-export default function CharacterPicker({ ownedIds, onToggle, onClear }) {
+export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onToggleTreasure, onClear }) {
   const [query, setQuery] = useState('');
   const [burstFilter, setBurstFilter] = useState('all');
 
@@ -70,6 +70,10 @@ export default function CharacterPicker({ ownedIds, onToggle, onClear }) {
         </div>
       </div>
 
+      <p className="text-xs text-slate-500 mb-4">
+        보유중인 캐릭터를 선택하고, 카드 우하단의 💎 아이콘을 눌러 애장품(Treasure) 보유 여부를 표시해보세요. AI 추천에 반영됩니다.
+      </p>
+
       {[1, 2, 3].map((b) =>
         grouped[b].length === 0 ? null : (
           <div key={b} className="mb-6 last:mb-0">
@@ -77,30 +81,61 @@ export default function CharacterPicker({ ownedIds, onToggle, onClear }) {
               <span className={`inline-block w-1.5 h-1.5 rounded-full ${BURST_ACCENT[b]}`} />
               {BURST_LABEL[b]}
             </h3>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2">
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
               {grouped[b].map((c) => {
                 const active = ownedIds.has(c.id);
+                const hasTreasure = treasureIds?.has(c.id);
                 return (
                   <button
                     key={c.id}
                     onClick={() => onToggle(c.id)}
-                    className={`card-hover flex items-center justify-between gap-2 rounded-lg pl-2 pr-3 py-2 text-sm border text-left ${
+                    className={`card-hover relative flex flex-col rounded-lg overflow-hidden border text-left bg-slate-900/40 ${
                       active
-                        ? 'bg-nikke-accent/15 border-nikke-accent text-nikke-accent ring-1 ring-nikke-accent/40'
-                        : 'bg-slate-800/40 border-slate-700 hover:border-slate-500 text-slate-200'
+                        ? 'border-nikke-accent ring-2 ring-nikke-accent/50'
+                        : 'border-slate-700 hover:border-slate-500'
                     }`}
                   >
-                    <span className="flex items-center gap-2 min-w-0">
-                      <CharacterAvatar character={c} size="sm" />
-                      <span className="truncate flex items-center gap-1">
-                        {active && <span className="text-nikke-accent">✓</span>}
-                        {c.name}
+                    <div className="relative">
+                      <CharacterAvatar character={c} shape="portrait" />
+                      <span
+                        className={`absolute top-1 right-1 text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                          TIER_COLOR[c.tier] || 'bg-slate-600'
+                        }`}
+                      >
+                        {c.tier}
                       </span>
-                    </span>
-                    <span
-                      className={`shrink-0 text-[10px] font-bold px-1.5 py-0.5 rounded ${TIER_COLOR[c.tier] || 'bg-slate-600'}`}
-                    >
-                      {c.tier}
+                      {active && (
+                        <span className="absolute top-1 left-1 w-5 h-5 rounded-full bg-nikke-accent text-slate-900 flex items-center justify-center text-xs font-bold">
+                          ✓
+                        </span>
+                      )}
+                      {active && onToggleTreasure && (
+                        <span
+                          role="button"
+                          tabIndex={0}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleTreasure(c.id);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.stopPropagation();
+                              onToggleTreasure(c.id);
+                            }
+                          }}
+                          title="애장품(Treasure) 보유 표시"
+                          className={`absolute bottom-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs cursor-pointer transition ${
+                            hasTreasure
+                              ? 'bg-amber-400 text-amber-950'
+                              : 'bg-slate-900/70 text-slate-400 hover:text-amber-300'
+                          }`}
+                        >
+                          💎
+                        </span>
+                      )}
+                    </div>
+                    <span className="px-1.5 py-1 text-[11px] font-medium text-slate-200 truncate bg-slate-800/60">
+                      {c.name}
                     </span>
                   </button>
                 );
