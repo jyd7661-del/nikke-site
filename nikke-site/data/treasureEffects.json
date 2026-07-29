@@ -1,0 +1,35 @@
+{
+  "meta": {
+    "note": "애장품(Treasure)을 장착하면 스킬 자체가 바뀌거나 강화되어, 애장품이 없을 때와는 다른 캐릭터와 궁합이 좋아지는 경우가 있습니다. 이 파일은 그런 사례를 기록합니다. 아직 일부 캐릭터만 조사되어 있으며, 새로 알게 되는 대로 계속 추가해야 하는 living 자료입니다.",
+    "lastUpdated": "2026-07-29",
+    "schema": "characterId는 data/characterDatabase.json의 id 기준. synergyWith[].target은 상대 캐릭터의 title(영문) 기준."
+  },
+  "characters": [
+    {
+      "characterId": "helm",
+      "title": "Helm",
+      "treasureEffect": "애장품을 장착하면 공격 효과와 함께 아군 전체를 회복시키는 스킬 효과가 새로 생깁니다.",
+      "scoreBonus": 4,
+      "synergyWith": [
+        {
+          "target": "Crown",
+          "bonus": 6,
+          "reason": "헬름 애장품의 공격+전체 회복 효과가 크라운의 스킬 발동 조건과 맞물려, 애장품이 없을 때보다 크라운과의 조합 궁합이 크게 좋아집니다."
+        }
+      ]
+    },
+    {
+      "characterId": "zwei",
+      "title": "Zwei",
+      "treasureEffect": "애장품을 장착하면 화력이 크게 오르지만, 크리티컬 확률/피해가 부족해지는 약점이 함께 두드러집니다.",
+      "scoreBonus": 3,
+      "synergyWith": [
+        {
+          "target": "Mint",
+          "bonus": 6,
+          "reason": "민트의 크리티컬 관련 버프가 즈바이 애장품의 약점을 정확히 보완해줘서 최상급 페어링으로 꼽힙니다."
+        }
+      ]
+    }
+  ]
+}
