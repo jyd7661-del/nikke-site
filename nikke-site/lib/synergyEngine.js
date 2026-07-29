@@ -287,7 +287,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           const result = scoreTeam(members, mode);
           candidateTeams.push({
             formation: formationName,
-            members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst })),
+            members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
             ...result,
           });
         });
