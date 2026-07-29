@@ -9,13 +9,13 @@
 //
 // 핵심 설계 원칙 (사용자 요구사항 반영):
 // 1) 사람이 만든 근거자료(synergyNotes)는 정확하지만 갱신이 느리다는 한계가 있으므로,
-//    모든 추천 결과에는 근거자료의 기준일(asOf)과 "오래된 자료일 수 있다"는 신뢰도 표시를 함께 낸다.
+// 모든 추천 결과에는 근거자료의 기준일(asOf)과 "오래된 자료일 수 있다"는 신뢰도 표시를 함께 낸다.
 // 2) 보유 캐릭터(임의의 부분집합)만으로 실시간으로 최적 5인 조합을 찾아야 하므로,
-//    전수조사(nC5)가 아니라 버스트 타입별로 나눠 탐색 공간을 줄이는 방식을 쓴다.
+// 전수조사(nC5)가 아니라 버스트 타입별로 나눠 탐색 공간을 줄이는 방식을 쓴다.
 // 3) 추천 근거는 항상 "왜 이 조합인지"를 사람이 읽을 수 있는 문장으로 함께 반환한다(설명 가능성).
 // 4) enikk.app의 실제 기록(픽률/승률/표본수)은 커뮤니티 공략보다 최신이고 "실제로 강한 조합"을
-//    직접 보여주므로, 스킬 기반 추론에 검증 신호로 추가한다. 단, 시즌마다 메타가 바뀌므로
-//    dataFreshness와 마찬가지로 기준일을 명시하고 오래되면 경고한다.
+// 직접 보여주므로, 스킬 기반 추론에 검증 신호로 추가한다. 단, 시즌마다 메타가 바뀌므로
+// dataFreshness와 마찬가지로 기준일을 명시하고 오래되면 경고한다.
 
 import characterDatabase from '../data/characterDatabase.json';
 import synergyNotes from '../data/synergyNotes.json';
@@ -71,6 +71,9 @@ const MODE_COMPAT = {
   pvp: ['pvp'],
 };
 
+// 솔로 레이드 보스 약점 속성 선택지. metaStats.soloRaidByElement의 키와 반드시 일치해야 함.
+export const BOSS_ELEMENTS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
+
 function tierScore(character, mode) {
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const grade = character?.tiers?.[key];
@@ -83,6 +86,18 @@ function realUsageTierScore(character, mode) {
   const entry = metaStats.usageTier?.[slice]?.[character.title];
   if (!entry) return 0;
   return REAL_TIER_SCORE[entry.tier] || 0;
+}
+
+// 솔로 레이드 보스의 약점 속성(bossElement)이 주어졌을 때, 그 속성 안에서 이 캐릭터의
+// 실사용률(%)을 조회. metaStats.soloRaidByElement는 원소별 대표 시즌 하나의 Advantage
+// Nikkes(그 원소 캐릭터 한정 실사용률) 기록이라, 값이 있으면 "그 원소 안에서 얼마나
+// 우선순위 높은 픽인지"를 곧바로 알려준다.
+function realElementUsage(character, bossElement) {
+  if (!bossElement) return null;
+  const table = metaStats.soloRaidByElement?.[bossElement];
+  if (!table) return null;
+  const entry = (table.entries || []).find((e) => e.title === character.title);
+  return entry ? entry.usage : null;
 }
 
 // 스킬 설명에 쿨타임 감소(CDR) 관련 문구가 있는지로 CDR 제공 캐릭터인지 판정.
@@ -183,6 +198,10 @@ const WEIGHTS = {
   // enikk.app 실사용 픽률 등급 합산 — characterDatabase 티어(커뮤니티 공략, 갱신 느림)를
   // 실제 플레이어 채택 데이터로 보정하는 2차 신호. 스케일을 작게 잡아 "참고용 보정"에 그치게 함.
   REAL_USAGE_TIER_SUM: 0.5,
+  // 솔로 레이드 보스의 약점 속성(bossElement)이 지정됐을 때, 그 속성 안에서의 실사용률(%) 자체를
+  // 가산점으로 사용. 원소 밖 캐릭터에는 영향이 없고(값이 null), 같은 원소 캐릭터끼리의 우선순위를
+  // 결정하는 신호라 TIER_SUM/REAL_USAGE_TIER_SUM보다 이 상황(그 보스 상대)에서는 더 구체적인 증거.
+  REAL_ELEMENT_USAGE_SCALE: 0.08,
   // synergyNotes.archetypes에 등록된 "이름 붙은 조합"을 통째로 포함하면 강한 가산점.
   // 커뮤니티에서 반복적으로 검증된 조합이므로 개별 티어 합보다 신뢰도가 높다고 봄.
   ARCHETYPE_FULL_MATCH: 14,
@@ -211,6 +230,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     return { totalScore: 0, valid: false, reasons: ['조합원이 없습니다.'] };
   }
   const treasureIds = opts.treasureIds || new Set();
+  // 솔로 레이드/보스전 전용: 이번에 상대할 보스의 약점 속성 (예: 'Iron', 'Wind', 'Water',
+  // 'Electronic', 'Fire'). bossing/raid 모드에서만 의미가 있고, 지정하지 않으면 이 보정은 생략된다.
+  const bossElement = opts.bossElement || null;
 
   const titles = members.map((m) => m.title);
   const reasons = [];
@@ -243,6 +265,31 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       `[실사용 데이터] ${sTierRealMembers.map((m) => m.title).join(', ')}는(은) enikk.app 실제 플레이어 ` +
       `기록에서도 이 모드 S등급 픽률을 보이는 검증된 채용 캐릭터입니다.`
     );
+  }
+
+  // --- 솔로 레이드 보스 약점 속성별 실사용률 (bossing/raid + bossElement 지정 시) ---
+  if ((mode === 'bossing' || mode === 'raid') && bossElement) {
+    const elementUsageMembers = members
+      .map((m) => ({ m, usage: realElementUsage(m, bossElement) }))
+      .filter((x) => x.usage !== null);
+    elementUsageMembers.forEach(({ m, usage }) => {
+      score += (usage / 100) * WEIGHTS.REAL_ELEMENT_USAGE_SCALE * 10;
+    });
+    const highUsage = elementUsageMembers.filter((x) => x.usage >= 80);
+    if (highUsage.length > 0) {
+      const table = metaStats.soloRaidByElement[bossElement];
+      reasons.push(
+        `[실전 기록] ${highUsage.map((x) => `${x.m.title}(${x.usage}%)`).join(', ')}는(은) ${bossElement} ` +
+        `약점 보스(시즌${table.season} '${table.boss}' 기준) 상대 실사용률이 매우 높은 픽입니다. (출처: enikk.app)`
+      );
+    }
+    const lowUsage = elementUsageMembers.filter((x) => x.usage < 10);
+    if (lowUsage.length > 0) {
+      reasons.push(
+        `[실전 기록] ${lowUsage.map((x) => `${x.m.title}(${x.usage}%)`).join(', ')}는(은) ${bossElement} ` +
+        `속성이지만 실제로는 이 약점 보스전에 잘 채용되지 않는 편입니다. (출처: enikk.app)`
+      );
+    }
   }
 
   // --- 아키타입 매칭 ---
@@ -400,6 +447,7 @@ const FORMATIONS = {
 export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   const topN = opts.topN || 5;
   const treasureIds = opts.treasureIds || new Set();
+  const bossElement = opts.bossElement || null;
   const formations = opts.formation ? [opts.formation] : Object.keys(FORMATIONS);
 
   const buckets = { 1: [], 2: [], 3: [] };
@@ -418,10 +466,16 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   }
 
   // 버킷별로 이 mode 기준 티어 점수 상위 BUCKET_CAP명만 후보로 사용 (탐색량 억제).
+  // 단, 보스 약점 속성이 지정된 경우에는 정렬 기준에 그 속성 실사용률도 함께 반영해
+  // "이번 보스에 잘 맞는 캐릭터"가 후보에서 밀려나지 않게 한다.
   Object.keys(buckets).forEach((b) => {
     buckets[b] = buckets[b]
       .slice()
-      .sort((a, z) => tierScore(z, mode) - tierScore(a, mode))
+      .sort((a, z) => {
+        const za = tierScore(z, mode) + ((bossElement && realElementUsage(z, bossElement)) || 0) / 20;
+        const aa = tierScore(a, mode) + ((bossElement && realElementUsage(a, bossElement)) || 0) / 20;
+        return za - aa;
+      })
       .slice(0, BUCKET_CAP);
   });
 
@@ -439,7 +493,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       combos2.forEach((c2) => {
         combos3.forEach((c3) => {
           const members = [...c1, ...c2, ...c3];
-          const result = scoreTeam(members, mode, { treasureIds });
+          const result = scoreTeam(members, mode, { treasureIds, bossElement });
           candidateTeams.push({
             formation: formationName,
             members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
@@ -467,4 +521,4 @@ export function resolveOwnedCharacters(ownedIds) {
 
 // 사용 예:
 //   const owned = resolveOwnedCharacters(['rapi-red-hood', 'mast-romantic-maid', ...]);
-//   const { teams, dataFreshness } = recommendTeams(owned, 'bossing');
+//   const { teams, dataFreshness } = recommendTeams(owned, 'bossing', { bossElement: 'Iron' });
