@@ -6,6 +6,8 @@ import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import NicknamePrompt from '@/components/NicknamePrompt';
 import { recommend } from '@/lib/recommend';
+import { recommendTeams } from '@/lib/synergyEngine';
+import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
 import { useAuth } from '@/components/AuthProvider';
 import { fetchRoster, addToRoster, removeFromRoster } from '@/lib/roster';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
@@ -15,6 +17,7 @@ export default function Home() {
   const [ownedIds, setOwnedIds] = useState(new Set());
   const [showResult, setShowResult] = useState(false);
   const [rosterLoading, setRosterLoading] = useState(false);
+  const [aiMode, setAiMode] = useState('campaign');
 
   // 로그인 상태면 저장된 보유 니케를 불러옵니다.
   useEffect(() => {
@@ -51,6 +54,15 @@ export default function Home() {
   };
 
   const result = useMemo(() => (showResult ? recommend(ownedIds) : null), [showResult, ownedIds]);
+
+  // 규칙 기반 스코어링 엔진(lib/synergyEngine.js) 결과.
+  // characterDatabase.json 상세 데이터가 있는 캐릭터만 분석 대상에 포함됩니다.
+  const aiResult = useMemo(() => {
+    if (!showResult) return null;
+    const { resolved, unresolved } = resolveRosterIdsToCdb(ownedIds);
+    const engineResult = recommendTeams(resolved, aiMode, { topN: 3 });
+    return { ...engineResult, unresolvedCount: unresolved.length };
+  }, [showResult, ownedIds, aiMode]);
 
   const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
 
@@ -106,7 +118,7 @@ export default function Home() {
         </button>
       </div>
 
-      <ResultPanel result={result} />
+      <ResultPanel result={result} aiResult={aiResult} aiMode={aiMode} onAiModeChange={setAiMode} />
 
       <div className="my-8">
         <AdSlot label="본문 하단 광고" size="rectangle" />
