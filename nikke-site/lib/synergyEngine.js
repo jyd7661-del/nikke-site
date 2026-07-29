@@ -71,6 +71,12 @@ const MODE_COMPAT = {
   pvp: ['pvp'],
 };
 
+// 캠페인 실전 조합(metaStats.campaignCompositions) 매칭을 적용할 mode 목록.
+// (엔니케 캠페인 Compositions 탭 데이터는 "스토리 클리어"에 쓰인 5인 로스터라 타워에도
+// 참고할 만하지만, 근거 강도가 다르므로 campaign/story에는 정상 가중치, tribe_tower에는
+// 적용하지 않는다 — 타워는 원소 방벽 등 별도 요구사항이 강해 그대로 적용하면 오도할 수 있음.)
+const CAMPAIGN_COMBO_MODES = new Set(['campaign', 'story']);
+
 // 솔로 레이드 보스 약점 속성 선택지. metaStats.soloRaidByElement의 키와 반드시 일치해야 함.
 export const BOSS_ELEMENTS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 
@@ -141,7 +147,7 @@ export function getDataFreshnessMeta() {
 }
 
 // ---------------------------------------------------------------------------
-// enikk.app 실전 기록(PvP 챔피언 아레나 페어/트리오/쿼드/완전 조합) 매칭 유틸
+// enikk.app 실전 기록(PvP 챔피언 아레나 페어/트리오/쿼드/완전 조합, 캠페인 조합) 매칭 유틸
 // ---------------------------------------------------------------------------
 
 // (wr - 50) 기준으로 부호/크기가 결정되는 실전 승률 보너스. wr이 50%보다 높으면 가산,
@@ -167,6 +173,29 @@ const REAL_PAIR_INDEX = buildRealComboIndex(metaStats.pvp?.pairs);
 const REAL_TRIO_INDEX = buildRealComboIndex(metaStats.pvp?.trios);
 const REAL_QUAD_INDEX = buildRealComboIndex(metaStats.pvp?.quads);
 const REAL_TEAM_INDEX = buildRealComboIndex(metaStats.pvp?.topTeams);
+
+// 캠페인 "가장 많이 쓴 5인 조합" 완전 일치 인덱스.
+const REAL_CAMPAIGN_TEAM_INDEX = buildRealComboIndex(metaStats.campaignCompositions?.list);
+
+// 캠페인 조합의 4인 부분집합 → "그 4인을 포함하는 조합 중 totalUses가 가장 큰 것" 인덱스.
+// 유저가 코어 4인만 보유하고 5번째가 없을 때 "이 캐릭터를 더 넣으면 실전에서 가장 많이 쓰인
+// 조합이 완성된다"는 근거를 만들기 위함 (archetypes의 partial match와 같은 목적).
+function buildCampaignPartialIndex(list) {
+  const map = new Map();
+  (list || []).forEach((comp) => {
+    const members = comp.members;
+    members.forEach((missing, idx) => {
+      const subset = members.filter((_, i) => i !== idx);
+      const key = titleSetKey(subset);
+      const existing = map.get(key);
+      if (!existing || comp.totalUses > existing.comp.totalUses) {
+        map.set(key, { comp, missing });
+      }
+    });
+  });
+  return map;
+}
+const REAL_CAMPAIGN_PARTIAL_INDEX = buildCampaignPartialIndex(metaStats.campaignCompositions?.list);
 
 function combinationsOfTitles(titles, k) {
   const results = [];
@@ -223,6 +252,12 @@ const WEIGHTS = {
   REAL_PVP_TRIO_SCALE: 1.5,
   REAL_PVP_QUAD_SCALE: 2,
   REAL_PVP_TEAM_SCALE: 3,
+  // enikk.app 캠페인 Compositions 실전 기록(pctOfClears, 전체 클리어 중 이 조합의 비중) 기반
+  // 보너스. 승률 개념이 없는 PvE라 "얼마나 많이 실제로 채택됐는지" 자체를 신호로 쓴다.
+  // 1위 조합 pctOfClears가 15.43%이므로 FULL_SCALE=0.6이면 최대 약 +9.3점(ARCHETYPE_FULL_MATCH와
+  // 비슷한 스케일), 부분 일치(4/5)는 그 절반 비중으로 낮춘다.
+  REAL_CAMPAIGN_FULL_SCALE: 0.6,
+  REAL_CAMPAIGN_PARTIAL_SCALE: 0.3,
 };
 
 export function scoreTeam(members, mode = 'campaign', opts = {}) {
@@ -385,6 +420,42 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     }
   }
 
+  // --- enikk.app 캠페인 "가장 많이 쓰인 조합(Compositions)" 실전 기록 매칭 (campaign/story 전용) ---
+  // 정확히 5인 로스터가 실전 기록과 완전히 일치하면 그 조합의 pctOfClears(전체 클리어 중 비중)를
+  // 그대로 가산점으로 쓰고, 4인만 일치하면 "이 캐릭터를 더 넣으면 실전 최다 사용 조합이 완성된다"는
+  // 절반 비중의 힌트를 준다.
+  if (CAMPAIGN_COMBO_MODES.has(mode) && titles.length >= 4) {
+    let exactMatched = false;
+    if (titles.length === 5) {
+      const exact = REAL_CAMPAIGN_TEAM_INDEX.get(titleSetKey(titles));
+      if (exact) {
+        exactMatched = true;
+        score += (exact.pctOfClears || 0) * WEIGHTS.REAL_CAMPAIGN_FULL_SCALE;
+        reasons.push(
+          `[실전 기록] 이 5인 조합은 enikk.app 캠페인 클리어 기록에서 실제로 ${exact.totalUses.toLocaleString()}회 ` +
+          `사용되어 분석된 전체 클리어의 ${exact.pctOfClears}%를 차지하는, 플레이어들이 가장 많이 쓰는 캠페인 조합 ` +
+          `중 하나입니다. (출처: enikk.app)`
+        );
+      }
+    }
+    if (!exactMatched) {
+      const seenComp = new Set();
+      combinationsOfTitles(titles, 4).forEach((combo) => {
+        const hit = REAL_CAMPAIGN_PARTIAL_INDEX.get(titleSetKey(combo));
+        if (!hit) return;
+        const compKey = titleSetKey(hit.comp.members);
+        if (seenComp.has(compKey)) return;
+        seenComp.add(compKey);
+        score += (hit.comp.pctOfClears || 0) * WEIGHTS.REAL_CAMPAIGN_PARTIAL_SCALE;
+        reasons.push(
+          `[실전 기록] ${combo.join(', ')}는(은) enikk.app에서 ${hit.missing}와(과) 함께 쓰였을 때 ` +
+          `가장 많이 기록된 캠페인 조합(${hit.comp.totalUses.toLocaleString()}회, 전체의 ${hit.comp.pctOfClears}%)의 ` +
+          `핵심 4인입니다. ${hit.missing}를(을) 보유하면 이 실전 검증 조합을 완성할 수 있습니다. (출처: enikk.app)`
+        );
+      });
+    }
+  }
+
   // --- 애장품(Treasure) 효과 ---
   // 애장품 장착 시 스킬 자체가 바뀌거나 강화돼 다른 캐릭터와의 궁합이 달라지는 경우를
   // data/treasureEffects.json에서 조회해 반영한다. (사용자 요구사항: "애장품마다 사람들의 평가가
@@ -520,5 +591,5 @@ export function resolveOwnedCharacters(ownedIds) {
 }
 
 // 사용 예:
-//   const owned = resolveOwnedCharacters(['rapi-red-hood', 'mast-romantic-maid', ...]);
-//   const { teams, dataFreshness } = recommendTeams(owned, 'bossing', { bossElement: 'Iron' });
+// const owned = resolveOwnedCharacters(['rapi-red-hood', 'mast-romantic-maid', ...]);
+// const { teams, dataFreshness } = recommendTeams(owned, 'bossing', { bossElement: 'Iron' });
