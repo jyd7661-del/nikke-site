@@ -16,6 +16,10 @@
 import characterDatabase from '../data/characterDatabase.json';
 import synergyNotes from '../data/synergyNotes.json';
 import dataFreshness from '../data/dataFreshness.json';
+import treasureEffects from '../data/treasureEffects.json';
+
+// characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
+const TREASURE_EFFECT_BY_ID = new Map(treasureEffects.characters.map((t) => [t.characterId, t]));
 
 // ---------------------------------------------------------------------------
 // 기초 유틸
@@ -118,10 +122,11 @@ const WEIGHTS = {
   ELEMENT_DIVERSITY: 1,
 };
 
-export function scoreTeam(members, mode = 'campaign') {
+export function scoreTeam(members, mode = 'campaign', opts = {}) {
   if (!members || members.length === 0) {
     return { totalScore: 0, valid: false, reasons: ['조합원이 없습니다.'] };
   }
+  const treasureIds = opts.treasureIds || new Set();
 
   const titles = members.map((m) => m.title);
   const reasons = [];
@@ -202,6 +207,24 @@ export function scoreTeam(members, mode = 'campaign') {
     });
   }
 
+  // --- 애장품(Treasure) 효과 ---
+  // 애장품 장착 시 스킬 자체가 바뀌거나 강화돼 다른 캐릭터와의 궁합이 달라지는 경우를
+  // data/treasureEffects.json에서 조회해 반영한다. (사용자 요구사항: "애장품마다 사람들의 평가가
+  // 다르기도 하고 다른 니케와의 스킬조합 궁합도 갑작스럽게 바뀌기 때문에" 캐릭터별로 다르게 반영)
+  members.forEach((m) => {
+    if (!treasureIds.has(m.id)) return;
+    const effect = TREASURE_EFFECT_BY_ID.get(m.id);
+    if (!effect) return;
+    score += effect.scoreBonus || 0;
+    reasons.push(`${m.title} 애장품 효과: ${effect.treasureEffect}`);
+    (effect.synergyWith || []).forEach((sw) => {
+      if (titles.includes(sw.target)) {
+        score += sw.bonus || 0;
+        reasons.push(`${m.title}(애장품) + ${sw.target} 궁합: ${sw.reason}`);
+      }
+    });
+  });
+
   return {
     totalScore: Math.round(score * 10) / 10,
     valid: validBurstChain,
@@ -245,6 +268,7 @@ const FORMATIONS = {
 // ownedCharacters: characterDatabase.json 항목 배열(보유한 캐릭터만)
 export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   const topN = opts.topN || 5;
+  const treasureIds = opts.treasureIds || new Set();
   const formations = opts.formation ? [opts.formation] : Object.keys(FORMATIONS);
 
   const buckets = { 1: [], 2: [], 3: [] };
@@ -284,7 +308,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       combos2.forEach((c2) => {
         combos3.forEach((c3) => {
           const members = [...c1, ...c2, ...c3];
-          const result = scoreTeam(members, mode);
+          const result = scoreTeam(members, mode, { treasureIds });
           candidateTeams.push({
             formation: formationName,
             members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
