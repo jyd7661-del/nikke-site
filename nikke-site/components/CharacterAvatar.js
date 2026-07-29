@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { nikkeImageUrl } from '@/lib/nikkeImage';
 
-// 이미지 로드에 실패하면(캐릭터 이미지가 없거나 위키 링크가 깨진 경우) 이니셜 아바타로 대체합니다.
 const COLORS = [
   'bg-rose-500', 'bg-amber-500', 'bg-emerald-500', 'bg-sky-500',
   'bg-violet-500', 'bg-fuchsia-500', 'bg-teal-500', 'bg-orange-500',
@@ -21,10 +20,37 @@ const SIZE_CLASS = {
   md: 'w-16 h-16 text-base',
 };
 
-export default function CharacterAvatar({ character, size = 'sm', className = '' }) {
+// shape="circle"(기본): 원형 작은 아이콘. 목록/칩 등 좁은 공간용.
+// shape="portrait": 카드 폭을 꽉 채우는 세로형(상반신) 이미지. 캐릭터 선택 그리드용 - 더 크고 상반신까지 보이게.
+export default function CharacterAvatar({ character, size = 'sm', shape = 'circle', className = '' }) {
   const [failed, setFailed] = useState(false);
-  const sizeClass = SIZE_CLASS[size] || SIZE_CLASS.sm;
   const src = character?.img ? nikkeImageUrl(character.img) : null;
+
+  if (shape === 'portrait') {
+    const shapeClass = 'w-full aspect-[3/4] rounded-t-lg';
+    if (!src || failed) {
+      return (
+        <span
+          className={`flex items-center justify-center font-bold text-white shrink-0 text-3xl ${colorFor(
+            character?.id || '?'
+          )} ${shapeClass} ${className}`}
+        >
+          {character?.name?.[0] || '?'}
+        </span>
+      );
+    }
+    return (
+      <img
+        src={src}
+        alt={character.name}
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className={`object-cover object-top shrink-0 bg-slate-800 ${shapeClass} ${className}`}
+      />
+    );
+  }
+
+  const sizeClass = SIZE_CLASS[size] || SIZE_CLASS.sm;
 
   if (!src || failed) {
     return (
