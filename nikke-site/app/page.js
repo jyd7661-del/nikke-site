@@ -9,23 +9,25 @@ import { recommend } from '@/lib/recommend';
 import { recommendTeams } from '@/lib/synergyEngine';
 import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
 import { useAuth } from '@/components/AuthProvider';
-import { fetchRoster, addToRoster, removeFromRoster } from '@/lib/roster';
+import { fetchRoster, addToRoster, removeFromRoster, setTreasure } from '@/lib/roster';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
   const [ownedIds, setOwnedIds] = useState(new Set());
+  const [treasureIds, setTreasureIds] = useState(new Set());
   const [showResult, setShowResult] = useState(false);
   const [rosterLoading, setRosterLoading] = useState(false);
   const [aiMode, setAiMode] = useState('campaign');
 
-  // 로그인 상태면 저장된 보유 니케를 불러옵니다.
+  // 로그인 상태면 저장된 보유 니케(+애장품 여부)를 불러옵니다.
   useEffect(() => {
     if (authLoading) return;
     if (!user) return;
     setRosterLoading(true);
-    fetchRoster(user.id).then((ids) => {
-      setOwnedIds(new Set(ids));
+    fetchRoster(user.id).then((rows) => {
+      setOwnedIds(new Set(rows.map((r) => r.id)));
+      setTreasureIds(new Set(rows.filter((r) => r.hasTreasure).map((r) => r.id)));
       setRosterLoading(false);
     });
   }, [user, authLoading]);
@@ -42,6 +44,25 @@ export default function Home() {
       }
       return next;
     });
+    // 보유 해제 시 애장품 상태도 함께 초기화합니다.
+    setTreasureIds((prev) => {
+      if (!prev.has(id)) return prev;
+      const next = new Set(prev);
+      next.delete(id);
+      return next;
+    });
+  };
+
+  const toggleTreasure = (id) => {
+    if (!ownedIds.has(id)) return; // 보유중인 캐릭터만 애장품 표시 가능
+    setTreasureIds((prev) => {
+      const next = new Set(prev);
+      const has = next.has(id);
+      if (has) next.delete(id);
+      else next.add(id);
+      if (user) setTreasure(user.id, id, !has);
+      return next;
+    });
   };
 
   const clear = () => {
@@ -50,19 +71,21 @@ export default function Home() {
       ownedIds.forEach((id) => removeFromRoster(user.id, id));
     }
     setOwnedIds(new Set());
+    setTreasureIds(new Set());
     setShowResult(false);
   };
 
   const result = useMemo(() => (showResult ? recommend(ownedIds) : null), [showResult, ownedIds]);
 
   // 규칙 기반 스코어링 엔진(lib/synergyEngine.js) 결과.
-  // characterDatabase.json 상세 데이터가 있는 캐릭터만 분석 대상에 포함됩니다.
+  // characterDatabase.json 상세 데이터가 있는 캐릭터만 분석 대상에 포함되며,
+  // 애장품(Treasure) 표시를 해둔 캐릭터는 data/treasureEffects.json의 효과가 함께 반영됩니다.
   const aiResult = useMemo(() => {
     if (!showResult) return null;
-    const { resolved, unresolved } = resolveRosterIdsToCdb(ownedIds);
-    const engineResult = recommendTeams(resolved, aiMode, { topN: 3 });
+    const { resolved, unresolved, treasureCdbIds } = resolveRosterIdsToCdb(ownedIds, treasureIds);
+    const engineResult = recommendTeams(resolved, aiMode, { topN: 3, treasureIds: treasureCdbIds });
     return { ...engineResult, unresolvedCount: unresolved.length };
-  }, [showResult, ownedIds, aiMode]);
+  }, [showResult, ownedIds, treasureIds, aiMode]);
 
   const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
 
@@ -103,7 +126,13 @@ export default function Home() {
         <AdSlot label="상단 배너 광고" size="banner" />
       </div>
 
-      <CharacterPicker ownedIds={ownedIds} onToggle={toggle} onClear={clear} />
+      <CharacterPicker
+        ownedIds={ownedIds}
+        treasureIds={treasureIds}
+        onToggle={toggle}
+        onToggleTreasure={toggleTreasure}
+        onClear={clear}
+      />
 
       <div className="flex items-center justify-between mt-5 mb-6">
         <p className="text-sm text-slate-400">
