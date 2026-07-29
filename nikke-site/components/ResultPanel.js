@@ -29,7 +29,17 @@ const AI_MODES = [
   { key: 'pvp', label: 'PvP' },
 ];
 
-function AiRecommendSection({ aiResult, aiMode, onAiModeChange }) {
+// 솔로 레이드 보스 약점 속성 선택지. lib/synergyEngine.js의 BOSS_ELEMENTS,
+// data/metaStats.json의 soloRaidByElement 키와 반드시 일치해야 함.
+const BOSS_ELEMENT_OPTIONS = [
+  { key: 'Iron', label: '철' },
+  { key: 'Wind', label: '바람' },
+  { key: 'Water', label: '물' },
+  { key: 'Electronic', label: '전기' },
+  { key: 'Fire', label: '불' },
+];
+
+function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onBossElementChange }) {
   if (!aiResult) return null;
   const freshness = aiResult.dataFreshness;
   const isStale = freshness && (freshness.characterDatabase.stale || freshness.synergyNotes.stale);
@@ -54,9 +64,42 @@ function AiRecommendSection({ aiResult, aiMode, onAiModeChange }) {
           ))}
         </div>
       </div>
+
+      {aiMode === 'bossing' && (
+        <div className="flex items-center flex-wrap gap-2 mb-3 mt-2">
+          <span className="text-xs text-slate-500">이번에 상대할 보스의 약점 속성:</span>
+          <div className="flex gap-1 flex-wrap">
+            <button
+              onClick={() => onBossElementChange(null)}
+              className={`text-xs px-2.5 py-1 rounded-full border transition ${
+                !bossElement
+                  ? 'bg-nikke-gold/20 text-nikke-gold border-nikke-gold/60 font-semibold'
+                  : 'border-slate-700 text-slate-400 hover:border-slate-500'
+              }`}
+            >
+              선택 안 함
+            </button>
+            {BOSS_ELEMENT_OPTIONS.map((el) => (
+              <button
+                key={el.key}
+                onClick={() => onBossElementChange(el.key)}
+                className={`text-xs px-2.5 py-1 rounded-full border transition ${
+                  bossElement === el.key
+                    ? 'bg-nikke-gold/20 text-nikke-gold border-nikke-gold/60 font-semibold'
+                    : 'border-slate-700 text-slate-400 hover:border-slate-500'
+                }`}
+              >
+                {el.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
       <p className="text-sm text-slate-400 mb-3">
-        보유 캐릭터의 실제 성능 데이터와 공략 근거자료(prydwen.gg 재구성)를 규칙으로 채점해 실시간으로 탐색한 결과입니다.
+        보유 캐릭터의 실제 성능 데이터와 공략 근거자료(prydwen.gg 재구성 + enikk.app 실전 기록)를 규칙으로 채점해 실시간으로 탐색한 결과입니다.
         각 조합 아래 근거 이유를 함께 표시합니다.
+        {aiMode === 'bossing' && bossElement && ' 선택한 약점 속성 캐릭터의 enikk.app 실사용률도 함께 반영됩니다.'}
       </p>
 
       {isStale && (
@@ -114,7 +157,7 @@ function AiRecommendSection({ aiResult, aiMode, onAiModeChange }) {
   );
 }
 
-export default function ResultPanel({ result, aiResult, aiMode, onAiModeChange }) {
+export default function ResultPanel({ result, aiResult, aiMode, onAiModeChange, bossElement, onBossElementChange }) {
   if (!result) return null;
   const { fullMatches, partialMatches, autoTeam, ownedCount } = result;
 
@@ -128,7 +171,13 @@ export default function ResultPanel({ result, aiResult, aiMode, onAiModeChange }
 
   return (
     <div className="space-y-6">
-      <AiRecommendSection aiResult={aiResult} aiMode={aiMode} onAiModeChange={onAiModeChange} />
+      <AiRecommendSection
+        aiResult={aiResult}
+        aiMode={aiMode}
+        onAiModeChange={onAiModeChange}
+        bossElement={bossElement}
+        onBossElementChange={onBossElementChange}
+      />
 
       {fullMatches.length > 0 && (
         <section className="bg-nikke-panel rounded-xl p-5 border border-nikke-accent/40 shadow-lg shadow-nikke-accent/5">
