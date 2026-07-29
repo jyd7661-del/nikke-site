@@ -8,13 +8,17 @@ create table if not exists profiles (
   created_at timestamptz default now()
 );
 
--- 2) 내 보유 니케
+-- 2) 내 보유 니케 (has_treasure: 애장품(Treasure) 장착 여부)
 create table if not exists owned_nikke (
   user_id uuid references auth.users on delete cascade,
   character_id text not null,
+  has_treasure boolean not null default false,
   created_at timestamptz default now(),
   primary key (user_id, character_id)
 );
+
+-- 이미 schema.sql을 예전에 실행해서 owned_nikke 테이블이 있는 경우, has_treasure 컬럼만 추가합니다.
+alter table owned_nikke add column if not exists has_treasure boolean not null default false;
 
 -- 3) 유저가 직접 등록하는 조합
 create table if not exists user_combos (
@@ -79,6 +83,7 @@ create policy "profiles_update_own" on profiles for update using (auth.uid() = i
 -- owned_nikke: 누구나 읽기(친구 공유용), 본인 데이터만 추가/삭제
 create policy "owned_select_all" on owned_nikke for select using (true);
 create policy "owned_insert_own" on owned_nikke for insert with check (auth.uid() = user_id);
+create policy "owned_update_own" on owned_nikke for update using (auth.uid() = user_id);
 create policy "owned_delete_own" on owned_nikke for delete using (auth.uid() = user_id);
 
 -- user_combos: 누구나 읽기, 본인 글만 작성/수정/삭제
