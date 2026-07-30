@@ -16,10 +16,10 @@ export const runtime = 'nodejs';
 
 const DAILY_LIMIT = 8;
 const MODEL = 'claude-sonnet-5';
-// 보유 캐릭터가 많은 유저(예: 70명 이상)는 프롬프트에 들어가는 로스터/근거자료 텍스트가 커지고
-// 그만큼 AI가 이유를 설명하는 답변도 길어질 수 있어, max_tokens가 너무 작으면 JSON이 끝나기 전에
-// 응답이 잘려 파싱에 실패한다(실제로 71명 보유 로스터에서 재현됨). 여유 있게 잡아둔다.
-const MAX_OUTPUT_TOKENS = 1500;
+// Vercel 로그로 확인한 실제 원인: stopReason이 'max_tokens'인데 텍스트 블록은 비어 있었다 —
+// 즉 모델이 응답용 텍스트를 쓰기 전에 내부적으로 토큰 예산을 다 써버린 것. max_tokens를
+// 넉넉하게 잡아야 실제 JSON 출력까지 도달한다. (71명 같은 대형 로스터에서 재현됨)
+const MAX_OUTPUT_TOKENS = 4096;
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
@@ -214,6 +214,7 @@ ${pairsText}
     if (!parsed || !Array.isArray(parsed.members)) {
       console.error('ai-recommend: failed to parse AI response', {
         stopReason: msg.stop_reason,
+        contentTypes: (msg.content || []).map((c) => c.type),
         textPreview: text.slice(0, 2000),
       });
       return Response.json({ error: 'AI가 유효한 형식으로 응답하지 않았습니다. 다시 시도해주세요.' }, { status: 502 });
