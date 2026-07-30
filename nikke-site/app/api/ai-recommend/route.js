@@ -16,6 +16,10 @@ export const runtime = 'nodejs';
 
 const DAILY_LIMIT = 8;
 const MODEL = 'claude-sonnet-5';
+// 보유 캐릭터가 많은 유저(예: 70명 이상)는 프롬프트에 들어가는 로스터/근거자료 텍스트가 커지고
+// 그만큼 AI가 이유를 설명하는 답변도 길어질 수 있어, max_tokens가 너무 작으면 JSON이 끝나기 전에
+// 응답이 잘려 파싱에 실패한다(실제로 71명 보유 로스터에서 재현됨). 여유 있게 잡아둔다.
+const MAX_OUTPUT_TOKENS = 1500;
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
@@ -175,8 +179,8 @@ export async function POST(req) {
 반드시 이 목록에 있는 캐릭터만 사용하세요. 목록에 없는 캐릭터나 자료에 없는 시너지를 지어내지 마세요.
 [필수 게임 규칙] 5인 조합은 버스트 I, II, III 단계 캐릭터를 각각 최소 1명씩 포함해야 하며, 5명은 모두 서로 다른 캐릭터여야 합니다.
 당신의 역할은 주어진 데이터만 근거로 이 사용자에게 가장 좋은 5인 조합을 직접 구성하고 그 이유를 설명하는 것입니다.
-반드시 아래 JSON 형식으로만 답하세요. JSON 앞뒤로 다른 설명이나 문장을 추가하지 마세요.
-{"members": ["영문 title 5개, characterDatabase의 title 표기 그대로"], "reasoning": "250~450자 분량의 한국어 설명"}`;
+매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요. reasoning은 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요).
+{"members": ["영문 title 5개, characterDatabase의 title 표기 그대로"], "reasoning": "200~350자 분량의 한국어 설명"}`;
 
     const excludeText =
       Array.isArray(excludeTitles) && excludeTitles.length > 0
@@ -199,7 +203,7 @@ ${pairsText}
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const msg = await client.messages.create({
       model: MODEL,
-      max_tokens: 800,
+      max_tokens: MAX_OUTPUT_TOKENS,
       system,
       messages: [{ role: 'user', content: userContent }],
     });
@@ -208,6 +212,10 @@ ${pairsText}
     const parsed = extractJson(text);
 
     if (!parsed || !Array.isArray(parsed.members)) {
+      console.error('ai-recommend: failed to parse AI response', {
+        stopReason: msg.stop_reason,
+        textPreview: text.slice(0, 2000),
+      });
       return Response.json({ error: 'AI가 유효한 형식으로 응답하지 않았습니다. 다시 시도해주세요.' }, { status: 502 });
     }
 
