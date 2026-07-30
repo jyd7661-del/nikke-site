@@ -2,25 +2,34 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { fetchPosts, fetchProfilesByIds } from '@/lib/board';
+import { fetchPosts, fetchProfilesByIds, BOARD_CATEGORIES } from '@/lib/board';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import { useAuth } from '@/components/AuthProvider';
+
+const TABS = [{ key: 'all', label: '전체' }, ...BOARD_CATEGORIES];
+const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
+const CATEGORY_BADGE_STYLE = {
+  bug: 'text-rose-300 bg-rose-500/10 border-rose-500/40',
+  suggestion: 'text-sky-300 bg-sky-500/10 border-sky-500/40',
+  free: 'text-slate-400 bg-slate-500/10 border-slate-500/40',
+};
 
 export default function BoardPage() {
   const { user } = useAuth();
   const [posts, setPosts] = useState([]);
   const [nicknames, setNicknames] = useState({});
   const [loading, setLoading] = useState(true);
+  const [tab, setTab] = useState('all');
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      const list = await fetchPosts();
+      const list = await fetchPosts(tab);
       setPosts(list);
       setNicknames(await fetchProfilesByIds([...new Set(list.map((p) => p.user_id))]));
       setLoading(false);
     })();
-  }, []);
+  }, [tab]);
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
@@ -37,7 +46,26 @@ export default function BoardPage() {
           <span className="text-xs text-slate-500">로그인 후 글쓰기 가능</span>
         )}
       </div>
-      <p className="text-sm text-slate-500 mb-6">자유롭게 공략, 잡담, 질문을 나눠보세요.</p>
+      <p className="text-sm text-slate-500 mb-4">
+        자유롭게 공략, 잡담, 질문을 나눠보세요. 버그를 발견했거나 사이트에 바라는 점이 있다면 버그 제보 / 건의사항
+        게시판에 남겨주세요.
+      </p>
+
+      <div className="flex gap-1.5 mb-6">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            onClick={() => setTab(t.key)}
+            className={`text-xs px-3 py-1.5 rounded-full border transition ${
+              tab === t.key
+                ? 'bg-nikke-accent text-slate-900 border-nikke-accent font-semibold'
+                : 'border-slate-700 text-slate-300 hover:border-slate-500'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
 
       {!isSupabaseConfigured && (
         <p className="text-sm text-rose-300 mb-6">
@@ -57,7 +85,16 @@ export default function BoardPage() {
             href={`/board/${post.id}`}
             className="flex items-center justify-between py-3 px-3 hover:bg-white/5 transition-colors"
           >
-            <span className="text-sm text-slate-100 truncate">{post.title}</span>
+            <span className="flex items-center gap-2 min-w-0">
+              <span
+                className={`text-[10px] shrink-0 border rounded-full px-2 py-0.5 ${
+                  CATEGORY_BADGE_STYLE[post.category] || CATEGORY_BADGE_STYLE.free
+                }`}
+              >
+                {CATEGORY_LABEL[post.category] || '자유'}
+              </span>
+              <span className="text-sm text-slate-100 truncate">{post.title}</span>
+            </span>
             <span className="text-xs text-slate-500 shrink-0 ml-3">
               {nicknames[post.user_id] || '익명 지휘관'} ·{' '}
               {new Date(post.created_at).toLocaleDateString('ko-KR')}
