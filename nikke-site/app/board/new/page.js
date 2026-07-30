@@ -3,13 +3,14 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
-import { createPost } from '@/lib/board';
+import { createPost, BOARD_CATEGORIES } from '@/lib/board';
 
 export default function NewPostPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [category, setCategory] = useState('free');
   const [submitting, setSubmitting] = useState(false);
 
   if (loading) return null;
@@ -25,7 +26,7 @@ export default function NewPostPage() {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
     setSubmitting(true);
-    const { data, error } = await createPost(user.id, { title: title.trim(), content: content.trim() });
+    const { data, error } = await createPost(user.id, { title: title.trim(), content: content.trim(), category });
     setSubmitting(false);
     if (error) {
       alert('등록에 실패했습니다: ' + (error.message || error));
@@ -38,6 +39,30 @@ export default function NewPostPage() {
     <main className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-xl font-bold mb-6">글쓰기</h1>
       <form onSubmit={submit} className="space-y-4">
+        <div className="flex gap-1.5">
+          {BOARD_CATEGORIES.map((c) => (
+            <button
+              key={c.key}
+              type="button"
+              onClick={() => setCategory(c.key)}
+              className={`text-xs px-3 py-1.5 rounded-full border transition ${
+                category === c.key
+                  ? 'bg-nikke-accent text-slate-900 border-nikke-accent font-semibold'
+                  : 'border-slate-700 text-slate-300 hover:border-slate-500'
+              }`}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+        {category === 'bug' && (
+          <p className="text-xs text-slate-500">
+            어떤 화면/기능에서, 어떤 상황에 문제가 생겼는지 최대한 자세히 적어주시면 확인이 빨라져요.
+          </p>
+        )}
+        {category === 'suggestion' && (
+          <p className="text-xs text-slate-500">사이트에 추가되었으면 하는 기능이나 개선 아이디어를 자유롭게 남겨주세요.</p>
+        )}
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
