@@ -6,7 +6,7 @@ export const runtime = 'nodejs';
 
 // 하루 IP당 무료 사용 횟수. 트래픽/비용 상황을 보며 나중에 조정하세요.
 const DAILY_LIMIT = 8;
-const MODEL = 'claude-haiku-4-5-20251001';
+const MODEL = 'claude-sonnet-5'; // 2026-07-31: 미사용 레거시 엔드포인트지만 일관성을 위해 sonnet으로 통일 (실제 추천은 app/api/ai-recommend가 처리, 이미 sonnet)
 
 function getClientIp(req) {
   const fwd = req.headers.get('x-forwarded-for');
