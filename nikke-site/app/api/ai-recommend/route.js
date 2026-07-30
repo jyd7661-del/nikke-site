@@ -11,6 +11,11 @@ import synergyNotes from '@/data/synergyNotes.json';
 // AI가 실제로 조합을 짜는 역할을 하도록 새로 만든 엔드포인트. lib/synergyEngine.js의 scoreTeam은
 // 여기서 AI가 고른 조합이 게임 규칙(버스트 I/II/III)을 만족하는지 검증하고 점수/근거를 매기는
 // 용도로만 재사용한다 — 후보를 미리 좁혀두는 용도로는 쓰지 않는다.)
+//
+// 유저 👍/👎 피드백(app/api/ai-recommend/feedback)이 쌓이면, 그 통계를 매 요청마다 조회해서
+// "커뮤니티 반응이 좋았던 조합" 힌트로 프롬프트에 실어 보낸다. 이건 모델을 학습/파인튜닝하는 게
+// 아니라 매번 그 순간의 통계를 다시 읽어 프롬프트에 얹는 방식(RAG)이며, 기존 아키타입/페어
+// 시너지 자료를 프롬프트에 넣는 방식과 동일한 원리다.
 
 export const runtime = 'nodejs';
 
@@ -68,6 +73,48 @@ async function checkAndIncrementRateLimit(supabase, ipHash) {
     await supabase.from('ai_explain_usage').insert({ ip_hash: ipHash, usage_date: today, count: 1 });
   }
   return true;
+}
+
+// 최근 피드백(최대 300건)을 모드별로 모아 조합(멤버 title 집합) 단위로 순호응(👍-👎)을 집계하고,
+// 투표가 2회 이상 쌓였고 순호응이 양수인 조합만 상위 3개까지 프롬프트용 텍스트로 만든다.
+// Supabase JS 클라이언트에 group-by 집계가 없어 최근 N건을 읽어 JS에서 직접 집계한다.
+async function popularCombosText(supabase, mode) {
+  const { data, error } = await supabase
+    .from('ai_recommend_feedback')
+    .select('members, formation, rating')
+    .eq('mode', mode)
+    .order('created_at', { ascending: false })
+    .limit(300);
+
+  if (error || !data || data.length === 0) return null;
+
+  const scoreMap = new Map();
+  for (const row of data) {
+    const members = row.members || [];
+    if (members.length === 0) continue;
+    const key = members
+      .map((m) => m.title)
+      .sort()
+      .join('|');
+    const entry = scoreMap.get(key) || { members, score: 0, votes: 0 };
+    entry.score += row.rating === 'up' ? 1 : -1;
+    entry.votes += 1;
+    scoreMap.set(key, entry);
+  }
+
+  const ranked = Array.from(scoreMap.values())
+    .filter((e) => e.score > 0 && e.votes >= 2)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
+  if (ranked.length === 0) return null;
+
+  return ranked
+    .map(
+      (e, i) =>
+        `${i + 1}. ${e.members.map((m) => `${m.title}(${m.name_kr})`).join(', ')} — 순호응 ${e.score} (투표 ${e.votes}회)`
+    )
+    .join('\n');
 }
 
 // 캐릭터 한 명을 AI 프롬프트용 한 줄 요약으로. characterDatabase.json 항목(c)을 그대로 받는다.
@@ -162,8 +209,9 @@ export async function POST(req) {
   }
 
   try {
+    let supabase = null;
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+      supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
       const ipHash = hashIp(getClientIp(req));
       const ok = await checkAndIncrementRateLimit(supabase, ipHash);
       if (!ok) {
@@ -188,10 +236,13 @@ export async function POST(req) {
         .map((p) => `- ${p.members.join(' + ')}: ${p.reason}`)
         .join('\n') || '(해당 없음)';
 
+    const popularText = supabase ? await popularCombosText(supabase, mode) : null;
+
     const system = `당신은 모바일 게임 '승리의 여신: 니케'의 조합을 실제로 구성하는 전문가입니다.
 아래에 사용자가 실제로 보유한 캐릭터 목록과 각 캐릭터의 실제 데이터(모드별 티어, 버스트 단계, 클래스, 속성, 애장품 여부)가 주어집니다.
-그 아래에는 커뮤니티에서 검증된 '이름 붙은 조합(아키타입)'과 캐릭터 페어 시너지가 주어집니다.
+그 아래에는 커뮤니티에서 검증된 '이름 붙은 조합(아키타입)'과 캐릭터 페어 시너지가 주어지고, 있다면 실제 유저들이 👍/👎로 평가한 조합 통계도 참고자료로 주어집니다.
 반드시 이 목록에 있는 캐릭터만 사용하세요. 목록에 없는 캐릭터나 자료에 없는 시너지를 지어내지 마세요.
+유저 피드백 통계가 주어지면 참고하되, 로스터 상황이나 게임 규칙에 안 맞으면 그대로 베끼지 말고 데이터에 맞게 조정하세요.
 [필수 게임 규칙] 5인 조합은 버스트 I, II, III 단계 캐릭터를 각각 최소 1명씩 포함해야 하며, 5명은 모두 서로 다른 캐릭터여야 합니다.
 당신의 역할은 주어진 데이터만 근거로 이 사용자에게 가장 좋은 5인 조합을 직접 구성하고 그 이유를 설명하는 것입니다.
 매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요.
@@ -204,6 +255,8 @@ export async function POST(req) {
         ? `\n이전에 추천한 조합(가능하면 겹치지 않는 다른 조합을 시도하세요): ${excludeTitles.join(', ')}`
         : '';
 
+    const popularBlock = popularText ? `\n\n[유저 👍/👎 피드백에서 반응이 좋았던 조합 (참고용)]\n${popularText}` : '';
+
     const userContent = `모드: ${modeLabel}${bossElement ? ` (보스 약점 속성: ${bossElement})` : ''}${excludeText}
 
 [보유 캐릭터 목록]
@@ -213,7 +266,7 @@ ${rosterText}
 ${archetypesText}
 
 [관련 페어 시너지]
-${pairsText}
+${pairsText}${popularBlock}
 
 위 데이터만 근거로 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
 
