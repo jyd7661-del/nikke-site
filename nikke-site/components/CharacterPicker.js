@@ -134,7 +134,13 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                         </span>
                       )}
                     </div>
-                    <span className="px-1.5 py-1 text-[11px] font-medium text-slate-200 truncate bg-slate-800/60">
+                    <span
+                      className={`relative px-1.5 py-1.5 text-[12px] font-display tracking-wide text-center leading-tight truncate transition-colors border-t ${
+                        active
+                          ? 'text-nikke-accent bg-gradient-to-b from-nikke-accent/10 to-slate-900/90 border-nikke-accent/50'
+                          : 'text-slate-200 bg-gradient-to-b from-slate-800/50 to-slate-900/90 border-slate-700/60'
+                      }`}
+                    >
                       {c.name}
                     </span>
                   </button>
