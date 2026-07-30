@@ -13,7 +13,7 @@ export const CHARACTERS = [
   { id: 'rumani', name: '루마니', burst: 1, tier: 'T0', role: ['탱커'], img: '9/91/Rumani_MI.png' },
   { id: 'moran', name: '목단', burst: 1, tier: 'T0', role: ['탱커'], img: 'a/ad/Moran_MI.png' },
   { id: 'anis-star', name: '아니스: 스타', burst: 1, tier: 'T0', role: ['탱커'], img: '5/5e/Anis_Star_MI.png' },
-  { id: 'rita', name: '리타', burst: 1, tier: 'T1', role: ['서포터', '버퍼'], img: null },
+  { id: 'rita', name: '리타', burst: 1, tier: 'T1', role: ['서포터', '버퍼'], img: 'c/c2/Liter_MI.png' },
   { id: 'rouge', name: '루주', burst: 1, tier: 'T1', role: ['서포터', '힐러'], img: '1/1a/Rouge_MI.png' },
   { id: 'tove', name: '토브', burst: 1, tier: 'T1', role: ['서포터', '힐러'], img: '7/7d/Tove_MI.png' },
   { id: 'miranda', name: '미란다', burst: 1, tier: 'T1', role: ['서포터', '버퍼'], img: '5/51/Miranda_MI.png' },
