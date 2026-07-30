@@ -16,7 +16,16 @@ import synergyNotes from '@/data/synergyNotes.json';
 // "커뮤니티 반응이 좋았던 조합" 힌트로 프롬프트에 실어 보낸다. 이건 모델을 학습/파인튜닝하는 게
 // 아니라 매번 그 순간의 통계를 다시 읽어 프롬프트에 얹는 방식(RAG)이며, 기존 아키타입/페어
 // 시너지 자료를 프롬프트에 넣는 방식과 동일한 원리다.
-
+//
+// 2026-07-31 수정: 유저가 "추천 조합이 시너지보다 역할군/티어 기준으로 뽑힌 것처럼 느껴진다"고
+// 피드백함. 원인 2가지를 찾아 수정: (1) synergyPairs에 mode 필드가 없어서 캠페인 추천에도
+// PvP 전용 페어 같은 것이 섞여 들어가 AI가 그 자료를 신뢰하지 못하고 무시했을 가능성 -> 페어에
+// mode를 추가하고 relevantPairs도 archetypes처럼 모드로 필터링하도록 수정. (2) 시스템 프롬프트가
+// "데이터를 참고하라"고만 했지 아키타입/페어를 개별 티어보다 우선하라고 명시하지 않아서, 모델이
+// 기본 휴리스틱(버스트 슬롯별 최고 티어 뽑기)으로 흐르기 쉬웠음 -> 아래처럼 "완전 보유한 아키타입 우선
+// -> 페어 시너지로 나머지 채우기 -> 그래도 남으면 개별 티어" 순서를 명시하고, 아키타입 목록에 각
+// 아키타입을 몇 명 보유했는지([완전 보유]/[일부 보유 n/m])를 함께 보여줘 AI가 우선순위를 스스로
+// 판단하기 쉽게 만듦.
 export const runtime = 'nodejs';
 
 const DAILY_LIMIT = 8;
@@ -129,7 +138,8 @@ function charSummaryLine(c, mode, treasureIdSet) {
 }
 
 // 보유 로스터 중 이 모드와 관련된 "이름 붙은 조합(아키타입)". 로스터에 한 명이라도 포함되면
-// AI가 참고할 수 있게 목록에 넣는다(완전 포함 여부는 AI가 직접 판단).
+// AI가 참고할 수 있게 목록에 넣는다(완전 포함 여부는 AI가 직접 판단할 수 있도록 아래에서
+// [완전 보유]/[일부 보유] 상태를 함께 표시한다).
 function relevantArchetypes(ownedTitleSet, mode) {
   const compat = MODE_COMPAT[mode] || [mode];
   return synergyNotes.archetypes.filter(
@@ -137,9 +147,13 @@ function relevantArchetypes(ownedTitleSet, mode) {
   );
 }
 
-// 페어 시너지는 두 멤버 모두 보유하고 있을 때만 의미가 있으므로 완전 포함된 것만 넘긴다.
-function relevantPairs(ownedTitleSet) {
-  return synergyNotes.synergyPairs.filter((p) => (p.members || []).every((m) => ownedTitleSet.has(m)));
+// 페어 시너지는 두 멤버 모두 보유하고 있을 때만 의미가 있으므로 완전 포함된 것만 넘기고,
+// 아키타입과 마찬가지로 현재 모드와 호환되는 것만 남긴다(mode가 없는 옛 데이터는 통과시킴).
+function relevantPairs(ownedTitleSet, mode) {
+  const compat = MODE_COMPAT[mode] || [mode];
+  return synergyNotes.synergyPairs.filter(
+    (p) => (p.members || []).every((m) => ownedTitleSet.has(m)) && (!p.mode || compat.includes(p.mode))
+  );
 }
 
 function computeFormation(members) {
@@ -229,10 +243,15 @@ export async function POST(req) {
     const rosterText = characters.map((c) => charSummaryLine(c, mode, treasureIdSet)).join('\n');
     const archetypesText =
       relevantArchetypes(ownedTitleSet, mode)
-        .map((a) => `- '${a.name}' (필요: ${a.members.join(', ')}): ${a.note}`)
+        .map((a) => {
+          const total = (a.members || []).length;
+          const owned = (a.members || []).filter((m) => ownedTitleSet.has(m)).length;
+          const status = total > 0 && owned === total ? '[완전 보유]' : `[일부 보유 ${owned}/${total}]`;
+          return `- ${status} '${a.name}' (필요: ${(a.members || []).join(', ') || '(전체 특성 조합)'}): ${a.note}`;
+        })
         .join('\n') || '(해당 없음)';
     const pairsText =
-      relevantPairs(ownedTitleSet)
+      relevantPairs(ownedTitleSet, mode)
         .map((p) => `- ${p.members.join(' + ')}: ${p.reason}`)
         .join('\n') || '(해당 없음)';
 
@@ -243,11 +262,18 @@ export async function POST(req) {
 그 아래에는 커뮤니티에서 검증된 '이름 붙은 조합(아키타입)'과 캐릭터 페어 시너지가 주어지고, 있다면 실제 유저들이 👍/👎로 평가한 조합 통계도 참고자료로 주어집니다.
 반드시 이 목록에 있는 캐릭터만 사용하세요. 목록에 없는 캐릭터나 자료에 없는 시너지를 지어내지 마세요.
 유저 피드백 통계가 주어지면 참고하되, 로스터 상황이나 게임 규칙에 안 맞으면 그대로 베끼지 말고 데이터에 맞게 조정하세요.
+
+[조합 구성 우선순위 — 반드시 이 순서를 따르세요. 캐릭터 개별 티어만 보고 버스트 단계별로 최고 티어를 하나씩 뽑는 방식(역할군 기반 조합)은 금지합니다]
+1. 아래 '관련 이름 붙은 조합(아키타입)' 중 [완전 보유]로 표시된 것이 있다면 최우선으로 채택하세요. 여러 개를 동시에 채택할 수 있으면(예: 4인 코어 아키타입 + 남는 1자리에 다른 아키타입/페어 멤버) 그렇게 결합하세요.
+2. 완전 보유한 아키타입만으로 5명이 다 안 채워지면, '관련 페어 시너지'에 있는 캐릭터 쌍을 최대한 함께 포함해 나머지 슬롯을 채우세요.
+3. 그래도 남는 슬롯만 개별 모드 티어가 높은 캐릭터로 채우세요.
+4. 위 아키타입/페어 자료에 이 로스터로 적용 가능한 것이 정말 하나도 없을 때만 순수 티어 기준으로 구성하고, 그 경우 reasoning 맨 앞에 "적용 가능한 아키타입/페어 자료가 없어 티어 기준으로 구성함"이라고 명시하세요.
+
 [필수 게임 규칙] 5인 조합은 버스트 I, II, III 단계 캐릭터를 각각 최소 1명씩 포함해야 하며, 5명은 모두 서로 다른 캐릭터여야 합니다.
 당신의 역할은 주어진 데이터만 근거로 이 사용자에게 가장 좋은 5인 조합을 직접 구성하고 그 이유를 설명하는 것입니다.
 매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요.
 - members 배열의 각 항목은 캐릭터 목록에 주어진 title 표기와 정확히 똑같이 쓰세요. 한글 이름이나 괄호 병기를 절대 덧붙이지 마세요. 예: "Rapi: Red Hood"는 맞고, "Rapi: Red Hood(라피)"는 틀립니다.
-- reasoning은 줄바꿈 없이 한 문단으로, 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요).
+- reasoning은 줄바꿈 없이 한 문단으로, 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요). 실제로 채택한 아키타입 이름이나 페어를 구체적으로 언급하세요(예: "캠페인 파밍 코어(아니스: 스타+크라운+...)를 채택하고 5번째 슬롯은...").
 {"members": ["title 5개, 위 목록의 title 표기 그대로, 괄호나 한글 이름 금지"], "reasoning": "200~350자 분량의 한국어 설명, 줄바꿈 없이 한 문단"}`;
 
     const excludeText =
@@ -268,7 +294,7 @@ ${archetypesText}
 [관련 페어 시너지]
 ${pairsText}${popularBlock}
 
-위 데이터만 근거로 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
+위 데이터만 근거로, 위에서 안내한 우선순위(완전 보유 아키타입 > 페어 시너지 > 개별 티어)에 따라 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
 
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const msg = await client.messages.create({
