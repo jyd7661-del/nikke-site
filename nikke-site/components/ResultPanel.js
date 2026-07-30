@@ -24,12 +24,15 @@ const BOSS_ELEMENT_OPTIONS = [
 // 응답에 포함된 team.reasons/totalScore는 lib/synergyEngine.js의 scoreTeam이 AI의 결과물을 사후
 // 검증/채점한 것이고, aiReasoning은 AI가 직접 쓴 구성 이유다.
 // "다른 조합 보기"를 누르면 이전까지 나온 멤버 목록을 excludeTitles로 함께 보내 겹치지 않는 조합을 유도한다.
+// 👍/👎 버튼은 app/api/ai-recommend/feedback에 평가를 저장하고, 그 통계는 다음 AI 추천 호출 때
+// app/api/ai-recommend가 "반응 좋았던 조합" 힌트로 다시 읽어 프롬프트에 실어 보낸다.
 function AiRecommendButton({ roster, mode, bossElement }) {
   const [phase, setPhase] = useState('idle'); // idle | loading | error
   const [team, setTeam] = useState(null);
   const [reasoning, setReasoning] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const [excludeTitles, setExcludeTitles] = useState([]);
+  const [feedback, setFeedback] = useState(null); // null | 'sending' | 'up' | 'down'
 
   const requestTeam = async (exclude) => {
     setPhase('loading');
@@ -55,10 +58,36 @@ function AiRecommendButton({ roster, mode, bossElement }) {
       setTeam(data.team);
       setReasoning(data.aiReasoning || '');
       setPhase('idle');
+      setFeedback(null);
       setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
     } catch {
       setErrorMsg('네트워크 오류로 AI 추천을 불러오지 못했습니다.');
       setPhase('error');
+    }
+  };
+
+  const sendFeedback = async (rating) => {
+    if (!team || feedback === 'sending' || feedback === 'up' || feedback === 'down') return;
+    setFeedback('sending');
+    try {
+      const res = await fetch('/api/ai-recommend/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          members: team.members,
+          mode,
+          bossElement,
+          formation: team.formation,
+          rating,
+        }),
+      });
+      if (!res.ok) {
+        setFeedback(null);
+        return;
+      }
+      setFeedback(rating);
+    } catch {
+      setFeedback(null);
     }
   };
 
@@ -110,6 +139,36 @@ function AiRecommendButton({ roster, mode, bossElement }) {
         </ul>
       )}
       {phase === 'error' && <p className="text-xs text-rose-300 mb-2">{errorMsg}</p>}
+
+      <div className="flex items-center flex-wrap gap-2 mb-3">
+        <span className="text-xs text-slate-500">이 조합 어때요?</span>
+        <button
+          onClick={() => sendFeedback('up')}
+          disabled={feedback === 'sending' || feedback === 'up' || feedback === 'down'}
+          className={`text-xs px-2.5 py-1 rounded-full border transition disabled:opacity-50 ${
+            feedback === 'up'
+              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/50 font-semibold'
+              : 'border-slate-700 text-slate-300 hover:border-slate-500'
+          }`}
+        >
+          👍 좋아요
+        </button>
+        <button
+          onClick={() => sendFeedback('down')}
+          disabled={feedback === 'sending' || feedback === 'up' || feedback === 'down'}
+          className={`text-xs px-2.5 py-1 rounded-full border transition disabled:opacity-50 ${
+            feedback === 'down'
+              ? 'bg-rose-500/20 text-rose-300 border-rose-500/50 font-semibold'
+              : 'border-slate-700 text-slate-300 hover:border-slate-500'
+          }`}
+        >
+          👎 별로예요
+        </button>
+        {(feedback === 'up' || feedback === 'down') && (
+          <span className="text-xs text-slate-500">피드백 감사합니다! 다음 추천에 참고할게요.</span>
+        )}
+      </div>
+
       <button
         onClick={() => requestTeam(excludeTitles)}
         disabled={phase === 'loading'}
