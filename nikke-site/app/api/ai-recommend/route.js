@@ -103,17 +103,32 @@ function computeFormation(members) {
   return `${counts[1]}-${counts[2]}-${counts[3]}`;
 }
 
+// AI가 지시를 어기고 reasoning 문자열 안에 이스케이프 없는 실제 줄바꿈을 넣는 경우가 있는데,
+// 이건 JSON 문법상 문자열 리터럴 안의 raw control character라 JSON.parse가 그대로 실패한다
+// (Vercel 로그에서 stopReason:'end_turn'인데도 파싱 실패로 확인됨). 우리가 기대하는 JSON은
+// 필드 몇 개짜리 단순 구조이므로, 구조적 개행이든 문자열 내부 개행이든 공백으로 바꿔도
+// 의미가 손상되지 않는다 — 그래서 파싱 전에 raw control character를 공백으로 치환한다.
 function extractJson(text) {
   const fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
   const raw = fenced ? fenced[1] : text;
   const start = raw.indexOf('{');
   const end = raw.lastIndexOf('}');
   if (start === -1 || end === -1) return null;
+  const candidate = raw.slice(start, end + 1).replace(/[\r\n\t]+/g, ' ');
   try {
-    return JSON.parse(raw.slice(start, end + 1));
+    return JSON.parse(candidate);
   } catch {
     return null;
   }
+}
+
+// AI가 프롬프트 지시를 어기고 "Tia(티아)"처럼 title 뒤에 한글 이름을 괄호로 덧붙이는 경우가
+// 있어, 정확히 일치하는 title이 없으면 괄호 이후를 잘라내고 한 번 더 시도한다.
+function resolveMember(rawTitle, byTitle) {
+  if (byTitle.has(rawTitle)) return byTitle.get(rawTitle);
+  const stripped = rawTitle.replace(/[(（].*$/, '').trim();
+  if (byTitle.has(stripped)) return byTitle.get(stripped);
+  return null;
 }
 
 export async function POST(req) {
@@ -179,8 +194,10 @@ export async function POST(req) {
 반드시 이 목록에 있는 캐릭터만 사용하세요. 목록에 없는 캐릭터나 자료에 없는 시너지를 지어내지 마세요.
 [필수 게임 규칙] 5인 조합은 버스트 I, II, III 단계 캐릭터를 각각 최소 1명씩 포함해야 하며, 5명은 모두 서로 다른 캐릭터여야 합니다.
 당신의 역할은 주어진 데이터만 근거로 이 사용자에게 가장 좋은 5인 조합을 직접 구성하고 그 이유를 설명하는 것입니다.
-매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요. reasoning은 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요).
-{"members": ["영문 title 5개, characterDatabase의 title 표기 그대로"], "reasoning": "200~350자 분량의 한국어 설명"}`;
+매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요.
+- members 배열의 각 항목은 캐릭터 목록에 주어진 title 표기와 정확히 똑같이 쓰세요. 한글 이름이나 괄호 병기를 절대 덧붙이지 마세요. 예: "Rapi: Red Hood"는 맞고, "Rapi: Red Hood(라피)"는 틀립니다.
+- reasoning은 줄바꿈 없이 한 문단으로, 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요).
+{"members": ["title 5개, 위 목록의 title 표기 그대로, 괄호나 한글 이름 금지"], "reasoning": "200~350자 분량의 한국어 설명, 줄바꿈 없이 한 문단"}`;
 
     const excludeText =
       Array.isArray(excludeTitles) && excludeTitles.length > 0
@@ -221,15 +238,21 @@ ${pairsText}
     }
 
     const byTitle = new Map(characters.map((c) => [c.title, c]));
-    const uniqueTitles = Array.from(new Set(parsed.members));
-    const members = uniqueTitles.map((t) => byTitle.get(t)).filter(Boolean);
+    const resolvedMembers = parsed.members.map((t) => resolveMember(t, byTitle)).filter(Boolean);
+    const uniqueMembers = Array.from(new Map(resolvedMembers.map((m) => [m.title, m])).values());
 
-    if (members.length !== 5 || uniqueTitles.length !== parsed.members.length) {
+    if (uniqueMembers.length !== 5 || parsed.members.length !== 5) {
+      console.error('ai-recommend: member resolution failed', {
+        rawMembers: parsed.members,
+        resolvedCount: uniqueMembers.length,
+      });
       return Response.json(
         { error: 'AI가 보유하지 않은 캐릭터를 포함했거나 5명을 채우지 못했습니다. 다시 시도해주세요.' },
         { status: 502 }
       );
     }
+
+    const members = uniqueMembers;
 
     // scoreTeam으로 AI가 구성한 조합이 실제로 유효한지(버스트 I/II/III 충족) 검증하고,
     // 동시에 점수/근거 문장도 함께 얻는다 — 후보를 미리 좁히는 용도가 아니라 사후 검증/설명용.
