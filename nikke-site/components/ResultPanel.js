@@ -44,6 +44,8 @@ const BOSS_ELEMENT_OPTIONS = [
 // 넘겨 "어떤 걸 우선 추천하는지/왜인지"만 자연스러운 문장으로 설명받는 버튼.
 // AI는 새 조합을 지어내지 않고 엔진이 이미 검증한 후보만 비교합니다 (app/api/ai-explain 참고).
 // 페이지 로드 시 자동으로 호출되지 않고, 사용자가 버튼을 눌렀을 때만 1회 호출됩니다(비용 관리).
+// key prop으로 teams 구성이 바뀔 때마다 리마운트되어 상태가 초기화됩니다(아래 AiRecommendSection 참고) —
+// 그렇지 않으면 로스터를 바꿔도 이전 'done' 상태가 남아 버튼이 다시 나타나지 않는 버그가 있었습니다.
 function AiExplainButton({ teams, mode, bossElement }) {
   const [state, setState] = useState('idle'); // idle | loading | done | error
   const [explanation, setExplanation] = useState('');
@@ -98,6 +100,12 @@ function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onB
   if (!aiResult) return null;
   const freshness = aiResult.dataFreshness;
   const isStale = freshness && (freshness.characterDatabase.stale || freshness.synergyNotes.stale);
+  // teams의 실제 구성(어떤 캐릭터로 이뤄진 몇 번째 후보인지)이 바뀔 때마다 값이 달라지는 키.
+  // 로스터를 변경해 추천 조합이 달라지면 이 값도 바뀌어 AiExplainButton이 리마운트되고,
+  // 이전 클릭으로 남아있던 'AI 비교 설명' 상태 대신 새 버튼이 다시 나타납니다.
+  const explainKey = `${aiMode}|${bossElement || ''}|${(aiResult.teams || [])
+    .map((t) => t.members.map((m) => m.id).join(','))
+    .join(';')}`;
 
   return (
     <section className="bg-nikke-panel rounded-xl p-5 border border-nikke-accent/40 shadow-lg shadow-nikke-accent/5">
@@ -204,7 +212,7 @@ function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onB
       </div>
 
       {!aiResult.error && aiResult.teams?.length > 0 && (
-        <AiExplainButton teams={aiResult.teams} mode={aiMode} bossElement={bossElement} />
+        <AiExplainButton key={explainKey} teams={aiResult.teams} mode={aiMode} bossElement={bossElement} />
       )}
 
       {aiResult.unresolvedCount > 0 && (
