@@ -17,7 +17,7 @@ import synergyNotes from '@/data/synergyNotes.json';
 // 아니라 매번 그 순간의 통계를 다시 읽어 프롬프트에 얹는 방식(RAG)이며, 기존 아키타입/페어
 // 시너지 자료를 프롬프트에 넣는 방식과 동일한 원리다.
 //
-// 2026-07-31 수정: 유저가 "추천 조합이 시너지보다 역할군/티어 기준으로 뽑힌 것처럼 느껴진다"고
+// 2026-07-31 수정(1차): 유저가 "추천 조합이 시너지보다 역할군/티어 기준으로 뽑힌 것처럼 느껴진다"고
 // 피드백함. 원인 2가지를 찾아 수정: (1) synergyPairs에 mode 필드가 없어서 캠페인 추천에도
 // PvP 전용 페어 같은 것이 섞여 들어가 AI가 그 자료를 신뢰하지 못하고 무시했을 가능성 -> 페어에
 // mode를 추가하고 relevantPairs도 archetypes처럼 모드로 필터링하도록 수정. (2) 시스템 프롬프트가
@@ -26,6 +26,15 @@ import synergyNotes from '@/data/synergyNotes.json';
 // -> 페어 시너지로 나머지 채우기 -> 그래도 남으면 개별 티어" 순서를 명시하고, 아키타입 목록에 각
 // 아키타입을 몇 명 보유했는지([완전 보유]/[일부 보유 n/m])를 함께 보여줘 AI가 우선순위를 스스로
 // 판단하기 쉽게 만듦.
+//
+// 2026-07-31 수정(2차): 유저가 "이번엔 포메이션(예: 1-2-2)에 너무 묶여있다, 같은 버스트 단계를
+// 2명 쓰는 건 그 버스트 스킬 쿨타임이 길어서(주로 40초 이상) 번갈아 커버해야 할 때나 의미 있는
+// 건데 지금은 그냥 '이 포메이션이니까 2명 써야지'처럼 형태 자체를 목표로 삼는 것 같다"고 피드백함.
+// characterDatabase.json의 skills[].cd(버스트 스킬 쿨타임, 초 단위)가 지금까지 프롬프트에 전혀
+// 전달되지 않아 AI가 이 판단을 할 근거 자체가 없었던 게 원인 -> charSummaryLine에 실제 버스트
+// 쿨타임을 추가하고, 시스템 프롬프트에 "포메이션은 캐릭터를 잘 고른 결과이지 그 자체가 목표가
+// 아니다 / 같은 버스트 단계 중복 기용은 쿨타임이 길 때 번갈아 커버하려는 것일 때만 정당화된다"는
+// 지침을 명시함.
 export const runtime = 'nodejs';
 
 const DAILY_LIMIT = 8;
@@ -126,12 +135,23 @@ async function popularCombosText(supabase, mode) {
     .join('\n');
 }
 
+// 캐릭터의 실제 버스트 스킬 쿨타임(초). characterDatabase.json의 skills 배열에서
+// type이 'Active'인 항목(=버스트 스킬)의 cd 필드를 찾는다. 값이 없거나 숫자가 아니면 null.
+function burstCooldownSeconds(c) {
+  const skill = (c.skills || []).find((s) => s.type === 'Active');
+  const cd = skill?.cd;
+  if (!cd || Number.isNaN(Number(cd))) return null;
+  return Number(cd);
+}
+
 // 캐릭터 한 명을 AI 프롬프트용 한 줄 요약으로. characterDatabase.json 항목(c)을 그대로 받는다.
 function charSummaryLine(c, mode, treasureIdSet) {
   const tierKey = MODE_TIER_KEY[mode] || 'story';
   const tier = c.tiers?.[tierKey] || '?';
   const note = INVESTMENT_NOTE_BY_NAME.get(c.title);
+  const cd = burstCooldownSeconds(c);
   const parts = [`버스트${c.burst}`, c.class || '', c.element || '', `이 모드 티어 ${tier}`];
+  if (cd) parts.push(`버스트 스킬 쿨타임 ${cd}초`);
   if (treasureIdSet.has(c.id)) parts.push('애장품 보유');
   else if (note?.treasureRequired) parts.push('애장품 미보유(공략상 권장)');
   return `- ${c.title}(${c.name_kr}): ${parts.filter(Boolean).join(', ')}`;
@@ -258,7 +278,7 @@ export async function POST(req) {
     const popularText = supabase ? await popularCombosText(supabase, mode) : null;
 
     const system = `당신은 모바일 게임 '승리의 여신: 니케'의 조합을 실제로 구성하는 전문가입니다.
-아래에 사용자가 실제로 보유한 캐릭터 목록과 각 캐릭터의 실제 데이터(모드별 티어, 버스트 단계, 클래스, 속성, 애장품 여부)가 주어집니다.
+아래에 사용자가 실제로 보유한 캐릭터 목록과 각 캐릭터의 실제 데이터(모드별 티어, 버스트 단계, 클래스, 속성, 버스트 스킬 쿨타임, 애장품 여부)가 주어집니다.
 그 아래에는 커뮤니티에서 검증된 '이름 붙은 조합(아키타입)'과 캐릭터 페어 시너지가 주어지고, 있다면 실제 유저들이 👍/👎로 평가한 조합 통계도 참고자료로 주어집니다.
 반드시 이 목록에 있는 캐릭터만 사용하세요. 목록에 없는 캐릭터나 자료에 없는 시너지를 지어내지 마세요.
 유저 피드백 통계가 주어지면 참고하되, 로스터 상황이나 게임 규칙에 안 맞으면 그대로 베끼지 말고 데이터에 맞게 조정하세요.
@@ -269,11 +289,14 @@ export async function POST(req) {
 3. 그래도 남는 슬롯만 개별 모드 티어가 높은 캐릭터로 채우세요.
 4. 위 아키타입/페어 자료에 이 로스터로 적용 가능한 것이 정말 하나도 없을 때만 순수 티어 기준으로 구성하고, 그 경우 reasoning 맨 앞에 "적용 가능한 아키타입/페어 자료가 없어 티어 기준으로 구성함"이라고 명시하세요.
 
+[포메이션에 대한 주의사항] 포메이션(버스트I-II-III 인원수 비율, 예: 1-2-2)은 캐릭터를 잘 골라서 나온 "결과"일 뿐, 그 자체가 맞춰야 할 목표가 아닙니다. "이런 포메이션이 좋다고 하니 버스트 단계별로 인원수를 맞추자"는 식으로 거꾸로 생각하지 마세요.
+같은 버스트 단계 캐릭터를 2명 이상 기용하는 것은 그 단계에 강력한 캐릭터가 많아서가 아니라, 구체적인 이유가 있을 때만 정당화됩니다: (a) 위 버스트 스킬 쿨타임을 보고, 그 단계의 캐릭터 쿨타임이 길어(대략 40초 이상) 매 풀버스트 사이클마다 준비되지 않을 수 있어 두 캐릭터가 번갈아 커버해야 하는 경우, 또는 (b) 완전 보유한 아키타입/페어 자료가 그 두 캐릭터를 실제로 명시하는 경우. 쿨타임이 짧은(20초 이하) 캐릭터 한 명으로 그 버스트 단계가 매 사이클 안정적으로 준비된다면 같은 단계에 2명을 넣을 이유가 없습니다.
+
 [필수 게임 규칙] 5인 조합은 버스트 I, II, III 단계 캐릭터를 각각 최소 1명씩 포함해야 하며, 5명은 모두 서로 다른 캐릭터여야 합니다.
 당신의 역할은 주어진 데이터만 근거로 이 사용자에게 가장 좋은 5인 조합을 직접 구성하고 그 이유를 설명하는 것입니다.
 매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요.
 - members 배열의 각 항목은 캐릭터 목록에 주어진 title 표기와 정확히 똑같이 쓰세요. 한글 이름이나 괄호 병기를 절대 덧붙이지 마세요. 예: "Rapi: Red Hood"는 맞고, "Rapi: Red Hood(라피)"는 틀립니다.
-- reasoning은 줄바꿈 없이 한 문단으로, 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요). 실제로 채택한 아키타입 이름이나 페어를 구체적으로 언급하세요(예: "캠페인 파밍 코어(아니스: 스타+크라운+...)를 채택하고 5번째 슬롯은...").
+- reasoning은 줄바꿈 없이 한 문단으로, 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요). 실제로 채택한 아키타입 이름이나 페어를 구체적으로 언급하세요(예: "캠페인 파밍 코어(아니스: 스타+크라운+...)를 채택하고 5번째 슬롯은..."). 같은 버스트 단계를 2명 이상 썼다면 그 이유(쿨타임 보완인지, 아키타입/페어 근거인지)도 짧게 밝히세요.
 {"members": ["title 5개, 위 목록의 title 표기 그대로, 괄호나 한글 이름 금지"], "reasoning": "200~350자 분량의 한국어 설명, 줄바꿈 없이 한 문단"}`;
 
     const excludeText =
@@ -294,7 +317,7 @@ ${archetypesText}
 [관련 페어 시너지]
 ${pairsText}${popularBlock}
 
-위 데이터만 근거로, 위에서 안내한 우선순위(완전 보유 아키타입 > 페어 시너지 > 개별 티어)에 따라 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
+위 데이터만 근거로, 위에서 안내한 우선순위(완전 보유 아키타입 > 페어 시너지 > 개별 티어)와 포메이션 주의사항에 따라 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
 
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     const msg = await client.messages.create({
