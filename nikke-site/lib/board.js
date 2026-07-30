@@ -1,11 +1,18 @@
 import { supabase } from './supabaseClient';
 
-export async function fetchPosts() {
+export const BOARD_CATEGORIES = [
+  { key: 'free', label: '자유' },
+  { key: 'bug', label: '버그 제보' },
+  { key: 'suggestion', label: '건의사항' },
+];
+
+export async function fetchPosts(category) {
   if (!supabase) return [];
-  const { data, error } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
+  let query = supabase.from('posts').select('*').order('created_at', { ascending: false });
+  if (category && category !== 'all') {
+    query = query.eq('category', category);
+  }
+  const { data, error } = await query;
   if (error) {
     console.error('fetchPosts error', error);
     return [];
@@ -23,11 +30,11 @@ export async function fetchPost(id) {
   return data;
 }
 
-export async function createPost(userId, { title, content }) {
+export async function createPost(userId, { title, content, category }) {
   if (!supabase || !userId) return { error: 'not_configured' };
   const { data, error } = await supabase
     .from('posts')
-    .insert({ user_id: userId, title, content })
+    .insert({ user_id: userId, title, content, category: category || 'free' })
     .select()
     .single();
   if (error) console.error('createPost error', error);
