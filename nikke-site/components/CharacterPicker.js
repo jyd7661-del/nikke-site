@@ -135,7 +135,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                       )}
                     </div>
                     <span
-                      className={`relative px-1.5 py-1.5 text-[12px] font-display tracking-wide text-center leading-tight truncate transition-colors border-t ${
+                      className={`relative px-1.5 py-2 text-sm font-display tracking-wide text-center leading-tight truncate transition-colors border-t ${
                         active
                           ? 'text-nikke-accent bg-gradient-to-b from-nikke-accent/10 to-slate-900/90 border-nikke-accent/50'
                           : 'text-slate-200 bg-gradient-to-b from-slate-800/50 to-slate-900/90 border-slate-700/60'
