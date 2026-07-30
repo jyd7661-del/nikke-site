@@ -6,8 +6,8 @@ import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import NicknamePrompt from '@/components/NicknamePrompt';
 import { recommend } from '@/lib/recommend';
-import { recommendTeams } from '@/lib/synergyEngine';
 import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
+import { getDataFreshnessMeta } from '@/lib/synergyEngine';
 import { useAuth } from '@/components/AuthProvider';
 import { fetchRoster, addToRoster, removeFromRoster, setTreasure } from '@/lib/roster';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
@@ -80,17 +80,17 @@ export default function Home() {
 
   const result = useMemo(() => (showResult ? recommend(ownedIds) : null), [showResult, ownedIds]);
 
-  // 규칙 기반 스코어링 엔진(lib/synergyEngine.js) 결과.
-  // characterDatabase.json 상세 데이터가 있는 캐릭터만 분석 대상에 포함되며,
-  // 애장품(Treasure) 표시를 해둔 캐릭터는 data/treasureEffects.json의 효과가 함께 반영됩니다.
-  // 보스전 모드에서 bossElement를 지정하면 metaStats.soloRaidByElement 실사용 데이터가
-  // 추가로 반영됩니다(엔진 내부에서 mode !== 'bossing'/'raid'일 때는 무시됨).
-  const aiResult = useMemo(() => {
+  // 보유 로스터를 characterDatabase.json 형태로 변환해 AI 추천 API에 그대로 전달할 원본 데이터로
+  // 준비합니다. 예전처럼 규칙 엔진(recommendTeams)이 미리 top-N 조합을 골라두는 게 아니라, AI가
+  // 이 로스터 데이터와 공략 근거자료를 직접 보고 조합을 구성합니다
+  // (app/api/ai-recommend, components/ResultPanel.js 참고).
+  const roster = useMemo(() => {
     if (!showResult) return null;
     const { resolved, unresolved, treasureCdbIds } = resolveRosterIdsToCdb(ownedIds, treasureIds);
-    const engineResult = recommendTeams(resolved, aiMode, { topN: 3, treasureIds: treasureCdbIds, bossElement });
-    return { ...engineResult, unresolvedCount: unresolved.length };
-  }, [showResult, ownedIds, treasureIds, aiMode, bossElement]);
+    return { resolved, unresolvedCount: unresolved.length, treasureIds: Array.from(treasureCdbIds) };
+  }, [showResult, ownedIds, treasureIds]);
+
+  const dataFreshness = useMemo(() => getDataFreshnessMeta(), []);
 
   const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
 
@@ -154,11 +154,12 @@ export default function Home() {
 
       <ResultPanel
         result={result}
-        aiResult={aiResult}
+        roster={roster}
         aiMode={aiMode}
         onAiModeChange={setAiMode}
         bossElement={bossElement}
         onBossElementChange={setBossElement}
+        dataFreshness={dataFreshness}
       />
 
       <div className="my-8">
