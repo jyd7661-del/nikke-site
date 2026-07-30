@@ -14,6 +14,9 @@ module.exports = {
           gold: '#f5c451',
         },
       },
+      fontFamily: {
+        display: ['"Black Han Sans"', 'sans-serif'],
+      },
     },
   },
   plugins: [],
