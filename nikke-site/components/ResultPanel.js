@@ -1,28 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { charMap } from '@/lib/recommend';
 import CharacterAvatar from '@/components/CharacterAvatar';
-
-function NameList({ ids }) {
-  return (
-    <div className="flex flex-wrap gap-2 mt-2">
-      {ids.map((id) => {
-        const c = charMap[id];
-        if (!c) return null;
-        return (
-          <span
-            key={id}
-            className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
-          >
-            <CharacterAvatar character={c} size="xs" />
-            {c.name}
-          </span>
-        );
-      })}
-    </div>
-  );
-}
 
 const AI_MODES = [
   { key: 'campaign', label: '캠페인' },
@@ -40,77 +19,116 @@ const BOSS_ELEMENT_OPTIONS = [
   { key: 'Fire', label: '불' },
 ];
 
-// 규칙 기반 엔진이 이미 계산해 둔 상위 조합 후보(teams)와 그 근거(reasons)를 그대로 AI에게
-// 넘겨 "어떤 걸 우선 추천하는지/왜인지"만 자연스러운 문장으로 설명받는 버튼.
-// AI는 새 조합을 지어내지 않고 엔진이 이미 검증한 후보만 비교합니다 (app/api/ai-explain 참고).
-// 페이지 로드 시 자동으로 호출되지 않고, 사용자가 버튼을 눌렀을 때만 1회 호출됩니다(비용 관리).
-// key prop으로 teams 구성이 바뀔 때마다 리마운트되어 상태가 초기화됩니다(아래 AiRecommendSection 참고) —
-// 그렇지 않으면 로스터를 바꿔도 이전 'done' 상태가 남아 버튼이 다시 나타나지 않는 버그가 있었습니다.
-function AiExplainButton({ teams, mode, bossElement }) {
-  const [state, setState] = useState('idle'); // idle | loading | done | error
-  const [explanation, setExplanation] = useState('');
+// AI가 "규칙 엔진이 미리 뽑아둔 후보 중 하나를 설명"하는 게 아니라, 보유 로스터(roster.resolved)와
+// 공략 근거자료를 통째로 서버(app/api/ai-recommend)에 넘겨 AI가 직접 5인 조합을 구성하게 하는 버튼.
+// 응답에 포함된 team.reasons/totalScore는 lib/synergyEngine.js의 scoreTeam이 AI의 결과물을 사후
+// 검증/채점한 것이고, aiReasoning은 AI가 직접 쓴 구성 이유다.
+// "다른 조합 보기"를 누르면 이전까지 나온 멤버 목록을 excludeTitles로 함께 보내 겹치지 않는 조합을 유도한다.
+function AiRecommendButton({ roster, mode, bossElement }) {
+  const [phase, setPhase] = useState('idle'); // idle | loading | error
+  const [team, setTeam] = useState(null);
+  const [reasoning, setReasoning] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
+  const [excludeTitles, setExcludeTitles] = useState([]);
 
-  const handleClick = async () => {
-    setState('loading');
+  const requestTeam = async (exclude) => {
+    setPhase('loading');
     setErrorMsg('');
     try {
-      const res = await fetch('/api/ai-explain', {
+      const res = await fetch('/api/ai-recommend', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ teams, mode, bossElement }),
+        body: JSON.stringify({
+          characters: roster.resolved,
+          treasureIds: roster.treasureIds,
+          mode,
+          bossElement,
+          excludeTitles: exclude,
+        }),
       });
       const data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || 'AI 설명을 불러오지 못했습니다.');
-        setState('error');
+        setErrorMsg(data.error || 'AI 추천을 불러오지 못했습니다.');
+        setPhase('error');
         return;
       }
-      setExplanation(data.explanation || '');
-      setState('done');
+      setTeam(data.team);
+      setReasoning(data.aiReasoning || '');
+      setPhase('idle');
+      setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
     } catch {
-      setErrorMsg('네트워크 오류로 AI 설명을 불러오지 못했습니다.');
-      setState('error');
+      setErrorMsg('네트워크 오류로 AI 추천을 불러오지 못했습니다.');
+      setPhase('error');
     }
   };
 
-  return (
-    <div className="mt-4 pt-4 border-t border-slate-800">
-      {state !== 'done' && (
+  if (!team) {
+    return (
+      <div className="mb-2">
         <button
-          onClick={handleClick}
-          disabled={state === 'loading'}
-          className="text-xs bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-3 py-1.5 rounded-lg hover:bg-nikke-accent/20 transition disabled:opacity-50"
+          onClick={() => requestTeam([])}
+          disabled={phase === 'loading'}
+          className="w-full sm:w-auto bg-nikke-accent text-slate-900 font-bold px-5 py-3 rounded-lg hover:brightness-110 transition disabled:opacity-50"
         >
-          {state === 'loading' ? 'AI가 비교하는 중...' : '🤖 이 조합들, AI에게 설명 듣기'}
+          {phase === 'loading' ? 'AI가 조합을 구성하는 중...' : '🤖 이 로스터로 AI가 조합 직접 구성하기'}
         </button>
-      )}
-      {state === 'error' && <p className="text-xs text-rose-300 mt-2">{errorMsg}</p>}
-      {state === 'done' && (
-        <div className="bg-slate-900/50 border border-nikke-accent/30 rounded-lg p-3">
-          <p className="text-xs text-nikke-accent font-semibold mb-1.5">🤖 AI 비교 설명</p>
-          <p className="text-sm text-slate-300 whitespace-pre-line">{explanation}</p>
+        {phase === 'error' && <p className="text-sm text-rose-300 mt-2">{errorMsg}</p>}
+      </div>
+    );
+  }
+
+  return (
+    <div className="bg-slate-900/40 rounded-lg p-4 border border-nikke-accent/30">
+      <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+        <h3 className="font-semibold text-slate-100">🤖 AI가 구성한 조합 · {team.formation} 포메이션</h3>
+        <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
+          점수 {team.totalScore}
+        </span>
+      </div>
+      <div className="flex flex-wrap gap-2 mb-3">
+        {team.members.map((m) => (
+          <span
+            key={m.id}
+            className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
+          >
+            <CharacterAvatar character={{ img: m.img, name: m.name_kr }} size="xs" />
+            {m.name_kr}
+          </span>
+        ))}
+      </div>
+      {reasoning && (
+        <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
+          <p className="text-xs text-nikke-accent font-semibold mb-1.5">🤖 AI의 구성 이유</p>
+          <p className="text-sm text-slate-300 whitespace-pre-line">{reasoning}</p>
         </div>
       )}
+      {team.reasons?.length > 0 && (
+        <ul className="space-y-1 text-xs text-slate-400 list-disc list-inside mb-3">
+          {team.reasons.map((r, ri) => (
+            <li key={ri}>{r}</li>
+          ))}
+        </ul>
+      )}
+      {phase === 'error' && <p className="text-xs text-rose-300 mb-2">{errorMsg}</p>}
+      <button
+        onClick={() => requestTeam(excludeTitles)}
+        disabled={phase === 'loading'}
+        className="text-xs bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-3 py-1.5 rounded-lg hover:bg-nikke-accent/20 transition disabled:opacity-50"
+      >
+        {phase === 'loading' ? 'AI가 다시 구성하는 중...' : '🔄 다른 조합 보기'}
+      </button>
     </div>
   );
 }
 
-function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onBossElementChange }) {
-  if (!aiResult) return null;
-  const freshness = aiResult.dataFreshness;
-  const isStale = freshness && (freshness.characterDatabase.stale || freshness.synergyNotes.stale);
-  // teams의 실제 구성(어떤 캐릭터로 이뤄진 몇 번째 후보인지)이 바뀔 때마다 값이 달라지는 키.
-  // 로스터를 변경해 추천 조합이 달라지면 이 값도 바뀌어 AiExplainButton이 리마운트되고,
-  // 이전 클릭으로 남아있던 'AI 비교 설명' 상태 대신 새 버튼이 다시 나타납니다.
-  const explainKey = `${aiMode}|${bossElement || ''}|${(aiResult.teams || [])
-    .map((t) => t.members.map((m) => m.id).join(','))
-    .join(';')}`;
+function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, dataFreshness }) {
+  if (!roster) return null;
+  const isStale = dataFreshness && (dataFreshness.characterDatabase.stale || dataFreshness.synergyNotes.stale);
 
   return (
     <section className="bg-nikke-panel rounded-xl p-5 border border-nikke-accent/40 shadow-lg shadow-nikke-accent/5">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
-        <h2 className="text-lg font-bold text-nikke-accent">🤖 AI 근거 기반 추천 조합</h2>
+        <h2 className="text-lg font-bold text-nikke-accent">🤖 AI 조합 추천</h2>
         <div className="flex gap-1">
           {AI_MODES.map((m) => (
             <button
@@ -160,73 +178,32 @@ function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onB
       )}
 
       <p className="text-sm text-slate-400 mb-3">
-        보유 캐릭터의 실제 성능 데이터와 공략 근거자료(prydwen.gg 재구성 + enikk.app 실전 기록)를 규칙으로 채점해 실시간으로 탐색한 결과입니다.
-        각 조합 아래 근거 이유를 함께 표시합니다.
+        보유 캐릭터와 공략 근거자료(아키타입/시너지 페어/애장품 정보)를 AI에게 그대로 전달해, AI가 이 데이터만 근거로
+        5인 조합을 직접 구성합니다. 구성된 조합은 게임 규칙(버스트 I/II/III)과 점수를 자동으로 검증해 함께 보여드려요.
         {aiMode === 'bossing' && bossElement && ' 선택한 약점 속성 캐릭터의 enikk.app 실사용률도 함께 반영됩니다.'}
       </p>
 
       {isStale && (
         <p className="text-xs text-amber-400 mb-3">
-          ⚠ 근거 자료 일부가 오래되었을 수 있습니다 (캐릭터 데이터 기준일 {freshness.characterDatabase.asOf}, 시너지 자료 기준일{' '}
-          {freshness.synergyNotes.asOf}). 새 패치나 신규 캐릭터 정보와 다를 수 있어요.
+          ⚠ 근거 자료 일부가 오래되었을 수 있습니다 (캐릭터 데이터 기준일 {dataFreshness.characterDatabase.asOf}, 시너지
+          자료 기준일 {dataFreshness.synergyNotes.asOf}). 새 패치나 신규 캐릭터 정보와 다를 수 있어요.
         </p>
       )}
 
-      {aiResult.error && <p className="text-sm text-rose-300">{aiResult.error}</p>}
+      <AiRecommendButton roster={roster} mode={aiMode} bossElement={bossElement} />
 
-      {!aiResult.error && aiResult.teams?.length === 0 && (
-        <p className="text-sm text-slate-500">분석 가능한 조합을 찾지 못했습니다. 캐릭터를 더 선택해보세요.</p>
-      )}
-
-      <div className="space-y-4">
-        {(aiResult.teams || []).map((team, i) => (
-          <div key={i} className="card-hover bg-slate-900/40 rounded-lg p-4 border border-slate-800">
-            <div className="flex items-center justify-between flex-wrap gap-2">
-              <h3 className="font-semibold text-slate-100">
-                추천 #{i + 1} · {team.formation} 포메이션
-              </h3>
-              <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
-                점수 {team.totalScore}
-              </span>
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              {team.members.map((m) => (
-                <span
-                  key={m.id}
-                  className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
-                >
-                  <CharacterAvatar character={{ img: m.img, name: m.name_kr }} size="xs" />
-                  {m.name_kr}
-                </span>
-              ))}
-            </div>
-            {team.reasons?.length > 0 && (
-              <ul className="mt-3 space-y-1 text-xs text-slate-400 list-disc list-inside">
-                {team.reasons.map((r, ri) => (
-                  <li key={ri}>{r}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {!aiResult.error && aiResult.teams?.length > 0 && (
-        <AiExplainButton key={explainKey} teams={aiResult.teams} mode={aiMode} bossElement={bossElement} />
-      )}
-
-      {aiResult.unresolvedCount > 0 && (
+      {roster.unresolvedCount > 0 && (
         <p className="text-xs text-slate-500 mt-3">
-          보유 캐릭터 중 {aiResult.unresolvedCount}명은 아직 상세 데이터(스킬/티어)가 없어 이 분석에서 제외되었습니다.
+          보유 캐릭터 중 {roster.unresolvedCount}명은 아직 상세 데이터(스킬/티어)가 없어 이 분석에서 제외되었습니다.
         </p>
       )}
     </section>
   );
 }
 
-export default function ResultPanel({ result, aiResult, aiMode, onAiModeChange, bossElement, onBossElementChange }) {
+export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bossElement, onBossElementChange, dataFreshness }) {
   if (!result) return null;
-  const { fullMatches, partialMatches, autoTeam, ownedCount } = result;
+  const { partialMatches, ownedCount } = result;
 
   if (ownedCount === 0) {
     return (
@@ -239,44 +216,13 @@ export default function ResultPanel({ result, aiResult, aiMode, onAiModeChange, 
   return (
     <div className="space-y-6">
       <AiRecommendSection
-        aiResult={aiResult}
+        roster={roster}
         aiMode={aiMode}
         onAiModeChange={onAiModeChange}
         bossElement={bossElement}
         onBossElementChange={onBossElementChange}
+        dataFreshness={dataFreshness}
       />
-
-      {fullMatches.length > 0 && (
-        <section className="bg-nikke-panel rounded-xl p-5 border border-nikke-accent/40 shadow-lg shadow-nikke-accent/5">
-          <h2 className="text-lg font-bold text-nikke-accent mb-3">✅ 바로 사용 가능한 알려진 조합</h2>
-          <div className="space-y-4">
-            {fullMatches.map((combo) => (
-              <div key={combo.id} className="card-hover bg-slate-900/40 rounded-lg p-4 border border-slate-800">
-                <div className="flex items-center justify-between flex-wrap gap-2">
-                  <h3 className="font-semibold text-slate-100">{combo.name}</h3>
-                  <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
-                    {combo.purpose}
-                  </span>
-                </div>
-                <p className="text-sm text-slate-400 mt-1">{combo.description}</p>
-                <NameList ids={combo.members} />
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section className="bg-nikke-panel rounded-xl p-5 border border-slate-800">
-        <h2 className="text-lg font-bold text-slate-100 mb-1">🛠 보유 캐릭터 기반 자동 추천 팀</h2>
-        <p className="text-sm text-slate-400 mb-3">
-          보유중인 니케 중 버스트 단계별로 티어가 높은 캐릭터를 우선 배치한 5인 팀입니다.
-        </p>
-        {autoTeam.length === 0 ? (
-          <p className="text-sm text-slate-500">선택한 캐릭터가 부족합니다. 더 많은 니케를 선택해보세요.</p>
-        ) : (
-          <NameList ids={autoTeam.map((c) => c.id)} />
-        )}
-      </section>
 
       {partialMatches.length > 0 && (
         <section className="bg-nikke-panel rounded-xl p-5 border border-slate-800">
