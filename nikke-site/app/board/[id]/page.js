@@ -3,7 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
-import { fetchPost, fetchComments, createComment, fetchProfilesByIds } from '@/lib/board';
+import { fetchPost, fetchComments, createComment, fetchProfilesByIds, BOARD_CATEGORIES } from '@/lib/board';
+
+const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
+const CATEGORY_BADGE_STYLE = {
+  bug: 'text-rose-300 bg-rose-500/10 border-rose-500/40',
+  suggestion: 'text-sky-300 bg-sky-500/10 border-sky-500/40',
+  free: 'text-slate-400 bg-slate-500/10 border-slate-500/40',
+};
 
 export default function PostDetailPage() {
   const { id } = useParams();
@@ -50,6 +57,13 @@ export default function PostDetailPage() {
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-8">
+      <span
+        className={`inline-block text-[10px] border rounded-full px-2 py-0.5 mb-2 ${
+          CATEGORY_BADGE_STYLE[post.category] || CATEGORY_BADGE_STYLE.free
+        }`}
+      >
+        {CATEGORY_LABEL[post.category] || '자유'}
+      </span>
       <h1 className="text-xl font-bold mb-1">{post.title}</h1>
       <p className="text-xs text-slate-500 mb-4">
         {nicknames[post.user_id] || '익명 지휘관'} · {new Date(post.created_at).toLocaleString('ko-KR')}
