@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 
 const AI_MODES = [
@@ -33,6 +33,17 @@ function AiRecommendButton({ roster, mode, bossElement }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [excludeTitles, setExcludeTitles] = useState([]);
   const [feedback, setFeedback] = useState(null); // null | 'sending' | 'up' | 'down'
+
+  // 캠페인/보스전/PvP 탭이나 보스 약점 속성이 바뀌면 이전 모드에서 만든 조합은 더 이상 유효하지
+  // 않으므로 상태를 초기화한다. 이게 없으면 탭을 바꿔도 화면에는 이전 조합이 그대로 남아있었다.
+  useEffect(() => {
+    setTeam(null);
+    setReasoning('');
+    setErrorMsg('');
+    setExcludeTitles([]);
+    setFeedback(null);
+    setPhase('idle');
+  }, [mode, bossElement]);
 
   const requestTeam = async (exclude) => {
     setPhase('loading');
