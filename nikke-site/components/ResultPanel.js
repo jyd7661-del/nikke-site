@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { charMap } from '@/lib/recommend';
 import CharacterAvatar from '@/components/CharacterAvatar';
 
@@ -38,6 +39,60 @@ const BOSS_ELEMENT_OPTIONS = [
   { key: 'Electronic', label: '전기' },
   { key: 'Fire', label: '불' },
 ];
+
+// 규칙 기반 엔진이 이미 계산해 둔 상위 조합 후보(teams)와 그 근거(reasons)를 그대로 AI에게
+// 넘겨 "어떤 걸 우선 추천하는지/왜인지"만 자연스러운 문장으로 설명받는 버튼.
+// AI는 새 조합을 지어내지 않고 엔진이 이미 검증한 후보만 비교합니다 (app/api/ai-explain 참고).
+// 페이지 로드 시 자동으로 호출되지 않고, 사용자가 버튼을 눌렀을 때만 1회 호출됩니다(비용 관리).
+function AiExplainButton({ teams, mode, bossElement }) {
+  const [state, setState] = useState('idle'); // idle | loading | done | error
+  const [explanation, setExplanation] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleClick = async () => {
+    setState('loading');
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/ai-explain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ teams, mode, bossElement }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrorMsg(data.error || 'AI 설명을 불러오지 못했습니다.');
+        setState('error');
+        return;
+      }
+      setExplanation(data.explanation || '');
+      setState('done');
+    } catch {
+      setErrorMsg('네트워크 오류로 AI 설명을 불러오지 못했습니다.');
+      setState('error');
+    }
+  };
+
+  return (
+    <div className="mt-4 pt-4 border-t border-slate-800">
+      {state !== 'done' && (
+        <button
+          onClick={handleClick}
+          disabled={state === 'loading'}
+          className="text-xs bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-3 py-1.5 rounded-lg hover:bg-nikke-accent/20 transition disabled:opacity-50"
+        >
+          {state === 'loading' ? 'AI가 비교하는 중...' : '🤖 이 조합들, AI에게 설명 듣기'}
+        </button>
+      )}
+      {state === 'error' && <p className="text-xs text-rose-300 mt-2">{errorMsg}</p>}
+      {state === 'done' && (
+        <div className="bg-slate-900/50 border border-nikke-accent/30 rounded-lg p-3">
+          <p className="text-xs text-nikke-accent font-semibold mb-1.5">🤖 AI 비교 설명</p>
+          <p className="text-sm text-slate-300 whitespace-pre-line">{explanation}</p>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onBossElementChange }) {
   if (!aiResult) return null;
@@ -147,6 +202,10 @@ function AiRecommendSection({ aiResult, aiMode, onAiModeChange, bossElement, onB
           </div>
         ))}
       </div>
+
+      {!aiResult.error && aiResult.teams?.length > 0 && (
+        <AiExplainButton teams={aiResult.teams} mode={aiMode} bossElement={bossElement} />
+      )}
 
       {aiResult.unresolvedCount > 0 && (
         <p className="text-xs text-slate-500 mt-3">
