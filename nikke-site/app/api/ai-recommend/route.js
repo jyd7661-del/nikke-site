@@ -36,6 +36,12 @@ import synergyNotes from '@/data/synergyNotes.json';
 // 아니다 / 같은 버스트 단계 중복 기용은 쿨타임이 길 때 번갈아 커버하려는 것일 때만 정당화된다"는
 // 지침을 명시함.
 export const runtime = 'nodejs';
+// 2026-08-03 수정: 유저가 "AI 추천 버튼을 눌러도 아무것도 안 나온다"고 제보. 실제로 재현해보니
+// 응답 자체는 오지만(200 OK) 로스터가 크면(20명 이상) 프롬프트가 커져 30~40초 가까이 걸림.
+// Vercel의 기본 함수 실행 제한(설정 안 하면 플랜 기본값, Hobby 기준 상당히 짧음)에 걸려 응답이
+// 오기 전에 함수가 죽으면 프론트는 별다른 에러 없이 "구성하는 중..."에서 멈춘 것처럼 보인다.
+// maxDuration을 명시적으로 늘려 큰 로스터에서도 안전하게 끝까지 응답하도록 한다(Hobby 플랜 상한 60초).
+export const maxDuration = 60;
 
 const DAILY_LIMIT = 8;
 const MODEL = 'claude-sonnet-5';
