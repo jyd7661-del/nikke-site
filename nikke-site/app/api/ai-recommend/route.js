@@ -45,13 +45,17 @@ export const maxDuration = 60;
 
 const DAILY_LIMIT = 8;
 const MODEL = 'claude-sonnet-5';
-// 2026-08-03 재수정: 위 maxDuration을 늘린 뒤에도 로스터가 큰(20명 이상) 유저에게서
-// "AI가 유효한 형식으로 응답하지 않았습니다"가 재현됨. Vercel 로그로 다시 확인한 원인은 여전히
-// stopReason이 'max_tokens'인데 텍스트 블록은 비어 있는 것 — 로스터/아키타입/페어 자료가 많을수록
-// 모델이 내부적으로 더 많은 추론 토큰을 쓰고 정작 최종 JSON을 쓰기 전에 4096 토큰 예산을 다
-// 소진해버린다. 71명 로스터에서 처음 발견했을 때 4096으로 올렸었지만 그것도 23명 이상 로스터에는
-// 부족했다 — 여유를 훨씬 크게 잡는다.
+// 2026-08-03 재수정: 위 maxDuration=60을 적용한 뒤에도, 로스터가 23명인 유저에게서 재현 테스트 중
+// 실제로 504(Gateway Timeout)가 발생하는 것을 확인함 — Vercel Hobby 플랜의 함수 실행 시간 상한이
+// 60초라 이 이상은 설정으로 늘릴 수 없다. 즉 이 케이스는 "응답을 더 오래 기다리게" 하는 것만으론
+// 해결이 안 되고, 애초에 생성 시간 자체를 줄여야 한다 — 아래 relevantArchetypes/relevantPairs에
+// 포함 개수 상한을 둬서 로스터가 커질수록 프롬프트(및 그에 비례하는 생성 시간)가 무한정 커지지
+// 않도록 한다. max_tokens는 "출력이 잘리는 것"을 막기 위한 것이라 8192로 유지(생성 시간과는 별개).
 const MAX_OUTPUT_TOKENS = 8192;
+// 아키타입/페어를 프롬프트에 몇 개까지 넣을지 상한. 소수의 캐릭터만 보유한 유저는 이 상한에
+// 걸릴 일이 거의 없고, 로스터가 매우 큰 유저(20명 이상)에서만 실제로 잘라내는 효과가 생긴다.
+const MAX_ARCHETYPES_IN_PROMPT = 15;
+const MAX_PAIRS_IN_PROMPT = 12;
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
@@ -166,23 +170,36 @@ function charSummaryLine(c, mode, treasureIdSet) {
   return `- ${c.title}(${c.name_kr}): ${parts.filter(Boolean).join(', ')}`;
 }
 
+// 보유 비율(완전 보유 > 일부 보유 중 비율 높은 순)로 정렬해, 로스터가 커서 관련 아키타입이
+// 너무 많아지더라도 프롬프트에는 실제로 근거가 될 확률이 높은 상위 항목만 담기게 한다.
+function ownedRatio(members, ownedTitleSet) {
+  const total = (members || []).length || 1;
+  const owned = (members || []).filter((m) => ownedTitleSet.has(m)).length;
+  return owned / total;
+}
+
 // 보유 로스터 중 이 모드와 관련된 "이름 붙은 조합(아키타입)". 로스터에 한 명이라도 포함되면
 // AI가 참고할 수 있게 목록에 넣는다(완전 포함 여부는 AI가 직접 판단할 수 있도록 아래에서
 // [완전 보유]/[일부 보유] 상태를 함께 표시한다).
+// 2026-08-03: 로스터가 매우 큰(20명 이상) 유저는 관련 아키타입도 함께 많아져 프롬프트가 커지고
+// 생성 시간이 Vercel 함수 실행 상한(60초)을 넘겨 504가 나는 것을 확인함 -> 보유 비율이 높은
+// 순으로 정렬 후 상한(MAX_ARCHETYPES_IN_PROMPT)만큼만 프롬프트에 포함시킨다.
 function relevantArchetypes(ownedTitleSet, mode) {
   const compat = MODE_COMPAT[mode] || [mode];
-  return synergyNotes.archetypes.filter(
-    (a) => compat.includes(a.mode) && (a.members || []).some((m) => ownedTitleSet.has(m))
-  );
+  return synergyNotes.archetypes
+    .filter((a) => compat.includes(a.mode) && (a.members || []).some((m) => ownedTitleSet.has(m)))
+    .sort((a, b) => ownedRatio(b.members, ownedTitleSet) - ownedRatio(a.members, ownedTitleSet))
+    .slice(0, MAX_ARCHETYPES_IN_PROMPT);
 }
 
 // 페어 시너지는 두 멤버 모두 보유하고 있을 때만 의미가 있으므로 완전 포함된 것만 넘기고,
 // 아키타입과 마찬가지로 현재 모드와 호환되는 것만 남긴다(mode가 없는 옛 데이터는 통과시킴).
+// 마찬가지로 대형 로스터에서 프롬프트가 무한정 커지지 않도록 상한을 둔다.
 function relevantPairs(ownedTitleSet, mode) {
   const compat = MODE_COMPAT[mode] || [mode];
-  return synergyNotes.synergyPairs.filter(
-    (p) => (p.members || []).every((m) => ownedTitleSet.has(m)) && (!p.mode || compat.includes(p.mode))
-  );
+  return synergyNotes.synergyPairs
+    .filter((p) => (p.members || []).every((m) => ownedTitleSet.has(m)) && (!p.mode || compat.includes(p.mode)))
+    .slice(0, MAX_PAIRS_IN_PROMPT);
 }
 
 function computeFormation(members) {
