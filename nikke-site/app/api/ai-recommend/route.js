@@ -45,10 +45,13 @@ export const maxDuration = 60;
 
 const DAILY_LIMIT = 8;
 const MODEL = 'claude-sonnet-5';
-// Vercel 로그로 확인한 실제 원인: stopReason이 'max_tokens'인데 텍스트 블록은 비어 있었다 —
-// 즉 모델이 응답용 텍스트를 쓰기 전에 내부적으로 토큰 예산을 다 써버린 것. max_tokens를
-// 넉넉하게 잡아야 실제 JSON 출력까지 도달한다. (71명 같은 대형 로스터에서 재현됨)
-const MAX_OUTPUT_TOKENS = 4096;
+// 2026-08-03 재수정: 위 maxDuration을 늘린 뒤에도 로스터가 큰(20명 이상) 유저에게서
+// "AI가 유효한 형식으로 응답하지 않았습니다"가 재현됨. Vercel 로그로 다시 확인한 원인은 여전히
+// stopReason이 'max_tokens'인데 텍스트 블록은 비어 있는 것 — 로스터/아키타입/페어 자료가 많을수록
+// 모델이 내부적으로 더 많은 추론 토큰을 쓰고 정작 최종 JSON을 쓰기 전에 4096 토큰 예산을 다
+// 소진해버린다. 71명 로스터에서 처음 발견했을 때 4096으로 올렸었지만 그것도 23명 이상 로스터에는
+// 부족했다 — 여유를 훨씬 크게 잡는다.
+const MAX_OUTPUT_TOKENS = 8192;
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
