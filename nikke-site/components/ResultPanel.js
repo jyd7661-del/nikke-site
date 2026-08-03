@@ -34,8 +34,14 @@ function AiRecommendButton({ roster, mode, bossElement }) {
   const [excludeTitles, setExcludeTitles] = useState([]);
   const [feedback, setFeedback] = useState(null); // null | 'sending' | 'up' | 'down'
 
-  // 캠페인/보스전/PvP 탭이나 보스 약점 속성이 바뀌면 이전 모드에서 만든 조합은 더 이상 유효하지
-  // 않으므로 상태를 초기화한다. 이게 없으면 탭을 바꿔도 화면에는 이전 조합이 그대로 남아있었다.
+  // 애장품(Treasure) 체크 목록을 문자열로 직렬화해 useEffect 의존성 비교에 사용한다.
+  // roster.treasureIds는 부모(app/page.js)에서 treasureIds가 바뀔 때마다 새 배열로 만들어지므로,
+  // 참조가 아니라 내용(join)으로 비교해야 실제 값이 바뀐 경우에만 재실행된다.
+  const treasureKey = (roster?.treasureIds || []).join(',');
+
+  // 캠페인/보스전/PvP 탭이나 보스 약점 속성, 애장품 체크 상태가 바뀌면 이전에 만든 조합은 더 이상
+  // 유효하지 않으므로 상태를 초기화한다. 이게 없으면 탭을 바꾸거나 애장품을 체크/해제해도 화면에는
+  // 이전 조합이 그대로 남아있어 "체크해도 반영이 안 된다"고 느껴질 수 있었다.
   useEffect(() => {
     setTeam(null);
     setReasoning('');
@@ -43,7 +49,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
     setExcludeTitles([]);
     setFeedback(null);
     setPhase('idle');
-  }, [mode, bossElement]);
+  }, [mode, bossElement, treasureKey]);
 
   const requestTeam = async (exclude) => {
     setPhase('loading');
@@ -112,6 +118,11 @@ function AiRecommendButton({ roster, mode, bossElement }) {
         >
           {phase === 'loading' ? 'AI가 조합을 구성하는 중...' : '🤖 이 로스터로 AI가 조합 직접 구성하기'}
         </button>
+        {phase === 'loading' && (
+          <p className="text-xs text-slate-500 mt-2">
+            보유 캐릭터가 많을수록 AI가 검토할 자료도 많아져 최대 40~50초 정도 걸릴 수 있어요. 화면이 멈춘 게 아니니 잠시만 기다려주세요.
+          </p>
+        )}
         {phase === 'error' && <p className="text-sm text-rose-300 mt-2">{errorMsg}</p>}
       </div>
     );
