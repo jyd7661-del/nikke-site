@@ -123,11 +123,18 @@ function providesCDR(character) {
   return (character.skills || []).some((s) => /cooldown/i.test(s.desc || ''));
 }
 
-// 버스트 스킬(보통 3번째 스킬, type: Active, cd 존재)의 쿨타임이 20초인지.
+// 버스트 스킬(항상 skills 배열의 마지막 원소)의 쿨타임이 20초인지.
 // (mechanics.burstSkillCooldown: 20초가 40초보다 풀버스트 진입이 잦음)
+// 2026-08-04 수정: 이전엔 type이 'Active'인 "첫 번째" 스킬을 찾았는데, 스킬2도 Active 타입이고
+// cd가 있는 캐릭터가 많아(예: Falcon: FA의 스킬2 'Falcon Nest'는 cd 15초, 실제 버스트 스킬
+// 'Falcon Boost'는 cd 20초) 버스트가 아닌 스킬을 잘못 판정하는 버그가 있었다. 유저가 "3버스트는
+// 보통 쿨타임이 40초라 2명 이상 있어야 하는데 AI 조합에 1명만 들어간 경우가 있다"고 제보해
+// app/api/ai-recommend/route.js의 동일 버그(burstCooldownSeconds)를 먼저 찾았고, 이 파일의
+// 룰 기반 채점에도 같은 패턴의 버그가 있어 함께 수정한다. 마지막 원소를 직접 참조하도록 수정.
 function hasFastBurstCooldown(character) {
-  const burstSkill = (character.skills || []).find((s) => s.type === 'Active' && s.cd);
-  return burstSkill?.cd === '20';
+  const skills = character.skills || [];
+  const burstSkill = skills[skills.length - 1];
+  return burstSkill?.type === 'Active' && burstSkill?.cd === '20';
 }
 
 // ---------------------------------------------------------------------------
