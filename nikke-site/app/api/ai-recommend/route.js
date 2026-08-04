@@ -260,7 +260,7 @@ export async function POST(req) {
     return Response.json({ error: '요청 형식이 올바르지 않습니다.' }, { status: 400 });
   }
 
-  const { characters, treasureIds, mode, bossElement, excludeTitles } = body || {};
+  const { characters, treasureIds, mode, bossElement, excludeTitles, lang } = body || {};
 
   if (!Array.isArray(characters) || characters.length === 0) {
     return Response.json({ error: '보유중인 캐릭터를 먼저 선택해주세요.' }, { status: 400 });
@@ -299,6 +299,9 @@ export async function POST(req) {
     const treasureIdSet = new Set(treasureIds || []);
     const ownedTitleSet = new Set(characters.map((c) => c.title));
     const modeLabel = MODE_LABEL[mode] || mode || '캠페인';
+    const LANG_NAMES = { ko: '한국어', en: '영어(English)', ja: '일본어(日本語)' };
+    const langKey = LANG_NAMES[lang] ? lang : 'ko';
+    const langName = LANG_NAMES[langKey];
 
     const rosterText = characters.map((c) => charSummaryLine(c, mode, treasureIdSet)).join('\n');
     const archetypesText =
@@ -338,8 +341,8 @@ export async function POST(req) {
 매우 중요: 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 JSON 객체 하나만 출력하세요.
 - members 배열의 각 항목은 캐릭터 목록에 주어진 title 표기와 정확히 똑같이 쓰세요. 한글 이름이나 괄호 병기를 절대 덧붙이지 마세요. 예: "Rapi: Red Hood"는 맞고, "Rapi: Red Hood(라피)"는 틀립니다.
 - members 배열의 순서는 실제 팀 편성의 왼쪽(1번)에서 오른쪽(5번) 위치를 그대로 의미합니다(임의 순서가 아닙니다) — 니케는 같은 버스트 단계 안에서 왼쪽에 있는 캐릭터부터 버스트를 발동하기 때문입니다. 같은 버스트 단계에 캐릭터가 2명 이상이라면, 실제로 매 사이클 버스트를 발동해야 할 캐릭터(쿨타임이 빠르거나 우선 발동해야 하는 캐릭터)를 배열에서 먼저(더 앞 인덱스) 쓰고, 토템 후보나 보조로 대기하는 캐릭터를 그 뒤에 쓰세요.
-- reasoning은 줄바꿈 없이 한 문단으로, 200~350자 이내로 간결하게 작성하세요(길게 쓰지 마세요). 실제로 채택한 아키타입 이름이나 페어를 구체적으로 언급하세요(예: "캠페인 파밍 코어(아니스: 스타+크라운+...)를 채택하고 5번째 슬롯은..."). 같은 버스트 단계를 2명 이상 썼다면 그 이유(쿨타임 보완인지, 아키타입/페어 근거인지)도 짧게 밝히세요.
-{"members": ["title 5개, 위 목록의 title 표기 그대로, 괄호나 한글 이름 금지"], "reasoning": "200~350자 분량의 한국어 설명, 줄바꿈 없이 한 문단"}`;
+- reasoning은 반드시 ${langName}로 작성하세요(캐릭터 title 표기는 원문 그대로 영어로 두고, 설명 문장만 ${langName}로 씁니다). 줄바꿈 없이 한 문단으로, 200~350자(영어라면 60~120단어) 이내로 간결하게 작성하세요(길게 쓰지 마세요). 실제로 채택한 아키타입 이름이나 페어를 구체적으로 언급하세요(예: "캠페인 파밍 코어(아니스: 스타+크라운+...)를 채택하고 5번째 슬롯은..."). 같은 버스트 단계를 2명 이상 썼다면 그 이유(쿨타임 보완인지, 아키타입/페어 근거인지)도 짧게 밝히세요.
+{"members": ["title 5개, 위 목록의 title 표기 그대로, 괄호나 한글 이름 금지"], "reasoning": "${langName}로 작성한 200~350자(영어는 60~120단어) 분량의 설명, 줄바꿈 없이 한 문단"}`;
 
     const excludeText =
       Array.isArray(excludeTitles) && excludeTitles.length > 0
