@@ -694,6 +694,18 @@
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
       "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서."
+    },
+    {
+      "name": "Naga",
+      "name_kr": "나가",
+      "treasureRequired": false,
+      "treasureNote": "확인 필요 (원문 미확보)",
+      "investmentProfile": "확인 필요 (원문 미확보)",
+      "skillPriority": "2스킬('Support of Friendship') 우선 -- 토템으로 기용할 때는 버스트가 아니라 평타 5회마다 발동하는 이 상시 회복/버프가 실전 체감의 핵심이라 투자 우선순위도 여기에 맞춘다.",
+      "overloadPriority": "확인 필요 (원문 미확보)",
+      "totemRole": true,
+      "totemNote": "버스트2 슬롯에 같은 단계의 다른 캐릭터(예: 크라운, 버스트 쿨타임 20초)가 이미 매 풀버스트 사이클을 안정적으로 커버하고 있다면, 나가의 버스트 스킬('As Long As We're With Friends', 쿨타임 20초) 자체는 실제로 발동할 타이밍이 나오지 않을 수 있다. 이 경우 나가는 버스트 딜러가 아니라 '토템'(버스트 슬롯만 채우고 실질 역할은 패시브 버프)으로 기용된 것 -- 2스킬 'Support of Friendship'이 평타 5회마다 자동 발동해 체력 비율이 가장 낮은 아군 2명을 최대 HP의 5.58%만큼 회복시켜 팀 생존력을 상시 보강한다. 이런 역할이 필요할 때(예: 버스트2가 이미 빠른 쿨타임 1명으로 충분히 커버되는데 팀 생존력이 부족한 경우) 추가 기용을 고려할 만하다.",
+      "notes": "출처: 사이트 운영자 실전 피드백(2026-08-04) -- 특정 조합에서 크라운(버스트2, 쿨타임 20초)과 함께 기용된 사례를 근거로 정리. characterDatabase.json 스킬 원문(Skill1 'Guardian of Friendship', Skill2 'Support of Friendship') 기준으로 회복/버프 수치를 인용."
     }
   ]
 }
