@@ -625,6 +625,25 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     }
   });
 
+  // --- 토템 역할(같은 버스트 단계를 다른 캐릭터가 이미 커버할 때 상시 버프용으로 추가 기용) ---
+  // 2026-08-04 추가: 유저가 "나가처럼 버스트가 아니라 팀 회복 버프 때문에 같은 버스트 단계에
+  // 추가로 넣는 캐릭터가 있다"고 제보. characterInvestmentNotes.json에 totemRole/totemNote로
+  // 정리해둔 캐릭터가, 같은 버스트 단계의 다른 멤버가 이미 빠른 쿨타임(20초)으로 매 사이클을
+  // 커버하고 있는 상태로 팀에 포함돼 있으면, 그게 왜 정당한 픽인지 근거 문장으로 설명해준다.
+  members.forEach((m) => {
+    const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
+    if (!note?.totemRole) return;
+    const sameBurstFastCovered = members.some(
+      (o) => o.id !== m.id && o.burst === m.burst && hasFastBurstCooldown(o)
+    );
+    if (sameBurstFastCovered) {
+      reasons.push(
+        `[토템 활용] ${m.title}는(은) 같은 버스트${m.burst} 단계를 다른 캐릭터가 이미 빠른 쿨타임으로 ` +
+        `안정적으로 커버하고 있어, 버스트 스킬보다 상시 버프/유틸리티 역할로 기용된 것으로 보입니다. ${note.totemNote}`
+      );
+    }
+  });
+
   return {
     totalScore: Math.round(score * 10) / 10,
     valid: validBurstChain,
