@@ -168,13 +168,22 @@ function burstCooldownSeconds(c) {
 // 캐릭터 한 명을 AI 프롬프트용 한 줄 요약으로. characterDatabase.json 항목(c)을 그대로 받는다.
 function charSummaryLine(c, mode, treasureIdSet) {
   const tierKey = MODE_TIER_KEY[mode] || 'story';
-  const tier = c.tiers?.[tierKey] || '?';
   const note = INVESTMENT_NOTE_BY_NAME.get(c.title);
+  const hasTreasure = treasureIdSet.has(c.id);
+  // 2026-08-05 추가: 애장품 보유 시 실제 성능이 기본 티어와 크게 달라지는 캐릭터(예: 헬름)가 있는데,
+  // 지금까지는 "애장품 보유" 태그만 붙고 티어 숫자는 그대로 기본값이라 AI가 실제로 얼마나 강해지는지
+  // 판단할 근거가 없어 계속 저평가되는 문제가 있었음(유저 제보) -> characterInvestmentNotes.json에
+  // treasureTiers를 추가해두고, 보유 시 그 값으로 티어 자체를 대체해서 보여준다.
+  const tier = (hasTreasure && note?.treasureTiers?.[tierKey]) || c.tiers?.[tierKey] || '?';
   const cd = burstCooldownSeconds(c);
   const parts = [`버스트${c.burst}`, c.class || '', c.element || '', `이 모드 티어 ${tier}`];
   if (cd) parts.push(`버스트 스킬 쿨타임 ${cd}초`);
-  if (treasureIdSet.has(c.id)) parts.push('애장품 보유');
-  else if (note?.treasureRequired) parts.push('애장품 미보유(공략상 권장)');
+  if (hasTreasure) {
+    parts.push('애장품 보유');
+    if (note?.treasureTiers?.[tierKey]) parts.push('(애장품 적용 티어로 표시됨)');
+  } else if (note?.treasureRequired) {
+    parts.push('애장품 미보유(공략상 권장, 미보유 시 위 티어보다 훨씬 낮게 평가됨)');
+  }
   // 2026-08-04 추가: 유저가 "나가를 같은 버스트 단계에 추가로 넣는 이유는 버스트가 아니라
   // 팀 회복 버프를 상시 제공하는 '토템' 역할 때문"이라고 제보. 이런 캐릭터는
   // characterInvestmentNotes.json에 totemRole/totemNote로 정리해두고, AI가 로스터에서
