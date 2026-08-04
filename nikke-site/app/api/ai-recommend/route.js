@@ -148,10 +148,18 @@ async function popularCombosText(supabase, mode) {
     .join('\n');
 }
 
-// 캐릭터의 실제 버스트 스킬 쿨타임(초). characterDatabase.json의 skills 배열에서
-// type이 'Active'인 항목(=버스트 스킬)의 cd 필드를 찾는다. 값이 없거나 숫자가 아니면 null.
+// 캐릭터의 실제 버스트 스킬 쿨타임(초). characterDatabase.json의 skills 배열은 항상
+// [스킬1, 스킬2, 버스트 스킬] 순서라 버스트 스킬은 항상 마지막 원소다.
+// 2026-08-04 수정: 이전엔 type이 'Active'인 "첫 번째" 스킬을 찾았는데, 스킬2도 Active 타입인
+// 캐릭터가 많아(예: Rapi: Red Hood의 스킬2 'Missile'은 cd 20초, 실제 버스트 스킬
+// 'Warhead Volley'는 cd 40초) 버스트가 아닌 스킬2의 쿨타임을 잘못 가져오는 버그가 있었다.
+// 유저가 "3버스트는 보통 쿨타임이 40초라 2명 이상 있어야 하는데 AI가 1명만 넣은 조합을 짬"이라고
+// 제보해 재현: 실제로 버스트III 캐릭터 다수(Rapi, Soldier: EG 등)가 스킬2도 Active라 이 버그로
+// 쿨타임이 20초 미만으로 잘못 표시되고 있었고, AI가 그 잘못된(짧은) 쿨타임만 보고 "1명으로 충분"이라고
+// 판단한 것이 근본 원인이었다. 마지막 원소를 직접 참조하도록 수정.
 function burstCooldownSeconds(c) {
-  const skill = (c.skills || []).find((s) => s.type === 'Active');
+  const skills = c.skills || [];
+  const skill = skills[skills.length - 1];
   const cd = skill?.cd;
   if (!cd || Number.isNaN(Number(cd))) return null;
   return Number(cd);
