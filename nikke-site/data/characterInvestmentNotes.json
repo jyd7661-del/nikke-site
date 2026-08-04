@@ -684,6 +684,16 @@
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
       "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서."
+    },
+    {
+      "name": "Marciana: Marine Study",
+      "name_kr": "마르차나 : 마린 스터디",
+      "treasureRequired": false,
+      "treasureNote": "2026-07-09 출시된 마르차나(수영복 스킨판, 일명 '수말차'). 전용 애장품 여부 미확인.",
+      "investmentProfile": "[2026-08-04 신규 추가, 확신도 낮음 — 스킬작/오버/큐브 구체 수치는 확인 필요] 재장전 시 탄환 2배 + 공격력 대폭 증가(약 625% 언급) 스킬 구조로 '사기캐' 평가(고뇨). 스테이지 다양한 콘텐츠에서 만능으로 기용 가능한 '조커픽' 여부가 검증 대상(스페란도, 신중한 톤 — 뉴비에게 '뽑기 전 꼭 시청' 안내). 스노우 화이트: 헤비암즈 자리의 대체 조합으로 제시됨(김진서).",
+      "skillPriority": "확인 필요 (원문 미확보)",
+      "overloadPriority": "확인 필요 (원문 미확보)",
+      "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서."
     }
   ]
 }
