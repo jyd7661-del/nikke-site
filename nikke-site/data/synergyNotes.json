@@ -61,6 +61,7 @@
   ],
   "synergyPairs": [
     {"members": ["Mast: Romantic Maid", "Anchor: Innocent Maid"], "type": "buff+heal+reload", "reason": "메이드 듀오. 무조건부 공격버프 + 힐 + 재장전 속도 증가로 탄약 관리 부담을 없애줌."},
+    {"members": ["Crown", "Mast: Romantic Maid"], "type": "burst-combo-manual", "reason": "버스트II 2인 콤보로 커뮤니티에서 잘 알려진 조합. 크라운의 버스트 쿨타임(20초)이 항상 먼저 준비되기 때문에 오토에 맡기면 크라운만 계속 버스트를 쓰고 마스트의 버스트(강력한 공격버프)는 거의 발동하지 않는다 — 크라운 버스트 직후 곧바로 마스트 버스트를 수동으로 눌러줘야 실제로 발동한다. 마스트는 이 조합이 없어도 1/2스킬 버프만으로 이미 훌륭하므로 필수 조합은 아니며, 수동 버스트 조작이 가능한 유저에게 추천되는 강화 픽이다."},
     {"members": ["Mint", "Prika"], "type": "buff", "reason": "강력한 버프를 주고받지만 두 캐릭터가 세트로 있어야 성능이 나오는 경직적 페어."},
     {"members": ["Tia", "Naga"], "type": "utility", "reason": "딜러를 크게 가리지 않는 범용 버스트I+II 코어."},
     {"members": ["Zwei (Treasure)", "Mint"], "type": "buff-complement", "reason": "즈바이 트레저의 크리티컬 부족을 민트가 정확히 메꿔줌."},
