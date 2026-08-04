@@ -9,11 +9,13 @@ import { recommend } from '@/lib/recommend';
 import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
 import { getDataFreshnessMeta } from '@/lib/synergyEngine';
 import { useAuth } from '@/components/AuthProvider';
+import { useLanguage } from '@/components/LanguageProvider';
 import { fetchRoster, addToRoster, removeFromRoster, setTreasure } from '@/lib/roster';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
+  const { t } = useLanguage();
   const [ownedIds, setOwnedIds] = useState(new Set());
   const [treasureIds, setTreasureIds] = useState(new Set());
   const [showResult, setShowResult] = useState(false);
@@ -98,10 +100,10 @@ export default function Home() {
     <main className="max-w-5xl mx-auto px-4 py-8">
       <header className="mb-8 pt-2">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-nikke-accent to-teal-200 bg-clip-text text-transparent">
-          내 니케로 최고의 조합 찾기
+          {t('home_title')}
         </h1>
         <p className="text-slate-400 mt-2.5 text-sm sm:text-base">
-          보유중인 니케를 선택하면 바로 조합을 추천해드려요. 로그인 없이도 바로 사용할 수 있어요.
+          {t('home_subtitle')}
         </p>
       </header>
 
@@ -110,25 +112,25 @@ export default function Home() {
       {user && (
         <div className="mb-6 text-xs text-slate-400 flex items-center gap-2 flex-wrap bg-nikke-panel/60 border border-slate-800 rounded-lg px-3 py-2 w-fit">
           <span className="text-emerald-400">●</span>
-          <span>로그인 상태 — 보유 니케가 자동 저장됩니다.</span>
+          <span>{t('logged_in_status')}</span>
           {shareUrl && (
             <button
               onClick={() => navigator.clipboard?.writeText(shareUrl)}
               className="underline decoration-dotted hover:text-nikke-accent"
             >
-              친구에게 공유 링크 복사
+              {t('share_link_copy')}
             </button>
           )}
         </div>
       )}
       {!user && !authLoading && isSupabaseConfigured && (
         <div className="mb-6 text-xs text-slate-500 bg-nikke-panel/40 border border-slate-800/70 rounded-lg px-3 py-2 w-fit">
-          로그인하면 보유 니케가 자동 저장되고, 친구와 공유할 수 있어요. (로그인 안 해도 추천 기능은 바로 사용 가능)
+          {t('login_hint')}
         </div>
       )}
 
       <div className="mb-6">
-        <AdSlot label="상단 배너 광고" size="banner" />
+        <AdSlot label={t('top_banner_ad')} size="banner" />
       </div>
 
       <CharacterPicker
@@ -141,14 +143,14 @@ export default function Home() {
 
       <div className="flex items-center justify-between mt-5 mb-6">
         <p className="text-sm text-slate-400">
-          선택한 니케: {ownedIds.size}명{rosterLoading ? ' (불러오는 중...)' : ''}
+          {t('selected_count')(ownedIds.size)}{rosterLoading ? t('loading_suffix') : ''}
         </p>
         <button
           onClick={() => setShowResult(true)}
           className="bg-nikke-accent text-slate-900 font-bold px-5 py-2.5 rounded-lg hover:brightness-110 transition disabled:opacity-40"
           disabled={ownedIds.size === 0}
         >
-          조합 추천받기
+          {t('get_recommendation')}
         </button>
       </div>
 
@@ -163,34 +165,34 @@ export default function Home() {
       />
 
       <div className="my-8">
-        <AdSlot label="본문 하단 광고" size="rectangle" />
+        <AdSlot label={t('bottom_ad')} size="rectangle" />
       </div>
 
       <section className="bg-gradient-to-br from-nikke-panel to-slate-900/60 rounded-xl p-6 border border-slate-800 text-center">
-        <h2 className="font-semibold text-slate-100 mb-1.5">💬 유저들과 조합·정보 나누기</h2>
+        <h2 className="font-semibold text-slate-100 mb-1.5">{t('community_title')}</h2>
         <p className="text-sm text-slate-500">
-          내가 쓰는 조합을 직접 등록하고 투표받거나, 게시판에서 다른 지휘관들과 이야기해보세요.
+          {t('community_subtitle')}
         </p>
         <div className="flex justify-center gap-3 mt-4">
           <a
             href="/combos"
             className="text-xs bg-nikke-accent text-slate-900 font-semibold px-4 py-2 rounded-lg hover:brightness-110 transition"
           >
-            커뮤니티 조합 보기
+            {t('view_combos')}
           </a>
           <a
             href="/board"
             className="text-xs border border-slate-700 px-4 py-2 rounded-lg text-slate-300 hover:border-slate-500 hover:bg-white/5 transition"
           >
-            게시판 가기
+            {t('go_board')}
           </a>
         </div>
       </section>
 
       <footer className="text-center text-xs text-slate-600 mt-10 pb-4">
-        본 사이트는 팬 제작 비공식 정보 사이트이며, 승리의 여신: 니케의 저작권은 시프트업(SHIFT UP)에 있습니다.
+        {t('footer_disclaimer_1')}
         <br />
-        조합 정보는 커뮤니티 공략을 참고해 정리한 자료로 실제 게임 밸런스와 다를 수 있습니다.
+        {t('footer_disclaimer_2')}
       </footer>
     </main>
   );
