@@ -4,20 +4,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { useAuth } from './AuthProvider';
+import { useLanguage } from './LanguageProvider';
 import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
-
-const NAV_LINKS = [
-  { href: '/', label: '추천' },
-  { href: '/combos', label: '커뮤니티 조합' },
-  { href: '/board', label: '게시판' },
-];
+import { LOCALES, LOCALE_LABELS } from '@/lib/i18n';
 
 export default function Header() {
   const { user, profile, loading } = useAuth();
   const pathname = usePathname();
+  const { lang, setLang, t } = useLanguage();
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const NAV_LINKS = [
+    { href: '/', label: t('nav_recommend') },
+    { href: '/combos', label: t('nav_combos') },
+    { href: '/board', label: t('nav_board') },
+  ];
 
   const sendLink = async (e) => {
     e.preventDefault();
@@ -56,7 +59,7 @@ export default function Header() {
             />
           </svg>
           <span>
-            <span className="text-nikke-accent">니케</span> 조합 추천
+            <span className="text-nikke-accent">니케</span> {t('site_name_suffix')}
           </span>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2 text-sm text-slate-300">
@@ -75,6 +78,21 @@ export default function Header() {
             );
           })}
 
+          <div className="flex items-center gap-0.5 ml-1 pl-2 border-l border-slate-800 text-xs">
+            {LOCALES.map((l) => (
+              <button
+                key={l}
+                onClick={() => setLang(l)}
+                title={LOCALE_LABELS[l]}
+                className={`px-1.5 py-1 rounded transition-colors ${
+                  lang === l ? 'text-nikke-accent bg-nikke-accent/10 font-semibold' : 'text-slate-500 hover:text-slate-200'
+                }`}
+              >
+                {l.toUpperCase()}
+              </button>
+            ))}
+          </div>
+
           {loading ? null : user ? (
             <div className="flex items-center gap-2 ml-1 pl-2 border-l border-slate-800">
               <span className="text-xs text-slate-400 hidden sm:inline">
@@ -84,7 +102,7 @@ export default function Header() {
                 onClick={logout}
                 className="px-2.5 py-1 rounded border border-slate-700 hover:border-rose-400 text-xs transition-colors"
               >
-                로그아웃
+                {t('logout')}
               </button>
             </div>
           ) : (
@@ -93,20 +111,18 @@ export default function Header() {
                 onClick={() => setOpen((v) => !v)}
                 className="px-3 py-1.5 rounded-md bg-nikke-accent text-slate-900 font-semibold text-xs hover:brightness-110 transition"
               >
-                로그인
+                {t('login')}
               </button>
               {open && (
                 <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-xl">
                   {sent ? (
-                    <p className="text-xs text-emerald-300">
-                      메일함에서 로그인 링크를 확인해주세요!
-                    </p>
+                    <p className="text-xs text-emerald-300">{t('login_sent')}</p>
                   ) : (
                     <form onSubmit={sendLink} className="flex flex-col gap-2">
                       <input
                         type="email"
                         required
-                        placeholder="이메일 주소"
+                        placeholder={t('login_email_placeholder')}
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         className="bg-slate-800 border border-slate-700 rounded px-2 py-1.5 text-xs outline-none focus:border-nikke-accent"
@@ -115,11 +131,9 @@ export default function Header() {
                         type="submit"
                         className="bg-nikke-accent text-slate-900 rounded py-1.5 text-xs font-semibold"
                       >
-                        로그인 링크 받기
+                        {t('login_send_link')}
                       </button>
-                      <p className="text-[10px] text-slate-500">
-                        비밀번호 없이, 받은 메일의 링크를 클릭하면 로그인됩니다.
-                      </p>
+                      <p className="text-[10px] text-slate-500">{t('login_password_note')}</p>
                     </form>
                   )}
                 </div>
