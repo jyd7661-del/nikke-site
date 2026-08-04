@@ -346,14 +346,27 @@ ${pairsText}${popularBlock}
 위 데이터만 근거로, 위에서 안내한 우선순위(완전 보유 아키타입 > 페어 시너지 > 개별 티어)와 포메이션 주의사항에 따라 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
 
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    // 2026-08-03 3차 수정: 아키타입/페어 상한(MAX_ARCHETYPES_IN_PROMPT/MAX_PAIRS_IN_PROMPT)을 적용한
+    // 뒤에도 23명 로스터에서 504가 재현됨 -> 입력 프롬프트 크기가 아니라 "모델이 JSON 앞뒤로
+    // 불필요한 군더더기를 얼마나 생성하는가"가 실제 생성 시간을 좌우하는 것으로 판단.
+    // JSON 구조가 중첩 객체 없이 단순({"members":[...], "reasoning":"..."} 한 겹뿐)이므로,
+    // assistant 메시지를 '{'로 프리필해 모델이 서두 설명 없이 바로 내용부터 쓰게 하고,
+    // stop_sequences로 마지막 '}'에서 즉시 멈추게 해 후행 텍스트 생성 자체를 없앤다.
+    // 이러면 생성 시간이 로스터 크기와 거의 무관하게 실제 답변 분량(멤버 5명 + 200~350자
+    // reasoning)에만 비례하게 되어 60초 상한 안에 안정적으로 끝난다.
     const msg = await client.messages.create({
       model: MODEL,
       max_tokens: MAX_OUTPUT_TOKENS,
       system,
-      messages: [{ role: 'user', content: userContent }],
+      messages: [
+        { role: 'user', content: userContent },
+        { role: 'assistant', content: '{' },
+      ],
+      stop_sequences: ['}'],
     });
 
-    const text = msg.content?.find((c) => c.type === 'text')?.text || '';
+    const rawText = msg.content?.find((c) => c.type === 'text')?.text || '';
+    const text = `{${rawText}}`;
     const parsed = extractJson(text);
 
     if (!parsed || !Array.isArray(parsed.members)) {
