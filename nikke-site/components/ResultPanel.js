@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
+import { useLanguage } from '@/components/LanguageProvider';
 
 const AI_MODES = [
   { key: 'campaign', label: '캠페인' },
@@ -27,6 +28,7 @@ const BOSS_ELEMENT_OPTIONS = [
 // 👍/👎 버튼은 app/api/ai-recommend/feedback에 평가를 저장하고, 그 통계는 다음 AI 추천 호출 때
 // app/api/ai-recommend가 "반응 좋았던 조합" 힌트로 다시 읽어 프롬프트에 실어 보낸다.
 function AiRecommendButton({ roster, mode, bossElement }) {
+  const { lang } = useLanguage();
   const [phase, setPhase] = useState('idle'); // idle | loading | error
   const [team, setTeam] = useState(null);
   const [reasoning, setReasoning] = useState('');
@@ -64,6 +66,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
           mode,
           bossElement,
           excludeTitles: exclude,
+          lang,
         }),
       });
       const data = await res.json();
