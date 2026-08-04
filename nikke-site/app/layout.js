@@ -1,8 +1,9 @@
 import './globals.css';
 import Script from 'next/script';
-import Link from 'next/link';
 import { AuthProvider } from '@/components/AuthProvider';
+import { LanguageProvider } from '@/components/LanguageProvider';
 import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export const metadata = {
   title: '니케 조합 추천 | 보유 니케로 최적의 팀 짜기',
@@ -19,18 +20,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body className="bg-nikke-bg text-slate-100 min-h-screen">
-        <AuthProvider>
-          <Header />
-          {children}
-          <footer className="border-t border-slate-800/80 mt-16">
-            <div className="max-w-5xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
-              <p>니케 조합 추천은 승리의 여신: 니케(시프트업) 비공식 팬 사이트입니다.</p>
-              <Link href="/privacy" className="hover:text-slate-300 underline underline-offset-2">
-                개인정보처리방침
-              </Link>
-            </div>
-          </footer>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
+        </LanguageProvider>
         {ADSENSE_CLIENT_ID && (
           <Script
             async
