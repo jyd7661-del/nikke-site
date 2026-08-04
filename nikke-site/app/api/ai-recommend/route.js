@@ -346,27 +346,28 @@ ${pairsText}${popularBlock}
 위 데이터만 근거로, 위에서 안내한 우선순위(완전 보유 아키타입 > 페어 시너지 > 개별 티어)와 포메이션 주의사항에 따라 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
 
     const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-    // 2026-08-03 3차 수정: 아키타입/페어 상한(MAX_ARCHETYPES_IN_PROMPT/MAX_PAIRS_IN_PROMPT)을 적용한
-    // 뒤에도 23명 로스터에서 504가 재현됨 -> 입력 프롬프트 크기가 아니라 "모델이 JSON 앞뒤로
-    // 불필요한 군더더기를 얼마나 생성하는가"가 실제 생성 시간을 좌우하는 것으로 판단.
-    // JSON 구조가 중첩 객체 없이 단순({"members":[...], "reasoning":"..."} 한 겹뿐)이므로,
-    // assistant 메시지를 '{'로 프리필해 모델이 서두 설명 없이 바로 내용부터 쓰게 하고,
-    // stop_sequences로 마지막 '}'에서 즉시 멈추게 해 후행 텍스트 생성 자체를 없앤다.
-    // 이러면 생성 시간이 로스터 크기와 거의 무관하게 실제 답변 분량(멤버 5명 + 200~350자
-    // reasoning)에만 비례하게 되어 60초 상한 안에 안정적으로 끝난다.
+    // 2026-08-03 4차 수정: 3차 수정(assistant 프리필 '{' + stop_sequences)을 배포했더니
+    // Anthropic API가 400으로 거부함: "This model does not support assistant message prefill.
+    // The conversation must end with a user message." -> MODEL(claude-sonnet-5)이 내부적으로
+    // 항상 reasoning(thinking)을 수행하는 모델이라 프리필 자체가 금지되어 있음을 확인.
+    // 이게 오히려 지금까지의 504/느린 응답의 진짜 원인일 가능성이 높다 — 우리가 보는 출력은
+    // 짧아도, 보이지 않는 thinking 단계가 로스터/프롬프트가 커질수록 함께 길어져 실제 생성
+    // 시간을 지배했을 것. 프리필 대신 thinking.budget_tokens을 명시적으로 낮게 고정해
+    // reasoning 단계 자체를 짧게 강제한다(이 작업은 사전에 명시된 우선순위 규칙을 그대로
+    // 적용하는 수준이라 깊은 추론이 필요 없음). stop_sequences는 그대로 유지해 thinking 이후
+    // 나오는 본문(JSON) 뒤에 불필요한 후행 텍스트가 붙는 것만 추가로 방지한다.
     const msg = await client.messages.create({
       model: MODEL,
       max_tokens: MAX_OUTPUT_TOKENS,
       system,
-      messages: [
-        { role: 'user', content: userContent },
-        { role: 'assistant', content: '{' },
-      ],
+      messages: [{ role: 'user', content: userContent }],
+      thinking: { type: 'enabled', budget_tokens: 1024 },
       stop_sequences: ['}'],
     });
 
     const rawText = msg.content?.find((c) => c.type === 'text')?.text || '';
-    const text = `{${rawText}}`;
+    // stop_sequences에 걸려 멈춘 경우 매칭된 '}'는 응답 텍스트에서 잘려 나가므로 다시 붙여준다.
+    const text = msg.stop_reason === 'stop_sequence' ? `${rawText}}` : rawText;
     const parsed = extractJson(text);
 
     if (!parsed || !Array.isArray(parsed.members)) {
