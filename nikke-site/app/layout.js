@@ -1,5 +1,6 @@
 import './globals.css';
 import Script from 'next/script';
+import Link from 'next/link';
 import { AuthProvider } from '@/components/AuthProvider';
 import Header from '@/components/Header';
 
@@ -21,6 +22,14 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <Header />
           {children}
+          <footer className="border-t border-slate-800/80 mt-16">
+            <div className="max-w-5xl mx-auto px-4 py-6 flex flex-wrap items-center justify-between gap-2 text-xs text-slate-500">
+              <p>니케 조합 추천은 승리의 여신: 니케(시프트업) 비공식 팬 사이트입니다.</p>
+              <Link href="/privacy" className="hover:text-slate-300 underline underline-offset-2">
+                개인정보처리방침
+              </Link>
+            </div>
+          </footer>
         </AuthProvider>
         {ADSENSE_CLIENT_ID && (
           <Script
