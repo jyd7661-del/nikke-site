@@ -760,6 +760,65 @@ export function resolveOwnedCharacters(ownedIds) {
   return characterDatabase.filter((c) => idSet.has(c.id));
 }
 
+// ---------------------------------------------------------------------------
+// prydwen.gg 커뮤니티 검증 조합 완전일치 매칭 (AI 호출 생략용)
+//
+// 2026-08-06 추가: 유저가 "AI에게 매번 새로 조합을 짜게 하고 그 과정에서 나온 문제를 하나씩
+// 규칙으로 시스템 프롬프트에 추가하다 보니, 규칙이 쌓일수록 AI의 사고가 점점 경직된다"고
+// 지적함. synergyNotes.archetypes에는 이미 prydwen.gg 개별 캐릭터 페이지 + Team Database에서
+// 수집한 검증된 5인 조합이 500개 이상 들어있으므로, 로스터가 그 중 하나와 완전히 일치하면
+// (5명 전원 보유 + 모드 호환 + 버스트 I/II/III 조건 충족) AI에게 새로 구성을 맡기지 않고 그
+// 조합을 그대로 반환한다. AI는 이 목록에 없는 경우이거나, ambiguousBurst로 표시된 애매한
+// 조합(예: 레드후드처럼 prydwen에서 버스트 역할별로 성능이 갈리는데 우리 DB는 버스트를
+// 하나로 고정해둔 캐릭터가 포함된 경우)에서만 호출된다.
+// ---------------------------------------------------------------------------
+function computeFormationLocal(members) {
+  const counts = { 1: 0, 2: 0, 3: 0 };
+  members.forEach((m) => {
+    counts[m.burst] = (counts[m.burst] || 0) + 1;
+  });
+  return `${counts[1]}-${counts[2]}-${counts[3]}`;
+}
+
+export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
+  const treasureIds = opts.treasureIds || new Set();
+  const bossElement = opts.bossElement || null;
+  const excludeTitles = new Set(opts.excludeTitles || []);
+  const compatModes = MODE_COMPAT[mode] || [mode];
+  const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
+  const ownedTitleSet = new Set(ownedCharacters.map((c) => c.title));
+
+  const candidates = synergyNotes.archetypes.filter((a) => {
+    const members = a.members || [];
+    if (members.length !== 5) return false;
+    if (new Set(members).size !== 5) return false;
+    if (a.ambiguousBurst) return false;
+    if (!compatModes.includes(a.mode)) return false;
+    if (!members.every((m) => ownedTitleSet.has(m))) return false;
+    if (members.some((m) => excludeTitles.has(m))) return false;
+    return true;
+  });
+
+  let best = null;
+  candidates.forEach((a) => {
+    const members = a.members.map((m) => byTitle.get(m));
+    const scored = scoreTeam(members, mode, { treasureIds, bossElement });
+    if (!scored.valid) return;
+    if (!best || scored.totalScore > best.scored.totalScore) {
+      best = { archetype: a, members, scored };
+    }
+  });
+
+  if (!best) return null;
+  return {
+    formation: computeFormationLocal(best.members),
+    members: best.members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
+    totalScore: best.scored.totalScore,
+    reasons: best.scored.reasons,
+    aiReasoning: `[prydwen.gg 검증 조합 '${best.archetype.name}'] ${best.archetype.note}`,
+  };
+}
+
 // 사용 예:
 // const owned = resolveOwnedCharacters(['rapi-red-hood', 'mast-romantic-maid', ...]);
 // const { teams, dataFreshness } = recommendTeams(owned, 'bossing', { bossElement: 'Iron' });
