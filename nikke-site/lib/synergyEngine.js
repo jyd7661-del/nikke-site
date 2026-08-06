@@ -775,6 +775,17 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
             formation: formationName,
             members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
             ...result,
+            // 2026-08-07 수정: 유저가 "왜 자꾸 다중 조합에 추가 점수를 주는거야? 조합에 있는
+            // 니케 점수만 따지라고 했잖아"라고 재차 지적. scoreTeam().totalScore는 아키타입
+            // 완전/부분일치·시너지 페어·CDR 등을 합산한 값이라, 개별 티어가 낮아도(A/A/A/S/S)
+            // 등록된 아키타입 여러 개와 겹치기만 하면 부분일치 보너스만으로 60점 넘게 붙어
+            // 티어가 훨씬 높은 다른 조합을 이기는 사례가 실측으로 확인됐다(티아/리타/나가/아인/
+            // 네온:비전아이 조합, tierTotal 32인데 totalScore 109). findExactTeamMatch에서
+            // 이미 "후보 비교는 티어 합으로, reasons만 scoreTeam 근거를 참고용으로 쓴다"고
+            // 정리했던 것과 동일한 원칙을 recommendTeams의 정렬/표시 점수에도 그대로 적용한다 —
+            // 아키타입/시너지 보너스는 reasons(설명 문장)에는 계속 나타나지만, 팀을 고르고
+            // 점수를 매기는 기준에는 더 이상 영향을 주지 않는다.
+            totalScore: result.tierTotal,
           });
         });
       });
