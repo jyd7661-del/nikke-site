@@ -246,34 +246,6 @@ function extractJson(text) {
   if (start === -1 || end === -1) return null;
   const candidate = raw.slice(start, end + 1).replace(/[\r\n\t]+/g, ' ');
   try {
-    const treasureIdSet = new Set(treasureIds || []);
-    const ownedTitleSet = new Set(characters.map((c) => c.title));
-    // 2026-08-06 추가: 유저가 "AI에게 매번 새로 짜게 하면서 규칙만 계속 추가하니 AI 사고가
-    // 점점 경직된다"고 지적함. 로스터가 prydwen.gg 검증 조합(synergyNotes.archetypes, 500개 이상)과
-    // 완전히 일치하면(5인 전원 보유 + 모드 호환 + 버스트 I/II/III 충족) AI를 호출하지 않고 그
-    // 조합을 그대로 반환한다. ambiguousBurst로 표시된(예: 레드후드처럼 prydwen 원본은 버스트
-    // 역할별로 성능이 갈리는데 우리 DB는 버스트를 하나로 고정해둔 캐릭터가 포함된) 애매한 조합은
-    // 이 매칭에서 제외되어 아래처럼 계속 AI가 판단한다. AI 호출 자체가 없으므로 일일 사용량
-    // (DAILY_LIMIT)도 소모하지 않는다 — 아래 rate limit 체크보다 먼저 수행하는 이유.
-    const exactMatch = findExactTeamMatch(characters, mode, {
-      treasureIds: treasureIdSet,
-      bossElement: bossElement || null,
-      excludeTitles: Array.isArray(excludeTitles) ? excludeTitles : [],
-    });
-    if (exactMatch) {
-      return Response.json({
-        team: {
-          formation: exactMatch.formation,
-          members: exactMatch.members,
-          totalScore: exactMatch.totalScore,
-          reasons: exactMatch.reasons,
-        },
-        aiReasoning: exactMatch.aiReasoning,
-        model: 'prydwen-direct-match',
-      });
-    }
-
-
     return JSON.parse(candidate);
   } catch {
     return null;
@@ -320,6 +292,33 @@ export async function POST(req) {
   }
 
   try {
+    const treasureIdSet = new Set(treasureIds || []);
+    const ownedTitleSet = new Set(characters.map((c) => c.title));
+    // 2026-08-06 추가: 유저가 "AI에게 매번 새로 짜게 하면서 규칙만 계속 추가하니 AI 사고가
+    // 점점 경직된다"고 지적함. 로스터가 prydwen.gg 검증 조합(synergyNotes.archetypes, 500개 이상)과
+    // 완전히 일치하면(5인 전원 보유 + 모드 호환 + 버스트 I/II/III 충족) AI를 호출하지 않고 그
+    // 조합을 그대로 반환한다. ambiguousBurst로 표시된(예: 레드후드처럼 prydwen 원본은 버스트
+    // 역할별로 성능이 갈리는데 우리 DB는 버스트를 하나로 고정해둔 캐릭터가 포함된) 애매한 조합은
+    // 이 매칭에서 제외되어 아래처럼 계속 AI가 판단한다. AI 호출 자체가 없으므로 일일 사용량
+    // (DAILY_LIMIT)도 소모하지 않는다 — 아래 rate limit 체크보다 먼저 수행하는 이유.
+    const exactMatch = findExactTeamMatch(characters, mode, {
+      treasureIds: treasureIdSet,
+      bossElement: bossElement || null,
+      excludeTitles: Array.isArray(excludeTitles) ? excludeTitles : [],
+    });
+    if (exactMatch) {
+      return Response.json({
+        team: {
+          formation: exactMatch.formation,
+          members: exactMatch.members,
+          totalScore: exactMatch.totalScore,
+          reasons: exactMatch.reasons,
+        },
+        aiReasoning: exactMatch.aiReasoning,
+        model: 'prydwen-direct-match',
+      });
+    }
+
     let supabase = null;
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
@@ -476,4 +475,3 @@ ${pairsText}${popularBlock}
     return Response.json({ error: 'AI 추천을 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' }, { status: 500 });
   }
 }
- 
