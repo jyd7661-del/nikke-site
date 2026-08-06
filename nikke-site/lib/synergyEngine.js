@@ -364,6 +364,13 @@ const WEIGHTS = {
   // 아키타입의 일부만 포함한 경우(예: 2명 중 1명만) — "이 캐릭터를 더 넣으면 좋아진다"는
   // 힌트를 주기 위한 절반 수준의 보너스.
   ARCHETYPE_PARTIAL_MATCH: 5,
+  // 2026-08-07 수정: synergyNotes.archetypes가 500개 이상으로 늘어나면서, 인기 캐릭터가 낀 팀은
+  // 수십~수백 개의 아키타입과 동시에 매칭되어 점수가 500~700점대로 폭주하는 버그가 있었다
+  // (예: 크라운/헬름/스노우화이트:헤비암즈/프리바티/목단 조합 726.5점, D/킬러와이프/티아/나가/
+  // 홍련:흑영/앨리스 조합 524점). 아키타입 매칭은 "커뮤니티에서 검증된 조합과 얼마나 겹치는가"를
+  // 보여주는 근거일 뿐 매칭 개수만큼 무한히 쌓일 신호가 아니므로, 점수 기여가 큰 상위 N개만
+  // 반영하도록 캡을 둔다.
+  ARCHETYPE_MATCH_CAP: 3,
   // synergyNotes.synergyPairs에 등록된 페어를 포함하면 가산점.
   SYNERGY_PAIR: 6,
   // 팀에 CDR 제공 캐릭터가 하나도 없으면 고티어 조합이 되기 어렵다는 공략 지적 반영.
@@ -464,7 +471,12 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   }
 
   // --- 아키타입 매칭 ---
+  // 2026-08-07 수정: 매칭되는 아키타입을 전부 더하지 않고, 일단 후보로만 모아뒀다가
+  // 점수가 큰 상위 ARCHETYPE_MATCH_CAP개만 실제 점수/근거에 반영한다. (다 같이 고쳐야지 —
+  // findExactTeamMatch와 free-form AI 경로가 모두 이 scoreTeam()을 공유하므로 여기서 고치면
+  // 두 경로 전부에 적용된다.)
   const compatModes = MODE_COMPAT[mode] || [mode];
+  const archetypeMatches = [];
   synergyNotes.archetypes
     .filter((a) => compatModes.includes(a.mode))
     .forEach((a) => {
@@ -472,16 +484,26 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       if (need.length === 0) return;
       const have = need.filter((n) => titles.includes(n));
       if (have.length === need.length) {
-        score += WEIGHTS.ARCHETYPE_FULL_MATCH;
-        reasons.push(`'${a.name}' 조합으로 알려진 구성입니다. ${a.note}`);
+        archetypeMatches.push({
+          points: WEIGHTS.ARCHETYPE_FULL_MATCH,
+          reason: `'${a.name}' 조합으로 알려진 구성입니다. ${a.note}`,
+        });
       } else if (have.length > 0) {
-        score += WEIGHTS.ARCHETYPE_PARTIAL_MATCH * have.length;
         const missing = need.filter((n) => !titles.includes(n));
-        reasons.push(
-          `'${a.name}' 조합의 일부(${have.join(', ')})가 포함되어 있습니다. ` +
-          `${missing.join(', ')}를(을) 보유하면 이 조합의 완성도가 더 올라갑니다.`
-        );
+        archetypeMatches.push({
+          points: WEIGHTS.ARCHETYPE_PARTIAL_MATCH * have.length,
+          reason:
+            `'${a.name}' 조합의 일부(${have.join(', ')})가 포함되어 있습니다. ` +
+            `${missing.join(', ')}를(을) 보유하면 이 조합의 완성도가 더 올라갑니다.`,
+        });
       }
+    });
+  archetypeMatches
+    .sort((x, y) => y.points - x.points)
+    .slice(0, WEIGHTS.ARCHETYPE_MATCH_CAP)
+    .forEach((m) => {
+      score += m.points;
+      reasons.push(m.reason);
     });
 
   // --- 시너지 페어 ---
