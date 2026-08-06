@@ -761,7 +761,7 @@ export function resolveOwnedCharacters(ownedIds) {
 }
 
 // ---------------------------------------------------------------------------
-// prydwen.gg 커뮤니티 검증 조합 완전일치 매칭 (AI 호출 생략용)
+// prydwen.gg 커뮤니티 검증 조합 완전일치 매칭 (AI 자유 구성 생략용)
 //
 // 2026-08-06 추가: 유저가 "AI에게 매번 새로 조합을 짜게 하고 그 과정에서 나온 문제를 하나씩
 // 규칙으로 시스템 프롬프트에 추가하다 보니, 규칙이 쌓일수록 AI의 사고가 점점 경직된다"고
@@ -770,7 +770,16 @@ export function resolveOwnedCharacters(ownedIds) {
 // (5명 전원 보유 + 모드 호환 + 버스트 I/II/III 조건 충족) AI에게 새로 구성을 맡기지 않고 그
 // 조합을 그대로 반환한다. AI는 이 목록에 없는 경우이거나, ambiguousBurst로 표시된 애매한
 // 조합(예: 레드후드처럼 prydwen에서 버스트 역할별로 성능이 갈리는데 우리 DB는 버스트를
-// 하나로 고정해둔 캐릭터가 포함된 경우)에서만 호출된다.
+// 하나로 고정해둔 캐릭터가 포함된 경우)에서만 "조합 구성"에 호출된다.
+//
+// 2026-08-06 수정(2차): 유저가 "완전일치 조합의 설명이 영어 원문 그대로 나오고, '~사이트에서
+// 검증된 xxx 조합'처럼 불필요한 출처/조합명 인용이 붙는다"고 지적. archetype.note는 prydwen.gg
+// 원문을 그대로 스크랩한 영어 텍스트라 사용자에게 그대로 보여주기엔 부적합했음 -> 이 함수는
+// 더 이상 aiReasoning 문자열을 직접 만들지 않고, 대신 archetypeName/archetypeNote를 그대로
+// 반환해 호출부(app/api/ai-recommend/route.js)가 이 원문을 "참고 자료"로만 삼아 AI에게 가볍게
+// 번역/재구성("이미 정해진 조합을 설명만 하라")을 시키도록 위임한다. 조합 구성 자체는 여전히
+// AI 없이 확정되므로("어떤 5명을 쓸지"를 AI가 자유롭게 바꾸지 않음) 경직 문제의 원인이었던
+// "자유 구성" 단계는 그대로 생략된 채, 설명 문장의 품질/언어만 개선하는 구조다.
 // ---------------------------------------------------------------------------
 function computeFormationLocal(members) {
   const counts = { 1: 0, 2: 0, 3: 0 };
@@ -815,7 +824,10 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     members: best.members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
     totalScore: best.scored.totalScore,
     reasons: best.scored.reasons,
-    aiReasoning: `[prydwen.gg 검증 조합 '${best.archetype.name}'] ${best.archetype.note}`,
+    // 원문(영어) 그대로 사용하지 말 것 — 호출부에서 이 두 필드를 참고 자료로만 삼아
+    // AI에게 한국어(또는 선택 언어)로 재구성하도록 넘긴다.
+    archetypeName: best.archetype.name,
+    archetypeNote: best.archetype.note,
   };
 }
 
