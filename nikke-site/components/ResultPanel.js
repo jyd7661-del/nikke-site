@@ -156,13 +156,6 @@ function AiRecommendButton({ roster, mode, bossElement }) {
           <p className="text-sm text-slate-300 whitespace-pre-line">{reasoning}</p>
         </div>
       )}
-      {team.reasons?.length > 0 && (
-        <ul className="space-y-1 text-xs text-slate-400 list-disc list-inside mb-3">
-          {team.reasons.map((r, ri) => (
-            <li key={ri}>{r}</li>
-          ))}
-        </ul>
-      )}
       {phase === 'error' && <p className="text-xs text-rose-300 mb-2">{errorMsg}</p>}
 
       <div className="flex items-center flex-wrap gap-2 mb-3">
