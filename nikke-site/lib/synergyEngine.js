@@ -701,10 +701,24 @@ function combinations(arr, k) {
 // 예: 8개면 1-1-3 포메이션 기준 최대 약 1.2만 개 조합 → 실시간 응답 가능한 수준.
 const BUCKET_CAP = 8;
 
-const FORMATIONS = {
-  '2-1-2': { 1: 2, 2: 1, 3: 2 },
-  '1-1-3': { 1: 1, 2: 1, 3: 3 },
-};
+// 버스트 I/II/III가 각 1명 이상, 합계 5명이 되는 모든 분배(가능한 포메이션)를 자동 생성.
+// 2026-08-07 수정: 이전엔 '2-1-2'/'1-1-3' 두 가지 형태만 후보로 만들어서, 실제로 유효한
+// 3-1-1/1-3-1/1-2-2/2-2-1 같은 다른 버스트 분배는 애초에 탐색조차 되지 않았다(유저 지적:
+// "포메이션에 갇혀서 조합을 짜는 느낌이 있다"). 이제 버스트 I/II/III 각 1~3명, 합 5명이 되는
+// 가능한 모든 분배(총 6가지)를 자동 생성해 전부 탐색 대상에 넣는다. 결과 team.formation
+// 표시는 그대로 유지되므로 어떤 분배가 선택됐는지는 여전히 보여준다.
+function buildFormations() {
+  const formations = {};
+  for (let a = 1; a <= 3; a += 1) {
+    for (let b = 1; b <= 3; b += 1) {
+      const c = 5 - a - b;
+      if (c < 1 || c > 3) continue;
+      formations[`${a}-${b}-${c}`] = { 1: a, 2: b, 3: c };
+    }
+  }
+  return formations;
+}
+const FORMATIONS = buildFormations();
 
 // ownedCharacters: characterDatabase.json 항목 배열(보유한 캐릭터만)
 export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
