@@ -67,6 +67,8 @@ const MODE_COMPAT = {
   pvp: ['pvp'],
 };
 
+const LANG_NAMES = { ko: '한국어', en: '영어(English)', ja: '일본어(日本語)' };
+
 const INVESTMENT_NOTE_BY_NAME = new Map(characterInvestmentNotes.characters.map((c) => [c.name, c]));
 
 function getClientIp(req) {
@@ -261,6 +263,55 @@ function resolveMember(rawTitle, byTitle) {
   return null;
 }
 
+// 완전일치 조합(findExactTeamMatch)의 근거를 사람이 읽기 좋은 문장으로 바꾼다.
+// 2026-08-06 추가: 유저가 "완전일치 조합의 설명이 영어 원문 그대로 나오고, '~사이트에서 검증된
+// xxx 조합'처럼 불필요한 출처/조합명 인용이 붙는다"고 지적. lib/synergyEngine.js의
+// findExactTeamMatch는 이제 archetypeNote(prydwen.gg 원문, 영어)를 그대로 반환하므로, 여기서
+// "이미 확정된 이 5명을 설명만 하라"는 가벼운 AI 호출로 번역/재구성한다. 조합 구성 자체(어떤
+// 5명을 쓸지)는 여전히 findExactTeamMatch가 AI 없이 확정하므로, 유저가 지적했던 "규칙이 쌓일수록
+// AI 사고가 경직되는" 자유 구성 단계는 그대로 생략된다 — 이 호출은 "구성"이 아니라 "설명"만
+// 담당하는 훨씬 가벼운 작업이라 시스템 프롬프트도 짧고 effort도 낮게 유지한다.
+async function explainMatchedTeam(client, fullMembers, archetypeNote, mode, modeLabel, treasureIdSet, langName) {
+  const rosterText = fullMembers.map((c) => charSummaryLine(c, mode, treasureIdSet)).join('\n');
+  const system = `당신은 모바일 게임 '승리의 여신: 니케'의 조합 전문가입니다. 아래에 이미 확정된 5인 조합과 멤버들의 실제 데이터, 그리고 이 조합이 왜 강한지 설명하는 영어 참고 자료가 주어집니다.
+당신의 역할은 새 조합을 만드는 것이 아니라, 이미 정해진 이 조합을 사용자에게 설명하는 것입니다 — members 구성을 바꾸거나 다른 조합을 제안하지 마세요.
+참고 자료는 영어 원문이니 그대로 옮기지 말고 내용을 이해해서 ${langName}로 자연스럽게 재구성하세요. "~사이트에서 검증된", "~라는 이름의 조합"처럼 출처나 조합 이름을 언급하지 말고, 마치 이 조합을 직접 분석해서 설명하는 것처럼 쓰세요.
+반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 출력하세요.
+{"reasoning": "${langName}로 작성한 200~350자(영어는 60~120단어) 분량의 설명, 줄바꿈 없이 한 문단"}`;
+
+  const userContent = `모드: ${modeLabel}
+
+[확정된 조합]
+${rosterText}
+
+[참고 자료 — 영어 원문, 그대로 인용하지 말고 이 내용을 근거로만 사용]
+${archetypeNote}
+
+위 조합이 왜 좋은지 ${langName}로 자연스럽게 설명하세요.`;
+
+  try {
+    const msg = await client.messages.create({
+      model: MODEL,
+      max_tokens: 1024,
+      system,
+      messages: [{ role: 'user', content: userContent }],
+      thinking: { type: 'adaptive' },
+      output_config: { effort: 'low' },
+      stop_sequences: ['}'],
+    });
+    const rawText = msg.content?.find((c) => c.type === 'text')?.text || '';
+    const text = msg.stop_reason === 'stop_sequence' ? `${rawText}}` : rawText;
+    const parsed = extractJson(text);
+    if (parsed?.reasoning) return parsed.reasoning;
+    console.error('explainMatchedTeam: failed to parse response', { stopReason: msg.stop_reason, textPreview: text.slice(0, 500) });
+  } catch (err) {
+    console.error('explainMatchedTeam error', err);
+  }
+  // AI 호출이 실패해도 영어 원문을 그대로 노출하지 않도록, 데이터 기반의 간단한 한국어
+  // 대체 문구로 대신한다(가능한 경우는 드물지만 완전히 실패하지 않도록 하는 안전장치).
+  return '커뮤니티에서 검증된 조합입니다. 버스트 I/II/III 단계가 모두 채워져 있어 안정적으로 풀버스트를 순환할 수 있습니다.';
+}
+
 export async function POST(req) {
   let body;
   try {
@@ -294,30 +345,6 @@ export async function POST(req) {
   try {
     const treasureIdSet = new Set(treasureIds || []);
     const ownedTitleSet = new Set(characters.map((c) => c.title));
-    // 2026-08-06 추가: 유저가 "AI에게 매번 새로 짜게 하면서 규칙만 계속 추가하니 AI 사고가
-    // 점점 경직된다"고 지적함. 로스터가 prydwen.gg 검증 조합(synergyNotes.archetypes, 500개 이상)과
-    // 완전히 일치하면(5인 전원 보유 + 모드 호환 + 버스트 I/II/III 충족) AI를 호출하지 않고 그
-    // 조합을 그대로 반환한다. ambiguousBurst로 표시된(예: 레드후드처럼 prydwen 원본은 버스트
-    // 역할별로 성능이 갈리는데 우리 DB는 버스트를 하나로 고정해둔 캐릭터가 포함된) 애매한 조합은
-    // 이 매칭에서 제외되어 아래처럼 계속 AI가 판단한다. AI 호출 자체가 없으므로 일일 사용량
-    // (DAILY_LIMIT)도 소모하지 않는다 — 아래 rate limit 체크보다 먼저 수행하는 이유.
-    const exactMatch = findExactTeamMatch(characters, mode, {
-      treasureIds: treasureIdSet,
-      bossElement: bossElement || null,
-      excludeTitles: Array.isArray(excludeTitles) ? excludeTitles : [],
-    });
-    if (exactMatch) {
-      return Response.json({
-        team: {
-          formation: exactMatch.formation,
-          members: exactMatch.members,
-          totalScore: exactMatch.totalScore,
-          reasons: exactMatch.reasons,
-        },
-        aiReasoning: exactMatch.aiReasoning,
-        model: 'prydwen-direct-match',
-      });
-    }
 
     let supabase = null;
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
@@ -333,9 +360,49 @@ export async function POST(req) {
     }
 
     const modeLabel = MODE_LABEL[mode] || mode || '캠페인';
-    const LANG_NAMES = { ko: '한국어', en: '영어(English)', ja: '일본어(日本語)' };
     const langKey = LANG_NAMES[lang] ? lang : 'ko';
     const langName = LANG_NAMES[langKey];
+
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+    // 2026-08-06 추가: 유저가 "AI에게 매번 새로 짜게 하면서 규칙만 계속 추가하니 AI 사고가
+    // 점점 경직된다"고 지적함. 로스터가 prydwen.gg 검증 조합(synergyNotes.archetypes, 500개 이상)과
+    // 완전히 일치하면(5인 전원 보유 + 모드 호환 + 버스트 I/II/III 충족) "어떤 5명을 쓸지"는 AI에게
+    // 맡기지 않고 그 조합을 그대로 확정한다. ambiguousBurst로 표시된(예: 레드후드처럼 prydwen 원본은
+    // 버스트 역할별로 성능이 갈리는데 우리 DB는 버스트를 하나로 고정해둔 캐릭터가 포함된) 애매한
+    // 조합은 이 매칭에서 제외되어 아래처럼 계속 AI가 자유롭게 구성한다.
+    // 2026-08-06 수정(2차): 다만 확정된 조합의 "설명"까지 AI 없이 처리하면 archetype.note(영어
+    // 원문)를 그대로 노출하거나 "~사이트에서 검증된 xxx 조합"처럼 불필요한 출처를 인용하는 문제가
+    // 있어(유저 제보), 설명 문장만 explainMatchedTeam으로 가볍게 AI에게 맡긴다 — "구성"은 여전히
+    // AI 없이 확정되고, "설명"만 자연스러운 문장으로 다듬는 저비용 호출이다.
+    const exactMatch = findExactTeamMatch(characters, mode, {
+      treasureIds: treasureIdSet,
+      bossElement: bossElement || null,
+      excludeTitles: Array.isArray(excludeTitles) ? excludeTitles : [],
+    });
+    if (exactMatch) {
+      const byTitle = new Map(characters.map((c) => [c.title, c]));
+      const fullMembers = exactMatch.members.map((m) => byTitle.get(m.title)).filter(Boolean);
+      const aiReasoning = await explainMatchedTeam(
+        client,
+        fullMembers,
+        exactMatch.archetypeNote,
+        mode,
+        modeLabel,
+        treasureIdSet,
+        langName
+      );
+      return Response.json({
+        team: {
+          formation: exactMatch.formation,
+          members: exactMatch.members,
+          totalScore: exactMatch.totalScore,
+          reasons: exactMatch.reasons,
+        },
+        aiReasoning,
+        model: 'prydwen-direct-match',
+      });
+    }
 
     const rosterText = characters.map((c) => charSummaryLine(c, mode, treasureIdSet)).join('\n');
     const archetypesText =
@@ -401,7 +468,6 @@ ${pairsText}${popularBlock}
 
 위 데이터만 근거로, 위에서 안내한 우선순위(완전 보유 아키타입 > 페어 시너지 > 개별 티어)와 포메이션 주의사항에 따라 최고의 5인 조합을 구성하고 JSON으로 답하세요.`;
 
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
     // 2026-08-03 5차 수정: 4차 수정(thinking: {type:'enabled', budget_tokens})도 400으로 거부됨:
     // '"thinking.type.enabled" is not supported for this model. Use "thinking.type.adaptive" and
     // "output_config.effort" to control thinking behavior.' -> MODEL(claude-sonnet-5)은 구형
