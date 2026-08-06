@@ -813,8 +813,20 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const members = a.members.map((m) => byTitle.get(m));
     const scored = scoreTeam(members, mode, { treasureIds, bossElement });
     if (!scored.valid) return;
-    if (!best || scored.totalScore > best.scored.totalScore) {
-      best = { archetype: a, members, scored };
+    // 2026-08-06 수정(3차): 유저가 "726점씩이나 나오는 게 이상하다"고 지적, 원인을 찾아보니
+    // archetypes가 590개(prydwen 개별 캐릭터 447명 Team 탭 전수조사 이후)로 늘면서 scoreTeam의
+    // 아키타입 매칭이 "겹치는 아키타입 전부"를 중복 합산해 팀 하나에 600점 넘게 쌓이는 버그였음
+    // (위 WEIGHTS.ARCHETYPE_FULL_MATCH 주석 참고). 이어서 유저가 "5인 완전일치 후보가 여러 개면
+    // 뭘 기준으로 고르냐"고 질문했는데, 지금까지는 바로 이 버그투성이 scoreTeam().totalScore로
+    // 후보를 비교하고 있었다 — 즉 실제로 좋은 조합이 아니라 "다른 아키타입들과 우연히 많이
+    // 겹치는 조합"이 이겼을 수 있다는 뜻. 유저 제안대로 캐릭터 개별 티어(스토리/보스전/PvP 티어,
+    // SSS~F를 tierScore()로 점수화) 합으로 후보를 비교하도록 변경한다 — 아키타입 개수와 무관하게
+    // 항상 안정적이고, 캐릭터 5명의 실제 성능을 그대로 반영한다. scoreTeam은 reasons(참고용
+    // 설명 문장)를 만드는 데는 계속 쓰지만, 후보 비교와 최종 표시 점수(totalScore)에는 이
+    // 티어 합을 쓴다.
+    const tierSum = members.reduce((sum, m) => sum + tierScore(m, mode), 0);
+    if (!best || tierSum > best.tierSum) {
+      best = { archetype: a, members, scored, tierSum };
     }
   });
 
@@ -822,7 +834,10 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   return {
     formation: computeFormationLocal(best.members),
     members: best.members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
-    totalScore: best.scored.totalScore,
+    // scoreTeam().totalScore(아키타입 중복 합산 버그로 700점대까지 부풀 수 있음) 대신 위에서
+    // 후보 비교에 쓴 티어 합을 그대로 표시 점수로 쓴다 — 캐릭터 5명의 실제 성능을 그대로
+    // 반영하는 값이라 이해하기 쉽고, 아키타입 개수가 늘어나도 값이 흔들리지 않는다.
+    totalScore: best.tierSum,
     reasons: best.scored.reasons,
     // 원문(영어) 그대로 사용하지 말 것 — 호출부에서 이 두 필드를 참고 자료로만 삼아
     // AI에게 한국어(또는 선택 언어)로 재구성하도록 넘긴다.
