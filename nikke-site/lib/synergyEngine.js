@@ -394,6 +394,51 @@ const WEIGHTS = {
   REAL_CAMPAIGN_PARTIAL_SCALE: 0.3,
 };
 
+// --- 같은 버스트 단계 인원 낭비 판정 ---
+// 2026-08-07 추가: 유저가 "3버스트에 3명이 있는데 셋 다 쿨타임이 40초라 2명만으로도 계속
+// 버스트가 돌아갈 수 있고, 나머지 1명은 버스트를 아예 못 쓰게 되는데 토템 역할을 할 수 있는
+// 캐릭터도 아니다"라고 지적. recommendTeams()가 (유저 요청대로) 순수 개별 티어 합만으로
+// 순위를 매기다 보니, 이렇게 "정말로는 못 쓰는" 캐릭터의 티어 점수까지 그대로 합산해 실제로는
+// 더 나쁜 조합이 더 높은 점수를 받는 문제가 있었다 — 그 캐릭터는 명목상 티어는 높아도 이
+// 조합 안에서 실제로 기여하는 가치가 없으므로(토템 역할이 아니라면), "조합에 있는 니케 점수만
+// 따진다"는 원칙을 제대로 지키려면 애초에 그 캐릭터의 점수를 합산하면 안 된다. 쿨타임이
+// 빠른(20초 이하) 캐릭터 1명이 이미 그 단계를 매 사이클 커버하고 있으면 나머지는 전부 낭비,
+// 아무도 빠르지 않으면 쿨타임이 짧은 순으로 2명까지만 번갈아 커버가 정당화되고 그 이상은
+// 낭비로 본다. 낭비로 판정된 캐릭터도 토템 후보(characterInvestmentNotes.json의 totemRole)로
+// 등록되어 있으면 버스트 대신 상시 버프/유틸리티로 기여하므로 예외로 둔다. 쿨타임 데이터가
+// 없는 멤버가 하나라도 섞여 있으면 판단 근거가 불충분하므로 그 단계는 건너뛴다(과잉 판정 방지).
+const FAST_BURST_CD = 20; // 이 이하면 혼자서 매 사이클 버스트를 안정적으로 커버 가능
+const ALTERNATE_BURST_CD = 45; // 이 이하 캐릭터 2명이면 번갈아 커버 가능
+
+function burstCooldownSeconds(character) {
+  const skills = character.skills || [];
+  const skill = skills[skills.length - 1];
+  const cd = skill?.cd;
+  if (!cd || Number.isNaN(Number(cd))) return null;
+  return Number(cd);
+}
+
+function findWastedBurstMembers(members) {
+  const wasted = [];
+  ['1', '2', '3'].forEach((burst) => {
+    const group = members.filter((m) => String(m.burst) === burst);
+    if (group.length <= 1) return;
+    const withCd = group.map((m) => ({ m, cd: burstCooldownSeconds(m) }));
+    if (withCd.some((x) => x.cd === null)) return;
+    const sorted = [...withCd].sort((a, b) => a.cd - b.cd);
+    let needed;
+    if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
+    else if (sorted.length >= 2 && sorted[1].cd <= ALTERNATE_BURST_CD) needed = 2;
+    else needed = Math.min(sorted.length, 2);
+    sorted.slice(needed).forEach(({ m }) => {
+      const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
+      if (note?.totemRole) return; // 토템 후보는 버스트 대신 상시 효과로 기여하므로 낭비가 아니다.
+      wasted.push(m);
+    });
+  });
+  return wasted;
+}
+
 export function scoreTeam(members, mode = 'campaign', opts = {}) {
   if (!members || members.length === 0) {
     return { totalScore: 0, valid: false, reasons: ['조합원이 없습니다.'] };
@@ -430,9 +475,22 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     );
   });
 
-  // --- 티어 합산 ---
-  const tierTotal = members.reduce((sum, m) => sum + tierScore(m, mode), 0);
+  // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리) ---
+  const wastedMembers = findWastedBurstMembers(members);
+  const wastedIds = new Set(wastedMembers.map((m) => m.id));
+  const tierTotal = members.reduce(
+    (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode)),
+    0
+  );
   score += tierTotal * WEIGHTS.TIER_SUM;
+  if (wastedMembers.length > 0) {
+    reasons.push(
+      `⚠️ ${wastedMembers.map((m) => m.title).join(', ')}는(은) 같은 버스트 단계를 다른 캐릭터가 ` +
+      `이미 쿨타임 기준으로 충분히 커버하고 있어 실제로 버스트를 발동할 기회가 거의 없고, 상시 ` +
+      `버프/유틸리티로 기여하는 토템 역할도 아니라서 이 조합에서는 사실상 자리를 낭비하고 있습니다. ` +
+      `이 자리를 다른 버스트 단계 보강이나 다른 캐릭터로 바꾸는 것을 추천합니다.`
+    );
+  }
 
   // --- 실사용 픽률 등급 합산 (enikk.app) ---
   const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode), 0);
@@ -827,6 +885,10 @@ export function resolveOwnedCharacters(ownedIds) {
 // 번역/재구성("이미 정해진 조합을 설명만 하라")을 시키도록 위임한다. 조합 구성 자체는 여전히
 // AI 없이 확정되므로("어떤 5명을 쓸지"를 AI가 자유롭게 바꾸지 않음) 경직 문제의 원인이었던
 // "자유 구성" 단계는 그대로 생략된 채, 설명 문장의 품질/언어만 개선하는 구조다.
+//
+// 2026-08-07 수정(3차): recommendTeams()와 마찬가지로 여기서도 후보 비교 기준(tierSum)이
+// findWastedBurstMembers()의 낭비 판정을 반영하지 않던 문제를 함께 맞춘다 — 같은 버스트 단계
+// 인원이 실제로 못 쓰는 자리라면 이 완전일치 후보 비교에서도 점수에 넣지 않는다.
 // ---------------------------------------------------------------------------
 function computeFormationLocal(members) {
   const counts = { 1: 0, 2: 0, 3: 0 };
@@ -860,18 +922,9 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const members = a.members.map((m) => byTitle.get(m));
     const scored = scoreTeam(members, mode, { treasureIds, bossElement });
     if (!scored.valid) return;
-    // 2026-08-06 수정(3차): 유저가 "726점씩이나 나오는 게 이상하다"고 지적, 원인을 찾아보니
-    // archetypes가 590개(prydwen 개별 캐릭터 447명 Team 탭 전수조사 이후)로 늘면서 scoreTeam의
-    // 아키타입 매칭이 "겹치는 아키타입 전부"를 중복 합산해 팀 하나에 600점 넘게 쌓이는 버그였음
-    // (위 WEIGHTS.ARCHETYPE_FULL_MATCH 주석 참고). 이어서 유저가 "5인 완전일치 후보가 여러 개면
-    // 뭘 기준으로 고르냐"고 질문했는데, 지금까지는 바로 이 버그투성이 scoreTeam().totalScore로
-    // 후보를 비교하고 있었다 — 즉 실제로 좋은 조합이 아니라 "다른 아키타입들과 우연히 많이
-    // 겹치는 조합"이 이겼을 수 있다는 뜻. 유저 제안대로 캐릭터 개별 티어(스토리/보스전/PvP 티어,
-    // SSS~F를 tierScore()로 점수화) 합으로 후보를 비교하도록 변경한다 — 아키타입 개수와 무관하게
-    // 항상 안정적이고, 캐릭터 5명의 실제 성능을 그대로 반영한다. scoreTeam은 reasons(참고용
-    // 설명 문장)를 만드는 데는 계속 쓰지만, 후보 비교와 최종 표시 점수(totalScore)에는 이
-    // 티어 합을 쓴다.
-    const tierSum = members.reduce((sum, m) => sum + tierScore(m, mode), 0);
+    // scoreTeam()이 이미 낭비 인원을 제외하고 계산한 tierTotal을 그대로 후보 비교 기준으로
+    // 쓴다 — 아키타입 개수와 무관하게 안정적이고, 같은 버스트 단계 낭비 인원도 반영된다.
+    const tierSum = scored.tierTotal;
     if (!best || tierSum > best.tierSum) {
       best = { archetype: a, members, scored, tierSum };
     }
