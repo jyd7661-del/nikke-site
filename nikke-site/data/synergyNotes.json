@@ -2,7 +2,9 @@
   "meta": {
     "source": "Prydwen.gg NIKKE 가이드(Team Building, Meta Teams - Story/Tribe Tower, Teams Database, Tier List 변경 이력) 및 니케 위키를 참고해 정리한 2차 자료. 원문을 그대로 인용하지 않고 우리말로 재구성/요약함. 캐릭터 이름은 데이터베이스(characterDatabase.json)의 title/name_kr 기준. 2026-07-31부터는 사용자가 지정한 니케 유튜버 4인(고뇨/스페란도/에펜바움/김진서)의 최근 영상 내용도 1순위 자료로 반영.",
     "lastUpdated": "2026-08-04",
-    "updateNote": "새 공략/패치 정보를 확인할 때마다 archetypes, synergyPairs, counters 배열에 계속 항목을 추가해 나갈 것. 이 파일은 조합 추천 스코어링 엔진의 '근거 자료'로 쓰인다. 2026-07-31: 7/23 패치(신규 유닛 라플라스: 얼티밋 히어로, 맥스웰: 오디너리 미케닉 출시)와 관련해 스페란도(유튜버) 영상들에서 반복적으로 소개된 PVP 조합을 1건 추가함(archetypes 'laplace-maxwell-pip-deck', synergyPairs 마지막 항목). 국내 유튜버 1개 채널 기준 정보라 추가 확인 필요. 2026-08-04: 주간 조사 결과 반영 — archetypes에 'wind-laplace-maxwell'(풍라플/풍맥덱, 스페란도 출처, 맥스웰 기여도에 대한 이견 있음), 'swha-alt-marciana'(마르차나: 마린 스터디를 스노우화이트: 헤비암즈 대체픽으로 활용, 김진서 출처) 2건 추가. 기존 'laplace-maxwell-pip-deck'(피뻥덱)과는 별개의 조합임. (2026-08-07: prydwen 개별 캐릭터 Team 탭 447개 임포트 중 실제로는 5인 팀 시너지를 설명하지 않고 캐릭터 1명에 대한 일반 조언이거나 내용 없는 플레이스홀더였던 항목 72개를 품질 검수 후 제거함.)"
+    "updateNote": "새 공략/패치 정보를 확인할 때마다 archetypes, synergyPairs, counters 배열에 계속 항목을 추가해 나갈 것. 이 파일은 조합 추천 스코어링 엔진의 '근거 자료'로 쓰인다. 2026-07-31: 7/23 패치(신규 유닛 라플라스: 얼티밋 히어로, 맥스웰: 오디너리 미케닉 출시)와 관련해 스페란도(유튜버) 영상들에서 반복적으로 소개된 PVP 조합을 1건 추가함(archetypes 'laplace-maxwell-pip-deck', synergyPairs 마지막 항목). 국내 유튜버 1개 채널 기준 정보라 추가 확인 필요. 2026-08-04: 주간 조사 결과 반영 — archetypes에 'wind-laplace-maxwell'(풍라플/풍맥덱, 스페란도 출처, 맥스웰 기여도에 대한 이견 있음), 'swha-alt-marciana'(마르차나: 마린 스터디를 스노우화이트: 헤비암즈 대체픽으로 활용, 김진서 출처) 2건 추가. 기존 'laplace-maxwell-pip-deck'(피뻥덱)과는 별개의 조합임. (2026-08-07: prydwen 개별 캐릭터 Team 탭 447개 임포트 중 실제로는 5인 팀 시너지를 설명하지 않고 캐릭터 1명에 대한 일반 조언이거나 내용 없는 플레이스홀더였던 항목 72개를 품질 검수 후 제거함.)",
+    "lastCleanup": "2026-08-08",
+    "cleanupNote": "2026-08-08: 같은 조합이 출처마다 다른 이름으로 중복 등록돼 있어 33건을 병합했다(516 -> 483). 이름은 aliases로, 설명은 note 뒤에 출처를 밝혀 이어 붙여 정보를 버리지 않았다. 내역: (1) 모드·멤버·슬롯이 완전히 같은 순수 중복 26건, (2) 멤버는 같은데 한쪽에만 자유 슬롯이 있어 슬롯 없는 쪽이 완전일치 후보가 될 수 없던 반쪽 기록 7건. 슬롯 구성 자체가 다른 변형(El-Macho의 B1-CDR vs El Ma-chor의 B1)은 서로 다른 조합이라 남겼다."
   },
   "mechanics": {
     "burstPhase": {
@@ -39,24 +41,6 @@
   },
   "archetypes": [
     {
-      "id": "vesgod-solo",
-      "name": "베스갓(베스티: 택티컬 업그레이드 원맨아미)",
-      "members": [
-        "Vesti: Tactical Upgrade"
-      ],
-      "mode": "campaign",
-      "note": "버스트/논버스트, 버퍼 유무와 상관없이 혼자서 캠페인을 밀어붙일 수 있는 원맨아미형 캐릭터. 방어력 무시 데미지가 핵심이라 고디시트(페널티) 구간에서 특히 강력."
-    },
-    {
-      "id": "rrh-solo",
-      "name": "라피: 레드 후드 원맨아미",
-      "members": [
-        "Rapi: Red Hood"
-      ],
-      "mode": "campaign",
-      "note": "단일 타겟/광역 모두 강력한 원맨아미형 딜러. 버스트I 쿨감 역할도 겸할 수 있음. 프레임 드랍 시 성능이 급락하는 단점."
-    },
-    {
       "id": "sbs-solo",
       "name": "홍련: 흑영(SBS) 원맨아미",
       "members": [
@@ -66,61 +50,16 @@
       "note": "저페널티 구간 최강 화면 클리어형 캐릭터. 한 타겟을 맞히면 화면 전체가 정리되는 광역 전이 효과가 핵심."
     },
     {
-      "id": "swha-solo",
-      "name": "스노우 화이트: 헤비암즈 원맨아미",
-      "members": [
-        "Snow White: Heavy Arms"
-      ],
-      "mode": "campaign",
-      "note": "60프레임 안정적으로 유지 가능하면 어떤 버스트I/II를 데려가도 스토리를 밀 수 있는 화력형 캐릭터."
-    },
-    {
-      "id": "anis-star-solo",
-      "name": "안니스: 스타 솔로캐리",
-      "members": [
-        "Anis: Star"
-      ],
-      "mode": "campaign",
-      "note": "버스트I 혼자서 딜/버프/쿨감/버스트 게이지 생성을 모두 담당해 버스트II·III 티어에 구애받지 않고 캐리 가능."
-    },
-    {
-      "id": "mint-prika",
-      "name": "민트카(민트+프리카)",
-      "members": [
-        "Mint",
-        "Prika"
-      ],
-      "mode": "campaign",
-      "note": "강력한 버프 듀오. 다만 실드/1차 풀버스트 화력이 약해 두 캐릭터가 세트로 묶여야만 제 성능이 나오는 경직적인 조합. 버스트I로 안니스: 스파클링 서머를 쓰면 시너지가 배가됨."
-    },
-    {
-      "id": "el-machor",
-      "name": "엘마초(마스트: 로망틱 메이드+앵커: 이노센트 메이드)",
-      "members": [
-        "Mast: Romantic Maid",
-        "Anchor: Innocent Maid"
-      ],
-      "mode": "campaign",
-      "note": "무조건적인 강력한 버프 + 튼튼한 힐 + 재장전 속도 증가로 구 메타였던 블랑+누아르 조합을 완전히 대체함. 캠페인 보스 상대로 앵커의 HP 저장(스토리지) 효과와 궁합이 좋음."
-    },
-    {
-      "id": "tia-naga",
-      "name": "티아+나가",
-      "members": [
-        "Tia",
-        "Naga"
-      ],
-      "mode": "campaign",
-      "note": "미시리스 소속 스쿨걸 듀오. 딜러 궁합을 크게 타지 않아 어떤 버스트III를 데려가도 무난하게 작동. 버스트I이 한 명 더 필요하다는 게 유일한 제약."
-    },
-    {
       "id": "crown-tia-naga",
       "name": "크라운(+티아+나가 대체)",
       "members": [
         "Crown"
       ],
       "mode": "campaign",
-      "note": "크라운은 '티아+나가' 아키타입의 상위호환이자 대체재입니다 — 같은 역할(버스트II 코어)을 더 잘 수행하므로, 크라운을 보유하고 있다면 이 조합에 티아+나가를 추가로 넣지 마세요. 특히 나가는 버스트II를 크라운이 담당하게 되면 자신의 버스트 스킬(쿨타임 20초, 크라운과 동일)이 실제로 발동할 타이밍을 얻지 못해 토템(1/2스킬 상시 효과만 남는 역할)으로 전환되는데, 이 경우 나가와의 궁합에만 의존하는 티아를 넣을 근거도 함께 사라집니다. 티아+나가는 크라운이 로스터에 없을 때만 대신 채택하는 조합입니다."
+      "note": "크라운은 '티아+나가' 아키타입의 상위호환이자 대체재입니다 — 같은 역할(버스트II 코어)을 더 잘 수행하므로, 크라운을 보유하고 있다면 이 조합에 티아+나가를 추가로 넣지 마세요. 특히 나가는 버스트II를 크라운이 담당하게 되면 자신의 버스트 스킬(쿨타임 20초, 크라운과 동일)이 실제로 발동할 타이밍을 얻지 못해 토템(1/2스킬 상시 효과만 남는 역할)으로 전환되는데, 이 경우 나가와의 궁합에만 의존하는 티아를 넣을 근거도 함께 사라집니다. 티아+나가는 크라운이 로스터에 없을 때만 대신 채택하는 조합입니다. [다른 출처의 같은 조합 설명 — \"The King of all units, come to make Campaign easy\"] [Source: prydwen.gg character page] General team comp for Crown for both Bossing or Campaign",
+      "aliases": [
+        "The King of all units, come to make Campaign easy"
+      ]
     },
     {
       "id": "isabel-arcana-bossing",
@@ -308,8 +247,11 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] A very strong contender for the easiest to use Campaign team for players who prefer bossing modes over others, and are not looking to invest into the likes of VestiTU for example. Red Hood's burst generation ensures that the team can get to next burst before Siren's cooldown time. Not just that, but the addition of HelmT as a B3 support means you can do a special combo for players looking to push into higher deficits. While for the first few bursts you would be following the usual pattern of RRH->RH->RRH.., you can break this pattern by bursting with Helm once to heal the team to full (especially useful against Bronchus (farter)), and then using RH-B1 with Rapi's B3 to deal devestating damage to the final boss of the stage. This ensures that the team doesn't die to chip damage and confirms the kill. Substitutions: -",
-      "ambiguousBurst": true
+      "note": "[Source: prydwen.gg Team Database] A very strong contender for the easiest to use Campaign team for players who prefer bossing modes over others, and are not looking to invest into the likes of VestiTU for example. Red Hood's burst generation ensures that the team can get to next burst before Siren's cooldown time. Not just that, but the addition of HelmT as a B3 support means you can do a special combo for players looking to push into higher deficits. While for the first few bursts you would be following the usual pattern of RRH->RH->RRH.., you can break this pattern by bursting with Helm once to heal the team to full (especially useful against Bronchus (farter)), and then using RH-B1 with Rapi's B3 to deal devestating damage to the final boss of the stage. This ensures that the team doesn't die to chip damage and confirms the kill. Substitutions: - [다른 출처의 같은 조합 설명 — \"Surf-ing Through Campaign ft. Rapihelm (CDR + RH Variant)\"] [Source: prydwen.gg Team Database] The Red Hood variant of the Rapi: Red Hood + HelmTr team. Substitutions: - (속성: Water)",
+      "ambiguousBurst": true,
+      "aliases": [
+        "Surf-ing Through Campaign ft. Rapihelm (CDR + RH Variant)"
+      ]
     },
     {
       "id": "pw-blaze-ing-through-campaign-ft-alice",
@@ -361,7 +303,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] For Low deficit players, there is nothing better than a good SBS! And who better to pair her with than Alice! Alice provides the single target focus damage that SBS does not have while there is a large number of mobs on the screen. Meanwhile, SBS with elemental damage is simply.. lovely! 2+ years since her release, and she is still probably the best low deficit DPS to exist in Nikke, even with all the new tech we have with units like Rapi etc. But who says no to using Rapi? If you lack Siren, just use Rapi to cover all your bases for wind weak content! She will assist not only Alice in focus target DPS, but also SBS by doing chip damage to mobs. All is well and easy in low deficit as long as you have SBS. You may take advantage of Maid Mast's Distributed Damage and ATK buffs to further buff your Scarlet, provided that you are able to properly burst gen with Alice. Substitutions: HelmT may be replaced by Maid Mast."
+      "note": "[Source: prydwen.gg Team Database] For Low deficit players, there is nothing better than a good SBS! And who better to pair her with than Alice! Alice provides the single target focus damage that SBS does not have while there is a large number of mobs on the screen. Meanwhile, SBS with elemental damage is simply.. lovely! 2+ years since her release, and she is still probably the best low deficit DPS to exist in Nikke, even with all the new tech we have with units like Rapi etc. But who says no to using Rapi? If you lack Siren, just use Rapi to cover all your bases for wind weak content! She will assist not only Alice in focus target DPS, but also SBS by doing chip damage to mobs. All is well and easy in low deficit as long as you have SBS. You may take advantage of Maid Mast's Distributed Damage and ATK buffs to further buff your Scarlet, provided that you are able to properly burst gen with Alice. Substitutions: HelmT may be replaced by Maid Mast. [다른 출처의 같은 조합 설명 — \"Tornado Incoming\"] [Source: prydwen.gg character page] Best Wind team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife. (속성: Wind)",
+      "aliases": [
+        "Tornado Incoming"
+      ]
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-cindy-ein-cdr-variant",
@@ -443,20 +388,6 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg Team Database] Rapipi + HelmTr have been a staple Water comp for Campaign, although they are not as prominent as the rest due to HelmTr's lack of AoE potential. However, HelmTr can provide healing and insane single-target damage that, when timed properly, can change the tides of a battle, especially against Farters. Substitutions: - (속성: Water)"
-    },
-    {
-      "id": "pw-surf-ing-through-campaign-ft-rapihelm-cdr-rh-varia",
-      "name": "Surf-ing Through Campaign ft. Rapihelm (CDR + RH Variant)",
-      "members": [
-        "Crown",
-        "Rapi: Red Hood",
-        "Helm",
-        "Little Mermaid",
-        "Red Hood"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The Red Hood variant of the Rapi: Red Hood + HelmTr team. Substitutions: - (속성: Water)",
-      "ambiguousBurst": true
     },
     {
       "id": "pw-surf-ing-through-campaign-ft-rapilud-cdr-variant",
@@ -577,7 +508,10 @@
         "Privaty"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The SSR version of our female protagonist brings shame to all current Nikkes ingame. She excels in both single target and AoE wiping, just like SBS (below) without the distributing damage fallback. She can even help you as a decent B1 CDR when you lack a proper team and just have her + another One Nikke Army. Disadvantage? Require your device to run at 60 FPS consistently. Substitutions: -"
+      "note": "[Source: prydwen.gg Team Database] The SSR version of our female protagonist brings shame to all current Nikkes ingame. She excels in both single target and AoE wiping, just like SBS (below) without the distributing damage fallback. She can even help you as a decent B1 CDR when you lack a proper team and just have her + another One Nikke Army. Disadvantage? Require your device to run at 60 FPS consistently. Substitutions: - [다른 출처의 같은 조합 설명 — \"One-Nikke-army\"] [Source: prydwen.gg Team Database] These teams only require 1 CORE Nikke, and you can fill the 4 rest slots with your strongest characters in the tier list (check them here). The structure will be X - X - Core Nikke - X - X. Note that Privaty and Alice are free here. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "aliases": [
+        "One-Nikke-army"
+      ]
     },
     {
       "id": "pw-one-nikke-army-modernia",
@@ -640,11 +574,14 @@
         "Naga"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The famous school girls of Missilis, known for their absurd “power” (whatever meaning you want). They are so strong that you can use any DPS with them and it still works wonderfully. Problem with them is, you need another Burst I here: Tia - Burst I - Naga - Burst III - Burst III. Example B3 can be high ranking in Tier List Substitutions: -",
+      "note": "[Source: prydwen.gg Team Database] The famous school girls of Missilis, known for their absurd “power” (whatever meaning you want). They are so strong that you can use any DPS with them and it still works wonderfully. Problem with them is, you need another Burst I here: Tia - Burst I - Naga - Burst III - Burst III. Example B3 can be high ranking in Tier List Substitutions: - [다른 출처의 같은 조합 설명 — \"티아+나가\"] 미시리스 소속 스쿨걸 듀오. 딜러 궁합을 크게 타지 않아 어떤 버스트III를 데려가도 무난하게 작동. 버스트I이 한 명 더 필요하다는 게 유일한 제약.",
       "flexSlots": [
         "B1-CDR",
         "B3",
         "B3"
+      ],
+      "aliases": [
+        "티아+나가"
       ]
     },
     {
@@ -756,19 +693,6 @@
       "note": "[Source: prydwen.gg Team Database] Did I just say this is where most auto teams stop? Definitely not with this team. Vesti will Burst first, make her way to the boss stage then Rapi finishes it. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
     },
     {
-      "id": "pw-t-t-stars-team",
-      "name": "T.T Stars Team",
-      "members": [
-        "Anis: Star",
-        "Prika",
-        "Mint",
-        "Rapi: Red Hood",
-        "Vesti: Tactical Upgrade"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] Another version of Vesgod team which has a lot of heal but is vulnerable against one shot KO Raptures. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
-    },
-    {
       "id": "pw-improvised-alice-maxwell-team",
       "name": "Improvised Alice Maxwell Team",
       "members": [
@@ -818,11 +742,14 @@
         "Red Hood"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] Okay these teams will blow your mind, not only from how you craft them, but also you will say: Is that even possible? Key Point to Note: Red Hood is the Solo Burst I Unit, and DO NOT USE RAPI: The Hood here because she will be B1 version This team can deal with stages by relying on 2, or at maximum 3 full Bursts to pass a stage. When you use Red Hood as Burst 1 only, you have an insanely high amount of attack buffs over 10s, and you can even do it twice before she goes on cooldown. It allows you to bring 2 DPS, which will a lot of times be Modernia + Nikke that matches the “Weak Element” of the Stage. Ideally, the B3 choices depend on the stage, and aren’t as easy as - this stage is Wind Weak, so I will pick Vesti: Tactical Upgrade / Scarlet: Black Shadow Huh? Why is Vesti in Wind weak? It’s because there will be a time when you face so many Raptures at once that your SBS damage is splitted too much; it deals meme damage. When that time comes, please remember praying to Vesgod and she will answer. (1145F for example). You want to study the stage step by step and see what best helps you progress from one wave to the other wave, and what the next wave requires. At times, you might need to i-frame to dodge Remnant Raptures, or hold your Burst while your Modernia kills off Raptures outside of Burst. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "note": "[Source: prydwen.gg Team Database] Okay these teams will blow your mind, not only from how you craft them, but also you will say: Is that even possible? Key Point to Note: Red Hood is the Solo Burst I Unit, and DO NOT USE RAPI: The Hood here because she will be B1 version This team can deal with stages by relying on 2, or at maximum 3 full Bursts to pass a stage. When you use Red Hood as Burst 1 only, you have an insanely high amount of attack buffs over 10s, and you can even do it twice before she goes on cooldown. It allows you to bring 2 DPS, which will a lot of times be Modernia + Nikke that matches the “Weak Element” of the Stage. Ideally, the B3 choices depend on the stage, and aren’t as easy as - this stage is Wind Weak, so I will pick Vesti: Tactical Upgrade / Scarlet: Black Shadow Huh? Why is Vesti in Wind weak? It’s because there will be a time when you face so many Raptures at once that your SBS damage is splitted too much; it deals meme damage. When that time comes, please remember praying to Vesgod and she will answer. (1145F for example). You want to study the stage step by step and see what best helps you progress from one wave to the other wave, and what the next wave requires. At times, you might need to i-frame to dodge Remnant Raptures, or hold your Burst while your Modernia kills off Raptures outside of Burst. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"Strongest Campaign Team\"] [Source: prydwen.gg character page] If a stage can be cleared within 3 or fewer Burst rotations, you can choose to bring a 40s or 60s CD Burst I unit (eg Rapunzel for heals) to replace the B1-CDR unit. Alternatively, you can add another B3 instead. In this 1-1-3 team, Red Hood will act as a support buffer, replacing the B1-CDR. Do Red Hood rotation 2 times, and after that, you're left with no Burst rotation for 40s. Try to keep a small rapture alive and allow ~40 seconds to elapse so that Red Hood can Burst again. Kill the small rapture and now proceed to the Boss wave and try to kill it with the insane Crown + RedHood buff chain for your B3 units.For more information on this team, kindly visit: https://www.prydwen.gg/nikke/guides/meta-teams/",
       "ambiguousBurst": true,
       "flexSlots": [
         "B3",
         "B3"
+      ],
+      "aliases": [
+        "Strongest Campaign Team"
       ]
     },
     {
@@ -867,7 +794,10 @@
         "Anis: Sparkling Summer"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg Team Database] Tetra is special, they can form 2 different teams and each has their own advantage and disadvantage distinctively. This team is the original, featuring 2 ~ 3 heavy DPS, depending on stage. You want Anis against Electric weak stage, else just put Noir in her place and let Alice + Xlud cover the rest. This team lacks AoE power, so you may find yourself in a pickle against some stages. Substitutions: -"
+      "note": "[Source: prydwen.gg Team Database] Tetra is special, they can form 2 different teams and each has their own advantage and disadvantage distinctively. This team is the original, featuring 2 ~ 3 heavy DPS, depending on stage. You want Anis against Electric weak stage, else just put Noir in her place and let Alice + Xlud cover the rest. This team lacks AoE power, so you may find yourself in a pickle against some stages. Substitutions: - [다른 출처의 같은 조합 설명 — \"Anis Holds a Summer Party\"] [Source: prydwen.gg character page] Tetra Tower Squad. With the removal of Noir, S. Anis can finally enjoy Blanc's buffs without bricking herself. With Rouge, she can be added to your Tetra Tower squad without any loss of DPS and can effectively be used as a B3.",
+      "aliases": [
+        "Anis Holds a Summer Party"
+      ]
     },
     {
       "id": "pw-tetra-tribe-tower-team-2",
@@ -906,8 +836,11 @@
         "Centi"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg Team Database] The bread and butter comp in PVP. You win by flashing your enemy before they can do anything. The combination of Red Hood B1 ATK buff and Trina B2 buffs will be enough for Scarlet to kill everything. The neat part? It's still 2 RL speed (after RL shoots 2 times, you fill your Burst gauge completely) Substitutions: -",
-      "ambiguousBurst": true
+      "note": "[Source: prydwen.gg Team Database] The bread and butter comp in PVP. You win by flashing your enemy before they can do anything. The combination of Red Hood B1 ATK buff and Trina B2 buffs will be enough for Scarlet to kill everything. The neat part? It's still 2 RL speed (after RL shoots 2 times, you fill your Burst gauge completely) Substitutions: - [다른 출처의 같은 조합 설명 — \"The best 2RL team\"] [Source: prydwen.gg character page] Scarlet's 2rl nukes are the hardest to deal with, especially in champions arena. They proved to be highly effective. Substitutions: Blanc can replace Trina.",
+      "ambiguousBurst": true,
+      "aliases": [
+        "The best 2RL team"
+      ]
     },
     {
       "id": "pw-pierce-heaven",
@@ -975,7 +908,10 @@
         "Mast: Romantic Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] The jellyfish works as a cs buffer for sbs, and both of them dealing devestating damage to Kraken! Consider starting with Liberalio burst if you are using Crown. Burst Maid Mast every third burst (Crown → Crown → Mast). Cover Anis when necessary or she will die to Kraken. Substitutions: Anis: Star may be replaced with Siren. Nayuta may be replaced with Crown. Liberalio may be replaced with Mana or Alice or Helm (Treasure). Mast: Romantic Maid may be replaced with Crown or Naga (only used with Crown). (속성: Wind)"
+      "note": "[Source: prydwen.gg Team Database] The jellyfish works as a cs buffer for sbs, and both of them dealing devestating damage to Kraken! Consider starting with Liberalio burst if you are using Crown. Burst Maid Mast every third burst (Crown → Crown → Mast). Cover Anis when necessary or she will die to Kraken. Substitutions: Anis: Star may be replaced with Siren. Nayuta may be replaced with Crown. Liberalio may be replaced with Mana or Alice or Helm (Treasure). Mast: Romantic Maid may be replaced with Crown or Naga (only used with Crown). (속성: Wind) [다른 출처의 같은 조합 설명 — \"Double Hit T1 Wind\"] [Source: prydwen.gg Team Database] Burst Maid Mast with Scarlet Black Shadow. Substitutions: Maid Mast is replaeable by Privaty. (속성: Wind)",
+      "aliases": [
+        "Double Hit T1 Wind"
+      ]
     },
     {
       "id": "pw-missing-the-great-swordwoman",
@@ -1001,7 +937,10 @@
         "Liberalio"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] No Crown? No problem! You can still do enough damage with Maids and reach Stage 9. Since they give a lot of distributed damage buffs, SBS performs super well here. Burst Maid Mast with SBS. Substitutions: Anis: Star may be replaced with Siren. Liberalio can be replaced with Asuka: Wille, Alice, Rapi: Red Hood, Snow White: Heavy Arms, or Cinderella: Crystal Wave. (속성: Wind)"
+      "note": "[Source: prydwen.gg Team Database] No Crown? No problem! You can still do enough damage with Maids and reach Stage 9. Since they give a lot of distributed damage buffs, SBS performs super well here. Burst Maid Mast with SBS. Substitutions: Anis: Star may be replaced with Siren. Liberalio can be replaced with Asuka: Wille, Alice, Rapi: Red Hood, Snow White: Heavy Arms, or Cinderella: Crystal Wave. (속성: Wind) [다른 출처의 같은 조합 설명 — \"Triple Hit T1 Wind\"] [Source: prydwen.gg Team Database] - Substitutions: - (속성: Wind)",
+      "aliases": [
+        "Triple Hit T1 Wind"
+      ]
     },
     {
       "id": "pw-afk-kraken-s7",
@@ -1014,7 +953,10 @@
         "Crown"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] The team has it all: heals, shielding, damage and AoE (for shooting down missiles), which actually allows it to run full auto. This is made possible by Anchor: Innocent Maid storing the excess heals provided by Helm to survive the attack caused by failing the QTE (red circles). For this team to run properly it is very important that Helm is in the middle and Anchor: Innocent Maid is on the left side of Crown for burst rotations to line up. This team only works at high investments with SR collection items and high synchro level (recommended 381+) to be able to survive. Reaching Boss Stage 7 is also possible if your SBS is strong enough. Substitutions: - (속성: Wind)"
+      "note": "[Source: prydwen.gg Team Database] The team has it all: heals, shielding, damage and AoE (for shooting down missiles), which actually allows it to run full auto. This is made possible by Anchor: Innocent Maid storing the excess heals provided by Helm to survive the attack caused by failing the QTE (red circles). For this team to run properly it is very important that Helm is in the middle and Anchor: Innocent Maid is on the left side of Crown for burst rotations to line up. This team only works at high investments with SR collection items and high synchro level (recommended 381+) to be able to survive. Reaching Boss Stage 7 is also possible if your SBS is strong enough. Substitutions: - (속성: Wind) [다른 출처의 같은 조합 설명 — \"Fully Auto Stage 7 - Kraken is down!\"] [Source: prydwen.gg character page] While we did indeed mention that Anchor’s fate is destined to be to take care of a drunk Mast, we have news for you. Insane QoL update alert! By far the best team yet for an easy Kraken daily run. This team is able to comfortably stage 6 or stage 7 Kraken provided your DPS are decently invested into. With above average investments, players should be able to get to stage 7 on full auto with this comp. Players may need doll investments to survive the QTE on full auto. (속성: Wind)",
+      "aliases": [
+        "Fully Auto Stage 7 - Kraken is down!"
+      ]
     },
     {
       "id": "pw-no-pilgrims",
@@ -1045,7 +987,10 @@
         "Helm"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Rapi is so strong she can even match Helm Tr with high ATK, high Ele and Phase 3 Treasure version on Water weak boss. Just pay attention during helm Burst, you don't want her Burst lands on random mob. Substitutions: You can replace Rapi with Ludmilla - Winter Owner or Quency: Escape queen, but that's another DPS you have to invest. Just invest in Rapi - Crown - Siren - Mast Maid and 1 element DPS to save your precious resource. (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] Rapi is so strong she can even match Helm Tr with high ATK, high Ele and Phase 3 Treasure version on Water weak boss. Just pay attention during helm Burst, you don't want her Burst lands on random mob. Substitutions: You can replace Rapi with Ludmilla - Winter Owner or Quency: Escape queen, but that's another DPS you have to invest. Just invest in Rapi - Crown - Siren - Mast Maid and 1 element DPS to save your precious resource. (속성: Water) [다른 출처의 같은 조합 설명 — \"Wheelchair\"] [Source: prydwen.gg Team Database] Time Crown's invulnerability at the beginning of phase 2 or she will die. Burst Maid Mast with Rapi: Red Hood as much as possible. Substitutions: Anis: Star may be replaced with Siren or Moran (Treasure). Crown may be replaced with Brid: Silent Track. Rapi: Red Hood may be replaced with Mihara: Bonding Chain. Mast: Romantic Maid may be replaced with Naga, Privaty (Treasure), or Helm (Treasure). (속성: Fire)",
+      "aliases": [
+        "Wheelchair"
+      ]
     },
     {
       "id": "pw-pirates-vs-crab",
@@ -1071,7 +1016,10 @@
         "Maiden: Ice Rose"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Although Anis: Star's stars can shoot the slippers without requiring aiming hence triggering instant slippers qte failure, this team can overcome the defense buff with brute force. Burst Maiden:Ice Rose at 12th and 14th burst instead of Anis: Sparkling Summer. If Maid Mast is used, burst Maid Mast with Neon: Vision Eye or Cinderella as much as possible. Substitutions: Crown may be replaced with Nayuta. Anis: Star may be replaced with Moran (Treasure), Rouge (only with Cinderella) or Rapi: Red Hood. Neon: Vision Eye may be replaced with Cinderella. Anis: Sparkling Summer may be replaced with Ada Wong. Maiden: Ice Rose may be replaced with Mast: Romantic Maid, Helm (Treasure), or Ada Wong. (속성: Electric)"
+      "note": "[Source: prydwen.gg Team Database] Although Anis: Star's stars can shoot the slippers without requiring aiming hence triggering instant slippers qte failure, this team can overcome the defense buff with brute force. Burst Maiden:Ice Rose at 12th and 14th burst instead of Anis: Sparkling Summer. If Maid Mast is used, burst Maid Mast with Neon: Vision Eye or Cinderella as much as possible. Substitutions: Crown may be replaced with Nayuta. Anis: Star may be replaced with Moran (Treasure), Rouge (only with Cinderella) or Rapi: Red Hood. Neon: Vision Eye may be replaced with Cinderella. Anis: Sparkling Summer may be replaced with Ada Wong. Maiden: Ice Rose may be replaced with Mast: Romantic Maid, Helm (Treasure), or Ada Wong. (속성: Electric) [다른 출처의 같은 조합 설명 — \"One Of Cindy/Neon Not Built\"] [Source: prydwen.gg Team Database] If only one of Neon or Cindy is built. Substitutions: Neon may be replaced by Cinderella. Crown may be replaced by Nayuta or Bunny Ade. (속성: Electric)",
+      "aliases": [
+        "One Of Cindy/Neon Not Built"
+      ]
     },
     {
       "id": "pw-took-a-summer-winter-vacation-from-nikke",
@@ -1084,7 +1032,10 @@
         "Mast: Romantic Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Although Anis: Star's stars can shoot the slippers without requiring aiming hence triggering instant slippers qte failure, this team can overcome the defense buff with brute force. Burst Maid Mast every third burst (Crown → Crown → Mast). Substitutions: Crown may be replaced with Nayuta. Anis: Star may be replaced with Moran (Treasure) or Rapi: Red Hood. Neon: Vision Eye or Cinderella may be replaced with Snow White: Heavy Arms or Cinderella: Crystal Wave. Mast: Romantic Maid may be replaced with Maiden: Ice Rose, Anis: Sparkling Summer, Helm (Treasure), or Ada Wong. (속성: Electric)"
+      "note": "[Source: prydwen.gg Team Database] Although Anis: Star's stars can shoot the slippers without requiring aiming hence triggering instant slippers qte failure, this team can overcome the defense buff with brute force. Burst Maid Mast every third burst (Crown → Crown → Mast). Substitutions: Crown may be replaced with Nayuta. Anis: Star may be replaced with Moran (Treasure) or Rapi: Red Hood. Neon: Vision Eye or Cinderella may be replaced with Snow White: Heavy Arms or Cinderella: Crystal Wave. Mast: Romantic Maid may be replaced with Maiden: Ice Rose, Anis: Sparkling Summer, Helm (Treasure), or Ada Wong. (속성: Electric) [다른 출처의 같은 조합 설명 — \"Most Common UR Team - Electric\"] [Source: prydwen.gg Team Database] One of the most commonly used teams in top unions. Substitutions: Crown may be replaced by Nayuta. Maid Mast may be replaced by Privaty, Summer Anis, or Winter Maiden. Anis: Star may be replaced by another B1-CDR, such as Moran-Treasure, but the burst generation needs to be covered by a nikke in off burst slot Nikke now, such as Helm-Treasure. (속성: Electric)",
+      "aliases": [
+        "Most Common UR Team - Electric"
+      ]
     },
     {
       "id": "pw-the-proper-way",
@@ -1154,19 +1105,6 @@
       "note": "[Source: prydwen.gg Team Database] The best team to use against Indivilia. Survival is very difficult and you'll have to rely on Crown s2 a lot. Time Crown's invulnerability at the beginning of phase 2 or she will die. Burst Maid Mast at start and at 3 stacks (Crown → Crown → Mast). Substitutions: Anis: Star may be replaced with Siren. Mihara: Bonding Chain may be replaced with Alice, Asuka, Diesel: Winter Sweets or Cinderella: Crystal Wave. Mast: Romantic Maid may be replaced with Naga, Privaty (Treasure), or Helm (Treasure). (속성: Fire)"
     },
     {
-      "id": "pw-wheelchair",
-      "name": "Wheelchair",
-      "members": [
-        "Crown",
-        "Anis: Star",
-        "Rapi: Red Hood",
-        "Helm",
-        "Mast: Romantic Maid"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Time Crown's invulnerability at the beginning of phase 2 or she will die. Burst Maid Mast with Rapi: Red Hood as much as possible. Substitutions: Anis: Star may be replaced with Siren or Moran (Treasure). Crown may be replaced with Brid: Silent Track. Rapi: Red Hood may be replaced with Mihara: Bonding Chain. Mast: Romantic Maid may be replaced with Naga, Privaty (Treasure), or Helm (Treasure). (속성: Fire)"
-    },
-    {
       "id": "pw-b1-rapi-vs-crab",
       "name": "B1 Rapi vs Crab",
       "members": [
@@ -1216,20 +1154,10 @@
         "Mint"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg Team Database] This team has 4 different ele which means you are only vulnerable against Wind weak ele shield. In that case, replacing duo Idols with duo Bunny (they are Wind ele) will do. Slot in Moran when you fight unavoidable damage dealer like Black Snake, Ziz or Nihilister. Substitutions: This Team is part of Meta Teams - Tribe Tower Guide. Check here for further information and viable substitutes."
-    },
-    {
-      "id": "pw-one-nikke-army",
-      "name": "One-Nikke-army",
-      "members": [
-        "N102",
-        "Anis",
-        "Alice",
-        "Privaty",
-        "Rapi: Red Hood"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] These teams only require 1 CORE Nikke, and you can fill the 4 rest slots with your strongest characters in the tier list (check them here). The structure will be X - X - Core Nikke - X - X. Note that Privaty and Alice are free here. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] This team has 4 different ele which means you are only vulnerable against Wind weak ele shield. In that case, replacing duo Idols with duo Bunny (they are Wind ele) will do. Slot in Moran when you fight unavoidable damage dealer like Black Snake, Ziz or Nihilister. Substitutions: This Team is part of Meta Teams - Tribe Tower Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"Tetra Idols\"] [Source: prydwen.gg character page] The Idol version for Tetra tower. They are very easy to use and buffing 2 Piercers by a lot. The fun part is, this team has 4/5 elements, so only against Wind-weak stage with elemental shield, you need to swap team",
+      "aliases": [
+        "Tetra Idols"
+      ]
     },
     {
       "id": "pw-vesti-tactical-upgrade-aka-vesgod",
@@ -1238,12 +1166,15 @@
         "Vesti: Tactical Upgrade"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] When they first dropped her, people were kinda disappointed with her Bossing power (which is the most famous mode in Nikke - Solo Raid). But eventually we figure out what a monster Shift Up has let loose onto their game. Vesgod is the one woman army. On burst, off burst, buffer has or not, it doesn’t matter. If loving you is the work of God, then Vesti’s work is sending you back to Him. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "note": "[Source: prydwen.gg Team Database] When they first dropped her, people were kinda disappointed with her Bossing power (which is the most famous mode in Nikke - Solo Raid). But eventually we figure out what a monster Shift Up has let loose onto their game. Vesgod is the one woman army. On burst, off burst, buffer has or not, it doesn’t matter. If loving you is the work of God, then Vesti’s work is sending you back to Him. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"베스갓(베스티: 택티컬 업그레이드 원맨아미)\"] 버스트/논버스트, 버퍼 유무와 상관없이 혼자서 캠페인을 밀어붙일 수 있는 원맨아미형 캐릭터. 방어력 무시 데미지가 핵심이라 고디시트(페널티) 구간에서 특히 강력.",
       "flexSlots": [
         "B1",
         "B2",
         "flex",
         "flex"
+      ],
+      "aliases": [
+        "베스갓(베스티: 택티컬 업그레이드 원맨아미)"
       ]
     },
     {
@@ -1253,12 +1184,15 @@
         "Rapi: Red Hood"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The SSR version of our female protagonist brings shame to all current Nikkes ingame. She excels in both single target and AoE wiping, just like SBS (below) without the distributing damage fallback. She can even help you as a decent B1 CDR when you lack a proper team and just have her + another One Nikke Army below. Disadvantage? Require your device to run at 60 FPS consistently. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "note": "[Source: prydwen.gg Team Database] The SSR version of our female protagonist brings shame to all current Nikkes ingame. She excels in both single target and AoE wiping, just like SBS (below) without the distributing damage fallback. She can even help you as a decent B1 CDR when you lack a proper team and just have her + another One Nikke Army below. Disadvantage? Require your device to run at 60 FPS consistently. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"라피: 레드 후드 원맨아미\"] 단일 타겟/광역 모두 강력한 원맨아미형 딜러. 버스트I 쿨감 역할도 겸할 수 있음. 프레임 드랍 시 성능이 급락하는 단점.",
       "flexSlots": [
         "B1",
         "B2",
         "flex",
         "flex"
+      ],
+      "aliases": [
+        "라피: 레드 후드 원맨아미"
       ]
     },
     {
@@ -1269,11 +1203,14 @@
         "Mint"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The latest duo, they are insanely strong with a lot of buffs which vibes well with meta DPS too, and if your B1 is Anis Sparkling Star, it's set in stone Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "note": "[Source: prydwen.gg Team Database] The latest duo, they are insanely strong with a lot of buffs which vibes well with meta DPS too, and if your B1 is Anis Sparkling Star, it's set in stone Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"민트카(민트+프리카)\"] 강력한 버프 듀오. 다만 실드/1차 풀버스트 화력이 약해 두 캐릭터가 세트로 묶여야만 제 성능이 나오는 경직적인 조합. 버스트I로 안니스: 스파클링 서머를 쓰면 시너지가 배가됨.",
       "flexSlots": [
         "B1-CDR",
         "B3",
         "B3"
+      ],
+      "aliases": [
+        "민트카(민트+프리카)"
       ]
     },
     {
@@ -1284,11 +1221,14 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] There were once Blanc and Noir, but let’s be real, they are outclassed heavily by this duo. El Ma-chor gives way stronger buff unconditionally, strong healing and comes with insane reload speed which allows you to ignore Ammo OL completely. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "note": "[Source: prydwen.gg Team Database] There were once Blanc and Noir, but let’s be real, they are outclassed heavily by this duo. El Ma-chor gives way stronger buff unconditionally, strong healing and comes with insane reload speed which allows you to ignore Ammo OL completely. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"엘마초(마스트: 로망틱 메이드+앵커: 이노센트 메이드)\"] 무조건적인 강력한 버프 + 튼튼한 힐 + 재장전 속도 증가로 구 메타였던 블랑+누아르 조합을 완전히 대체함. 캠페인 보스 상대로 앵커의 HP 저장(스토리지) 효과와 궁합이 좋음.",
       "flexSlots": [
         "B1",
         "B3",
         "B3"
+      ],
+      "aliases": [
+        "엘마초(마스트: 로망틱 메이드+앵커: 이노센트 메이드)"
       ]
     },
     {
@@ -1354,7 +1294,10 @@
         "Rapi: Red Hood"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The healing amount from Prika and Mint will be enough to keep you alive against sustain damage, but against one shot enemies, you need Moran instead. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] The healing amount from Prika and Mint will be enough to keep you alive against sustain damage, but against one shot enemies, you need Moran instead. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"T.T Stars Team\"] [Source: prydwen.gg Team Database] Another version of Vesgod team which has a lot of heal but is vulnerable against one shot KO Raptures. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "aliases": [
+        "T.T Stars Team"
+      ]
     },
     {
       "id": "pw-mission-impossible-team",
@@ -1376,26 +1319,16 @@
         "Anis: Star"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] Anis is that strong, she can solo carry as a solo B1, doesn't care about your B2 or B3 too because she gives CDR too. Dmg, buff, CDR and burst gauge, she's basically Siren on steroids. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "note": "[Source: prydwen.gg Team Database] Anis is that strong, she can solo carry as a solo B1, doesn't care about your B2 or B3 too because she gives CDR too. Dmg, buff, CDR and burst gauge, she's basically Siren on steroids. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes. [다른 출처의 같은 조합 설명 — \"안니스: 스타 솔로캐리\"] 버스트I 혼자서 딜/버프/쿨감/버스트 게이지 생성을 모두 담당해 버스트II·III 티어에 구애받지 않고 캐리 가능.",
       "flexSlots": [
         "B2",
         "B3",
         "B3",
         "B3"
-      ]
-    },
-    {
-      "id": "pw-most-common-ur-team-electric",
-      "name": "Most Common UR Team - Electric",
-      "members": [
-        "Anis: Star",
-        "Crown",
-        "Cinderella",
-        "Neon: Vision Eye",
-        "Mast: Romantic Maid"
       ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] One of the most commonly used teams in top unions. Substitutions: Crown may be replaced by Nayuta. Maid Mast may be replaced by Privaty, Summer Anis, or Winter Maiden. Anis: Star may be replaced by another B1-CDR, such as Moran-Treasure, but the burst generation needs to be covered by a nikke in off burst slot Nikke now, such as Helm-Treasure. (속성: Electric)"
+      "aliases": [
+        "안니스: 스타 솔로캐리"
+      ]
     },
     {
       "id": "pw-alternate-best-ur-team-electric",
@@ -1409,32 +1342,6 @@
       ],
       "mode": "raid",
       "note": "[Source: prydwen.gg Team Database] If you have Isabel and Arcana built. Substitutions: FloraTreasure may be replaced by Crown. Consequently, in a multi-team approach, the next Team's Burst 2 also changes according to their subsistutes. (속성: Electric)"
-    },
-    {
-      "id": "pw-one-of-cindy-neon-not-built",
-      "name": "One Of Cindy/Neon Not Built",
-      "members": [
-        "Anis: Star",
-        "Crown",
-        "Neon: Vision Eye",
-        "Anis: Sparkling Summer",
-        "Maiden: Ice Rose"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] If only one of Neon or Cindy is built. Substitutions: Neon may be replaced by Cinderella. Crown may be replaced by Nayuta or Bunny Ade. (속성: Electric)"
-    },
-    {
-      "id": "pw-idols-electric",
-      "name": "Idols Electric",
-      "members": [
-        "Anis: Star",
-        "Prika",
-        "Cinderella",
-        "Neon: Vision Eye",
-        "Mint"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] If players are trying to save Crown and Nayuta both. Substitutions: - (속성: Electric)"
     },
     {
       "id": "pw-old-meta-or-saving-anis-star",
@@ -1702,19 +1609,6 @@
       "note": "[Source: prydwen.gg Team Database] Replacing Siren with Liter/Moran for less damage is often a trick used by unions to save Siren for other bosses where more damage is required, since Wind is usually a commonly built element for players and almost everyone is able to deal good damage to it. Substitutions: Velvet may be replaced by Maid Mast. Siren may be replaced by Liter/Moran or Siren. (속성: Wind)"
     },
     {
-      "id": "pw-double-hit-t1-wind",
-      "name": "Double Hit T1 Wind",
-      "members": [
-        "Anis: Star",
-        "Nayuta",
-        "Scarlet: Black Shadow",
-        "Liberalio",
-        "Mast: Romantic Maid"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Burst Maid Mast with Scarlet Black Shadow. Substitutions: Maid Mast is replaeable by Privaty. (속성: Wind)"
-    },
-    {
       "id": "pw-double-hit-t2-wind",
       "name": "Double Hit T2 Wind",
       "members": [
@@ -1725,20 +1619,10 @@
         "Velvet"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] There is a reload trrick to Asuka: Wille where you reload yourself before the end of the burst, which can substantially increase her damage. Substitutions: Rei Ayanami may be replaced by another invested wind DPS like Black Ark Ranger or Laplace: Ultimate Hero, or with an alternate buffer, or with a common high tier DPS like Cinderella: Crystal Wave or Snow White: Heavy Arms. (속성: Wind)"
-    },
-    {
-      "id": "pw-triple-hit-t1-wind",
-      "name": "Triple Hit T1 Wind",
-      "members": [
-        "Anis: Star",
-        "Mast: Romantic Maid",
-        "Scarlet: Black Shadow",
-        "Liberalio",
-        "Anchor: Innocent Maid"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] - Substitutions: - (속성: Wind)"
+      "note": "[Source: prydwen.gg Team Database] There is a reload trrick to Asuka: Wille where you reload yourself before the end of the burst, which can substantially increase her damage. Substitutions: Rei Ayanami may be replaced by another invested wind DPS like Black Ark Ranger or Laplace: Ultimate Hero, or with an alternate buffer, or with a common high tier DPS like Cinderella: Crystal Wave or Snow White: Heavy Arms. (속성: Wind) [다른 출처의 같은 조합 설명 — \"DeltaNT Powercrept in 3.5 Months\"] [Source: prydwen.gg character page] Siren Crown AsukaW ReiT DeltaNT was the meta for one Solo Raid. DeltaNT has now been toppled over by Velvet. This team is actually not ideal for Solo Raid because Velvet should be a DPS, but it's the second best if you don't have her DPS-built. (속성: Wind)",
+      "aliases": [
+        "DeltaNT Powercrept in 3.5 Months"
+      ]
     },
     {
       "id": "pw-triple-hit-t2-wind",
@@ -2095,19 +1979,6 @@
       "note": "[Source: prydwen.gg character page] In this comp, we focus on overloading our units with maximum Reload Speed, allowing them to Fire to their heart's content. Both Rapi: Red Hood and Alice scale well with this. Crown is likely the better option here despite Mast's alliance with Anchor. This is not something you'd normally do in Solo Raid, but it might be something viable for Union Raid or Anomaly Interception, so keep that in mind! If you use Crown, then Anchor can be treated as an Off-Burst B2 or occasional B2. Substitutions: Crown instead of Mast: Romatic MaidLiter instead of Rapi: Red Hood"
     },
     {
-      "id": "pwc-fully-auto-stage-7-kraken-is-down",
-      "name": "Fully Auto Stage 7 - Kraken is down!",
-      "members": [
-        "Anchor: Innocent Maid",
-        "Scarlet: Black Shadow",
-        "Helm",
-        "Rapi: Red Hood",
-        "Crown"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg character page] While we did indeed mention that Anchor’s fate is destined to be to take care of a drunk Mast, we have news for you. Insane QoL update alert! By far the best team yet for an easy Kraken daily run. This team is able to comfortably stage 6 or stage 7 Kraken provided your DPS are decently invested into. With above average investments, players should be able to get to stage 7 on full auto with this comp. Players may need doll investments to survive the QTE on full auto. (속성: Wind)"
-    },
-    {
       "id": "pwc-elysion-tower",
       "name": "Elysion Tower",
       "members": [
@@ -2118,7 +1989,11 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] 2025. The year of Elysion! Ingrid stays cooking. The duo provides a new perspective for Elysion tower meta, and takes over the job of healing, Burst gen and buffing, all at once! Rapi: Red Hood insanely benefits from their buffs, and while the remaining B3 spot is quite weak in terms of pushing higher deficits, we still have solid options and even some synergy in Phantom! We finally have something solid for Elysion Tower, so start pushing that stage you have been stuck on for ages!"
+      "note": "[Source: prydwen.gg character page] 2025. The year of Elysion! Ingrid stays cooking. The duo provides a new perspective for Elysion tower meta, and takes over the job of healing, Burst gen and buffing, all at once! Rapi: Red Hood insanely benefits from their buffs, and while the remaining B3 spot is quite weak in terms of pushing higher deficits, we still have solid options and even some synergy in Phantom! We finally have something solid for Elysion Tower, so start pushing that stage you have been stuck on for ages! [다른 출처의 같은 조합 설명 — \"Elysion Tower ft. HelmT #1\"] [Source: prydwen.gg character page] Redefining Burst generation in Elysion Tower, Helm (Treasure) really does it all! She can even act alongside Mast Anchor to provide immense Heal for the team as Rapi: Red Hood destroys the enemy raptures. [다른 출처의 같은 조합 설명 — \"Elysions's Saver\"] [Source: prydwen.gg character page] Elysion Tower FINALLY as a DPS unit as Rapi saves the day for them with her new found skills! Substitutions: Helm is replacable with Phantom, Maiden: Ice Rose or Maid Privaty",
+      "aliases": [
+        "Elysion Tower ft. HelmT #1",
+        "Elysions's Saver"
+      ]
     },
     {
       "id": "pwc-scarletto-s-arc",
@@ -2226,18 +2101,10 @@
         "Biscuit"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] A PvP Attack team that features an undying Anis + an Indomitable B3 to breach some solid defense teams. Use FLEX slots to manipulate speed."
-    },
-    {
-      "id": "pwc-anis-blanc-s-concert-ii",
-      "name": "Anis & Blanc's Concert II",
-      "members": [
-        "Anis: Star",
-        "Blanc",
-        "Biscuit"
-      ],
-      "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] A variant that makes Biscuit indomitable, guaranteeing Anis's survivability. Use FLEX slots to manipulate speed."
+      "note": "[Source: prydwen.gg character page] A PvP Attack team that features an undying Anis + an Indomitable B3 to breach some solid defense teams. Use FLEX slots to manipulate speed. [다른 출처의 같은 조합 설명 — \"Anis & Blanc's Concert II\"] [Source: prydwen.gg character page] A variant that makes Biscuit indomitable, guaranteeing Anis's survivability. Use FLEX slots to manipulate speed.",
+      "aliases": [
+        "Anis & Blanc's Concert II"
+      ]
     },
     {
       "id": "pwc-delayed-indom-for-indom-war",
@@ -2449,19 +2316,6 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] Ammo Support is crucial to some units in this game, and the OG Bunny Duo of Blanc and Noir is the best way to mitigate it. Noir's ammo buffs suit all of the 3 units: Rei, Modernia, and especially Asuka. If you lack Max Ammo rolls, using Bunnies is a viable strat. Similar to S. Rosanna, Blanc's Damage Taken debuff is a separate undiluted multiplier and hence a major driver for Asuka's DPS. However, Blanc's shield is NOT individual. Substitutions: Modernia => Rei"
-    },
-    {
-      "id": "pwc-indivilia-killer",
-      "name": "Indivilia Killer",
-      "members": [
-        "Crown",
-        "Rapi: Red Hood",
-        "Naga",
-        "Asuka Shikinami Langley",
-        "Alice"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Indivilia is one of the tougher Bosses out there, and a well invested asuka alice and rapi are best set to take her down easily (속성: Fire)"
     },
     {
       "id": "pwc-demolish-unprotected-p1-wind-unit",
@@ -2930,19 +2784,6 @@
       "note": "[Source: prydwen.gg character page] This team revolves around 2 heavy DPS but in the final damage charts, Cinderella will always be on top. All of these DPS also share the same trait: having an insane amount of innate ATK buff. This makes Liter inferior to Rouge, who is more ideal for buffing Cinderella. This team works great for both Bossing and Electric-Weak Campaign, provided you can spam properly with Ein and Rouge. Anis: Sparkling Summer’s presence is usually more important because she acts as a buffer for Cindy. Exia (Treasure)/Scarlet can be used as an Off-Burst damage dealer if supports like Anis: Sparkling Summer and Naga don’t fascinate you or are used elsewhere.A variant or two would work best for you depending on your investment; Mirror Container AI is a good place to test them out. Comps with Cindy, whether using Ein or Naga as the fifth unit, have proven to reach Stage 9. Both variants feature Anis: Sparkling Summer.For Electric-Weak Raids, usually Crown will join the strongest DPS (in this case, Cindy’s team). However, outside Electric-Weak Raids, you can choose to use Blanc so that Crown can support other teams with potentially more effective DPS. (속성: Electric)"
     },
     {
-      "id": "pwc-the-best-electric-bossing-comp",
-      "name": "The best Electric bossing Comp",
-      "members": [
-        "Cinderella",
-        "Rouge",
-        "Anis: Sparkling Summer",
-        "Crown",
-        "Maiden: Ice Rose"
-      ],
-      "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] - Substitutions: Crown may be replaced by Mari, Grave or Blanc. (속성: Electric)"
-    },
-    {
       "id": "pwc-red-hood-buffer-team",
       "name": "Red Hood Buffer Team",
       "members": [
@@ -3086,15 +2927,6 @@
       "note": "[Source: prydwen.gg character page] This team has a highly situational niche, where Clay is able to cleanse debuffs off from our dps units so that they can function normally. This team is highly specialised for Bosses such as Thermite B or Heavy Metal, who are Wind Weak Bosses but have charge speed debuffs which cause ScarletBS to have much worse damage. Clay's Cleanse in this case helps her a lot since she can remove the debuff and allow Scarlet Black Shadow to function normally. (속성: Wind)"
     },
     {
-      "id": "pwc-the-king-of-all-units-come-to-make-campaign-easy",
-      "name": "The King of all units, come to make Campaign easy",
-      "members": [
-        "Crown"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] General team comp for Crown for both Bossing or Campaign"
-    },
-    {
       "id": "pwc-fiery-land",
       "name": "Fiery Land",
       "members": [
@@ -3129,19 +2961,6 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] Best Electric team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Cinderella, Anis: Sparkling Summer, Asuka, or can be someone else as well depending on stage. (속성: Electric)"
-    },
-    {
-      "id": "pwc-tornado-incoming",
-      "name": "Tornado Incoming",
-      "members": [
-        "Crown",
-        "Rapi: Red Hood",
-        "Scarlet: Black Shadow",
-        "Alice",
-        "Helm"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Best Wind team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife. (속성: Wind)"
     },
     {
       "id": "pwc-metal-crown-solid",
@@ -3179,7 +2998,10 @@
         "Naga"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] This is the basic structure for most Crown teams. Naga is the absolute BEST choice. Crown + Naga is BETTER than Tia + Naga when it comes to overall damage buffs!! The synergy is clear: Crown Bursts to provide shield to Naga, which activates Naga's Core damage buffs. In return, Naga heals Crown and activates her Attack Damage Buff. With crown's Skill 1 and Burst buffs in tow, they all combine to provide insane, never-seen-before damage buffs to teams! The advantages of being able to use Crown over Tia are simply too many!Rapunzel is a more comfortable/casual choice for when you need a safe and clutch revive with extra heals. One thing to keep in mind is Crown's placement slot. When everyone is full health, the healing effects are applied left to right (P1 to P5) . Hence, Crown should be placed in Position 1 so that when everyone is full health, she receives the heal from Naga/Rapunzel, and activates her skill 2 attack damage buff for us!"
+      "note": "[Source: prydwen.gg character page] This is the basic structure for most Crown teams. Naga is the absolute BEST choice. Crown + Naga is BETTER than Tia + Naga when it comes to overall damage buffs!! The synergy is clear: Crown Bursts to provide shield to Naga, which activates Naga's Core damage buffs. In return, Naga heals Crown and activates her Attack Damage Buff. With crown's Skill 1 and Burst buffs in tow, they all combine to provide insane, never-seen-before damage buffs to teams! The advantages of being able to use Crown over Tia are simply too many!Rapunzel is a more comfortable/casual choice for when you need a safe and clutch revive with extra heals. One thing to keep in mind is Crown's placement slot. When everyone is full health, the healing effects are applied left to right (P1 to P5) . Hence, Crown should be placed in Position 1 so that when everyone is full health, she receives the heal from Naga/Rapunzel, and activates her skill 2 attack damage buff for us! [다른 출처의 같은 조합 설명 — \"Going behind Tia's back\"] [Source: prydwen.gg character page] This is just purely better than Tiga in anyway, sadly.",
+      "aliases": [
+        "Going behind Tia's back"
+      ]
     },
     {
       "id": "pwc-tyrant-class-rapture-in-sight",
@@ -4097,19 +3919,6 @@
       "note": "[Source: prydwen.gg character page] Simply the solution to all Anomaly Interception Bosses. The B3 units are supposed to be element based DPS units."
     },
     {
-      "id": "pwc-elysion-tower-ft-helmt-1",
-      "name": "Elysion Tower ft. HelmT #1",
-      "members": [
-        "D: Killer Wife",
-        "Mast: Romantic Maid",
-        "Rapi: Red Hood",
-        "Helm",
-        "Anchor: Innocent Maid"
-      ],
-      "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] Redefining Burst generation in Elysion Tower, Helm (Treasure) really does it all! She can even act alongside Mast Anchor to provide immense Heal for the team as Rapi: Red Hood destroys the enemy raptures."
-    },
-    {
       "id": "pwc-elysion-tower-ft-helmt-2",
       "name": "Elysion Tower ft. HelmT #2",
       "members": [
@@ -4382,19 +4191,6 @@
       "note": "[Source: prydwen.gg character page] This team is a random Campaign team example for Lapluh. She can be used as an AoE wiper with Pierce for killing enemies behind shield and cover. If invested with Max Ammo OL, she can stall for Over Energy, allowing her to nuke the stage target with the strongest Single-Target nuke in the game."
     },
     {
-      "id": "pwc-sword-jellyfish-octopus",
-      "name": "Sword, Jellyfish, Octopus",
-      "members": [
-        "Nayuta",
-        "Little Mermaid",
-        "Scarlet: Black Shadow",
-        "Liberalio",
-        "Mast: Romantic Maid"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Liberalio takes over the spot of Asuka: WILLE. The new and fastest team to clear Kraken (or stage 7 Kraken) (and at least till 3rd Anniversary) involves the Jellyfish buffing SBS and both of them dealing devestating damage to Kraken! Substitutions: Nayuta can be replaced by Crown. MastM can be replaced by Crown (recommended) or Helm Treasure (less recommended). (속성: Wind)"
-    },
-    {
       "id": "pwc-windy-raid-ft-4-dps",
       "name": "Windy Raid ft. 4 DPS",
       "members": [
@@ -4405,7 +4201,10 @@
         "Mast: Romantic Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] For Bossing, especially Solo and Union Raids, it is ideal to pair Scarlet: Black Shadow with Maid Mast. However, in this team, we also have 3 other DPS units that ShiftUp released just for dealing damage to Wind-weak enemies. Siren, Nayuta, and Liberalio all pair up with SBS smoothly and can end up dealing insane damage so much so that it becomes worth it to move Crown to another team! Saving Crown for another team = stonks! (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] For Bossing, especially Solo and Union Raids, it is ideal to pair Scarlet: Black Shadow with Maid Mast. However, in this team, we also have 3 other DPS units that ShiftUp released just for dealing damage to Wind-weak enemies. Siren, Nayuta, and Liberalio all pair up with SBS smoothly and can end up dealing insane damage so much so that it becomes worth it to move Crown to another team! Saving Crown for another team = stonks! (속성: Wind) [다른 출처의 같은 조합 설명 — \"Sword, Jellyfish, Octopus\"] [Source: prydwen.gg character page] Liberalio takes over the spot of Asuka: WILLE. The new and fastest team to clear Kraken (or stage 7 Kraken) (and at least till 3rd Anniversary) involves the Jellyfish buffing SBS and both of them dealing devestating damage to Kraken! Substitutions: Nayuta can be replaced by Crown. MastM can be replaced by Crown (recommended) or Helm Treasure (less recommended). (속성: Wind)",
+      "aliases": [
+        "Sword, Jellyfish, Octopus"
+      ]
     },
     {
       "id": "pwc-it-s-quite-windy-today",
@@ -4460,17 +4259,6 @@
       "note": "[Source: prydwen.gg character page] With 2 Quantum Cubes on Lib and Emilia, this team reaches 3 RL without any Charge Speed OL on Emilia or Lib (still needs S1 Lv. 10 from Emilia). Mihara dies, Burst or not doesn't matter. Nayuta will finish the rest, verily"
     },
     {
-      "id": "pwc-tia-naga",
-      "name": "Tia Naga",
-      "members": [
-        "Tia",
-        "Liter",
-        "Naga"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] General team comp for Liter."
-    },
-    {
       "id": "pwc-grave",
       "name": "Grave",
       "members": [
@@ -4523,7 +4311,10 @@
         "Crown"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] The Best Electric Bossing Comp Against Water Without CP Penalty. Yes, that's right! Basically, in this comp, Rouge buffs Cinderella's and Maiden: Ice Rose's Max HP. Cinderella and Anis: Sparkling Summer alternate Burst until the Burst before the very end, where Rouge + Crown + Maiden: Ice Rose S1 + 12 MP unleash obliteration on the enemy. Maiden: Ice Rose will also buff Cinderella's, Anis: Sparkling Summer's, and Rouge's ELE DMG and ATK nearly the whole run. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] The Best Electric Bossing Comp Against Water Without CP Penalty. Yes, that's right! Basically, in this comp, Rouge buffs Cinderella's and Maiden: Ice Rose's Max HP. Cinderella and Anis: Sparkling Summer alternate Burst until the Burst before the very end, where Rouge + Crown + Maiden: Ice Rose S1 + 12 MP unleash obliteration on the enemy. Maiden: Ice Rose will also buff Cinderella's, Anis: Sparkling Summer's, and Rouge's ELE DMG and ATK nearly the whole run. (속성: Electric) [다른 출처의 같은 조합 설명 — \"The best Electric bossing Comp\"] [Source: prydwen.gg character page] - Substitutions: Crown may be replaced by Mari, Grave or Blanc. (속성: Electric)",
+      "aliases": [
+        "The best Electric bossing Comp"
+      ]
     },
     {
       "id": "pwc-ein-and-exia-took-away-crown",
@@ -5132,7 +4923,10 @@
         "Mint"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team buffs 2 strongest RL in the game - Lap... nah those are Neon and Cinderella. The upside of this team is: It doesn't cost Crown, but the downside is - the explosion buff is actually kind of scam. Still, the other buffs are definitely strong enough to make this team work. You can replace Cinderella with Liberalio to create a full funnel Neon team instead, and putting Cinderella back with Isabel-Arcana Substitutions: Cinderella can be replaced by Liberalio (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] This team buffs 2 strongest RL in the game - Lap... nah those are Neon and Cinderella. The upside of this team is: It doesn't cost Crown, but the downside is - the explosion buff is actually kind of scam. Still, the other buffs are definitely strong enough to make this team work. You can replace Cinderella with Liberalio to create a full funnel Neon team instead, and putting Cinderella back with Isabel-Arcana Substitutions: Cinderella can be replaced by Liberalio (속성: Electric) [다른 출처의 같은 조합 설명 — \"Idols Electric\"] [Source: prydwen.gg Team Database] If players are trying to save Crown and Nayuta both. Substitutions: - (속성: Electric)",
+      "aliases": [
+        "Idols Electric"
+      ]
     },
     {
       "id": "pwc-cry-mint-a-river",
@@ -5182,19 +4976,6 @@
       ],
       "mode": "raid",
       "note": "[Source: prydwen.gg character page] This is a team which has both DPS enjoying the best of Mint's buffs. Raven deals sustained DoT damage, which means even in her off-burst, she is dealing devastating damage. Hence, if you burst with Mint's Singing state alongside BMilk, Raven loses minimal damage! Substitutions: Milk: Blooming Bunny can be replaced by Red Hood. (속성: Iron)"
-    },
-    {
-      "id": "pwc-tetra-idols",
-      "name": "Tetra Idols",
-      "members": [
-        "Anis: Star",
-        "Prika",
-        "Alice",
-        "Milk: Blooming Bunny",
-        "Mint"
-      ],
-      "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] The Idol version for Tetra tower. They are very easy to use and buffing 2 Piercers by a lot. The fun part is, this team has 4/5 elements, so only against Wind-weak stage with elemental shield, you need to swap team"
     },
     {
       "id": "pwc-the-sw-team",
@@ -5366,18 +5147,10 @@
         "Liter"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] This team used to be the best Campaign team, but now it lost ít's flavor."
-    },
-    {
-      "id": "pwc-going-behind-tia-s-back",
-      "name": "Going behind Tia's back",
-      "members": [
-        "Crown",
-        "Naga",
-        "Liter"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] This is just purely better than Tiga in anyway, sadly."
+      "note": "[Source: prydwen.gg character page] This team used to be the best Campaign team, but now it lost ít's flavor. [다른 출처의 같은 조합 설명 — \"Tia Naga\"] [Source: prydwen.gg character page] General team comp for Liter.",
+      "aliases": [
+        "Tia Naga"
+      ]
     },
     {
       "id": "pwc-heavenly-palm",
@@ -5754,20 +5527,10 @@
         "Naga"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] With the release of Rapi, Indivilla is no longer that difficult anymore. As a B1, she allows faster rotation and still deals a lot of damage to the Boss. Because you are running Rapi as B1, this team still relies on Alice doing the heavy work, with Asuka as both buffer + damage dealer. (속성: Fire)"
-    },
-    {
-      "id": "pwc-elysions-s-saver",
-      "name": "Elysions's Saver",
-      "members": [
-        "D: Killer Wife",
-        "Mast: Romantic Maid",
-        "Rapi: Red Hood",
-        "Helm",
-        "Anchor: Innocent Maid"
-      ],
-      "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] Elysion Tower FINALLY as a DPS unit as Rapi saves the day for them with her new found skills! Substitutions: Helm is replacable with Phantom, Maiden: Ice Rose or Maid Privaty"
+      "note": "[Source: prydwen.gg character page] With the release of Rapi, Indivilla is no longer that difficult anymore. As a B1, she allows faster rotation and still deals a lot of damage to the Boss. Because you are running Rapi as B1, this team still relies on Alice doing the heavy work, with Asuka as both buffer + damage dealer. (속성: Fire) [다른 출처의 같은 조합 설명 — \"Indivilia Killer\"] [Source: prydwen.gg character page] Indivilia is one of the tougher Bosses out there, and a well invested asuka alice and rapi are best set to take her down easily (속성: Fire)",
+      "aliases": [
+        "Indivilia Killer"
+      ]
     },
     {
       "id": "pwc-zombie-rapi",
@@ -5833,18 +5596,6 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] Very strong team for Campaign, due to Red Hood piercing and Core exists",
-      "ambiguousBurst": true
-    },
-    {
-      "id": "pwc-strongest-campaign-team",
-      "name": "Strongest Campaign Team",
-      "members": [
-        "Crown",
-        "Naga",
-        "Red Hood"
-      ],
-      "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] If a stage can be cleared within 3 or fewer Burst rotations, you can choose to bring a 40s or 60s CD Burst I unit (eg Rapunzel for heals) to replace the B1-CDR unit. Alternatively, you can add another B3 instead. In this 1-1-3 team, Red Hood will act as a support buffer, replacing the B1-CDR. Do Red Hood rotation 2 times, and after that, you're left with no Burst rotation for 40s. Try to keep a small rapture alive and allow ~40 seconds to elapse so that Red Hood can Burst again. Kill the small rapture and now proceed to the Boss wave and try to kill it with the insane Crown + RedHood buff chain for your B3 units.For more information on this team, kindly visit: https://www.prydwen.gg/nikke/guides/meta-teams/",
       "ambiguousBurst": true
     },
     {
@@ -5949,19 +5700,6 @@
       "note": "[Source: prydwen.gg character page] Scarlet team is 2.5RL at base, 2RL with feed or Quantum Cubes. S. Sakura team is 3RL at base, 2.5 with feed. Fast-buffed Nukes to wipe off slower teams quickly. Expensive, but it saves Blanc."
     },
     {
-      "id": "pwc-anis-holds-a-summer-party",
-      "name": "Anis Holds a Summer Party",
-      "members": [
-        "Blanc",
-        "Alice",
-        "Anis: Sparkling Summer",
-        "Rouge",
-        "Ludmilla: Winter Owner"
-      ],
-      "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] Tetra Tower Squad. With the removal of Noir, S. Anis can finally enjoy Blanc's buffs without bricking herself. With Rouge, she can be added to your Tetra Tower squad without any loss of DPS and can effectively be used as a B3."
-    },
-    {
       "id": "pwc-typical-2-rl-nuke",
       "name": "Typical 2 RL nuke",
       "members": [
@@ -6050,30 +5788,6 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] One of the most useful tool to have at your disposal in Campaign is a screen clear. There is barely anyone who does it better than our very own OG Scarlet! (속성: Electric)"
-    },
-    {
-      "id": "pwc-general-new-bossing-team",
-      "name": "General new bossing team",
-      "members": [
-        "Scarlet",
-        "Trina"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Trina is the new Scarlet buffer who lets her deal enough damage to compete in the current meta. The problem is that Trina buffs ONLY Scarlet, so maybe it is better to just form a team around her here. (속성: Electric)"
-    },
-    {
-      "id": "pwc-the-best-2rl-team",
-      "name": "The best 2RL team",
-      "members": [
-        "Scarlet",
-        "Trina",
-        "Centi",
-        "Red Hood",
-        "Jackal"
-      ],
-      "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Scarlet's 2rl nukes are the hardest to deal with, especially in champions arena. They proved to be highly effective. Substitutions: Blanc can replace Trina.",
-      "ambiguousBurst": true
     },
     {
       "id": "pwc-basic-siren-comp",
@@ -6208,7 +5922,10 @@
         "Snow White: Heavy Arms"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Snow White can replace HelmTr here as off-burst B3, because she has insane burst gen and better off-burst DPS than Helm for sure. You will lose a bit bonus Attack Damage from Crown's S2, though."
+      "note": "[Source: prydwen.gg character page] Snow White can replace HelmTr here as off-burst B3, because she has insane burst gen and better off-burst DPS than Helm for sure. You will lose a bit bonus Attack Damage from Crown's S2, though. [다른 출처의 같은 조합 설명 — \"스노우 화이트: 헤비암즈 원맨아미\"] 60프레임 안정적으로 유지 가능하면 어떤 버스트I/II를 데려가도 스토리를 밀 수 있는 화력형 캐릭터.",
+      "aliases": [
+        "스노우 화이트: 헤비암즈 원맨아미"
+      ]
     },
     {
       "id": "pwc-crit-white",
@@ -6331,7 +6048,10 @@
         "Trina"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] The new general team composition for PvE whenever Scarlet is relevant. B3 can be any unit that can do the job for the stage or Boss, but will mostly depend on game mode. Rapi: Red Hood, Liter, and Volume are popular pairings alongside Scarlet for B1-CDR. A Doro-Priv team to allow Scarlet to achieve 100% Reload Speed is also not a bad idea if there are Boss Parts. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] The new general team composition for PvE whenever Scarlet is relevant. B3 can be any unit that can do the job for the stage or Boss, but will mostly depend on game mode. Rapi: Red Hood, Liter, and Volume are popular pairings alongside Scarlet for B1-CDR. A Doro-Priv team to allow Scarlet to achieve 100% Reload Speed is also not a bad idea if there are Boss Parts. (속성: Electric) [다른 출처의 같은 조합 설명 — \"General new bossing team\"] [Source: prydwen.gg character page] Trina is the new Scarlet buffer who lets her deal enough damage to compete in the current meta. The problem is that Trina buffs ONLY Scarlet, so maybe it is better to just form a team around her here. (속성: Electric)",
+      "aliases": [
+        "General new bossing team"
+      ]
     },
     {
       "id": "pwc-electric-wombo-combo-73",
@@ -6420,19 +6140,6 @@
       ],
       "mode": "bossing",
       "note": "[Source: prydwen.gg character page] The BiS Wind-Weak Bossing comp for Singular Team content like Campaign, Interception, and UR (ideally, you hit each element once). Charge Speed & Max Ammo on Velvet enables Siren to deal more damage. (속성: Wind)"
-    },
-    {
-      "id": "pwc-deltant-powercrept-in-3-5-months",
-      "name": "DeltaNT Powercrept in 3.5 Months",
-      "members": [
-        "Little Mermaid",
-        "Crown",
-        "Asuka: WILLE",
-        "Rei Ayanami (Tentative Name)",
-        "Velvet"
-      ],
-      "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Siren Crown AsukaW ReiT DeltaNT was the meta for one Solo Raid. DeltaNT has now been toppled over by Velvet. This team is actually not ideal for Solo Raid because Velvet should be a DPS, but it's the second best if you don't have her DPS-built. (속성: Wind)"
     },
     {
       "id": "pwc-the-good-the-bad-and-the-demon",

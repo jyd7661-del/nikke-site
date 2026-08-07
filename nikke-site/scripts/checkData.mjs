@@ -200,13 +200,23 @@ if (missingTreasure.length) {
     missingTreasure.map((n) => n.name).join(', '));
 }
 
+// 2026-08-08 수정: 중복 판정 키에 flexSlots를 넣는다.
+// 예전 키는 (모드+멤버)뿐이라, 고정 멤버는 같지만 자유 슬롯 조건이 다른 별개의 조합까지
+// 중복으로 셌다 — El-Macho(B1-CDR,B3,B3)와 El Ma-chor(B1,B3,B3)는 1버스트에 쿨감을
+// 요구하느냐 아니냐가 달라 서로 다른 조합이다. 실제 중복 33건은 병합해서 없앴고, 남는 것은
+// 이런 정상적인 변형뿐이므로 키를 정확하게 고쳐 경고가 계속 울리지 않게 한다.
 const seen = new Map();
-let dupArch = 0;
+const dupNames = [];
 syn.archetypes.forEach((a) => {
-  const key = `${a.mode}|${(a.members || []).slice().sort().join(',')}`;
-  if (seen.has(key)) dupArch += 1; else seen.set(key, a.name);
+  const key = `${a.mode}|${(a.members || []).slice().sort().join(',')}|${(a.flexSlots || []).slice().sort().join(',')}`;
+  if (seen.has(key)) dupNames.push(`'${a.name}' = '${seen.get(key)}'`); else seen.set(key, a.name);
 });
-if (dupArch) warn('DUP_ARCHETYPE', `아키타입 ${syn.archetypes.length}개 중 ${dupArch}개가 (모드+멤버) 완전 중복`);
+if (dupNames.length) {
+  warn('DUP_ARCHETYPE',
+    `아키타입 ${syn.archetypes.length}개 중 ${dupNames.length}개가 (모드+멤버+자유슬롯) 완전 중복 — ` +
+    `같은 조합이 두 번 추천될 수 있다. 이름은 aliases로, 설명은 note에 합쳐 하나로 정리할 것: ` +
+    dupNames.slice(0, 5).join(', '));
+}
 
 syn.archetypes.forEach((a) => {
   const m = a.members || [];
