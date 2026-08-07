@@ -474,6 +474,31 @@ function burstCooldownSeconds(character) {
   return Number(cd);
 }
 
+// 2026-08-07 추가: 토템 역할에 조건이 붙는 경우 처리.
+//
+// 토템은 "버스트를 못 써도 상시 효과로 팀에 기여한다"는 이유로 낭비 판정에서 빠진다. 그런데
+// 그 상시 효과가 특정 속성 아군에게만 들어가는 캐릭터가 있다:
+//   아니스: 스파클링 서머 — "Affects all Electric Code allies"
+//   일레그: 붐 앤 쇼크    — "Affects all Water Code allies"
+// 이런 캐릭터를 조건 없이 면제하면, 전기 아군이 하나도 없는 팀에 아니스: 스파클링 서머를
+// 넣어도 만점을 주게 된다. 실제로는 버프가 아무에게도 안 들어가므로 그냥 낭비다.
+//
+// characterInvestmentNotes.json의 totemCondition으로 조건을 적어두면 여기서 검사한다.
+//   { "element": "electric", "minAllies": 1 }  -> 자신 외 전기 아군이 1명 이상일 때만 토템
+// 조건이 없으면(대다수) 예전처럼 무조건 인정한다.
+function totemConditionMet(note, member, members) {
+  const cond = note?.totemCondition;
+  if (!cond) return true;
+  if (cond.element) {
+    const need = cond.minAllies || 1;
+    const count = members.filter(
+      (m) => m.id !== member.id && normalizeElement(m.element) === normalizeElement(cond.element)
+    ).length;
+    if (count < need) return false;
+  }
+  return true;
+}
+
 // 반환값:
 //   wasted        — 버스트를 못 쓰는데 토템도 아니라서 점수에서 빼야 하는 멤버
 //   totemExempted — 버스트 순번에서는 밀렸지만 토템이라 예외로 인정된 멤버
@@ -514,7 +539,7 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     sorted.forEach(({ m }, i) => burstOrder.set(m.id, i));
     sorted.slice(needed).forEach(({ m }) => {
       const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
-      if (note?.totemRole) {
+      if (note?.totemRole && totemConditionMet(note, m, members)) {
         // 토템 후보는 버스트 대신 상시 효과로 기여하므로 낭비가 아니다.
         totemExempted.push({ member: m, note, needed });
         return;

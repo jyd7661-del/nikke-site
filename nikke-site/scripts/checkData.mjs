@@ -222,6 +222,7 @@ notes.characters.filter((n) => n.totemRole).forEach((n) => {
       `${n.name}의 totemRole에 근거 표기가 없음 — 레드 후드처럼 근거 없이 등록된 항목일 수 있음. ` +
       `외부 공략 출처를 적거나, 스킬 원문에서 끌어낸 판단이면 '[스킬 원문 근거]'라고 밝힐 것`);
   }
+
 });
 
 // ---------------------------------------------------------------------------
@@ -248,6 +249,34 @@ const DOMAIN = {
   burstCd: ['20', '40', '60'],
 };
 const REQUIRED_TOP = ['id', 'title', 'name_kr', 'class', 'burst', 'element', 'weapon', 'tiers', 'skills'];
+
+// totemCondition(속성 한정 토템) 검증. 2026-08-07 추가.
+// 아니스: 스파클링 서머나 일레그: 붐 앤 쇼크처럼 아군 버프가 특정 속성에게만 들어가는 토템은
+// totemCondition으로 조건을 건다. 여기서 오타가 나면 조건이 조용히 '항상 거짓'이 되어 그
+// 캐릭터가 영영 토템 대접을 못 받게 되므로(= 조용한 누락, 우리가 가장 자주 당한 유형) ERROR다.
+notes.characters.filter((n) => n.totemCondition).forEach((n) => {
+  const cond = n.totemCondition;
+  if (!n.totemRole) {
+    warn('TOTEM_COND_ORPHAN', `${n.name}: totemRole이 없는데 totemCondition만 있음 — 아무 효과도 없는 설정`);
+  }
+  if (!cond.element) return;
+  if (!DOMAIN.element.includes(cond.element)) {
+    err('TOTEM_COND_ELEMENT',
+      `${n.name}의 totemCondition.element='${cond.element}'가 유효하지 않음 — ` +
+      `${DOMAIN.element.join('/')} 중 하나여야 하며, 어긋나면 이 캐릭터는 토템으로 인정받지 못한다`);
+    return;
+  }
+  // 조건으로 적은 속성이 실제 스킬 원문의 적용 범위와 맞는지 확인한다.
+  const c = cdb.find((x) => x.title === n.name);
+  if (!c) return;
+  const nonBurst = (c.skills || []).slice(0, -1).map((s) => s.desc || '').join(' ');
+  const codeWord = { electric: 'Electric', water: 'Water', fire: 'Fire', wind: 'Wind', iron: 'Iron' }[cond.element];
+  if (!new RegExp(`all ${codeWord} Code allies`, 'i').test(nonBurst)) {
+    warn('TOTEM_COND_MISMATCH',
+      `${n.name}: totemCondition에 '${cond.element}' 한정이라 적었는데 비버스트 스킬 원문에 ` +
+      `'all ${codeWord} Code allies' 표현이 없음 — 조건이 실제 스킬과 어긋났을 수 있음`);
+  }
+});
 
 const seenTitle = new Set();
 cdb.forEach((c) => {
