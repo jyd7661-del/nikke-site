@@ -34,7 +34,7 @@ export const runtime = 'nodejs';
 // maxDuration을 명시적으로 늘려 큰 로스터에서도 안전하게 끝까지 응답하도록 한다(Hobby 플랜 상한 60초).
 export const maxDuration = 60;
 
-const DAILY_LIMIT = 9999;
+const DAILY_LIMIT = 8;
 const MODEL = 'claude-sonnet-5';
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
