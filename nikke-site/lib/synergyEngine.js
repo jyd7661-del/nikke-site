@@ -418,14 +418,20 @@ function burstCooldownSeconds(character) {
   return Number(cd);
 }
 
-function findWastedBurstMembers(members) {
+function findWastedBurstMembers(members, mode) {
   const wasted = [];
   ['1', '2', '3'].forEach((burst) => {
     const group = members.filter((m) => String(m.burst) === burst);
     if (group.length <= 1) return;
     const withCd = group.map((m) => ({ m, cd: burstCooldownSeconds(m) }));
     if (withCd.some((x) => x.cd === null)) return;
-    const sorted = [...withCd].sort((a, b) => a.cd - b.cd);
+    // 2026-08-07 수정: 쿨타임이 같을 때 배열 순서대로 낭비 대상을 골라서, 똑같은 5명인데
+    // 로스터 정렬만 다르면 점수가 달라지는 버그가 있었다(예: 크라운/맥스웰: 오디너리 미케닉
+    // 둘 다 버스트2·쿨 20초일 때 29점 vs 30점). 쿨타임이 같으면 티어가 높은 쪽을 남기고
+    // 낮은 쪽을 낭비로 판정해, 순서와 무관하게 항상 같은 결과가 나오도록 한다.
+    const sorted = [...withCd].sort(
+      (a, b) => (a.cd - b.cd) || (tierScore(b.m, mode) - tierScore(a.m, mode))
+    );
     let needed;
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
     else if (sorted.length >= 2 && sorted[1].cd <= ALTERNATE_BURST_CD) needed = 2;
@@ -476,7 +482,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   });
 
   // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리) ---
-  const wastedMembers = findWastedBurstMembers(members);
+  const wastedMembers = findWastedBurstMembers(members, mode);
   const wastedIds = new Set(wastedMembers.map((m) => m.id));
   const tierTotal = members.reduce(
     (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode)),
