@@ -288,6 +288,50 @@ notes.characters.filter((n) => n.totemCondition).forEach((n) => {
   }
 });
 
+// ---------------------------------------------------------------------------
+// 상수 표류 검사 (2026-08-08 추가)
+//
+// scripts/findTotems.mjs는 "실사용 조합에서 버스트 순번에 밀리는 인원"을 찾아 누락된 토템을
+// 검출하는데, 그 판정을 하려면 엔진과 똑같은 규칙이 필요하다. 엔진(lib/synergyEngine.js)은
+// Next.js 전용 import 문법을 써서 일반 node 스크립트가 그대로 불러올 수 없어, 어쩔 수 없이
+// 상수를 복사해 두었다. 한쪽만 고치면 검출 결과가 조용히 어긋나므로(경고도 안 뜨고 그냥
+// 다른 답이 나온다) 두 파일의 값을 직접 대조한다.
+const readSrc = (rel) => {
+  try { return fs.readFileSync(path.join(__dirname, '..', rel), 'utf8'); } catch { return null; }
+};
+const engineSrc = readSrc('lib/synergyEngine.js');
+const totemSrc = readSrc('scripts/findTotems.mjs');
+if (engineSrc && totemSrc) {
+  const grab = (src, name) => {
+    const m = src.match(new RegExp(`const\\s+${name}\\s*=\\s*(\\d+)`));
+    return m ? m[1] : null;
+  };
+  ['FAST_BURST_CD', 'ALTERNATE_BURST_CD'].forEach((name) => {
+    const a = grab(engineSrc, name);
+    const b = grab(totemSrc, name);
+    if (a === null || b === null) {
+      warn('CONST_DRIFT', `${name}을(를) 두 파일 중 한쪽에서 찾지 못함 — 상수 이름이 바뀌었는지 확인할 것`);
+    } else if (a !== b) {
+      err('CONST_DRIFT',
+        `${name}이(가) 어긋남: lib/synergyEngine.js=${a} vs scripts/findTotems.mjs=${b} — ` +
+        `토템 검출이 엔진과 다른 기준으로 돌아 잘못된 후보를 내놓는다`);
+    }
+  });
+  // 티어 점수표도 같은 이유로 복사돼 있다.
+  // 한쪽은 여러 줄, 한쪽은 한 줄로 적혀 있고 후행 쉼표 유무도 달라서, 공백과 쉼표를 정규화한
+  // 뒤 '키:값' 집합으로 비교한다. (그냥 문자열 비교하면 서식 차이만으로 오탐이 난다)
+  const grabTiers = (src) => {
+    const m = src.match(/TIER_SCORE\s*=\s*\{([^}]*)\}/);
+    if (!m) return null;
+    return m[1].replace(/\s/g, '').split(',').filter(Boolean).sort().join(',');
+  };
+  const ta = grabTiers(engineSrc);
+  const tb = grabTiers(totemSrc);
+  if (ta && tb && ta !== tb) {
+    err('CONST_DRIFT', `TIER_SCORE 표가 lib/synergyEngine.js와 scripts/findTotems.mjs에서 다름`);
+  }
+}
+
 const seenTitle = new Set();
 cdb.forEach((c) => {
   const who = (c.title || '(title 없음)') + '(' + (c.name_kr || '?') + ')';
