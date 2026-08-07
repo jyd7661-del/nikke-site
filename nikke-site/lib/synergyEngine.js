@@ -136,10 +136,22 @@ function realElementUsage(character, bossElement) {
   return entry ? entry.usage : null;
 }
 
-// 스킬 설명에 쿨타임 감소(CDR) 관련 문구가 있는지로 CDR 제공 캐릭터인지 판정.
+// 스킬 설명에 버스트 쿨타임 감소(CDR) 문구가 있는지로 CDR 제공 캐릭터인지 판정.
 // (mechanics.cdr: "팀에 CDR 제공 캐릭터가 최소 1명 있는지가 고티어 조합의 필수 조건")
+//
+// 2026-08-07 수정: 예전 판정은 스킬 원문에 'cooldown'이라는 단어가 있기만 하면 CDR로 봤는데,
+// 니케 스킬 원문에서 이 단어는 세 가지 전혀 다른 의미로 쓰인다:
+//   1) "Cooldown of Burst Skill ▼ N sec"  -- 진짜 버스트 쿨감 (우리가 원하는 것)
+//   2) "Cooldown of Skill 2 ▼ N%"          -- 자기 일반 스킬 쿨감. 풀버스트 순환과 무관
+//   3) "Cooldown of Burst Skill ▲ N sec"  -- 쿨타임 '증가'. 정반대 효과
+// 그래서 센티(2번)와 프리카(3번)가 CDR 제공 캐릭터로 잡혔다. 특히 프리카는 버스트 쿨타임을
+// 21초 '늘리는' 대가로 강한 효과를 받는 캐릭터인데, 화면에는 "프리카가 쿨타임 감소를 제공해
+// 풀버스트 순환이 빨라집니다"라는 정반대 설명이 출력되고 있었다.
+// 이제 '버스트 스킬 쿨타임 ▼'만 CDR로 인정한다. (▼/▲ 기호는 게임 원문 표기 그대로다)
 function providesCDR(character) {
-  return (character.skills || []).some((s) => /cooldown/i.test(s.desc || ''));
+  return (character.skills || []).some((s) =>
+    /cooldown of burst skill\s*▼/i.test(s.desc || '')
+  );
 }
 
 // 버스트 스킬(항상 skills 배열의 마지막 원소)의 쿨타임이 20초인지.
@@ -1132,7 +1144,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   //   "B1"/"B2"/"B3" -> 그 버스트 단계 캐릭터
   //   "B1-CDR"        -> 버스트1 중 쿨타임 감소를 제공하는 캐릭터
   //   "flex"          -> 버스트 무관
-  // 채울 때는 이 모드 티어가 높은 순으로 넣되, 이미 고정 멤버로 들어간 캐릭터는 제외한다.
+  // 이미 고정 멤버로 들어간 캐릭터는 후보에서 제외한다.
   const slotCandidates = (slot, used) => {
     const pool = ownedCharacters.filter(
       (c) => !used.has(c.title) && !excludeTitles.has(c.title)
@@ -1140,32 +1152,94 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const m = String(slot).match(/^B([123])/);
     let filtered = m ? pool.filter((c) => String(c.burst) === m[1]) : pool;
     if (/-CDR$/i.test(String(slot))) filtered = filtered.filter(providesCDR);
-    return filtered.sort(
-      (a, z) => tierScore(z, mode, treasureIds) - tierScore(a, mode, treasureIds)
+    return filtered;
+  };
+
+  // 후보 비교용 티어 합. scoreTeam()의 tierTotal과 같은 규칙(낭비 인원 0점, 토템은 예외)이지만
+  // 아키타입/시너지 계산을 건너뛰어 훨씬 싸므로 슬롯 채우기에서 반복 호출해도 부담이 없다.
+  const teamTierTotal = (members) => {
+    const { wasted } = findWastedBurstMembers(members, mode, treasureIds);
+    const wastedIds = new Set(wasted.map((m) => m.id));
+    return members.reduce(
+      (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode, treasureIds)),
+      0
     );
   };
 
   // 고정 멤버 + 슬롯을 채워 5인을 만든다. 채울 수 없으면 null.
+  //
+  // 2026-08-07 수정: 예전에는 슬롯을 "개인 티어가 가장 높은 캐릭터"로 채웠는데, 최종 점수는
+  // tierTotal(= 낭비 인원을 0점 처리한 합)이라 채우는 기준과 채점하는 기준이 서로 달랐다.
+  // 그 결과 엔진이 자기 기준으로 더 나쁜 팀을 만들었다. 실측 예(God Comp #2, 캠페인):
+  //   고정 4명이 이미 B1/B2/B3를 다 채워서, 5번째로 들어오는 캐릭터는 토템이 아닌 한 무조건
+  //   낭비 처리되어 0점이 된다. 그런데 개인 티어만 보면 레드후드(SSS)가 1등이라 그를 골라
+  //   총점 35점이 나왔다. 같은 자리에 모더니아(A, 토템)를 넣으면 41점이었다.
+  // 이제 "그 캐릭터를 넣었을 때 tierTotal이 실제로 얼마나 오르는가"로 고른다. 그러면 이미
+  // 포화된 버스트 단계는 자연히 피하고, 채워야 한다면 토템을 고르게 된다 -- 실제 유저들이
+  // 그 자리에 토템을 넣는 이유와 같은 결론이다.
   const fillTeam = (a) => {
     const fixed = a.members || [];
     const slots = a.flexSlots || [];
     if (fixed.length + slots.length !== 5) return null;
     if (!fixed.every((t) => ownedTitleSet.has(t))) return null;
     if (fixed.some((t) => excludeTitles.has(t))) return null;
-    const used = new Set(fixed);
-    const picked = [];
-    // 제약이 강한 슬롯(B1-CDR 등)부터 채워야 후보가 고갈되지 않는다.
-    const order = slots
-      .map((s, i) => ({ s, i }))
-      .sort((x, y) => slotCandidates(x.s, used).length - slotCandidates(y.s, used).length);
-    for (const { s } of order) {
-      const cand = slotCandidates(s, used);
-      if (!cand.length) return null;
-      picked.push(cand[0]);
-      used.add(cand[0].title);
-    }
+
+    const base = fixed.map((t) => byTitle.get(t));
+    const used0 = new Set(fixed);
+    // 제약이 강한 슬롯(B1-CDR 등)을 앞에 둔다. 아래 전 조합 탐색에서는 순서가 결과를 바꾸지
+    // 않지만, 후보가 마른 슬롯을 먼저 걸러 탐색을 일찍 끝낼 수 있다.
+    const order = [...slots].sort(
+      (x, y) => slotCandidates(x, used0).length - slotCandidates(y, used0).length
+    );
+    if (order.some((s) => slotCandidates(s, used0).length === 0)) return null;
+
+    // 각 슬롯 후보를 "혼자 넣었을 때의 기여도" 순으로 세운 뒤 상위 CAP명만 남긴다.
+    // 슬롯은 최대 4개라 CAP^4 = 4096가지가 상한이고, 버스트 조건 때문에 실제로는 훨씬 적다.
+    // (슬롯을 하나씩 순서대로 고르는 방식도 써봤지만, 뒤에 올 슬롯을 보지 못해 자유 슬롯이
+    //  2개 이상인 조합에서 최적보다 낮은 구성에 갇히는 경우가 실측으로 확인됐다.)
+    const CAP = 8;
+    const ranked = order.map((s) =>
+      slotCandidates(s, used0)
+        .map((c) => ({ c, v: teamTierTotal([...base, c]), t: tierScore(c, mode, treasureIds) }))
+        .sort((a, z) => (z.v - a.v) || (z.t - a.t))
+        .map((x) => x.c)
+    );
+
+    // 슬롯 조합 전체를 시도해 tierTotal이 가장 높은 구성을 고른다. 동점이면 개인 티어 합이
+    // 높은 쪽을 택해 결과가 로스터 정렬 순서에 흔들리지 않게 한다.
+    const search = (pools) => {
+      let best = null;
+      let bestV = -Infinity;
+      let bestT = -Infinity;
+      const usedTitles = new Set(fixed);
+      const acc = [];
+      const rec = (i) => {
+        if (i === pools.length) {
+          const v = teamTierTotal([...base, ...acc]);
+          const t = acc.reduce((s, c) => s + tierScore(c, mode, treasureIds), 0);
+          if (v > bestV || (v === bestV && t > bestT)) {
+            bestV = v; bestT = t; best = [...acc];
+          }
+          return;
+        }
+        pools[i].forEach((c) => {
+          if (usedTitles.has(c.title)) return;
+          usedTitles.add(c.title); acc.push(c);
+          rec(i + 1);
+          acc.pop(); usedTitles.delete(c.title);
+        });
+      };
+      rec(0);
+      return best;
+    };
+
+    // 상위 CAP명끼리 서로 겹쳐 5인을 못 채우는 드문 경우에는 제한을 풀고 다시 찾는다.
+    let picked = search(ranked.map((p) => p.slice(0, CAP)));
+    if (!picked) picked = search(ranked);
+    if (!picked) return null;
+
     return {
-      members: [...fixed.map((t) => byTitle.get(t)), ...picked],
+      members: [...base, ...picked],
       filledCount: picked.length,
     };
   };

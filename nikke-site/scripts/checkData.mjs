@@ -215,9 +215,12 @@ syn.archetypes.forEach((a) => {
 
 // 토템 주장에 출처가 있는가 (레드 후드 재발 방지)
 notes.characters.filter((n) => n.totemRole).forEach((n) => {
-  if (!/출처|arca\.live|prydwen|tistory|enikk|namu|유저 확인/i.test(n.totemNote || '')) {
+  // '스킬 원문 근거'는 외부 공략 출처는 없지만 characterDatabase의 스킬 원문에서 직접 끌어낸
+  // 판단이라는 표시다. 근거 없이 등록된 것과는 구분되므로 통과시키되, 반드시 명시해야 한다.
+  if (!/출처|arca\.live|prydwen|tistory|enikk|namu|inven|인벤|유저 확인|스킬 원문 근거/i.test(n.totemNote || '')) {
     warn('TOTEM_NO_SOURCE',
-      `${n.name}의 totemRole에 출처 표기가 없음 — 레드 후드처럼 근거 없이 등록된 항목일 수 있음`);
+      `${n.name}의 totemRole에 근거 표기가 없음 — 레드 후드처럼 근거 없이 등록된 항목일 수 있음. ` +
+      `외부 공략 출처를 적거나, 스킬 원문에서 끌어낸 판단이면 '[스킬 원문 근거]'라고 밝힐 것`);
   }
 });
 
