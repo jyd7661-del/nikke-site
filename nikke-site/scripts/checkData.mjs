@@ -257,6 +257,15 @@ const DOMAIN = {
   grades: ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E', 'F'],
   skillType: ['Passive', 'Active'],
   burstCd: ['20', '40', '60'],
+  // 2026-08-08 추가. prydwen.gg 티어리스트가 캐릭터 아이콘에 붙여둔 특수 표시를 그대로 옮긴 값.
+  // 원문 범례:
+  //   invest  ($)  heavy investment is required to play the character at their full potential
+  //   partner (📣) this unit can only shine (or improves dramatically) if a specific unit is in
+  //                the team or she is in specific teams
+  //   expert  (🌀) this unit requires high manual skill to be viable
+  //   limited (🕐) is a limited character that isn't available in the general pool
+  // (treasure 표시는 우리 쪽에서 이미 characters.js의 hasTreasure로 다루므로 여기 넣지 않는다)
+  prydwenTag: ['invest', 'partner', 'expert', 'limited'],
 };
 const REQUIRED_TOP = ['id', 'title', 'name_kr', 'class', 'burst', 'element', 'weapon', 'tiers', 'skills'];
 
@@ -348,6 +357,22 @@ cdb.forEach((c) => {
   } else {
     seenTitle.add(c.title);
   }
+
+  // prydwen 특수 표시. 오타가 나면 그 표시를 참조하는 쪽이 조용히 아무것도 못 찾는다.
+  ['prydwenTags', 'prydwenTagsTreasure'].forEach((f) => {
+    const v = c[f];
+    if (v === undefined) return;
+    if (!Array.isArray(v) || v.length === 0) {
+      err('SHAPE_TAG', who + ': ' + f + "는 비어 있지 않은 배열이어야 함(태그가 없으면 필드 자체를 두지 말 것)");
+      return;
+    }
+    v.forEach((t) => {
+      if (!DOMAIN.prydwenTag.includes(t)) {
+        err('SHAPE_TAG', who + ": " + f + "에 알 수 없는 값 '" + t + "' — " + DOMAIN.prydwenTag.join('/') + '만 허용');
+      }
+    });
+    if (new Set(v).size !== v.length) warn('SHAPE_TAG', who + ': ' + f + '에 중복 태그가 있음');
+  });
 
   // 값 자체는 맞아도 대소문자가 다르면 조회 키로 쓸 때 조용히 어긋난다 (예: 'Fire' vs 'fire').
   ['element', 'class', 'weapon'].forEach((f) => {

@@ -1,7 +1,7 @@
 {
   "characterDatabase": {
-    "asOf": "2026-07-26",
-    "source": "니케 위키(Fandom) 인포박스/스킬 테이블 + prydwen.gg 티어리스트",
+    "asOf": "2026-08-08",
+    "source": "니케 위키(Fandom) 인포박스/스킬 테이블 + prydwen.gg 티어리스트(prydwenTags 포함)",
     "refreshMethod": "README.md '데이터 업데이트 방법' 참고 (MediaWiki API + Claude-in-Chrome)",
     "staleAfterDays": 60
   },

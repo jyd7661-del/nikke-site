@@ -298,6 +298,113 @@ function findSkillMechanicSynergies(members) {
   return found;
 }
 
+// ---------------------------------------------------------------------------
+// 자유 슬롯 채우기용 시너지 판정 (2026-08-08 추가)
+//
+// 빈 자리를 티어 합만 보고 채우면, 고정 멤버와 아무 상호작용도 없는 캐릭터가 들어올 수 있다.
+// 여기서는 "채워 넣은 캐릭터가 고정 멤버와 실제로 맞물리는가"를 셋으로 나눠 센다:
+//   1) 스킬 원문으로 확인되는 데미지 타입 버프 관계 (어느 쪽이 주고 받든)
+//   2) synergyNotes.synergyPairs에 등록된 검증된 페어
+//   3) 팀 전체에 걸리는 의미 있는 아군 버프 보유 (특정 대상이 없어도 고정 멤버가 다 받는다)
+//
+// findSkillMechanicSynergies를 조합마다 통째로 부르면 스킬 원문 파싱이 수천 번 반복돼 느리다.
+// 관계는 (시전자, 대상) 쌍마다 고정된 값이므로 쌍 단위로 캐시한다.
+const DAMAGE_SYNERGY_CACHE = new Map();
+function hasDamageTypeSynergy(caster, receiver) {
+  if (!caster || !receiver || caster.id === receiver.id) return false;
+  const key = `${caster.id}>${receiver.id}`;
+  if (DAMAGE_SYNERGY_CACHE.has(key)) return DAMAGE_SYNERGY_CACHE.get(key);
+  const grants = extractDamageTypeGrants(caster).filter((g) => g.scope);
+  const ok = grants.some(
+    (g) => grantAppliesToAlly(caster, g, receiver) && dealsDamageType(receiver, g.type)
+  );
+  DAMAGE_SYNERGY_CACHE.set(key, ok);
+  return ok;
+}
+
+const SYNERGY_PAIR_SET = new Set(
+  (synergyNotes.synergyPairs || [])
+    .filter((p) => (p.members || []).length === 2)
+    .map((p) => [...p.members].sort().join('|'))
+);
+
+// 두 캐릭터 사이의 상호작용 수. 어느 쪽이 버프를 주든 세고, 검증된 페어면 하나 더 센다.
+function pairSynergyCount(a, b) {
+  let n = 0;
+  if (hasDamageTypeSynergy(a, b)) n += 1;
+  if (hasDamageTypeSynergy(b, a)) n += 1;
+  if (SYNERGY_PAIR_SET.has([a.title, b.title].sort().join('|'))) n += 1;
+  return n;
+}
+
+// allyBuffStrength는 스킬 원문을 매번 파싱해서, 조합 탐색처럼 반복 호출되면 비싸다.
+const ALLY_BUFF_CACHE = new Map();
+function allyBuffStrengthCached(character) {
+  const key = character?.id;
+  if (key === undefined) return 0;
+  if (ALLY_BUFF_CACHE.has(key)) return ALLY_BUFF_CACHE.get(key);
+  const v = allyBuffStrength(character);
+  ALLY_BUFF_CACHE.set(key, v);
+  return v;
+}
+
+// ---------------------------------------------------------------------------
+// 파트너 의존 캐릭터 판정 (2026-08-08 추가)
+//
+// prydwen 티어리스트는 일부 캐릭터에 partner(📣) 표시를 붙인다. 원문 정의:
+//   "this unit can only shine (or improves dramatically) if a specific unit is in the team
+//    or she is in specific teams"
+// 즉 "이 캐릭터의 티어는 특정 동료가 함께 있는 상태를 전제로 매겨졌다"는 뜻이다. 문제는
+// 표시가 '조건부'라는 사실만 알려줄 뿐 '누가 파트너인지'는 알려주지 않는다는 것.
+//
+// 그 짝은 우리가 이미 가진 조합 데이터에서 뽑는다. 단순 동시 등장 횟수를 세면 크라운·아니스:
+// 스타처럼 아무 조합에나 들어가는 범용 캐릭터가 항상 1등이 되어 무의미하다. 그래서 조건부
+// 확률을 쓴다 — "이 캐릭터가 나온 팀들 중 몇 %에 저 캐릭터가 같이 있었는가". 실제로 이렇게
+// 계산하면 프리카→민트 100%, 티아→나가 100%, 아르카나↔이자벨 100%처럼 알려진 짝이 그대로 나온다.
+//
+// 표본이 적으면 100%가 아무 의미도 없으므로(등장 팀이 1~2개면 우연히 100%가 된다) 최소 등장
+// 팀 수를 요구하고, 비율도 높게 잡아 '확실한 짝'만 남긴다. 조건을 못 채운 캐릭터는 점수를
+// 깎지 않고 -- 티어를 얼마나 깎아야 하는지에 대한 근거 있는 숫자가 없다 -- 자유 슬롯을 채울 때
+// 동점이면 뒤로 밀고, 사용자에게 조건을 밝힌다.
+const PARTNER_MIN_TEAMS = 5;   // 이만큼은 등장해야 비율을 신뢰한다
+const PARTNER_MIN_RATIO = 0.7; // 등장 팀의 70% 이상에 함께 나오면 '확실한 짝'
+
+const DOMINANT_PARTNERS = (() => {
+  const teams = [];
+  (synergyNotes.archetypes || []).forEach((a) => {
+    if ((a.members || []).length >= 3) teams.push(a.members);
+  });
+  (metaStats.campaignCompositions?.list || []).forEach((t) => teams.push(t.members || []));
+  (metaStats.pvp?.topTeams || []).forEach((t) => teams.push(t.members || []));
+
+  const result = new Map();
+  characterDatabase.forEach((c) => {
+    const tagged = (c.prydwenTags || []).includes('partner') ||
+      (c.prydwenTagsTreasure || []).includes('partner');
+    if (!tagged) return;
+    const mine = teams.filter((t) => t.includes(c.title));
+    if (mine.length < PARTNER_MIN_TEAMS) return;
+    const count = new Map();
+    mine.forEach((t) => t.forEach((x) => {
+      if (x !== c.title) count.set(x, (count.get(x) || 0) + 1);
+    }));
+    const strong = [...count.entries()]
+      .filter(([, v]) => v / mine.length >= PARTNER_MIN_RATIO)
+      .sort((a, b) => b[1] - a[1])
+      .map(([n, v]) => ({ title: n, ratio: v / mine.length }));
+    if (strong.length) result.set(c.title, { partners: strong, teams: mine.length });
+  });
+  return result;
+})();
+
+// 이 캐릭터가 파트너 의존형인데 팀에 그 짝이 하나도 없는가.
+function partnerConditionUnmet(character, members) {
+  const req = DOMINANT_PARTNERS.get(character?.title);
+  if (!req) return null;
+  const present = req.partners.filter((p) => members.some((m) => m.title === p.title));
+  return present.length ? null : req;
+}
+
 function normalizeElement(el) {
   return (el || '').toLowerCase();
 }
@@ -727,6 +834,61 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // --- 버스트 쿨타임 20초 캐릭터 ---
   const fastBurstMembers = members.filter((m) => (m.burst === '1' || m.burst === '2') && hasFastBurstCooldown(m));
   score += fastBurstMembers.length * WEIGHTS.FAST_BURST_CD;
+
+  // --- 조건부 성능 캐릭터 안내 (2026-08-08 추가) ---
+  //
+  // prydwen 티어리스트는 캐릭터 아이콘에 "$ = 고투자 전제", "🌀 = 높은 수동 조작 필요" 같은
+  // 표시를 달아둔다. 우리 티어 등급은 그 조건이 충족된 상태를 전제로 매겨진 값이라, 조건을
+  // 못 갖춘 사용자에게는 등급만큼의 성능이 안 나온다.
+  //
+  // 유저 지적 — "추천을 받는 건 보통 초보 유저일 가능성이 큰데, 고투자가 선행돼야 좋은
+  // 캐릭터를 그냥 추천하면 난감해진다". 실제로 이 표시가 붙은 아니스: 스파클링 서머와
+  // 모더니아를 우리가 토템으로 등록해 아무 단서 없이 추천하고 있었다.
+  //
+  // 점수는 깎지 않는다. 사용자의 실제 투자 수준을 우리가 모르는 상태에서 감점하면, 이미
+  // 키운 사람에게 오히려 틀린 추천을 하게 된다. 대신 조건을 밝혀서 판단은 사용자가 하게 한다.
+  // ('limited'는 이미 보유한 캐릭터에게는 의미가 없으므로 조합 설명에서는 다루지 않는다)
+  const CONDITIONAL_TAG_NOTE = {
+    invest: {
+      label: '충분한 투자(스킬 레벨/오버로드 등)가 갖춰졌을 때 제 성능이 나오는 캐릭터',
+      caveat: '아직 육성이 덜 됐다면 등급만큼의 성능이 나오지 않습니다. 다른 캐릭터를 먼저 키우는 편이 나을 수 있습니다.',
+    },
+    expert: {
+      label: '수동 조작 숙련이 있어야 제 성능이 나오는 캐릭터',
+      caveat: '오토 전투 위주로 플레이한다면 기대만큼의 결과가 안 나올 수 있습니다.',
+    },
+  };
+  Object.entries(CONDITIONAL_TAG_NOTE).forEach(([tag, { label, caveat }]) => {
+    const hit = members.filter((m) => (m.prydwenTags || []).includes(tag));
+    if (!hit.length) return;
+    reasons.push(
+      `[조건 확인] ${hit.map((m) => m.title).join(', ')}은(는) ${label}입니다. ` +
+      `이 조합의 티어 평가는 그 조건이 갖춰진 상태를 기준으로 매겨진 값입니다 — ${caveat} ` +
+      `(출처: prydwen.gg 티어리스트 특수 표시)`
+    );
+  });
+
+  // --- 파트너 조건 (2026-08-08 추가) ---
+  // 짝이 함께 있으면 그 사실을 근거로 밝히고, 없으면 조건이 빠졌다고 알린다.
+  members.forEach((m) => {
+    const req = DOMINANT_PARTNERS.get(m.title);
+    if (!req) return;
+    const present = req.partners.filter((p) => members.some((x) => x.title === p.title));
+    if (present.length) {
+      reasons.push(
+        `${m.title}은(는) 특정 동료가 있어야 제 성능이 나오는 캐릭터인데, 이 조합에는 ` +
+        `${present.map((p) => `${p.title}(함께 쓰인 비율 ${Math.round(p.ratio * 100)}%)`).join(', ')}이(가) ` +
+        `있어 조건이 충족됩니다.`
+      );
+    } else {
+      reasons.push(
+        `[조건 확인] ${m.title}은(는) 특정 동료가 있어야 제 성능이 나오는 캐릭터입니다 ` +
+        `(prydwen.gg 티어리스트 표시). 실제 조합 ${req.teams}건을 보면 거의 항상 ` +
+        `${req.partners.map((p) => p.title).join(' 또는 ')}와(과) 함께 쓰이는데 이 조합에는 없어, ` +
+        `티어 등급만큼의 성능이 안 나올 수 있습니다.`
+      );
+    }
+  });
 
   // --- 원소 다양성 ---
   const distinctElements = new Set(members.map((m) => normalizeElement(m.element)).filter(Boolean));
@@ -1230,19 +1392,58 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
         .map((x) => x.c)
     );
 
-    // 슬롯 조합 전체를 시도해 tierTotal이 가장 높은 구성을 고른다. 동점이면 개인 티어 합이
-    // 높은 쪽을 택해 결과가 로스터 정렬 순서에 흔들리지 않게 한다.
+    // 시너지 점수는 조합마다 다시 계산하면 스킬 원문 파싱이 수천 번 반복돼 느려진다(실측 14배).
+    // 값은 (후보, 고정 멤버) 또는 (후보, 후보) 쌍마다 고정이므로 처음 볼 때만 계산하고 캐시한다.
+    // 후보 풀 전체를 미리 계산하지는 않는다 — 풀이 수십 명이라 대부분은 탐색에 쓰이지도 않는다.
+    const selfCache = new Map();
+    const selfScore = (c) => {
+      if (selfCache.has(c.title)) return selfCache.get(c.title);
+      let n = base.reduce((sum, f) => sum + pairSynergyCount(c, f), 0);
+      if (allyBuffStrengthCached(c) >= MEANINGFUL_ALLY_BUFF) n += 1; // 팀 전체에 걸리는 버프
+      // 파트너 의존 캐릭터는 그 짝이 고정 멤버에 있으면 크게 우대하고, 없으면 감점한다.
+      // 빈 자리에 "특정 동료가 있어야 빛나는 캐릭터"를 그 동료 없이 넣는 건 그 자체로 잘못된
+      // 채움이다. (고정 멤버 기준으로만 판단하므로 후보끼리의 조합과 무관하게 값이 고정된다)
+      const req = DOMINANT_PARTNERS.get(c.title);
+      if (req) n += req.partners.some((p) => base.some((f) => f.title === p.title)) ? 2 : -2;
+      selfCache.set(c.title, n);
+      return n;
+    };
+    const pairCache = new Map();
+    const pairScore = (x, y) => {
+      const k = x.title < y.title ? `${x.title}|${y.title}` : `${y.title}|${x.title}`;
+      if (pairCache.has(k)) return pairCache.get(k);
+      const n = pairSynergyCount(x, y);
+      pairCache.set(k, n);
+      return n;
+    };
+    const synergyOf = (picked) => picked.reduce(
+      (sum, c, i) => sum + selfScore(c) +
+        picked.slice(i + 1).reduce((s2, d) => s2 + pairScore(c, d), 0),
+      0
+    );
+
+    // 슬롯 조합 전체를 시도해 tierTotal이 가장 높은 구성을 고른다.
+    //
+    // 2026-08-08 추가(시너지 반영): 예전에는 동점일 때 '개인 티어 합'이 높은 쪽을 택했는데,
+    // 그러면 빈 자리가 고정 멤버와 아무 상호작용이 없는 캐릭터로 채워질 수 있었다. 유저 지적 —
+    // "나머지 칸을 채울 때 서로 상호작용을 잘 일으키면서 티어도 높은 니케로 채울 수 있을까".
+    // 그래서 동점 판정에 '고정 멤버와의 실제 상호작용 수'를 먼저 넣는다. 티어 합을 이기지는
+    // 못하고(성능이 우선), 같은 점수일 때만 시너지가 있는 쪽을 고른다 -- 상호작용을 점수로
+    // 환산할 근거 있는 가중치가 없어서, 근거 없는 숫자를 만들기보다 동점 판정에만 쓴다.
     const search = (pools) => {
       let best = null;
       let bestV = -Infinity;
+      let bestS = -Infinity;
       let bestT = -Infinity;
       const usedTitles = new Set(fixed);
       const acc = [];
       const rec = (i) => {
         if (i === pools.length) {
           const v = teamTierTotal([...base, ...acc]);
-          const t = acc.reduce((s, c) => s + tierScore(c, mode, treasureIds), 0);
-          if (v > bestV || (v === bestV && t > bestT)) {
+          const s = synergyOf(acc);
+          const t = acc.reduce((s2, c) => s2 + tierScore(c, mode, treasureIds), 0);
+          if (v > bestV || (v === bestV && s > bestS) || (v === bestV && s === bestS && t > bestT)) {
+            bestS = s;
             bestV = v; bestT = t; best = [...acc];
           }
           return;
