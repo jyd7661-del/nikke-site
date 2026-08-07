@@ -219,6 +219,98 @@ notes.characters.filter((n) => n.totemRole).forEach((n) => {
 });
 
 // ---------------------------------------------------------------------------
+// 5. 형식(shape) 검사 — 대조할 기존 자료가 없는 "새 데이터"에도 작동하는 유일한 자동 검증
+//
+// 유저 지적: "새로운 데이터니까 기존 자료를 참고할 수도 없잖아" — 맞는 지적이다. 신규 캐릭터의
+// 스킬 수치가 실제로 맞는지는 자동으로 확인할 방법이 없다. 그건 "1차 출처의 값을 그대로
+// 옮겼는가"라는 절차로만 담보된다(scripts 밖의 문제).
+//
+// 다만 "버스트는 1/2/3", "스킬은 3개", "쿨타임은 숫자" 같은 구조적 규칙은 비교 대상 없이도
+// 검사할 수 있다. 그리고 실제로 데이터를 새로 채우다 나는 사고의 상당수는 값이 틀린 게 아니라
+// 필드가 비거나 형식이 깨지는 쪽이다(예: 라플라스: 얼티밋 히어로 — 항목만 만들어지고 skills가
+// 빈 배열로 남아 엔진의 버스트 낭비 판정이 통째로 스킵되고 있었다). 여기서는 그것만 잡는다.
+//
+// 유효 범위는 정상적인 기존 캐릭터들에서 귀납적으로 추출한 값이다.
+const DOMAIN = {
+  element: ['fire', 'iron', 'wind', 'water', 'electric'],
+  burst: ['1', '2', '3'],
+  class: ['attacker', 'supporter', 'defender'],
+  weapon: ['ar', 'sg', 'sr', 'rl', 'mg', 'smg'],
+  tierKeys: ['story', 'bossing', 'pvp'],
+  grades: ['SSS', 'SS', 'S', 'A', 'B', 'C', 'D', 'E', 'F'],
+  skillType: ['Passive', 'Active'],
+  burstCd: ['20', '40', '60'],
+};
+const REQUIRED_TOP = ['id', 'title', 'name_kr', 'class', 'burst', 'element', 'weapon', 'tiers', 'skills'];
+
+const seenTitle = new Set();
+cdb.forEach((c) => {
+  const who = (c.title || '(title 없음)') + '(' + (c.name_kr || '?') + ')';
+
+  REQUIRED_TOP.forEach((f) => {
+    const v = c[f];
+    if (v === undefined || v === null || v === '') {
+      err('SHAPE_MISSING', who + ": 필수 필드 '" + f + "' 누락");
+    }
+  });
+
+  if (seenTitle.has(c.title)) {
+    err('SHAPE_DUP_TITLE', "title '" + c.title + "'이 중복 — 조회 시 뒤 항목이 앞 항목을 덮어씀");
+  } else {
+    seenTitle.add(c.title);
+  }
+
+  // 값 자체는 맞아도 대소문자가 다르면 조회 키로 쓸 때 조용히 어긋난다 (예: 'Fire' vs 'fire').
+  ['element', 'class', 'weapon'].forEach((f) => {
+    const v = c[f];
+    if (v === undefined || DOMAIN[f].includes(v)) return;
+    if (DOMAIN[f].includes(String(v).toLowerCase())) {
+      warn('SHAPE_CASE', who + ': ' + f + "='" + v + "' — 다른 캐릭터는 소문자('" + String(v).toLowerCase() + "')를 쓰므로 표기 통일 필요");
+    } else {
+      err('SHAPE_DOMAIN', who + ': ' + f + "='" + v + "'은(는) 허용되지 않는 값 (" + DOMAIN[f].join('/') + ')');
+    }
+  });
+
+  if (c.burst !== undefined && !DOMAIN.burst.includes(String(c.burst))) {
+    err('SHAPE_DOMAIN', who + ": burst='" + c.burst + "' — 1/2/3 중 하나여야 함");
+  }
+
+  const t = c.tiers || {};
+  DOMAIN.tierKeys.forEach((k) => {
+    if (t[k] === undefined) {
+      err('SHAPE_TIER', who + ': tiers.' + k + ' 누락 — 그 모드에서 티어 점수가 0으로 계산됨');
+    } else if (!DOMAIN.grades.includes(t[k])) {
+      err('SHAPE_TIER', who + ': tiers.' + k + "='" + t[k] + "'은(는) 허용 등급이 아님");
+    }
+  });
+
+  const sk = c.skills || [];
+  if (sk.length === 0) return; // 이미 NO_SKILLS로 보고됨
+  if (sk.length !== 3) {
+    err('SHAPE_SKILL_COUNT', who + ': 스킬이 ' + sk.length + '개 — 정상 캐릭터는 전부 3개(스킬1/스킬2/버스트)');
+  }
+  sk.forEach((s, i) => {
+    ['name', 'type', 'desc'].forEach((f) => {
+      if (!s[f]) err('SHAPE_SKILL_FIELD', who + ': ' + (i + 1) + "번째 스킬의 '" + f + "'이(가) 비어 있음");
+    });
+    if (s.type && !DOMAIN.skillType.includes(s.type)) {
+      err('SHAPE_SKILL_FIELD', who + ': ' + (i + 1) + "번째 스킬 type='" + s.type + "' — Passive/Active만 허용");
+    }
+  });
+
+  // 버스트 스킬(마지막)의 쿨타임은 낭비 판정·풀버스트 계산에 직접 쓰이는 값이라 특히 중요하다.
+  const burstSkill = sk[sk.length - 1];
+  if (burstSkill) {
+    const cd = burstSkill.cd;
+    if (cd === undefined || cd === null || cd === '' || Number.isNaN(Number(cd))) {
+      err('SHAPE_BURST_CD', who + ": 버스트 스킬 쿨타임이 숫자가 아님(cd='" + cd + "') — findWastedBurstMembers가 이 버스트 단계 판정을 통째로 건너뜀");
+    } else if (!DOMAIN.burstCd.includes(String(cd))) {
+      warn('SHAPE_BURST_CD', who + ': 버스트 쿨타임 ' + cd + '초 — 기존 캐릭터는 전부 20/40/60초라 오타 가능성 있음');
+    }
+  }
+});
+
+// ---------------------------------------------------------------------------
 // 리포트
 // ---------------------------------------------------------------------------
 const line = '─'.repeat(72);
