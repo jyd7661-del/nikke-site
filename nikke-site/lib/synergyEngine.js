@@ -462,13 +462,32 @@ function burstCooldownSeconds(character) {
   return Number(cd);
 }
 
+// 반환값:
+//   wasted        — 버스트를 못 쓰는데 토템도 아니라서 점수에서 빼야 하는 멤버
+//   totemExempted — 버스트 순번에서는 밀렸지만 토템이라 예외로 인정된 멤버
+//   burstOrder    — 각 버스트 단계에서 엔진이 가정하는 순번(앞쪽이 실제로 버스트를 쓰는 쪽).
+//                   화면 표시 순서를 이 순번과 맞추기 위해 노출한다.
+//
+// 2026-08-07 추가(totemExempted / burstOrder): 유저 지적 — "3버스트 순서가 스화헤비, 프리바티,
+// 일레그인데 이러면 스화헤비랑 프리바티가 번갈아 쓰게 된다. 프리바티가 토템이면 잘못된 배치".
+// 엔진은 실제로 티어순(스화헤비 SSS → 일레그 S → 프리바티 B)으로 정렬해 프리바티를 비버스트
+// 자리로 빼고 토템 예외 처리하고 있었지만, 화면에는 원본 데이터 배열 순서가 그대로 나가서
+// 마치 프리바티가 2순번인 것처럼 보였다. 순번 정보를 밖으로 내보내 표시 순서를 맞춘다.
 function findWastedBurstMembers(members, mode, treasureIds) {
   const wasted = [];
+  const totemExempted = [];
+  const burstOrder = new Map(); // id -> 같은 버스트 단계 내 순번(0부터)
   ['1', '2', '3'].forEach((burst) => {
     const group = members.filter((m) => String(m.burst) === burst);
-    if (group.length <= 1) return;
+    if (group.length <= 1) {
+      group.forEach((m) => burstOrder.set(m.id, 0));
+      return;
+    }
     const withCd = group.map((m) => ({ m, cd: burstCooldownSeconds(m) }));
-    if (withCd.some((x) => x.cd === null)) return;
+    if (withCd.some((x) => x.cd === null)) {
+      group.forEach((m, i) => burstOrder.set(m.id, i));
+      return;
+    }
     // 2026-08-07 수정: 쿨타임이 같을 때 배열 순서대로 낭비 대상을 골라서, 똑같은 5명인데
     // 로스터 정렬만 다르면 점수가 달라지는 버그가 있었다(예: 크라운/맥스웰: 오디너리 미케닉
     // 둘 다 버스트2·쿨 20초일 때 29점 vs 30점). 쿨타임이 같으면 티어가 높은 쪽을 남기고
@@ -480,13 +499,30 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
     else if (sorted.length >= 2 && sorted[1].cd <= ALTERNATE_BURST_CD) needed = 2;
     else needed = Math.min(sorted.length, 2);
+    sorted.forEach(({ m }, i) => burstOrder.set(m.id, i));
     sorted.slice(needed).forEach(({ m }) => {
       const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
-      if (note?.totemRole) return; // 토템 후보는 버스트 대신 상시 효과로 기여하므로 낭비가 아니다.
+      if (note?.totemRole) {
+        // 토템 후보는 버스트 대신 상시 효과로 기여하므로 낭비가 아니다.
+        totemExempted.push({ member: m, note, needed });
+        return;
+      }
       wasted.push(m);
     });
   });
-  return wasted;
+  return { wasted, totemExempted, burstOrder };
+}
+
+// 화면 표시용 정렬: 버스트 1 → 2 → 3, 같은 단계 안에서는 엔진이 가정한 버스트 순번대로.
+// 이렇게 하면 표시 순서가 곧 "누가 실제로 버스트를 쓰는가"를 나타내고, 토템처럼 버스트를
+// 쓰지 않는 멤버가 자연스럽게 뒤로 간다.
+function orderMembersForDisplay(members, mode, treasureIds) {
+  const { burstOrder } = findWastedBurstMembers(members, mode, treasureIds);
+  return [...members].sort(
+    (a, b) =>
+      (Number(a.burst) - Number(b.burst)) ||
+      ((burstOrder.get(a.id) ?? 0) - (burstOrder.get(b.id) ?? 0))
+  );
 }
 
 export function scoreTeam(members, mode = 'campaign', opts = {}) {
@@ -527,7 +563,8 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   });
 
   // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리) ---
-  const wastedMembers = findWastedBurstMembers(members, mode, treasureIds);
+  const burstAnalysis = findWastedBurstMembers(members, mode, treasureIds);
+  const wastedMembers = burstAnalysis.wasted;
   const wastedIds = new Set(wastedMembers.map((m) => m.id));
   const tierTotal = members.reduce(
     (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode, treasureIds)),
@@ -789,9 +826,27 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 추가로 넣는 캐릭터가 있다"고 제보. characterInvestmentNotes.json에 totemRole/totemNote로
   // 정리해둔 캐릭터가, 같은 버스트 단계의 다른 멤버가 이미 빠른 쿨타임(20초)으로 매 사이클을
   // 커버하고 있는 상태로 팀에 포함돼 있으면, 그게 왜 정당한 픽인지 근거 문장으로 설명해준다.
+  //
+  // 2026-08-07 수정: 원래는 "같은 단계에 쿨 20초짜리가 있을 때"만 이 문장이 나왔다. 그래서
+  // 버스트3에 40초짜리 3명이 있고 그중 하나가 토템인 경우(스화헤비/일레그/프리바티)에는
+  // 낭비 판정에서 토템 예외는 적용되는데 정작 그 이유를 설명하는 문장이 안 나왔다.
+  // 유저가 "프리바티가 토템이면 잘못된 배치 아니냐"고 물은 것도 이 설명이 없었기 때문이다.
+  // 이제는 실제로 버스트 순번에서 밀려 토템으로 인정된 경우(totemExempted)에도 문장을 낸다.
+  const explainedTotems = new Set();
+  burstAnalysis.totemExempted.forEach(({ member: m, note, needed }) => {
+    explainedTotems.add(m.id);
+    const others = members
+      .filter((o) => o.id !== m.id && String(o.burst) === String(m.burst))
+      .map((o) => o.title);
+    reasons.push(
+      `[토템 활용] 버스트${m.burst} 단계는 ${others.join(', ')}가 번갈아 돌리면 매 사이클 커버되므로 ` +
+      `(쿨타임 기준 ${needed}명이면 충분), ${m.title}는(은) 버스트 순번에서 빠집니다. 대신 버스트를 쓰지 ` +
+      `않아도 발동하는 상시 버프/유틸리티로 기여하는 토템 역할이라 이 자리는 낭비가 아닙니다. ${note.totemNote}`
+    );
+  });
   members.forEach((m) => {
     const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
-    if (!note?.totemRole) return;
+    if (!note?.totemRole || explainedTotems.has(m.id)) return;
     const sameBurstFastCovered = members.some(
       (o) => o.id !== m.id && o.burst === m.burst && hasFastBurstCooldown(o)
     );
@@ -920,7 +975,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           const members = [...c1, ...c2, ...c3];
           const result = scoreTeam(members, mode, { treasureIds, bossElement });
           candidateTeams.push({
-            members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
+            members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
             ...result,
             totalScore: result.tierTotal,
           });
@@ -1017,7 +1072,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
 
   return {
-    members: best.members.map((m) => ({
+    members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({
       id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null,
     })),
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
@@ -1099,7 +1154,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
 
   if (!best) return null;
   return {
-    members: best.members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
+    members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
     // scoreTeam().totalScore(아키타입 중복 합산 버그로 700점대까지 부풀 수 있음) 대신 위에서
     // 후보 비교에 쓴 티어 합을 그대로 표시 점수로 쓴다 — 캐릭터 5명의 실제 성능을 그대로
     // 반영하는 값이라 이해하기 쉽고, 아키타입 개수가 늘어나도 값이 흔들리지 않는다.
