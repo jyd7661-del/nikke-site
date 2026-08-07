@@ -56,6 +56,10 @@ function hashIp(ip) {
   return crypto.createHash('sha256').update(ip).digest('hex');
 }
 
+// 참고: 테이블 이름이 ai_explain_usage인 것은 과거 app/api/ai-explain 라우트가 먼저 이 테이블을
+// 만들었기 때문이다. 그 라우트는 어디에서도 호출되지 않는 죽은 코드여서 2026-08-07에 삭제했고,
+// 이제 이 테이블을 쓰는 곳은 여기 하나뿐이다. 이름을 바꾸려면 Supabase 마이그레이션이 필요해
+// (기존 사용량 기록이 끊길 수 있음) 그대로 두었다. supabase/ai_rate_limit_migration.sql 참고.
 async function checkAndIncrementRateLimit(supabase, ipHash) {
   const today = new Date().toISOString().slice(0, 10);
   const { data: existing, error: selectError } = await supabase

@@ -1,23 +1,27 @@
 // data/characters.js(사이트에서 실제로 쓰는 보유 캐릭터 목록/id)와
 // data/characterDatabase.json(스코어링 엔진이 쓰는 상세 데이터, title/tiers/skills 포함)을
-// 이어주는 다리 역할. 두 파일은 각각 다른 시점에 만들어져 id 체계가 완전히 일치하지 않을 수
-// 있어서, 이름(name_kr) 기준으로 매칭한다. (README '데이터 업데이트 방법' 참고)
+// 이어주는 다리 역할.
 //
-// 주의: characters.js는 '이름: 부제'(콜론 앞 공백 없음), characterDatabase.json은
-// '이름 : 부제'(콜론 앞뒤 공백) 형식을 섞어 쓰고 있어, 콜론 주변 공백 차이를 무시하고
-// 비교하지 않으면 정상적으로 보유 중인 캐릭터도 매칭에 실패해 분석에서 누락된다.
+// 2026-08-07 수정: 예전에는 두 파일을 '한국어 이름'으로 매칭했는데, 이름 표기가 조금만 어긋나도
+// 정상 보유 캐릭터가 조용히 분석에서 빠지는 사고가 반복됐다. 실제로 이런 것들이 누락되고 있었다:
+//   - 홍련(Scarlet), 유니(Yuni): characterDatabase의 name_kr이 위키 스크랩 오류로 "{{hover"였음
+//   - 라벨: characters.js는 '라벨', characterDatabase는 '레이블'로 표기가 달랐음
+// 홍련은 PvP SS 티어인데도 추천 계산에서 통째로 제외되고 있었다.
+//
+// 그래서 이름 매칭을 완전히 없애고 id로만 연결한다. UI id와 엔진 id가 다른 13명에는
+// characters.js에 cdbId를 명시해 뒀다(예: rita -> liter). 표기가 어떻게 바뀌든 매칭은 깨지지 않고,
+// 새 캐릭터를 추가하다 연결을 빠뜨리면 scripts/checkData.mjs의 UI_CDB_UNRESOLVED가 잡아준다.
 
 import { CHARACTERS } from '../data/characters';
 import characterDatabase from '../data/characterDatabase.json';
 
-const normalizeName = (name) => (name || '').replace(/\s*:\s*/g, ':').trim();
-
-const nameToCdb = new Map(characterDatabase.map((c) => [normalizeName(c.name_kr), c]));
+const cdbById = new Map(characterDatabase.map((c) => [c.id, c]));
 
 // characters.js의 id → characterDatabase.json 항목 매핑을 한 번만 계산해 캐시.
+// cdbId가 명시돼 있으면 그것을, 없으면 id가 같다고 보고 연결한다.
 const rosterIdToCdb = new Map(
   CHARACTERS
-    .map((c) => [c.id, nameToCdb.get(normalizeName(c.name))])
+    .map((c) => [c.id, cdbById.get(c.cdbId || c.id)])
     .filter(([, cdbChar]) => Boolean(cdbChar))
 );
 

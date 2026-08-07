@@ -314,6 +314,96 @@ cdb.forEach((c) => {
 });
 
 // ---------------------------------------------------------------------------
+// 6. UI 목록(data/characters.js) ↔ 엔진 DB(characterDatabase.json) 연결 검사
+//
+// 2026-08-07 추가. 사이트는 캐릭터 데이터를 두 벌로 들고 있다:
+//   data/characters.js        — 화면의 캐릭터 선택창이 쓰는 목록(보유 저장 id의 기준)
+//   data/characterDatabase.json — 점수/조합 계산 엔진이 쓰는 상세 데이터
+// 둘을 lib/rosterBridge.js가 이어주는데, 예전에는 '한국어 이름'으로 매칭해서 표기가 조금만
+// 어긋나도 정상 보유 캐릭터가 조용히 분석에서 빠졌다. 실제 사고:
+//   - 홍련(Scarlet) / 유니(Yuni): characterDatabase의 name_kr이 "{{hover"(위키 템플릿 잔재)였음
+//   - 라벨: characters.js는 '라벨', characterDatabase는 '레이블'
+// 홍련은 PvP SS 티어인데도 계산에서 통째로 빠져 있었고, 화면에는 "보유 캐릭터 중 N명은 아직
+// 상세 데이터가 없어 제외되었습니다"라는 안내만 떠서 원인을 알기 어려웠다.
+//
+// 이제 연결은 id(필요하면 cdbId)로만 하며, 여기서 그 연결이 전부 성립하는지 검사한다.
+let uiCharacters = null;
+try {
+  // characters.js는 ESM이라 동적 import가 필요하다. 실패해도 나머지 검사는 계속 진행한다.
+  ({ CHARACTERS: uiCharacters } = await import('../data/characters.js'));
+} catch (e) {
+  warn('UI_LIST_LOAD', `data/characters.js를 읽지 못해 UI↔엔진 연결 검사를 건너뜀: ${e.message}`);
+}
+
+if (uiCharacters) {
+  const cdbIdSet = new Set(cdb.map((c) => c.id));
+  const seenUiId = new Set();
+  const usedCdbIds = new Set();
+
+  uiCharacters.forEach((u) => {
+    const who = `${u.id}(${u.name || '?'})`;
+
+    if (seenUiId.has(u.id)) err('UI_DUP_ID', `characters.js에 id '${u.id}'가 중복`);
+    else seenUiId.add(u.id);
+
+    const target = u.cdbId || u.id;
+    if (!cdbIdSet.has(target)) {
+      err('UI_CDB_UNRESOLVED',
+        `${who}가 characterDatabase.json의 어떤 항목과도 연결되지 않음(찾는 id: '${target}'). ` +
+        `이 캐릭터를 보유로 선택해도 조합 계산에서 통째로 제외된다. ` +
+        `id가 다르면 characters.js 항목에 cdbId를 명시할 것.`);
+    } else {
+      usedCdbIds.add(target);
+    }
+
+    if (!u.name) err('UI_NO_NAME', `${u.id}: characters.js 항목에 name이 없음`);
+    if (![1, 2, 3].includes(Number(u.burst))) {
+      err('UI_BAD_BURST', `${who}: burst=${u.burst} — 1/2/3 중 하나여야 함`);
+    }
+  });
+
+  // 같은 엔진 캐릭터를 두 UI 항목이 가리키면, 한쪽 보유 표시가 다른 쪽을 덮어쓴 것처럼 동작한다.
+  const dupTargets = [...usedCdbIds].filter(
+    (t) => uiCharacters.filter((u) => (u.cdbId || u.id) === t).length > 1
+  );
+  dupTargets.forEach((t) => {
+    const who = uiCharacters.filter((u) => (u.cdbId || u.id) === t).map((u) => u.id).join(', ');
+    err('UI_CDB_DUP', `characterDatabase의 '${t}'를 여러 UI 항목이 가리킴: ${who}`);
+  });
+
+  // 엔진 DB에는 있는데 화면에서 선택할 수 없는 캐릭터. 저티어 구캐릭터가 대부분이라 ERROR는
+  // 아니지만, 쓸 만한 티어인데 빠져 있으면 알려준다.
+  const GOOD = new Set(['SSS', 'SS', 'S', 'A', 'B']);
+  const missingGood = cdb.filter((c) => {
+    if (usedCdbIds.has(c.id)) return false;
+    const t = c.tiers || {};
+    return [t.story, t.bossing, t.pvp].some((g) => GOOD.has(g));
+  });
+  if (missingGood.length) {
+    warn('UI_MISSING_CHAR',
+      `엔진 DB에는 있으나 화면에서 선택할 수 없는 캐릭터 중 B티어 이상이 ${missingGood.length}명 있음 ` +
+      `(사용자가 보유해도 조합에 넣을 수 없다): ` +
+      missingGood.map((c) => `${c.name_kr}(${[c.tiers.story, c.tiers.bossing, c.tiers.pvp].join('/')})`).join(', '));
+  }
+}
+
+// 이름에 위키 템플릿 잔재나 제어문자가 들어간 항목 — "{{hover" 유형 재발 방지.
+cdb.forEach((c) => {
+  ['title', 'name_kr'].forEach((f) => {
+    const v = c[f];
+    if (typeof v !== 'string' || !v.trim()) {
+      err('NAME_EMPTY', `${c.id}: ${f}가 비어 있음`);
+      return;
+    }
+    if (/\{\{|\}\}|\[\[|\]\]|<[a-z/]/i.test(v)) {
+      err('NAME_MARKUP',
+        `${c.id}: ${f}='${v}' — 위키/HTML 마크업 잔재로 보임. ` +
+        `이런 이름은 다른 데이터와 매칭되지 않아 해당 캐릭터가 조용히 누락된다.`);
+    }
+  });
+});
+
+// ---------------------------------------------------------------------------
 // 리포트
 // ---------------------------------------------------------------------------
 const line = '─'.repeat(72);
