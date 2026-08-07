@@ -769,9 +769,13 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       const base = m?.tiers?.[key];
       const withTreasure = note.treasureTiers?.[key];
       // 애장품 보유 시 티어를 알고 있으면 "얼마나 손해인지"를 구체적으로 알려준다.
+      // 2026-08-07 수정: 처음엔 "애장품을 갖추면 B → SS로 올라간다"고 썼는데, 설명을 쓰는 AI가
+      // 그 문장을 '성장 잠재력'으로 읽고 미보유 상태를 오히려 장점처럼 포장하는 문제가 있었다
+      // (유저 지적: "애장품이 없으니까 잘못된 추천이잖아"). 지금 보유한 상태를 기준으로만
+      // 읽히도록, 상승 여력이 아니라 현재의 한계로 서술한다.
       const gap = withTreasure
-        ? ` 애장품을 갖추면 이 모드 평가가 ${base} → ${withTreasure}로 올라가므로, 이 조합에서는 ` +
-          `애장품 없는 ${base} 기준으로 계산했습니다.`
+        ? ` 지금은 애장품이 없어 공략의 ${withTreasure} 평가가 아니라 ${base} 성능으로 계산했습니다. ` +
+          `이 조합에서 ${m.title}의 기여는 ${base} 수준까지로 보고 판단해야 합니다.`
         : ` 이 조합에서는 애장품 없는 기본 티어(${base}) 기준으로 계산했습니다.`;
       reasons.push(
         `[투자 참고] ${m.title}는(은) 공략 기준 애장품(Treasure) 의존도가 높은 캐릭터인데 애장품을 ` +
