@@ -1123,10 +1123,58 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
   const ownedTitleSet = new Set(ownedCharacters.map((c) => c.title));
 
+  // 2026-08-07 추가: flexSlots 지원.
+  //
+  // prydwen 팀 데이터베이스의 조합에는 "이 3명 + B3 아무나" 처럼 비워둔 자리가 있다.
+  // 예전 스크랩은 그 자리 표시(B1/B2/B3/flex)를 그냥 버려서, 5인 팀이 2~4인짜리로 잘린 채
+  // 저장됐고 완전일치 후보에서 아예 제외되고 있었다(유저 지적). 이제 flexSlots로 복원했으니,
+  // 비어 있는 자리는 보유 로스터에서 조건에 맞는 캐릭터로 채워 5인을 완성한다.
+  //   "B1"/"B2"/"B3" -> 그 버스트 단계 캐릭터
+  //   "B1-CDR"        -> 버스트1 중 쿨타임 감소를 제공하는 캐릭터
+  //   "flex"          -> 버스트 무관
+  // 채울 때는 이 모드 티어가 높은 순으로 넣되, 이미 고정 멤버로 들어간 캐릭터는 제외한다.
+  const slotCandidates = (slot, used) => {
+    const pool = ownedCharacters.filter(
+      (c) => !used.has(c.title) && !excludeTitles.has(c.title)
+    );
+    const m = String(slot).match(/^B([123])/);
+    let filtered = m ? pool.filter((c) => String(c.burst) === m[1]) : pool;
+    if (/-CDR$/i.test(String(slot))) filtered = filtered.filter(providesCDR);
+    return filtered.sort(
+      (a, z) => tierScore(z, mode, treasureIds) - tierScore(a, mode, treasureIds)
+    );
+  };
+
+  // 고정 멤버 + 슬롯을 채워 5인을 만든다. 채울 수 없으면 null.
+  const fillTeam = (a) => {
+    const fixed = a.members || [];
+    const slots = a.flexSlots || [];
+    if (fixed.length + slots.length !== 5) return null;
+    if (!fixed.every((t) => ownedTitleSet.has(t))) return null;
+    if (fixed.some((t) => excludeTitles.has(t))) return null;
+    const used = new Set(fixed);
+    const picked = [];
+    // 제약이 강한 슬롯(B1-CDR 등)부터 채워야 후보가 고갈되지 않는다.
+    const order = slots
+      .map((s, i) => ({ s, i }))
+      .sort((x, y) => slotCandidates(x.s, used).length - slotCandidates(y.s, used).length);
+    for (const { s } of order) {
+      const cand = slotCandidates(s, used);
+      if (!cand.length) return null;
+      picked.push(cand[0]);
+      used.add(cand[0].title);
+    }
+    return {
+      members: [...fixed.map((t) => byTitle.get(t)), ...picked],
+      filledCount: picked.length,
+    };
+  };
+
   const candidates = synergyNotes.archetypes.filter((a) => {
     const members = a.members || [];
-    if (members.length !== 5) return false;
-    if (new Set(members).size !== 5) return false;
+    const slots = a.flexSlots || [];
+    if (members.length + slots.length !== 5) return false;
+    if (new Set(members).size !== members.length) return false;
     if (a.ambiguousBurst) return false;
     if (!compatModes.includes(a.mode)) return false;
     if (!members.every((m) => ownedTitleSet.has(m))) return false;
@@ -1141,25 +1189,44 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
 
   let best = null;
   candidates.forEach((a) => {
-    const members = a.members.map((m) => byTitle.get(m));
+    const filled = fillTeam(a);
+    if (!filled) return;
+    const members = filled.members;
     const scored = scoreTeam(members, mode, { treasureIds, bossElement });
     if (!scored.valid) return;
     // scoreTeam()이 이미 낭비 인원을 제외하고 계산한 tierTotal을 그대로 후보 비교 기준으로
     // 쓴다 — 아키타입 개수와 무관하게 안정적이고, 같은 버스트 단계 낭비 인원도 반영된다.
     const tierSum = scored.tierTotal;
-    if (!best || tierSum > best.tierSum) {
-      best = { archetype: a, members, scored, tierSum };
+    // 동점이면 자유 슬롯을 덜 채운 쪽(= prydwen이 더 구체적으로 지정한 조합)을 택한다.
+    if (!best || tierSum > best.tierSum ||
+        (tierSum === best.tierSum && filled.filledCount < best.filledCount)) {
+      best = { archetype: a, members, scored, tierSum, filledCount: filled.filledCount };
     }
   });
 
   if (!best) return null;
+
+  // 자유 슬롯을 채워 완성한 조합이면, 어디까지가 원본 조합이고 어디를 우리가 채웠는지 밝힌다.
+  // (그래야 사용자가 "이 자리는 바꿔도 되는 자리"라는 걸 알 수 있다)
+  const slotReasons = [];
+  if (best.filledCount > 0) {
+    const fixedTitles = new Set(best.archetype.members || []);
+    const filledTitles = best.members.filter((m) => !fixedTitles.has(m.title)).map((m) => m.title);
+    slotReasons.push(
+      `[자유 슬롯] 이 조합은 원래 ${[...fixedTitles].join(', ')}만 고정이고 나머지 ` +
+      `${best.archetype.flexSlots.join(', ')} 자리는 비어 있는 구성입니다. ` +
+      `보유 캐릭터 중 조건에 맞고 이 모드 티어가 가장 높은 ${filledTitles.join(', ')}로 채웠습니다. ` +
+      `이 자리는 같은 조건을 만족하는 다른 캐릭터로 바꿔도 조합이 성립합니다.`
+    );
+  }
+
   return {
     members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
     // scoreTeam().totalScore(아키타입 중복 합산 버그로 700점대까지 부풀 수 있음) 대신 위에서
     // 후보 비교에 쓴 티어 합을 그대로 표시 점수로 쓴다 — 캐릭터 5명의 실제 성능을 그대로
     // 반영하는 값이라 이해하기 쉽고, 아키타입 개수가 늘어나도 값이 흔들리지 않는다.
     totalScore: best.tierSum,
-    reasons: best.scored.reasons,
+    reasons: [...slotReasons, ...best.scored.reasons],
     // 원문(영어) 그대로 사용하지 말 것 — 호출부에서 이 두 필드를 참고 자료로만 삼아
     // AI에게 한국어(또는 선택 언어)로 재구성하도록 넘긴다.
     archetypeName: best.archetype.name,

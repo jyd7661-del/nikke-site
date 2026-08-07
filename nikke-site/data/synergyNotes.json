@@ -276,18 +276,6 @@
       "note": "리터-티아-나가 '삼위일체' 코어에 나머지 2딜러는 스테이지별로 교체(아인/라플라스, 혹은 드레이크 트레저/퀀시: 에스케이프 퀸). 참고: 2026-07-31 기준 국내 유튜버(김진서)는 신규 유닛 맥스웰: 오디너리 미케닉이 미시리스 타워 콘텐츠 정상화의 핵심이라고 평가함 - 구성 개편 여부는 추가 확인 필요."
     },
     {
-      "id": "pilgrim-tower",
-      "name": "필그림 타워 추천 조합",
-      "mode": "tribe_tower",
-      "note": "단일 타겟 화력, 광역 정리력, 쿨감이 모두 뛰어난 조합으로 5원소가 골고루 섞여 원소 방벽에 안 막히는 게 특징. 라피를 버스트I으로 돌리면 버스트III 딜러 슬롯을 하나 더 확보 가능."
-    },
-    {
-      "id": "kraken-crown-mast",
-      "name": "크라켄전 크라운+마스트 로테이션",
-      "mode": "raid",
-      "note": "크라운을 3버스트 중 2번(크라운→크라운→마스트) 사용하는 로테이션이 정석. 앵커: 이노센트 메이드가 있으면 더 강한 딜러와 함께 마스트를 발동."
-    },
-    {
       "id": "mirror-container-cindy",
       "name": "미러 컨테이너(전기) 신데렐라 하이퍼캐리",
       "members": [
@@ -652,7 +640,12 @@
         "Naga"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The famous school girls of Missilis, known for their absurd “power” (whatever meaning you want). They are so strong that you can use any DPS with them and it still works wonderfully. Problem with them is, you need another Burst I here: Tia - Burst I - Naga - Burst III - Burst III. Example B3 can be high ranking in Tier List Substitutions: -"
+      "note": "[Source: prydwen.gg Team Database] The famous school girls of Missilis, known for their absurd “power” (whatever meaning you want). They are so strong that you can use any DPS with them and it still works wonderfully. Problem with them is, you need another Burst I here: Tia - Burst I - Naga - Burst III - Burst III. Example B3 can be high ranking in Tier List Substitutions: -",
+      "flexSlots": [
+        "B1-CDR",
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-el-macho",
@@ -662,7 +655,12 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] This place was once for Blanc and Noir, but let’s be real, they are outclassed heavily by this duo. El Ma-cho gives way stronger buff unconditionally, strong healing and comes with insane reload speed which allows you to ignore Ammo OL completely. Substitutions: -"
+      "note": "[Source: prydwen.gg Team Database] This place was once for Blanc and Noir, but let’s be real, they are outclassed heavily by this duo. El Ma-cho gives way stronger buff unconditionally, strong healing and comes with insane reload speed which allows you to ignore Ammo OL completely. Substitutions: -",
+      "flexSlots": [
+        "B1-CDR",
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-crown",
@@ -672,7 +670,12 @@
         "Naga"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] Crown is the better Tia. Overall, her team looks exactly like the Tia-Naga team. Substitutions: -"
+      "note": "[Source: prydwen.gg Team Database] Crown is the better Tia. Overall, her team looks exactly like the Tia-Naga team. Substitutions: -",
+      "flexSlots": [
+        "B1-CDR",
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-auto-team",
@@ -801,7 +804,10 @@
         "Ada Wong"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] This team works on one concept - True damage funneling. It has zero defense which means either you kill enemies before they start dealing damage or you die. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] This team works on one concept - True damage funneling. It has zero defense which means either you kill enemies before they start dealing damage or you die. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "flex"
+      ]
     },
     {
       "id": "pw-god-comp-3",
@@ -813,7 +819,11 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg Team Database] Okay these teams will blow your mind, not only from how you craft them, but also you will say: Is that even possible? Key Point to Note: Red Hood is the Solo Burst I Unit, and DO NOT USE RAPI: The Hood here because she will be B1 version This team can deal with stages by relying on 2, or at maximum 3 full Bursts to pass a stage. When you use Red Hood as Burst 1 only, you have an insanely high amount of attack buffs over 10s, and you can even do it twice before she goes on cooldown. It allows you to bring 2 DPS, which will a lot of times be Modernia + Nikke that matches the “Weak Element” of the Stage. Ideally, the B3 choices depend on the stage, and aren’t as easy as - this stage is Wind Weak, so I will pick Vesti: Tactical Upgrade / Scarlet: Black Shadow Huh? Why is Vesti in Wind weak? It’s because there will be a time when you face so many Raptures at once that your SBS damage is splitted too much; it deals meme damage. When that time comes, please remember praying to Vesgod and she will answer. (1145F for example). You want to study the stage step by step and see what best helps you progress from one wave to the other wave, and what the next wave requires. At times, you might need to i-frame to dodge Remnant Raptures, or hold your Burst while your Modernia kills off Raptures outside of Burst. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "flexSlots": [
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-elysion-best-tribe-tower-team",
@@ -838,7 +848,13 @@
         "Liter"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg Team Database] Thanks to Flora with her insane buffing, you can now ditch Tia and go for Flora treasure instead. And Laplace: UH also helps a lot on mob clearing. Substitutions: This Team is part of Meta Teams - Tribe Tower Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] Thanks to Flora with her insane buffing, you can now ditch Tia and go for Flora treasure instead. And Laplace: UH also helps a lot on mob clearing. Substitutions: This Team is part of Meta Teams - Tribe Tower Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "B3"
+      ],
+      "requiresTreasure": [
+        "Flora"
+      ]
     },
     {
       "id": "pw-tetra-tribe-tower-team-1",
@@ -942,7 +958,11 @@
         "Naga"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] A shielder is needed to survive the fight, which is the only reason Tia is here. Tia needs to Burst to apply shields and requires a second B1 Nikke for the team to function. Since Tia is Iron, you pretty much get the freedom of running whatever you’ve invested in, hence very beginner friendly. Burst Tia to block the slam or shockwave from Ultra. Substitutions: Anis: Star may be replaced with any B1 CDR. Naga may be replaced with Nayuta or Grave. (속성: Iron)"
+      "note": "[Source: prydwen.gg Team Database] A shielder is needed to survive the fight, which is the only reason Tia is here. Tia needs to Burst to apply shields and requires a second B1 Nikke for the team to function. Since Tia is Iron, you pretty much get the freedom of running whatever you’ve invested in, hence very beginner friendly. Burst Tia to block the slam or shockwave from Ultra. Substitutions: Anis: Star may be replaced with any B1 CDR. Naga may be replaced with Nayuta or Grave. (속성: Iron)",
+      "flexSlots": [
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-everyone-almost-is-a-dps-now",
@@ -1000,12 +1020,19 @@
       "id": "pw-no-pilgrims",
       "name": "No Pilgrims",
       "members": [
-        "Liter",
-        "Blanc",
-        "Noir"
+        "Mast: Romantic Maid",
+        "Moran",
+        "Anchor: Innocent Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Beginner-friendly team. Bunny duo being wind helps team-building in the early-game. Maids Mast and Anchor, or the Tia and Naga twin will perform better if you have them, but you'll need some Wind unit to deal with QTE (red circles). Substitutions: Liter may be replaced with any B1 CDR. (속성: Wind)"
+      "note": "[Source: prydwen.gg Team Database] Beginner-friendly team. Bunny duo being wind helps team-building in the early-game. Maids Mast and Anchor, or the Tia and Naga twin will perform better if you have them, but you'll need some Wind unit to deal with QTE (red circles). Substitutions: Liter may be replaced with any B1 CDR. (속성: Wind)",
+      "flexSlots": [
+        "B3",
+        "B3"
+      ],
+      "requiresTreasure": [
+        "Moran"
+      ]
     },
     {
       "id": "pw-rapi-and-helm-vs-harvester",
@@ -1107,7 +1134,11 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Beginner friendly team. Maid Duo being water helps team-building in the early-game. This team will preform worse than the Bunny Ade version of the Spider Slayer team if you have 2 invested Water DPS and Summer Elegg. Burst Maid Mast with the stronger DPS. Substitutions: Liter may be replaced with any B1 CDR. (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] Beginner friendly team. Maid Duo being water helps team-building in the early-game. This team will preform worse than the Bunny Ade version of the Spider Slayer team if you have 2 invested Water DPS and Summer Elegg. Burst Maid Mast with the stronger DPS. Substitutions: Liter may be replaced with any B1 CDR. (속성: Water)",
+      "flexSlots": [
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-oh-crab",
@@ -1207,7 +1238,13 @@
         "Vesti: Tactical Upgrade"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] When they first dropped her, people were kinda disappointed with her Bossing power (which is the most famous mode in Nikke - Solo Raid). But eventually we figure out what a monster Shift Up has let loose onto their game. Vesgod is the one woman army. On burst, off burst, buffer has or not, it doesn’t matter. If loving you is the work of God, then Vesti’s work is sending you back to Him. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] When they first dropped her, people were kinda disappointed with her Bossing power (which is the most famous mode in Nikke - Solo Raid). But eventually we figure out what a monster Shift Up has let loose onto their game. Vesgod is the one woman army. On burst, off burst, buffer has or not, it doesn’t matter. If loving you is the work of God, then Vesti’s work is sending you back to Him. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "B1",
+        "B2",
+        "flex",
+        "flex"
+      ]
     },
     {
       "id": "pw-other-one-nikke-army-teams",
@@ -1216,7 +1253,13 @@
         "Rapi: Red Hood"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The SSR version of our female protagonist brings shame to all current Nikkes ingame. She excels in both single target and AoE wiping, just like SBS (below) without the distributing damage fallback. She can even help you as a decent B1 CDR when you lack a proper team and just have her + another One Nikke Army below. Disadvantage? Require your device to run at 60 FPS consistently. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] The SSR version of our female protagonist brings shame to all current Nikkes ingame. She excels in both single target and AoE wiping, just like SBS (below) without the distributing damage fallback. She can even help you as a decent B1 CDR when you lack a proper team and just have her + another One Nikke Army below. Disadvantage? Require your device to run at 60 FPS consistently. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "B1",
+        "B2",
+        "flex",
+        "flex"
+      ]
     },
     {
       "id": "pw-mint-ka-team",
@@ -1226,7 +1269,12 @@
         "Mint"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The latest duo, they are insanely strong with a lot of buffs which vibes well with meta DPS too, and if your B1 is Anis Sparkling Star, it's set in stone Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] The latest duo, they are insanely strong with a lot of buffs which vibes well with meta DPS too, and if your B1 is Anis Sparkling Star, it's set in stone Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "B1-CDR",
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-el-ma-chor",
@@ -1236,7 +1284,12 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] There were once Blanc and Noir, but let’s be real, they are outclassed heavily by this duo. El Ma-chor gives way stronger buff unconditionally, strong healing and comes with insane reload speed which allows you to ignore Ammo OL completely. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] There were once Blanc and Noir, but let’s be real, they are outclassed heavily by this duo. El Ma-chor gives way stronger buff unconditionally, strong healing and comes with insane reload speed which allows you to ignore Ammo OL completely. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "B1",
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-auto-team-story",
@@ -1323,7 +1376,13 @@
         "Anis: Star"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] Anis is that strong, she can solo carry as a solo B1, doesn't care about your B2 or B3 too because she gives CDR too. Dmg, buff, CDR and burst gauge, she's basically Siren on steroids. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] Anis is that strong, she can solo carry as a solo B1, doesn't care about your B2 or B3 too because she gives CDR too. Dmg, buff, CDR and burst gauge, she's basically Siren on steroids. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "flexSlots": [
+        "B2",
+        "B3",
+        "B3",
+        "B3"
+      ]
     },
     {
       "id": "pw-most-common-ur-team-electric",
@@ -1582,7 +1641,13 @@
         "Elegg: Boom and Shock"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Alternate teams for saving Crown include using Nayuta or Bunny Ade over Crown, but it is ideal to have Elegg skilled up and OLed for these teams rather than the option we have with Crown to use MMast. B1-CDR options: Anis: Star, Siren, Liter, Moran-Treasure. Substitutions: Summer Elegg may be replaced by Maid Mast. Nayuta may be replaced with Bunny Ade. Helm may be used over Privaty(Treasure) or Elegg/MMast if healing is required or if a unit is not built/needed elsewhere. xLudmilla is a very strong option for Water bosses with core, where she may be used over SElegg or MMast if she is built, or even Privaty(Treasure) if she is not built. (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] Alternate teams for saving Crown include using Nayuta or Bunny Ade over Crown, but it is ideal to have Elegg skilled up and OLed for these teams rather than the option we have with Crown to use MMast. B1-CDR options: Anis: Star, Siren, Liter, Moran-Treasure. Substitutions: Summer Elegg may be replaced by Maid Mast. Nayuta may be replaced with Bunny Ade. Helm may be used over Privaty(Treasure) or Elegg/MMast if healing is required or if a unit is not built/needed elsewhere. xLudmilla is a very strong option for Water bosses with core, where she may be used over SElegg or MMast if she is built, or even Privaty(Treasure) if she is not built. (속성: Water)",
+      "flexSlots": [
+        "B1-CDR"
+      ],
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pw-water-team-2-shotguns",
