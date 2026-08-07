@@ -756,34 +756,41 @@ function combinations(arr, k) {
 }
 
 // 버킷당 후보를 이 개수로 제한해 탐색량을 억제 (티어 점수 상위 N명만 조합 후보로 고려).
-// 예: 8개면 1-1-3 포메이션 기준 최대 약 1.2만 개 조합 → 실시간 응답 가능한 수준.
+// 예: 8개면 버스트 인원 분배 기준 최대 약 1.2만 개 조합 → 실시간 응답 가능한 수준.
 const BUCKET_CAP = 8;
 
-// 버스트 I/II/III가 각 1명 이상, 합계 5명이 되는 모든 분배(가능한 포메이션)를 자동 생성.
+// 버스트 I/II/III가 각 1명 이상, 합계 5명이 되는 인원 분배 조합을 전부 만든다.
 // 2026-08-07 수정: 이전엔 '2-1-2'/'1-1-3' 두 가지 형태만 후보로 만들어서, 실제로 유효한
 // 3-1-1/1-3-1/1-2-2/2-2-1 같은 다른 버스트 분배는 애초에 탐색조차 되지 않았다(유저 지적:
-// "포메이션에 갇혀서 조합을 짜는 느낌이 있다"). 이제 버스트 I/II/III 각 1~3명, 합 5명이 되는
-// 가능한 모든 분배(총 6가지)를 자동 생성해 전부 탐색 대상에 넣는다. 결과 team.formation
-// 표시는 그대로 유지되므로 어떤 분배가 선택됐는지는 여전히 보여준다.
-function buildFormations() {
-  const formations = {};
+// "포메이션에 갇혀서 조합을 짜는 느낌이 있다"). 6가지 분배를 전부 자동 생성해 탐색 대상에
+// 넣도록 고쳤었다.
+// 2026-08-07 수정(2차): 유저가 재차 지적 — "포메이션 기준으로 선정되는 느낌이 난다, 왜
+// 있는지 모르겠다"고 함. 6가지를 전부 도는 것 자체는 수학적으로는 버스트I/II/III 각 1명
+// 이상이라는 조건을 만족하는 모든 5인 조합을 빠짐없이 탐색하는 것과 동일한 결과를 내지만
+// (버스트 인원 분배는 5명을 뽑으면 자동으로 정해지는 결과이지, 그것을 미리 정해두고 그
+// 틀에 맞춰 캐릭터를 채워 넣는 게 아니다), 코드가 "포메이션"이라는 개념을 선정 로직의
+// 1급 조직 원리처럼 노출하고 있어 그 인상을 주고 있었다. 이 함수는 이제 순수하게 "버스트
+// I/II/III 인원수 조합(needed member counts)"을 생성하는 내부 구현 디테일일 뿐이고,
+// 결과 team 객체에는 더 이상 formation 필드를 넣지 않는다 — 어떤 분배였는지는 선정에도
+// 표시에도 쓰이지 않는다.
+function buildBurstCountDistributions() {
+  const distributions = [];
   for (let a = 1; a <= 3; a += 1) {
     for (let b = 1; b <= 3; b += 1) {
       const c = 5 - a - b;
       if (c < 1 || c > 3) continue;
-      formations[`${a}-${b}-${c}`] = { 1: a, 2: b, 3: c };
+      distributions.push({ 1: a, 2: b, 3: c });
     }
   }
-  return formations;
+  return distributions;
 }
-const FORMATIONS = buildFormations();
+const BURST_COUNT_DISTRIBUTIONS = buildBurstCountDistributions();
 
 // ownedCharacters: characterDatabase.json 항목 배열(보유한 캐릭터만)
 export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   const topN = opts.topN || 5;
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
-  const formations = opts.formation ? [opts.formation] : Object.keys(FORMATIONS);
 
   const buckets = { 1: [], 2: [], 3: [] };
   ownedCharacters.forEach((c) => {
@@ -815,10 +822,9 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   });
 
   const candidateTeams = [];
-  formations.forEach((formationName) => {
-    const counts = FORMATIONS[formationName];
+  BURST_COUNT_DISTRIBUTIONS.forEach((counts) => {
     if (buckets[1].length < counts[1] || buckets[2].length < counts[2] || buckets[3].length < counts[3]) {
-      return; // 이 포메이션을 만들 만큼 인원이 부족하면 스킵
+      return; // 이 인원 분배를 만들 만큼 후보가 부족하면 스킵
     }
     const combos1 = combinations(buckets[1], counts[1]);
     const combos2 = combinations(buckets[2], counts[2]);
@@ -830,19 +836,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           const members = [...c1, ...c2, ...c3];
           const result = scoreTeam(members, mode, { treasureIds, bossElement });
           candidateTeams.push({
-            formation: formationName,
             members: members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
             ...result,
-            // 2026-08-07 수정: 유저가 "왜 자꾸 다중 조합에 추가 점수를 주는거야? 조합에 있는
-            // 니케 점수만 따지라고 했잖아"라고 재차 지적. scoreTeam().totalScore는 아키타입
-            // 완전/부분일치·시너지 페어·CDR 등을 합산한 값이라, 개별 티어가 낮아도(A/A/A/S/S)
-            // 등록된 아키타입 여러 개와 겹치기만 하면 부분일치 보너스만으로 60점 넘게 붙어
-            // 티어가 훨씬 높은 다른 조합을 이기는 사례가 실측으로 확인됐다(티아/리타/나가/아인/
-            // 네온:비전아이 조합, tierTotal 32인데 totalScore 109). findExactTeamMatch에서
-            // 이미 "후보 비교는 티어 합으로, reasons만 scoreTeam 근거를 참고용으로 쓴다"고
-            // 정리했던 것과 동일한 원칙을 recommendTeams의 정렬/표시 점수에도 그대로 적용한다 —
-            // 아키타입/시너지 보너스는 reasons(설명 문장)에는 계속 나타나지만, 팀을 고르고
-            // 점수를 매기는 기준에는 더 이상 영향을 주지 않는다.
             totalScore: result.tierTotal,
           });
         });
@@ -890,14 +885,6 @@ export function resolveOwnedCharacters(ownedIds) {
 // findWastedBurstMembers()의 낭비 판정을 반영하지 않던 문제를 함께 맞춘다 — 같은 버스트 단계
 // 인원이 실제로 못 쓰는 자리라면 이 완전일치 후보 비교에서도 점수에 넣지 않는다.
 // ---------------------------------------------------------------------------
-function computeFormationLocal(members) {
-  const counts = { 1: 0, 2: 0, 3: 0 };
-  members.forEach((m) => {
-    counts[m.burst] = (counts[m.burst] || 0) + 1;
-  });
-  return `${counts[1]}-${counts[2]}-${counts[3]}`;
-}
-
 export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
@@ -932,7 +919,6 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
 
   if (!best) return null;
   return {
-    formation: computeFormationLocal(best.members),
     members: best.members.map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
     // scoreTeam().totalScore(아키타입 중복 합산 버그로 700점대까지 부풀 수 있음) 대신 위에서
     // 후보 비교에 쓴 티어 합을 그대로 표시 점수로 쓴다 — 캐릭터 5명의 실제 성능을 그대로
