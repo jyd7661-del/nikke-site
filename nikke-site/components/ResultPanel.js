@@ -97,7 +97,6 @@ function AiRecommendButton({ roster, mode, bossElement }) {
           members: team.members,
           mode,
           bossElement,
-          formation: team.formation,
           rating,
         }),
       });
@@ -134,7 +133,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
   return (
     <div className="bg-slate-900/40 rounded-lg p-4 border border-nikke-accent/30">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-        <h3 className="font-semibold text-slate-100">🤖 AI가 구성한 조합 · {team.formation} 포메이션</h3>
+        <h3 className="font-semibold text-slate-100">🤖 AI가 구성한 조합</h3>
         <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
           점수 {team.totalScore}
         </span>
