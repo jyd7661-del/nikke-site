@@ -1,34 +1,31 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { recommendTeams } from '@/lib/synergyEngine';
+import { recommendTeams, findExactTeamMatch } from '@/lib/synergyEngine';
 import characterInvestmentNotes from '@/data/characterInvestmentNotes.json';
-import synergyNotes from '@/data/synergyNotes.json';
 
 // 보유 로스터에서 5인 조합을 추천하는 API.
 //
 // 2026-08-07 근본 수정: 유저가 이 세션에서 여러 차례("왜 자꾸 다중 조합에 추가 점수를 주는거야?
-// 조합에 있는 니케 점수만 따지라고 했잖아") 반복 지적함. 지금까지(배포된 버전 + 이 파일의 이전
-// 로컬 초안 모두) 이 엔드포인트는 두 가지 방식 중 하나로 동작했다:
-// (1) findExactTeamMatch — synergyNotes.archetypes(prydwen 커뮤니티 조합 500여 개)에 등록되어
-//     있고 5명 전원을 보유한 것만 후보로 놓고 그 중 티어 합이 가장 높은 것을 고른다.
-// (2) 등록된 완전일치 조합이 없으면 AI에게 자유 구성을 맡기되, 시스템 프롬프트가 "완전 보유
-//     아키타입 최우선, 개별 티어만 보고 고르는 방식은 금지"라고 명시적으로 강제했다.
-// 두 방식 모두 "등록된 아키타입"이라는 틀 안에서만 움직인다는 공통된 한계가 있었다. 그 결과
-// 예를 들어 티아/리타/아인/네온:비전아이/나가(개별 모드 티어 합 32)처럼 등록된 아키타입이기만
-// 하면, 로스터에 실제로는 티어가 훨씬 높은 리틀머메이드/크라운/베스티: 전술강화/홍련: 흑영/
-// 스노우화이트: 헤비암즈(티어 합 42) 같은 조합이 있어도 그 조합은 어떤 아키타입에도 등록되어
-// 있지 않다는 이유만으로 절대 후보에 오르지 못했다.
+// 조합에 있는 니케 점수만 따지라고 했잖아") 반복 지적함. 그전까지는 AI에게 자유 구성을 맡기되
+// 시스템 프롬프트가 "완전 보유 아키타입 최우선, 개별 티어만 보고 고르는 방식은 금지"라고 강제하고
+// 있어, 등록된 아키타입이 아니면 티어가 훨씬 높아도 절대 후보에 오르지 못하는 문제가 있었다.
+// AI 자유 구성을 없애고 recommendTeams()(순수 개별 티어 합 최고 조합, 등록 여부 무관)로 완전히
+// 바꿨다가, 이번엔 "선정 과정에서 프리드웬 아키타입 대조가 아예 빠졌다"는 지적을 받았다.
 //
-// 근본 해결: 등록된 아키타입 여부와 무관하게, 보유 로스터 전체를 대상으로 lib/synergyEngine.js의
-// recommendTeams()(가능한 버스트 I/II/III 분배 6가지 전부 탐색, 각 캐릭터의 이 모드 티어 점수
-// 합만으로 정렬)를 돌려 나온 1위 조합을 그대로 채택한다. AI는 더 이상 "어떤 5명을 쓸지"를
-// 전혀 결정하지 않고, 이미 확정된 조합이 왜 좋은지 설명하는 문장만 만든다 — 그 조합이 우연히
-// 등록된 아키타입과 정확히 일치하면 그 아키타입의 참고 자료(archetypeNote)를 설명 근거로
-// 함께 건네고, 아니면 scoreTeam의 reasons(개별 근거 문장)만 근거로 쓴다. 이렇게 하면 "조합
-// 구성"과 "조합 설명"이 완전히 분리되어, 설명 프롬프트를 아무리 다듬어도 실제 구성(점수 계산)이
-// 흔들리지 않는다 — 이번 세션에서 반복된 "프롬프트 규칙을 고쳐도 매번 똑같은 조합이 나온다"는
-// 문제의 근본 원인이 "구성까지 AI/등록된 아키타입에 맡겼던 구조" 자체였기 때문이다.
+// 2026-08-07 수정(4차, 최종): 유저가 "검증된 조합이기 때문에 동일한 조합이 있으면 먼저 선정한다.
+// 대신 그 조합이 캠페인/보스/PVP 중 어디용인지 분류해서 요청에 맞게 답하고, 부합하는 조합이
+// 여럿이면 티어 합이 높은 쪽을 선택하라"고 정확히 지시함. 이는 lib/synergyEngine.js의
+// findExactTeamMatch()가 이미 하는 일과 정확히 같다 — synergyNotes.archetypes(prydwen 검증
+// 조합)를 요청 모드와 호환되는 것만(MODE_COMPAT) 필터링하고, 5명 전원을 보유한 것 중 티어 합이
+// 가장 높은 것을 고른다(더 이상 아키타입 개수로 점수가 쌓이지 않고, 순수 티어 합으로만 비교).
+// 그래서 findExactTeamMatch를 1순위로 복원하고, 등록된 완전일치 조합이 하나도 없을 때만
+// recommendTeams(전체 로스터 대상 순수 티어 탐색)로 폴백한다. 어느 경로든 "구성"은 AI가 전혀
+// 관여하지 않고, AI는 이미 확정된 5명이 왜 좋은지 설명하는 문장만 작성한다.
+//
+// 2026-08-07 수정(5차): 유저가 "포메이션 기준으로 선정되는 느낌이 난다"고 재차 지적해, 결과
+// 화면의 포메이션 라벨과 선정 로직 내부의 '포메이션' 개념을 완전히 제거했다(lib/synergyEngine.js
+// 참고). 이 파일의 응답에서도 team.formation 필드를 더 이상 내려주지 않는다.
 export const runtime = 'nodejs';
 // 2026-08-03 수정: 유저가 "AI 추천 버튼을 눌러도 아무것도 안 나온다"고 제보. 실제로 재현해보니
 // 응답 자체는 오지만(200 OK) 로스터가 크면(20명 이상) 프롬프트가 커져 30~40초 가까이 걸림.
@@ -42,13 +39,8 @@ const MODEL = 'claude-sonnet-5';
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
-const MODE_COMPAT = {
-  campaign: ['campaign', 'tribe_tower'],
-  story: ['campaign', 'tribe_tower'],
-  bossing: ['bossing', 'raid'],
-  raid: ['raid', 'bossing'],
-  pvp: ['pvp'],
-};
+// 모드별 아키타입 호환 필터링(campaign↔tribe_tower, bossing↔raid 등)은 이제
+// lib/synergyEngine.js의 findExactTeamMatch() 안에서 처리하므로 여기서는 필요 없다.
 
 const LANG_NAMES = { ko: '한국어', en: '영어(English)', ja: '일본어(日本語)' };
 
@@ -237,40 +229,46 @@ export async function POST(req) {
     const langName = LANG_NAMES[langKey];
     const excludeSet = new Set(Array.isArray(excludeTitles) ? excludeTitles : []);
 
-    // 조합 "구성"은 전부 여기서 결정된다 — AI는 관여하지 않는다. recommendTeams()가 가능한
-    // 버스트 I/II/III 분배 6가지 전부를 탐색해 개별 모드 티어 점수 합이 가장 높은 조합부터
-    // 정렬해 반환한다(lib/synergyEngine.js 참고).
-    const rec = recommendTeams(characters, mode, {
+    // 조합 "구성"은 전부 여기서 결정된다 — AI는 관여하지 않는다.
+    // 1순위: 등록된 아키타입(prydwen 검증 조합) 중 요청 모드와 호환되고 5명 전원을 보유한 것이
+    // 있으면, 그 중 티어 합이 가장 높은 것을 그대로 채택한다(findExactTeamMatch, 모드별로
+    // 자동 분류됨 — MODE_COMPAT 참고).
+    const exactMatch = findExactTeamMatch(characters, mode, {
       treasureIds: treasureIdSet,
       bossElement: bossElement || null,
-      topN: 20,
+      excludeTitles: Array.from(excludeSet),
     });
 
-    if (!rec.teams || rec.teams.length === 0) {
-      return Response.json(
-        { error: rec.error || '보유한 캐릭터로는 조건을 만족하는 조합을 만들 수 없습니다.' },
-        { status: 400 }
-      );
+    let chosen;
+    let archetypeNote = null;
+    let matchSource;
+
+    if (exactMatch) {
+      chosen = exactMatch;
+      archetypeNote = exactMatch.archetypeNote || null;
+      matchSource = 'prydwen-exact-match';
+    } else {
+      // 2순위(폴백): 등록된 완전일치 조합이 하나도 없으면, 보유 로스터 전체를 대상으로
+      // recommendTeams()(순수 개별 모드 티어 점수 합 최고 조합, 등록 여부 무관)를 돌린다.
+      const rec = recommendTeams(characters, mode, {
+        treasureIds: treasureIdSet,
+        bossElement: bossElement || null,
+        topN: 20,
+      });
+
+      if (!rec.teams || rec.teams.length === 0) {
+        return Response.json(
+          { error: rec.error || '보유한 캐릭터로는 조건을 만족하는 조합을 만들 수 없습니다.' },
+          { status: 400 }
+        );
+      }
+
+      // "다른 조합 보기": 이전에 보여준 멤버가 하나도 겹치지 않는 후보 중 1위를 우선 채택하고,
+      // 로스터가 작아 그런 후보가 없으면 겹치더라도 순위상 1위를 그대로 채택한다.
+      const pool = rec.teams.filter((t) => !t.members.some((m) => excludeSet.has(m.title)));
+      chosen = (pool.length > 0 ? pool : rec.teams)[0];
+      matchSource = 'tier-rank';
     }
-
-    // "다른 조합 보기": 이전에 보여준 멤버가 하나도 겹치지 않는 후보 중 1위를 우선 채택하고,
-    // 로스터가 작아 그런 후보가 없으면 겹치더라도 순위상 1위를 그대로 채택한다.
-    const pool = rec.teams.filter((t) => !t.members.some((m) => excludeSet.has(m.title)));
-    const chosen = (pool.length > 0 ? pool : rec.teams)[0];
-
-    // 채택된 조합이 우연히 등록된 아키타입(prydwen 커뮤니티 조합)과 정확히 일치하면, 그
-    // 아키타입의 참고 자료를 설명 근거로 함께 건넨다 — "구성"이 아니라 "설명"만 풍부해진다.
-    const compatModes = MODE_COMPAT[mode] || [mode];
-    const chosenTitleSet = new Set(chosen.members.map((m) => m.title));
-    const matchedArchetype = synergyNotes.archetypes.find((a) => {
-      const need = a.members || [];
-      return (
-        need.length === 5 &&
-        new Set(need).size === 5 &&
-        compatModes.includes(a.mode) &&
-        need.every((m) => chosenTitleSet.has(m))
-      );
-    });
 
     const byTitle = new Map(characters.map((c) => [c.title, c]));
     const fullMembers = chosen.members.map((m) => byTitle.get(m.title)).filter(Boolean);
@@ -280,7 +278,7 @@ export async function POST(req) {
       client,
       fullMembers,
       chosen.reasons,
-      matchedArchetype ? matchedArchetype.note : null,
+      archetypeNote,
       mode,
       modeLabel,
       treasureIdSet,
@@ -289,13 +287,12 @@ export async function POST(req) {
 
     return Response.json({
       team: {
-        formation: chosen.formation,
         members: chosen.members,
         totalScore: chosen.totalScore,
         reasons: chosen.reasons,
       },
       aiReasoning,
-      model: matchedArchetype ? 'tier-rank+prydwen-note' : 'tier-rank',
+      model: matchSource,
     });
   } catch (err) {
     console.error('ai-recommend error', err);
