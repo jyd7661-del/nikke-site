@@ -106,7 +106,7 @@ export const CHARACTERS = [
   { id: 'ade-2', cdbId: 'ade', name: '에이드', burst: 2, tier: 'T3', role: ['버퍼', '디버퍼'], img: '9/99/Ade_MI.png' },
   { id: 'elegg', name: '일레그', burst: 2, tier: 'T3', role: ['버퍼', '디버퍼'], img: '8/88/Elegg_MI.png' },
   { id: 'mori', name: '모리', burst: 2, tier: 'T3', role: ['탱커'], img: '9/9b/Mori_MI.png' },
-  { id: 'maxwell-ordinary-mechanic', name: '맥스웰: 오디너리 미케닉', burst: 2, tier: 'T3', role: ['서포터'], img: '9/9c/Maxwell_Ordinary_Mechanic_FB.png' },
+  { id: 'maxwell-ordinary-mechanic', name: '맥스웰: 오디너리 미케닉', burst: 2, tier: 'T3', role: ['서포터'], img: 'f/fe/Maxwell_Ordinary_Mechanic_MI.png' },
 
   // ── 버스트 III (메인 딜러) ────────────────────
   { id: 'snow-white', name: '스노우 화이트', burst: 3, tier: 'T0', role: ['딜러'], img: '2/24/Snow_White_MI.png' },
@@ -122,7 +122,7 @@ export const CHARACTERS = [
   { id: 'emilia', name: '에밀리아', burst: 3, tier: 'T0', role: ['딜러', 'PvP'], img: '1/15/Emilia_MI.png' },
   { id: 'vesti-tactical-upgrade', name: '베스티: 택티컬 업', burst: 3, tier: 'T0', role: ['딜러'], img: 'c/ce/Vesti_Tactical_Upgrade_MI.png' },
   { id: 'snow-white-heavy-arms', name: '스노우 화이트: 헤비암즈', burst: 3, tier: 'T0', role: ['딜러'], img: 'a/a8/Snow_White_Heavy_Arms_MI.png' },
-  { id: 'neon-vision-eye', name: '네온: 비전 아이', burst: 3, tier: 'T0', role: ['딜러'], img: '5/57/Neon_Vision_Eye_FB.png' },
+  { id: 'neon-vision-eye', name: '네온: 비전 아이', burst: 3, tier: 'T0', role: ['딜러'], img: '3/3b/Neon_Vision_Eye_MI.png' },
   { id: 'cinderella-crystal-wave', name: '신데렐라: 크리스탈 웨이브', burst: 3, tier: 'T0', role: ['딜러'], img: '5/55/Cinderella_Crystal_Wave_MI.png' },
   { id: 'drake', hasTreasure: true, name: '드레이크', burst: 3, tier: 'T1', role: ['딜러'], img: 'e/e9/Drake_MI.png' },
   { id: 'raven', name: '레이븐', burst: 3, tier: 'T1', role: ['딜러'], img: '0/02/Raven_MI.png' },
@@ -170,7 +170,7 @@ export const CHARACTERS = [
   { id: 'vesti', name: '베스티', burst: 3, tier: 'T3', role: ['딜러'], img: '7/7a/Vesti_MI.png' },
   { id: 'brid', name: '브리드', burst: 3, tier: 'T3', role: ['딜러'], img: '7/78/Brid_MI.png' },
   { id: 'crow', name: '크로우', burst: 3, tier: 'T3', role: ['탱커'], img: '6/6c/Crow_MI.png' },
-  { id: 'power', name: '파워', burst: 3, tier: 'T3', role: ['딜러'], img: 'a/a7/Power_FB.png' },
+  { id: 'power', name: '파워', burst: 3, tier: 'T3', role: ['딜러'], img: '4/42/Power_MI.png' },
   { id: 'd', name: 'D(디)', burst: 3, tier: 'T3', role: ['딜러'], img: 'a/aa/D_MI.png' },
   { id: 'k', name: 'K', burst: 3, tier: 'T3', role: ['딜러'], img: 'f/fb/K_MI.png' },
   { id: 'neon-blue-ocean', name: '네온: 블루 오션', burst: 3, tier: 'T3', role: ['딜러'], img: '9/92/Neon_Blue_Ocean_MI.png' },

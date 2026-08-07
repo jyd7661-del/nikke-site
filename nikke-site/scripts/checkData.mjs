@@ -536,6 +536,32 @@ if (uiCharacters) {
     if (![1, 2, 3].includes(Number(u.burst))) {
       err('UI_BAD_BURST', `${who}: burst=${u.burst} — 1/2/3 중 하나여야 함`);
     }
+
+    // 이미지 검사는 characterDatabase.json과 characters.js 양쪽에 다 필요하다.
+    // 2026-08-08: 유저가 "네온: 비전 아이만 전신 사진"이라고 지적해 characterDatabase의 img를
+    // _MI로 고치고 검사까지 붙였는데도 화면이 그대로였다. 화면의 캐릭터 그리드가 읽는 건
+    // characters.js 쪽 img라서, 한쪽만 고치고 한쪽만 막아둔 탓이었다. 같은 규칙을 여기도 건다.
+    if (u.img !== undefined) {
+      if (!/_MI\.png$/.test(String(u.img))) {
+        err('UI_BAD_IMG', `${who}: img='${u.img}' — 상반신 초상화(_MI.png)여야 함. ` +
+          `_FB.png(전신)는 가로로 넓어 세로형 카드에서 혼자 튄다`);
+      } else {
+        const file = decodeURIComponent(String(u.img).split('/').pop());
+        const h = createHash('md5').update(file).digest('hex');
+        const expected = `${h[0]}/${h.slice(0, 2)}/${String(u.img).split('/').pop()}`;
+        if (expected !== u.img) {
+          err('UI_BAD_IMG', `${who}: img 경로가 파일명과 맞지 않음 — '${u.img}' (계산값 '${expected}')`);
+        }
+      }
+    }
+
+    // 두 파일이 같은 캐릭터에 서로 다른 그림을 쓰고 있으면, 화면 위치에 따라 다른 얼굴이 나온다.
+    const cdbEntry = cdb.find((x) => x.id === (u.cdbId || u.id));
+    if (cdbEntry && u.img && cdbEntry.img && u.img !== cdbEntry.img) {
+      warn('UI_IMG_MISMATCH',
+        `${who}: characters.js의 img('${u.img}')와 characterDatabase의 img('${cdbEntry.img}')가 다름 — ` +
+        `선택 그리드와 결과 화면에서 다른 그림이 나올 수 있다`);
+    }
   });
 
   // 같은 엔진 캐릭터를 두 UI 항목이 가리키면, 한쪽 보유 표시가 다른 쪽을 덮어쓴 것처럼 동작한다.
