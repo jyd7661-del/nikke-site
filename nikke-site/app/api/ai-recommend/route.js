@@ -60,31 +60,94 @@ function hashIp(ip) {
 // 만들었기 때문이다. 그 라우트는 어디에서도 호출되지 않는 죽은 코드여서 2026-08-07에 삭제했고,
 // 이제 이 테이블을 쓰는 곳은 여기 하나뿐이다. 이름을 바꾸려면 Supabase 마이그레이션이 필요해
 // (기존 사용량 기록이 끊길 수 있음) 그대로 두었다. supabase/ai_rate_limit_migration.sql 참고.
-async function checkAndIncrementRateLimit(supabase, ipHash) {
+// 2026-08-08 수정: 검사와 증가를 분리했다.
+// 예전에는 요청을 받자마자 사용 횟수를 올렸는데, 캐시가 생긴 뒤로는 그러면 안 된다 —
+// 캐시에 적중한 요청은 API를 호출하지 않아 비용이 0인데도 사용자의 하루 할당량을 깎기 때문이다.
+// 이제 진입 시점에는 한도 초과 여부만 읽고, 실제로 API를 호출한 뒤에만 증가시킨다.
+async function isOverDailyLimit(supabase, ipHash) {
   const today = new Date().toISOString().slice(0, 10);
-  const { data: existing, error: selectError } = await supabase
+  const { data, error } = await supabase
     .from('ai_explain_usage')
     .select('count')
     .eq('ip_hash', ipHash)
     .eq('usage_date', today)
     .maybeSingle();
-
-  if (selectError) {
-    console.error('rate limit select error', selectError);
-    return true; // 조회 실패 시 열어둠(사용자 차단보다 안전)
+  if (error) {
+    console.error('rate limit select error', error);
+    return false; // 조회 실패 시 열어둠(사용자 차단보다 안전)
   }
+  return Boolean(data && data.count >= DAILY_LIMIT);
+}
 
-  if (existing) {
-    if (existing.count >= DAILY_LIMIT) return false;
+async function incrementDailyUsage(supabase, ipHash) {
+  const today = new Date().toISOString().slice(0, 10);
+  const { data, error } = await supabase
+    .from('ai_explain_usage')
+    .select('count')
+    .eq('ip_hash', ipHash)
+    .eq('usage_date', today)
+    .maybeSingle();
+  if (error) {
+    console.error('rate limit select error', error);
+    return;
+  }
+  if (data) {
     await supabase
       .from('ai_explain_usage')
-      .update({ count: existing.count + 1 })
+      .update({ count: data.count + 1 })
       .eq('ip_hash', ipHash)
       .eq('usage_date', today);
   } else {
     await supabase.from('ai_explain_usage').insert({ ip_hash: ipHash, usage_date: today, count: 1 });
   }
-  return true;
+}
+
+// ---------------------------------------------------------------------------
+// AI 설명문 캐시 (supabase/ai_explain_cache_migration.sql 참고)
+//
+// 엔진이 결정적이라 같은 입력이면 항상 같은 설명이 나온다. 로스터가 아니라 "AI에게 실제로
+// 보내는 입력"을 해싱하므로, 서로 다른 로스터라도 같은 조합·같은 근거로 수렴하면 캐시를
+// 공유한다. 반대로 엔진 로직이나 데이터가 바뀌어 근거 문장이 달라지면 키도 달라져서
+// 자동으로 새 설명이 생성된다 — 별도 무효화 절차가 필요 없다.
+function buildCacheKey({ mode, langKey, members, reasons, archetypeNote, treasureIdSet }) {
+  const payload = JSON.stringify({
+    v: 1, // 프롬프트를 크게 바꿔 기존 캐시를 통째로 버려야 할 때 올린다
+    mode,
+    lang: langKey,
+    members: members.map((c) => `${c.title}${treasureIdSet.has(c.id) ? '+T' : ''}`),
+    reasons: reasons || [],
+    note: archetypeNote || '',
+  });
+  return crypto.createHash('sha256').update(payload).digest('hex');
+}
+
+async function readCache(supabase, cacheKey) {
+  if (!supabase) return null;
+  const { data, error } = await supabase
+    .from('ai_explain_cache')
+    .select('reasoning, hits')
+    .eq('cache_key', cacheKey)
+    .maybeSingle();
+  if (error) {
+    console.error('cache read error', error);
+    return null; // 캐시 실패는 기능 실패가 아니다 — 그냥 새로 만든다
+  }
+  if (!data) return null;
+  // 적중 통계 갱신은 응답을 늦출 이유가 없으므로 기다리지 않는다.
+  supabase
+    .from('ai_explain_cache')
+    .update({ hits: (data.hits || 0) + 1, last_hit_at: new Date().toISOString() })
+    .eq('cache_key', cacheKey)
+    .then(null, (e) => console.error('cache hit update error', e));
+  return data.reasoning || null;
+}
+
+async function writeCache(supabase, cacheKey, reasoning, langKey, mode) {
+  if (!supabase || !reasoning) return;
+  const { error } = await supabase
+    .from('ai_explain_cache')
+    .upsert({ cache_key: cacheKey, reasoning, lang: langKey, mode }, { onConflict: 'cache_key' });
+  if (error) console.error('cache write error', error);
 }
 
 // 캐릭터의 실제 버스트 스킬 쿨타임(초). characterDatabase.json의 skills 배열은 항상
@@ -189,7 +252,15 @@ ${reasonsText}${noteBlock}
   } catch (err) {
     console.error('explainChosenTeam error', err);
   }
-  return (reasons || []).slice(0, 3).join(' ') || '보유 캐릭터 중 이 모드 티어 점수 합이 가장 높은 조합입니다.';
+  // 2026-08-08 수정: 실패 시 폴백 문장을 여기서 만들어 반환하면, 호출부가 그것을 정상 응답으로
+  // 착각해 캐시에 저장한다. 그러면 열화된 문장이 그 조합에 영구히 박힌다. 실패는 실패로 알린다.
+  return null;
+}
+
+// AI 호출이 실패했을 때 보여줄 대체 문장. 캐시에는 저장하지 않는다.
+function fallbackReasoning(reasons) {
+  return (reasons || []).slice(0, 3).join(' ') ||
+    '보유 캐릭터 중 이 모드 티어 점수 합이 가장 높은 조합입니다.';
 }
 
 export async function POST(req) {
@@ -226,11 +297,11 @@ export async function POST(req) {
     const treasureIdSet = new Set(treasureIds || []);
 
     let supabase = null;
+    let ipHash = null;
     if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
       supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-      const ipHash = hashIp(getClientIp(req));
-      const ok = await checkAndIncrementRateLimit(supabase, ipHash);
-      if (!ok) {
+      ipHash = hashIp(getClientIp(req));
+      if (await isOverDailyLimit(supabase, ipHash)) {
         return Response.json(
           { error: `오늘 사용 가능한 AI 추천 횟수(${DAILY_LIMIT}회)를 모두 사용했습니다. 내일 다시 시도해주세요.` },
           { status: 429 }
@@ -310,17 +381,43 @@ export async function POST(req) {
     const byTitle = new Map(characters.map((c) => [c.title, c]));
     const fullMembers = chosen.members.map((m) => byTitle.get(m.title)).filter(Boolean);
 
-    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-    const aiReasoning = await explainChosenTeam(
-      client,
-      fullMembers,
-      chosen.reasons,
-      archetypeNote,
+    // 조합이 확정된 뒤에 캐시를 조회한다. 여기까지의 계산은 전부 우리 서버 안에서 끝나므로
+    // 비용이 들지 않고, 캐시에 맞으면 유료 API 호출을 통째로 건너뛴다.
+    const cacheKey = buildCacheKey({
       mode,
-      modeLabel,
+      langKey,
+      members: fullMembers,
+      reasons: chosen.reasons,
+      archetypeNote,
       treasureIdSet,
-      langName
-    );
+    });
+
+    let aiReasoning = await readCache(supabase, cacheKey);
+    let cached = Boolean(aiReasoning);
+
+    if (!aiReasoning) {
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+      const generated = await explainChosenTeam(
+        client,
+        fullMembers,
+        chosen.reasons,
+        archetypeNote,
+        mode,
+        modeLabel,
+        treasureIdSet,
+        langName
+      );
+      if (generated) {
+        aiReasoning = generated;
+        // 실제로 돈을 쓴 요청만 사용자의 하루 할당량에서 차감한다.
+        if (supabase && ipHash) await incrementDailyUsage(supabase, ipHash);
+        await writeCache(supabase, cacheKey, generated, langKey, mode);
+      } else {
+        // AI 호출 실패. 근거 문장으로 대체하되 캐시에는 남기지 않는다 —
+        // 열화된 문장이 캐시에 박히면 그 조합은 영영 제대로 된 설명을 못 받는다.
+        aiReasoning = fallbackReasoning(chosen.reasons);
+      }
+    }
 
     return Response.json({
       team: {
@@ -330,6 +427,7 @@ export async function POST(req) {
       },
       aiReasoning,
       model: matchSource,
+      cached,
     });
   } catch (err) {
     console.error('ai-recommend error', err);
