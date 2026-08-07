@@ -35,7 +35,17 @@ export const runtime = 'nodejs';
 export const maxDuration = 60;
 
 const DAILY_LIMIT = 30;
-const MODEL = 'claude-sonnet-5';
+
+// 2026-08-08 변경: claude-sonnet-5 -> claude-haiku-4-5.
+//
+// 이 엔드포인트에서 AI가 하는 일은 "이미 확정된 5인 조합과 그 근거를 자연스러운 한 문단으로
+// 다시 쓰기"뿐이다. 조합 구성·점수·근거는 전부 lib/synergyEngine.js가 결정하므로 추론 능력이
+// 필요한 작업이 아니다. 반면 비용 차이는 크다 — Sonnet 5는 2026-09-01부터 $3/$15(per 1M),
+// Haiku 4.5는 $1/$5로 3배 싸다.
+//
+// 되돌리기 쉽게 환경변수로 뺐다. 설명 품질이 떨어진다고 판단되면 Vercel 환경변수에
+// AI_EXPLAIN_MODEL=claude-sonnet-5 를 넣으면 코드 수정 없이 원복된다.
+const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-4-5';
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
@@ -111,7 +121,9 @@ async function incrementDailyUsage(supabase, ipHash) {
 // 자동으로 새 설명이 생성된다 — 별도 무효화 절차가 필요 없다.
 function buildCacheKey({ mode, langKey, members, reasons, archetypeNote, treasureIdSet }) {
   const payload = JSON.stringify({
-    v: 1, // 프롬프트를 크게 바꿔 기존 캐시를 통째로 버려야 할 때 올린다
+    // 프롬프트를 크게 바꿔 기존 캐시를 통째로 버려야 할 때 올린다.
+    // v2(2026-08-08): 프롬프트로 보내는 근거 문장에 길이 상한을 두고 아키타입 노트 중복을 제거.
+    v: 2,
     mode,
     lang: langKey,
     members: members.map((c) => `${c.title}${treasureIdSet.has(c.id) ? '+T' : ''}`),
@@ -201,11 +213,37 @@ function extractJson(text) {
 // 이미 확정된(개별 모드 티어 점수 합만으로 recommendTeams가 고른) 5인 조합을 사용자에게
 // 설명하는 문장만 만든다. AI는 members 구성에 전혀 관여하지 않는다 — 실패해도 reasons를
 // 이어붙인 한국어 문장으로 대체하므로 이 엔드포인트가 완전히 실패하지 않는다.
+// 2026-08-08 추가: 프롬프트로 보낼 때만 문장을 줄인다.
+//
+// 근거 문장은 화면에도 그대로 쓰이므로 원본을 건드리면 안 되고, 여기서 복사본만 줄인다.
+// 자르는 위치는 문장 경계를 우선한다 — 문장 중간에서 끊기면 AI가 문맥을 잘못 잡을 수 있다.
+function clipForPrompt(text, maxLen) {
+  const s = String(text || '');
+  if (s.length <= maxLen) return s;
+  const cut = s.slice(0, maxLen);
+  const boundary = Math.max(cut.lastIndexOf('. '), cut.lastIndexOf('다. '), cut.lastIndexOf('요. '));
+  return boundary > maxLen * 0.5 ? cut.slice(0, boundary + 1) : `${cut.trimEnd()}…`;
+}
+
+// 근거 문장 하나의 상한. 중앙값이 162자라 대부분은 그대로 통과하고, 토템 설명처럼
+// 우리 조사 노트가 통째로 실린 700자대 문장만 잘린다.
+const MAX_REASON_CHARS = 250;
+const MAX_NOTE_CHARS = 400;
+
 async function explainChosenTeam(client, fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName) {
   const rosterText = fullMembers.map((c) => charSummaryLine(c, mode, treasureIdSet)).join('\n');
-  const reasonsText = (reasons || []).map((r) => `- ${r}`).join('\n') || '(추가 근거 없음)';
+
+  // 아키타입 노트는 근거 문장 안에도 통째로 박혀 있고(synergyEngine이 "'X' 조합으로 알려진
+  // 구성입니다. {note}" 형태로 만든다) 아래 noteBlock으로 한 번 더 보내진다. 같은 영어 원문을
+  // 두 번 실어 보내던 셈이라, 근거 쪽에서는 빼고 noteBlock 하나만 남긴다.
+  const deduped = (reasons || []).map((r) =>
+    archetypeNote && r.includes(archetypeNote) ? r.replace(archetypeNote, '').trim() : r
+  );
+
+  const reasonsText =
+    deduped.map((r) => `- ${clipForPrompt(r, MAX_REASON_CHARS)}`).join('\n') || '(추가 근거 없음)';
   const noteBlock = archetypeNote
-    ? `\n\n[참고: 이 조합은 커뮤니티에서 검증된 조합과도 일치합니다 — 아래는 그 조합에 대한 영어 참고 자료이니 그대로 인용하지 말고 내용만 참고하세요]\n${archetypeNote}`
+    ? `\n\n[참고: 이 조합은 커뮤니티에서 검증된 조합과도 일치합니다 — 아래는 그 조합에 대한 영어 참고 자료이니 그대로 인용하지 말고 내용만 참고하세요]\n${clipForPrompt(archetypeNote, MAX_NOTE_CHARS)}`
     : '';
 
   const system = `당신은 모바일 게임 '승리의 여신: 니케'의 조합 전문가입니다. 아래에 이미 확정된 5인 조합과 멤버들의 실제 데이터, 그 조합이 채점된 근거 문장이 주어집니다.
@@ -240,8 +278,10 @@ ${reasonsText}${noteBlock}
       max_tokens: 1024,
       system,
       messages: [{ role: 'user', content: userContent }],
-      thinking: { type: 'adaptive' },
-      output_config: { effort: 'low' },
+      // 2026-08-08: thinking/output_config를 뺐다. 이 작업은 이미 정해진 사실을 문장으로 옮기는
+      // 것이라 추론 단계가 필요 없고, thinking 토큰은 출력 요금($5~15/1M)으로 청구되어 이
+      // 엔드포인트 비용의 절반가량을 차지하고 있었다. 또 이 파라미터들은 모델 계열에 따라
+      // 지원 여부가 달라, 모델을 바꿀 때마다 호출이 깨질 위험도 있었다.
       stop_sequences: ['}'],
     });
     const rawText = msg.content?.find((c) => c.type === 'text')?.text || '';
