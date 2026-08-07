@@ -21,6 +21,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const DATA = path.join(__dirname, '..', 'data');
@@ -395,6 +396,30 @@ cdb.forEach((c) => {
       err('SHAPE_RELEASE_DATE', who + ": releaseDate='" + c.releaseDate + "' — 존재하지 않는 날짜");
     } else if (c.releaseDate > todayISO) {
       warn('SHAPE_RELEASE_DATE', who + ': releaseDate가 미래(' + c.releaseDate + ') — 오타 가능성');
+    }
+  }
+
+  // 캐릭터 이미지. 니케 위키에는 같은 캐릭터의 그림이 여러 종류 있는데, 우리 화면(세로형 카드)에
+  // 맞는 것은 상반신 초상화인 _MI.png뿐이다. _FB.png(전신)는 가로로 넓은 이미지라(예: 932x888,
+  // _MI는 256x512) 카드 안에서 혼자 전신으로 보이며 튄다. 실제로 파워/네온: 비전 아이/맥스웰:
+  // 오디너리 미케닉 3명이 _FB로 들어와 있었고, 유저가 화면을 보고 지적해서야 발견했다.
+  //
+  // 위키 이미지 경로는 (디코딩한 파일명의 MD5) 앞 1글자/앞 2글자로 정해지므로, 파일명만 알면
+  // 경로를 계산할 수 있다. 형식이 어긋나면 이미지가 아예 안 뜨므로 여기서 함께 검사한다.
+  if (c.img !== undefined) {
+    if (!/_MI\.png$/.test(String(c.img))) {
+      err('SHAPE_IMG', who + `: img='${c.img}' — 상반신 초상화(_MI.png)여야 함. ` +
+        `_FB.png(전신)는 비율이 달라 카드에서 혼자 튄다`);
+    } else if (!/^[0-9a-f]\/[0-9a-f]{2}\//.test(String(c.img))) {
+      err('SHAPE_IMG', who + `: img='${c.img}' — 위키 경로 형식(x/xy/파일명)이 아님`);
+    } else {
+      const file = decodeURIComponent(String(c.img).split('/').pop());
+      const h = createHash('md5').update(file).digest('hex');
+      const expected = `${h[0]}/${h.slice(0, 2)}/${String(c.img).split('/').pop()}`;
+      if (expected !== c.img) {
+        err('SHAPE_IMG', who + `: img 경로가 파일명과 맞지 않음 — '${c.img}' (계산값 '${expected}'). ` +
+          `위키는 파일명 MD5로 경로를 정하므로 이대로면 이미지가 뜨지 않는다`);
+      }
     }
   }
 
