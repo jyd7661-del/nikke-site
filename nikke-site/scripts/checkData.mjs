@@ -32,6 +32,7 @@ const notes = read('characterInvestmentNotes.json');
 const syn = read('synergyNotes.json');
 const meta = read('metaStats.json');
 const treasure = read('treasureEffects.json');
+const freshness = read('dataFreshness.json');
 
 const errors = [];
 const warns = [];
@@ -268,6 +269,23 @@ const DOMAIN = {
   prydwenTag: ['invest', 'partner', 'expert', 'limited'],
 };
 const REQUIRED_TOP = ['id', 'title', 'name_kr', 'class', 'burst', 'element', 'weapon', 'tiers', 'skills'];
+const todayISO = new Date().toISOString().slice(0, 10);
+
+// prydwenTags(고투자/파트너 의존 등 특수 표시)는 prydwen 티어리스트를 긁어 넣은 값이라,
+// 마지막 수집 이후에 나온 캐릭터는 태그가 '없는' 게 아니라 '아직 안 긁힌' 것이다. 둘은 구분이
+// 안 되므로 출시일로 판별한다 — 이 경고가 뜨면 티어리스트를 다시 긁고 asOf를 갱신해야 한다.
+{
+  const asOf = freshness?.characterDatabase?.asOf;
+  if (asOf) {
+    const newer = cdb.filter((c) => /^\d{4}-\d{2}-\d{2}$/.test(c.releaseDate || '') && c.releaseDate > asOf);
+    if (newer.length) {
+      warn('TAGS_MAYBE_STALE',
+        `characterDatabase.asOf(${asOf}) 이후에 출시된 캐릭터가 ${newer.length}명 있음 — ` +
+        `prydwen 특수 표시(prydwenTags)가 아직 수집되지 않았을 수 있다. 티어리스트를 다시 긁고 asOf를 갱신할 것: ` +
+        newer.map((c) => `${c.title}(${c.releaseDate})`).join(', '));
+    }
+  }
+}
 
 // totemCondition(속성 한정 토템) 검증. 2026-08-07 추가.
 // 아니스: 스파클링 서머나 일레그: 붐 앤 쇼크처럼 아군 버프가 특정 속성에게만 들어가는 토템은
@@ -356,6 +374,22 @@ cdb.forEach((c) => {
     err('SHAPE_DUP_TITLE', "title '" + c.title + "'이 중복 — 조회 시 뒤 항목이 앞 항목을 덮어씀");
   } else {
     seenTitle.add(c.title);
+  }
+
+  // 출시일. 2026-08-08 이전에는 "4 nov 2022", "july 23 2026", "{{#dateformat: 13 apr 2023}}"이
+  // 뒤섞여 있어 정렬도 비교도 불가능했다(위키 템플릿 잔재는 홍련/유니를 통째로 누락시킨 것과
+  // 같은 유형이다). ISO(YYYY-MM-DD)로 통일했고, 여기서 어긋나면 잡는다.
+  // 이 값이 정확해야 "지난 조사 이후 나온 신규 캐릭터"를 기계적으로 찾을 수 있다.
+  if (c.releaseDate !== undefined) {
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(c.releaseDate))) {
+      err('SHAPE_RELEASE_DATE',
+        who + ": releaseDate='" + c.releaseDate + "' — YYYY-MM-DD 형식이어야 함" +
+        (/\{\{|\}\}/.test(String(c.releaseDate)) ? ' (위키 템플릿 잔재로 보임)' : ''));
+    } else if (Number.isNaN(Date.parse(c.releaseDate + 'T00:00:00Z'))) {
+      err('SHAPE_RELEASE_DATE', who + ": releaseDate='" + c.releaseDate + "' — 존재하지 않는 날짜");
+    } else if (c.releaseDate > todayISO) {
+      warn('SHAPE_RELEASE_DATE', who + ': releaseDate가 미래(' + c.releaseDate + ') — 오타 가능성');
+    }
   }
 
   // prydwen 특수 표시. 오타가 나면 그 표시를 참조하는 쪽이 조용히 아무것도 못 찾는다.
