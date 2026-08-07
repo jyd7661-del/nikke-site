@@ -528,6 +528,18 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     }
   }
 
+  // --- 조건부 매칭 헬퍼 ---
+  // 2026-08-07 추가: synergyNotes의 일부 항목은 조건을 멤버 이름에 욱여넣어("Zwei (Treasure)",
+  // "Helm (Treasure)", "Red Hood B1") characterDatabase.json에 없는 이름이 되어버렸고, 그 결과
+  // 해당 페어/아키타입은 영영 매칭되지 않는 죽은 데이터였다(scripts/checkData.mjs가 검출).
+  // 이름은 실제 캐릭터명으로 되돌리고 조건은 requiresTreasure 필드로 분리했으므로,
+  // 여기서 그 조건을 실제로 검사한다 — 애장품을 장착하지 않았으면 그 시너지는 인정하지 않는다.
+  const idByTitle = new Map(members.map((m) => [m.title, m.id]));
+  const treasureSatisfied = (need) =>
+    !need || need.every((t) => treasureIds.has(idByTitle.get(t)));
+  const withTreasureMark = (list, need) =>
+    list.map((n) => ((need || []).includes(n) ? n + "(애장품)" : n));
+
   // --- 아키타입 매칭 ---
   // 2026-08-07 수정: 매칭되는 아키타입을 전부 더하지 않고, 일단 후보로만 모아뒀다가
   // 점수가 큰 상위 ARCHETYPE_MATCH_CAP개만 실제 점수/근거에 반영한다. (다 같이 고쳐야지 —
@@ -542,6 +554,8 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       if (need.length === 0) return;
       const have = need.filter((n) => titles.includes(n));
       if (have.length === need.length) {
+        // 애장품이 전제인 조합은 실제로 장착했을 때만 인정한다.
+        if (!treasureSatisfied(a.requiresTreasure)) return;
         archetypeMatches.push({
           points: WEIGHTS.ARCHETYPE_FULL_MATCH,
           reason: `'${a.name}' 조합으로 알려진 구성입니다. ${a.note}`,
@@ -567,10 +581,12 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // --- 시너지 페어 ---
   synergyNotes.synergyPairs.forEach((p) => {
     const have = p.members.filter((n) => titles.includes(n));
-    if (have.length === p.members.length) {
-      score += WEIGHTS.SYNERGY_PAIR;
-      reasons.push(`${p.members.join(' + ')} 페어 시너지: ${p.reason}`);
-    }
+    if (have.length !== p.members.length) return;
+    if (!treasureSatisfied(p.requiresTreasure)) return;
+    score += WEIGHTS.SYNERGY_PAIR;
+    reasons.push(
+      `${withTreasureMark(p.members, p.requiresTreasure).join(' + ')} 페어 시너지: ${p.reason}`
+    );
   });
 
   // --- CDR 보유 여부 ---
@@ -901,6 +917,11 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     if (!compatModes.includes(a.mode)) return false;
     if (!members.every((m) => ownedTitleSet.has(m))) return false;
     if (members.some((m) => excludeTitles.has(m))) return false;
+    // 애장품 전제 조합은 그 애장품을 보유했을 때만 완전일치 후보로 인정한다.
+    if (a.requiresTreasure && !a.requiresTreasure.every((t) => {
+      const c = byTitle.get(t);
+      return c && treasureIds.has(c.id);
+    })) return false;
     return true;
   });
 

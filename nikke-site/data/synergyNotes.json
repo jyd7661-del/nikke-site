@@ -146,11 +146,14 @@
       "id": "zwei-mint",
       "name": "즈바이(트레저)+민트",
       "members": [
-        "Zwei (Treasure)",
+        "Zwei",
         "Mint"
       ],
       "mode": "bossing",
-      "note": "즈바이 트레저의 약점(크리티컬 확률/피해 부족)을 민트의 버프가 정확히 보완해줘서 최상급 페어링으로 평가됨."
+      "note": "즈바이 트레저의 약점(크리티컬 확률/피해 부족)을 민트의 버프가 정확히 보완해줘서 최상급 페어링으로 평가됨.",
+      "requiresTreasure": [
+        "Zwei"
+      ]
     },
     {
       "id": "delta-crown",
@@ -197,11 +200,15 @@
       "name": "2RL 인스턴트 누크(홍련+레드후드B1+트리나)",
       "members": [
         "Scarlet",
-        "Red Hood B1",
+        "Red Hood",
         "Trina"
       ],
       "mode": "pvp",
-      "note": "레드후드B1의 공격력 버프와 트리나의 버프를 홍련에게 몰아줘서 상대가 대응하기 전에 순삭시키는 PvP 초반 러시형 조합. RL(로켓런처) 무기가 2번 발사하면 버스트 게이지가 가득 차는 특성을 활용."
+      "note": "레드후드B1의 공격력 버프와 트리나의 버프를 홍련에게 몰아줘서 상대가 대응하기 전에 순삭시키는 PvP 초반 러시형 조합. RL(로켓런처) 무기가 2번 발사하면 버스트 게이지가 가득 차는 특성을 활용.",
+      "burstRole": {
+        "Red Hood": "1"
+      },
+      "ambiguousBurst": true
     },
     {
       "id": "laplace-maxwell-pip-deck",
@@ -6526,11 +6533,14 @@
     },
     {
       "members": [
-        "Zwei (Treasure)",
+        "Zwei",
         "Mint"
       ],
       "type": "buff-complement",
-      "reason": "즈바이 트레저의 크리티컬 부족을 민트가 정확히 메꿔줌."
+      "reason": "즈바이 트레저의 크리티컬 부족을 민트가 정확히 메꿔줌.",
+      "requiresTreasure": [
+        "Zwei"
+      ]
     },
     {
       "members": [
@@ -6567,18 +6577,25 @@
     {
       "members": [
         "Rapi: Red Hood",
-        "Helm (Treasure)"
+        "Helm"
       ],
       "type": "burst-gen+heal",
-      "reason": "라피의 화력에 헬름 트레저의 버스트 생성/힐이 더해지는 표준 화력조합 페어."
+      "reason": "라피의 화력에 헬름 트레저의 버스트 생성/힐이 더해지는 표준 화력조합 페어.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "members": [
-        "Red Hood B1",
+        "Red Hood",
         "Scarlet"
       ],
       "type": "burst-buff",
-      "reason": "레드후드B1의 공격버프가 홍련의 순삭형 버스트 데미지를 극대화."
+      "reason": "레드후드B1의 공격버프가 홍련의 순삭형 버스트 데미지를 극대화.",
+      "burstRole": {
+        "Red Hood": "1"
+      },
+      "ambiguousBurst": true
     },
     {
       "members": [
