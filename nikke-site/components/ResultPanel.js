@@ -145,7 +145,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
             className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
           >
             <CharacterAvatar character={{ img: m.img, name: m.name_kr }} size="xs" />
-            {m.name_kr}
+            {m.name_kr}{roster.treasureIds?.includes(m.id) ? ' (애장품)' : ''}
           </span>
         ))}
       </div>
