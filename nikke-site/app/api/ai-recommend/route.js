@@ -356,44 +356,72 @@ export async function POST(req) {
 
     // 조합 "구성"은 전부 여기서 결정된다 — AI는 관여하지 않는다.
     //
-    // 2026-08-07 수정(6차): 유저가 선정 기준을 확정했다.
-    //   "실사용 데이터를 우선하되(실사용 데이터는 보통 스킬 시너지가 짜여있는 조합),
-    //    보유 니케가 한정적일 경우에는 스킬 시너지가 날 수 있는 방향으로 조합을 짜주는 방식"
-    // 핵심은 "실제로 많이 쓰이고 이긴 조합에는 시너지가 이미 검증되어 들어있다"는 것.
-    // 개별 티어 점수 합은 개인 성능 지표라 팀 시너지를 반영하지 못하고, 그것 때문에
-    // "왜 이 조합이 나왔는지" 설명이 계속 부실했다. 그래서 순위를 이렇게 둔다:
+    // 2026-08-07(6차): "실사용 데이터를 우선하되, 보유 니케가 한정적이면 스킬 시너지 방향으로"
+    // 라는 유저 지시에 따라 enikk 실사용을 1순위, prydwen 아키타입을 2순위로 두었다.
     //
-    //   1순위 enikk.app 실사용 5인 조합 완전일치 (캠페인=최다 사용, PvP=최고 승률)
-    //   2순위 prydwen 아키타입 완전일치 (커뮤니티 검증 조합)
-    //   3순위 폴백: 보유 로스터 전체 조합 탐색 (티어 합 + 스킬 원문 근거 시너지)
+    // 2026-08-08 수정(7차): 그 서열을 없애고 둘을 같은 층에 놓는다.
     //
-    // 보스전(솔로 레이드)은 enikk에 5인 조합 단위 기록이 없어 1순위가 항상 비고, 2순위부터
-    // 시작한다. (캐릭터별 사용률은 있으며 그건 후보 정렬과 근거 문장에 이미 반영된다.)
+    // 유저가 의도를 다시 밝혔다 — "검증된 조합"이란 "사람들이 두루두루 쓰는 조합" **또는**
+    // "prydwen에 이미 등록된 조합"이며, 둘은 원래 대등한 개념이었다. 그런데 코드가 enikk을
+    // 무조건 위에 두는 바람에 다음 문제가 실제로 발생했다:
+    //
+    //   유저 로스터 70명 기준, enikk 실사용 조합(크라운/나가/앨리스/D:킬러와이프/레드후드)이
+    //   35점으로 채택되고, 42점짜리 prydwen 조합(Vesgod)은 아예 후보에 오르지도 못했다.
+    //   문제의 enikk 조합은 캠페인 실사용 20건 중 평균 전투력이 가장 낮은(42만, 전체 평균
+    //   89.7만) 저투자 계정용 구성이었다. "많이 쓰인다"가 "이 유저에게 좋다"는 뜻은 아니다.
+    //
+    // 그래서 이제 둘 다 계산해 점수로 비교하고, 진 쪽은 alternative로 함께 내려보내
+    // 화면에서 나란히 볼 수 있게 한다(어느 쪽을 택할지는 사용자가 판단).
+    // 동점이면 enikk 실사용을 택한다 — 실제 클리어 기록이 공략 등재보다 강한 근거다.
+    //
+    //   같은 층: enikk.app 실사용 5인 완전일치 / prydwen 아키타입 완전일치(빈 칸 자동 채움 포함)
+    //   폴백   : 둘 다 없을 때만 보유 로스터 전체 조합 탐색
+    //
+    // 보스전(솔로 레이드)은 enikk에 5인 조합 단위 기록이 없어 실사용 쪽이 항상 비고, 자연히
+    // prydwen 아키타입만 남는다. (캐릭터별 사용률은 후보 정렬과 근거 문장에 이미 반영된다.)
     let chosen;
     let archetypeNote = null;
     let matchSource;
+    let alternative = null;
 
-    const realUsageMatch = findRealUsageTeamMatch(characters, mode, {
+    const matchOpts = {
       treasureIds: treasureIdSet,
       bossElement: bossElement || null,
       excludeTitles: Array.from(excludeSet),
-    });
+    };
+    const realUsageMatch = findRealUsageTeamMatch(characters, mode, matchOpts);
+    const exactMatch = findExactTeamMatch(characters, mode, matchOpts);
 
-    const exactMatch = realUsageMatch
-      ? null
-      : findExactTeamMatch(characters, mode, {
-          treasureIds: treasureIdSet,
-          bossElement: bossElement || null,
-          excludeTitles: Array.from(excludeSet),
-        });
+    const candidates = [
+      realUsageMatch && { match: realUsageMatch, source: 'enikk-real-usage', rank: 0 },
+      exactMatch && { match: exactMatch, source: 'prydwen-exact-match', rank: 1 },
+    ].filter(Boolean);
 
-    if (realUsageMatch) {
-      chosen = realUsageMatch;
-      matchSource = 'enikk-real-usage';
-    } else if (exactMatch) {
-      chosen = exactMatch;
-      archetypeNote = exactMatch.archetypeNote || null;
-      matchSource = 'prydwen-exact-match';
+    if (candidates.length) {
+      candidates.sort(
+        (a, b) => (b.match.totalScore - a.match.totalScore) || (a.rank - b.rank)
+      );
+      const win = candidates[0];
+      chosen = win.match;
+      matchSource = win.source;
+      archetypeNote = win.match.archetypeNote || null;
+
+      // 진 쪽은 멤버 구성이 실제로 다를 때만 대안으로 내려보낸다(같으면 보여줄 이유가 없다).
+      const lose = candidates[1];
+      if (lose) {
+        const key = (m) => m.members.map((x) => x.title).sort().join('|');
+        if (key(lose.match) !== key(win.match)) {
+          alternative = {
+            source: lose.source,
+            members: lose.match.members,
+            totalScore: lose.match.totalScore,
+            archetypeName: lose.match.archetypeName || null,
+            // AI 설명은 붙이지 않는다 — 대안까지 생성하면 API 비용이 두 배가 된다.
+            // 대신 규칙 기반 근거의 첫 문장만 실어 왜 후보였는지 알 수 있게 한다.
+            headline: (lose.match.reasons || [])[0] || null,
+          };
+        }
+      }
     } else {
       // 3순위(폴백): 등록된 실전 조합도 아키타입도 없을 만큼 로스터가 한정적인 경우.
       // 순위 1차 기준은 여전히 티어 합이고, 티어 합이 같은 후보들 사이에서만 스킬 시너지와
@@ -468,6 +496,10 @@ export async function POST(req) {
       aiReasoning,
       model: matchSource,
       cached,
+      // 2026-08-08: 점수 비교에서 진 쪽(실사용 vs prydwen)을 함께 내려준다.
+      // 둘은 서로 다른 질문에 대한 답이라("검증된 조합이 뭐냐" vs "내 캐릭터로 제일 센 게 뭐냐")
+      // 하나만 보여주면 나머지가 있었다는 사실 자체가 사용자에게 보이지 않는다.
+      alternative,
     });
   } catch (err) {
     console.error('ai-recommend error', err);

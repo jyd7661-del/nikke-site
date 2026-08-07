@@ -27,6 +27,15 @@ const BOSS_ELEMENT_OPTIONS = [
 // "다른 조합 보기"를 누르면 이전까지 나온 멤버 목록을 excludeTitles로 함께 보내 겹치지 않는 조합을 유도한다.
 // 👍/👎 버튼은 app/api/ai-recommend/feedback에 평가를 저장하고, 그 통계는 다음 AI 추천 호출 때
 // app/api/ai-recommend가 "반응 좋았던 조합" 힌트로 다시 읽어 프롬프트에 실어 보낸다.
+// 조합이 어느 근거에서 나왔는지 표시하는 라벨.
+// 유저 정의: "검증된 조합"이란 사람들이 두루두루 쓰는 조합(enikk 실사용) 또는 prydwen에
+// 등록된 조합이며, 둘은 대등하다. 어느 쪽 근거인지 밝혀야 사용자가 판단할 수 있다.
+const SOURCE_LABEL = {
+  'enikk-real-usage': '실사용 검증',
+  'prydwen-exact-match': 'prydwen 등록',
+  'skill-synergy-fallback': '보유 조합 탐색',
+};
+
 function AiRecommendButton({ roster, mode, bossElement }) {
   const { lang } = useLanguage();
   const [phase, setPhase] = useState('idle'); // idle | loading | error
@@ -35,6 +44,11 @@ function AiRecommendButton({ roster, mode, bossElement }) {
   const [errorMsg, setErrorMsg] = useState('');
   const [excludeTitles, setExcludeTitles] = useState([]);
   const [feedback, setFeedback] = useState(null); // null | 'sending' | 'up' | 'down'
+  // 2026-08-08: enikk 실사용 조합과 prydwen 등록 조합을 같은 층에서 점수로 비교하고,
+  // 진 쪽도 함께 보여준다. 둘은 서로 다른 질문에 대한 답이라 하나만 띄우면 나머지가
+  // 있었다는 사실 자체가 사용자에게 보이지 않는다.
+  const [alternative, setAlternative] = useState(null);
+  const [source, setSource] = useState(null);
 
   // 애장품(Treasure) 체크 목록을 문자열로 직렬화해 useEffect 의존성 비교에 사용한다.
   // roster.treasureIds는 부모(app/page.js)에서 treasureIds가 바뀔 때마다 새 배열로 만들어지므로,
@@ -50,6 +64,8 @@ function AiRecommendButton({ roster, mode, bossElement }) {
     setErrorMsg('');
     setExcludeTitles([]);
     setFeedback(null);
+    setAlternative(null);
+    setSource(null);
     setPhase('idle');
   }, [mode, bossElement, treasureKey]);
 
@@ -77,6 +93,8 @@ function AiRecommendButton({ roster, mode, bossElement }) {
       }
       setTeam(data.team);
       setReasoning(data.aiReasoning || '');
+      setAlternative(data.alternative || null);
+      setSource(data.model || null);
       setPhase('idle');
       setFeedback(null);
       setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
@@ -134,9 +152,16 @@ function AiRecommendButton({ roster, mode, bossElement }) {
     <div className="bg-slate-900/40 rounded-lg p-4 border border-nikke-accent/30">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
         <h3 className="font-semibold text-slate-100">🤖 AI가 구성한 조합</h3>
-        <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
-          점수 {team.totalScore}
-        </span>
+        <div className="flex items-center gap-1.5">
+          {SOURCE_LABEL[source] && (
+            <span className="text-xs text-slate-300 bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">
+              {SOURCE_LABEL[source]}
+            </span>
+          )}
+          <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
+            점수 {team.totalScore}
+          </span>
+        </div>
       </div>
       <div className="flex flex-wrap gap-2 mb-3">
         {team.members.map((m) => (
@@ -155,6 +180,33 @@ function AiRecommendButton({ roster, mode, bossElement }) {
           <p className="text-sm text-slate-300 whitespace-pre-line">{reasoning}</p>
         </div>
       )}
+      {alternative && (
+        <div className="bg-slate-900/40 border border-slate-700 rounded-lg p-3 mb-3">
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+            <p className="text-xs text-slate-400 font-semibold">
+              다른 근거로 뽑은 조합 — {SOURCE_LABEL[alternative.source] || '대안'}
+            </p>
+            <span className="text-xs text-slate-400 bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">
+              점수 {alternative.totalScore}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {alternative.members.map((m) => (
+              <span
+                key={m.id}
+                className="flex items-center gap-1.5 text-xs bg-slate-800/60 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-300"
+              >
+                <CharacterAvatar character={{ img: m.img, name: m.name_kr }} size="xs" />
+                {m.name_kr}{roster.treasureIds?.includes(m.id) ? ' (애장품)' : ''}
+              </span>
+            ))}
+          </div>
+          {alternative.headline && (
+            <p className="text-xs text-slate-500 leading-relaxed">{alternative.headline}</p>
+          )}
+        </div>
+      )}
+
       {phase === 'error' && <p className="text-xs text-rose-300 mb-2">{errorMsg}</p>}
 
       <div className="flex items-center flex-wrap gap-2 mb-3">
