@@ -371,19 +371,37 @@ if (uiCharacters) {
     err('UI_CDB_DUP', `characterDatabase의 '${t}'를 여러 UI 항목이 가리킴: ${who}`);
   });
 
-  // 엔진 DB에는 있는데 화면에서 선택할 수 없는 캐릭터. 저티어 구캐릭터가 대부분이라 ERROR는
-  // 아니지만, 쓸 만한 티어인데 빠져 있으면 알려준다.
+  // 엔진 DB에는 있는데 화면에서 선택할 수 없는 캐릭터.
+  //
+  // [SSR만 검사하는 이유] 화면 캐릭터 목록은 의도적으로 SSR 전용이다. enikk 실사용 데이터에
+  // SR/R 캐릭터가 등장한 조합이 단 하나도 없고(2026-08-07 확인), prydwen 조합에서도 초반
+  // 육성 가이드 외에는 쓰이지 않는다. 따라서 SR/R이 목록에 없는 것은 정상이며, 이걸 경고로
+  // 띄우면 매번 네온·아니스·파스칼 같은 SR이 잡혀서 진짜 누락(SSR 신캐 추가 후 UI 반영 누락)이
+  // 소음에 묻힌다. 방침이 바뀌어 SR을 넣기로 하면 아래 rarity 조건만 풀면 된다.
   const GOOD = new Set(['SSS', 'SS', 'S', 'A', 'B']);
   const missingGood = cdb.filter((c) => {
     if (usedCdbIds.has(c.id)) return false;
+    if (c.rarity !== 'SSR') return false;
     const t = c.tiers || {};
     return [t.story, t.bossing, t.pvp].some((g) => GOOD.has(g));
   });
   if (missingGood.length) {
     warn('UI_MISSING_CHAR',
-      `엔진 DB에는 있으나 화면에서 선택할 수 없는 캐릭터 중 B티어 이상이 ${missingGood.length}명 있음 ` +
-      `(사용자가 보유해도 조합에 넣을 수 없다): ` +
+      `엔진 DB에는 있으나 화면에서 선택할 수 없는 SSR 캐릭터 중 B티어 이상이 ${missingGood.length}명 있음 ` +
+      `(사용자가 보유해도 조합에 넣을 수 없다). data/characters.js에 항목을 추가할 것: ` +
       missingGood.map((c) => `${c.name_kr}(${[c.tiers.story, c.tiers.bossing, c.tiers.pvp].join('/')})`).join(', '));
+  }
+
+  // 반대 방향: 목록은 SSR 전용이어야 한다. SR/R이 섞여 들어오면 위 검사가 조용히 무의미해지고,
+  // 데이터 수집 범위(SSR만 스크랩)와도 어긋나 스킬·티어가 비어 있는 항목이 화면에 노출된다.
+  const nonSsrInUi = uiCharacters
+    .map((u) => ({ u, c: cdb.find((x) => x.id === (u.cdbId || u.id)) }))
+    .filter(({ c }) => c && c.rarity !== 'SSR');
+  if (nonSsrInUi.length) {
+    warn('UI_NON_SSR',
+      `화면 캐릭터 목록은 SSR 전용인데 SSR이 아닌 항목이 ${nonSsrInUi.length}개 있음 ` +
+      `(의도한 추가라면 위 UI_MISSING_CHAR의 rarity 조건도 같이 풀 것): ` +
+      nonSsrInUi.map(({ u, c }) => `${u.name}[${c.rarity}]`).join(', '));
   }
 }
 
