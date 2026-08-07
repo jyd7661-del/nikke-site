@@ -1,0 +1,38 @@
+# 의존성
+node_modules/
+.pnp
+.pnp.js
+
+# Next.js 빌드 산출물
+.next/
+out/
+build/
+dist/
+
+# 환경변수 — 중요
+# .env.local 에는 Supabase 키와 ANTHROPIC_API_KEY가 들어갑니다.
+# 이 파일이 저장소에 올라가면 공개 저장소에 API 키가 그대로 노출되므로 반드시 제외합니다.
+# (예시 파일인 .env.local.example 은 값이 비어 있으므로 커밋해도 됩니다.)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 배포
+.vercel/
+
+# 로그 / 캐시
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.eslintcache
+*.tsbuildinfo
+
+# 에디터 / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -85,6 +85,11 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
               {grouped[b].map((c) => {
                 const active = ownedIds.has(c.id);
                 const hasTreasure = treasureIds?.has(c.id);
+                // 2026-08-07 추가: 애장품이 아직 출시되지 않은 캐릭터에도 💎 버튼이 떠서,
+                // 실수로 누르면 실제로는 존재하지 않는 "애장품 보유" 상태가 저장되고
+                // 결과 화면에 "(애장품)"이 잘못 표시되던 문제. 애장품이 실제로 출시된
+                // 캐릭터(data/characters.js의 hasTreasure)에만 버튼을 노출한다.
+                const treasureAvailable = !!c.hasTreasure;
                 return (
                   <button
                     key={c.id}
@@ -109,7 +114,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                           ✓
                         </span>
                       )}
-                      {active && onToggleTreasure && (
+                      {active && treasureAvailable && onToggleTreasure && (
                         <span
                           role="button"
                           tabIndex={0}

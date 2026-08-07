@@ -91,32 +91,29 @@ const CAMPAIGN_COMBO_MODES = new Set(['campaign', 'story']);
 // 솔로 레이드 보스 약점 속성 선택지. metaStats.soloRaidByElement의 키와 반드시 일치해야 함.
 export const BOSS_ELEMENTS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 
-// 이 캐릭터가 공략 기준으로 애장품(Treasure) 의존도가 높은 캐릭터인지.
-// (data/characterInvestmentNotes.json의 treasureRequired)
-function needsTreasure(character) {
-  return !!INVESTMENT_NOTE_BY_NAME.get(character?.title)?.treasureRequired;
-}
-
-// 2026-08-07 수정: 애장품을 조합 선정에 반영하는 방식으로 "유효 티어 조정"을 택했다.
+// 2026-08-07 수정: 애장품(Treasure)을 조합 선정에 반영한다.
 //
 // 배경: treasureEffects.json에는 scoreBonus라는 가산점 필드가 있었지만 (1) 그 숫자들은
 // 근거가 약한 임의 가중치였고 (2) recommendTeams/findExactTeamMatch가 최종 점수를
 // tierTotal로 덮어쓰기 때문에 애초에 순위에 아무 영향도 주지 못하고 있었다.
 //
-// 유저 방침("조합에 있는 니케 점수만 따져라")을 지키면서 애장품을 반영하려면, 조합에
-// 보너스를 더하는 게 아니라 그 캐릭터 자신의 점수를 조정하는 게 맞다. 공략 자료의 티어는
-// 애장품을 갖춘 상태를 전제로 매겨진 경우가 많아, 애장품 없이 편성하면 과대평가가 된다.
-// 그래서 애장품 의존도가 높은 캐릭터를 애장품 없이 넣으면 유효 티어를 한 등급 낮춘다.
-// 애장품을 갖췄다고 해서 티어를 올리지는 않는다 — 그건 다시 근거 없는 가산점이 된다.
+// 유저 방침("조합에 있는 니케 점수만 따져라")을 지키려면 조합에 보너스를 더하는 게 아니라
+// 그 캐릭터 자신의 점수를 조정해야 한다. 처음엔 "애장품 없으면 한 등급 강등"이라는 추정치를
+// 썼는데, characterInvestmentNotes.json에 이미 treasureTiers(애장품 보유 시 실제 티어)가
+// 15명분 들어있는 것을 확인하고 실제 데이터로 교체했다. treasureTiersNote 원문:
+//   "애장품 보유 시 실제 평가(...). 애장품 미보유 시에는 characterDatabase.json의 기본 티어를 따름."
+// 즉 characterDatabase.tiers = 애장품 없는 상태, treasureTiers = 애장품 있는 상태다.
+// 실제 격차는 한 등급을 훨씬 넘는다(예: 헬름 PvP C -> SSS, 프리바티 전 모드 B -> SS).
+//
+// treasureTiers가 없는 캐릭터(아직 조사 안 됨)나 특정 모드 값이 비어 있는 경우에는
+// 그냥 기본 티어를 쓴다 — 없는 데이터를 추정으로 메우지 않는다.
 function tierScore(character, mode, treasureIds) {
   const key = MODE_TO_TIER_KEY[mode] || 'story';
-  const grade = character?.tiers?.[key];
-  const base = TIER_SCORE[grade] || 0;
-  if (base === 0) return 0;
-  if (treasureIds && needsTreasure(character) && !treasureIds.has(character.id)) {
-    return Math.max(1, base - 1); // 한 등급 강등 (최저 등급 F 아래로는 내리지 않음)
-  }
-  return base;
+  const note = INVESTMENT_NOTE_BY_NAME.get(character?.title);
+  const useTreasureTier =
+    treasureIds && note?.treasureTiers && treasureIds.has(character?.id);
+  const grade = (useTreasureTier ? note.treasureTiers[key] : null) || character?.tiers?.[key];
+  return TIER_SCORE[grade] || 0;
 }
 
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
@@ -743,11 +740,16 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (!note) return;
     if (note.treasureRequired && !treasureIds.has(m.id)) {
       const key = MODE_TO_TIER_KEY[mode] || 'story';
-      const grade = m?.tiers?.[key];
+      const base = m?.tiers?.[key];
+      const withTreasure = note.treasureTiers?.[key];
+      // 애장품 보유 시 티어를 알고 있으면 "얼마나 손해인지"를 구체적으로 알려준다.
+      const gap = withTreasure
+        ? ` 애장품을 갖추면 이 모드 평가가 ${base} → ${withTreasure}로 올라가므로, 이 조합에서는 ` +
+          `애장품 없는 ${base} 기준으로 계산했습니다.`
+        : ` 이 조합에서는 애장품 없는 기본 티어(${base}) 기준으로 계산했습니다.`;
       reasons.push(
         `[투자 참고] ${m.title}는(은) 공략 기준 애장품(Treasure) 의존도가 높은 캐릭터인데 애장품을 ` +
-        `장착하지 않은 상태입니다. 공략의 ${grade} 티어는 애장품을 갖춘 상태를 전제로 매겨진 값이라, ` +
-        `이 조합 점수에서는 한 등급 낮춰 계산했습니다. ${note.treasureNote}`
+        `장착하지 않은 상태입니다.${gap} ${note.treasureNote}`
       );
     }
   });

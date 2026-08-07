@@ -12,6 +12,12 @@ import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
 import { fetchRoster, addToRoster, removeFromRoster, setTreasure } from '@/lib/roster';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
+import { CHARACTERS } from '@/data/characters';
+
+// 애장품(Treasure)이 실제로 출시된 캐릭터 목록.
+// 출처: prydwen.gg 캐릭터 목록에서 "<이름> (Treasure)"로 별도 등재된 항목(2026-08-07 기준 21명).
+// data/characters.js의 hasTreasure 플래그가 단일 출처이며, 여기서는 조회용 Set으로만 만든다.
+const TREASURE_AVAILABLE_IDS = new Set(CHARACTERS.filter((c) => c.hasTreasure).map((c) => c.id));
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
@@ -32,7 +38,13 @@ export default function Home() {
     setRosterLoading(true);
     fetchRoster(user.id).then((rows) => {
       setOwnedIds(new Set(rows.map((r) => r.id)));
-      setTreasureIds(new Set(rows.filter((r) => r.hasTreasure).map((r) => r.id)));
+      // 애장품이 실제로 출시된 캐릭터만 인정합니다. 예전에는 모든 캐릭터에 💎 버튼이
+      // 떠서, 애장품이 없는 캐릭터(예: 아니스: 스타)에도 보유 표시가 저장될 수 있었고
+      // 그 상태가 결과 화면에 "(애장품)"으로 잘못 표시됐습니다. 이미 저장된 잘못된
+      // 값은 여기서 걸러냅니다.
+      setTreasureIds(
+        new Set(rows.filter((r) => r.hasTreasure && TREASURE_AVAILABLE_IDS.has(r.id)).map((r) => r.id))
+      );
       setRosterLoading(false);
     });
   }, [user, authLoading]);
@@ -60,6 +72,7 @@ export default function Home() {
 
   const toggleTreasure = (id) => {
     if (!ownedIds.has(id)) return; // 보유중인 캐릭터만 애장품 표시 가능
+    if (!TREASURE_AVAILABLE_IDS.has(id)) return; // 애장품이 출시되지 않은 캐릭터는 표시 불가
     setTreasureIds((prev) => {
       const next = new Set(prev);
       const has = next.has(id);
