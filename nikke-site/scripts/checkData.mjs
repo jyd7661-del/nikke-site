@@ -192,8 +192,11 @@ const missingTreasure = needTreasure.filter((n) => {
 if (missingTreasure.length) {
   warn('TREASURE_GAP',
     `treasureRequired:true인 캐릭터 ${needTreasure.length}명 중 ${missingTreasure.length}명이 ` +
-    `treasureEffects.json에 없어 애장품 점수가 반영되지 않음 ` +
-    `(UI에는 '(애장품)'이 표시되므로 표시와 실제 로직이 어긋남): ` +
+    `treasureEffects.json에 없어, 추천 근거 문장에 애장품 내용이 전혀 등장하지 않음 ` +
+    `(UI에는 '(애장품)'이 해당 캐릭터 전원에게 표시되므로 표시와 실제 설명이 어긋남). ` +
+    `참고: 조합 순위에 반영되는 것은 characterInvestmentNotes의 treasureRequired다 ` +
+    `(애장품 미장착 시 해당 캐릭터의 유효 티어를 한 등급 낮춤 — synergyEngine의 tierScore 참고). ` +
+    `treasureEffects.json의 scoreBonus는 순위에 영향이 없고, 이 파일은 설명 문장 생성에만 쓰인다: ` +
     missingTreasure.map((n) => n.name).join(', '));
 }
 

@@ -91,10 +91,32 @@ const CAMPAIGN_COMBO_MODES = new Set(['campaign', 'story']);
 // 솔로 레이드 보스 약점 속성 선택지. metaStats.soloRaidByElement의 키와 반드시 일치해야 함.
 export const BOSS_ELEMENTS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 
-function tierScore(character, mode) {
+// 이 캐릭터가 공략 기준으로 애장품(Treasure) 의존도가 높은 캐릭터인지.
+// (data/characterInvestmentNotes.json의 treasureRequired)
+function needsTreasure(character) {
+  return !!INVESTMENT_NOTE_BY_NAME.get(character?.title)?.treasureRequired;
+}
+
+// 2026-08-07 수정: 애장품을 조합 선정에 반영하는 방식으로 "유효 티어 조정"을 택했다.
+//
+// 배경: treasureEffects.json에는 scoreBonus라는 가산점 필드가 있었지만 (1) 그 숫자들은
+// 근거가 약한 임의 가중치였고 (2) recommendTeams/findExactTeamMatch가 최종 점수를
+// tierTotal로 덮어쓰기 때문에 애초에 순위에 아무 영향도 주지 못하고 있었다.
+//
+// 유저 방침("조합에 있는 니케 점수만 따져라")을 지키면서 애장품을 반영하려면, 조합에
+// 보너스를 더하는 게 아니라 그 캐릭터 자신의 점수를 조정하는 게 맞다. 공략 자료의 티어는
+// 애장품을 갖춘 상태를 전제로 매겨진 경우가 많아, 애장품 없이 편성하면 과대평가가 된다.
+// 그래서 애장품 의존도가 높은 캐릭터를 애장품 없이 넣으면 유효 티어를 한 등급 낮춘다.
+// 애장품을 갖췄다고 해서 티어를 올리지는 않는다 — 그건 다시 근거 없는 가산점이 된다.
+function tierScore(character, mode, treasureIds) {
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const grade = character?.tiers?.[key];
-  return TIER_SCORE[grade] || 0;
+  const base = TIER_SCORE[grade] || 0;
+  if (base === 0) return 0;
+  if (treasureIds && needsTreasure(character) && !treasureIds.has(character.id)) {
+    return Math.max(1, base - 1); // 한 등급 강등 (최저 등급 F 아래로는 내리지 않음)
+  }
+  return base;
 }
 
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
@@ -418,7 +440,7 @@ function burstCooldownSeconds(character) {
   return Number(cd);
 }
 
-function findWastedBurstMembers(members, mode) {
+function findWastedBurstMembers(members, mode, treasureIds) {
   const wasted = [];
   ['1', '2', '3'].forEach((burst) => {
     const group = members.filter((m) => String(m.burst) === burst);
@@ -430,7 +452,7 @@ function findWastedBurstMembers(members, mode) {
     // 둘 다 버스트2·쿨 20초일 때 29점 vs 30점). 쿨타임이 같으면 티어가 높은 쪽을 남기고
     // 낮은 쪽을 낭비로 판정해, 순서와 무관하게 항상 같은 결과가 나오도록 한다.
     const sorted = [...withCd].sort(
-      (a, b) => (a.cd - b.cd) || (tierScore(b.m, mode) - tierScore(a.m, mode))
+      (a, b) => (a.cd - b.cd) || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
     );
     let needed;
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
@@ -482,10 +504,10 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   });
 
   // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리) ---
-  const wastedMembers = findWastedBurstMembers(members, mode);
+  const wastedMembers = findWastedBurstMembers(members, mode, treasureIds);
   const wastedIds = new Set(wastedMembers.map((m) => m.id));
   const tierTotal = members.reduce(
-    (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode)),
+    (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode, treasureIds)),
     0
   );
   score += tierTotal * WEIGHTS.TIER_SUM;
@@ -720,9 +742,12 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
     if (!note) return;
     if (note.treasureRequired && !treasureIds.has(m.id)) {
+      const key = MODE_TO_TIER_KEY[mode] || 'story';
+      const grade = m?.tiers?.[key];
       reasons.push(
-        `[투자 참고] ${m.title}는(은) 공략 기준 애장품(Treasure) 의존도가 높은 캐릭터입니다. ` +
-        `${note.treasureNote}`
+        `[투자 참고] ${m.title}는(은) 공략 기준 애장품(Treasure) 의존도가 높은 캐릭터인데 애장품을 ` +
+        `장착하지 않은 상태입니다. 공략의 ${grade} 티어는 애장품을 갖춘 상태를 전제로 매겨진 값이라, ` +
+        `이 조합 점수에서는 한 등급 낮춰 계산했습니다. ${note.treasureNote}`
       );
     }
   });
@@ -836,8 +861,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
     buckets[b] = buckets[b]
       .slice()
       .sort((a, z) => {
-        const za = tierScore(z, mode) + ((bossElement && realElementUsage(z, bossElement)) || 0) / 20;
-        const aa = tierScore(a, mode) + ((bossElement && realElementUsage(a, bossElement)) || 0) / 20;
+        const za = tierScore(z, mode, treasureIds) + ((bossElement && realElementUsage(z, bossElement)) || 0) / 20;
+        const aa = tierScore(a, mode, treasureIds) + ((bossElement && realElementUsage(a, bossElement)) || 0) / 20;
         return za - aa;
       })
       .slice(0, BUCKET_CAP);
