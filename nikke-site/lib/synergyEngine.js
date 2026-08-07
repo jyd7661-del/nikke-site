@@ -1037,10 +1037,15 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     const others = members
       .filter((o) => o.id !== m.id && String(o.burst) === String(m.burst))
       .map((o) => o.title);
+    // 2026-08-08 수정: "버스트를 쓰지 않아도 발동하는" 이라고 단정하던 문장을 고쳤다.
+    // 유저 지적 — 마스트: 로망틱 메이드는 버스트를 아예 안 쓰는 게 아니라, 취기 스택이 3까지
+    // 쌓이는 3번째 사이클에 버스트를 쓴다(커뮤니티에서 '크크마'라 부르는 로테이션).
+    // 즉 "매 사이클 버스트 순번에 들어가지 않는다"는 맞지만 "버스트를 안 쓴다"는 틀리다.
+    // 왜 낭비가 아닌지는 캐릭터마다 다르므로 totemNote에 맡긴다.
     reasons.push(
-      `[토템 활용] 버스트${m.burst} 단계는 ${others.join(', ')}가 번갈아 돌리면 매 사이클 커버되므로 ` +
-      `(쿨타임 기준 ${needed}명이면 충분), ${m.title}는(은) 버스트 순번에서 빠집니다. 대신 버스트를 쓰지 ` +
-      `않아도 발동하는 상시 버프/유틸리티로 기여하는 토템 역할이라 이 자리는 낭비가 아닙니다. ${note.totemNote}`
+      `[토템 활용] 버스트${m.burst} 단계는 ${others.join(', ')}가 돌리면 매 사이클 커버되므로 ` +
+      `(쿨타임 기준 ${needed}명이면 충분), ${m.title}는(은) 매 사이클 버스트 순번에는 들어가지 않습니다. ` +
+      `그래도 이 자리는 낭비가 아닙니다. ${note.totemNote}`
     );
   });
   members.forEach((m) => {
@@ -1052,7 +1057,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (sameBurstFastCovered) {
       reasons.push(
         `[토템 활용] ${m.title}는(은) 같은 버스트${m.burst} 단계를 다른 캐릭터가 이미 빠른 쿨타임으로 ` +
-        `안정적으로 커버하고 있어, 버스트 스킬보다 상시 버프/유틸리티 역할로 기용된 것으로 보입니다. ${note.totemNote}`
+        `커버하고 있어 매 사이클 버스트를 쓰지는 못하지만, 그래도 제 몫을 합니다. ${note.totemNote}`
       );
     }
   });
