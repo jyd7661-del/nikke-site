@@ -240,6 +240,31 @@ function grantAppliesToAlly(caster, grant, allyMember) {
   return false;
 }
 
+// 이 캐릭터가 1/2스킬(버스트 스킬 제외)로 "전 아군"에게 공격 관련 스탯 버프를 주는지.
+// 버스트 스킬이 아니라 상시/조건부 패시브로 주는 것만 센다 — 버스트는 이미 버스트 단계
+// 로직에서 따로 다루고, 여기서 보고 싶은 것은 "이 캐릭터가 팀 전체를 올려주는 버퍼인가"다.
+//
+// 2026-08-07 추가. 폴백 탐색의 동점 처리에만 쓰인다(순위를 뒤집는 가산점이 아니다).
+const ALLY_BUFF_STATS = /^(ATK|Attack Damage|Critical Rate|Critical Damage|Charge Damage|Pierce Damage|Attack Speed|Reload Speed|Reloading Speed|Hit Rate|Max Ammunition Capacity)$/i;
+
+function allyBuffStrength(character) {
+  let best = 0;
+  (character?.skills || []).slice(0, 2).forEach((s) => {
+    let scope = null;
+    splitSkillClauses(s.desc).forEach((clause) => {
+      const affects = clause.match(/^Affects\s+(.+?)\.$/i);
+      if (affects) { scope = affects[1]; return; }
+      if (!scope || !/all allies/i.test(scope)) return;
+      const m = clause.match(/([A-Za-z][A-Za-z .]{1,30}?)\s*▲\s*([\d.]+)%/);
+      if (m && ALLY_BUFF_STATS.test(m[1].trim())) best = Math.max(best, parseFloat(m[2]));
+    });
+  });
+  return best;
+}
+
+// "의미 있는 버퍼"로 볼 최소 버프량. 1~3%짜리 미미한 버프까지 버퍼로 세면 변별력이 없어진다.
+const MEANINGFUL_ALLY_BUFF = 10;
+
 // 팀 구성원 사이에서 "A가 주는 [타입] 데미지 버프를 B가 (스킬 문구 근거로) 받는다"는 관계를
 // 찾아 반환. scoreTeam에서 이 결과를 근거 문장 맨 앞에 배치해 "왜 시너지가 나는지"를 스킬
 // 메커니즘으로 직접 설명한다.
@@ -492,7 +517,8 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   }
 
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
-  findSkillMechanicSynergies(members).forEach((syn) => {
+  const skillSynergies = findSkillMechanicSynergies(members);
+  skillSynergies.forEach((syn) => {
     score += WEIGHTS.SKILL_MECHANIC_SYNERGY;
     reasons.push(
       `[스킬 근거] ${syn.caster}의 스킬에 '${syn.label} ▲' 버프 효과가 있고, ${syn.receivers.join(', ')}의 ` +
@@ -777,6 +803,11 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     totalScore: Math.round(score * 10) / 10,
     valid: validBurstChain,
     tierTotal,
+    // 스킬 원문에서 "A가 주는 [데미지 타입] 버프를 B가 실제로 받는다"가 확인된 쌍의 개수.
+    // 폴백 탐색(recommendTeams)의 동점 처리에 쓰기 위해 밖으로 노출한다.
+    skillSynergyCount: skillSynergies.length,
+    // 1/2스킬로 전 아군에게 의미 있는 공격계열 버프를 주는 멤버 수(버퍼 수).
+    allyBufferCount: members.filter((m) => allyBuffStrength(m) >= MEANINGFUL_ALLY_BUFF).length,
     reasons,
     dataFreshness: getDataFreshnessMeta(),
   };
@@ -894,12 +925,103 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
     });
   });
 
-  candidateTeams.sort((a, z) => z.totalScore - a.totalScore);
+  // 2026-08-07 수정: 순위 기준.
+  //
+  // 1차는 여전히 순수 티어 합이다 — "조합에 있는 니케 점수만 따진다"는 방침을 지키기 위해,
+  // 시너지 때문에 티어가 낮은 조합이 높은 조합을 밀어내는 일이 없어야 한다.
+  //
+  // 다만 조합을 전수 탐색하면 티어 합이 완전히 같은 후보가 아주 많이 나온다. 그동안은 그중
+  // 무엇이 뽑히는지가 사실상 배열 순서였다. 유저 요청("보유 니케가 한정적일 경우에는 스킬
+  // 시너지가 날 수 있는 방향으로 조합을 짜달라")은 바로 이 동점 구간에 적용한다:
+  //   동점이면 → 스킬 원문으로 확인된 데미지 타입 시너지가 많은 쪽
+  //   그래도 동점이면 → 전 아군 버프를 주는 버퍼가 많은 쪽
+  // 가산점이 아니라 동점 처리라, 순위가 뒤집히지 않으면서 방향만 잡아준다.
+  candidateTeams.sort(
+    (a, z) =>
+      (z.totalScore - a.totalScore) ||
+      (z.skillSynergyCount - a.skillSynergyCount) ||
+      (z.allyBufferCount - a.allyBufferCount)
+  );
 
   return {
     teams: candidateTeams.slice(0, topN),
     searched: candidateTeams.length,
     dataFreshness: getDataFreshnessMeta(),
+  };
+}
+
+// ---------------------------------------------------------------------------
+// enikk.app 실사용 5인 조합 완전일치 (조합 선정 1순위)
+//
+// 2026-08-07 추가. 유저 방침:
+//   "실사용 데이터를 우선하되(실사용 데이터는 보통 스킬 시너지가 짜여있는 조합),
+//    보유 니케가 한정적일 경우에는 스킬 시너지가 날 수 있는 방향으로 조합을 짜주는 방식"
+//
+// 핵심 논리는 "실제로 많이 쓰이고 이긴 조합에는 이미 시너지가 검증되어 들어있다"는 것이다.
+// 그래서 개별 티어 점수 합보다 이쪽을 먼저 본다. 티어 합은 개인 성능 지표라 팀 시너지를
+// 반영하지 못하고, 그것 때문에 "왜 이 조합이 나왔는지" 설명이 계속 부실했다.
+//
+// 한계(중요): enikk.app에 5인 조합 단위 기록이 있는 것은 캠페인과 PvP뿐이다. 보스전(솔로
+// 레이드)은 캐릭터별 사용률만 있고 조합 기록이 없어 이 함수는 null을 반환하며, 그 경우
+// 호출부는 다음 순위(prydwen 아키타입)로 넘어간다.
+// ---------------------------------------------------------------------------
+const REAL_TEAM_SOURCE = {
+  campaign: 'campaign',
+  story: 'campaign',
+  pvp: 'pvp',
+  // bossing / raid / tribe_tower: 5인 조합 단위 실사용 기록 없음
+};
+
+export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
+  const source = REAL_TEAM_SOURCE[mode];
+  if (!source) return null;
+
+  const treasureIds = opts.treasureIds || new Set();
+  const bossElement = opts.bossElement || null;
+  const excludeTitles = new Set(opts.excludeTitles || []);
+  const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
+  const ownedTitles = new Set(ownedCharacters.map((c) => c.title));
+
+  // 캠페인은 "얼마나 많이 쓰였는가"(pctOfClears), PvP는 "얼마나 이겼는가"(승률)를 기준으로 삼는다.
+  const entries =
+    source === 'campaign'
+      ? (metaStats.campaignCompositions?.list || []).map((e) => ({ e, rank: e.pctOfClears || 0 }))
+      : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
+
+  let best = null;
+  entries.forEach(({ e, rank }) => {
+    const titles = e.members || [];
+    if (titles.length !== 5 || new Set(titles).size !== 5) return;
+    if (!titles.every((t) => ownedTitles.has(t))) return;
+    if (titles.some((t) => excludeTitles.has(t))) return;
+
+    const members = titles.map((t) => byTitle.get(t));
+    const scored = scoreTeam(members, mode, { treasureIds, bossElement });
+    if (!scored.valid) return; // 버스트 I/II/III 조건을 못 갖추면 제외
+    if (!best || rank > best.rank) best = { entry: e, rank, members, scored };
+  });
+
+  if (!best) return null;
+
+  const e = best.entry;
+  const headline =
+    source === 'campaign'
+      ? `[실전 기록] 이 5인 조합은 enikk.app 캠페인 클리어 기록에서 실제로 ` +
+        `${(e.totalUses || 0).toLocaleString()}회 사용되어 분석된 전체 클리어의 ${e.pctOfClears}%를 ` +
+        `차지합니다. 플레이어들이 실제로 가장 많이 쓰는 조합이라 시너지가 이미 검증된 구성입니다.`
+      : `[실전 기록] 이 5인 조합은 챔피언 아레나 실제 대전에서 승률 ${e.wr}%(${e.n}전, ` +
+        `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
+
+  return {
+    members: best.members.map((m) => ({
+      id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null,
+    })),
+    // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
+    totalScore: best.scored.tierTotal,
+    reasons: [headline, ...best.scored.reasons],
+    realUsage: source === 'campaign'
+      ? { kind: 'campaign', totalUses: e.totalUses, pctOfClears: e.pctOfClears }
+      : { kind: 'pvp', wr: e.wr, n: e.n, adoption: e.adoption },
   };
 }
 

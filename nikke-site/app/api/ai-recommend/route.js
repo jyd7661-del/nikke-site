@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { recommendTeams, findExactTeamMatch } from '@/lib/synergyEngine';
+import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch } from '@/lib/synergyEngine';
 import characterInvestmentNotes from '@/data/characterInvestmentNotes.json';
 
 // 보유 로스터에서 5인 조합을 추천하는 API.
@@ -230,26 +230,49 @@ export async function POST(req) {
     const excludeSet = new Set(Array.isArray(excludeTitles) ? excludeTitles : []);
 
     // 조합 "구성"은 전부 여기서 결정된다 — AI는 관여하지 않는다.
-    // 1순위: 등록된 아키타입(prydwen 검증 조합) 중 요청 모드와 호환되고 5명 전원을 보유한 것이
-    // 있으면, 그 중 티어 합이 가장 높은 것을 그대로 채택한다(findExactTeamMatch, 모드별로
-    // 자동 분류됨 — MODE_COMPAT 참고).
-    const exactMatch = findExactTeamMatch(characters, mode, {
+    //
+    // 2026-08-07 수정(6차): 유저가 선정 기준을 확정했다.
+    //   "실사용 데이터를 우선하되(실사용 데이터는 보통 스킬 시너지가 짜여있는 조합),
+    //    보유 니케가 한정적일 경우에는 스킬 시너지가 날 수 있는 방향으로 조합을 짜주는 방식"
+    // 핵심은 "실제로 많이 쓰이고 이긴 조합에는 시너지가 이미 검증되어 들어있다"는 것.
+    // 개별 티어 점수 합은 개인 성능 지표라 팀 시너지를 반영하지 못하고, 그것 때문에
+    // "왜 이 조합이 나왔는지" 설명이 계속 부실했다. 그래서 순위를 이렇게 둔다:
+    //
+    //   1순위 enikk.app 실사용 5인 조합 완전일치 (캠페인=최다 사용, PvP=최고 승률)
+    //   2순위 prydwen 아키타입 완전일치 (커뮤니티 검증 조합)
+    //   3순위 폴백: 보유 로스터 전체 조합 탐색 (티어 합 + 스킬 원문 근거 시너지)
+    //
+    // 보스전(솔로 레이드)은 enikk에 5인 조합 단위 기록이 없어 1순위가 항상 비고, 2순위부터
+    // 시작한다. (캐릭터별 사용률은 있으며 그건 후보 정렬과 근거 문장에 이미 반영된다.)
+    let chosen;
+    let archetypeNote = null;
+    let matchSource;
+
+    const realUsageMatch = findRealUsageTeamMatch(characters, mode, {
       treasureIds: treasureIdSet,
       bossElement: bossElement || null,
       excludeTitles: Array.from(excludeSet),
     });
 
-    let chosen;
-    let archetypeNote = null;
-    let matchSource;
+    const exactMatch = realUsageMatch
+      ? null
+      : findExactTeamMatch(characters, mode, {
+          treasureIds: treasureIdSet,
+          bossElement: bossElement || null,
+          excludeTitles: Array.from(excludeSet),
+        });
 
-    if (exactMatch) {
+    if (realUsageMatch) {
+      chosen = realUsageMatch;
+      matchSource = 'enikk-real-usage';
+    } else if (exactMatch) {
       chosen = exactMatch;
       archetypeNote = exactMatch.archetypeNote || null;
       matchSource = 'prydwen-exact-match';
     } else {
-      // 2순위(폴백): 등록된 완전일치 조합이 하나도 없으면, 보유 로스터 전체를 대상으로
-      // recommendTeams()(순수 개별 모드 티어 점수 합 최고 조합, 등록 여부 무관)를 돌린다.
+      // 3순위(폴백): 등록된 실전 조합도 아키타입도 없을 만큼 로스터가 한정적인 경우.
+      // 순위 1차 기준은 여전히 티어 합이고, 티어 합이 같은 후보들 사이에서만 스킬 시너지와
+      // 전 아군 버퍼 수로 방향을 잡는다(recommendTeams의 정렬 주석 참고).
       const rec = recommendTeams(characters, mode, {
         treasureIds: treasureIdSet,
         bossElement: bossElement || null,
@@ -267,7 +290,7 @@ export async function POST(req) {
       // 로스터가 작아 그런 후보가 없으면 겹치더라도 순위상 1위를 그대로 채택한다.
       const pool = rec.teams.filter((t) => !t.members.some((m) => excludeSet.has(m.title)));
       chosen = (pool.length > 0 ? pool : rec.teams)[0];
-      matchSource = 'tier-rank';
+      matchSource = 'skill-synergy-fallback';
     }
 
     const byTitle = new Map(characters.map((c) => [c.title, c]));
