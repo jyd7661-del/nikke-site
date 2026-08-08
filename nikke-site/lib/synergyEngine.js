@@ -1335,8 +1335,15 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   // 비어 있는 자리는 보유 로스터에서 조건에 맞는 캐릭터로 채워 5인을 완성한다.
   //   "B1"/"B2"/"B3" -> 그 버스트 단계 캐릭터
   //   "B1-CDR"        -> 버스트1 중 쿨타임 감소를 제공하는 캐릭터
-  //   "flex"          -> 버스트 무관
+  //   "flex"          -> 버프/유틸 담당 자리
   // 이미 고정 멤버로 들어간 캐릭터는 후보에서 제외한다.
+  //
+  // 2026-08-08 수정: flex에만 아무 조건이 없어서 사실상 '아무나'였다. 유저 지적 —
+  // "각 칸의 용도에 맞는 조건으로 최고 티어를 넣어야 한다. B3면 3버스트 중 최고,
+  //  FLEX면 버프류 중 최고." prydwen 조합에서 이 자리는 실제로 버퍼/토템이 들어가는 곳이다.
+  // 그래서 flex는 '전 아군에게 의미 있는 버프를 주는 캐릭터'로 좁힌다(196명 중 74명).
+  // 다만 로스터가 좁아 버퍼가 하나도 없으면 조합 자체가 성립 불가가 되어버리므로,
+  // 그때는 조건을 풀어 아무나 채운다 — 자리를 못 채워 추천이 사라지는 쪽이 더 나쁘다.
   const slotCandidates = (slot, used) => {
     const pool = ownedCharacters.filter(
       (c) => !used.has(c.title) && !excludeTitles.has(c.title)
@@ -1344,6 +1351,10 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const m = String(slot).match(/^B([123])/);
     let filtered = m ? pool.filter((c) => String(c.burst) === m[1]) : pool;
     if (/-CDR$/i.test(String(slot))) filtered = filtered.filter(providesCDR);
+    if (/^flex$/i.test(String(slot))) {
+      const buffers = filtered.filter((c) => allyBuffStrengthCached(c) >= MEANINGFUL_ALLY_BUFF);
+      if (buffers.length) filtered = buffers;
+    }
     return filtered;
   };
 
@@ -1360,15 +1371,20 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
 
   // 고정 멤버 + 슬롯을 채워 5인을 만든다. 채울 수 없으면 null.
   //
-  // 2026-08-07 수정: 예전에는 슬롯을 "개인 티어가 가장 높은 캐릭터"로 채웠는데, 최종 점수는
-  // tierTotal(= 낭비 인원을 0점 처리한 합)이라 채우는 기준과 채점하는 기준이 서로 달랐다.
-  // 그 결과 엔진이 자기 기준으로 더 나쁜 팀을 만들었다. 실측 예(God Comp #2, 캠페인):
-  //   고정 4명이 이미 B1/B2/B3를 다 채워서, 5번째로 들어오는 캐릭터는 토템이 아닌 한 무조건
-  //   낭비 처리되어 0점이 된다. 그런데 개인 티어만 보면 레드후드(SSS)가 1등이라 그를 골라
-  //   총점 35점이 나왔다. 같은 자리에 모더니아(A, 토템)를 넣으면 41점이었다.
-  // 이제 "그 캐릭터를 넣었을 때 tierTotal이 실제로 얼마나 오르는가"로 고른다. 그러면 이미
-  // 포화된 버스트 단계는 자연히 피하고, 채워야 한다면 토템을 고르게 된다 -- 실제 유저들이
-  // 그 자리에 토템을 넣는 이유와 같은 결론이다.
+  // 채우는 기준의 변천(같은 실수를 반복하지 않기 위해 기록):
+  //
+  // (1) 2026-08-07 이전: "개인 티어가 가장 높은 캐릭터". 슬롯 조건이 B1/B2/B3/CDR뿐이라
+  //     flex는 사실상 아무나였고, 낭비 여부를 안 봐서 God Comp #2에서 레드후드(SSS)를 골라
+  //     35점을 만들었다(모더니아를 넣으면 41점).
+  // (2) 2026-08-07: "넣었을 때 tierTotal이 얼마나 오르는가"(= 낭비 반영 기여도)로 변경.
+  //     팀 점수는 좋아졌지만, 낭비 판정이 0점 아니면 전부라 '버스트 못 쓰는 SSS'와
+  //     '버스트 못 쓰는 D'를 같게 취급해 저티어가 자주 뽑혔다(무작위 133조합 중 260슬롯).
+  // (3) 2026-08-08(현재): 유저 지시 — "각 칸의 용도에 맞는 조건으로 최고 티어를 넣어야 한다.
+  //     B3면 3버스트 중 최고, FLEX면 버프류 중 최고." 즉 걸러내기는 슬롯 조건이 하고,
+  //     그 안에서는 티어 순으로 고른다. 티어가 높다는 건 범용성이 높다는 뜻이고, 조합을
+  //     찾아보는 사람은 대개 니케 풀이 좁아 지금뿐 아니라 나중까지 쓸 캐릭터가 중요하다.
+  //     그래서 flex에 버퍼 조건을 붙이고(slotCandidates 참고), 정렬 1순위를 티어로 되돌렸다.
+  //     기여도는 동점일 때의 판단 근거로만 남는다.
   const fillTeam = (a) => {
     const fixed = a.members || [];
     const slots = a.flexSlots || [];
@@ -1392,8 +1408,9 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const CAP = 8;
     const ranked = order.map((s) =>
       slotCandidates(s, used0)
-        .map((c) => ({ c, v: teamTierTotal([...base, c]), t: tierScore(c, mode, treasureIds) }))
-        .sort((a, z) => (z.v - a.v) || (z.t - a.t))
+        .map((c) => ({ c, t: tierScore(c, mode, treasureIds), v: teamTierTotal([...base, c]) }))
+        // 슬롯 조건을 이미 통과한 후보들이므로, 그 안에서는 티어가 높은 순이 우선이다.
+        .sort((a, z) => (z.t - a.t) || (z.v - a.v))
         .map((x) => x.c)
     );
 
@@ -1427,29 +1444,28 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
       0
     );
 
-    // 슬롯 조합 전체를 시도해 tierTotal이 가장 높은 구성을 고른다.
-    //
-    // 2026-08-08 추가(시너지 반영): 예전에는 동점일 때 '개인 티어 합'이 높은 쪽을 택했는데,
-    // 그러면 빈 자리가 고정 멤버와 아무 상호작용이 없는 캐릭터로 채워질 수 있었다. 유저 지적 —
-    // "나머지 칸을 채울 때 서로 상호작용을 잘 일으키면서 티어도 높은 니케로 채울 수 있을까".
-    // 그래서 동점 판정에 '고정 멤버와의 실제 상호작용 수'를 먼저 넣는다. 티어 합을 이기지는
-    // 못하고(성능이 우선), 같은 점수일 때만 시너지가 있는 쪽을 고른다 -- 상호작용을 점수로
-    // 환산할 근거 있는 가중치가 없어서, 근거 없는 숫자를 만들기보다 동점 판정에만 쓴다.
+    // 슬롯 조합 전체를 시도해 최선의 구성을 고른다. 비교 순서:
+    //   1) 채워 넣은 캐릭터들의 티어 합  — 슬롯 조건은 이미 통과했으므로 그 안에서는 티어가 기준
+    //   2) 팀 tierTotal(낭비 반영)       — 티어가 같으면 실제로 버스트를 돌릴 수 있는 배치를 선호
+    //   3) 고정 멤버와의 상호작용 수      — 그것도 같으면 맞물리는 쪽
+    // 상호작용을 점수로 환산할 근거 있는 가중치가 없어서, 근거 없는 숫자를 만들기보다
+    // 순위 비교에만 쓴다.
     const search = (pools) => {
       let best = null;
+      let bestT = -Infinity;
       let bestV = -Infinity;
       let bestS = -Infinity;
-      let bestT = -Infinity;
       const usedTitles = new Set(fixed);
       const acc = [];
       const rec = (i) => {
         if (i === pools.length) {
+          const t = acc.reduce((s2, c) => s2 + tierScore(c, mode, treasureIds), 0);
           const v = teamTierTotal([...base, ...acc]);
           const s = synergyOf(acc);
-          const t = acc.reduce((s2, c) => s2 + tierScore(c, mode, treasureIds), 0);
-          if (v > bestV || (v === bestV && s > bestS) || (v === bestV && s === bestS && t > bestT)) {
-            bestS = s;
-            bestV = v; bestT = t; best = [...acc];
+          if (t > bestT ||
+              (t === bestT && v > bestV) ||
+              (t === bestT && v === bestV && s > bestS)) {
+            bestT = t; bestV = v; bestS = s; best = [...acc];
           }
           return;
         }
