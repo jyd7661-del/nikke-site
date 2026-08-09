@@ -478,7 +478,7 @@ bash cowork-lock.sh status                           # 점유자 + 대기열 (�
 |---|---|
 | **npm registry 403 차단(기기 쪽)** | 사용자 컴퓨터 VM에서는 `npm install` 불가. **단 클라우드 컨테이너에는 네트워크가 있어 `npm i esbuild` 로 JSX 문법 검증이 됩니다**(2026-08-09 확인). `device_stage_files`로 파일을 올린 뒤 `esbuild <파일> --loader:.js=jsx --outfile=/dev/null`. 문법만 보는 것이라 타입·런타임 오류는 여전히 Vercel 빌드에서만 잡힙니다 |
 | **샌드박스에서 파일 삭제 불가** | `mcp__cowork__allow_cowork_file_delete` 호출로 권한 요청 |
-| **샌드박스 git 사용 금지** | `.git/index.lock`이 남아 GitHub Desktop이 고장납니다. 커밋은 **GitHub Desktop으로만** |
+| **샌드박스 git 사용 금지 — 조회 명령도 포함** | `.git/index.lock`이 남아 GitHub Desktop 커밋이 `Commit failed - A lock file already exists`로 막힙니다. **2026-08-09에 실제로 당했습니다** — `git log`/`git config`만 볼 생각이었는데 `git status`·`git diff`가 섞였고, 그게 도중에 중단되면서 락이 남았습니다. **`git` 은 조회용으로도 치지 마세요.** 상태 확인이 필요하면 GitHub Desktop 화면을 보거나, `cat .git/refs/heads/main` 과 `cat .git/refs/remotes/origin/main` 을 비교하세요(같으면 푸시 완료). **복구법**: 샌드박스는 파일 삭제가 안 되므로 `mv .git/index.lock .git/index.lock.stale` 로 치우면 됩니다 |
 | **CRLF 문제** | 리눅스 쪽 `git status`가 전 파일을 수정됨으로 표시. GitHub Desktop은 정상 |
 | **엔진을 node로 직접 못 부름** | `synergyEngine.js`의 JSON import에 `with { type: 'json' }`가 없음. 테스트할 땐 sed로 임시 복사본을 만들고 **끝나면 반드시 삭제** (한 번 커밋에 섞일 뻔함) |
 | **`javascript_tool` 출력 차단** | `[BLOCKED: Cookie/query string data]`. 작은 파생 요약만 반환하세요 |

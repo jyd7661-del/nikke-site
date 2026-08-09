@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { createPost, BOARD_CATEGORIES, defaultPrivateFor } from '@/lib/board';
@@ -18,6 +18,20 @@ export default function NewPostPage() {
   // 사용자가 직접 체크박스를 건드렸는지. 건드린 뒤에는 카테고리를 바꿔도 그 선택을 존중한다.
   const [privateTouched, setPrivateTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // 목록에서 넘어온 ?category= 를 초기값으로 쓴다.
+  //
+  // useSearchParams()를 쓰지 않은 이유: 이 저장소에 선례가 없고, App Router에서 정적
+  // 프리렌더되는 페이지에 도입하면 Suspense 경계를 요구해 **빌드가 깨질 수 있다.**
+  // 로컬 빌드 검증이 제한적이라(§8) 배포에서야 드러나므로, 위험 없는 window 경로를 쓴다.
+  // 첫 렌더 뒤 한 번 바뀌는 정도는 감수한다.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const q = new URLSearchParams(window.location.search).get('category');
+    if (!q || !BOARD_CATEGORIES.some((c) => c.key === q)) return;
+    setCategory(q);
+    setIsPrivate(defaultPrivateFor(q));
+  }, []);
 
   const pickCategory = (key) => {
     setCategory(key);
@@ -66,7 +80,13 @@ export default function NewPostPage() {
             </button>
           ))}
         </div>
-        <label className="flex items-start gap-2 text-xs text-slate-400 cursor-pointer">
+        <label
+          className={`flex items-start gap-2 text-xs cursor-pointer border rounded-lg px-3 py-2.5 transition ${
+            isPrivate
+              ? 'text-amber-200 bg-amber-500/10 border-amber-500/50'
+              : 'text-slate-400 border-slate-800 hover:border-slate-700'
+          }`}
+        >
           <input
             type="checkbox"
             checked={isPrivate}
@@ -76,7 +96,9 @@ export default function NewPostPage() {
           <span>
             🔒 비밀글로 올리기
             <span className="block text-slate-600 mt-0.5">
-              체크하면 운영자와 나만 볼 수 있고, 목록에도 다른 사람에게는 나오지 않습니다.
+              {isPrivate
+                ? '지금 이 글은 나와 운영자만 볼 수 있습니다. 로그아웃 상태에서는 본인도 목록에서 볼 수 없습니다.'
+                : '체크하면 운영자와 나만 볼 수 있고, 목록에도 다른 사람에게는 나오지 않습니다.'}
               {category === 'bug' && ' 버그 제보는 계정 정보가 섞이기 쉬워 기본으로 켜집니다.'}
             </span>
           </span>

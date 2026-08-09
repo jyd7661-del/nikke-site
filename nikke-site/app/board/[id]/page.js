@@ -125,9 +125,18 @@ export default function PostDetailPage() {
         {CATEGORY_LABEL[post.category] || '자유'}
       </span>
       {post.is_private && (
-        <span className="inline-block text-[10px] border rounded-full px-2 py-0.5 mb-2 ml-1 text-amber-300 bg-amber-500/10 border-amber-500/40">
-          🔒 비밀글
-        </span>
+        <>
+          <span className="inline-block text-[10px] border rounded-full px-2 py-0.5 mb-2 ml-1 text-amber-300 bg-amber-500/10 border-amber-500/40">
+            🔒 비밀글
+          </span>
+          {/* 로그아웃하면 본인도 못 본다는 점을 분명히 알린다. 로그아웃 상태에서는 서버가
+              작성자를 구분할 방법이 없어(익명과 동일) 목록에서도 사라지는데, 이걸 모르면
+              "내 글이 사라졌다"고 오해하게 된다(2026-08-09 실제 제보). */}
+          <p className="text-xs text-amber-200/70 bg-amber-500/5 border border-amber-500/20 rounded-lg px-3 py-2 mb-3">
+            이 글은 작성자와 운영자만 볼 수 있습니다. <strong>로그아웃하면 본인도 목록에서 보이지 않습니다</strong> —
+            로그인 상태에서만 확인할 수 있어요. 공개로 바꾸려면 아래 <strong>수정</strong>에서 비밀글 체크를 해제하세요.
+          </p>
+        </>
       )}
 
       {editing ? (

@@ -37,7 +37,9 @@ export default function BoardPage() {
         <h1 className="text-xl font-bold">게시판</h1>
         {user ? (
           <Link
-            href="/board/new"
+            // 지금 보고 있는 게시판을 그대로 들고 간다. 이게 없어서 버그 제보 탭에서
+            // 글쓰기를 눌러도 자유 게시판으로 시작하는 문제가 있었다(2026-08-09 제보).
+            href={tab && tab !== 'all' ? `/board/new?category=${tab}` : '/board/new'}
             className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded-lg hover:brightness-110 transition"
           >
             + 글쓰기
