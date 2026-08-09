@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
-import { fetchCombos, fetchProfilesByIds, fetchMyVotes, voteCombo } from '@/lib/combos';
+import { fetchCombos, fetchProfilesByIds, fetchMyVotes, voteCombo, updateCombo, deleteCombo } from '@/lib/combos';
 import { charMap } from '@/lib/recommend';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import AdSlot from '@/components/AdSlot';
@@ -43,6 +43,10 @@ function AiScoreBadge({ members, purpose }) {
 
 export default function CombosPage() {
   const { user } = useAuth();
+  // 조합 수정/삭제. 2026-08-09 추가 — DB 정책(combos_update_own / combos_delete_own)은
+  // 처음부터 있었고 화면 버튼과 함수가 없었을 뿐이다.
+  const [editingCombo, setEditingCombo] = useState(null);
+  const [draft, setDraft] = useState({ name: '', purpose: '', description: '' });
   const [combos, setCombos] = useState([]);
   const [nicknames, setNicknames] = useState({});
   const [myVotes, setMyVotes] = useState({});
@@ -65,6 +69,31 @@ export default function CombosPage() {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
+
+  const startEditCombo = (combo) => {
+    setEditingCombo(combo.id);
+    setDraft({ name: combo.name, purpose: combo.purpose || '', description: combo.description || '' });
+  };
+
+  const saveCombo = async (comboId) => {
+    if (!draft.name.trim()) return;
+    const { error } = await updateCombo(user.id, comboId, {
+      name: draft.name.trim(),
+      purpose: draft.purpose.trim() || null,
+      description: draft.description.trim() || null,
+    });
+    if (error) { alert('수정에 실패했습니다.'); return; }
+    setEditingCombo(null);
+    load();
+  };
+
+  const removeCombo = async (comboId) => {
+    // 투표는 DB의 ON DELETE CASCADE가 함께 지운다(lib/combos.js 주석 참고).
+    if (!confirm('이 조합을 삭제할까요? 받은 추천/비추천도 함께 사라지며 되돌릴 수 없습니다.')) return;
+    const { error } = await deleteCombo(user.id, comboId);
+    if (error) { alert('삭제에 실패했습니다.'); return; }
+    load();
+  };
 
   const handleVote = async (comboId, value) => {
     if (!user) {
@@ -113,7 +142,15 @@ export default function CombosPage() {
           return (
             <div key={combo.id} className="card-hover bg-nikke-panel rounded-xl p-4 border border-slate-800">
               <div className="flex items-center justify-between flex-wrap gap-2">
-                <h3 className="font-semibold">{combo.name}</h3>
+                {editingCombo === combo.id ? (
+                  <input
+                    value={draft.name}
+                    onChange={(e) => setDraft((d) => ({ ...d, name: e.target.value }))}
+                    className="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
+                  />
+                ) : (
+                  <h3 className="font-semibold">{combo.name}</h3>
+                )}
                 <div className="flex items-center gap-2 flex-wrap">
                   {combo.purpose && (
                     <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
@@ -123,7 +160,42 @@ export default function CombosPage() {
                   <AiScoreBadge members={combo.members} purpose={combo.purpose} />
                 </div>
               </div>
-              {combo.description && <p className="text-sm text-slate-400 mt-1">{combo.description}</p>}
+              {editingCombo === combo.id ? (
+                <div className="mt-2 space-y-2">
+                  <input
+                    value={draft.purpose}
+                    onChange={(e) => setDraft((d) => ({ ...d, purpose: e.target.value }))}
+                    placeholder="용도 (예: 캠페인, 보스전)"
+                    className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
+                  />
+                  <textarea
+                    value={draft.description}
+                    onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
+                    placeholder="설명"
+                    rows={3}
+                    className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
+                  />
+                  <p className="text-xs text-slate-600">
+                    니케 구성은 여기서 바꿀 수 없어요. 멤버를 바꾸려면 새로 등록해주세요.
+                  </p>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => saveCombo(combo.id)}
+                      className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded"
+                    >
+                      저장
+                    </button>
+                    <button
+                      onClick={() => setEditingCombo(null)}
+                      className="text-xs border border-slate-700 text-slate-300 px-3 py-1.5 rounded hover:border-slate-500"
+                    >
+                      취소
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                combo.description && <p className="text-sm text-slate-400 mt-1">{combo.description}</p>
+              )}
               <div className="flex flex-wrap gap-2 mt-2">
                 {combo.members.map((id) => (
                   <span key={id} className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1">
@@ -133,8 +205,24 @@ export default function CombosPage() {
                 ))}
               </div>
               <div className="flex items-center justify-between mt-3">
-                <span className="text-xs text-slate-500">
+                <span className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
                   by {nicknames[combo.user_id] || '익명 지휘관'}
+                  {user && user.id === combo.user_id && editingCombo !== combo.id && (
+                    <>
+                      <button
+                        onClick={() => startEditCombo(combo)}
+                        className="text-[11px] text-slate-500 hover:text-slate-300 underline decoration-dotted"
+                      >
+                        수정
+                      </button>
+                      <button
+                        onClick={() => removeCombo(combo.id)}
+                        className="text-[11px] text-slate-500 hover:text-rose-300 underline decoration-dotted"
+                      >
+                        삭제
+                      </button>
+                    </>
+                  )}
                 </span>
                 <div className="flex items-center gap-2">
                   <button

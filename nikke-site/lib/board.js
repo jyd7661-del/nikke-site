@@ -30,15 +30,75 @@ export async function fetchPost(id) {
   return data;
 }
 
-export async function createPost(userId, { title, content, category }) {
+// 비밀글 기본값: 버그 제보만 true. (supabase/board_private_posts_migration.sql 참고)
+// 버그 제보에는 계정 정보·스크린샷이 섞이기 쉬워 기본 보호하되, 작성자가 해제할 수 있다.
+export function defaultPrivateFor(category) {
+  return category === 'bug';
+}
+
+export async function createPost(userId, { title, content, category, isPrivate }) {
   if (!supabase || !userId) return { error: 'not_configured' };
+  const cat = category || 'free';
   const { data, error } = await supabase
     .from('posts')
-    .insert({ user_id: userId, title, content, category: category || 'free' })
+    .insert({
+      user_id: userId,
+      title,
+      content,
+      category: cat,
+      is_private: typeof isPrivate === 'boolean' ? isPrivate : defaultPrivateFor(cat),
+    })
     .select()
     .single();
   if (error) console.error('createPost error', error);
   return { data, error };
+}
+
+// ---------------------------------------------------------------------------
+// 수정 / 삭제 (2026-08-09 추가)
+//
+// 유저 제보: "게시판이랑 조합 올리는 곳이 수정·삭제가 안 된다."
+// 원인은 권한이 아니었다 — DB 정책(posts_update_own / posts_delete_own)은 처음부터
+// auth.uid() = user_id 조건으로 정상 설정돼 있었고, **함수와 화면 버튼이 없었을 뿐**이다.
+//
+// 아래 함수들은 user_id 조건을 명시적으로 한 번 더 건다. RLS가 이미 막아주지만,
+// 조건을 빠뜨린 쿼리가 "0건 수정"으로 조용히 성공하는 것보다 코드에서 의도가 드러나는 편이 낫다.
+// ---------------------------------------------------------------------------
+export async function updatePost(userId, postId, { title, content, category, isPrivate }) {
+  if (!supabase || !userId) return { error: 'not_configured' };
+  const patch = {};
+  if (title !== undefined) patch.title = title;
+  if (content !== undefined) patch.content = content;
+  if (category !== undefined) patch.category = category;
+  if (isPrivate !== undefined) patch.is_private = isPrivate;
+  const { error } = await supabase.from('posts').update(patch).eq('id', postId).eq('user_id', userId);
+  if (error) console.error('updatePost error', error);
+  return { error };
+}
+
+export async function deletePost(userId, postId) {
+  if (!supabase || !userId) return { error: 'not_configured' };
+  // 댓글은 지우지 않는다 — comments_post_id_fkey가 ON DELETE CASCADE라 글을 지우면 DB가 함께
+  // 지운다(2026-08-09 확인). 오히려 앱에서 먼저 지우려 하면 comments_delete_own 정책 때문에
+  // **내가 쓴 댓글만** 지워지고 남의 댓글은 조용히 남아, "지웠는데 왜 안 지워졌지"가 된다.
+  // 캐스케이드는 RLS를 거치지 않으므로 남의 댓글까지 정상적으로 정리된다.
+  const { error } = await supabase.from('posts').delete().eq('id', postId).eq('user_id', userId);
+  if (error) console.error('deletePost error', error);
+  return { error };
+}
+
+export async function updateComment(userId, commentId, content) {
+  if (!supabase || !userId) return { error: 'not_configured' };
+  const { error } = await supabase.from('comments').update({ content }).eq('id', commentId).eq('user_id', userId);
+  if (error) console.error('updateComment error', error);
+  return { error };
+}
+
+export async function deleteComment(userId, commentId) {
+  if (!supabase || !userId) return { error: 'not_configured' };
+  const { error } = await supabase.from('comments').delete().eq('id', commentId).eq('user_id', userId);
+  if (error) console.error('deleteComment error', error);
+  return { error };
 }
 
 export async function fetchComments(postId) {

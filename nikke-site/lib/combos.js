@@ -70,3 +70,31 @@ export async function createCombo(userId, { name, purpose, description, members 
   if (error) console.error('createCombo error', error);
   return { error };
 }
+
+// ---------------------------------------------------------------------------
+// 수정 / 삭제 (2026-08-09 추가)
+//
+// board.js와 같은 사정이다 — DB 정책(combos_update_own / combos_delete_own)은 있었고
+// 함수와 버튼이 없었을 뿐이다.
+// ---------------------------------------------------------------------------
+export async function updateCombo(userId, comboId, { name, purpose, description, members }) {
+  if (!supabase || !userId) return { error: 'not_configured' };
+  const patch = {};
+  if (name !== undefined) patch.name = name;
+  if (purpose !== undefined) patch.purpose = purpose;
+  if (description !== undefined) patch.description = description;
+  if (members !== undefined) patch.members = members;
+  const { error } = await supabase.from('user_combos').update(patch).eq('id', comboId).eq('user_id', userId);
+  if (error) console.error('updateCombo error', error);
+  return { error };
+}
+
+export async function deleteCombo(userId, comboId) {
+  if (!supabase || !userId) return { error: 'not_configured' };
+  // 투표는 지우지 않는다 — combo_votes_combo_id_fkey가 ON DELETE CASCADE라 조합을 지우면 DB가
+  // 함께 지운다(2026-08-09 확인). 앱에서 먼저 지우려 하면 votes_delete_own 정책 때문에
+  // **내 투표만** 지워지고 남의 투표는 남아 외래키 위반으로 조합 삭제가 실패한다.
+  const { error } = await supabase.from('user_combos').delete().eq('id', comboId).eq('user_id', userId);
+  if (error) console.error('deleteCombo error', error);
+  return { error };
+}

@@ -36,6 +36,20 @@ export const maxDuration = 60;
 
 const DAILY_LIMIT = 30;
 
+// 일일 총 호출 상한 (서킷 브레이커) — 2026-08-09 추가.
+//
+// 기존 DAILY_LIMIT은 IP 해시당 하루 30회다. IP가 많아지면 총액은 얼마든지 늘어나므로,
+// 트래픽이 몰리거나 크롤러가 붙으면 청구를 막을 수단이 전혀 없었다. 광고를 붙이고 공개하기
+// 전에 반드시 필요한 안전장치다(HANDOFF §6).
+//
+// 기본값 1,000회/일 근거: 2026-08-08 실측으로 1건당 약 4.9원이므로 하루 1,000건 = 약 4,900원,
+// 월 약 14.7만원. 이건 "여기까지는 감수한다"가 아니라 **폭주를 끊는 천장**이다.
+// 환경변수 AI_DAILY_GLOBAL_LIMIT로 배포 없이 조정할 수 있다.
+//
+// 세는 대상은 **실제로 Anthropic API를 호출한 횟수뿐**이다. 캐시 적중은 비용이 0이라 세지 않고,
+// 상한에 걸려도 캐시된 설명은 그대로 나간다.
+const DAILY_GLOBAL_LIMIT = Number(process.env.AI_DAILY_GLOBAL_LIMIT || 1000);
+
 // 2026-08-08 변경: claude-sonnet-5 -> claude-haiku-4-5.
 //
 // 이 엔드포인트에서 AI가 하는 일은 "이미 확정된 5인 조합과 그 근거를 자연스러운 한 문단으로
@@ -47,7 +61,13 @@ const DAILY_LIMIT = 30;
 // AI_EXPLAIN_MODEL=claude-sonnet-5 를 넣으면 코드 수정 없이 원복된다.
 const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-4-5';
 
-const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP' };
+const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP', tribe_tower: '타워' };
+
+// 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS / TOWER_LABEL과 일치해야 한다.
+// 클라이언트 값을 그대로 믿지 않고 이 목록으로 검증한다 — 엉뚱한 값이 오면 엔진이 로스터를
+// 통째로 걸러내 "조합을 만들 수 없습니다"만 나오고 원인을 알기 어렵다.
+const TOWER_CORP_SET = new Set(['elysion', 'missilis', 'tetra', 'pilgrim']);
+const TOWER_LABEL_KO = { elysion: '엘리시온', missilis: '미실리스', tetra: '테트라', pilgrim: '필그림/오버스펙' };
 const MODE_TIER_KEY = { campaign: 'story', story: 'story', bossing: 'bossing', raid: 'bossing', pvp: 'pvp' };
 // 모드별 아키타입 호환 필터링(campaign↔tribe_tower, bossing↔raid 등)은 이제
 // lib/synergyEngine.js의 findExactTeamMatch() 안에서 처리하므로 여기서는 필요 없다.
@@ -112,6 +132,31 @@ async function incrementDailyUsage(supabase, ipHash) {
   }
 }
 
+// 일일 총 호출 상한 조회/증가 (supabase/ai_daily_budget_migration.sql 참고).
+//
+// 조회 실패 시에는 열어둔다 — Supabase가 잠깐 흔들렸다고 사이트 전체가 설명을 못 만드는 건
+// 과하다. 다만 조용히 넘어가면 보호가 사라진 걸 아무도 모르므로, 눈에 띄는 태그로 로그를 남긴다.
+async function isOverGlobalDailyLimit(supabase) {
+  const today = new Date().toISOString().slice(0, 10);
+  const { data, error } = await supabase
+    .from('ai_daily_budget')
+    .select('count')
+    .eq('usage_date', today)
+    .maybeSingle();
+  if (error) {
+    console.error('[AI_BUDGET] 일일 총 상한 조회 실패 — 보호가 걸리지 않은 채로 진행합니다', error);
+    return false;
+  }
+  return Boolean(data && data.count >= DAILY_GLOBAL_LIMIT);
+}
+
+// 원자적 증가. select 후 update 방식은 동시 요청에서 갱신이 유실돼 카운터가 실제보다 적게
+// 남는데, 서킷 브레이커에서 그건 "보호가 조용히 약해지는" 방향이라 특히 나쁘다.
+async function incrementGlobalDailyUsage(supabase) {
+  const { error } = await supabase.rpc('increment_ai_daily_budget');
+  if (error) console.error('[AI_BUDGET] 일일 총 사용량 증가 실패 — 카운터가 실제보다 낮습니다', error);
+}
+
 // ---------------------------------------------------------------------------
 // AI 설명문 캐시 (supabase/ai_explain_cache_migration.sql 참고)
 //
@@ -119,12 +164,15 @@ async function incrementDailyUsage(supabase, ipHash) {
 // 보내는 입력"을 해싱하므로, 서로 다른 로스터라도 같은 조합·같은 근거로 수렴하면 캐시를
 // 공유한다. 반대로 엔진 로직이나 데이터가 바뀌어 근거 문장이 달라지면 키도 달라져서
 // 자동으로 새 설명이 생성된다 — 별도 무효화 절차가 필요 없다.
-function buildCacheKey({ mode, langKey, members, reasons, archetypeNote, treasureIdSet }) {
+function buildCacheKey({ mode, tower, langKey, members, reasons, archetypeNote, treasureIdSet }) {
   const payload = JSON.stringify({
     // 프롬프트를 크게 바꿔 기존 캐시를 통째로 버려야 할 때 올린다.
     // v2(2026-08-08): 프롬프트로 보내는 근거 문장에 길이 상한을 두고 아키타입 노트 중복을 제거.
     v: 2,
     mode,
+    // 2026-08-09: 기업 타워 추가. 멤버·근거가 달라지면 키도 달라지지만, 타워만 다르고
+    // 결론이 같은 경우가 있을 수 있어 명시적으로 넣는다(설명 문장에 타워 이름이 들어간다).
+    tower: tower || null,
     lang: langKey,
     members: members.map((c) => `${c.title}${treasureIdSet.has(c.id) ? '+T' : ''}`),
     reasons: reasons || [],
@@ -311,7 +359,9 @@ export async function POST(req) {
     return Response.json({ error: '요청 형식이 올바르지 않습니다.' }, { status: 400 });
   }
 
-  const { characters, treasureIds, mode, bossElement, excludeTitles, lang } = body || {};
+  const { characters, treasureIds, mode, bossElement, tower, excludeTitles, lang } = body || {};
+  // 기업 타워는 tribe_tower 모드에서만 의미가 있다. 다른 모드에 딸려오면 무시한다.
+  const towerKey = mode === 'tribe_tower' && TOWER_CORP_SET.has(tower) ? tower : null;
 
   if (!Array.isArray(characters) || characters.length === 0) {
     return Response.json({ error: '보유중인 캐릭터를 먼저 선택해주세요.' }, { status: 400 });
@@ -349,7 +399,9 @@ export async function POST(req) {
       }
     }
 
-    const modeLabel = MODE_LABEL[mode] || mode || '캠페인';
+    const modeLabel = towerKey
+      ? `${TOWER_LABEL_KO[towerKey]} 타워`
+      : (MODE_LABEL[mode] || mode || '캠페인');
     const langKey = LANG_NAMES[lang] ? lang : 'ko';
     const langName = LANG_NAMES[langKey];
     const excludeSet = new Set(Array.isArray(excludeTitles) ? excludeTitles : []);
@@ -387,6 +439,7 @@ export async function POST(req) {
     const matchOpts = {
       treasureIds: treasureIdSet,
       bossElement: bossElement || null,
+      tower: towerKey,
       excludeTitles: Array.from(excludeSet),
     };
     const realUsageMatch = findRealUsageTeamMatch(characters, mode, matchOpts);
@@ -429,6 +482,7 @@ export async function POST(req) {
       const rec = recommendTeams(characters, mode, {
         treasureIds: treasureIdSet,
         bossElement: bossElement || null,
+        tower: towerKey,
         topN: 20,
       });
 
@@ -453,6 +507,7 @@ export async function POST(req) {
     // 비용이 들지 않고, 캐시에 맞으면 유료 API 호출을 통째로 건너뛴다.
     const cacheKey = buildCacheKey({
       mode,
+      tower: towerKey,
       langKey,
       members: fullMembers,
       reasons: chosen.reasons,
@@ -462,6 +517,20 @@ export async function POST(req) {
 
     let aiReasoning = await readCache(supabase, cacheKey);
     let cached = Boolean(aiReasoning);
+
+    // 캐시에 없을 때만 상한을 본다. 캐시 적중은 비용이 0이므로 상한에 걸려도 그대로 내보낸다.
+    //
+    // 상한에 걸려도 에러를 내지 않는다 — 조합 구성·점수·근거는 전부 엔진이 정하므로(§2-1)
+    // AI 문장이 빠져도 사용자가 받는 결과물의 핵심은 그대로다. 사용자를 막는 것보다
+    // 설명만 담백해지는 쪽이 낫다. (이 폴백 문장은 캐시에 저장하지 않는다 — 아래 참고)
+    let budgetExhausted = false;
+    if (!aiReasoning && supabase) {
+      budgetExhausted = await isOverGlobalDailyLimit(supabase);
+      if (budgetExhausted) {
+        console.warn(`[AI_BUDGET] 일일 총 상한(${DAILY_GLOBAL_LIMIT}회) 도달 — AI 설명 생성을 중단하고 근거 문장으로 대체합니다`);
+        aiReasoning = fallbackReasoning(chosen.reasons);
+      }
+    }
 
     if (!aiReasoning) {
       const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
@@ -479,6 +548,8 @@ export async function POST(req) {
         aiReasoning = generated;
         // 실제로 돈을 쓴 요청만 사용자의 하루 할당량에서 차감한다.
         if (supabase && ipHash) await incrementDailyUsage(supabase, ipHash);
+        // 전역 카운터도 같은 기준(실제 API 호출)으로 올린다.
+        if (supabase) await incrementGlobalDailyUsage(supabase);
         await writeCache(supabase, cacheKey, generated, langKey, mode);
       } else {
         // AI 호출 실패. 근거 문장으로 대체하되 캐시에는 남기지 않는다 —
@@ -500,6 +571,9 @@ export async function POST(req) {
       // 둘은 서로 다른 질문에 대한 답이라("검증된 조합이 뭐냐" vs "내 캐릭터로 제일 센 게 뭐냐")
       // 하나만 보여주면 나머지가 있었다는 사실 자체가 사용자에게 보이지 않는다.
       alternative,
+      // 일일 총 상한에 걸려 AI 문장 없이 근거 문장으로 대체된 경우. 화면에서 안내를 띄운다 —
+      // 아무 표시 없이 설명 품질만 떨어지면 사용자는 "왜 갑자기 설명이 딱딱해졌지"만 느낀다.
+      budgetExhausted,
     });
   } catch (err) {
     console.error('ai-recommend error', err);

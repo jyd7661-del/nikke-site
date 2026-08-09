@@ -3,7 +3,11 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
-import { fetchPost, fetchComments, createComment, fetchProfilesByIds, BOARD_CATEGORIES } from '@/lib/board';
+import { useRouter } from 'next/navigation';
+import {
+  fetchPost, fetchComments, createComment, fetchProfilesByIds, BOARD_CATEGORIES,
+  updatePost, deletePost, updateComment, deleteComment,
+} from '@/lib/board';
 
 const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
 const CATEGORY_BADGE_STYLE = {
@@ -14,6 +18,7 @@ const CATEGORY_BADGE_STYLE = {
 
 export default function PostDetailPage() {
   const { id } = useParams();
+  const router = useRouter();
   const { user } = useAuth();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
@@ -21,6 +26,15 @@ export default function PostDetailPage() {
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  // 글 수정 모드. 2026-08-09 추가 — DB 정책은 처음부터 있었는데 화면에 버튼이 없어서
+  // "수정·삭제가 안 된다"는 제보를 받았다.
+  const [editing, setEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState('');
+  const [editContent, setEditContent] = useState('');
+  const [editPrivate, setEditPrivate] = useState(false);
+  // 댓글 수정 모드 (한 번에 하나만)
+  const [editingComment, setEditingComment] = useState(null);
+  const [commentDraft, setCommentDraft] = useState('');
 
   const load = async () => {
     setLoading(true);
@@ -37,6 +51,52 @@ export default function PostDetailPage() {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const isMine = Boolean(user && post && user.id === post.user_id);
+
+  const startEdit = () => {
+    setEditTitle(post.title);
+    setEditContent(post.content);
+    setEditPrivate(Boolean(post.is_private));
+    setEditing(true);
+  };
+
+  const saveEdit = async () => {
+    if (!editTitle.trim() || !editContent.trim()) return;
+    setSubmitting(true);
+    const { error } = await updatePost(user.id, id, {
+      title: editTitle.trim(),
+      content: editContent.trim(),
+      isPrivate: editPrivate,
+    });
+    setSubmitting(false);
+    if (error) { alert('수정에 실패했습니다. 잠시 후 다시 시도해주세요.'); return; }
+    setEditing(false);
+    load();
+  };
+
+  const removePost = async () => {
+    // 댓글은 DB의 ON DELETE CASCADE가 함께 지운다(lib/board.js 주석 참고).
+    if (!confirm('이 글을 삭제할까요? 달린 댓글도 함께 삭제되며 되돌릴 수 없습니다.')) return;
+    const { error } = await deletePost(user.id, id);
+    if (error) { alert('삭제에 실패했습니다.'); return; }
+    router.push('/board');
+  };
+
+  const saveComment = async (commentId) => {
+    if (!commentDraft.trim()) return;
+    const { error } = await updateComment(user.id, commentId, commentDraft.trim());
+    if (error) { alert('댓글 수정에 실패했습니다.'); return; }
+    setEditingComment(null);
+    load();
+  };
+
+  const removeComment = async (commentId) => {
+    if (!confirm('이 댓글을 삭제할까요?')) return;
+    const { error } = await deleteComment(user.id, commentId);
+    if (error) { alert('댓글 삭제에 실패했습니다.'); return; }
+    load();
+  };
 
   const submitComment = async (e) => {
     e.preventDefault();
@@ -64,13 +124,72 @@ export default function PostDetailPage() {
       >
         {CATEGORY_LABEL[post.category] || '자유'}
       </span>
-      <h1 className="text-xl font-bold mb-1">{post.title}</h1>
-      <p className="text-xs text-slate-500 mb-4">
-        {nicknames[post.user_id] || '익명 지휘관'} · {new Date(post.created_at).toLocaleString('ko-KR')}
-      </p>
-      <p className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed border-b border-slate-800 pb-6 mb-6">
-        {post.content}
-      </p>
+      {post.is_private && (
+        <span className="inline-block text-[10px] border rounded-full px-2 py-0.5 mb-2 ml-1 text-amber-300 bg-amber-500/10 border-amber-500/40">
+          🔒 비밀글
+        </span>
+      )}
+
+      {editing ? (
+        <div className="border-b border-slate-800 pb-6 mb-6">
+          <input
+            value={editTitle}
+            onChange={(e) => setEditTitle(e.target.value)}
+            className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm mb-2 outline-none focus:border-nikke-accent"
+          />
+          <textarea
+            value={editContent}
+            onChange={(e) => setEditContent(e.target.value)}
+            rows={8}
+            className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm mb-2 outline-none focus:border-nikke-accent"
+          />
+          <label className="flex items-center gap-2 text-xs text-slate-400 mb-3 cursor-pointer">
+            <input type="checkbox" checked={editPrivate} onChange={(e) => setEditPrivate(e.target.checked)} />
+            🔒 비밀글로 두기 (운영자와 나만 볼 수 있어요)
+          </label>
+          <div className="flex gap-2">
+            <button
+              onClick={saveEdit}
+              disabled={submitting}
+              className="bg-nikke-accent text-slate-900 font-semibold text-sm px-4 py-2 rounded disabled:opacity-50"
+            >
+              저장
+            </button>
+            <button
+              onClick={() => setEditing(false)}
+              className="border border-slate-700 text-slate-300 text-sm px-4 py-2 rounded hover:border-slate-500"
+            >
+              취소
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <h1 className="text-xl font-bold mb-1">{post.title}</h1>
+          <p className="text-xs text-slate-500 mb-4">
+            {nicknames[post.user_id] || '익명 지휘관'} · {new Date(post.created_at).toLocaleString('ko-KR')}
+          </p>
+          <p className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">{post.content}</p>
+          <div className="border-b border-slate-800 pb-6 mb-6">
+            {isMine && (
+              <div className="flex gap-2 mt-4">
+                <button
+                  onClick={startEdit}
+                  className="text-xs border border-slate-700 text-slate-300 px-3 py-1.5 rounded hover:border-slate-500"
+                >
+                  수정
+                </button>
+                <button
+                  onClick={removePost}
+                  className="text-xs border border-rose-500/40 text-rose-300 px-3 py-1.5 rounded hover:border-rose-500"
+                >
+                  삭제
+                </button>
+              </div>
+            )}
+          </div>
+        </>
+      )}
 
       <h2 className="text-sm font-semibold text-slate-400 mb-3">댓글 {comments.length}</h2>
       <div className="space-y-3 mb-6">
@@ -79,7 +198,41 @@ export default function PostDetailPage() {
             <p className="text-xs text-slate-500 mb-1">
               {nicknames[c.user_id] || '익명 지휘관'} · {new Date(c.created_at).toLocaleString('ko-KR')}
             </p>
-            <p className="text-sm text-slate-200 whitespace-pre-wrap">{c.content}</p>
+            {editingComment === c.id ? (
+              <div className="flex gap-2">
+                <input
+                  value={commentDraft}
+                  onChange={(e) => setCommentDraft(e.target.value)}
+                  className="flex-1 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
+                />
+                <button onClick={() => saveComment(c.id)} className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 rounded">
+                  저장
+                </button>
+                <button onClick={() => setEditingComment(null)} className="text-xs border border-slate-700 text-slate-300 px-3 rounded">
+                  취소
+                </button>
+              </div>
+            ) : (
+              <>
+                <p className="text-sm text-slate-200 whitespace-pre-wrap">{c.content}</p>
+                {user && user.id === c.user_id && (
+                  <div className="flex gap-3 mt-2">
+                    <button
+                      onClick={() => { setEditingComment(c.id); setCommentDraft(c.content); }}
+                      className="text-[11px] text-slate-500 hover:text-slate-300 underline decoration-dotted"
+                    >
+                      수정
+                    </button>
+                    <button
+                      onClick={() => removeComment(c.id)}
+                      className="text-[11px] text-slate-500 hover:text-rose-300 underline decoration-dotted"
+                    >
+                      삭제
+                    </button>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ))}
         {comments.length === 0 && <p className="text-sm text-slate-600">첫 댓글을 남겨보세요.</p>}

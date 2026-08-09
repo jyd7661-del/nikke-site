@@ -624,6 +624,89 @@ cdb.forEach((c) => {
 });
 
 // ---------------------------------------------------------------------------
+// 6. 오버스펙(overspec) — 기업 타워 모드용
+//
+// 오버스펙 니케는 "3대 기업 캐릭터의 파워업 버전"으로, 소속 기업을 유지하면서
+// 필그림/오버스펙 타워에도 들어갈 수 있다(gamechosun 2025-01). 즉 제조사 필터를
+// 그대로 걸면 이들이 부당하게 빠지고, prydwen 필그림 타워 조합이 통째로 깨진다.
+//
+// 이 검사의 핵심은 마지막 항목이다: "제조사가 섞인 tribe_tower 조합 = 필그림 타워
+// 조합"이므로, 그 안의 비-필그림 멤버는 반드시 overspec이어야 한다. 새 오버스펙이
+// 출시됐는데 플래그를 안 넣으면 여기서 잡힌다(조용한 누락 방지).
+// ---------------------------------------------------------------------------
+const overspecs = cdb.filter((c) => c.overspec);
+
+overspecs.forEach((c) => {
+  if (c.manufacturer === 'pilgrim') {
+    err('OVERSPEC_PILGRIM',
+      `${c.title}은 제조사가 pilgrim인데 overspec:true — 필그림은 이미 필그림 타워에 들어가므로 ` +
+      `플래그가 불필요하고, 제조사 필터 로직에서 이중 처리될 수 있음`);
+  }
+  if (c.manufacturer === 'abnormal') {
+    err('OVERSPEC_ABNORMAL',
+      `${c.title}은 제조사가 abnormal(콜라보·특수)인데 overspec:true — abnormal은 기업 타워 자체가 없음`);
+  }
+  if (!/출처|gamechosun|prydwen|inven|인벤|nikke\.gg|lootandwaifus|namu|arca\.live|유저 확인/i.test(c.overspecNote || '')) {
+    warn('OVERSPEC_NO_SOURCE',
+      `${c.title}의 overspec에 근거 표기가 없음 — 이 플래그는 기업 타워 편성 가능 여부를 직접 바꾸므로 ` +
+      `반드시 1차 출처를 overspecNote에 남길 것`);
+  }
+});
+
+// 제조사가 섞인 tribe_tower 아키타입 = 필그림/오버스펙 타워 조합
+syn.archetypes.filter((a) => a.mode === 'tribe_tower').forEach((a) => {
+  const members = (a.members || []).map((m) => BY_TITLE.get(m)).filter(Boolean);
+  const mans = [...new Set(members.map((c) => c.manufacturer))];
+  if (mans.length < 2) return;
+
+  const hasPilgrim = mans.includes('pilgrim');
+  const outsiders = members.filter((c) => c.manufacturer !== 'pilgrim' && !c.overspec);
+
+  if (!hasPilgrim) {
+    err('TOWER_MIXED_ARCH',
+      `tribe_tower 아키타입 '${a.name}'에 제조사가 ${mans.join('/')}로 섞여 있는데 필그림이 없음 — ` +
+      `기업 타워는 한 제조사만 출전 가능하므로 성립하지 않는 조합이거나, 일반 트라이브 타워 조합인데 ` +
+      `모드 구분이 없어서 기업 타워로 잘못 취급될 위험이 있음`);
+  } else if (outsiders.length) {
+    err('TOWER_NON_OVERSPEC',
+      `필그림 타워 조합으로 보이는 '${a.name}'에 필그림도 오버스펙도 아닌 ${outsiders.map((c) => `${c.title}(${c.manufacturer})`).join(', ')}가 포함됨 — ` +
+      `새 오버스펙 니케가 출시됐는데 characterDatabase.json에 overspec 플래그를 안 넣었을 가능성이 높다. ` +
+      `플래그를 넣지 않으면 제조사 필터가 이들을 걸러내 이 아키타입이 통째로 깨진다`);
+  }
+});
+
+// ---------------------------------------------------------------------------
+// 6-1. 기업 타워 값이 세 파일에서 어긋나지 않는가 (2026-08-09 추가)
+//
+// 타워 목록이 엔진·API·화면 세 곳에 각각 적혀 있다. 한 곳만 고치면 조용히 어긋난다:
+//   - 화면에만 추가 → API가 검증에서 걸러 tower=null이 되고, 제조사 필터가 아예 안 걸림
+//   - 엔진에만 추가 → 화면에 탭이 안 떠서 사용자가 고를 수 없음
+// 둘 다 에러 없이 "그냥 다른 결과"가 나오는 유형이라 사람이 알아채기 어렵다.
+// ---------------------------------------------------------------------------
+const routeSrc = readSrc('app/api/ai-recommend/route.js');
+const uiSrc = readSrc('components/ResultPanel.js');
+if (engineSrc && routeSrc && uiSrc) {
+  const grabList = (src, re) => {
+    const m = src.match(re);
+    if (!m) return null;
+    return [...m[1].matchAll(/'([a-z_]+)'/g)].map((x) => x[1]).sort().join(',');
+  };
+  const a = grabList(engineSrc, /TOWER_CORPS\s*=\s*\[([^\]]*)\]/);
+  const b = grabList(routeSrc, /TOWER_CORP_SET\s*=\s*new Set\(\[([^\]]*)\]/);
+  const c = grabList(uiSrc, /TOWER_OPTIONS\s*=\s*\[([\s\S]*?)\n\];/);
+  if (a === null || b === null || c === null) {
+    warn('TOWER_LIST_MISSING',
+      `기업 타워 목록을 못 찾음 (engine=${a === null ? 'X' : 'O'} / route=${b === null ? 'X' : 'O'} / ` +
+      `UI=${c === null ? 'X' : 'O'}) — 상수 이름이 바뀌었는지 확인할 것`);
+  } else if (!(a === b && b === c)) {
+    err('TOWER_LIST_DRIFT',
+      `기업 타워 목록이 어긋남 — lib/synergyEngine.js=[${a}] / app/api/ai-recommend/route.js=[${b}] / ` +
+      `components/ResultPanel.js=[${c}]. 화면에만 있으면 API가 걸러내 제조사 필터가 안 걸리고, ` +
+      `엔진에만 있으면 사용자가 고를 수 없다. 둘 다 에러 없이 결과만 달라진다`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 리포트
 // ---------------------------------------------------------------------------
 const line = '─'.repeat(72);

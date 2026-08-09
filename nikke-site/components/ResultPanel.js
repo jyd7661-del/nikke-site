@@ -8,6 +8,23 @@ const AI_MODES = [
   { key: 'campaign', label: '캠페인' },
   { key: 'bossing', label: '보스전' },
   { key: 'pvp', label: 'PvP' },
+  { key: 'tribe_tower', label: '타워' },
+];
+
+// 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS / TOWER_LABEL과 반드시 일치해야 한다.
+// 요일은 prydwen 트라이브 타워 가이드 기준(2026-08-09 확인):
+//   월 전체 / 화·금 엘리시온 / 수·토 미실리스 / 목·일 테트라 / 수 필그림
+// 일반 트라이브 타워는 제조사 제한이 없고 상시 열려 있다.
+//
+// 요일 강조 표시는 일부러 넣지 않았다 — SSR과 클라이언트의 날짜가 어긋나면
+// 하이드레이션 불일치가 나는데, 이 저장소는 npm이 막혀 로컬 빌드 검증이 안 된다(HANDOFF §8).
+// 요일은 버튼 옆 고정 문구로만 알린다.
+const TOWER_OPTIONS = [
+  { key: null, label: '일반 트라이브', days: '상시' },
+  { key: 'elysion', label: '엘리시온', days: '월·화·금' },
+  { key: 'missilis', label: '미실리스', days: '월·수·토' },
+  { key: 'tetra', label: '테트라', days: '월·목·일' },
+  { key: 'pilgrim', label: '필그림/오버스펙', days: '월·수' },
 ];
 
 // 솔로 레이드 보스 약점 속성 선택지. lib/synergyEngine.js의 BOSS_ELEMENTS,
@@ -36,7 +53,7 @@ const SOURCE_LABEL = {
   'skill-synergy-fallback': '보유 조합 탐색',
 };
 
-function AiRecommendButton({ roster, mode, bossElement }) {
+function AiRecommendButton({ roster, mode, bossElement, tower }) {
   const { lang } = useLanguage();
   const [phase, setPhase] = useState('idle'); // idle | loading | error
   const [team, setTeam] = useState(null);
@@ -49,6 +66,9 @@ function AiRecommendButton({ roster, mode, bossElement }) {
   // 있었다는 사실 자체가 사용자에게 보이지 않는다.
   const [alternative, setAlternative] = useState(null);
   const [source, setSource] = useState(null);
+  // 일일 총 상한(서킷 브레이커)에 걸려 AI 문장 없이 근거 문장으로 나온 경우.
+  // 표시가 없으면 사용자는 "왜 갑자기 설명이 딱딱해졌지"만 느끼고 원인을 알 수 없다.
+  const [budgetExhausted, setBudgetExhausted] = useState(false);
 
   // 애장품(Treasure) 체크 목록을 문자열로 직렬화해 useEffect 의존성 비교에 사용한다.
   // roster.treasureIds는 부모(app/page.js)에서 treasureIds가 바뀔 때마다 새 배열로 만들어지므로,
@@ -66,8 +86,9 @@ function AiRecommendButton({ roster, mode, bossElement }) {
     setFeedback(null);
     setAlternative(null);
     setSource(null);
+    setBudgetExhausted(false);
     setPhase('idle');
-  }, [mode, bossElement, treasureKey]);
+  }, [mode, bossElement, tower, treasureKey]);
 
   const requestTeam = async (exclude) => {
     setPhase('loading');
@@ -81,6 +102,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
           treasureIds: roster.treasureIds,
           mode,
           bossElement,
+          tower,
           excludeTitles: exclude,
           lang,
         }),
@@ -95,6 +117,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
       setReasoning(data.aiReasoning || '');
       setAlternative(data.alternative || null);
       setSource(data.model || null);
+      setBudgetExhausted(Boolean(data.budgetExhausted));
       setPhase('idle');
       setFeedback(null);
       setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
@@ -176,8 +199,16 @@ function AiRecommendButton({ roster, mode, bossElement }) {
       </div>
       {reasoning && (
         <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
-          <p className="text-xs text-nikke-accent font-semibold mb-1.5">🤖 AI의 구성 이유</p>
+          <p className="text-xs text-nikke-accent font-semibold mb-1.5">
+            {budgetExhausted ? '📋 구성 근거' : '🤖 AI의 구성 이유'}
+          </p>
           <p className="text-sm text-slate-300 whitespace-pre-line">{reasoning}</p>
+          {budgetExhausted && (
+            <p className="text-xs text-slate-500 mt-2">
+              오늘 AI 설명 생성 한도에 도달해 근거 문장을 그대로 보여드립니다. 조합 구성과 점수는
+              AI가 아니라 규칙 엔진이 정하므로 추천 결과 자체는 평소와 동일합니다.
+            </p>
+          )}
         </div>
       )}
       {alternative && (
@@ -249,7 +280,7 @@ function AiRecommendButton({ roster, mode, bossElement }) {
   );
 }
 
-function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, dataFreshness }) {
+function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
   if (!roster) return null;
   const isStale = dataFreshness && (dataFreshness.characterDatabase.stale || dataFreshness.synergyNotes.stale);
 
@@ -305,10 +336,42 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
         </div>
       )}
 
+      {aiMode === 'tribe_tower' && (
+        <div className="mt-2 mb-3">
+          <div className="flex items-center flex-wrap gap-2">
+            <span className="text-xs text-slate-500">타워 종류:</span>
+            <div className="flex gap-1 flex-wrap">
+              {TOWER_OPTIONS.map((tw) => (
+                <button
+                  key={tw.key || 'general'}
+                  onClick={() => onTowerChange(tw.key)}
+                  className={`text-xs px-2.5 py-1 rounded-full border transition ${
+                    tower === tw.key
+                      ? 'bg-nikke-gold/20 text-nikke-gold border-nikke-gold/60 font-semibold'
+                      : 'border-slate-700 text-slate-400 hover:border-slate-500'
+                  }`}
+                >
+                  {tw.label}
+                  <span className="ml-1 opacity-60">{tw.days}</span>
+                </button>
+              ))}
+            </div>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">
+            {tower
+              ? '기업 타워는 해당 제조사 니케만 출전할 수 있어, 보유 니케 중 조건에 맞는 인원으로만 조합을 만듭니다.'
+              : '일반 트라이브 타워는 제조사 제한이 없고 상시 열려 있습니다.'}
+            {tower === 'pilgrim' &&
+              ' 필그림 타워에는 오버스펙 니케(라피: 레드 후드, 미하라: 본딩 체인, 아니스: 스타, 네온: 비전 아이)도 출전할 수 있습니다.'}
+          </p>
+        </div>
+      )}
+
       <p className="text-sm text-slate-400 mb-3">
         보유 캐릭터와 공략 근거자료(아키타입/시너지 페어/애장품 정보)를 AI에게 그대로 전달해, AI가 이 데이터만 근거로
         5인 조합을 직접 구성합니다. 구성된 조합은 게임 규칙(버스트 I/II/III)과 점수를 자동으로 검증해 함께 보여드려요.
         {aiMode === 'bossing' && bossElement && ' 선택한 약점 속성 캐릭터의 enikk.app 실사용률도 함께 반영됩니다.'}
+        {aiMode === 'tribe_tower' && tower && ' 선택한 기업 타워에 출전 가능한 니케만 후보로 씁니다.'}
       </p>
 
       {isStale && (
@@ -318,7 +381,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
         </p>
       )}
 
-      <AiRecommendButton roster={roster} mode={aiMode} bossElement={bossElement} />
+      <AiRecommendButton roster={roster} mode={aiMode} bossElement={bossElement} tower={tower} />
 
       {roster.unresolvedCount > 0 && (
         <p className="text-xs text-slate-500 mt-3">
@@ -329,7 +392,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
   );
 }
 
-export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bossElement, onBossElementChange, dataFreshness }) {
+export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
   if (!result) return null;
   const { partialMatches, ownedCount } = result;
 
@@ -349,6 +412,8 @@ export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bo
         onAiModeChange={onAiModeChange}
         bossElement={bossElement}
         onBossElementChange={onBossElementChange}
+        tower={tower}
+        onTowerChange={onTowerChange}
         dataFreshness={dataFreshness}
       />
 

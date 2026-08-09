@@ -2,9 +2,16 @@ import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
 
 // AI가 구성해준 조합에 대해 유저가 👍/👎로 평가한 결과를 저장하는 엔드포인트.
-// 여기 쌓인 데이터는 app/api/ai-recommend/route.js에서 "유저 피드백이 좋았던 조합" 힌트로
-// 다시 읽혀서 프롬프트에 참고 정보로 들어간다 — AI 모델 자체를 학습/파인튜닝하는 게 아니라,
-// 매 요청마다 그때그때 프롬프트에 실어 보내는 방식(RAG)이라는 점은 기존 구조와 동일하다.
+//
+// 2026-08-09 정정: 이 주석은 원래 "여기 쌓인 데이터가 ai-recommend/route.js에서 힌트로 다시
+// 읽혀 프롬프트에 들어간다"고 적혀 있었으나, **사실이 아니다.** 전 코드를 grep한 결과 이
+// 테이블을 읽는 곳은 한 곳도 없다(쓰기 전용). 지금은 나중에 분석하려고 쌓아두는 기록이다.
+// 나중에 읽는 기능을 만든다면 아래 RLS 주의사항을 먼저 볼 것.
+//
+// ⚠️ RLS: 2026-08-09부터 이 테이블은 **insert 정책만** 열려 있다
+// (supabase/ai_recommend_feedback_rls_migration.sql). anon 키로는 읽을 수 없고, 정책 없이
+// 읽으려 하면 에러가 아니라 **빈 결과**가 돌아와 조용히 실패한다. 읽는 기능을 추가하려면
+// service role 키를 쓰거나 select 정책을 따로 만들어야 한다.
 
 export const runtime = 'nodejs';
 

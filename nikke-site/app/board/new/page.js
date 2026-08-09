@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
-import { createPost, BOARD_CATEGORIES } from '@/lib/board';
+import { createPost, BOARD_CATEGORIES, defaultPrivateFor } from '@/lib/board';
 
 export default function NewPostPage() {
   const { user, loading } = useAuth();
@@ -11,7 +11,18 @@ export default function NewPostPage() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [category, setCategory] = useState('free');
+  // 비밀글 여부. 버그 제보를 고르면 기본으로 켜지되, 사용자가 끌 수 있다.
+  // (버그 게시판 전체를 무조건 비밀로 하면 중복 제보가 늘고 색인 페이지가 줄어 애드센스
+  //  심사에 불리하다 — supabase/board_private_posts_migration.sql 참고)
+  const [isPrivate, setIsPrivate] = useState(defaultPrivateFor('free'));
+  // 사용자가 직접 체크박스를 건드렸는지. 건드린 뒤에는 카테고리를 바꿔도 그 선택을 존중한다.
+  const [privateTouched, setPrivateTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  const pickCategory = (key) => {
+    setCategory(key);
+    if (!privateTouched) setIsPrivate(defaultPrivateFor(key));
+  };
 
   if (loading) return null;
   if (!user) {
@@ -26,7 +37,7 @@ export default function NewPostPage() {
     e.preventDefault();
     if (!title.trim() || !content.trim()) return;
     setSubmitting(true);
-    const { data, error } = await createPost(user.id, { title: title.trim(), content: content.trim(), category });
+    const { data, error } = await createPost(user.id, { title: title.trim(), content: content.trim(), category, isPrivate });
     setSubmitting(false);
     if (error) {
       alert('등록에 실패했습니다: ' + (error.message || error));
@@ -44,7 +55,7 @@ export default function NewPostPage() {
             <button
               key={c.key}
               type="button"
-              onClick={() => setCategory(c.key)}
+              onClick={() => pickCategory(c.key)}
               className={`text-xs px-3 py-1.5 rounded-full border transition ${
                 category === c.key
                   ? 'bg-nikke-accent text-slate-900 border-nikke-accent font-semibold'
@@ -55,6 +66,21 @@ export default function NewPostPage() {
             </button>
           ))}
         </div>
+        <label className="flex items-start gap-2 text-xs text-slate-400 cursor-pointer">
+          <input
+            type="checkbox"
+            checked={isPrivate}
+            onChange={(e) => { setIsPrivate(e.target.checked); setPrivateTouched(true); }}
+            className="mt-0.5"
+          />
+          <span>
+            🔒 비밀글로 올리기
+            <span className="block text-slate-600 mt-0.5">
+              체크하면 운영자와 나만 볼 수 있고, 목록에도 다른 사람에게는 나오지 않습니다.
+              {category === 'bug' && ' 버그 제보는 계정 정보가 섞이기 쉬워 기본으로 켜집니다.'}
+            </span>
+          </span>
+        </label>
         {category === 'bug' && (
           <p className="text-xs text-slate-500">
             어떤 화면/기능에서, 어떤 상황에 문제가 생겼는지 최대한 자세히 적어주시면 확인이 빨라져요.

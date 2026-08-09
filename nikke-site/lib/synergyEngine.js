@@ -91,6 +91,79 @@ const CAMPAIGN_COMBO_MODES = new Set(['campaign', 'story']);
 // 솔로 레이드 보스 약점 속성 선택지. metaStats.soloRaidByElement의 키와 반드시 일치해야 함.
 export const BOSS_ELEMENTS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 
+// ---------------------------------------------------------------------------
+// 자유 슬롯(빈칸) 차감 — 후보 비교용 (2026-08-09 추가)
+//
+// 빈칸은 "보유 로스터에서 조건에 맞는 최고 티어"로 채워진다. 즉 빈칸이 있는 조합은 고정 5인
+// 조합과 달리 **로스터 전체를 뒤져 최댓값을 고르는** 셈이라, 티어 합 비교에서 구조적으로
+// 유리하다(빈칸이 많을수록 max-of-N 이득이 커짐). 유저 지적으로 확인된 문제다:
+// "베스티: 택티컬 업(story SSS) 하나만 고정이고 빈칸이 4개인 조합이 있는데, 이 니케를
+//  보유하면 무조건 그 조합이 선정될 가능성이 너무 크다."
+//
+// 실측(2026-08-09, 베스티 보유 로스터 49건, campaign):
+//   - 로스터 30명: 그 조합이 1위 8/8건(100%). 단 이 구간은 **다른 완전일치가 아예 0건**이라
+//     경쟁자가 없어서 이긴 것이고, 차감으로는 바뀌지 않는다(바꿀 대상이 없음).
+//   - 로스터 100명 이상: 다른 완전일치가 생기고, 그때 점수차는 **평균 2.8점(1~6)**.
+//     빈칸 4칸 × 1점 = 4점이면 이 구간은 대부분 뒤집힌다.
+//   → 1점/칸은 임의로 고른 값이 아니라 **실측 격차와 자리수가 맞는 크기**다.
+//
+// **차감은 후보 비교에만 쓰고 화면 표시 점수(totalScore)에는 반영하지 않는다.**
+// 표시 점수는 "이 5명의 실제 티어 합"이라는 의미를 유지해야 사용자가 해석할 수 있다.
+//
+// ⚠️ 값 1은 잠정입니다. 유저가 "몇 점이 맞는지는 아직 확실히 정하지 못했다"고 했으므로,
+// 바꿀 때는 이 상수만 고치고 실측을 다시 돌리세요(0으로 두면 도입 전 동작과 완전히 같습니다).
+export const FLEX_SLOT_PENALTY = 1;
+
+// ---------------------------------------------------------------------------
+// 기업 타워 편성 자격 (2026-08-08 추가)
+//
+// 트라이브 타워(일반)는 제조사 제한이 없고 상시 열려 있다. 기업 타워는 요일제로 열리며
+// 해당 제조사 니케만 출전할 수 있다(월 전체 / 화·금 엘리시온 / 수·토 미실리스 /
+// 목·일 테트라 / 수 필그림).
+//
+// 예외는 오버스펙이다. 오버스펙은 3대 기업 캐릭터의 파워업 버전으로 **소속 기업을 유지하면서**
+// 필그림/오버스펙 타워에도 들어간다 — 즉 원 소속 기업 타워와 필그림 타워 양쪽에서 쓸 수 있다.
+// 소속을 유지하므로 원 소속 타워 쪽은 manufacturer 비교로 이미 커버되고, 여기서 따로 봐야
+// 하는 건 필그림 타워뿐이다.
+//
+// 이 예외가 없으면 필그림 타워가 사실상 성립하지 않는다: 필그림 SSR 중 버스트1은 4명뿐이고
+// (라푼젤 / 도로시 / 라푼젤: 퓨어 그레이스 / 리틀 머메이드), prydwen의 필그림 타워 조합 2건도
+// 전부 오버스펙(라피: 레드 후드, 아니스: 스타, 미하라: 본딩 체인)을 포함한다. 제조사 필터만
+// 걸면 그 조합들이 통째로 깨진다.
+//
+// abnormal(콜라보·특수) 25명은 기업 타워 자체가 없어 일반 타워 전용이다.
+export const TOWER_CORPS = ['elysion', 'missilis', 'tetra', 'pilgrim'];
+
+export const TOWER_LABEL = {
+  elysion: '엘리시온',
+  missilis: '미실리스',
+  tetra: '테트라',
+  pilgrim: '필그림/오버스펙',
+};
+
+export function isTowerEligible(character, tower) {
+  if (!tower) return true; // 일반 트라이브 타워: 제한 없음
+  if (!character) return false;
+  if (tower === 'pilgrim') {
+    return character.manufacturer === 'pilgrim' || character.overspec === true;
+  }
+  return character.manufacturer === tower;
+}
+
+// 로스터를 타워 자격으로 거른다.
+//
+// **걸러진 로스터 하나만 진입점에 흘려보내면 나머지가 전부 따라온다:**
+//   - 아키타입 후보 조건이 "멤버 전원 보유"라, 자격 없는 멤버가 낀 조합은 자동으로 빠진다
+//   - flexSlots도 이 로스터에서만 채워지므로 빈 자리에 자격 없는 캐릭터가 들어갈 수 없다
+//   - recommendTeams의 전체 탐색도 같은 풀을 쓴다
+// 그래서 아키타입마다 "이건 무슨 타워 조합인가"를 따로 판별할 필요가 없다. 아키타입 30개에
+// 타워 구분 필드가 없다는 게 이 작업의 걸림돌로 보였지만, 자격을 캐릭터 쪽에서 판정하면
+// 그 문제 자체가 사라진다.
+export function filterRosterByTower(ownedCharacters, tower) {
+  if (!tower) return ownedCharacters;
+  return (ownedCharacters || []).filter((c) => isTowerEligible(c, tower));
+}
+
 // 2026-08-07 수정: 애장품(Treasure)을 조합 선정에 반영한다.
 //
 // 배경: treasureEffects.json에는 scoreBonus라는 가산점 필드가 있었지만 (1) 그 숫자들은
@@ -1134,6 +1207,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   const topN = opts.topN || 5;
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
+  const tower = opts.tower || null;
+  ownedCharacters = filterRosterByTower(ownedCharacters, tower);
 
   const buckets = { 1: [], 2: [], 3: [] };
   ownedCharacters.forEach((c) => {
@@ -1144,8 +1219,14 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   if (missing.length > 0) {
     return {
       teams: [],
-      error: `버스트 ${missing.join(', ')} 캐릭터를 보유하고 있지 않아 완전한 풀버스트 조합을 만들 수 없습니다. ` +
-        `해당 버스트 단계의 캐릭터를 육성하는 것을 추천합니다.`,
+      // 기업 타워는 제조사로 로스터가 잘리므로 "보유하지 않았다"는 표현이 사실과 다르다.
+      // 보유는 하고 있는데 그 타워에 못 나가는 것이라, 문구를 나눠야 오해가 없다.
+      error: tower
+        ? `${TOWER_LABEL[tower] || tower} 타워에 출전할 수 있는 버스트 ${missing.join(', ')} 캐릭터가 없어 ` +
+          `풀버스트 조합을 만들 수 없습니다. 기업 타워는 해당 제조사 니케만 출전할 수 있습니다` +
+          `${tower === 'pilgrim' ? '(오버스펙 니케 포함)' : ''}.`
+        : `버스트 ${missing.join(', ')} 캐릭터를 보유하고 있지 않아 완전한 풀버스트 조합을 만들 수 없습니다. ` +
+          `해당 버스트 단계의 캐릭터를 육성하는 것을 추천합니다.`,
       dataFreshness: getDataFreshnessMeta(),
     };
   }
@@ -1242,6 +1323,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
   const excludeTitles = new Set(opts.excludeTitles || []);
+  ownedCharacters = filterRosterByTower(ownedCharacters, opts.tower || null);
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
   const ownedTitles = new Set(ownedCharacters.map((c) => c.title));
 
@@ -1323,6 +1405,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
   const excludeTitles = new Set(opts.excludeTitles || []);
+  ownedCharacters = filterRosterByTower(ownedCharacters, opts.tower || null);
   const compatModes = MODE_COMPAT[mode] || [mode];
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
   const ownedTitleSet = new Set(ownedCharacters.map((c) => c.title));
@@ -1518,10 +1601,13 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     // scoreTeam()이 이미 낭비 인원을 제외하고 계산한 tierTotal을 그대로 후보 비교 기준으로
     // 쓴다 — 아키타입 개수와 무관하게 안정적이고, 같은 버스트 단계 낭비 인원도 반영된다.
     const tierSum = scored.tierTotal;
-    // 동점이면 자유 슬롯을 덜 채운 쪽(= prydwen이 더 구체적으로 지정한 조합)을 택한다.
-    if (!best || tierSum > best.tierSum ||
-        (tierSum === best.tierSum && filled.filledCount < best.filledCount)) {
-      best = { archetype: a, members, scored, tierSum, filledCount: filled.filledCount };
+    // 비교용 점수에서만 빈칸 수만큼 차감한다(FLEX_SLOT_PENALTY 주석 참고).
+    // tierSum 자체는 그대로 남겨 화면 표시 점수로 쓴다.
+    const cmpScore = tierSum - FLEX_SLOT_PENALTY * filled.filledCount;
+    // 차감 후에도 동점이면 자유 슬롯을 덜 채운 쪽(= prydwen이 더 구체적으로 지정한 조합)을 택한다.
+    if (!best || cmpScore > best.cmpScore ||
+        (cmpScore === best.cmpScore && filled.filledCount < best.filledCount)) {
+      best = { archetype: a, members, scored, tierSum, cmpScore, filledCount: filled.filledCount };
     }
   });
 

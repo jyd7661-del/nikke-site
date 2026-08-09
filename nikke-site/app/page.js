@@ -30,6 +30,9 @@ export default function Home() {
   // 보스전(솔로 레이드) 모드일 때 상대할 보스의 약점 속성. 지정 안 하면(null) 원소 보정 없이
   // 기존 방식대로만 추천한다. metaStats.soloRaidByElement 키(Iron/Wind/Water/Electronic/Fire)와 일치.
   const [bossElement, setBossElement] = useState(null);
+  // 기업 타워 모드에서 어느 타워를 도는지. null이면 일반 트라이브 타워(제조사 제한 없음).
+  // lib/synergyEngine.js의 TOWER_CORPS 값('elysion'|'missilis'|'tetra'|'pilgrim')과 일치해야 한다.
+  const [tower, setTower] = useState(null);
 
   // 로그인 상태면 저장된 보유 니케(+애장품 여부)를 불러옵니다.
   useEffect(() => {
@@ -174,6 +177,8 @@ export default function Home() {
         onAiModeChange={setAiMode}
         bossElement={bossElement}
         onBossElementChange={setBossElement}
+        tower={tower}
+        onTowerChange={setTower}
         dataFreshness={dataFreshness}
       />
 

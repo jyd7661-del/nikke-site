@@ -93,6 +93,14 @@ export default function BoardPage() {
               >
                 {CATEGORY_LABEL[post.category] || '자유'}
               </span>
+              {post.is_private && (
+                <span
+                  className="text-[10px] shrink-0 border rounded-full px-2 py-0.5 text-amber-300 bg-amber-500/10 border-amber-500/40"
+                  title="운영자와 작성자만 볼 수 있는 글입니다"
+                >
+                  🔒
+                </span>
+              )}
               <span className="text-sm text-slate-100 truncate">{post.title}</span>
             </span>
             <span className="text-xs text-slate-500 shrink-0 ml-3">
