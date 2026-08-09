@@ -22,6 +22,28 @@ export default function Header() {
     { href: '/board', label: t('nav_board') },
   ];
 
+  // 구글 로그인 (2026-08-09 도입).
+  //
+  // 왜 바꿨나: 기존 매직링크(signInWithOtp)는 **로그인할 때마다 이메일을 한 통씩** 태운다.
+  // Supabase 내장 메일은 시간당 2통이 한도이고 그 한도가 **프로젝트 전체 공유**라,
+  // 공개하면 하루 몇 명만 로그인해도 나머지는 아예 로그인을 못 한다(실제로 막혀봄, §7 참고).
+  // OAuth는 이메일을 0통 쓰고, 사용자 입장에서도 메일함을 오갈 필요가 없어 마찰이 훨씬 낮다.
+  //
+  // 기존 계정은 그대로 이어진다: 이 프로젝트의 기존 사용자는 email_confirmed 상태이고
+  // 구글이 돌려주는 이메일도 검증된 값이라, 같은 주소면 Supabase가 같은 user_id에
+  // 구글 신원을 붙인다(보유 니케·게시글·운영자 권한 유지).
+  const signInWithGoogle = async () => {
+    if (!isSupabaseConfigured) {
+      alert('아직 Supabase 연결이 설정되지 않았습니다.');
+      return;
+    }
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: typeof window !== 'undefined' ? window.location.origin : undefined },
+    });
+    if (error) alert(error.message);
+  };
+
   const sendLink = async (e) => {
     e.preventDefault();
     if (!isSupabaseConfigured) {
@@ -118,7 +140,32 @@ export default function Header() {
                   {sent ? (
                     <p className="text-xs text-emerald-300">{t('login_sent')}</p>
                   ) : (
-                    <form onSubmit={sendLink} className="flex flex-col gap-2">
+                    <>
+                    <div className="flex flex-col gap-2">
+                      <button
+                        type="button"
+                        onClick={signInWithGoogle}
+                        className="flex items-center justify-center gap-2 bg-white text-slate-800 rounded py-2 text-xs font-semibold hover:brightness-95 transition"
+                      >
+                        <svg width="14" height="14" viewBox="0 0 48 48" aria-hidden="true">
+                          <path fill="#4285F4" d="M45.1 24.5c0-1.6-.1-2.8-.4-4H24v7.3h12.1c-.2 2-1.6 5-4.5 7l-.1.4 6.5 5 .5.1c4.1-3.8 6.6-9.4 6.6-15.8" />
+                          <path fill="#34A853" d="M24 46c5.9 0 10.9-2 14.5-5.3l-6.9-5.4c-1.9 1.3-4.4 2.2-7.6 2.2-5.8 0-10.7-3.8-12.5-9.900l-.4.03-6.8 5.2-.1.4C7.8 40.9 15.3 46 24 46" />
+                          <path fill="#FBBC05" d="M11.5 27.6c-.5-1.4-.7-2.9-.7-4.6s.3-3.2.7-4.6l0-.5-6.9-5.3-.2.1C2.8 15.6 2 19.2 2 23s.8 7.4 2.4 10.3z" />
+                          <path fill="#EA4335" d="M24 9.5c4.1 0 6.9 1.8 8.5 3.3l6.2-6C34.9 3.4 29.9 1 24 1 15.3 1 7.8 6.1 4.4 13.7l7.1 5.5C13.3 13.3 18.2 9.5 24 9.5" />
+                        </svg>
+                        구글로 로그인
+                      </button>
+                      <p className="text-[10px] text-slate-500">
+                        가입 절차가 따로 없어요. 처음이면 자동으로 계정이 만들어집니다.
+                      </p>
+                    </div>
+                    {/* 매직링크는 구글 설정이 끝날 때까지 남겨두는 대체 수단이다.
+                        로그인마다 메일을 태우므로, 구글 로그인이 확인되면 지울 것. */}
+                    <details className="mt-2">
+                      <summary className="text-[10px] text-slate-500 cursor-pointer hover:text-slate-400">
+                        이메일로 로그인
+                      </summary>
+                      <form onSubmit={sendLink} className="flex flex-col gap-2 mt-2">
                       <input
                         type="email"
                         required
@@ -133,8 +180,10 @@ export default function Header() {
                       >
                         {t('login_send_link')}
                       </button>
-                      <p className="text-[10px] text-slate-500">{t('login_password_note')}</p>
-                    </form>
+                        <p className="text-[10px] text-slate-500">{t('login_password_note')}</p>
+                      </form>
+                    </details>
+                    </>
                   )}
                 </div>
               )}

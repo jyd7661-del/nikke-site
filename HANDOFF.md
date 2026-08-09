@@ -380,6 +380,28 @@ NEXT_PUBLIC_ADSENSE_SLOT_RECTANGLE   = 5842768434
 (AI_EXPLAIN_MODEL — 선택. 넣으면 모델 교체)
 ```
 
+### 🚨 공개 전 필수 — 로그인 이메일이 시간당 2통까지밖에 안 나갑니다
+
+**2026-08-09에 실제로 막혔습니다.** 로그아웃/로그인을 몇 번 반복하니 매직링크가 안 오고
+Supabase 인증 로그에 `429: email rate limit exceeded` / `over_email_send_rate_limit`이 찍혔습니다.
+
+원인: 로그인이 `signInWithOtp`(이메일 매직링크)인데, 지금 메일을 보내는 주체가
+**Supabase 내장 메일 서비스**(`noreply@mail.app.supabase.io`)입니다. 이건 **개발용**이고
+공식 문서도 *"availability is on a best-effort basis. For production use, you should consider
+configuring a custom SMTP server"* 라고 못박고 있습니다. 실측으로 **시간당 2통**입니다
+(10:11:50, 10:13:04 발송 성공 → 그다음부터 전부 429).
+
+**⚠️ 이 한도는 계정별이 아니라 프로젝트 전체 공유입니다.** 즉 **지금 상태로 공개하면
+하루 몇 명만 로그인해도 나머지 사용자는 아예 로그인을 못 합니다.** 광고를 붙이기 전에
+반드시 해결해야 합니다 — 애드센스 통과보다 이게 먼저입니다.
+
+**해결**: Supabase 대시보드 → Authentication → Emails → SMTP Settings 에 커스텀 SMTP 등록
+(SendGrid, AWS SES, Resend 등). 등록하면 기본 한도가 **시간당 30통**이 되고,
+Authentication → Rate Limits 에서 더 올릴 수 있습니다.
+
+**개발 중 우회**: 비로그인 화면을 확인할 때 **로그아웃하지 말고 시크릿 창을 쓰세요.**
+로그아웃하면 다시 들어올 때 메일을 한 통 더 쓰게 되고, 두 번이면 한 시간 묶입니다.
+
 ### 애드센스 — 사이트 검토 대기 중
 
 계정 승인은 났지만 `nikke-site.vercel.app`은 **`준비 중`(사이트의 광고 게재 가능 여부 검토 중)**
