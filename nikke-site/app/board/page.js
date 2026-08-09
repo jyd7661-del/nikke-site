@@ -21,6 +21,14 @@ export default function BoardPage() {
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('all');
 
+  // 글 상세에서 "목록으로" 눌러 돌아왔을 때 보던 게시판을 되살린다.
+  // (useSearchParams 대신 window를 쓰는 이유는 app/board/new/page.js 주석 참고)
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const q = new URLSearchParams(window.location.search).get('category');
+    if (q && TABS.some((t) => t.key === q)) setTab(q);
+  }, []);
+
   useEffect(() => {
     (async () => {
       setLoading(true);

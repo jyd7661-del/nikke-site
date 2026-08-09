@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
 import { useRouter } from 'next/navigation';
 import {
@@ -113,10 +114,34 @@ export default function PostDetailPage() {
   };
 
   if (loading) return <main className="max-w-2xl mx-auto px-4 py-8 text-sm text-slate-500">불러오는 중...</main>;
-  if (!post) return <main className="max-w-2xl mx-auto px-4 py-8 text-sm text-slate-500">글을 찾을 수 없습니다.</main>;
+  // 비밀글 URL을 로그아웃 상태로 열면 여기로 온다(RLS가 행 자체를 안 내려준다).
+  // 여기에도 나가는 길이 있어야 막다른 길이 되지 않는다.
+  if (!post) {
+    return (
+      <main className="max-w-2xl mx-auto px-4 py-8">
+        <p className="text-sm text-slate-500 mb-1">글을 찾을 수 없습니다.</p>
+        <p className="text-xs text-slate-600 mb-4">
+          삭제되었거나, 작성자와 운영자만 볼 수 있는 비밀글일 수 있어요. 비밀글이라면 로그인 후 다시 열어보세요.
+        </p>
+        <Link href="/board" className="text-xs text-slate-500 hover:text-slate-300">
+          ← 목록으로
+        </Link>
+      </main>
+    );
+  }
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-8">
+      {/* 목록으로 돌아가는 길이 없어서 브라우저 뒤로가기밖에 방법이 없었다(2026-08-09 제보).
+          보던 게시판 탭을 그대로 들고 돌아간다. */}
+      <div className="mb-4">
+        <Link
+          href={post.category ? `/board?category=${post.category}` : '/board'}
+          className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-300"
+        >
+          ← 목록으로
+        </Link>
+      </div>
       <span
         className={`inline-block text-[10px] border rounded-full px-2 py-0.5 mb-2 ${
           CATEGORY_BADGE_STYLE[post.category] || CATEGORY_BADGE_STYLE.free
