@@ -11,11 +11,9 @@ import {
 } from '@/lib/board';
 import { fetchTranslations } from '@/lib/translate';
 import { useLanguage } from '@/components/LanguageProvider';
+import { dateLocale } from '@/lib/i18n';
 import TranslationToggle from '@/components/TranslationToggle';
 
-// 날짜 표기도 선택 언어를 따른다. 예전에는 'ko-KR'이 박혀 있어 일본어 화면에서도
-// 날짜만 한국식으로 나왔다(2026-08-10, B단계).
-const DATE_LOCALE = { ko: 'ko-KR', en: 'en-US', ja: 'ja-JP' };
 const CATEGORY_LABEL_KEY = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.labelKey]));
 const CATEGORY_BADGE_STYLE = {
   bug: 'text-rose-300 bg-rose-500/10 border-rose-500/40',
@@ -223,7 +221,7 @@ export default function PostDetailPage() {
           <h1 className="text-xl font-bold mb-1">{shownTitle}</h1>
           <p className="text-xs text-slate-500 mb-4 flex items-center gap-2 flex-wrap">
             <span>
-              {nicknames[post.user_id] || t('anonymous_commander')} · {new Date(post.created_at).toLocaleString(DATE_LOCALE[lang] || DATE_LOCALE.ko)}
+              {nicknames[post.user_id] || t('anonymous_commander')} · {new Date(post.created_at).toLocaleString(dateLocale(lang))}
             </span>
             <TranslationToggle
               available={Boolean(postTr)}
@@ -263,7 +261,7 @@ export default function PostDetailPage() {
         {comments.map((c) => (
           <div key={c.id} className="bg-nikke-panel border border-slate-800 rounded-lg p-3">
             <p className="text-xs text-slate-500 mb-1">
-              {nicknames[c.user_id] || t('anonymous_commander')} · {new Date(c.created_at).toLocaleString(DATE_LOCALE[lang] || DATE_LOCALE.ko)}
+              {nicknames[c.user_id] || t('anonymous_commander')} · {new Date(c.created_at).toLocaleString(dateLocale(lang))}
             </p>
             {editingComment === c.id ? (
               <div className="flex gap-2">

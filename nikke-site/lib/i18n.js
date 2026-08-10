@@ -1,5 +1,11 @@
 export const LOCALES = ['ko', 'en', 'ja'];
 export const LOCALE_LABELS = { ko: '한국어', en: 'English', ja: '日本語' };
+
+// 날짜·시각 표기용 로케일. 화면 문구만 바꾸고 날짜를 놔두면 일본어 화면에
+// 날짜만 `2026. 8. 10.` 같은 한국식으로 남는다(2026-08-10에 실제로 목록 페이지에서 발생).
+// ⚠️ 여기 한 곳에서만 정의한다. 파일마다 따로 두면 한쪽만 고치고 끝난다.
+export const DATE_LOCALE = { ko: 'ko-KR', en: 'en-US', ja: 'ja-JP' };
+export const dateLocale = (lang) => DATE_LOCALE[lang] || DATE_LOCALE[DEFAULT_LOCALE];
 export const DEFAULT_LOCALE = 'ko';
 
 // 가벼운 클라이언트 사이드 다국어 사전. URL 경로는 바꾸지 않고(예: /ko, /en 분리 없음)

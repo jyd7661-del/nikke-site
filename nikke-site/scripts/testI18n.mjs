@@ -122,6 +122,26 @@ const walkShadow = (dir) => {
 for (const d of scanDirs) walkShadow(path.join(ROOT, d));
 check('번역 함수 t 를 가리는 콜백 인자 없음', shadow.length === 0, shadow.join(', '));
 
+// 9. 날짜 로케일이 하드코딩돼 있지 않은가.
+//    문구만 번역하고 날짜를 놔두면 일본어 화면에 `2026. 8. 10.` 같은 한국식 표기가 남는다.
+//    2026-08-10에 상세 페이지만 고치고 목록 페이지를 놓쳐 실제로 그 상태로 배포됐다.
+const hardDate = [];
+const walkDate = (dir) => {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fp = path.join(dir, e.name);
+    if (e.isDirectory()) { if (!['node_modules', '.next'].includes(e.name)) walkDate(fp); continue; }
+    if (!e.name.endsWith('.js')) continue;
+    fs.readFileSync(fp, 'utf8').split('\n').forEach((l, i) => {
+      if (/toLocale(?:Date|Time)?String\(\s*['"][a-z]{2}-[A-Z]{2}['"]/.test(l)) {
+        hardDate.push(`${path.relative(ROOT, fp)}:${i + 1}`);
+      }
+    });
+  }
+};
+for (const d of scanDirs) walkDate(path.join(ROOT, d));
+check('날짜 로케일 하드코딩 없음', hardDate.length === 0,
+  `${hardDate.join(', ')} — lib/i18n.js의 dateLocale(lang)을 쓸 것`);
+
 console.log(`\ni18n 사전 테스트 — 키 ${table[DEFAULT_LOCALE].length}개 × ${LOCALES.length}개 언어 / 함수형 ${fnKeys.length}개`);
 console.log(`통과 ${pass} / 실패 ${fails.length}`);
 if (fails.length) {

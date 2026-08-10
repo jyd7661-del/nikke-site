@@ -7,6 +7,7 @@ import { fetchTranslations } from '@/lib/translate';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
+import { dateLocale } from '@/lib/i18n';
 
 const TABS = [{ key: 'all', labelKey: 'filter_all' }, ...BOARD_CATEGORIES];
 const CATEGORY_LABEL_KEY = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.labelKey]));
@@ -130,7 +131,7 @@ export default function BoardPage() {
             </span>
             <span className="text-xs text-slate-500 shrink-0 ml-3">
               {nicknames[post.user_id] || t('anonymous_commander')} ·{' '}
-              {new Date(post.created_at).toLocaleDateString('ko-KR')}
+              {new Date(post.created_at).toLocaleDateString(dateLocale(lang))}
             </span>
           </Link>
         ))}
