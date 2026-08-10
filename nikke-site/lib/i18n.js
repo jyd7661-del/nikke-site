@@ -31,6 +31,12 @@ const dict = {
     community_subtitle: '내가 쓰는 조합을 직접 등록하고 투표받거나, 게시판에서 다른 지휘관들과 이야기해보세요.',
     view_combos: '커뮤니티 조합 보기',
     go_board: '게시판 가기',
+    // 커뮤니티 번역 (2026-08-09)
+    translated_badge: '자동 번역',
+    show_original: '원문 보기',
+    show_translation: '번역 보기',
+    translate_pending: '번역 준비 중',
+    translate_failed: '자동 번역을 만들지 못해 원문을 그대로 보여드립니다.',
     footer_disclaimer_1: '본 사이트는 팬 제작 비공식 정보 사이트이며, 승리의 여신: 니케의 저작권은 시프트업(SHIFT UP)에 있습니다.',
     footer_disclaimer_2: '조합 정보는 커뮤니티 공략을 참고해 정리한 자료로 실제 게임 밸런스와 다를 수 있습니다.',
     footer_fan_site: '니케 조합 추천은 승리의 여신: 니케(시프트업) 비공식 팬 사이트입니다.',
@@ -61,6 +67,11 @@ const dict = {
     community_subtitle: 'Post your own team and get votes, or chat with other commanders on the board.',
     view_combos: 'View community teams',
     go_board: 'Go to board',
+    translated_badge: 'Auto-translated',
+    show_original: 'Show original',
+    show_translation: 'Show translation',
+    translate_pending: 'Translation pending',
+    translate_failed: 'Automatic translation is unavailable, so the original text is shown.',
     footer_disclaimer_1: 'This is an unofficial fan-made information site. All rights to Goddess of Victory: NIKKE belong to SHIFT UP.',
     footer_disclaimer_2: 'Team info is compiled from community guides and may differ from actual in-game balance.',
     footer_fan_site: '"Nikke Team Guide" is an unofficial fan site for Goddess of Victory: NIKKE (SHIFT UP).',
@@ -91,12 +102,51 @@ const dict = {
     community_subtitle: '自分の編成を登録して投票を集めたり、掲示板で他の指揮官と交流しよう。',
     view_combos: 'コミュニティ編成を見る',
     go_board: '掲示板へ',
+    translated_badge: '自動翻訳',
+    show_original: '原文を見る',
+    show_translation: '翻訳を見る',
+    translate_pending: '翻訳の準備中',
+    translate_failed: '自動翻訳を作成できなかったため、原文をそのまま表示しています。',
     footer_disclaimer_1: '本サイトはファン制作の非公式情報サイトであり、『勝利の女神:NIKKE』の著作権はShift Upに帰属します。',
     footer_disclaimer_2: '編成情報はコミュニティ攻略を参考にまとめたものであり、実際のゲームバランスと異なる場合があります。',
     footer_fan_site: '「ニケ編成ガイド」は『勝利の女神:NIKKE』(Shift Up)の非公式ファンサイトです。',
     privacy_policy: 'プライバシーポリシー',
   },
 };
+
+// -----------------------------------------------------------------------------
+// 원문 언어 판별
+//
+// 화면 언어 설정을 그대로 쓰지 않는 이유: 화면을 영어로 두고 한국어로 쓰는 사람이 있다.
+// 그러면 원문이 en 으로 기록돼 **한국어 글을 한국어로 번역하려 들고**, 정작 필요한
+// 일본어 번역은 안 만들어진다. 글자만 보면 확실히 알 수 있는 걸 설정에 맡길 이유가 없다.
+//
+// 한글(가-힣)은 한국어에만, 가나(ひらがな/カタカナ)는 일본어에만 쓰인다. 이 두 개면
+// 우리가 지원하는 세 언어는 갈린다. 한자만 있는 경우는 일본어로 본다(중국어는 미지원).
+// -----------------------------------------------------------------------------
+export function detectLang(text, fallback = DEFAULT_LOCALE) {
+  const s = String(text || '');
+  if (!s.trim()) return fallback;
+  let hangul = 0;
+  let kana = 0;
+  let kanji = 0;
+  let latin = 0;
+  for (const ch of s) {
+    // 완성형 한글 + 호환 자모(ㅋㅋㅋ, ㅠㅠ 같은 것도 분명한 한국어 단서다)
+    if ((ch >= '가' && ch <= '힣') || (ch >= 'ㄱ' && ch <= 'ㆎ')) hangul++;
+    else if ((ch >= 'ぁ' && ch <= 'ゖ') || (ch >= 'ァ' && ch <= 'ヴ')) kana++;
+    else if (ch >= '一' && ch <= '鿿') kanji++;
+    else if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z')) latin++;
+  }
+  if (hangul > 0 && hangul >= kana) return 'ko';
+  if (kana > 0) return 'ja';
+  if (kanji > 0) return 'ja';
+  // 라틴 문자만 있으면 영어로 본다. 여기서 fallback(기본 ko)으로 넘기면
+  // 영어 글이 한국어로 기록돼 **영어 번역본이 안 만들어진다.**
+  if (latin > 0) return 'en';
+  // 숫자·기호뿐이라 단서가 없을 때만 fallback
+  return LOCALES.includes(fallback) ? fallback : DEFAULT_LOCALE;
+}
 
 export function t(key, locale) {
   const table = dict[locale] || dict[DEFAULT_LOCALE];

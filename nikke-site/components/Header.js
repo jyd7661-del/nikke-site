@@ -12,8 +12,6 @@ export default function Header() {
   const { user, profile, loading } = useAuth();
   const pathname = usePathname();
   const { lang, setLang, t } = useLanguage();
-  const [email, setEmail] = useState('');
-  const [sent, setSent] = useState(false);
   const [open, setOpen] = useState(false);
 
   const NAV_LINKS = [
@@ -44,19 +42,11 @@ export default function Header() {
     if (error) alert(error.message);
   };
 
-  const sendLink = async (e) => {
-    e.preventDefault();
-    if (!isSupabaseConfigured) {
-      alert('아직 Supabase 연결이 설정되지 않았습니다. README.md를 참고해 .env.local을 설정해주세요.');
-      return;
-    }
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: { emailRedirectTo: typeof window !== 'undefined' ? window.location.origin : undefined },
-    });
-    if (error) alert(error.message);
-    else setSent(true);
-  };
+  // 매직링크(signInWithOtp) 로그인은 2026-08-09에 **없앴습니다.**
+  // 남겨두면 안 되는 이유가 분명했습니다: Supabase 내장 메일은 시간당 2통이 한도인데
+  // 그 한도가 프로젝트 전체 공유라, 오픈 후 몇 명만 눌러도 나머지는 로그인이 막힙니다.
+  // "가끔 되는 로그인 버튼"은 아예 없는 것보다 나쁩니다.
+  // 다시 살리려면 외부 SMTP(SendGrid 등)를 먼저 붙여야 합니다.
 
   const logout = async () => {
     if (!supabase) return;
@@ -137,11 +127,7 @@ export default function Header() {
               </button>
               {open && (
                 <div className="absolute right-0 mt-2 w-64 bg-slate-900 border border-slate-700 rounded-lg p-3 shadow-xl">
-                  {sent ? (
-                    <p className="text-xs text-emerald-300">{t('login_sent')}</p>
-                  ) : (
-                    <>
-                    <div className="flex flex-col gap-2">
+                  <div className="flex flex-col gap-2">
                       <button
                         type="button"
                         onClick={signInWithGoogle}
@@ -158,33 +144,7 @@ export default function Header() {
                       <p className="text-[10px] text-slate-500">
                         가입 절차가 따로 없어요. 처음이면 자동으로 계정이 만들어집니다.
                       </p>
-                    </div>
-                    {/* 매직링크는 구글 설정이 끝날 때까지 남겨두는 대체 수단이다.
-                        로그인마다 메일을 태우므로, 구글 로그인이 확인되면 지울 것. */}
-                    <details className="mt-2">
-                      <summary className="text-[10px] text-slate-500 cursor-pointer hover:text-slate-400">
-                        이메일로 로그인
-                      </summary>
-                      <form onSubmit={sendLink} className="flex flex-col gap-2 mt-2">
-                      <input
-                        type="email"
-                        required
-                        placeholder={t('login_email_placeholder')}
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="bg-slate-800 border border-slate-700 rounded px-2 py-1.5 text-xs outline-none focus:border-nikke-accent"
-                      />
-                      <button
-                        type="submit"
-                        className="bg-nikke-accent text-slate-900 rounded py-1.5 text-xs font-semibold"
-                      >
-                        {t('login_send_link')}
-                      </button>
-                        <p className="text-[10px] text-slate-500">{t('login_password_note')}</p>
-                      </form>
-                    </details>
-                    </>
-                  )}
+                  </div>
                 </div>
               )}
             </div>

@@ -9,6 +9,9 @@ import {
   fetchPost, fetchComments, createComment, fetchProfilesByIds, BOARD_CATEGORIES,
   updatePost, deletePost, updateComment, deleteComment,
 } from '@/lib/board';
+import { fetchTranslations } from '@/lib/translate';
+import { useLanguage } from '@/components/LanguageProvider';
+import TranslationToggle from '@/components/TranslationToggle';
 
 const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
 const CATEGORY_BADGE_STYLE = {
@@ -21,8 +24,13 @@ export default function PostDetailPage() {
   const { id } = useParams();
   const router = useRouter();
   const { user } = useAuth();
+  const { lang, t } = useLanguage();
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
+  // 번역본과 "원문 보기" 상태. 글과 댓글을 따로 토글하면 화면이 번잡해져서 한 번에 바꾼다.
+  const [postTr, setPostTr] = useState(null);
+  const [commentTr, setCommentTr] = useState({});
+  const [showOriginal, setShowOriginal] = useState(false);
   const [nicknames, setNicknames] = useState({});
   const [text, setText] = useState('');
   const [loading, setLoading] = useState(true);
@@ -45,13 +53,24 @@ export default function PostDetailPage() {
     const ids = new Set(c.map((x) => x.user_id));
     if (p) ids.add(p.user_id);
     setNicknames(await fetchProfilesByIds([...ids]));
+    const [pt, ct] = await Promise.all([
+      p ? fetchTranslations('post', [p.id], lang) : Promise.resolve({}),
+      fetchTranslations('comment', c.map((x) => x.id), lang),
+    ]);
+    setPostTr(p ? pt[p.id] || null : null);
+    setCommentTr(ct);
     setLoading(false);
   };
 
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [id, lang]);
+
+  // 번역본이 있고 원문 보기를 누르지 않았을 때만 번역문을 쓴다.
+  const useTr = Boolean(postTr) && !showOriginal;
+  const shownTitle = useTr && postTr.title ? postTr.title : post?.title;
+  const shownContent = useTr && postTr.content ? postTr.content : post?.content;
 
   const isMine = Boolean(user && post && user.id === post.user_id);
 
@@ -199,11 +218,23 @@ export default function PostDetailPage() {
         </div>
       ) : (
         <>
-          <h1 className="text-xl font-bold mb-1">{post.title}</h1>
-          <p className="text-xs text-slate-500 mb-4">
-            {nicknames[post.user_id] || '익명 지휘관'} · {new Date(post.created_at).toLocaleString('ko-KR')}
+          <h1 className="text-xl font-bold mb-1">{shownTitle}</h1>
+          <p className="text-xs text-slate-500 mb-4 flex items-center gap-2 flex-wrap">
+            <span>
+              {nicknames[post.user_id] || '익명 지휘관'} · {new Date(post.created_at).toLocaleString('ko-KR')}
+            </span>
+            <TranslationToggle
+              available={Boolean(postTr)}
+              showingOriginal={showOriginal}
+              onToggle={() => setShowOriginal((v) => !v)}
+            />
+            {/* 원문이 다른 언어인데 번역본이 아직 없는 경우. 왜 내 언어로 안 보이는지 알려준다.
+                번역은 글 등록 직후 백그라운드로 만들어지므로 몇 초 뒤 새로고침하면 대개 나온다. */}
+            {!postTr && post.source_lang && post.source_lang !== lang && (
+              <span className="text-[11px] text-slate-600">🌐 {t('translate_pending')}</span>
+            )}
           </p>
-          <p className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">{post.content}</p>
+          <p className="text-sm text-slate-200 whitespace-pre-wrap leading-relaxed">{shownContent}</p>
           <div className="border-b border-slate-800 pb-6 mb-6">
             {isMine && (
               <div className="flex gap-2 mt-4">
@@ -248,7 +279,9 @@ export default function PostDetailPage() {
               </div>
             ) : (
               <>
-                <p className="text-sm text-slate-200 whitespace-pre-wrap">{c.content}</p>
+                <p className="text-sm text-slate-200 whitespace-pre-wrap">
+                  {!showOriginal && commentTr[c.id]?.content ? commentTr[c.id].content : c.content}
+                </p>
                 {user && user.id === c.user_id && (
                   <div className="flex gap-3 mt-2">
                     <button

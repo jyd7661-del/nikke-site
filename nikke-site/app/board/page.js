@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { fetchPosts, fetchProfilesByIds, BOARD_CATEGORIES } from '@/lib/board';
+import { fetchTranslations } from '@/lib/translate';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import { useAuth } from '@/components/AuthProvider';
+import { useLanguage } from '@/components/LanguageProvider';
 
 const TABS = [{ key: 'all', label: '전체' }, ...BOARD_CATEGORIES];
 const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
@@ -16,8 +18,11 @@ const CATEGORY_BADGE_STYLE = {
 
 export default function BoardPage() {
   const { user } = useAuth();
+  const { lang } = useLanguage();
   const [posts, setPosts] = useState([]);
   const [nicknames, setNicknames] = useState({});
+  // 제목 번역본. 목록에서는 토글 없이 번역된 제목만 보여주고, 원문은 글 안에서 볼 수 있다.
+  const [titles, setTitles] = useState({});
   const [loading, setLoading] = useState(true);
   const [tab, setTab] = useState('all');
 
@@ -35,9 +40,11 @@ export default function BoardPage() {
       const list = await fetchPosts(tab);
       setPosts(list);
       setNicknames(await fetchProfilesByIds([...new Set(list.map((p) => p.user_id))]));
+      // 원문이 이미 화면 언어와 같은 글은 번역본이 아예 없다(서버가 만들지 않는다).
+      setTitles(await fetchTranslations('post', list.map((p) => p.id), lang));
       setLoading(false);
     })();
-  }, [tab]);
+  }, [tab, lang]);
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
@@ -111,7 +118,15 @@ export default function BoardPage() {
                   🔒
                 </span>
               )}
-              <span className="text-sm text-slate-100 truncate">{post.title}</span>
+              {titles[post.id]?.title && (
+                <span
+                  className="text-[10px] shrink-0 text-slate-500"
+                  title="자동 번역된 제목입니다"
+                >
+                  🌐
+                </span>
+              )}
+              <span className="text-sm text-slate-100 truncate">{titles[post.id]?.title || post.title}</span>
             </span>
             <span className="text-xs text-slate-500 shrink-0 ml-3">
               {nicknames[post.user_id] || '익명 지휘관'} ·{' '}

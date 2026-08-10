@@ -171,7 +171,7 @@ export const CHARACTERS = [
   { id: 'brid', name: '브리드', burst: 3, tier: 'T3', role: ['딜러'], img: '7/78/Brid_MI.png' },
   { id: 'crow', name: '크로우', burst: 3, tier: 'T3', role: ['탱커'], img: '6/6c/Crow_MI.png' },
   { id: 'power', name: '파워', burst: 3, tier: 'T3', role: ['딜러'], img: '4/42/Power_MI.png' },
-  { id: 'd', name: 'D(디)', burst: 3, tier: 'T3', role: ['딜러'], img: 'a/aa/D_MI.png' },
+  { id: 'd', name: 'D', burst: 3, tier: 'T3', role: ['딜러'], img: 'a/aa/D_MI.png' },
   { id: 'k', name: 'K', burst: 3, tier: 'T3', role: ['딜러'], img: 'f/fb/K_MI.png' },
   { id: 'neon-blue-ocean', name: '네온: 블루 오션', burst: 3, tier: 'T3', role: ['딜러'], img: '9/92/Neon_Blue_Ocean_MI.png' },
   { id: 'snow-white-innocent-days', name: '스노우 화이트: 이노센트 데이즈', burst: 3, tier: 'T3', role: ['딜러'], img: 'a/a7/Snow_White_Innocent_Days_MI.png' },

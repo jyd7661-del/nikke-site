@@ -1121,19 +1121,22 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       `그래도 이 자리는 낭비가 아닙니다. ${note.totemNote}`
     );
   });
-  members.forEach((m) => {
-    const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
-    if (!note?.totemRole || explainedTotems.has(m.id)) return;
-    const sameBurstFastCovered = members.some(
-      (o) => o.id !== m.id && o.burst === m.burst && hasFastBurstCooldown(o)
-    );
-    if (sameBurstFastCovered) {
-      reasons.push(
-        `[토템 활용] ${m.title}는(은) 같은 버스트${m.burst} 단계를 다른 캐릭터가 이미 빠른 쿨타임으로 ` +
-        `커버하고 있어 매 사이클 버스트를 쓰지는 못하지만, 그래도 제 몫을 합니다. ${note.totemNote}`
-      );
-    }
-  });
+  // 2026-08-09 삭제: 여기 있던 두 번째 토템 설명 경로를 없앴습니다.
+  //
+  // 유저 지적 — **"토템은 토템으로도 쓸 수 있다는 뜻이지 토템으로만 써야 한다는 게 아니다."**
+  // 예를 들어 드레이크는 샷건덱에서 딜러로 활약합니다.
+  //
+  // 옛 경로는 `같은 버스트 단계에 쿨 20초짜리 동료가 있는가`만 보고, 정작 **이 캐릭터가
+  // 버스트 순번에서 밀렸는지를 확인하지 않았습니다.** 그래서 자기가 버스트를 돌리는
+  // 쪽인데도 "매 사이클 버스트를 쓰지는 못하지만"이라고 설명했습니다.
+  //
+  // 실측(2026-08-09): 나유타(B2 쿨20) + 디젤(B2 쿨20) 조합에서 티어가 높은 나유타가 남고
+  // 디젤이 밀리는데, 결과 안에 "Diesel은 낭비"와 "Nayuta는 버스트를 못 쓴다"가 **동시에**
+  // 나왔습니다. 같은 문제가 생길 수 있는 토템은 루주 / 나가 / D: 킬러 와이프 / 나유타 /
+  // 에이드: 에이전트 바니 5명(전부 쿨 20초)이었습니다.
+  //
+  // 위의 totemExempted 경로가 "실제로 버스트 순번에서 밀린 멤버"만 설명하므로 이 경로는
+  // 필요 없습니다. 토템 설명은 **밀렸을 때만** 나와야 합니다.
 
   return {
     totalScore: Math.round(score * 10) / 10,

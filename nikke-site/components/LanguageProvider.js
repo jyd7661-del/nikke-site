@@ -28,6 +28,19 @@ export function LanguageProvider({ children }) {
     }
   }, []);
 
+  // 선택한 언어를 <html lang="...">에 반영한다 (2026-08-10 추가).
+  //
+  // app/layout.js는 서버에서 `lang="ko"`로 고정 출력하는데, 이 사이트는 URL을 나누지 않고
+  // 화면 문구만 바꾸는 방식이라 언어를 일본어로 바꿔도 그 속성이 그대로 'ko'로 남아 있었다.
+  // 그러면:
+  //   - 스크린리더가 일본어 본문을 한국어 발음 규칙으로 읽는다
+  //   - 브라우저가 "이 한국어 페이지를 번역할까요?"를 일본어 사용자에게 띄운다
+  //   - 검색엔진이 언어 신호를 잘못 받는다 (robots/sitemap을 붙인 의미가 줄어든다)
+  // 에러가 나지 않아 눈에 안 띄는 종류라 여기서 확실히 맞춰둔다.
+  useEffect(() => {
+    if (typeof document !== 'undefined') document.documentElement.lang = lang;
+  }, [lang]);
+
   const setLang = (next) => {
     if (!LOCALES.includes(next)) return;
     setLangState(next);

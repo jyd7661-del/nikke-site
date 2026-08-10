@@ -10,6 +10,9 @@ import AdSlot from '@/components/AdSlot';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { scoreTeam } from '@/lib/synergyEngine';
 import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
+import { fetchTranslations } from '@/lib/translate';
+import { useLanguage } from '@/components/LanguageProvider';
+import TranslationToggle from '@/components/TranslationToggle';
 
 // 조합의 purpose 문구로 어떤 모드(캠페인/보스전/PvP) 기준으로 채점할지 대략 추정합니다.
 function inferMode(purpose) {
@@ -51,6 +54,9 @@ export default function CombosPage() {
   const [nicknames, setNicknames] = useState({});
   const [myVotes, setMyVotes] = useState({});
   const [loading, setLoading] = useState(true);
+  const { lang } = useLanguage();
+  const [tr, setTr] = useState({});
+  const [showOriginal, setShowOriginal] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -62,13 +68,21 @@ export default function CombosPage() {
     ]);
     setNicknames(profiles);
     setMyVotes(votes);
+    setTr(await fetchTranslations('combo', list.map((c) => c.id), lang));
     setLoading(false);
   };
 
   useEffect(() => {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user]);
+  }, [user, lang]);
+
+  // 번역본이 있고 원문 보기를 누르지 않았을 때만 번역문을 쓴다.
+  const shown = (combo, field) => {
+    const v = !showOriginal ? tr[combo.id]?.[field] : null;
+    return v || combo[field];
+  };
+  const anyTranslated = combos.some((c) => tr[c.id]);
 
   const startEditCombo = (combo) => {
     setEditingCombo(combo.id);
@@ -120,6 +134,15 @@ export default function CombosPage() {
         유저들이 직접 등록한 조합을 보고 투표해보세요. 투표가 많을수록 위로 올라갑니다. 🤖 AI 점수는 캐릭터 성능
         데이터와 공략 근거자료를 기준으로 자동 채점한 참고용 점수입니다.
       </p>
+      {anyTranslated && (
+        <div className="mb-4 -mt-3">
+          <TranslationToggle
+            available
+            showingOriginal={showOriginal}
+            onToggle={() => setShowOriginal((v) => !v)}
+          />
+        </div>
+      )}
 
       {!isSupabaseConfigured && (
         <p className="text-sm text-rose-300 mb-6">
@@ -149,14 +172,17 @@ export default function CombosPage() {
                     className="flex-1 min-w-0 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
                   />
                 ) : (
-                  <h3 className="font-semibold">{combo.name}</h3>
+                  <h3 className="font-semibold">{shown(combo, 'name')}</h3>
                 )}
                 <div className="flex items-center gap-2 flex-wrap">
                   {combo.purpose && (
                     <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
-                      {combo.purpose}
+                      {shown(combo, 'purpose')}
                     </span>
                   )}
+                  {/* ⚠️ AiScoreBadge에는 반드시 **원문** purpose를 넘긴다.
+                      inferMode()가 '보스'·'아레나' 같은 한국어로 모드를 고르는데, 번역문을
+                      넘기면 모드가 조용히 캠페인으로 바뀌어 점수가 달라진다. */}
                   <AiScoreBadge members={combo.members} purpose={combo.purpose} />
                 </div>
               </div>
@@ -194,7 +220,7 @@ export default function CombosPage() {
                   </div>
                 </div>
               ) : (
-                combo.description && <p className="text-sm text-slate-400 mt-1">{combo.description}</p>
+                combo.description && <p className="text-sm text-slate-400 mt-1">{shown(combo, 'description')}</p>
               )}
               <div className="flex flex-wrap gap-2 mt-2">
                 {combo.members.map((id) => (

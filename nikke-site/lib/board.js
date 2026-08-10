@@ -1,4 +1,6 @@
 import { supabase } from './supabaseClient';
+import { detectLang } from './i18n';
+import { requestTranslation } from './translate';
 
 export const BOARD_CATEGORIES = [
   { key: 'free', label: '자유' },
@@ -47,10 +49,14 @@ export async function createPost(userId, { title, content, category, isPrivate }
       content,
       category: cat,
       is_private: typeof isPrivate === 'boolean' ? isPrivate : defaultPrivateFor(cat),
+      // 글자를 보고 판별한다. 화면 언어 설정은 믿지 않는다(lib/i18n.js의 detectLang 주석 참고).
+      source_lang: detectLang(`${title}\n${content}`),
     })
     .select()
     .single();
   if (error) console.error('createPost error', error);
+  // 번역은 기다리지 않는다. 실패해도 글 등록은 성공이고, 번역본이 없으면 원문이 그대로 보인다.
+  if (data?.id) requestTranslation('post', data.id);
   return { data, error };
 }
 
@@ -71,8 +77,13 @@ export async function updatePost(userId, postId, { title, content, category, isP
   if (content !== undefined) patch.content = content;
   if (category !== undefined) patch.category = category;
   if (isPrivate !== undefined) patch.is_private = isPrivate;
+  // 본문을 고쳤으면 언어도 다시 본다. 한국어 글을 영어로 새로 쓰는 경우가 있다.
+  const textChanged = title !== undefined || content !== undefined;
+  if (textChanged) patch.source_lang = detectLang(`${title ?? ''}\n${content ?? ''}`);
   const { error } = await supabase.from('posts').update(patch).eq('id', postId).eq('user_id', userId);
   if (error) console.error('updatePost error', error);
+  // 본문이 바뀌었으면 번역을 다시 만든다. 안 바뀌었으면 서버가 src_hash로 걸러 AI를 부르지 않는다.
+  if (!error && textChanged) requestTranslation('post', postId);
   return { error };
 }
 
@@ -89,8 +100,12 @@ export async function deletePost(userId, postId) {
 
 export async function updateComment(userId, commentId, content) {
   if (!supabase || !userId) return { error: 'not_configured' };
-  const { error } = await supabase.from('comments').update({ content }).eq('id', commentId).eq('user_id', userId);
+  const { error } = await supabase
+    .from('comments')
+    .update({ content, source_lang: detectLang(content) })
+    .eq('id', commentId).eq('user_id', userId);
   if (error) console.error('updateComment error', error);
+  if (!error) requestTranslation('comment', commentId);
   return { error };
 }
 
@@ -117,9 +132,15 @@ export async function fetchComments(postId) {
 
 export async function createComment(userId, postId, content) {
   if (!supabase || !userId) return { error: 'not_configured' };
-  const { error } = await supabase.from('comments').insert({ user_id: userId, post_id: postId, content });
+  // 번역하려면 방금 만든 댓글의 id가 필요해서 select().single()을 붙였다(2026-08-09).
+  const { data, error } = await supabase
+    .from('comments')
+    .insert({ user_id: userId, post_id: postId, content, source_lang: detectLang(content) })
+    .select()
+    .single();
   if (error) console.error('createComment error', error);
-  return { error };
+  if (data?.id) requestTranslation('comment', data.id);
+  return { data, error };
 }
 
 export async function fetchProfilesByIds(ids) {

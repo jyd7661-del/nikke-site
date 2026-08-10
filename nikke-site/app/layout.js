@@ -4,8 +4,12 @@ import { AuthProvider } from '@/components/AuthProvider';
 import { LanguageProvider } from '@/components/LanguageProvider';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { SITE_URL } from '@/lib/site';
 
 export const metadata = {
+  // 상대 주소로 적힌 메타데이터(og:image 등)를 절대 주소로 만들 기준점.
+  // 없으면 Next.js가 빌드 때 경고를 내고, 검색·SNS 미리보기에서 주소가 깨질 수 있다.
+  metadataBase: new URL(SITE_URL),
   title: '니케 조합 추천 | 보유 니케로 최적의 팀 짜기',
   description:
     '보유중인 니케 캐릭터를 선택하면 캠페인, 보스전, 아레나(PvP)에 맞는 추천 조합을 알려주고, 유저들과 직접 조합을 공유·투표할 수 있는 승리의 여신: 니케 팬 사이트입니다.',

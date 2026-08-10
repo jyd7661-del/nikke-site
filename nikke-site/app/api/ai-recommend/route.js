@@ -388,8 +388,25 @@ export async function POST(req) {
 
     let supabase = null;
     let ipHash = null;
-    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-      supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+    // 이 라우트는 서버에서만 돕니다. 그래서 공개 키가 아니라 service role 키를 씁니다.
+    //
+    // 왜 바꿨나 (2026-08-09): 예전엔 여기서도 NEXT_PUBLIC_SUPABASE_ANON_KEY를 썼는데,
+    // 그러면 서버가 써야 하는 테이블(캐시·레이트리밋·일일예산)을 전부 anon에게 열어줘야 합니다.
+    // 실제로 그 결과 **누구나 공개 키만으로 ai_explain_cache의 설명문을 바꿔 쓸 수 있었습니다.**
+    // 캐시된 글은 모든 유저에게 그대로 나가므로 내용 변조 통로였습니다.
+    //
+    // ⚠️ service role 키는 RLS를 통째로 무시합니다. 절대 클라이언트로 내려보내지 말 것이고,
+    // 이 파일에서만, 아래 세 테이블 용도로만 씁니다. 변수 이름에 NEXT_PUBLIC_을 붙이면
+    // 번들에 실려 나가니 절대 붙이지 마세요.
+    //
+    // 키가 없으면 공개 키로 되돌아가지 않고 그냥 Supabase 연동을 끕니다. 되돌아가면
+    // "고쳤다고 생각했는데 옛날 상태로 조용히 돌아가 있는" 최악의 경우가 되고,
+    // 그건 §2-3이 말하는 조용한 누락 그 자체입니다. AI 설명은 캐시·레이트리밋 없이도
+    // 동작하므로(캐시 미스로 취급) 기능이 죽지는 않습니다.
+    if (process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.SUPABASE_SERVICE_ROLE_KEY, {
+        auth: { persistSession: false, autoRefreshToken: false },
+      });
       ipHash = hashIp(getClientIp(req));
       if (await isOverDailyLimit(supabase, ipHash)) {
         return Response.json(
@@ -397,6 +414,13 @@ export async function POST(req) {
           { status: 429 }
         );
       }
+    } else if (process.env.NEXT_PUBLIC_SUPABASE_URL) {
+      // URL은 있는데 키만 없다 = 환경변수를 안 넣었다는 뜻. 이 경우 캐시도 레이트리밋도
+      // 일일 상한도 전부 꺼진 채로 돌아가므로 비용이 무방비가 된다. 조용히 넘어가면 안 된다.
+      console.error(
+        '[AI_KEY] SUPABASE_SERVICE_ROLE_KEY가 없습니다 — 캐시·레이트리밋·일일 상한이 모두 꺼진 채로 동작합니다. ' +
+        'Vercel 환경변수를 확인하세요.'
+      );
     }
 
     const modeLabel = towerKey

@@ -1,4 +1,6 @@
 import { supabase } from './supabaseClient';
+import { detectLang } from './i18n';
+import { requestTranslation } from './translate';
 
 // 점수(추천-비추천)순으로 유저 등록 조합을 가져옵니다.
 export async function fetchCombos() {
@@ -60,15 +62,22 @@ export async function voteCombo(userId, comboId, value, currentValue) {
 
 export async function createCombo(userId, { name, purpose, description, members }) {
   if (!supabase || !userId) return { error: 'not_configured' };
-  const { error } = await supabase.from('user_combos').insert({
-    user_id: userId,
-    name,
-    purpose,
-    description,
-    members,
-  });
+  // 번역하려면 방금 만든 조합의 id가 필요해서 select().single()을 붙였다(2026-08-09).
+  const { data, error } = await supabase
+    .from('user_combos')
+    .insert({
+      user_id: userId,
+      name,
+      purpose,
+      description,
+      members,
+      source_lang: detectLang(`${name}\n${purpose || ''}\n${description || ''}`),
+    })
+    .select()
+    .single();
   if (error) console.error('createCombo error', error);
-  return { error };
+  if (data?.id) requestTranslation('combo', data.id);
+  return { data, error };
 }
 
 // ---------------------------------------------------------------------------
@@ -84,8 +93,12 @@ export async function updateCombo(userId, comboId, { name, purpose, description,
   if (purpose !== undefined) patch.purpose = purpose;
   if (description !== undefined) patch.description = description;
   if (members !== undefined) patch.members = members;
+  const textChanged = name !== undefined || purpose !== undefined || description !== undefined;
+  if (textChanged) patch.source_lang = detectLang(`${name ?? ''}\n${purpose ?? ''}\n${description ?? ''}`);
   const { error } = await supabase.from('user_combos').update(patch).eq('id', comboId).eq('user_id', userId);
   if (error) console.error('updateCombo error', error);
+  // 글이 바뀌었으면 번역을 다시 만든다. 안 바뀌었으면 서버가 src_hash로 걸러 AI를 부르지 않는다.
+  if (!error && textChanged) requestTranslation('combo', comboId);
   return { error };
 }
 

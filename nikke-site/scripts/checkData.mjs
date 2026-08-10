@@ -707,6 +707,159 @@ if (engineSrc && routeSrc && uiSrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 7. 번역 용어집 — 3개 언어 이름이 치환에 쓸 수 있는 상태인가 (2026-08-09 추가)
+//
+// 커뮤니티 번역은 AI에게 이름을 맡기지 않는다. 번역 전에 본문에서 니케 이름을
+// 토큰으로 빼내고, 번역 후 대상 언어 이름으로 되돌린다(lib/glossary.js).
+// 이 방식이 성립하려면 세 가지가 필요하다:
+//   (a) 196명 전원이 세 언어 이름을 다 가질 것 — 하나라도 비면 그 이름만 원문으로 남는다
+//   (b) 같은 언어 안에서 이름이 겹치지 않을 것 — 겹치면 되돌릴 때 어느 쪽인지 알 수 없다
+//   (c) 짧은 이름의 오검출을 알고 있을 것 — '신'은 '신데렐라' 안에 들어 있다
+// (c)는 막을 수 없고 치환 순서(긴 이름 우선)로 다루므로 여기서는 개수만 알린다.
+// ---------------------------------------------------------------------------
+const NAME_FIELDS = [
+  ['name_kr', '한글'],
+  ['name_ja', '일본어'],
+  ['title', '영문'],
+];
+for (const [field, label] of NAME_FIELDS) {
+  const missing = cdb.filter((c) => !c[field] || !String(c[field]).trim());
+  if (missing.length) {
+    err('NAME_MISSING',
+      `${label} 이름(${field})이 없는 캐릭터 ${missing.length}명: ${missing.slice(0, 8).map((c) => c.title || c.id).join(', ')}` +
+      `${missing.length > 8 ? ' 외' : ''} — 번역 시 이 이름들은 치환되지 않고 원문 그대로 남는다`);
+  }
+  const seen = new Map();
+  const dups = [];
+  for (const c of cdb) {
+    const v = String(c[field] || '').trim();
+    if (!v) continue;
+    if (seen.has(v)) dups.push(`${v}(${seen.get(v)} ↔ ${c.title})`);
+    else seen.set(v, c.title);
+  }
+  if (dups.length) {
+    err('NAME_DUP',
+      `${label} 이름(${field})이 겹치는 캐릭터가 있음: ${dups.join(', ')} — ` +
+      `번역본에서 원래 어느 캐릭터였는지 되돌릴 수 없다`);
+  }
+}
+// 짧은 이름이 다른 이름 안에 포함되는 경우. 치환을 긴 이름부터 하면 대부분 해결되지만,
+// 'D'처럼 일반 문장에도 나올 수 있는 이름은 앞뒤 문자까지 봐야 한다.
+for (const [field, label] of NAME_FIELDS) {
+  const names = [...new Set(cdb.map((c) => String(c[field] || '').trim()).filter(Boolean))];
+  const risky = names.filter((a) => a.length <= 2 && names.some((b) => b !== a && b.includes(a)));
+  if (risky.length) {
+    warn('NAME_SUBSTRING',
+      `${label} 이름 중 다른 이름 안에 통째로 들어 있는 짧은 이름 ${risky.length}개: ${risky.join(', ')} — ` +
+      `치환은 반드시 긴 이름부터 해야 하고, 이 이름들은 앞뒤 경계까지 확인해야 한다`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 7-1. 용어집 (data/glossary.json)
+//
+// 캐릭터가 아닌 게임 용어의 3개 언어 표기. 캐릭터 이름과 같은 치환 경로를 타므로
+// 같은 제약을 받는다. 특히 용어와 캐릭터 이름이 같은 문자열이면 되돌릴 때 어느 쪽인지
+// 알 수 없다(예: 어떤 용어가 'D'라면 캐릭터 D와 구분 불가).
+// ---------------------------------------------------------------------------
+let glossary = null;
+try {
+  glossary = read('glossary.json');
+} catch {
+  warn('GLOSSARY_MISSING', 'data/glossary.json이 없음 — 게임 용어가 번역에서 보호되지 않는다');
+}
+if (glossary) {
+  const terms = glossary.terms || [];
+  const charNames = new Set();
+  for (const c of cdb) for (const f of ['title', 'name_kr', 'name_ja']) if (c[f]) charNames.add(String(c[f]).trim());
+  const seen = { ko: new Map(), en: new Map(), ja: new Map() };
+  for (const t of terms) {
+    const holes = ['ko', 'en', 'ja', 'source'].filter((f) => !t[f] || !String(t[f]).trim());
+    if (holes.length) {
+      err('GLOSSARY_INCOMPLETE',
+        `용어 '${t.key || '(key 없음)'}'에 ${holes.join('/')}가 비어 있음 — ` +
+        `출처 없는 표기는 넣지 않는다는 원칙(HANDOFF §2-2)에 어긋나고, 언어가 비면 그 말만 원문으로 남는다`);
+      continue;
+    }
+    for (const f of ['ko', 'en', 'ja']) {
+      const v = String(t[f]).trim();
+      if (seen[f].has(v)) {
+        err('GLOSSARY_DUP',
+          `용어집 ${f} 표기 '${v}'가 '${seen[f].get(v)}'와 '${t.key}' 두 곳에 있음 — 되돌릴 때 어느 쪽인지 알 수 없다`);
+      } else seen[f].set(v, t.key);
+      if (charNames.has(v)) {
+        err('GLOSSARY_NAME_COLLISION',
+          `용어 '${t.key}'의 ${f} 표기 '${v}'가 캐릭터 이름과 같음 — 번역본에서 용어인지 캐릭터인지 구분할 수 없다`);
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 7-2. 지원 언어가 화면과 DB에서 어긋나지 않는가 (2026-08-09 추가)
+//
+// 언어 목록이 두 곳에 있다: lib/i18n.js 의 LOCALES 와 content_translations.lang 의
+// check 제약. 한 곳만 고치면 조용히 어긋난다:
+//   - 화면에만 추가 → 사용자가 그 언어를 고를 수 있는데 저장이 거부돼 번역이 통째로 안 됨
+//   - DB에만 추가   → 아무도 그 언어를 고를 수 없어 번역본이 만들어지지 않음
+// 둘 다 "에러 없이 그냥 번역이 안 되는" 유형이라 사람이 알아채기 어렵다.
+// ---------------------------------------------------------------------------
+const i18nSrc = readSrc('lib/i18n.js');
+const migSrc = readSrc('supabase/content_translations_migration.sql');
+if (i18nSrc && migSrc) {
+  const pick = (src, re) => {
+    const m = src.match(re);
+    return m ? [...m[1].matchAll(/'([a-z-]+)'/g)].map((x) => x[1]).sort().join(',') : null;
+  };
+  const ui = pick(i18nSrc, /LOCALES\s*=\s*\[([^\]]*)\]/);
+  const db = pick(migSrc, /lang\s+text\s+not null\s+check\s*\(\s*lang\s+in\s*\(([^)]*)\)/i);
+  if (ui === null || db === null) {
+    warn('LOCALE_LIST_MISSING',
+      `지원 언어 목록을 못 찾음 (lib/i18n.js=${ui === null ? 'X' : 'O'} / 마이그레이션=${db === null ? 'X' : 'O'}) — ` +
+      `상수 이름이나 제약 형태가 바뀌었는지 확인할 것`);
+  } else if (ui !== db) {
+    err('LOCALE_DRIFT',
+      `지원 언어가 어긋남 — lib/i18n.js=[${ui}] / content_translations.lang 제약=[${db}]. ` +
+      `화면에만 있으면 저장이 거부돼 그 언어 번역이 통째로 안 되고, DB에만 있으면 아무도 고를 수 없다`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 7-3. 모호어 목록이 실제 표기를 가리키는가 (2026-08-09 추가)
+//
+// lib/glossary.js 의 AMBIGUOUS_* 는 "게임 이름이면서 일상 낱말이기도 해서 치환하면 안 되는
+// 표기" 목록이다. 여기 적힌 문자열이 실제 이름·용어와 한 글자라도 다르면 그 항목은
+// **아무 일도 하지 않는다.** 그런데 에러는 안 난다 — 오타 하나로 보호가 풀리고,
+// "소다 마시고 싶다"가 캐릭터 이름으로 치환돼도 아무도 모른다.
+// ---------------------------------------------------------------------------
+const glossarySrc = readSrc('lib/glossary.js');
+if (glossarySrc) {
+  const forms = { ko: new Set(), en: new Set(), ja: new Set() };
+  for (const c of cdb) {
+    if (c.name_kr) forms.ko.add(String(c.name_kr).trim());
+    if (c.title) forms.en.add(String(c.title).trim());
+    if (c.name_ja) forms.ja.add(String(c.name_ja).trim());
+  }
+  for (const t of (glossary?.terms) || []) {
+    for (const f of ['ko', 'en', 'ja']) if (t[f]) forms[f].add(String(t[f]).trim());
+  }
+  for (const [constName, lang] of [['AMBIGUOUS_KO', 'ko'], ['AMBIGUOUS_EN', 'en'], ['AMBIGUOUS_JA', 'ja']]) {
+    const m = glossarySrc.match(new RegExp(`${constName}\\s*=\\s*new Set\\(\\[([\\s\\S]*?)\\]\\)`));
+    if (!m) {
+      warn('AMBIGUOUS_LIST_MISSING', `lib/glossary.js에서 ${constName}를 못 찾음 — 상수 이름이 바뀌었는지 확인할 것`);
+      continue;
+    }
+    const listed = [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
+    const ghosts = listed.filter((v) => !forms[lang].has(v));
+    if (ghosts.length) {
+      err('AMBIGUOUS_GHOST',
+        `${constName}에 실제로 없는 표기가 있음: ${ghosts.join(', ')} — ` +
+        `이 항목들은 아무 일도 하지 않는다. 오타라면 그 이름의 오검출 보호가 풀린 상태다`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 리포트
 // ---------------------------------------------------------------------------
 const line = '─'.repeat(72);
