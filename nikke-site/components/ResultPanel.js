@@ -5,11 +5,13 @@ import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { memberName, characterName } from '@/lib/characterNames';
 
+// 모듈 스코프라 t()를 부를 수 없다. 문구 대신 **키**만 들고 있다가 화면에서 t()로 푼다.
+// (여기에 한국어를 그대로 적으면 언어를 바꿔도 이 목록만 한국어로 남는다 — A단계에서 겪은 그 문제)
 const AI_MODES = [
-  { key: 'campaign', label: '캠페인' },
-  { key: 'bossing', label: '보스전' },
-  { key: 'pvp', label: 'PvP' },
-  { key: 'tribe_tower', label: '타워' },
+  { key: 'campaign', labelKey: 'mode_campaign' },
+  { key: 'bossing', labelKey: 'mode_bossing' },
+  { key: 'pvp', labelKey: 'mode_pvp' },
+  { key: 'tribe_tower', labelKey: 'mode_tribe_tower' },
 ];
 
 // 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS / TOWER_LABEL과 반드시 일치해야 한다.
@@ -30,21 +32,21 @@ const AI_MODES = [
 // 하이드레이션 불일치가 나는데, 이 저장소는 npm이 막혀 로컬 빌드 검증이 안 된다(HANDOFF §8).
 // 요일은 버튼 옆 고정 문구로만 알린다.
 const TOWER_OPTIONS = [
-  { key: null, label: '일반 트라이브', days: '상시' },
-  { key: 'elysion', label: '엘리시온', days: '화·금·일' },
-  { key: 'missilis', label: '미실리스', days: '수·토·일' },
-  { key: 'tetra', label: '테트라', days: '월·목·일' },
-  { key: 'pilgrim', label: '필그림/오버스펙', days: '수·일' },
+  { key: null, labelKey: 'tower_normal', daysKey: 'tower_days_always' },
+  { key: 'elysion', labelKey: 'tower_elysion', daysKey: 'tower_days_elysion' },
+  { key: 'missilis', labelKey: 'tower_missilis', daysKey: 'tower_days_missilis' },
+  { key: 'tetra', labelKey: 'tower_tetra', daysKey: 'tower_days_tetra' },
+  { key: 'pilgrim', labelKey: 'tower_pilgrim', daysKey: 'tower_days_pilgrim' },
 ];
 
 // 솔로 레이드 보스 약점 속성 선택지. lib/synergyEngine.js의 BOSS_ELEMENTS,
 // data/metaStats.json의 soloRaidByElement 키와 반드시 일치해야 함.
 const BOSS_ELEMENT_OPTIONS = [
-  { key: 'Iron', label: '철' },
-  { key: 'Wind', label: '바람' },
-  { key: 'Water', label: '물' },
-  { key: 'Electronic', label: '전기' },
-  { key: 'Fire', label: '불' },
+  { key: 'Iron', labelKey: 'element_iron' },
+  { key: 'Wind', labelKey: 'element_wind' },
+  { key: 'Water', labelKey: 'element_water' },
+  { key: 'Electronic', labelKey: 'element_electronic' },
+  { key: 'Fire', labelKey: 'element_fire' },
 ];
 
 // AI가 "규칙 엔진이 미리 뽑아둔 후보 중 하나를 설명"하는 게 아니라, 보유 로스터(roster.resolved)와
@@ -57,10 +59,10 @@ const BOSS_ELEMENT_OPTIONS = [
 // 조합이 어느 근거에서 나왔는지 표시하는 라벨.
 // 유저 정의: "검증된 조합"이란 사람들이 두루두루 쓰는 조합(enikk 실사용) 또는 prydwen에
 // 등록된 조합이며, 둘은 대등하다. 어느 쪽 근거인지 밝혀야 사용자가 판단할 수 있다.
-const SOURCE_LABEL = {
-  'enikk-real-usage': '실사용 검증',
-  'prydwen-exact-match': 'prydwen 등록',
-  'skill-synergy-fallback': '보유 조합 탐색',
+const SOURCE_LABEL_KEY = {
+  'enikk-real-usage': 'source_enikk',
+  'prydwen-exact-match': 'source_prydwen',
+  'skill-synergy-fallback': 'source_fallback',
 };
 
 function AiRecommendButton({ roster, mode, bossElement, tower }) {
@@ -119,7 +121,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || 'AI 추천을 불러오지 못했습니다.');
+        setErrorMsg(data.error || t('ai_error_generic'));
         setPhase('error');
         return;
       }
@@ -132,7 +134,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       setFeedback(null);
       setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
     } catch {
-      setErrorMsg('네트워크 오류로 AI 추천을 불러오지 못했습니다.');
+      setErrorMsg(t('ai_error_network'));
       setPhase('error');
     }
   };
@@ -169,11 +171,11 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           disabled={phase === 'loading'}
           className="w-full sm:w-auto bg-nikke-accent text-slate-900 font-bold px-5 py-3 rounded-lg hover:brightness-110 transition disabled:opacity-50"
         >
-          {phase === 'loading' ? 'AI가 조합을 구성하는 중...' : '🤖 이 로스터로 AI가 조합 직접 구성하기'}
+          {phase === 'loading' ? t('ai_building') : t('ai_build_cta')}
         </button>
         {phase === 'loading' && (
           <p className="text-xs text-slate-500 mt-2">
-            보유 캐릭터가 많을수록 AI가 검토할 자료도 많아져 최대 40~50초 정도 걸릴 수 있어요. 화면이 멈춘 게 아니니 잠시만 기다려주세요.
+            {t('ai_wait_note')}
           </p>
         )}
         {phase === 'error' && <p className="text-sm text-rose-300 mt-2">{errorMsg}</p>}
@@ -184,15 +186,15 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
   return (
     <div className="bg-slate-900/40 rounded-lg p-4 border border-nikke-accent/30">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
-        <h3 className="font-semibold text-slate-100">🤖 AI가 구성한 조합</h3>
+        <h3 className="font-semibold text-slate-100">{t('ai_team_heading')}</h3>
         <div className="flex items-center gap-1.5">
-          {SOURCE_LABEL[source] && (
+          {SOURCE_LABEL_KEY[source] && (
             <span className="text-xs text-slate-300 bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">
-              {SOURCE_LABEL[source]}
+              {t(SOURCE_LABEL_KEY[source])}
             </span>
           )}
           <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
-            점수 {team.totalScore}
+            {t('score')} {team.totalScore}
           </span>
         </div>
       </div>
@@ -210,13 +212,12 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       {reasoning && (
         <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
           <p className="text-xs text-nikke-accent font-semibold mb-1.5">
-            {budgetExhausted ? '📋 구성 근거' : '🤖 AI의 구성 이유'}
+            {budgetExhausted ? t('reason_fallback_heading') : t('reason_ai_heading')}
           </p>
           <p className="text-sm text-slate-300 whitespace-pre-line">{reasoning}</p>
           {budgetExhausted && (
             <p className="text-xs text-slate-500 mt-2">
-              오늘 AI 설명 생성 한도에 도달해 근거 문장을 그대로 보여드립니다. 조합 구성과 점수는
-              AI가 아니라 규칙 엔진이 정하므로 추천 결과 자체는 평소와 동일합니다.
+              {t('budget_exhausted_note')}
             </p>
           )}
         </div>
@@ -225,10 +226,10 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
         <div className="bg-slate-900/40 border border-slate-700 rounded-lg p-3 mb-3">
           <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
             <p className="text-xs text-slate-400 font-semibold">
-              다른 근거로 뽑은 조합 — {SOURCE_LABEL[alternative.source] || '대안'}
+              {t('alt_team_from')} — {SOURCE_LABEL_KEY[alternative.source] ? t(SOURCE_LABEL_KEY[alternative.source]) : t('source_other')}
             </p>
             <span className="text-xs text-slate-400 bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">
-              점수 {alternative.totalScore}
+              {t('score')} {alternative.totalScore}
             </span>
           </div>
           <div className="flex flex-wrap gap-1.5 mb-2">
@@ -251,7 +252,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       {phase === 'error' && <p className="text-xs text-rose-300 mb-2">{errorMsg}</p>}
 
       <div className="flex items-center flex-wrap gap-2 mb-3">
-        <span className="text-xs text-slate-500">이 조합 어때요?</span>
+        <span className="text-xs text-slate-500">{t('feedback_ask')}</span>
         <button
           onClick={() => sendFeedback('up')}
           disabled={feedback === 'sending' || feedback === 'up' || feedback === 'down'}
@@ -261,7 +262,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
               : 'border-slate-700 text-slate-300 hover:border-slate-500'
           }`}
         >
-          👍 좋아요
+          {t('feedback_good')}
         </button>
         <button
           onClick={() => sendFeedback('down')}
@@ -272,10 +273,10 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
               : 'border-slate-700 text-slate-300 hover:border-slate-500'
           }`}
         >
-          👎 별로예요
+          {t('feedback_bad')}
         </button>
         {(feedback === 'up' || feedback === 'down') && (
-          <span className="text-xs text-slate-500">피드백 감사합니다! 다음 추천에 참고할게요.</span>
+          <span className="text-xs text-slate-500">{t('feedback_thanks')}</span>
         )}
       </div>
 
@@ -284,7 +285,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
         disabled={phase === 'loading'}
         className="text-xs bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-3 py-1.5 rounded-lg hover:bg-nikke-accent/20 transition disabled:opacity-50"
       >
-        {phase === 'loading' ? 'AI가 다시 구성하는 중...' : '🔄 다른 조합 보기'}
+        {phase === 'loading' ? t('ai_rebuilding') : t('ai_another_team')}
       </button>
     </div>
   );
@@ -297,7 +298,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
   return (
     <section className="bg-nikke-panel rounded-xl p-5 border border-nikke-accent/40 shadow-lg shadow-nikke-accent/5">
       <div className="flex items-center justify-between flex-wrap gap-2 mb-1">
-        <h2 className="text-lg font-bold text-nikke-accent">🤖 AI 조합 추천</h2>
+        <h2 className="text-lg font-bold text-nikke-accent">{t('ai_section_heading')}</h2>
         <div className="flex gap-1">
           {AI_MODES.map((m) => (
             <button
@@ -309,7 +310,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
                   : 'border-slate-700 text-slate-300 hover:border-slate-500'
               }`}
             >
-              {m.label}
+              {t(m.labelKey)}
             </button>
           ))}
         </div>
@@ -317,7 +318,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
 
       {aiMode === 'bossing' && (
         <div className="flex items-center flex-wrap gap-2 mb-3 mt-2">
-          <span className="text-xs text-slate-500">이번에 상대할 보스의 약점 속성:</span>
+          <span className="text-xs text-slate-500">{t('boss_weak_element')}</span>
           <div className="flex gap-1 flex-wrap">
             <button
               onClick={() => onBossElementChange(null)}
@@ -327,7 +328,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
                   : 'border-slate-700 text-slate-400 hover:border-slate-500'
               }`}
             >
-              선택 안 함
+              {t('none_selected')}
             </button>
             {BOSS_ELEMENT_OPTIONS.map((el) => (
               <button
@@ -339,7 +340,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
                     : 'border-slate-700 text-slate-400 hover:border-slate-500'
                 }`}
               >
-                {el.label}
+                {t(el.labelKey)}
               </button>
             ))}
           </div>
@@ -349,7 +350,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
       {aiMode === 'tribe_tower' && (
         <div className="mt-2 mb-3">
           <div className="flex items-center flex-wrap gap-2">
-            <span className="text-xs text-slate-500">타워 종류:</span>
+            <span className="text-xs text-slate-500">{t('tower_kind')}</span>
             <div className="flex gap-1 flex-wrap">
               {TOWER_OPTIONS.map((tw) => (
                 <button
@@ -361,33 +362,31 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
                       : 'border-slate-700 text-slate-400 hover:border-slate-500'
                   }`}
                 >
-                  {tw.label}
-                  <span className="ml-1 opacity-60">{tw.days}</span>
+                  {t(tw.labelKey)}
+                  <span className="ml-1 opacity-60">{t(tw.daysKey)}</span>
                 </button>
               ))}
             </div>
           </div>
           <p className="text-xs text-slate-500 mt-2">
             {tower
-              ? '기업 타워는 해당 제조사 니케만 출전할 수 있어, 보유 니케 중 조건에 맞는 인원으로만 조합을 만듭니다.'
-              : '일반 트라이브 타워는 제조사 제한이 없고 상시 열려 있습니다.'}
+              ? t('tower_corp_note')
+              : t('tower_normal_note')}
             {tower === 'pilgrim' &&
-              ' 필그림 타워에는 오버스펙 니케(라피: 레드 후드, 미하라: 본딩 체인, 아니스: 스타, 네온: 비전 아이)도 출전할 수 있습니다.'}
+              ` ${t('tower_pilgrim_note')}`}
           </p>
         </div>
       )}
 
       <p className="text-sm text-slate-400 mb-3">
-        보유 캐릭터와 공략 근거자료(아키타입/시너지 페어/애장품 정보)를 AI에게 그대로 전달해, AI가 이 데이터만 근거로
-        5인 조합을 직접 구성합니다. 구성된 조합은 게임 규칙(버스트 I/II/III)과 점수를 자동으로 검증해 함께 보여드려요.
-        {aiMode === 'bossing' && bossElement && ' 선택한 약점 속성 캐릭터의 enikk.app 실사용률도 함께 반영됩니다.'}
-        {aiMode === 'tribe_tower' && tower && ' 선택한 기업 타워에 출전 가능한 니케만 후보로 씁니다.'}
+        {t('ai_section_desc')}
+        {aiMode === 'bossing' && bossElement && ` ${t('ai_desc_boss')}`}
+        {aiMode === 'tribe_tower' && tower && ` ${t('ai_desc_tower')}`}
       </p>
 
       {isStale && (
         <p className="text-xs text-amber-400 mb-3">
-          ⚠ 근거 자료 일부가 오래되었을 수 있습니다 (캐릭터 데이터 기준일 {dataFreshness.characterDatabase.asOf}, 시너지
-          자료 기준일 {dataFreshness.synergyNotes.asOf}). 새 패치나 신규 캐릭터 정보와 다를 수 있어요.
+          {t('data_stale_note')(dataFreshness.characterDatabase.asOf, dataFreshness.synergyNotes.asOf)}
         </p>
       )}
 
@@ -395,7 +394,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
 
       {roster.unresolvedCount > 0 && (
         <p className="text-xs text-slate-500 mt-3">
-          보유 캐릭터 중 {roster.unresolvedCount}명은 아직 상세 데이터(스킬/티어)가 없어 이 분석에서 제외되었습니다.
+          {t('unresolved_note')(roster.unresolvedCount)}
         </p>
       )}
     </section>
@@ -410,7 +409,7 @@ export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bo
   if (ownedCount === 0) {
     return (
       <div className="bg-nikke-panel rounded-xl p-6 border border-slate-800 text-center text-slate-400">
-        보유중인 니케를 위에서 먼저 선택해주세요.
+        {t('select_nikkes_first')}
       </div>
     );
   }
@@ -430,7 +429,7 @@ export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bo
 
       {partialMatches.length > 0 && (
         <section className="bg-nikke-panel rounded-xl p-5 border border-slate-800">
-          <h2 className="text-lg font-bold text-slate-100 mb-3">🎯 조금만 더 모으면 완성되는 조합</h2>
+          <h2 className="text-lg font-bold text-slate-100 mb-3">{t('partial_matches_heading')}</h2>
           <div className="space-y-4">
             {partialMatches.map(({ combo, missing }) => (
               <div key={combo.id} className="card-hover bg-slate-900/40 rounded-lg p-4 border border-slate-800">

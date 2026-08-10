@@ -8,8 +8,8 @@ import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
 
-const TABS = [{ key: 'all', label: '전체' }, ...BOARD_CATEGORIES];
-const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
+const TABS = [{ key: 'all', labelKey: 'filter_all' }, ...BOARD_CATEGORIES];
+const CATEGORY_LABEL_KEY = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.labelKey]));
 const CATEGORY_BADGE_STYLE = {
   bug: 'text-rose-300 bg-rose-500/10 border-rose-500/40',
   suggestion: 'text-sky-300 bg-sky-500/10 border-sky-500/40',
@@ -18,7 +18,7 @@ const CATEGORY_BADGE_STYLE = {
 
 export default function BoardPage() {
   const { user } = useAuth();
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [posts, setPosts] = useState([]);
   const [nicknames, setNicknames] = useState({});
   // 제목 번역본. 목록에서는 토글 없이 번역된 제목만 보여주고, 원문은 글 안에서 볼 수 있다.
@@ -31,7 +31,7 @@ export default function BoardPage() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const q = new URLSearchParams(window.location.search).get('category');
-    if (q && TABS.some((t) => t.key === q)) setTab(q);
+    if (q && TABS.some((tb) => tb.key === q)) setTab(q);
   }, []);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function BoardPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-xl font-bold">게시판</h1>
+        <h1 className="text-xl font-bold">{t('nav_board')}</h1>
         {user ? (
           <Link
             // 지금 보고 있는 게시판을 그대로 들고 간다. 이게 없어서 버그 제보 탭에서
@@ -57,42 +57,42 @@ export default function BoardPage() {
             href={tab && tab !== 'all' ? `/board/new?category=${tab}` : '/board/new'}
             className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded-lg hover:brightness-110 transition"
           >
-            + 글쓰기
+            {t('board_write')}
           </Link>
         ) : (
-          <span className="text-xs text-slate-500">로그인 후 글쓰기 가능</span>
+          <span className="text-xs text-slate-500">{t('board_write_login_required')}</span>
         )}
       </div>
       <p className="text-sm text-slate-500 mb-4">
-        자유롭게 공략, 잡담, 질문을 나눠보세요. 버그를 발견했거나 사이트에 바라는 점이 있다면 버그 제보 / 건의사항
-        게시판에 남겨주세요.
+        {t('board_intro')}
       </p>
 
       <div className="flex gap-1.5 mb-6">
-        {TABS.map((t) => (
+        {/* ⚠️ 콜백 인자를 t 로 쓰면 번역 함수 t 를 가린다(2026-08-10). 이름을 tb 로 둔다. */}
+        {TABS.map((tb) => (
           <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
+            key={tb.key}
+            onClick={() => setTab(tb.key)}
             className={`text-xs px-3 py-1.5 rounded-full border transition ${
-              tab === t.key
+              tab === tb.key
                 ? 'bg-nikke-accent text-slate-900 border-nikke-accent font-semibold'
                 : 'border-slate-700 text-slate-300 hover:border-slate-500'
             }`}
           >
-            {t.label}
+            {t(tb.labelKey)}
           </button>
         ))}
       </div>
 
       {!isSupabaseConfigured && (
         <p className="text-sm text-rose-300 mb-6">
-          Supabase 연결이 아직 설정되지 않아 게시판 기능을 사용할 수 없습니다. README.md를 참고해주세요.
+          {t('supabase_not_configured_board')}
         </p>
       )}
 
-      {loading && <p className="text-sm text-slate-500">불러오는 중...</p>}
+      {loading && <p className="text-sm text-slate-500">{t('loading')}</p>}
       {!loading && posts.length === 0 && isSupabaseConfigured && (
-        <p className="text-sm text-slate-500">아직 게시글이 없습니다. 첫 글을 남겨보세요!</p>
+        <p className="text-sm text-slate-500">{t('board_empty')}</p>
       )}
 
       <div className="divide-y divide-slate-800 border-t border-b border-slate-800 rounded-lg overflow-hidden bg-nikke-panel/30">
@@ -108,12 +108,12 @@ export default function BoardPage() {
                   CATEGORY_BADGE_STYLE[post.category] || CATEGORY_BADGE_STYLE.free
                 }`}
               >
-                {CATEGORY_LABEL[post.category] || '자유'}
+                {t(CATEGORY_LABEL_KEY[post.category] || 'board_cat_free')}
               </span>
               {post.is_private && (
                 <span
                   className="text-[10px] shrink-0 border rounded-full px-2 py-0.5 text-amber-300 bg-amber-500/10 border-amber-500/40"
-                  title="운영자와 작성자만 볼 수 있는 글입니다"
+                  title={t('private_post_title')}
                 >
                   🔒
                 </span>
@@ -121,7 +121,7 @@ export default function BoardPage() {
               {titles[post.id]?.title && (
                 <span
                   className="text-[10px] shrink-0 text-slate-500"
-                  title="자동 번역된 제목입니다"
+                  title={t('translated_title_title')}
                 >
                   🌐
                 </span>
@@ -129,7 +129,7 @@ export default function BoardPage() {
               <span className="text-sm text-slate-100 truncate">{titles[post.id]?.title || post.title}</span>
             </span>
             <span className="text-xs text-slate-500 shrink-0 ml-3">
-              {nicknames[post.user_id] || '익명 지휘관'} ·{' '}
+              {nicknames[post.user_id] || t('anonymous_commander')} ·{' '}
               {new Date(post.created_at).toLocaleDateString('ko-KR')}
             </span>
           </Link>

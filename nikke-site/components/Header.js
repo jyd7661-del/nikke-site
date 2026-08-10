@@ -32,7 +32,7 @@ export default function Header() {
   // 구글 신원을 붙인다(보유 니케·게시글·운영자 권한 유지).
   const signInWithGoogle = async () => {
     if (!isSupabaseConfigured) {
-      alert('아직 Supabase 연결이 설정되지 않았습니다.');
+      alert(t('supabase_not_configured'));
       return;
     }
     const { error } = await supabase.auth.signInWithOAuth({
@@ -71,7 +71,7 @@ export default function Header() {
             />
           </svg>
           <span>
-            <span className="text-nikke-accent">니케</span> {t('site_name_suffix')}
+            <span className="text-nikke-accent">{t('site_name_brand')}</span> {t('site_name_suffix')}
           </span>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2 text-sm text-slate-300">
@@ -139,10 +139,10 @@ export default function Header() {
                           <path fill="#FBBC05" d="M11.5 27.6c-.5-1.4-.7-2.9-.7-4.6s.3-3.2.7-4.6l0-.5-6.9-5.3-.2.1C2.8 15.6 2 19.2 2 23s.8 7.4 2.4 10.3z" />
                           <path fill="#EA4335" d="M24 9.5c4.1 0 6.9 1.8 8.5 3.3l6.2-6C34.9 3.4 29.9 1 24 1 15.3 1 7.8 6.1 4.4 13.7l7.1 5.5C13.3 13.3 18.2 9.5 24 9.5" />
                         </svg>
-                        구글로 로그인
+                        {t('login_google')}
                       </button>
                       <p className="text-[10px] text-slate-500">
-                        가입 절차가 따로 없어요. 처음이면 자동으로 계정이 만들어집니다.
+                        {t('login_google_note')}
                       </p>
                   </div>
                 </div>

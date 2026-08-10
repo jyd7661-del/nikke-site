@@ -13,7 +13,10 @@ import { fetchTranslations } from '@/lib/translate';
 import { useLanguage } from '@/components/LanguageProvider';
 import TranslationToggle from '@/components/TranslationToggle';
 
-const CATEGORY_LABEL = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.label]));
+// 날짜 표기도 선택 언어를 따른다. 예전에는 'ko-KR'이 박혀 있어 일본어 화면에서도
+// 날짜만 한국식으로 나왔다(2026-08-10, B단계).
+const DATE_LOCALE = { ko: 'ko-KR', en: 'en-US', ja: 'ja-JP' };
+const CATEGORY_LABEL_KEY = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.labelKey]));
 const CATEGORY_BADGE_STYLE = {
   bug: 'text-rose-300 bg-rose-500/10 border-rose-500/40',
   suggestion: 'text-sky-300 bg-sky-500/10 border-sky-500/40',
@@ -90,38 +93,38 @@ export default function PostDetailPage() {
       isPrivate: editPrivate,
     });
     setSubmitting(false);
-    if (error) { alert('수정에 실패했습니다. 잠시 후 다시 시도해주세요.'); return; }
+    if (error) { alert(t('edit_failed_retry')); return; }
     setEditing(false);
     load();
   };
 
   const removePost = async () => {
     // 댓글은 DB의 ON DELETE CASCADE가 함께 지운다(lib/board.js 주석 참고).
-    if (!confirm('이 글을 삭제할까요? 달린 댓글도 함께 삭제되며 되돌릴 수 없습니다.')) return;
+    if (!confirm(t('confirm_delete_post'))) return;
     const { error } = await deletePost(user.id, id);
-    if (error) { alert('삭제에 실패했습니다.'); return; }
+    if (error) { alert(t('delete_failed')); return; }
     router.push('/board');
   };
 
   const saveComment = async (commentId) => {
     if (!commentDraft.trim()) return;
     const { error } = await updateComment(user.id, commentId, commentDraft.trim());
-    if (error) { alert('댓글 수정에 실패했습니다.'); return; }
+    if (error) { alert(t('comment_edit_failed')); return; }
     setEditingComment(null);
     load();
   };
 
   const removeComment = async (commentId) => {
-    if (!confirm('이 댓글을 삭제할까요?')) return;
+    if (!confirm(t('confirm_delete_comment'))) return;
     const { error } = await deleteComment(user.id, commentId);
-    if (error) { alert('댓글 삭제에 실패했습니다.'); return; }
+    if (error) { alert(t('comment_delete_failed')); return; }
     load();
   };
 
   const submitComment = async (e) => {
     e.preventDefault();
     if (!user) {
-      alert('댓글을 쓰려면 로그인이 필요해요.');
+      alert(t('login_required_comment'));
       return;
     }
     if (!text.trim()) return;
@@ -132,18 +135,18 @@ export default function PostDetailPage() {
     load();
   };
 
-  if (loading) return <main className="max-w-2xl mx-auto px-4 py-8 text-sm text-slate-500">불러오는 중...</main>;
+  if (loading) return <main className="max-w-2xl mx-auto px-4 py-8 text-sm text-slate-500">{t('loading')}</main>;
   // 비밀글 URL을 로그아웃 상태로 열면 여기로 온다(RLS가 행 자체를 안 내려준다).
   // 여기에도 나가는 길이 있어야 막다른 길이 되지 않는다.
   if (!post) {
     return (
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <p className="text-sm text-slate-500 mb-1">글을 찾을 수 없습니다.</p>
+        <p className="text-sm text-slate-500 mb-1">{t('post_not_found')}</p>
         <p className="text-xs text-slate-600 mb-4">
-          삭제되었거나, 작성자와 운영자만 볼 수 있는 비밀글일 수 있어요. 비밀글이라면 로그인 후 다시 열어보세요.
+          {t('post_not_found_note')}
         </p>
         <Link href="/board" className="text-xs text-slate-500 hover:text-slate-300">
-          ← 목록으로
+          {t('back_to_list')}
         </Link>
       </main>
     );
@@ -158,7 +161,7 @@ export default function PostDetailPage() {
           href={post.category ? `/board?category=${post.category}` : '/board'}
           className="inline-flex items-center gap-1 text-xs text-slate-500 hover:text-slate-300"
         >
-          ← 목록으로
+          {t('back_to_list')}
         </Link>
       </div>
       <span
@@ -166,19 +169,18 @@ export default function PostDetailPage() {
           CATEGORY_BADGE_STYLE[post.category] || CATEGORY_BADGE_STYLE.free
         }`}
       >
-        {CATEGORY_LABEL[post.category] || '자유'}
+        {t(CATEGORY_LABEL_KEY[post.category] || 'board_cat_free')}
       </span>
       {post.is_private && (
         <>
           <span className="inline-block text-[10px] border rounded-full px-2 py-0.5 mb-2 ml-1 text-amber-300 bg-amber-500/10 border-amber-500/40">
-            🔒 비밀글
+            {t('private_post_badge')}
           </span>
           {/* 로그아웃하면 본인도 못 본다는 점을 분명히 알린다. 로그아웃 상태에서는 서버가
               작성자를 구분할 방법이 없어(익명과 동일) 목록에서도 사라지는데, 이걸 모르면
               "내 글이 사라졌다"고 오해하게 된다(2026-08-09 실제 제보). */}
           <p className="text-xs text-amber-200/70 bg-amber-500/5 border border-amber-500/20 rounded-lg px-3 py-2 mb-3">
-            이 글은 작성자와 운영자만 볼 수 있습니다. <strong>로그아웃하면 본인도 목록에서 보이지 않습니다</strong> —
-            로그인 상태에서만 확인할 수 있어요. 공개로 바꾸려면 아래 <strong>수정</strong>에서 비밀글 체크를 해제하세요.
+            {t('private_post_explain')}
           </p>
         </>
       )}
@@ -198,7 +200,7 @@ export default function PostDetailPage() {
           />
           <label className="flex items-center gap-2 text-xs text-slate-400 mb-3 cursor-pointer">
             <input type="checkbox" checked={editPrivate} onChange={(e) => setEditPrivate(e.target.checked)} />
-            🔒 비밀글로 두기 (운영자와 나만 볼 수 있어요)
+            {t('keep_private_label')}
           </label>
           <div className="flex gap-2">
             <button
@@ -206,13 +208,13 @@ export default function PostDetailPage() {
               disabled={submitting}
               className="bg-nikke-accent text-slate-900 font-semibold text-sm px-4 py-2 rounded disabled:opacity-50"
             >
-              저장
+              {t('save')}
             </button>
             <button
               onClick={() => setEditing(false)}
               className="border border-slate-700 text-slate-300 text-sm px-4 py-2 rounded hover:border-slate-500"
             >
-              취소
+              {t('cancel')}
             </button>
           </div>
         </div>
@@ -221,7 +223,7 @@ export default function PostDetailPage() {
           <h1 className="text-xl font-bold mb-1">{shownTitle}</h1>
           <p className="text-xs text-slate-500 mb-4 flex items-center gap-2 flex-wrap">
             <span>
-              {nicknames[post.user_id] || '익명 지휘관'} · {new Date(post.created_at).toLocaleString('ko-KR')}
+              {nicknames[post.user_id] || t('anonymous_commander')} · {new Date(post.created_at).toLocaleString(DATE_LOCALE[lang] || DATE_LOCALE.ko)}
             </span>
             <TranslationToggle
               available={Boolean(postTr)}
@@ -242,13 +244,13 @@ export default function PostDetailPage() {
                   onClick={startEdit}
                   className="text-xs border border-slate-700 text-slate-300 px-3 py-1.5 rounded hover:border-slate-500"
                 >
-                  수정
+                  {t('edit')}
                 </button>
                 <button
                   onClick={removePost}
                   className="text-xs border border-rose-500/40 text-rose-300 px-3 py-1.5 rounded hover:border-rose-500"
                 >
-                  삭제
+                  {t('delete')}
                 </button>
               </div>
             )}
@@ -256,12 +258,12 @@ export default function PostDetailPage() {
         </>
       )}
 
-      <h2 className="text-sm font-semibold text-slate-400 mb-3">댓글 {comments.length}</h2>
+      <h2 className="text-sm font-semibold text-slate-400 mb-3">{t('comments')} {comments.length}</h2>
       <div className="space-y-3 mb-6">
         {comments.map((c) => (
           <div key={c.id} className="bg-nikke-panel border border-slate-800 rounded-lg p-3">
             <p className="text-xs text-slate-500 mb-1">
-              {nicknames[c.user_id] || '익명 지휘관'} · {new Date(c.created_at).toLocaleString('ko-KR')}
+              {nicknames[c.user_id] || t('anonymous_commander')} · {new Date(c.created_at).toLocaleString(DATE_LOCALE[lang] || DATE_LOCALE.ko)}
             </p>
             {editingComment === c.id ? (
               <div className="flex gap-2">
@@ -271,10 +273,10 @@ export default function PostDetailPage() {
                   className="flex-1 bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
                 />
                 <button onClick={() => saveComment(c.id)} className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 rounded">
-                  저장
+                  {t('save')}
                 </button>
                 <button onClick={() => setEditingComment(null)} className="text-xs border border-slate-700 text-slate-300 px-3 rounded">
-                  취소
+                  {t('cancel')}
                 </button>
               </div>
             ) : (
@@ -288,13 +290,13 @@ export default function PostDetailPage() {
                       onClick={() => { setEditingComment(c.id); setCommentDraft(c.content); }}
                       className="text-[11px] text-slate-500 hover:text-slate-300 underline decoration-dotted"
                     >
-                      수정
+                      {t('edit')}
                     </button>
                     <button
                       onClick={() => removeComment(c.id)}
                       className="text-[11px] text-slate-500 hover:text-rose-300 underline decoration-dotted"
                     >
-                      삭제
+                      {t('delete')}
                     </button>
                   </div>
                 )}
@@ -302,14 +304,14 @@ export default function PostDetailPage() {
             )}
           </div>
         ))}
-        {comments.length === 0 && <p className="text-sm text-slate-600">첫 댓글을 남겨보세요.</p>}
+        {comments.length === 0 && <p className="text-sm text-slate-600">{t('comment_empty')}</p>}
       </div>
 
       <form onSubmit={submitComment} className="flex gap-2">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          placeholder={user ? '댓글을 입력하세요' : '로그인 후 댓글을 남길 수 있어요'}
+          placeholder={user ? t('comment_placeholder') : t('comment_login_placeholder')}
           disabled={!user}
           className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm outline-none focus:border-nikke-accent disabled:opacity-50"
         />
@@ -317,7 +319,7 @@ export default function PostDetailPage() {
           disabled={!user || submitting}
           className="bg-nikke-accent text-slate-900 font-semibold text-sm px-4 py-2 rounded disabled:opacity-50"
         >
-          등록
+          {t('submit_short')}
         </button>
       </form>
     </main>

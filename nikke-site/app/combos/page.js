@@ -39,8 +39,8 @@ function AiScoreBadge({ members, purpose }) {
           : 'text-amber-300 bg-amber-400/10 border-amber-400/40'
       }`}
     >
-      🤖 AI 점수 {result.totalScore}
-      {!result.valid && ' · 버스트 구성 확인 필요'}
+      {t('ai_score')} {result.totalScore}
+      {!result.valid && ` · ${t('burst_check_needed')}`}
     </span>
   );
 }
@@ -55,7 +55,7 @@ export default function CombosPage() {
   const [nicknames, setNicknames] = useState({});
   const [myVotes, setMyVotes] = useState({});
   const [loading, setLoading] = useState(true);
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [tr, setTr] = useState({});
   const [showOriginal, setShowOriginal] = useState(false);
 
@@ -97,22 +97,22 @@ export default function CombosPage() {
       purpose: draft.purpose.trim() || null,
       description: draft.description.trim() || null,
     });
-    if (error) { alert('수정에 실패했습니다.'); return; }
+    if (error) { alert(t('edit_failed')); return; }
     setEditingCombo(null);
     load();
   };
 
   const removeCombo = async (comboId) => {
     // 투표는 DB의 ON DELETE CASCADE가 함께 지운다(lib/combos.js 주석 참고).
-    if (!confirm('이 조합을 삭제할까요? 받은 추천/비추천도 함께 사라지며 되돌릴 수 없습니다.')) return;
+    if (!confirm(t('confirm_delete_combo'))) return;
     const { error } = await deleteCombo(user.id, comboId);
-    if (error) { alert('삭제에 실패했습니다.'); return; }
+    if (error) { alert(t('delete_failed')); return; }
     load();
   };
 
   const handleVote = async (comboId, value) => {
     if (!user) {
-      alert('투표하려면 로그인이 필요해요. 우측 상단에서 로그인해주세요.');
+      alert(t('login_required_vote'));
       return;
     }
     const current = myVotes[comboId];
@@ -123,17 +123,16 @@ export default function CombosPage() {
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-2">
-        <h1 className="text-xl font-bold">커뮤니티 조합</h1>
+        <h1 className="text-xl font-bold">{t('nav_combos')}</h1>
         <Link
           href="/combos/new"
           className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded-lg hover:brightness-110 transition"
         >
-          + 내 조합 등록
+          {t('combo_add')}
         </Link>
       </div>
       <p className="text-sm text-slate-500 mb-6">
-        유저들이 직접 등록한 조합을 보고 투표해보세요. 투표가 많을수록 위로 올라갑니다. 🤖 AI 점수는 캐릭터 성능
-        데이터와 공략 근거자료를 기준으로 자동 채점한 참고용 점수입니다.
+        {t('combos_intro')}
       </p>
       {anyTranslated && (
         <div className="mb-4 -mt-3">
@@ -147,17 +146,17 @@ export default function CombosPage() {
 
       {!isSupabaseConfigured && (
         <p className="text-sm text-rose-300 mb-6">
-          Supabase 연결이 아직 설정되지 않아 커뮤니티 조합 기능을 사용할 수 없습니다. README.md를 참고해주세요.
+          {t('supabase_not_configured_combos')}
         </p>
       )}
 
       <div className="mb-6">
-        <AdSlot label="커뮤니티 조합 페이지 광고" size="banner" />
+        <AdSlot label={t('ad_combos_page')} size="banner" />
       </div>
 
-      {loading && <p className="text-sm text-slate-500">불러오는 중...</p>}
+      {loading && <p className="text-sm text-slate-500">{t('loading')}</p>}
       {!loading && combos.length === 0 && isSupabaseConfigured && (
-        <p className="text-sm text-slate-500">아직 등록된 조합이 없습니다. 첫 조합을 등록해보세요!</p>
+        <p className="text-sm text-slate-500">{t('combos_empty')}</p>
       )}
 
       <div className="space-y-4">
@@ -192,31 +191,31 @@ export default function CombosPage() {
                   <input
                     value={draft.purpose}
                     onChange={(e) => setDraft((d) => ({ ...d, purpose: e.target.value }))}
-                    placeholder="용도 (예: 캠페인, 보스전)"
+                    placeholder={t('combo_purpose_placeholder')}
                     className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
                   />
                   <textarea
                     value={draft.description}
                     onChange={(e) => setDraft((d) => ({ ...d, description: e.target.value }))}
-                    placeholder="설명"
+                    placeholder={t('combo_desc_placeholder')}
                     rows={3}
                     className="w-full bg-slate-900 border border-slate-700 rounded px-2 py-1 text-sm outline-none focus:border-nikke-accent"
                   />
                   <p className="text-xs text-slate-600">
-                    니케 구성은 여기서 바꿀 수 없어요. 멤버를 바꾸려면 새로 등록해주세요.
+                    {t('combo_members_locked')}
                   </p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => saveCombo(combo.id)}
                       className="text-xs bg-nikke-accent text-slate-900 font-semibold px-3 py-1.5 rounded"
                     >
-                      저장
+                      {t('save')}
                     </button>
                     <button
                       onClick={() => setEditingCombo(null)}
                       className="text-xs border border-slate-700 text-slate-300 px-3 py-1.5 rounded hover:border-slate-500"
                     >
-                      취소
+                      {t('cancel')}
                     </button>
                   </div>
                 </div>
@@ -233,20 +232,20 @@ export default function CombosPage() {
               </div>
               <div className="flex items-center justify-between mt-3">
                 <span className="text-xs text-slate-500 flex items-center gap-2 flex-wrap">
-                  by {nicknames[combo.user_id] || '익명 지휘관'}
+                  by {nicknames[combo.user_id] || t('anonymous_commander')}
                   {user && user.id === combo.user_id && editingCombo !== combo.id && (
                     <>
                       <button
                         onClick={() => startEditCombo(combo)}
                         className="text-[11px] text-slate-500 hover:text-slate-300 underline decoration-dotted"
                       >
-                        수정
+                        {t('edit')}
                       </button>
                       <button
                         onClick={() => removeCombo(combo.id)}
                         className="text-[11px] text-slate-500 hover:text-rose-300 underline decoration-dotted"
                       >
-                        삭제
+                        {t('delete')}
                       </button>
                     </>
                   )}
@@ -260,7 +259,7 @@ export default function CombosPage() {
                         : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-white/5'
                     }`}
                   >
-                    👍 추천
+                    {t('vote_up')}
                   </button>
                   <span className="text-sm font-semibold w-6 text-center">{combo.score}</span>
                   <button
@@ -271,7 +270,7 @@ export default function CombosPage() {
                         : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-white/5'
                     }`}
                   >
-                    👎 비추천
+                    {t('vote_down')}
                   </button>
                 </div>
               </div>

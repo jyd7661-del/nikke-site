@@ -705,7 +705,15 @@ if (engineSrc && routeSrc && uiSrc) {
   };
   const a = grabList(engineSrc, /TOWER_CORPS\s*=\s*\[([^\]]*)\]/);
   const b = grabList(routeSrc, /TOWER_CORP_SET\s*=\s*new Set\(\[([^\]]*)\]/);
-  const c = grabList(uiSrc, /TOWER_OPTIONS\s*=\s*\[([\s\S]*?)\n\];/);
+  // ⚠️ 화면 쪽은 `key:` 값만 세야 한다. 2026-08-10에 라벨을 i18n 키로 바꾸면서
+  //    labelKey: 'tower_elysion' 같은 값까지 타워 키로 오인해 이 검사가 오탐을 냈다.
+  //    (검사가 틀리면 진짜 어긋남이 묻히므로 추출을 좁게 잡는다)
+  const grabUiTowers = (src) => {
+    const m = src.match(/TOWER_OPTIONS\s*=\s*\[([\s\S]*?)\n\];/);
+    if (!m) return null;
+    return [...m[1].matchAll(/key:\s*'([a-z_]+)'/g)].map((x) => x[1]).sort().join(',');
+  };
+  const c = grabUiTowers(uiSrc);
   if (a === null || b === null || c === null) {
     warn('TOWER_LIST_MISSING',
       `기업 타워 목록을 못 찾음 (engine=${a === null ? 'X' : 'O'} / route=${b === null ? 'X' : 'O'} / ` +

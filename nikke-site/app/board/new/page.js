@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import { createPost, BOARD_CATEGORIES, defaultPrivateFor } from '@/lib/board';
+import { useLanguage } from '@/components/LanguageProvider';
 
 export default function NewPostPage() {
+  const { t } = useLanguage();
   const { user, loading } = useAuth();
   const router = useRouter();
   const [title, setTitle] = useState('');
@@ -42,7 +44,7 @@ export default function NewPostPage() {
   if (!user) {
     return (
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <p className="text-sm text-slate-400">글을 쓰려면 먼저 로그인해주세요.</p>
+        <p className="text-sm text-slate-400">{t('login_required_write')}</p>
       </main>
     );
   }
@@ -54,7 +56,7 @@ export default function NewPostPage() {
     const { data, error } = await createPost(user.id, { title: title.trim(), content: content.trim(), category, isPrivate });
     setSubmitting(false);
     if (error) {
-      alert('등록에 실패했습니다: ' + (error.message || error));
+      alert(t('submit_failed') + ': ' + (error.message || error));
       return;
     }
     router.push(`/board/${data.id}`);
@@ -62,7 +64,7 @@ export default function NewPostPage() {
 
   return (
     <main className="max-w-2xl mx-auto px-4 py-8">
-      <h1 className="text-xl font-bold mb-6">글쓰기</h1>
+      <h1 className="text-xl font-bold mb-6">{t('board_write_heading')}</h1>
       <form onSubmit={submit} className="space-y-4">
         <div className="flex gap-1.5">
           {BOARD_CATEGORIES.map((c) => (
@@ -76,7 +78,7 @@ export default function NewPostPage() {
                   : 'border-slate-700 text-slate-300 hover:border-slate-500'
               }`}
             >
-              {c.label}
+              {t(c.labelKey)}
             </button>
           ))}
         </div>
@@ -94,41 +96,41 @@ export default function NewPostPage() {
             className="mt-0.5"
           />
           <span>
-            🔒 비밀글로 올리기
+            {t('post_private_label')}
             <span className="block text-slate-600 mt-0.5">
               {isPrivate
-                ? '지금 이 글은 나와 운영자만 볼 수 있습니다. 로그아웃 상태에서는 본인도 목록에서 볼 수 없습니다.'
-                : '체크하면 운영자와 나만 볼 수 있고, 목록에도 다른 사람에게는 나오지 않습니다.'}
-              {category === 'bug' && ' 버그 제보는 계정 정보가 섞이기 쉬워 기본으로 켜집니다.'}
+                ? t('post_private_on_note')
+                : t('post_private_off_note')}
+              {category === 'bug' && ` ${t('post_private_bug_note')}`}
             </span>
           </span>
         </label>
         {category === 'bug' && (
           <p className="text-xs text-slate-500">
-            어떤 화면/기능에서, 어떤 상황에 문제가 생겼는지 최대한 자세히 적어주시면 확인이 빨라져요.
+            {t('bug_guide')}
           </p>
         )}
         {category === 'suggestion' && (
-          <p className="text-xs text-slate-500">사이트에 추가되었으면 하는 기능이나 개선 아이디어를 자유롭게 남겨주세요.</p>
+          <p className="text-xs text-slate-500">{t('suggestion_guide')}</p>
         )}
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="제목"
+          placeholder={t('title_placeholder')}
           className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm outline-none focus:border-nikke-accent"
         />
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
           rows={10}
-          placeholder="내용을 입력하세요"
+          placeholder={t('content_placeholder')}
           className="w-full bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm outline-none focus:border-nikke-accent resize-none"
         />
         <button
           disabled={submitting}
           className="bg-nikke-accent text-slate-900 font-bold px-5 py-2.5 rounded-lg disabled:opacity-50"
         >
-          등록하기
+          {t('submit')}
         </button>
       </form>
     </main>

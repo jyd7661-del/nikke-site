@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useLanguage } from '@/components/LanguageProvider';
 
 // Google AdSense 연동 슬롯.
 // - Vercel 환경변수에 NEXT_PUBLIC_ADSENSE_CLIENT_ID(예: ca-pub-1234567890123456)와
@@ -20,7 +21,9 @@ const SLOTS = {
   square: process.env.NEXT_PUBLIC_ADSENSE_SLOT_SQUARE,
 };
 
-export default function AdSlot({ label = '광고', size = 'banner' }) {
+export default function AdSlot({ label, size = 'banner' }) {
+  const { t } = useLanguage();
+  const shownLabel = label || t('ad');
   const heightClass = size === 'banner' ? 'h-24' : size === 'square' ? 'h-64' : 'h-40';
   const slot = SLOTS[size];
   const pushedRef = useRef(false);
@@ -52,7 +55,7 @@ export default function AdSlot({ label = '광고', size = 'banner' }) {
     <div
       className={`w-full ${heightClass} border border-dashed border-slate-700/70 rounded-xl flex items-center justify-center text-slate-500 text-sm bg-slate-900/30`}
     >
-      {label} 영역 (AdSense 승인 후 노출)
+      {t('ad_placeholder')(shownLabel)}
     </div>
   );
 }

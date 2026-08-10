@@ -2,10 +2,12 @@ import { supabase } from './supabaseClient';
 import { detectLang } from './i18n';
 import { requestTranslation } from './translate';
 
+// 문구가 아니라 i18n 키를 들고 있다. 여기에 한국어를 적으면 언어를 바꿔도
+// 게시판 카테고리만 한국어로 남는다(2026-08-10, B단계).
 export const BOARD_CATEGORIES = [
-  { key: 'free', label: '자유' },
-  { key: 'bug', label: '버그 제보' },
-  { key: 'suggestion', label: '건의사항' },
+  { key: 'free', labelKey: 'board_cat_free' },
+  { key: 'bug', labelKey: 'board_cat_bug' },
+  { key: 'suggestion', labelKey: 'board_cat_suggestion' },
 ];
 
 export async function fetchPosts(category) {

@@ -18,7 +18,7 @@ export default function FriendRoster() {
 
   useEffect(() => {
     if (!isSupabaseConfigured) {
-      setError('Supabase 연결이 설정되지 않았습니다.');
+      setError(t('supabase_not_configured'));
       return;
     }
     (async () => {
@@ -27,7 +27,7 @@ export default function FriendRoster() {
         supabase.from('profiles').select('nickname').eq('id', id).maybeSingle(),
       ]);
       if (rErr) {
-        setError('보유 정보를 불러오지 못했습니다.');
+        setError(t('roster_load_failed'));
         return;
       }
       setIds(new Set(roster.map((r) => r.character_id)));
@@ -39,13 +39,13 @@ export default function FriendRoster() {
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-xl font-bold mb-1">{nickname ? `${nickname}님의` : '지휘관님의'} 보유 니케</h1>
-      <p className="text-sm text-slate-500 mb-6">공유받은 보유 니케 목록입니다. (읽기 전용)</p>
+      <h1 className="text-xl font-bold mb-1">{t('shared_roster_heading')(nickname)}</h1>
+      <p className="text-sm text-slate-500 mb-6">{t('shared_roster_note')}</p>
 
       {error && <p className="text-rose-300 text-sm">{error}</p>}
-      {!error && ids === null && <p className="text-slate-500 text-sm">불러오는 중...</p>}
+      {!error && ids === null && <p className="text-slate-500 text-sm">{t('loading')}</p>}
       {!error && ids && owned.length === 0 && (
-        <p className="text-slate-500 text-sm">등록된 보유 니케가 없습니다.</p>
+        <p className="text-slate-500 text-sm">{t('shared_roster_empty')}</p>
       )}
 
       {[1, 2, 3].map((b) => {
@@ -67,7 +67,7 @@ export default function FriendRoster() {
       })}
 
       <a href="/" className="inline-block mt-4 text-xs text-nikke-accent underline">
-        나도 내 보유 니케로 조합 추천받기 →
+        {t('shared_roster_cta')}
       </a>
     </main>
   );
