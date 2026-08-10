@@ -530,6 +530,18 @@ if (uiCharacters) {
         `id가 다르면 characters.js 항목에 cdbId를 명시할 것.`);
     } else {
       usedCdbIds.add(target);
+
+      // 2026-08-10 추가 (A단계 — 화면 다국어).
+      // 니케 목록·결과 패널은 characters.js를 그리지만 표시할 이름은 characterDatabase의
+      // title/name_kr/name_ja에서 가져온다(lib/characterNames.js). 셋 중 하나라도 비면
+      // **에러 없이 그 언어에서만 이름이 한국어로 남는다** — 눈으로 안 보면 모르는 종류다.
+      const d = cdb.find((c) => c.id === target);
+      const lack = ['title', 'name_kr', 'name_ja'].filter((k) => !d?.[k]);
+      if (lack.length) {
+        err('UI_NAME_LOCALE_MISSING',
+          `${who} → characterDatabase '${target}'에 ${lack.join(', ')}이(가) 없음. ` +
+          `해당 언어에서 니케 이름이 다른 언어 표기로 대체 표시된다(lib/characterNames.js).`);
+      }
     }
 
     if (!u.name) err('UI_NO_NAME', `${u.id}: characters.js 항목에 name이 없음`);

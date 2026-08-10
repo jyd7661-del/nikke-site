@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
 import { fetchCombos, fetchProfilesByIds, fetchMyVotes, voteCombo, updateCombo, deleteCombo } from '@/lib/combos';
 import { charMap } from '@/lib/recommend';
+import { characterName, localizedCharacter } from '@/lib/characterNames';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import AdSlot from '@/components/AdSlot';
 import CharacterAvatar from '@/components/CharacterAvatar';
@@ -225,8 +226,8 @@ export default function CombosPage() {
               <div className="flex flex-wrap gap-2 mt-2">
                 {combo.members.map((id) => (
                   <span key={id} className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1">
-                    <CharacterAvatar character={charMap[id]} size="xs" />
-                    {charMap[id]?.name || id}
+                    <CharacterAvatar character={localizedCharacter(charMap[id], lang)} size="xs" />
+                    {characterName(id, lang)}
                   </span>
                 ))}
               </div>

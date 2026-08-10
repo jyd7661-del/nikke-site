@@ -180,5 +180,7 @@ export const CHARACTERS = [
   { id: 'laplace-ultimate-hero', name: '라플라스: 얼티밋 히어로', burst: 3, tier: 'T3', role: ['딜러'], img: '2/25/Laplace_Ultimate_Hero_MI.png' },
 ];
 
-export const BURST_LABEL = { 1: '버스트 I (서포터/힐러)', 2: '버스트 II (탱커/버퍼)', 3: '버스트 III (메인딜러)' };
+// BURST_LABEL은 2026-08-10에 제거했습니다. 한국어 한 가지로 고정돼 있어서 언어를 바꿔도
+// 그대로 남았기 때문입니다. 지금은 lib/i18n.js의 burst_label_1/2/3 키를 t()로 씁니다.
+// 여기에 다시 만들지 마세요 — 만들면 그 화면만 조용히 한국어로 돌아갑니다.
 export const TIER_ORDER = ['T0', 'T1', 'T2', 'T3', 'T4'];

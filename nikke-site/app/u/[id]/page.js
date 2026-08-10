@@ -3,11 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { supabase, isSupabaseConfigured } from '@/lib/supabaseClient';
-import { CHARACTERS, BURST_LABEL } from '@/data/characters';
+import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
+import { useLanguage } from '@/components/LanguageProvider';
+import { characterName, localizedCharacter } from '@/lib/characterNames';
 
 // 친구가 공유한 링크(/u/유저ID)로 들어오면 그 유저의 보유 니케를 읽기 전용으로 보여줍니다.
 export default function FriendRoster() {
+  const { lang, t } = useLanguage();
   const { id } = useParams();
   const [ids, setIds] = useState(null);
   const [nickname, setNickname] = useState(null);
@@ -50,12 +53,12 @@ export default function FriendRoster() {
         if (list.length === 0) return null;
         return (
           <div key={b} className="mb-5">
-            <h3 className="text-sm font-semibold text-slate-400 mb-2">{BURST_LABEL[b]}</h3>
+            <h3 className="text-sm font-semibold text-slate-400 mb-2">{t(`burst_label_${b}`)}</h3>
             <div className="flex flex-wrap gap-2">
               {list.map((c) => (
                 <span key={c.id} className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1">
-                  <CharacterAvatar character={c} size="xs" />
-                  {c.name}
+                  <CharacterAvatar character={localizedCharacter(c, lang)} size="xs" />
+                  {characterName(c, lang)}
                 </span>
               ))}
             </div>

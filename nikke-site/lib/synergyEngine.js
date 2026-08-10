@@ -1263,7 +1263,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           const members = [...c1, ...c2, ...c3];
           const result = scoreTeam(members, mode, { treasureIds, bossElement });
           candidateTeams.push({
-            members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
+            members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
             ...result,
             totalScore: result.tierTotal,
           });
@@ -1362,7 +1362,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
 
   return {
     members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({
-      id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null,
+      id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null,
     })),
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
     totalScore: best.scored.tierTotal,
@@ -1631,7 +1631,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   }
 
   return {
-    members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, burst: m.burst, img: m.img || null })),
+    members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
     // scoreTeam().totalScore(아키타입 중복 합산 버그로 700점대까지 부풀 수 있음) 대신 위에서
     // 후보 비교에 쓴 티어 합을 그대로 표시 점수로 쓴다 — 캐릭터 5명의 실제 성능을 그대로
     // 반영하는 값이라 이해하기 쉽고, 아키타입 개수가 늘어나도 값이 흔들리지 않는다.

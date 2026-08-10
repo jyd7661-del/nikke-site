@@ -1,8 +1,10 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { CHARACTERS, BURST_LABEL } from '@/data/characters';
+import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
+import { useLanguage } from '@/components/LanguageProvider';
+import { characterName, characterSearchText, localizedCharacter } from '@/lib/characterNames';
 
 const TIER_COLOR = {
   T0: 'bg-amber-400 text-amber-950',
@@ -19,13 +21,15 @@ const BURST_ACCENT = {
 };
 
 export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onToggleTreasure, onClear }) {
+  const { lang, t } = useLanguage();
   const [query, setQuery] = useState('');
   const [burstFilter, setBurstFilter] = useState('all');
 
   const filtered = useMemo(() => {
     return CHARACTERS.filter((c) => {
       if (burstFilter !== 'all' && c.burst !== Number(burstFilter)) return false;
-      if (query && !c.name.toLowerCase().includes(query.toLowerCase())) return false;
+      // 검색은 한/영/일 어느 표기로 쳐도 걸린다(lib/characterNames.js).
+      if (query && !characterSearchText(c).includes(query.trim().toLowerCase())) return false;
       return true;
     });
   }, [query, burstFilter]);
@@ -50,7 +54,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                   : 'border-slate-700 text-slate-300 hover:border-slate-500 hover:bg-white/5'
               }`}
             >
-              {b === 'all' ? '전체' : `버스트 ${b}`}
+              {b === 'all' ? t('filter_all') : `${t('burst_short')} ${b}`}
             </button>
           ))}
         </div>
@@ -58,20 +62,20 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="캐릭터 검색..."
+            placeholder={t('character_search_placeholder')}
             className="bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-nikke-accent transition-colors w-48"
           />
           <button
             onClick={onClear}
             className="px-3 py-1.5 rounded-lg text-sm border border-slate-700 text-slate-300 hover:border-rose-400 hover:text-rose-300 transition-colors"
           >
-            선택 초기화
+            {t('clear_selection')}
           </button>
         </div>
       </div>
 
       <p className="text-xs text-slate-500 mb-4">
-        보유중인 캐릭터를 선택하고, 카드 우하단의 💎 아이콘을 눌러 애장품(Treasure) 보유 여부를 표시해보세요. AI 추천에 반영됩니다.
+        {t('picker_hint')}
       </p>
 
       {[1, 2, 3].map((b) =>
@@ -79,7 +83,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
           <div key={b} className="mb-6 last:mb-0">
             <h3 className="text-sm font-semibold text-slate-400 mb-2.5 flex items-center gap-2">
               <span className={`inline-block w-1.5 h-1.5 rounded-full ${BURST_ACCENT[b]}`} />
-              {BURST_LABEL[b]}
+              {t(`burst_label_${b}`)}
             </h3>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
               {grouped[b].map((c) => {
@@ -101,7 +105,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                     }`}
                   >
                     <div className="relative">
-                      <CharacterAvatar character={c} shape="portrait" />
+                      <CharacterAvatar character={localizedCharacter(c, lang)} shape="portrait" />
                       <span
                         className={`absolute top-1 right-1 text-[10px] font-bold px-1.5 py-0.5 rounded ${
                           TIER_COLOR[c.tier] || 'bg-slate-600'
@@ -128,7 +132,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                               onToggleTreasure(c.id);
                             }
                           }}
-                          title="애장품(Treasure) 보유 표시"
+                          title={t('treasure_toggle_title')}
                           className={`absolute bottom-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs cursor-pointer transition ${
                             hasTreasure
                               ? 'bg-amber-400 text-amber-950'
@@ -146,7 +150,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                           : 'text-slate-200 bg-gradient-to-b from-slate-800/50 to-slate-900/90 border-slate-700/60'
                       }`}
                     >
-                      {c.name}
+                      {characterName(c, lang)}
                     </span>
                   </button>
                 );

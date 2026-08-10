@@ -1,7 +1,7 @@
 {
   "characterDatabase": {
-    "asOf": "2026-08-08",
-    "source": "니케 위키(Fandom) 인포박스/스킬 테이블 + prydwen.gg 티어리스트(prydwenTags 포함) + overspec 플래그: gamechosun 2025-01(오버스펙 정의)·inven 3.5주년·nikke.gg·lootandwaifus 기업타워",
+    "asOf": "2026-08-10",
+    "source": "니케 위키(Fandom) 인포박스/스킬 테이블 + prydwen.gg 티어리스트(prydwenTags 포함) + overspec 플래그: gamechosun 2025-01(오버스펙 정의)·inven 3.5주년·nikke.gg·lootandwaifus 기업타워 + name_ja 196명: wiki3.jp/nikke 부대별(page/269) 1차, 해외명(page/236) 128명 교차검증 + name_kr 'D' 정정: wiki3.jp/nikke/page/236 한국어 칸",
     "refreshMethod": "README.md '데이터 업데이트 방법' 참고 (MediaWiki API + Claude-in-Chrome)",
     "staleAfterDays": 60
   },
@@ -11,5 +11,11 @@
     "refreshMethod": "README.md '데이터 업데이트 방법' 참고",
     "staleAfterDays": 60
   },
-  "note": "사람이 정리한 커뮤니티 데이터는 정확하지만 갱신이 느리다(예: 일부 팬사이트는 1년 넘게 업데이트가 없기도 함). asOf/staleAfterDays를 기준으로 오래된 자료는 추천 이유에 신뢰도 경고를 함께 표시하고, 새 패치·신규 캐릭터·새 공략을 발견할 때마다 asOf를 갱신해야 한다."
+  "note": "사람이 정리한 커뮤니티 데이터는 정확하지만 갱신이 느리다(예: 일부 팬사이트는 1년 넘게 업데이트가 없기도 함). asOf/staleAfterDays를 기준으로 오래된 자료는 추천 이유에 신뢰도 경고를 함께 표시하고, 새 패치·신규 캐릭터·새 공략을 발견할 때마다 asOf를 갱신해야 한다. metaStats는 자체 meta 블록에 asOf/staleAfterDays를 갖고 있어 여기 중복 기재하지 않는다(2026-08-10 확인). characterInvestmentNotes / treasureEffects는 아직 asOf 관리 대상이 아니다.",
+  "glossary": {
+    "asOf": "2026-08-09",
+    "source": "게임 용어 3개 국어 표기. 행마다 source 필드에 개별 출처 기재 (inven.co.kr 니케 DB 필터 / wiki3.jp 분류 페이지 / gamewith·game8 제목)",
+    "refreshMethod": "HANDOFF §7-3 참고. 세 언어를 모두 실제 출처에서 확인한 것만 추가한다",
+    "staleAfterDays": 180
+  }
 }

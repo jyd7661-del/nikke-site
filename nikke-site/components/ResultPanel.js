@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
+import { memberName, characterName } from '@/lib/characterNames';
 
 const AI_MODES = [
   { key: 'campaign', label: '캠페인' },
@@ -63,7 +64,7 @@ const SOURCE_LABEL = {
 };
 
 function AiRecommendButton({ roster, mode, bossElement, tower }) {
-  const { lang } = useLanguage();
+  const { lang, t } = useLanguage();
   const [phase, setPhase] = useState('idle'); // idle | loading | error
   const [team, setTeam] = useState(null);
   const [reasoning, setReasoning] = useState('');
@@ -201,8 +202,8 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
             key={m.id}
             className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
           >
-            <CharacterAvatar character={{ img: m.img, name: m.name_kr }} size="xs" />
-            {m.name_kr}{roster.treasureIds?.includes(m.id) ? ' (애장품)' : ''}
+            <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} size="xs" />
+            {memberName(m, lang)}{roster.treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}
           </span>
         ))}
       </div>
@@ -236,8 +237,8 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
                 key={m.id}
                 className="flex items-center gap-1.5 text-xs bg-slate-800/60 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-300"
               >
-                <CharacterAvatar character={{ img: m.img, name: m.name_kr }} size="xs" />
-                {m.name_kr}{roster.treasureIds?.includes(m.id) ? ' (애장품)' : ''}
+                <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} size="xs" />
+                {memberName(m, lang)}{roster.treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}
               </span>
             ))}
           </div>
@@ -402,6 +403,7 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
 }
 
 export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
+  const { lang, t } = useLanguage();
   if (!result) return null;
   const { partialMatches, ownedCount } = result;
 
@@ -440,7 +442,7 @@ export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bo
                 </div>
                 <p className="text-sm text-slate-400 mt-1">{combo.description}</p>
                 <p className="text-xs text-rose-300 mt-2">
-                  부족한 캐릭터: {missing.map((c) => c.name).join(', ')}
+                  {t('missing_characters')}: {missing.map((c) => characterName(c, lang)).join(', ')}
                 </p>
               </div>
             ))}
