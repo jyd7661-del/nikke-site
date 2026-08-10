@@ -292,6 +292,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
 }
 
 function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
+  const { t } = useLanguage();
   if (!roster) return null;
   const isStale = dataFreshness && (dataFreshness.characterDatabase.stale || dataFreshness.synergyNotes.stale);
 

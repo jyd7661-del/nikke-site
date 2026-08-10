@@ -26,6 +26,7 @@ function inferMode(purpose) {
 // 유저가 등록한 조합을 lib/synergyEngine.js의 scoreTeam으로 채점해 "AI 신뢰도 점수" 배지를 붙여줍니다.
 // characterDatabase.json에 상세 데이터가 없는 캐릭터가 섞여 있으면 배지를 표시하지 않습니다.
 function AiScoreBadge({ members, purpose }) {
+  const { t } = useLanguage();
   const { resolved, unresolved } = resolveRosterIdsToCdb(members);
   if (resolved.length === 0 || unresolved.length > 0) return null;
   const mode = inferMode(purpose);

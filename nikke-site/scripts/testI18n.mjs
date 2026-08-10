@@ -122,7 +122,39 @@ const walkShadow = (dir) => {
 for (const d of scanDirs) walkShadow(path.join(ROOT, d));
 check('번역 함수 t 를 가리는 콜백 인자 없음', shadow.length === 0, shadow.join(', '));
 
-// 9. 날짜 로케일이 하드코딩돼 있지 않은가.
+// 9. t()를 쓰는 **컴포넌트마다** useLanguage() 훅이 있는가.
+//
+//    ⚠️ 파일 단위로 검사하면 안 된다. 한 파일에 컴포넌트가 여럿이면 스코프가 각각인데,
+//       파일 어딘가에 훅이 하나만 있어도 통과해버린다. 2026-08-11에 실제로 이걸 놓쳤다 —
+//       components/ResultPanel.js의 AiRecommendSection이 t()를 16번 쓰면서 훅이 없었고,
+//       **AI 추천 섹션이 통째로 안 그려졌다.** 에러 로그도 안 남아서 사용자 제보로 알았다.
+const scopeBad = [];
+const walkScope = (dir) => {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fp = path.join(dir, e.name);
+    if (e.isDirectory()) { if (!['node_modules', '.next'].includes(e.name)) walkScope(fp); continue; }
+    if (!e.name.endsWith('.js')) continue;
+    const lines = fs.readFileSync(fp, 'utf8').split('\n');
+    // 최상위 함수 선언(= 컴포넌트/헬퍼)을 경계로 잘라 각 구간을 따로 본다.
+    const starts = [];
+    lines.forEach((l, i) => { if (/^(export default )?function [A-Za-z]/.test(l)) starts.push(i); });
+    if (!starts.length) return;
+    starts.push(lines.length);
+    for (let k = 0; k < starts.length - 1; k++) {
+      const body = lines.slice(starts[k], starts[k + 1]).join('\n');
+      const uses = (body.match(/(?<![A-Za-z0-9_.])t\(/g) || []).length;
+      if (!uses) continue;
+      if (!/const \{[^}]*\bt\b[^}]*\} = useLanguage\(\)/.test(body)) {
+        const name = (lines[starts[k]].match(/function ([A-Za-z0-9_]+)/) || [, '?'])[1];
+        scopeBad.push(`${path.relative(ROOT, fp)}:${starts[k] + 1} ${name}() — t() ${uses}회`);
+      }
+    }
+  }
+};
+for (const d of scanDirs) walkScope(path.join(ROOT, d));
+check('t()를 쓰는 컴포넌트마다 useLanguage() 보유', scopeBad.length === 0, scopeBad.join(' / '));
+
+// 10. 날짜 로케일이 하드코딩돼 있지 않은가.
 //    문구만 번역하고 날짜를 놔두면 일본어 화면에 `2026. 8. 10.` 같은 한국식 표기가 남는다.
 //    2026-08-10에 상세 페이지만 고치고 목록 페이지를 놓쳐 실제로 그 상태로 배포됐다.
 const hardDate = [];
