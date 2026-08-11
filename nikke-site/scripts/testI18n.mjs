@@ -210,6 +210,23 @@ for (const d of ['app', 'components']) walkReason(path.join(ROOT, d));
 check("엔진 근거 문장은 lang==='ko' 조건과 함께만 렌더", rawReason.length === 0,
   `${rawReason.join(', ')} — reasons/headline은 한국어 전용이다`);
 
+// 12. data/combos.js 의 조합 6개가 이름·용도·설명 키를 모두 갖고 사전에 실려 있는가.
+//
+//     조합을 추가하면서 키를 빠뜨리면 화면에 문구 대신 `combo_xxx_name` 이 그대로 뜬다.
+//     에러는 안 나고, 한국어로 보는 사람은 눈치채기 어렵다(2026-08-11 추가).
+const combosSrc = fs.readFileSync(path.join(ROOT, 'data', 'combos.js'), 'utf8');
+const comboIds = [...combosSrc.matchAll(/id:\s*'([^']+)'/g)].map((m) => m[1]);
+const comboBad = [];
+for (const id of comboIds) {
+  const stem = `combo_${id.replace(/-/g, '_')}`;
+  for (const suffix of ['name', 'purpose', 'desc']) {
+    const key = `${stem}_${suffix}`;
+    if (!base.has(key)) comboBad.push(key);
+    else if (!new RegExp(`${suffix}Key:\\s*'${key}'`).test(combosSrc)) comboBad.push(`${key}(참조없음)`);
+  }
+}
+check(`조합 ${comboIds.length}개의 이름·용도·설명 키가 모두 존재`, comboBad.length === 0, comboBad.join(', '));
+
 console.log(`\ni18n 사전 테스트 — 키 ${table[DEFAULT_LOCALE].length}개 × ${LOCALES.length}개 언어 / 함수형 ${fnKeys.length}개`);
 console.log(`통과 ${pass} / 실패 ${fails.length}`);
 if (fails.length) {

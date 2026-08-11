@@ -1,47 +1,54 @@
 // 공개된 공략/티어표에 나온 "알려진 메타 조합" 초안 목록입니다.
 // 실제 게임 밸런스 패치에 따라 수시로 바뀌므로, 사이트 운영 시 주기적으로 업데이트가 필요합니다.
+//
+// 이름·용도·설명은 문구가 아니라 **i18n 키**를 들고 있습니다(2026-08-11).
+// 예전에는 한국어 문자열이 직접 박혀 있어서, 언어를 일본어로 바꿔도 "조금만 더 모으면
+// 완성되는 조합" 섹션만 한국어로 남았습니다. 조합이 6개뿐이라 사전으로 옮겼습니다
+// (엔진 근거 문장은 데이터가 400건이 넘어 같은 방식을 쓸 수 없습니다 — HANDOFF 참고).
+// 조합을 추가하면 lib/i18n.js에 combo_<id>_name / _purpose / _desc 세 키를 함께 넣으세요.
+// scripts/testI18n.mjs가 빠진 키를 잡아줍니다.
 
 export const COMBOS = [
   {
     id: 'campaign-core',
-    name: '캠페인 메인 딜러 팀',
-    purpose: '캠페인 / 일반 스테이지',
-    description: '크라운의 방어+버프를 중심으로 리타가 버스트 사이클을 돌리고 레드 후드·모더니아가 화력을 담당하는 범용 캠페인 팀입니다.',
+    nameKey: 'combo_campaign_core_name',
+    purposeKey: 'combo_campaign_core_purpose',
+    descKey: 'combo_campaign_core_desc',
     members: ['crown', 'rita', 'red-hood', 'modernia', 'naga'],
   },
   {
     id: 'nublanc-boss',
-    name: '누블랑 보스전 팀',
-    purpose: '솔로/유니온 레이드, 보스전',
-    description: '앨리스의 고정 코어 대미지에 블랑·누아르 듀오 시너지를 더한 보스전 특화 팀입니다.',
+    nameKey: 'combo_nublanc_boss_name',
+    purposeKey: 'combo_nublanc_boss_purpose',
+    descKey: 'combo_nublanc_boss_desc',
     members: ['alice', 'blanc', 'noir', 'rita', 'crown'],
   },
   {
     id: 'naga-tia-boss',
-    name: '나가티아 보스전 팀',
-    purpose: '솔로/유니온 레이드, 보스전',
-    description: '티아·나가 듀오의 방어력 감소·탱킹으로 안정성을 확보하고 앨리스가 딜을 몰아치는 조합입니다.',
+    nameKey: 'combo_naga_tia_boss_name',
+    purposeKey: 'combo_naga_tia_boss_purpose',
+    descKey: 'combo_naga_tia_boss_desc',
     members: ['tia', 'naga', 'alice', 'crown', 'dorothy'],
   },
   {
     id: 'pvp-burst-rush',
-    name: 'PvP 고속 버스트 팀',
-    purpose: '아레나 (PvP)',
-    description: '자칼로 선제 버스트를 확보하고 노아·트리나·비스킷으로 버티며 홍련이 마무리하는 속공형 아레나 팀입니다.',
+    nameKey: 'combo_pvp_burst_rush_name',
+    purposeKey: 'combo_pvp_burst_rush_purpose',
+    descKey: 'combo_pvp_burst_rush_desc',
     members: ['jackal', 'noa', 'trina', 'biscuit', 'scarlet'],
   },
   {
     id: 'velvet-wind-code',
-    name: '벨벳 우월코드(풍압) 팀',
-    purpose: '솔로 레이드 상위권',
-    description: '벨벳을 중심으로 한 풍압 속성 우월 코드 특화 조합으로, 상위 3% 솔로 레이드를 노리는 유저에게 추천됩니다.',
+    nameKey: 'combo_velvet_wind_code_name',
+    purposeKey: 'combo_velvet_wind_code_purpose',
+    descKey: 'combo_velvet_wind_code_desc',
     members: ['nayuta', 'scarlet-black-shadow', 'liberalio', 'little-mermaid', 'velvet'],
   },
   {
     id: 'label-defense',
-    name: '라벨 PvP 방어 팀',
-    purpose: '아레나 방어팀',
-    description: '라벨의 무적 보호막으로 초기 폭딜을 견디는 챌린저 랭크용 방어 특화 조합입니다.',
+    nameKey: 'combo_label_defense_name',
+    purposeKey: 'combo_label_defense_purpose',
+    descKey: 'combo_label_defense_desc',
     members: ['jackal', 'emilia', 'maiden-ice-rose', 'blanc', 'label'],
   },
 ];

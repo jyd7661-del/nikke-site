@@ -441,12 +441,12 @@ export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bo
             {partialMatches.map(({ combo, missing }) => (
               <div key={combo.id} className="card-hover bg-slate-900/40 rounded-lg p-4 border border-slate-800">
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <h3 className="font-semibold text-slate-100">{combo.name}</h3>
+                  <h3 className="font-semibold text-slate-100">{t(combo.nameKey)}</h3>
                   <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
-                    {combo.purpose}
+                    {t(combo.purposeKey)}
                   </span>
                 </div>
-                <p className="text-sm text-slate-400 mt-1">{combo.description}</p>
+                <p className="text-sm text-slate-400 mt-1">{t(combo.descKey)}</p>
                 <p className="text-xs text-rose-300 mt-2">
                   {t('missing_characters')}: {missing.map((c) => characterName(c, lang)).join(', ')}
                 </p>
