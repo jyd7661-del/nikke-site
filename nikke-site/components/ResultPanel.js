@@ -243,7 +243,13 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
               </span>
             ))}
           </div>
-          {alternative.headline && (
+          {/* 근거 문장(headline)은 lib/synergyEngine.js가 한국어로 조립한다. 그 문장 안에는
+              synergyNotes.json·characterInvestmentNotes.json 같은 **데이터 파일의 한국어 원문**이
+              그대로 박히기 때문에, 코드만 다국어화해도 문장 절반이 한국어로 남는다(2026-08-11 조사).
+              근거 문장의 주 소비자는 화면이 아니라 AI 프롬프트이고, AI는 이미 사용자 언어로
+              설명을 쓴다. 그래서 한국어일 때만 보여주고, 다른 언어에서는 조합·출처·점수만 남긴다.
+              데이터까지 번역하기로 방침이 바뀌면 이 조건을 지우면 된다. */}
+          {alternative.headline && lang === 'ko' && (
             <p className="text-xs text-slate-500 leading-relaxed">{alternative.headline}</p>
           )}
         </div>

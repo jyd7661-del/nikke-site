@@ -345,10 +345,22 @@ ${reasonsText}${noteBlock}
   return null;
 }
 
-// AI 호출이 실패했을 때 보여줄 대체 문장. 캐시에는 저장하지 않는다.
-function fallbackReasoning(reasons) {
-  return (reasons || []).slice(0, 3).join(' ') ||
-    '보유 캐릭터 중 이 모드 티어 점수 합이 가장 높은 조합입니다.';
+// AI 호출이 실패했거나 일일 상한에 걸렸을 때 보여줄 대체 문장. 캐시에는 저장하지 않는다.
+//
+// ⚠️ reasons는 lib/synergyEngine.js가 **한국어로만** 조립한다. 문장 안에 데이터 파일의
+//    한국어 원문이 그대로 박혀 있어 코드만 번역해선 해결되지 않는다(2026-08-11 조사).
+//    그래서 한국어가 아닐 때는 근거 문장을 그대로 내보내지 않고, 해당 언어의 일반 문장으로
+//    대체한다. 어차피 화면에는 '오늘 AI 설명 한도에 도달했다'는 안내가 함께 뜬다.
+const FALLBACK_GENERIC = {
+  ko: '보유 캐릭터 중 이 모드 티어 점수 합이 가장 높은 조합입니다.',
+  en: 'This is the team with the highest combined tier score for this mode among the Nikkes you own.',
+  ja: '所持ニケの中で、このモードのティアスコア合計が最も高い編成です。',
+};
+
+function fallbackReasoning(reasons, langKey = 'ko') {
+  const generic = FALLBACK_GENERIC[langKey] || FALLBACK_GENERIC.ko;
+  if (langKey !== 'ko') return generic;
+  return (reasons || []).slice(0, 3).join(' ') || generic;
 }
 
 export async function POST(req) {
@@ -552,7 +564,7 @@ export async function POST(req) {
       budgetExhausted = await isOverGlobalDailyLimit(supabase);
       if (budgetExhausted) {
         console.warn(`[AI_BUDGET] 일일 총 상한(${DAILY_GLOBAL_LIMIT}회) 도달 — AI 설명 생성을 중단하고 근거 문장으로 대체합니다`);
-        aiReasoning = fallbackReasoning(chosen.reasons);
+        aiReasoning = fallbackReasoning(chosen.reasons, langKey);
       }
     }
 
@@ -578,7 +590,7 @@ export async function POST(req) {
       } else {
         // AI 호출 실패. 근거 문장으로 대체하되 캐시에는 남기지 않는다 —
         // 열화된 문장이 캐시에 박히면 그 조합은 영영 제대로 된 설명을 못 받는다.
-        aiReasoning = fallbackReasoning(chosen.reasons);
+        aiReasoning = fallbackReasoning(chosen.reasons, langKey);
       }
     }
 

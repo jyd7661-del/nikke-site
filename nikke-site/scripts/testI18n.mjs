@@ -174,6 +174,42 @@ for (const d of scanDirs) walkDate(path.join(ROOT, d));
 check('날짜 로케일 하드코딩 없음', hardDate.length === 0,
   `${hardDate.join(', ')} — lib/i18n.js의 dateLocale(lang)을 쓸 것`);
 
+// 11. 엔진 근거 문장(reasons/headline)을 언어 조건 없이 화면에 그리고 있지 않은가.
+//
+//     lib/synergyEngine.js의 reasons는 **한국어로만** 만들어진다. 문장 안에
+//     synergyNotes.json 등 데이터 파일의 한국어 원문이 그대로 박혀 있어, 코드만
+//     번역해도 절반이 한국어로 남는다(2026-08-11 조사 후 "화면 노출부만 정리"로 결정).
+//     그래서 화면에 그릴 때는 반드시 lang === 'ko' 조건을 함께 걸어야 한다.
+//     조건 없이 꽂으면 일본어·영어 화면에 한국어 문장이 그대로 샌다 — 에러는 안 난다.
+//
+//     ⚠️ 검사 대상은 화면(app/·components/)뿐이다. lib/ 안의 reasons는 엔진이 만드는
+//        내부 값이고, app/api/ 는 서버라 langKey로 따로 처리한다. 여기까지 잡으면
+//        오탐이 나고, 오탐이 나는 검사는 아무도 믿지 않게 된다.
+const rawReason = [];
+const GUARD = /lang\s*===\s*'ko'/;
+const walkReason = (dir) => {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fp = path.join(dir, e.name);
+    if (e.isDirectory()) { if (!['node_modules', '.next'].includes(e.name)) walkReason(fp); continue; }
+    if (!e.name.endsWith('.js')) continue;
+    if (fp.includes(`${path.sep}api${path.sep}`)) continue;
+    const lines = fs.readFileSync(fp, 'utf8').split('\n');
+    lines.forEach((l, i) => {
+      const trimmed = l.trim();
+      if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('{/*')) return;
+      // JSX 자식으로 그리거나 title= 같은 속성으로 넘기는 경우만 본다.
+      if (!/\.(headline|reasons)\b/.test(l)) return;
+      if (!/[{=]/.test(l)) return;
+      // 가드가 같은 줄이나 바로 위 3줄 안에 있으면 통과 (조건과 렌더가 줄이 갈리는 게 흔하다)
+      const window = lines.slice(Math.max(0, i - 3), i + 1).join('\n');
+      if (!GUARD.test(window)) rawReason.push(`${path.relative(ROOT, fp)}:${i + 1}`);
+    });
+  }
+};
+for (const d of ['app', 'components']) walkReason(path.join(ROOT, d));
+check("엔진 근거 문장은 lang==='ko' 조건과 함께만 렌더", rawReason.length === 0,
+  `${rawReason.join(', ')} — reasons/headline은 한국어 전용이다`);
+
 console.log(`\ni18n 사전 테스트 — 키 ${table[DEFAULT_LOCALE].length}개 × ${LOCALES.length}개 언어 / 함수형 ${fnKeys.length}개`);
 console.log(`통과 ${pass} / 실패 ${fails.length}`);
 if (fails.length) {
