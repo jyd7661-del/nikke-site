@@ -14,6 +14,11 @@ export const metadata = {
   title: '니케 조합 추천 | 보유 니케로 최적의 팀 짜기',
   description:
     '보유중인 니케 캐릭터를 선택하면 캠페인, 보스전, 아레나(PvP)에 맞는 추천 조합을 알려주고, 유저들과 직접 조합을 공유·투표할 수 있는 승리의 여신: 니케 팬 사이트입니다.',
+  // Google Search Console 소유권 확인 (2026-08-13, Phase 0).
+  // 삭제하면 소유권이 풀려 Search Console 접근을 잃는다.
+  verification: {
+    google: 'cXe2elGxOSNx992Nm62TZGosEFaQTKt-3PZGWy3VLAk',
+  },
 };
 
 // Vercel 환경변수 NEXT_PUBLIC_ADSENSE_CLIENT_ID(예: ca-pub-1234567890123456)가 설정된 경우에만
