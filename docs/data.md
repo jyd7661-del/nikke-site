@@ -1,0 +1,127 @@
+# 데이터 파일
+
+> `HANDOFF.md`에서 분리했습니다(2026-08-12). 왜 그렇게 만들었는지와
+> 어떤 함정을 밟았는지가 핵심입니다. 코드만 보면 알 수 없는 내용입니다.
+
+---
+
+모두 `nikke-site/data/` 아래에 있습니다.
+
+| 파일 | 내용 | 현재 규모 |
+|---|---|---|
+| `characterDatabase.json` | 캐릭터 상세(스킬 3종, 쿨타임, 버스트, 원소, 클래스, 무기, 제조사, 출시일, 모드별 티어, prydwenTags, **이름 3개 국어 `title`/`name_kr`/`name_ja`**) | 196명 (SSR 168 / SR 19 / R 9) |
+| `characters.js` | **화면 캐릭터 선택 그리드가 읽는 UI 목록. SSR 전용** | 168 항목 |
+| `synergyNotes.json` | prydwen 아키타입, 시너지 페어, 카운터 | 아키타입 483 / 페어 13 / 카운터 4 |
+| `characterInvestmentNotes.json` | 애장품 필요 여부, 투자 우선순위, **토템 역할** | 76건 (토템 18명) |
+| `treasureEffects.json` | 애장품 효과 | 17명 (전원) |
+| `metaStats.json` | enikk.app 실사용 데이터 | 캠페인 조합 20 / PvP 상위 11 |
+| `dataFreshness.json` | 각 파일의 asOf / 만료일 | — |
+| `glossary.json` | 커뮤니티 번역용 게임 용어 3개 국어 표기 (§7-3) | 20건 |
+
+### ⚠️ 이미지는 두 파일이 각자 들고 있습니다
+
+`characterDatabase.json`과 `characters.js` **양쪽 모두** `img` 필드가 있습니다.
+화면 그리드는 `characters.js` 쪽을 읽습니다. 한쪽만 고치면 화면이 안 바뀝니다(실제로 겪음).
+`UI_IMG_MISMATCH` 검사가 이걸 잡아줍니다.
+
+이미지 경로 규칙: **디코딩한 파일명의 MD5 앞 1글자/앞 2글자**.
+반드시 `_MI.png`(상반신)를 쓰세요. `_FB.png`는 전신이라 세로형 카드에서 혼자 튑니다.
+
+### 캐릭터 이름 표기 (어기면 데이터가 무시됩니다)
+
+- 항상 `characterDatabase.json`의 **`title` 값을 정확히** 사용. 축약형 금지
+- 과거 사고: `Ada`/`Takina`/`Jill`/`Mari`/`Asuka`/`Rita` 축약형 → 데이터 통째로 무시
+- 정식 표기: `Ada Wong`, `Takina Inoue`, `Jill Valentine`, `Mari Makinami Illustrious`, `Asuka Shikinami Langley`, `Liter`
+- prydwen 표기와 다른 경우: prydwen `Eve` = 우리 `EVE`, prydwen `Asuka Shikinami Langley: Wille` = 우리 `Asuka: WILLE`
+- 조건을 이름에 붙이지 마세요. `"Zwei (Treasure)"` 금지 → `requiresTreasure: ["Zwei"]` 필드 사용
+
+---
+
+
+prydwen 티어리스트가 캐릭터 아이콘에 붙여둔 라벨을 그대로 옮긴 값입니다.
+
+| 태그 | 원문 | 뜻 | 인원 |
+|---|---|---|---|
+| `limited` | is a limited character that isn't available in the general pool | 한정 | 50 |
+| `partner` | can only shine if a specific unit is in the team | 특정 동료 필요 | 22 |
+| `invest` | heavy investment is required | 고투자 전제 | 16 |
+| `expert` | requires high manual skill | 수동 조작 숙련 | 7 |
+
+수집: https://www.prydwen.gg/nikke/tier-list 의 `div.avatar-card` → `.emp-name` + `.new-tag`(클래스명이 곧 태그)
+`treasure` 태그는 `characters.js`의 `hasTreasure`로 따로 다루므로 넣지 않습니다.
+`X (Treasure)` 항목에만 붙은 태그는 `prydwenTagsTreasure`로 분리(Zwei, Tove).
+
+### 5-1. `partner`의 짝은 데이터에서 계산합니다
+
+태그는 "조건부"라는 사실만 알려주고 **누가 파트너인지는 안 알려줍니다.**
+그래서 조건부 확률로 뽑습니다 — "이 캐릭터가 나온 팀 중 몇 %에 저 캐릭터가 같이 있었나".
+단순 동시 등장 횟수는 크라운·아니스 스타 같은 범용 픽이 항상 1등이라 무의미합니다.
+
+최소 5팀 등장 + 70% 이상만 인정 → 6명:
+`Prika→Mint 100%`, `Tia→Naga 100%`, `Arcana↔Isabel 100%`,
+`Emma:TU→Eunhwa:TU/Vesti:TU 100%`, `Velvet→Little Mermaid 73%`
+
+### 5-2. 사용 방식 — 점수를 깎지 않습니다
+
+`invest`/`expert`/`partner` 모두 **근거 문장에 `[조건 확인]`으로 표시만** 합니다.
+유저 투자 수준을 모르는 상태에서 감점하면 이미 키운 사람에게 틀린 추천을 하게 됩니다.
+AI 프롬프트에도 `[조건 확인]` 항목은 반드시 포함하되 겁주지 말라고 명시했습니다.
+
+---
+
+## 오버스펙(Overspec) 플래그
+
+> 2026-08-08 추가. claude.ai 프로젝트 문서에서 이관.
+
+오버스펙 = **3대 기업 캐릭터의 파워업 버전**. **소속 기업을 그대로 유지**하면서
+**필그림/오버스펙 타워에도** 들어간다 → 원 소속 기업 타워 + 필그림 타워 **양쪽 사용 가능**.
+라피: 레드 후드 출시(2025-01-01) 때 필그림 타워가 '필그림/오버스펙 타워'로 개편된 것이 근거.
+
+`characterDatabase.json`에 `overspec: true` + `overspecNote`(출처)를 붙인다.
+
+| 캐릭터 | 소속 | 버스트 | 출시 |
+|---|---|---|---|
+| Rapi: Red Hood | elysion | B3 | 2025-01-01 |
+| Mihara: Bonding Chain | missilis | B3 | 2025-05-01 |
+| Anis: Star | tetra | B1 | 2026-04-23 |
+| Neon: Vision Eye | missilis | B3 | 2026-04-30 |
+
+### 오버스펙이 아닌 것 (헷갈리기 쉽다)
+
+- **아비스타** — 3.5주년 동시 출시지만 풀돌 배포 일반 SSR (squad: Overseer)
+- **앵커: 이노센트 메이드 / 델타: 닌자 시프** — SR의 SSR 버전이지만 코스튬 알트
+- **아니스: 스파클링 서머 / 네온: 블루 오션** — 2023년 수영복 알트
+
+"SR이 SSR 버전을 받으면 오버스펙"이 **아니다.** 미하라가 2번째 오버스펙인데
+앵커: 이노센트 메이드가 더 먼저 나왔다는 사실이 이를 증명한다.
+
+> ⚠️ **네온: 비전 아이는 소속이 바뀌었다.** 원본 네온은 엘리시온이지만 비전 아이는
+> **미실리스**다(nikke.gg "Missilis Overspec", 엘리시온 타워 사용 불가). DB 값이 맞으니 고치지 말 것.
+
+### checkData 검증
+
+| 검사 | 내용 |
+|---|---|
+| `OVERSPEC_PILGRIM` / `OVERSPEC_ABNORMAL` | 잘못된 대상에 플래그 → ERROR |
+| `OVERSPEC_NO_SOURCE` | `overspecNote` 출처 누락 → WARN |
+| `TOWER_NON_OVERSPEC` | 제조사가 섞인 tribe_tower 조합에 필그림·오버스펙이 아닌 멤버가 있으면 ERROR. 새 오버스펙 출시 시 플래그 누락을 자동 검출. **역테스트로 발화 확인함** |
+| `TOWER_MIXED_ARCH` | 필그림 없이 제조사만 섞인 조합 → ERROR |
+
+⚠️ `TOWER_NON_OVERSPEC`은 prydwen이 그 캐릭터를 필그림 타워 조합에 넣어준 **뒤에야** 발화한다.
+출시 직후 몇 주의 공백은 사람이 메워야 한다 → `docs/weekly-research.md`
+
+### 남은 문제 — tribe_tower 아키타입에 타워 정보가 없다
+
+아키타입 30개에 `mode: "tribe_tower"`만 있고 `corp`/`tower` 필드가 없다. 이름으로도 판별
+불가("Tower of Fantasy"=엘리시온, "Bunny? Bunnies!"=테트라). **멤버 제조사로 유도해야 한다** —
+전원 동일 제조사면 그 타워, 섞여 있으면 필그림 타워. 현재 섞인 것은 정확히 2건이고
+둘 다 필그림 타워라 규칙이 성립한다.
+
+### 출처
+
+- [오버스펙 정의 — gamechosun](https://www.gamechosun.co.kr/webzine/article/view.php?no=210977)
+- [3.5주년 뉴 카운터스 — 인벤](https://www.inven.co.kr/webzine/news/?news=315569)
+- [Tribe Tower — Fandom](https://nikke-goddess-of-victory-international.fandom.com/wiki/Tribe_Tower)
+- [Manufacturer Tower teams — lootandwaifus](https://lootandwaifus.com/teams/nikke-manufacturer-tower-teams/)
+- [Neon: Vision Eye 분석 — nikke.gg](https://nikke.gg/neon-vision-eye-analysis-should-you-pull/)
+- [트라이브/기업 타워 — 디스이즈게임](https://www.thisisgame.com/articles/209101)
