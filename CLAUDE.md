@@ -7,10 +7,31 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 - 배포: https://nikke-site.vercel.app · DB/인증: Supabase (`yttfwroeyplwrchyitud`)
 - 운영자 겸 기획자 1인. 사이트가 번영하도록 데이터 관리·수집·유지보수·고객응대를 함께 한다.
 
+## 목표 — 성장 · 수익 · 자동화 3축 (2026-08-13 확정)
+
+세 축을 **밸런스 있게** 유지한다. 하나만 밀면 나머지가 무너진다.
+
+| 축 | 뜻 | 현재 상태 |
+|---|---|---|
+| **성장** | 검색 유입·방문 | Vercel Analytics + Search Console 가동, 색인 201 URL |
+| **수익** | 광고 수입 | 애드센스 **사이트 검토 대기**. CMP 동의 배너 미설정(EEA 수익 누락) |
+| **자동화** | 사람 손 없이 도는 업무 | 주간 데이터 조사 1건. 도감은 데이터가 곧 페이지라 유지비 0 |
+
+진행 상황의 **단일 출처는 `docs/open-items.md`의 "성장 계획 3축" 절**이다. 여기 요약을
+믿지 말고 그 파일을 읽을 것. Phase 0(계측)·1(도감 196페이지)은 2026-08-13에 완료했다.
+
+> 비용 판단 기준: AI 설명은 건당 약 4.9원이고 전역 상한 `AI_DAILY_GLOBAL_LIMIT`
+> **기본 1,000회/일**이 천장이다(최악 하루 약 4,900원). **유저 결정으로 상한은 유지 중**이며
+> 임의로 낮추지 않는다. 도감 같은 정적 페이지는 방문당 API 비용이 0이다.
+
 ## 세션 시작 시 먼저 할 일
 
+**저장소 루트는 `nikke-site-git/`이다.** 세션이 한 단계 위(`...\Claude\nikke`)에서 열리는
+경우가 있는데, 그 위치의 `CLAUDE.md`·`docs/`는 **사본**이다. 작업은 반드시 저장소 안에서 한다.
+(`...\Desktop\nikke-site` 는 이관 전 옛 복사본이니 건드리지 말 것.)
+
 ```bash
-cd nikke-site
+cd nikke-site-git/nikke-site
 node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
 node scripts/testI18n.mjs            # 22건
 node scripts/testCharacterNames.mjs  # 26건
@@ -83,7 +104,7 @@ node scripts/findTotems.mjs          # 기준선: 1군 0명
 | `docs/ops.md` | Supabase·Vercel·배포·환경변수 |
 | `docs/pitfalls.md` | 개발 환경의 함정 |
 | `docs/weekly-research.md` | 주간 데이터 조사 예약 작업 |
-| `docs/open-items.md` | 열려 있는 작업·판단 대기 항목 |
+| `docs/open-items.md` | **성장 계획 3축 진행 상황(단일 출처)** · 열려 있는 작업·판단 대기 항목 |
 | `docs/claude-code.md` | 클로드 코드 이관·설정 방법 |
 
 과거 인수인계 문서 `HANDOFF.md`는 위 파일들로 분리했다(2026-08-12). 원문은 `git show ff9997e:HANDOFF.md`.
@@ -113,6 +134,21 @@ node scripts/findTotems.mjs          # 기준선: 1군 0명
 - **A(1차 출처에서 그대로 옮긴 값)만 자동 반영, B(추론·해석)는 제안만.**
 - 캐릭터를 추가하면 `id/title/name_kr/name_ja/class/burst/element/weapon/releaseDate/tiers/
   skills[3]`을 모두 채운다. `name_ja`가 없으면 `checkData`가 ERROR를 낸다.
+- **`id`는 이제 공개 URL이다**(`/nikke/[id]`, sitemap). 소문자·숫자·하이픈만 쓴다 —
+  어기면 `checkData`의 `ID_URL_UNSAFE`가 ERROR를 낸다.
+
+### 도감 페이지 `/nikke` (2026-08-13 추가, 성장 계획 Phase 1)
+
+`characterDatabase.json` 하나로 인덱스 1 + 상세 196페이지를 **빌드 때 정적 생성**한다.
+헬퍼는 `lib/dex.js`, 페이지는 `app/nikke/`.
+
+- **데이터가 곧 페이지다.** 캐릭터를 추가·수정하면 다음 배포에서 페이지와 sitemap이 함께
+  따라온다. 페이지를 손으로 만들지 말 것
+- **표시되는 값은 전부 데이터 파일 그대로(A등급)다.** 이 페이지에서 새 판정·점수·해석을
+  만들지 않는다. 새 문장이 필요하면 데이터 파일에 근거와 함께 넣는다
+- **서버 컴포넌트라 클라이언트 i18n을 못 쓴다**(`app/privacy`와 같은 제약). 한국어로 렌더하되
+  `title`(영문)·`name_ja`(일문)를 본문에 함께 실어 세 언어 검색어를 모두 색인시킨다
+- 한국어 라벨(화력형·수냉·작열 등)은 `data/glossary.json`의 확정 표기를 따른다. 임의 번역 금지
 
 ---
 

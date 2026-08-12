@@ -202,6 +202,30 @@ Phase 0 세부 (전부 실측 확인):
 - Search Console — URL 접두어 속성 `https://nikke-site.vercel.app`, HTML 태그 인증(커밋 `61132c7`).
   **layout.js의 verification 메타태그를 지우면 소유권이 풀린다.** sitemap.xml 제출 성공(페이지 4개)
 
+### 다음 세션이 이어받을 것 (2026-08-13 기준)
+
+**지금 당장 급한 것은 없다.** 색인은 시간이 필요하다 — Phase 1을 방금 올렸으므로
+Search Console에 색인이 잡히기까지 1~2주가 정상이다. 그 사이에 할 수 있는 것:
+
+| 후보 | 성격 | 비고 |
+|---|---|---|
+| 색인 추이 관찰 | 성장 | Search Console에서 `/nikke/*` 색인 수·노출어 확인. **최소 며칠 뒤에 볼 것** |
+| 주간 성장·수익 리포트 자동화 | 자동화 | 승인됨. 지표가 쌓여야 무엇을 리포트할지 정할 수 있어 대기 중 |
+| Phase 3 커뮤니티 시드 | 성장 | 주간 조사 결과 → 게시글 초안. **초안까지만, 게시는 사람이**(B등급) |
+| CMP 동의 배너 | 수익 | **법적 판단이라 유저 결정 필요.** 애드센스 통과 시점부터 EEA 수익이 0이 된다 |
+
+작업 환경에서 미리 알아둘 것 (헤매지 않도록):
+
+- **Supabase는 claude.ai 커넥터로 접근한다.** 저장소의 `.mcp.json`에 있는 로컬 supabase MCP는
+  `SUPABASE_ACCESS_TOKEN` 환경변수가 없어 `Unauthorized`가 난다. 커넥터 쪽에 project_id
+  `yttfwroeyplwrchyitud`를 넘겨 쓰고, `execute_sql`은 여러 문을 한 번에 보내면 **마지막 결과만**
+  돌아오므로 쿼리를 나눠 보낸다
+- **Vercel 팀 슬러그는 `the-j1`** — `vercel.com/the-j1/nikke-site`. push하면 자동 배포되고 보통 1분 내 Ready
+- **Vercel 대시보드·Search Console·애드센스는 브라우저 로그인이 필요하다.** 원격(클라우드) 세션에서는
+  못 하고 이 PC의 Chrome으로만 된다. 원격에서 할 수 있는 것은 코드·데이터·문서 작업까지다
+- `characterDatabase.json`은 **최상위가 배열**이고 `characterInvestmentNotes.json`은
+  `{ characters: [...] }` 래퍼다. 여기서 한 번 빌드가 깨졌다
+
 ## 현재 열려 있는 항목 (2026-08-13 갱신)
 
 > claude.ai 프로젝트 문서 `컴퓨터-앞-할일.md`에서 이관. 이제 이 파일이 단일 출처다.
