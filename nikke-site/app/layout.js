@@ -1,5 +1,6 @@
 import './globals.css';
 import Script from 'next/script';
+import { Analytics } from '@vercel/analytics/next';
 import { AuthProvider } from '@/components/AuthProvider';
 import { LanguageProvider } from '@/components/LanguageProvider';
 import Header from '@/components/Header';
@@ -31,6 +32,10 @@ export default function RootLayout({ children }) {
             <Footer />
           </AuthProvider>
         </LanguageProvider>
+        {/* Vercel Web Analytics — 방문·페이지뷰 계측 (2026-08-12, Phase 0).
+            쿠키를 쓰지 않아 동의 배너(CMP) 없이도 적법하게 동작한다.
+            Vercel 대시보드에서 Web Analytics를 Enable해야 수집이 시작된다. */}
+        <Analytics />
         {ADSENSE_CLIENT_ID && (
           <Script
             async
