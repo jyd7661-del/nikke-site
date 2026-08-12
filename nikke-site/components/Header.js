@@ -16,6 +16,7 @@ export default function Header() {
 
   const NAV_LINKS = [
     { href: '/', label: t('nav_recommend') },
+    { href: '/nikke', label: t('nav_dex') },
     { href: '/combos', label: t('nav_combos') },
     { href: '/board', label: t('nav_board') },
   ];

@@ -83,6 +83,16 @@ cdb.forEach((c) => {
 const dupIds = cdb.map((c) => c.id).filter((v, i, a) => a.indexOf(v) !== i);
 if (dupIds.length) err('DUP_ID', `characterDatabase.json에 중복 id: ${[...new Set(dupIds)].join(', ')}`);
 
+// id는 도감 페이지 주소(/nikke/[id])와 sitemap에 그대로 들어간다 (2026-08-13 Phase 1).
+// URL에 못 쓰는 문자가 섞이면 에러 없이 깨진 링크·잘못된 sitemap이 나간다 — 조용한 누락 유형.
+cdb.forEach((c) => {
+  if (!/^[a-z0-9-]+$/.test(String(c.id || ''))) {
+    err('ID_URL_UNSAFE',
+      `${c.title}의 id '${c.id}'에 URL에 쓸 수 없는 문자가 있음 — ` +
+      `소문자·숫자·하이픈만 허용 (도감 페이지 주소와 sitemap이 이 값으로 만들어짐)`);
+  }
+});
+
 // ---------------------------------------------------------------------------
 // 2. 다른 파일들이 참조하는 캐릭터 이름이 실재하는가
 //    (여기서 걸리는 항목은 전부 "그 데이터가 통째로 무시되고 있다"는 뜻)
