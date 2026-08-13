@@ -73,8 +73,20 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
   const cardRefs = useRef(new Map());
   const prevRects = useRef(new Map());
 
+  // 용도(캠페인/보스전/PvP/타워)가 바뀐 재정렬은 **애니메이션 없이** 넘긴다.
+  //
+  // 애니메이션은 원래 "💎를 눌렀는데 카드 한 장이 순간이동한다"를 고치려고 넣은 것이다.
+  // 그런데 용도를 바꾸면 티어 기준 자체가 바뀌어 168장이 거의 전부 자리를 옮긴다. 그걸
+  // 420ms 동안 한꺼번에 움직이면 도움이 되기는커녕 화면 전체가 출렁이고, 사용자는 아래쪽
+  // 추천 영역을 보고 있는데 위쪽 그리드가 통째로 요동친다("모드 버튼을 누르면 화면이
+  // 이동한다", 2026-08-13 지적).
+  // 한 장이 움직일 때는 눈으로 따라갈 수 있어 유용하고, 168장이 움직일 때는 소음이다.
+  const prevMode = useRef(aiMode);
+
   useIsomorphicLayoutEffect(() => {
     const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const modeChanged = prevMode.current !== aiMode;
+    prevMode.current = aiMode;
     const nextRects = new Map();
     cardRefs.current.forEach((el, id) => {
       if (!el || !el.isConnected) return;
@@ -108,7 +120,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
       const rect = { left: r.left - pr.left, top: r.top - pr.top };
       nextRects.set(id, rect);
       const prev = prevRects.current.get(id);
-      if (reduceMotion || !prev) return;
+      if (reduceMotion || modeChanged || !prev) return;
       const dx = prev.left - rect.left;
       const dy = prev.top - rect.top;
       if (!dx && !dy) return;
@@ -210,7 +222,14 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
             </h3>
             {/* 도감(/nikke)과 같은 열 수로 맞췄다 (2026-08-13). 6열 → 8열.
                 10열도 해봤지만 "솔린 : 프로스트…"처럼 알트 이름이 잘려 구분이 안 돼 8열로 되돌렸다. */}
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
+            {/* [overflow-anchor:none] — 크롬의 스크롤 앵커링을 이 그리드에서 끈다.
+                크롬은 화면 안의 요소 하나를 기준점으로 잡아 두고, 그 위쪽 콘텐츠 높이가
+                바뀌면 기준점이 제자리에 보이도록 스크롤을 자동으로 보정한다. 보통은 도움이
+                되지만, 카드 168장이 **순서를 바꾸는** 경우엔 기준점 자신이 다른 자리로
+                옮겨가므로 브라우저가 엉뚱하게 스크롤을 움직인다(재정렬 목록의 알려진 함정).
+                html에 scroll-behavior:smooth가 걸려 있어 그 보정이 스르륵 미끄러지는
+                애니메이션으로 보인다 — "자동으로 화면이 이동한다"의 유력한 정체다. */}
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2 [overflow-anchor:none]">
               {grouped[b].map((c) => {
                 const active = ownedIds.has(c.id);
                 const hasTreasure = treasureIds?.has(c.id);
