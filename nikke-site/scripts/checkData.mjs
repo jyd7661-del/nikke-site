@@ -612,6 +612,26 @@ if (uiCharacters) {
       err('UI_BAD_BURST', `${who}: burst=${u.burst} — 1/2/3 중 하나여야 함`);
     }
 
+    // burst가 두 파일에 각각 있어서 조용히 어긋날 수 있다. 2026-08-13 추가.
+    //
+    // 실제로 3명이 어긋나 있었다 — 밀크: 블루밍 바니 / 이브 / 소다: 트윙클링 바니가
+    // characters.js에서는 버스트1인데 characterDatabase에서는 버스트3이었다.
+    // 화면(CharacterPicker·MemberSelect)은 characters.js 값으로 묶고 엔진은
+    // characterDatabase 값으로 조합을 짜므로, **화면에서는 버스트1 칸에 보이는데
+    // 실제로는 버스트3으로 계산되는** 상태였다. 에러가 없어 유저가 눈으로 보고 발견했다.
+    // (나무위키 인포박스로 교차 확인: 셋 다 버스트 III, 기본 밀크·소다는 I)
+    //
+    // 이름은 일부러 검사하지 않는다 — '라벨'(화면)과 '레이블'(DB)처럼 표기가 다른 경우가
+    // 정상이고, 그래서 애초에 id로 연결한다(lib/rosterBridge.js 주석 참고).
+    {
+      const d = cdb.find((c) => c.id === (u.cdbId || u.id));
+      if (d && String(u.burst) !== String(d.burst)) {
+        err('UI_CDB_BURST_DRIFT',
+          `${who}: characters.js는 버스트${u.burst}인데 characterDatabase '${d.id}'는 버스트${d.burst} — ` +
+          `화면 분류와 실제 조합 계산이 어긋난다. characterDatabase 쪽이 1차 출처이므로 그 값에 맞출 것`);
+      }
+    }
+
     // 이미지 검사는 characterDatabase.json과 characters.js 양쪽에 다 필요하다.
     // 2026-08-08: 유저가 "네온: 비전 아이만 전신 사진"이라고 지적해 characterDatabase의 img를
     // _MI로 고치고 검사까지 붙였는데도 화면이 그대로였다. 화면의 캐릭터 그리드가 읽는 건
