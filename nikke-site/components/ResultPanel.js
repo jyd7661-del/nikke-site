@@ -198,16 +198,43 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           </span>
         </div>
       </div>
-      <div className="flex flex-wrap gap-2 mb-3">
-        {team.members.map((m) => (
-          <span
-            key={m.id}
-            className="flex items-center gap-1.5 text-xs bg-slate-800 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-200"
-          >
-            <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} size="xs" />
-            {memberName(m, lang)}{roster.treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}
-          </span>
-        ))}
+      {/* 주력 조합 5명은 **세로 카드**로 크게 보여준다(메인 선택 그리드·도감과 같은 처리).
+          예전에는 32px 원형 아이콘 + 이름 칩이었는데, 얼굴이 아래로 걸리는 니케가 섞여
+          알아보기 나빴다(2026-08-13 지적).
+
+          원인은 크롭 비율이다. 원본(위키 `_MI`)은 캐릭터마다 구도가 달라서 — 모자·머리
+          장식·머리카락이 높으면 얼굴이 아래로 내려가 있다 — 어느 한 object-position 값으로
+          196명을 다 맞출 수 없다. 정사각형 원형 틀은 원본의 **53%**만 보여주므로 그 구도
+          차이가 증폭되고, 3:4 세로 틀은 **67%**를 보여주므로 훨씬 덜 티 난다.
+          즉 이건 숫자를 잘 고르는 문제가 아니라 틀을 키우는 문제였다.
+
+          이름은 카드 안 아래쪽에 겹친다. 밑에 따로 칸을 두면 이름이 한 줄이냐 두 줄이냐에
+          따라 카드 높이가 갈리는데, 5명이 한 행이라 행 전체가 들쭉날쭉해진다
+          (CharacterPicker에서 같은 문제를 겪고 이렇게 고쳤다).
+
+          모바일에서는 5열이면 카드가 54px까지 좁아져 이름이 서너 글자씩 잘린다. 3열로
+          두 줄(3+2)에 나누는 편이 읽기 낫다.
+
+          대안 조합·MemberSelect·/combos의 칩은 그대로 둔다. 거기까지 키우면 결과 화면이
+          세로로 너무 길어지고, "한눈에 알아본다"는 이득은 주력 조합에서 대부분 나온다. */}
+      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-3">
+        {team.members.map((m) => {
+          const name = `${memberName(m, lang)}${roster.treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}`;
+          return (
+            <div
+              key={m.id}
+              className="relative rounded-lg overflow-hidden border border-slate-700 bg-slate-900/40"
+            >
+              <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} shape="portrait" />
+              <span
+                title={name}
+                className="absolute inset-x-0 bottom-0 px-1 pt-6 pb-1.5 text-[13px] font-semibold text-center leading-tight line-clamp-3 break-keep text-slate-100 drop-shadow-[0_1px_2px_rgba(2,6,23,0.95)] bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent"
+              >
+                {name}
+              </span>
+            </div>
+          );
+        })}
       </div>
       {reasoning && (
         <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
