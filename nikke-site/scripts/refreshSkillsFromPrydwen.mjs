@@ -81,17 +81,23 @@ const SLUG_OVERRIDE = {
 // 이건 "1차 출처를 그대로 옮긴다"가 아니라 **출처의 사고를 우리가 받아 적는 것**이라
 // 데이터가 나빠진다. 기계적으로 판별 가능한 두 경우만 막고, 나머지 이름 변경은 그대로 받는다
 // (prydwen이 우리 오타를 고쳐준 것도 많다: Zaitochi→Zatoichi, Disscusion→Discussion, Milage→Mileage).
+// 반환값: null | 'mojibake' | 'trailing-number'
+//
+// **두 유형을 구분해야 한다.** 설명 본문까지 되돌려도 되는 것은 'mojibake' 뿐이다.
+// 'trailing-number'는 설명 안에서 그 숫자가 진짜 의미를 갖는다 —
+// 미하라 설명은 "Highway to Hell 1: ATK ▲ …", "… during Highway to Hell 1", "Highway to Hell 2: …"
+// 처럼 **중첩 단계 이름**으로 쓴다. 여기서 숫자를 지우면 설명이 망가진다(실제로 한 번 그렇게 했다).
 function looksCorrupted(oursName, theirsName) {
-  if (!oursName || !theirsName || oursName === theirsName) return false;
+  if (!oursName || !theirsName || oursName === theirsName) return null;
   // (1) 우리에게 있던 비ASCII 글자가 사라지고 나머지가 같은 모양이면 문자 뭉갬으로 본다
-  const oursHasNonAscii = /[^\x00-\x7F]/.test(oursName);
-  if (oursHasNonAscii) {
+  //     마나 Metal γ → Metal y,  디젤: 윈터 스위츠 La La La ♫ → La La La
+  if (/[^\x00-\x7F]/.test(oursName)) {
     const strip = (s) => s.replace(/[^A-Za-z0-9]/g, '').toLowerCase();
-    if (strip(oursName).length - strip(theirsName).length <= 0 && !/[^\x00-\x7F]/.test(theirsName)) return true;
+    if (strip(oursName).length - strip(theirsName).length <= 0 && !/[^\x00-\x7F]/.test(theirsName)) return 'mojibake';
   }
-  // (2) 우리 이름 뒤에 " 숫자"만 덧붙은 경우
-  if (new RegExp(`^${oursName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\d+$`).test(theirsName)) return true;
-  return false;
+  // (2) 우리 이름 뒤에 " 숫자"만 덧붙은 경우 — 이름만 지키고 설명은 건드리지 않는다
+  if (new RegExp(`^${oursName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')} \\d+$`).test(theirsName)) return 'trailing-number';
+  return null;
 }
 
 function decodeEntities(s) {
@@ -221,12 +227,27 @@ for (const c of targets) {
 
   if (err) { failed.push({ id: c.id, name: c.name_kr, err }); continue; }
 
-  // 출처가 망가진 이름은 우리 값을 남긴다 (수치·설명은 그대로 새 값을 쓴다)
+  // 출처가 망가진 이름은 우리 값을 남긴다 (수치는 그대로 새 값을 쓴다).
+  //
+  // ⚠️ 이름만 되돌리면 **설명 본문이 어긋난다.** 스킬 설명은 그 버프를 이름으로 다시 부르는데
+  //    (마나: "Metal γ: ATK ▲ …", "Metal γ 상태일 때 …"), prydwen이 뭉갠 "Metal y"가 본문에
+  //    그대로 남아 화면에서 제목과 본문이 서로 다른 이름을 쓰게 된다. 실제로 라이브에서 그렇게
+  //    나갔다(2026-08-13). 그래서 같은 치환을 **그 캐릭터의 모든 설명에도** 적용한다.
   (c.skills || []).forEach((oursSkill, i) => {
-    if (skills[i] && looksCorrupted(oursSkill.name, skills[i].name)) {
-      kept.push({ id: c.id, name: c.name_kr, field: '이름', ours: oursSkill.name, theirs: skills[i].name });
-      skills[i].name = oursSkill.name;
+    if (!skills[i]) return;
+    const kind = looksCorrupted(oursSkill.name, skills[i].name);
+    if (!kind) return;
+    const theirs = skills[i].name;
+    kept.push({ id: c.id, name: c.name_kr, field: `이름(${kind})`, ours: oursSkill.name, theirs });
+    skills[i].name = oursSkill.name;
+    if (kind !== 'mojibake') return; // 숫자가 붙은 경우는 설명을 건드리지 않는다
+    let n = 0;
+    for (const s of skills) {
+      if (!s.desc.includes(theirs)) continue;
+      n += s.desc.split(theirs).length - 1;
+      s.desc = s.desc.split(theirs).join(oursSkill.name);
     }
+    if (n) kept.push({ id: c.id, name: c.name_kr, field: `설명 본문 ${n}곳`, ours: oursSkill.name, theirs });
   });
 
   // 버스트 쿨타임이 비어 온 경우도 우리 값을 남긴다.
