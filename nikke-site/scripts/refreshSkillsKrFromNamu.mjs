@@ -73,9 +73,12 @@ const decode = (s) => s
 //   '버스트 Ⅲ'    (전각 로마숫자 U+2162) — 마나
 //   '버스트 I|I'  (위키 표 구분자가 샘)  — 솔린
 // 정규화하지 않으면 이 캐릭터들만 조용히 빠진다. 실제로 빠졌다(2026-08-13).
+// ⚠️ '|'를 그냥 지우면 안 된다. 처음에 지웠다가 '버스트 I|I'가 '버스트 II'가 되어,
+//    솔린 알트(실제 버스트 I)를 II로 읽고 "DB 3 vs 나무위키 II"라는 **가짜 충돌**을 만들었다.
+//    '|'는 위키 표 구분자가 샌 것이므로 **앞부분만** 취한다: '버스트 I|I' → '버스트 I'.
 const normalizeLine = (l) => l
   .replace(/[Ⅰ-Ⅲ]/g, (ch) => 'I'.repeat(ch.charCodeAt(0) - 0x215f))
-  .replace(/\|/g, '')
+  .replace(/^(버스트\s*(?:I{1,3}|[123]))\|.*$/, '$1')
   .trim();
 
 function toLines(html) {
@@ -86,11 +89,8 @@ function toLines(html) {
   return decode(stripped).split('\n').map((x) => normalizeLine(x)).filter(Boolean);
 }
 
-// 스킬1 / 스킬2 / 버스트 세 블록만 뽑는다.
-function extractSkills(html) {
-  const lines = toLines(html);
-  const start = lines.findIndex((l) => l === '스킬 1');
-  if (start < 0) return null;
+// 스킬1 / 스킬2 / 버스트 세 블록을 **한 벌** 뽑는다. start는 '스킬 1'이 있는 줄 번호.
+function extractSkillsAt(lines, start) {
   // ⚠️ 여기서 멈추는 것이 라이선스 경계다. '평가' 이후는 위키 기여자의 글이다.
   let end = lines.length;
   for (let i = start; i < lines.length; i++) {
@@ -127,14 +127,58 @@ function extractSkills(html) {
   return out.length === 3 ? out : null;
 }
 
+// 한 문서에 **여러 캐릭터가 들어 있다.** 나무위키는 기본 캐릭터와 알트를 한 문서에서 다룬다.
+// 실측: '솔린' 문서에는 '버스트 III'(기본 솔린)와 '버스트 I'(솔린 : 프로스트 티켓)가 둘 다 있다.
+// 첫 번째 '스킬 1'만 보고 자르면 엉뚱한 캐릭터의 스킬을 가져오게 되고, 그게 실제로
+// "솔린 버스트가 3인데 나무위키는 I"이라는 가짜 충돌을 만들어냈다(2026-08-13).
+//
+// 그래서 문서 안의 모든 '스킬 1' 위치에서 후보를 뽑고, **우리 영어 데이터의 숫자와 가장 잘
+// 맞는 후보**를 고른다. 이미 신뢰하는 검증(숫자 대조)을 선택 기준으로 재사용하는 셈이라,
+// 고른 결과가 곧 검증된 결과다.
+function extractSkillsBest(html, enSkills) {
+  const lines = toLines(html);
+  const starts = [];
+  lines.forEach((l, i) => { if (l === '스킬 1') starts.push(i); });
+  if (!starts.length) return null;
+  let best = null; let bestScore = -1;
+  for (const s of starts) {
+    const cand = extractSkillsAt(lines, s);
+    if (!cand) continue;
+    let hit = 0; let total = 0;
+    for (let i = 0; i < 3; i++) {
+      const en = numsOf(enSkills[i]?.desc);
+      const kr = numsOf(cand[i].desc);
+      total += en.size;
+      for (const n of en) if (hasNear(kr, n)) hit++;
+    }
+    const score = total ? hit / total : 0;
+    if (score > bestScore) { bestScore = score; best = cand; }
+  }
+  return best;
+}
+
 // 숫자 대조 — 영어 설명의 숫자가 한국어 설명에 전부 있는가.
 // 천단위 콤마·후행 0 차이를 없애려고 Number로 정규화한다.
 const numsOf = (s) => new Set(
   (String(s).match(/\d[\d,]*\.?\d*/g) || [])
     .map((n) => Number(n.replace(/,/g, '')))
     .filter((n) => Number.isFinite(n))
-    .map((n) => String(n))
 );
+
+// 상대오차 0.5% 안이면 같은 값으로 본다.
+// 헬름 : 아쿠아마린 3번 스킬이 영어 164.73 / 한국어 164.83으로 한 자리 달랐다. 어느 한쪽의
+// 오타이고 값 자체는 같은 것이라 유저가 "비슷하니까 무시하자"고 판단했다(2026-08-13).
+// 진짜로 다른 값(홍련 : 흑영 250.47 vs 283.03 = 13% 차이)은 이 폭에 절대 들어오지 않으므로
+// 검사가 무뎌지지 않는다.
+const NEAR = 0.005;
+const hasNear = (set, n) => {
+  for (const m of set) {
+    if (m === n) return true;
+    const scale = Math.max(Math.abs(m), Math.abs(n));
+    if (scale > 0 && Math.abs(m - n) / scale <= NEAR) return true;
+  }
+  return false;
+};
 
 function verify(krSkills, enSkills, burst) {
   const problems = [];
@@ -148,7 +192,7 @@ function verify(krSkills, enSkills, burst) {
   for (let i = 0; i < 3; i++) {
     const en = numsOf(enSkills[i]?.desc);
     const kr = numsOf(krSkills[i].desc);
-    const missing = [...en].filter((n) => !kr.has(n));
+    const missing = [...en].filter((n) => !hasNear(kr, n));
     // 영어에만 있는 숫자가 절반 넘게 빠지면 다른 스킬을 본 것이다.
     if (en.size && missing.length > Math.floor(en.size / 2)) {
       problems.push(`스킬${i + 1} 숫자 불일치: 영어 ${[...en].join('/')} vs 한국어 ${[...kr].join('/')}`);
@@ -170,7 +214,7 @@ for (const c of cdb) {
   for (const t of titles) {
     const html = fetchNamu(t);
     if (!html) continue;
-    const s = extractSkills(html);
+    const s = extractSkillsBest(html, c.skills);
     if (s) { kr = s; used = t; break; }
   }
   if (!kr) { failed.push([c.id, '문서/스킬 절 못 찾음']); continue; }
