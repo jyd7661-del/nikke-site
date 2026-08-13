@@ -53,7 +53,7 @@ const REAL_TIER_SCORE = { S: 6, A: 4, B: 2, C: 1, D: 0, F: 0 };
 
 // 사이트 내부에서 쓰는 용도(mode) 이름을 characterDatabase.json의 tiers 키로 매핑.
 // story = 캠페인, bossing = 보스전(인터셉트/레이드 포함 근사치), pvp = 아레나/유니온레이드 근사치
-const MODE_TO_TIER_KEY = {
+export const MODE_TO_TIER_KEY = {
   campaign: 'story',
   story: 'story',
   bossing: 'bossing',
@@ -1057,11 +1057,19 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     const effect = TREASURE_EFFECT_BY_ID.get(m.id);
     if (!effect) return;
     score += effect.scoreBonus || 0;
-    reasons.push(`${m.title} 애장품 효과: ${effect.treasureEffect}`);
+    // ⚠️ 이 블록은 **애장품을 실제로 장착한 경우에만** 돈다(위의 treasureIds 검사).
+    //    그런데 treasureEffects.json의 원문은 "애장품을 장착하면 ~ 새로 생깁니다"처럼
+    //    조건형으로 쓰여 있어서, 그대로 넘기면 설명을 쓰는 AI가 "헬름의 애장품이 있다면 ~"
+    //    으로 받아써서 **보유 중인데 미보유처럼 읽힌다**(2026-08-13 유저 제보로 재현 확인).
+    //    자료 원문은 건드리지 않고, 앞에 현재 상태를 못박아 붙인다.
+    reasons.push(
+      `${m.title}는(은) 애장품을 장착한 상태입니다(가정이 아니라 현재 보유). ` +
+      `장착 효과: ${effect.treasureEffect}`
+    );
     (effect.synergyWith || []).forEach((sw) => {
       if (titles.includes(sw.target)) {
         score += sw.bonus || 0;
-        reasons.push(`${m.title}(애장품) + ${sw.target} 궁합: ${sw.reason}`);
+        reasons.push(`${m.title}(애장품 장착 중) + ${sw.target} 궁합: ${sw.reason}`);
       }
     });
   });
