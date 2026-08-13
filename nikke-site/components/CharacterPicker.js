@@ -78,13 +78,27 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
     const nextRects = new Map();
     cardRefs.current.forEach((el, id) => {
       if (!el || !el.isConnected) return;
-      // ⚠️ 위치는 **문서 기준**으로 기억한다. getBoundingClientRect는 뷰포트 기준이라
-      //    두 측정 사이에 사용자가 스크롤하면 그 스크롤 양이 이동량에 통째로 섞인다.
-      //    실제 증상: 페이지를 연 뒤 아래로 스크롤해서 캐릭터를 찾아 누르면, 카드 전체가
-      //    스크롤한 거리만큼 위/아래로 미끄러져 화면이 당겨지는 것처럼 보였다.
-      //    두 번째부터는 기억된 위치가 최신이라 멀쩡했다("최초 한 번만" 증상의 정체).
+      // ⚠️ 위치는 **자기 그리드 컨테이너 기준**으로 기억한다. 여기가 이 애니메이션의
+      //    유일한 함정이라 이유를 적어 둔다. FLIP은 "옛 위치 − 새 위치"만큼 되돌렸다가
+      //    푸는 방식이라, 기준점이 카드와 함께 움직이지 않으면 **재정렬과 무관한 이동까지
+      //    이동량에 섞여** 카드 전체가 미끄러진다. 화면이 당겨지는 것처럼 보이는 정체가 이것이다.
+      //
+      //    뷰포트 기준(getBoundingClientRect 그대로)이면 → 두 측정 사이의 **스크롤**이 섞인다.
+      //      증상: 페이지를 열고 아래로 스크롤해 캐릭터를 찾아 누르면 그 스크롤 거리만큼
+      //      카드가 미끄러진다. 두 번째부터는 기억된 위치가 최신이라 멀쩡하다
+      //      ("최초 한 번만 그렇다"던 증상의 정체).
+      //    문서 기준(+ scrollX/scrollY)이면 스크롤은 빠지지만 → **그리드 위쪽 콘텐츠의
+      //      높이 변화**가 섞인다. 💎를 누르면 추천이 다시 돌아 위쪽 결과 패널 높이가 바뀌는데,
+      //      그러면 168장 전부가 같은 거리만큼 이동한 것으로 계산돼 그리드가 통째로 미끄러진다.
+      //
+      //    컨테이너 기준이면 둘 다 상쇄된다. 카드는 자기 그리드 안에서만 자리를 옮기므로
+      //    (버스트가 바뀌는 캐릭터는 없다) 이게 정확한 기준계다. 그리드 자체가 어디로
+      //    움직이든 카드끼리의 상대 위치가 그대로면 dx=dy=0이라 애니메이션이 아예 안 걸린다.
+      const parent = el.parentElement;
+      if (!parent) return;
       const r = el.getBoundingClientRect();
-      const rect = { left: r.left + window.scrollX, top: r.top + window.scrollY };
+      const pr = parent.getBoundingClientRect();
+      const rect = { left: r.left - pr.left, top: r.top - pr.top };
       nextRects.set(id, rect);
       const prev = prevRects.current.get(id);
       if (reduceMotion || !prev) return;
