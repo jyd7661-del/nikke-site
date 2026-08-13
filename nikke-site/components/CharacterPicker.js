@@ -78,7 +78,13 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
     const nextRects = new Map();
     cardRefs.current.forEach((el, id) => {
       if (!el || !el.isConnected) return;
-      const rect = el.getBoundingClientRect();
+      // ⚠️ 위치는 **문서 기준**으로 기억한다. getBoundingClientRect는 뷰포트 기준이라
+      //    두 측정 사이에 사용자가 스크롤하면 그 스크롤 양이 이동량에 통째로 섞인다.
+      //    실제 증상: 페이지를 연 뒤 아래로 스크롤해서 캐릭터를 찾아 누르면, 카드 전체가
+      //    스크롤한 거리만큼 위/아래로 미끄러져 화면이 당겨지는 것처럼 보였다.
+      //    두 번째부터는 기억된 위치가 최신이라 멀쩡했다("최초 한 번만" 증상의 정체).
+      const r = el.getBoundingClientRect();
+      const rect = { left: r.left + window.scrollX, top: r.top + window.scrollY };
       nextRects.set(id, rect);
       const prev = prevRects.current.get(id);
       if (reduceMotion || !prev) return;
@@ -258,7 +264,16 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                       // 더 읽기 나빠지고 폭도 먹어서 tracking-wide 는 뺐다.
                       // 한 줄 고정(truncate)이면 "솔린 : 프로스트 …"처럼 알트를 구분하는 부분이
                       // 잘린다(15px에서 168명 중 28명). 두 줄까지 허용한다.
-                      className={`relative px-1.5 py-2 text-[15px] font-semibold text-center leading-tight line-clamp-2 break-keep transition-colors border-t ${
+                      // 이름 칸 높이를 **두 줄로 고정**한다(min-h + line-clamp-2).
+                      //
+                      // 고정하지 않으면 한 줄 이름 카드(225px)와 두 줄 카드(244px)가 섞이고,
+                      // 그리드 행 높이는 그 행에서 가장 높은 카드를 따라간다. 정렬이 바뀌어
+                      // 행 구성이 달라지면 행 높이가 들쭉날쭉해지고, 앞으로 세 줄짜리 긴 이름이
+                      // 나오면 그 행 전체가 늘어나 보기 나쁘다(2026-08-13 유저 지적).
+                      // 55px = 두 줄(15px × leading-tight 1.25 × 2) + py-2 상하 + 위 테두리.
+                      // 두 줄을 넘는 이름은 말줄임되므로 title로 전체 이름을 남긴다.
+                      title={characterName(c, lang)}
+                      className={`relative min-h-[55px] px-1.5 py-2 text-[15px] font-semibold text-center leading-tight line-clamp-2 break-keep transition-colors border-t ${
                         active
                           ? 'text-nikke-accent bg-gradient-to-b from-nikke-accent/10 to-slate-900/90 border-nikke-accent/50'
                           : 'text-slate-200 bg-gradient-to-b from-slate-800/50 to-slate-900/90 border-slate-700/60'
