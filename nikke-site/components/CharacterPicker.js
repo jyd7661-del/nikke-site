@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -37,6 +37,10 @@ const TIER_COLOR = {
 // 추정해 끼워 넣지 않는다.
 const TIER_RANK = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 
+// useLayoutEffect는 서버 렌더에서 경고를 낸다. 이 컴포넌트는 'use client'지만 SSR도 타므로
+// 브라우저에서만 레이아웃 훅을 쓰고 서버에서는 아무것도 안 하는 쪽으로 맞춘다.
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
 const BURST_ACCENT = {
   1: 'bg-sky-400',
   2: 'bg-violet-400',
@@ -59,6 +63,37 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
 
   // 이 캐릭터가 지금 용도에서 실제로 받는 등급. 애장품 표시가 반영된다.
   const tierOf = (uiChar) => effectiveTier(cdbForRosterId(uiChar.id), aiMode, treasureCdbIds);
+
+  // 카드가 자리를 옮길 때 미끄러지듯 이동시킨다(FLIP).
+  //
+  // 애장품을 켜면 티어가 올라가면서 카드가 위로 재정렬되는데, 그냥 두면 "사라졌다가 위에서
+  // 갑자기 나타나는" 것처럼 보인다(2026-08-13 유저 지적). 옮기기 직전 위치를 기억해 두고,
+  // DOM이 새 위치로 바뀐 직후 이전 위치로 되돌리는 transform을 건 다음 원위치로 풀어 준다.
+  // 실제 레이아웃은 이미 끝난 상태라 transform만 움직이므로 리플로우가 없다.
+  const cardRefs = useRef(new Map());
+  const prevRects = useRef(new Map());
+
+  useIsomorphicLayoutEffect(() => {
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches;
+    const nextRects = new Map();
+    cardRefs.current.forEach((el, id) => {
+      if (!el || !el.isConnected) return;
+      const rect = el.getBoundingClientRect();
+      nextRects.set(id, rect);
+      const prev = prevRects.current.get(id);
+      if (reduceMotion || !prev) return;
+      const dx = prev.left - rect.left;
+      const dy = prev.top - rect.top;
+      if (!dx && !dy) return;
+      el.style.transition = 'none';
+      el.style.transform = `translate(${dx}px, ${dy}px)`;
+      requestAnimationFrame(() => {
+        el.style.transition = 'transform 260ms cubic-bezier(0.2, 0, 0, 1)';
+        el.style.transform = '';
+      });
+    });
+    prevRects.current = nextRects;
+  });
   const [query, setQuery] = useState('');
   const [burstFilter, setBurstFilter] = useState('all');
 
@@ -156,6 +191,11 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                 return (
                   <button
                     key={c.id}
+                    ref={(el) => {
+                      // 사라진 카드(검색 필터 등)는 지워서 맵이 계속 커지지 않게 한다
+                      if (el) cardRefs.current.set(c.id, el);
+                      else cardRefs.current.delete(c.id);
+                    }}
                     onClick={() => onToggle(c.id)}
                     className={`card-hover relative flex flex-col rounded-lg overflow-hidden border text-left bg-slate-900/40 ${
                       active
