@@ -85,12 +85,16 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
       const dx = prev.left - rect.left;
       const dy = prev.top - rect.top;
       if (!dx && !dy) return;
-      el.style.transition = 'none';
-      el.style.transform = `translate(${dx}px, ${dy}px)`;
-      requestAnimationFrame(() => {
-        el.style.transition = 'transform 260ms cubic-bezier(0.2, 0, 0, 1)';
-        el.style.transform = '';
-      });
+      // ⚠️ inline style + requestAnimationFrame 방식은 쓰지 말 것.
+      //    "이전 위치로 되돌리는 transform"을 직접 걸고 다음 프레임에 푸는 구조라,
+      //    rAF가 안 돌면(백그라운드 탭, 렌더가 멈춘 창) 카드가 되돌린 자리에 그대로 멈춘다.
+      //    실제로 그 상태를 재현했다 — 72장 전부 옛 위치에 붙어 재정렬이 아예 안 보였다.
+      //    Web Animations API는 인라인 스타일을 남기지 않고(fill 기본값 none) 애니메이션이
+      //    실행되지 않아도 요소는 이미 올바른 최종 위치에 있으므로 그런 고장이 없다.
+      el.animate(
+        [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }],
+        { duration: 260, easing: 'cubic-bezier(0.2, 0, 0, 1)' }
+      );
     });
     prevRects.current = nextRects;
   });
