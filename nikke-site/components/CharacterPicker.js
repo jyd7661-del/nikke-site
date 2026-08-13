@@ -198,6 +198,8 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                 // 결과 화면에 "(애장품)"이 잘못 표시되던 문제. 애장품이 실제로 출시된
                 // 캐릭터(data/characters.js의 hasTreasure)에만 버튼을 노출한다.
                 const treasureAvailable = !!c.hasTreasure;
+                // 💎 버튼을 그릴지 — 이름줄 좌우 칸을 같이 결정하므로 한 곳에서 판단한다
+                const treasureSlot = active && treasureAvailable && !!onToggleTreasure;
                 // 값이 없으면 배지를 아예 안 그린다 — 없는 데이터를 추정으로 메우지 않는다.
                 const tier = tierOf(c);
                 return (
@@ -232,55 +234,71 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                           ✓
                         </span>
                       )}
-                      {active && treasureAvailable && onToggleTreasure && (
+                      {/*
+                        이름 — 아트워크 아래쪽에 **겹쳐서** 아래 정렬로 놓는다.
+
+                        예전에는 이미지 밑에 별도의 칸으로 뒀는데, 그러면 이름이 한 줄이냐
+                        두 줄이냐에 따라 카드 높이가 225px / 244px로 갈렸다. 그리드 행 높이는
+                        그 행에서 가장 높은 카드를 따라가므로 정렬이 바뀔 때마다 행 높이가
+                        들쭉날쭉했고, 세 줄짜리 이름이 생기면 그 행 전체가 길어졌다.
+                        min-h로 두 줄을 고정해봤지만 그건 "카드가 세로로 길어지는" 문제를
+                        남긴다(2026-08-13 유저 지적).
+
+                        참고로 실측한 두 사이트가 정확히 갈렸다:
+                          prydwen.gg — 이름을 카드 안에 position:absolute bottom으로 겹침.
+                                       이름이 1·2·3줄이어도 카드 높이는 전부 196px로 균일.
+                          nikke.gg   — 겹치지 않고 아래에 쌓음. 카드 높이가 123/126/144/165로 제각각.
+                        prydwen 쪽을 택했다.
+
+                        이제 카드 높이 = 이미지 높이(aspect-[3/4])뿐이라 이름 길이와 **구조적으로**
+                        무관하다. 매직 넘버(min-h-[55px])도 필요 없어졌다. 긴 이름은 아트워크를
+                        조금 더 가릴 뿐 레이아웃을 건드리지 않는다.
+
+                        글자는 위쪽으로 자라므로 아래에서 위로 흐리는 그라데이션을 깔아
+                        아트워크 위에서도 읽히게 한다. 세 줄을 넘으면 말줄임하고 title로 전체를 남긴다.
+                      */}
+                      <span className="absolute inset-x-0 bottom-0 flex items-end gap-1 px-1.5 pt-7 pb-1.5 bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent">
+                        {/* 💎를 이름줄 오른쪽 칸에 넣고 왼쪽에 같은 폭의 빈 칸을 둬서, 버튼이
+                            떠도 이름이 가운데 정렬을 유지하고 서로 겹치지 않게 한다. */}
+                        {treasureSlot && <span className="w-6 shrink-0" aria-hidden="true" />}
                         <span
-                          role="button"
-                          tabIndex={0}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onToggleTreasure(c.id);
-                          }}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') {
-                              e.stopPropagation();
-                              onToggleTreasure(c.id);
-                            }
-                          }}
-                          title={t('treasure_toggle_title')}
-                          className={`absolute bottom-1 right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs cursor-pointer transition ${
-                            hasTreasure
-                              ? 'bg-amber-400 text-amber-950'
-                              : 'bg-slate-900/70 text-slate-400 hover:text-amber-300'
+                          // 이름은 font-display(Black Han Sans)에 tracking-wide 였는데, 초굵은 한글
+                          // 디스플레이 폰트라 14px에서 획이 붙어 뭉개졌다(2026-08-13 지적).
+                          // 기본 산세리프 semibold로 바꾸고 크기를 키웠다. 자간을 넓히면 한글이
+                          // 더 읽기 나빠지고 폭도 먹어서 tracking-wide 는 뺐다.
+                          title={characterName(c, lang)}
+                          className={`flex-1 min-w-0 text-[15px] font-semibold text-center leading-tight line-clamp-3 break-keep drop-shadow-[0_1px_2px_rgba(2,6,23,0.95)] ${
+                            active ? 'text-nikke-accent' : 'text-slate-100'
                           }`}
                         >
-                          💎
+                          {characterName(c, lang)}
                         </span>
-                      )}
+                        {treasureSlot && (
+                          <span
+                            role="button"
+                            tabIndex={0}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              onToggleTreasure(c.id);
+                            }}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter') {
+                                e.stopPropagation();
+                                onToggleTreasure(c.id);
+                              }
+                            }}
+                            title={t('treasure_toggle_title')}
+                            className={`w-6 h-6 shrink-0 rounded-full flex items-center justify-center text-xs cursor-pointer transition ${
+                              hasTreasure
+                                ? 'bg-amber-400 text-amber-950'
+                                : 'bg-slate-900/70 text-slate-400 hover:text-amber-300'
+                            }`}
+                          >
+                            💎
+                          </span>
+                        )}
+                      </span>
                     </div>
-                    <span
-                      // 이름은 font-display(Black Han Sans)에 tracking-wide 였는데, 초굵은 한글
-                      // 디스플레이 폰트라 14px에서 획이 붙어 뭉개졌다(2026-08-13 지적).
-                      // 기본 산세리프 semibold로 바꾸고 크기를 키웠다. 자간을 넓히면 한글이
-                      // 더 읽기 나빠지고 폭도 먹어서 tracking-wide 는 뺐다.
-                      // 한 줄 고정(truncate)이면 "솔린 : 프로스트 …"처럼 알트를 구분하는 부분이
-                      // 잘린다(15px에서 168명 중 28명). 두 줄까지 허용한다.
-                      // 이름 칸 높이를 **두 줄로 고정**한다(min-h + line-clamp-2).
-                      //
-                      // 고정하지 않으면 한 줄 이름 카드(225px)와 두 줄 카드(244px)가 섞이고,
-                      // 그리드 행 높이는 그 행에서 가장 높은 카드를 따라간다. 정렬이 바뀌어
-                      // 행 구성이 달라지면 행 높이가 들쭉날쭉해지고, 앞으로 세 줄짜리 긴 이름이
-                      // 나오면 그 행 전체가 늘어나 보기 나쁘다(2026-08-13 유저 지적).
-                      // 55px = 두 줄(15px × leading-tight 1.25 × 2) + py-2 상하 + 위 테두리.
-                      // 두 줄을 넘는 이름은 말줄임되므로 title로 전체 이름을 남긴다.
-                      title={characterName(c, lang)}
-                      className={`relative min-h-[55px] px-1.5 py-2 text-[15px] font-semibold text-center leading-tight line-clamp-2 break-keep transition-colors border-t ${
-                        active
-                          ? 'text-nikke-accent bg-gradient-to-b from-nikke-accent/10 to-slate-900/90 border-nikke-accent/50'
-                          : 'text-slate-200 bg-gradient-to-b from-slate-800/50 to-slate-900/90 border-slate-700/60'
-                      }`}
-                    >
-                      {characterName(c, lang)}
-                    </span>
                   </button>
                 );
               })}
