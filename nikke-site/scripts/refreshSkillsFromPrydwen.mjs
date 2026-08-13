@@ -110,17 +110,33 @@ function decodeEntities(s) {
     .replace(/&amp;/g, '&');
 }
 
-// prydwen의 description은 <p>/<b>가 섞인 HTML이다. 기존 데이터와 같은 모양으로 되돌린다:
-// ■ 제거 → 태그 제거 → 문단을 공백으로 이어 붙이기 → 공백 정리
+// prydwen의 description은 <p>/<b>/<strong>이 섞인 HTML이다. 기존 데이터와 같은 모양으로 되돌린다.
+//
+// ⚠️ **엔티티를 먼저 풀고 태그를 지운다.** 순서를 반대로 했다가 나유타 버스트 설명에
+//    `Bonus Effect<strong> Unlimited ammunition…` 처럼 태그가 그대로 남았다.
+//    원문에 `&lt;strong&gt;`가 있으면 태그 제거가 먼저 돌 때는 안 걸리고, 그 뒤에 디코드하면
+//    태그로 되살아난다. 그래서 디코드 → 태그 제거 → 한 번 더 디코드 순으로 돈다.
 function toPlain(descHtml) {
-  return decodeEntities(
-    descHtml
-      .replace(/<\/p>/gi, ' ')
-      .replace(/<[^>]+>/g, '')
-      .replace(/■/g, ' ')
-  )
-    .replace(/\s+/g, ' ')
-    .trim();
+  let s = decodeEntities(String(descHtml));
+  s = s.replace(/<\/p>/gi, ' ').replace(/<[^>]+>/g, '');
+  s = decodeEntities(s).replace(/<[^>]+>/g, ''); // 디코드로 되살아난 태그까지 정리
+  return s.replace(/■/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// 화면에 렌더된 스킬 블록에서 slot → 설명 을 뽑는다.
+//
+// 왜 필요한가: 페이지에 박힌 skills JSON의 description이 **"$56" 같은 다른 행 참조**로
+// 들어오는 경우가 있다(Next.js RSC 플라이트 형식). 그대로 받으면 설명 자리에 "$56"이
+// 저장되고, 에러도 없이 화면에 그대로 나간다 — 실제로 6명 8건이 그렇게 나갔다(2026-08-13,
+// 신데렐라: 크리스탈 웨이브를 유저가 발견). 렌더된 HTML에는 항상 실제 문장이 들어 있다.
+function renderedDescs(html) {
+  const map = new Map();
+  for (const chunk of html.split('<div class="skill-header">').slice(1)) {
+    const slot = (chunk.match(/^<div class="skill-icon[^"]*">([^<]*)</) || [])[1];
+    const desc = (chunk.match(/class="skill-description[^"]*">([\s\S]*?)<\/div>/) || [])[1];
+    if (slot && desc != null) map.set(slot.trim(), toPlain(desc));
+  }
+  return map;
 }
 
 async function getHtml(id) {
@@ -192,12 +208,29 @@ function parseSkills(html) {
 
   const wanted = arr.filter((s) => /^(Skill 1|Skill 2|Burst)$/.test(s.slot || ''));
   if (wanted.length !== 3) return null;
-  return wanted.map((s) => ({
-    name: decodeEntities(String(s.name || '')).trim(),
-    type: String(s.type || '').trim(),
-    cd: s.cooldown ? String(s.cooldown).trim() : 'N/A',
-    desc: toPlain(String(s.description || '')),
-  }));
+
+  const rendered = renderedDescs(html);
+  const parsed = wanted.map((s) => {
+    const raw = String(s.description || '');
+    // "$56" 처럼 통째로 참조인 경우 렌더된 본문으로 대체한다
+    const desc = /^\$[\w-]+$/.test(raw.trim())
+      ? (rendered.get(String(s.slot).trim()) || '')
+      : toPlain(raw);
+    return {
+      name: decodeEntities(String(s.name || '')).trim(),
+      type: String(s.type || '').trim(),
+      cd: s.cooldown ? String(s.cooldown).trim() : 'N/A',
+      desc,
+    };
+  });
+
+  // 설명이 비었거나 아직도 참조/태그가 남아 있으면 **저장하지 않는다.**
+  // 빈 값이나 "$56"을 그대로 넣으면 에러 없이 화면에 나가버린다(원칙 §3).
+  const broken = parsed.some(
+    (s) => !s.name || !s.desc || /^\$[\w-]+$/.test(s.desc) || /<[a-z/]/i.test(s.desc)
+  );
+  if (broken) return null;
+  return parsed;
 }
 
 const db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'));

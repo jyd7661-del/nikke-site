@@ -5517,7 +5517,7 @@
         "name": "Beginner's Rewards",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$56"
+        "desc": "Activates when entering Burst stage 3. Affects all allies. Additional effects triggered according to the number of Golden Chip stacks. Previous effects trigger repeatedly: Stage 1: Golden Chip 10 stack(s) and above. Time Extension I: Full Burst Time Duration ▲ 2 sec. Active during Full Burst Time. Stage 2: Golden Chip 20 stack(s) and above. Time Extension II: Full Burst Time Duration ▲ 3 sec. Active during Full Burst Time. Activates when casting a normal attack during Full Burst Time. Affects I enemy unit(s) nearest to the crosshair. Additional effects triggered according to Time Extension state, Previous effects trigger repeatedly: Stage I: When in Time Extension I state. Deals 52.04% of final ATK as damage. Stage 2: When in Time Extension II state. Deals 85.02% of final ATK as damage."
       },
       {
         "name": "Onward, Soda!",
@@ -7126,7 +7126,7 @@
         "name": "Aaceticism",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects all allies. Attack damage ▲ 35.45% for 15 sec. Affects all enemies. Deals 645.33% of final ATK as Burst Skill damage. Affects self. Memory Incineration: Changes the weapon in use. Charge time: Fixed at 1.8 sec. Damage: 275.18% of final ATK. Full Charge damage: 250% of damage. Duration: 10 sec. Bonus Effect<strong> Unlimited ammunition for 10 sec."
+        "desc": "Affects all allies. Attack damage ▲ 35.45% for 15 sec. Affects all enemies. Deals 645.33% of final ATK as Burst Skill damage. Affects self. Memory Incineration: Changes the weapon in use. Charge time: Fixed at 1.8 sec. Damage: 275.18% of final ATK. Full Charge damage: 250% of damage. Duration: 10 sec. Bonus Effect Unlimited ammunition for 10 sec."
       }
     ]
   },
@@ -7417,7 +7417,7 @@
         "name": "Niinjutsu Camouflage",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$56"
+        "desc": "Activates at the start of battle. Effects differ according to squad formation. Activates only the corresponding effect. Affects self if there are no other Defender allies in the squad. Effect 1: Creates a Shield equal to 12.25% of the caster's final Max HP for 10 sec. Effect 2: Attract: Taunt all enemies continuously. Affects self if there is another Defender ally in the squad. Effect 1: Niinjutsu Camouflage: Prevents self from being the target of single-target attacks for 10 sec. Loses effect when the caster takes damage. Effect 2: Niinjutsu Injection: Recovers 0.22% of attack damage as HP continuously. Activates when performing 200 normal attack(s). Affects self while in Attract status. Creates a Shield equal to 12.25% of the caster's final Max HP for 10 sec. Affects self while in Niinjutsu Injection status every 4 sec. Niinjutsu IFAK lasts for 4 sec. Function: Accumulates HP recovery during the activation duration, after which all allies are healed for the accumulated amount. Effect 1: The maximum accumulated amount is equal to 165.28% of the caster's final ATK. Effect 2: Once the duration ends, all allies are healed for the accumulated recovery amount.​"
       },
       {
         "name": "Secret Technique: Ninja Overdrive",
@@ -7581,7 +7581,7 @@
         "name": "Seven Dwarves V+VI",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$56"
+        "desc": "Activates every 0.2 sec while charging. Affects the enemy unit nearest to the crosshair that is not in Lock-On status. Lock-On Function: Designates the enemy as a target of Seven Dwarves. Max Lock-On targets: 5 Removal condition: Performing a normal attack or taking cover. Activates every 0.2 sec while charging. Affects self. Auto Fire Ready Function: Loads Seven Dwarves with ammo. Effect: DEF ▲ 42.24% continuously. Max ammo loaded by Auto Fire Ready: 5 Removal condition: Performing a normal attack. Activates every 0.2 sec while charging. Affects all enemies in Lock-On status. Damage Taken ▲ 4.2% for 4 sec. Activates when attacking with Full Charge. Auto Fire Function: Attacks Lock-On targets with Seven Dwarves. Effect 1: Deals 41.9% of final ATK as damage. Affects all enemies. Effect 2: Deals 105.59% of final ATK as damage. Affects Lock-On targets. Attacks sequentially based on the amount of ammo loaded by Auto Fire Ready. Activates when attacking with Full Charge while in Seven Dwarves Fully Active status. Affects self. Number of uses of Seven Dwarves Fully Active ▼ 1. Activates when performing a normal attack. Affects self if not in Full Burst. Removes Seven Dwarves Fully Active."
       },
       {
         "name": "Shades of White",
@@ -7874,7 +7874,7 @@
         "name": "Starfall",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$56"
+        "desc": "Activates at the start of battle only if self is alive. Affects all allies. Burst Gauge filling speed 6% ▲ continuously. Activates at the start of battle and when Full Burst ends. Effect differs according to squad formation. Only the corresponding effect is applied. If there are no other Burst 1 allies: Effect 1: Affects self. Cancels Everyone's Star. Effect 2: Affects self. My Own Star: ATK ▲ 40.01%. This effect is continuous and cannot be removed. Effect 3: Affects all allies. Cooldown of Burst Skill ▼ 7.48 sec. If there are any other Burst 1 allies: Effect 1: Affects self. Cancels My Own Star. Effect 2: Affects self. Everyone's Star: Re-enters Burst and changes to Stage 1. This effect is continuous and cannot be removed. Activates when hitting a target with Full Charge. Affects the target. Deals 120.13% of final ATK as additional damage."
       },
       {
         "name": "Stardust",
@@ -7958,13 +7958,13 @@
         "name": "Beauty-Full",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$56"
+        "desc": "Activates upon reloading to max ammunition while in the Preparation for Change state. Affects self. Changes the weapon in use: Snipe Mode. Charge Time: 1 sec. Damage: 62.13% of final ATK. Full Charge Damage: 250% of damage. Max Ammunition Capacity: 15 rounds (max ammunition effect refreshes after reloading). Additional Effect 1: Gains Pierce. Additional Effect 2: Activates when performing a Full Charge attack. Expends ammo. Amount: 40 round(s). Additional Effect 3: Charge time is fixed at 1 sec. Removal Condition: Reloading to max ammunition while in the Preparation for Change state. Activates at the start of battle. Affects self. Beauty-Full: Attack Damage ▲ 24% continuously. Activates upon reloading to max ammunition. Affects self. Preparation for Change: Reload time is fixed at 3 sec for 6 sec. Removed upon firing the last bullet. Activates every 5 sec. Affects the enemy unit nearest to the crosshair. Deals 900% of final ATK as damage. Activates each time total ammo consumed by allies reaches 200. Affects all allies. Fills Burst Gauge by 12%."
       },
       {
         "name": "Mode Swap",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$57"
+        "desc": "Activates at the start of battle and when using Burst Skill. Affects self. Decoy: Creates an avatar with 70.34% of the skill user's final Max HP. This effect is continuous. Activates at the start of battle. Affects self. ATK ▲ 29% continuously. Activates when Snipe Mode takes effect. Affects self. Destroy: Damage to Parts ▲ 26.21% continuously. Removes Pinpoint. Activates at the start of battle and when Snipe Mode is removed. Affects self. Pinpoint: Damage dealt when attacking core ▲ 26% continuously. Removes Destroy. Activates when entering Full Burst after this unit uses her Burst Skill. Effect varies according to this unit's current mode. Only one effect is applied. Activates while in Snipe Mode. Affects all enemies (including parts). Effect 1: Deals 1189.66% of final ATK as damage. Activates while not in Snipe Mode. Affects all enemies with activated cores. Effect 1: Deals 833.79% of final ATK as core strike damage."
       },
       {
         "name": "Glass Slippers Full Contact W",
@@ -8002,13 +8002,13 @@
         "name": "Emergency Whistle",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$56"
+        "desc": "Activates when entering Full Burst after this unit uses her Burst Skill. Affects the 1 enemy unit(s) with the highest final Max HP. Flagged Target Designation. Effect 1: Deals 3789.25% of final ATK as additional damage. Effect 2: Activates when the target is alive. Flagged Target: ATK ▼ 10.56% for 10 sec. Activates when an enemy is neutralized if the target is in the Flagged Target state. Affects 1 random enemy unit(s). Flagged Target Designation. Effect 1: Deals 3789.25% of final ATK as additional damage. Effect 2: Activates when the target is alive. Flagged Target: ATK ▼ 10.56% for 10 sec. Activates when landing 20 normal attacks against a target in the High-Risk Target state. Affects the target. Deals 152.68% of final ATK as additional damage."
       },
       {
         "name": "Penguin Emergency Dispatch",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "$57"
+        "desc": "Activates at the start of battle. Affects self. Whistle: ATK ▲ 32.73% continuously. Stacks up to 5 times. Whistle stacks ▲ 4. Activates every time there are 3 or fewer Raptures present for a period of 5 sec. Affects self. Whistle: ATK ▲ 32.73% continuously. Stacks up to 5 times. Activates every time there are 6 or more Raptures present for a period of 1 sec. Penguin Emergency Dispatch. Function: Expends Whistle stacks to attack Raptures when there are 6 or more present. Effect 1: Affects all enemies. Deals 214.36% of final ATK as additional damage. Effect 2: Affects self. Whistle stacks ▼ 1. Only activates when a Rapture appears or is neutralized while there are 5 or fewer Raptures. Affects self. Elemental Advantage Attack Damage ▲ 20.41% continuously."
       },
       {
         "name": "Penguin Spiral",

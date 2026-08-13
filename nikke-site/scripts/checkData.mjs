@@ -304,6 +304,33 @@ const todayISO = new Date().toISOString().slice(0, 10);
   }
 }
 
+// 스킬 설명이 사람이 읽을 문장인지. 2026-08-13 추가.
+//
+// prydwen 페이지에 박힌 skills JSON은 설명이 **"$56" 같은 다른 행 참조**로 오는 경우가 있다
+// (Next.js RSC 플라이트 형식). 수집기가 그대로 받아 6명 8건이 설명 자리에 "$56"을 달고
+// 라이브로 나갔고, **에러 하나 없이** 도감에 그대로 표시됐다. 유저가 신데렐라: 크리스탈
+// 웨이브를 열어보고 발견했다(원칙 §3 — 조용한 누락).
+// 태그 잔재도 같이 본다: 엔티티를 태그 제거보다 나중에 풀면 `&lt;strong&gt;`가 태그로
+// 되살아나 본문에 남는다(나유타에서 실제로 발생).
+{
+  for (const c of cdb) {
+    (c.skills || []).forEach((s, i) => {
+      const label = `${c.title}(${c.name_kr}) 스킬[${i}]`;
+      const d = String(s.desc ?? '');
+      if (!d.trim()) {
+        err('SKILL_DESC_EMPTY', `${label}: 설명이 비어 있다`);
+      } else if (/^\$[\w-]+$/.test(d.trim())) {
+        err('SKILL_DESC_REF',
+          `${label}: 설명이 "${d.trim()}" — prydwen 페이로드의 행 참조가 그대로 저장됐다. ` +
+          `scripts/refreshSkillsFromPrydwen.mjs 로 다시 수집할 것`);
+      } else if (/<[a-z/][^>]*>/i.test(d)) {
+        err('SKILL_DESC_HTML', `${label}: 설명에 HTML 태그가 남아 있다 — ${d.match(/<[a-z/][^>]*>/i)[0]}`);
+      }
+      if (!String(s.name ?? '').trim()) err('SKILL_NAME_EMPTY', `${label}: 스킬 이름이 비어 있다`);
+    });
+  }
+}
+
 // 스킬 수치의 출처·레벨 기준이 기록돼 있는지. 2026-08-13 추가.
 //
 // 도감 196페이지가 "출처: prydwen.gg"라고 적어놓고 **레벨 1 기준의 낡은 수치**를 보여주고
