@@ -146,7 +146,13 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                       )}
                     </div>
                     <span
-                      className={`relative px-1.5 py-2 text-sm font-display tracking-wide text-center leading-tight truncate transition-colors border-t ${
+                      // 이름은 font-display(Black Han Sans)에 tracking-wide 였는데, 초굵은 한글
+                      // 디스플레이 폰트라 14px에서 획이 붙어 뭉개졌다(2026-08-13 지적).
+                      // 기본 산세리프 semibold로 바꾸고 크기를 키웠다. 자간을 넓히면 한글이
+                      // 더 읽기 나빠지고 폭도 먹어서 tracking-wide 는 뺐다.
+                      // 한 줄 고정(truncate)이면 "솔린 : 프로스트 …"처럼 알트를 구분하는 부분이
+                      // 잘린다(15px에서 168명 중 28명). 두 줄까지 허용한다.
+                      className={`relative px-1.5 py-2 text-[15px] font-semibold text-center leading-tight line-clamp-2 break-keep transition-colors border-t ${
                         active
                           ? 'text-nikke-accent bg-gradient-to-b from-nikke-accent/10 to-slate-900/90 border-nikke-accent/50'
                           : 'text-slate-200 bg-gradient-to-b from-slate-800/50 to-slate-900/90 border-slate-700/60'
