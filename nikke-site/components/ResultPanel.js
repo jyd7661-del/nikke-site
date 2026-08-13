@@ -65,6 +65,50 @@ const SOURCE_LABEL_KEY = {
   'skill-synergy-fallback': 'source_fallback',
 };
 
+// 조합 구성원을 세로 카드로 그린다. **주력 조합과 대안 조합이 같은 것을 쓴다.**
+//
+// 처음엔 주력 조합만 카드로 키우고 대안 조합은 옛 원형 칩으로 뒀는데, 한 화면에 조합이 둘
+// 나오는 걸 놓쳤다("조합 두가지 나오는데 왜 위에 조합만 확대해놨어", 2026-08-13).
+// 같은 것을 두 벌로 두면 한쪽만 고치는 실수가 또 난다. 그래서 컴포넌트로 뺐다.
+//
+// ⚠️ 이 컴포넌트도 useLanguage()를 **자기가** 받는다. 한 파일에 컴포넌트가 여럿이면 스코프가
+//    각각이고, 훅 없이 t()를 쓰면 콘솔 에러도 없이 이 컴포넌트만 통째로 렌더되지 않는다
+//    (.claude/rules/ui-i18n.md, 실제 사고 2026-08-11).
+//
+// 폭은 88px(모바일) / 116px(그 이상)로 고정한다.
+// 1280 뷰포트에서 5열 그리드로 두면 카드가 233×310px까지 커진다(실측). 선택 그리드 카드가
+// 143px인데 그보다 크다 — "사진이 너무 큰 것 같으니까 반으로 줄여보자"는 지적 그대로다.
+// 233의 절반이 116이라 이 값을 썼다.
+// 모바일은 줄이지 않았다. 지금도 3열에서 약 85px인데 여기서 반으로 줄이면 43px이라
+// 얼굴을 알아볼 수 없어 원래 목적(한눈에 파악)이 사라진다. 88px이면 375px 화면에서
+// 여전히 한 줄에 3장 들어간다.
+function TeamMemberCards({ members, treasureIds }) {
+  const { lang, t } = useLanguage();
+  return (
+    <div className="flex flex-wrap gap-2 mb-3">
+      {members.map((m) => {
+        const name = `${memberName(m, lang)}${treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}`;
+        return (
+          <div
+            key={m.id}
+            className="relative w-[88px] sm:w-[116px] rounded-lg overflow-hidden border border-slate-700 bg-slate-900/40"
+          >
+            <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} shape="portrait" />
+            {/* 이름은 카드 안 아래쪽에 겹친다. 밑에 따로 칸을 두면 이름 줄 수에 따라 카드
+                높이가 갈려 행 전체가 들쭉날쭉해진다(CharacterPicker에서 겪고 고친 문제). */}
+            <span
+              title={name}
+              className="absolute inset-x-0 bottom-0 px-1 pt-5 pb-1 text-[12px] font-semibold text-center leading-tight line-clamp-3 break-keep text-slate-100 drop-shadow-[0_1px_2px_rgba(2,6,23,0.95)] bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent"
+            >
+              {name}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function AiRecommendButton({ roster, mode, bossElement, tower }) {
   const { lang, t } = useLanguage();
   const [phase, setPhase] = useState('idle'); // idle | loading | error
@@ -198,44 +242,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           </span>
         </div>
       </div>
-      {/* 주력 조합 5명은 **세로 카드**로 크게 보여준다(메인 선택 그리드·도감과 같은 처리).
-          예전에는 32px 원형 아이콘 + 이름 칩이었는데, 얼굴이 아래로 걸리는 니케가 섞여
-          알아보기 나빴다(2026-08-13 지적).
-
-          원인은 크롭 비율이다. 원본(위키 `_MI`)은 캐릭터마다 구도가 달라서 — 모자·머리
-          장식·머리카락이 높으면 얼굴이 아래로 내려가 있다 — 어느 한 object-position 값으로
-          196명을 다 맞출 수 없다. 정사각형 원형 틀은 원본의 **53%**만 보여주므로 그 구도
-          차이가 증폭되고, 3:4 세로 틀은 **67%**를 보여주므로 훨씬 덜 티 난다.
-          즉 이건 숫자를 잘 고르는 문제가 아니라 틀을 키우는 문제였다.
-
-          이름은 카드 안 아래쪽에 겹친다. 밑에 따로 칸을 두면 이름이 한 줄이냐 두 줄이냐에
-          따라 카드 높이가 갈리는데, 5명이 한 행이라 행 전체가 들쭉날쭉해진다
-          (CharacterPicker에서 같은 문제를 겪고 이렇게 고쳤다).
-
-          모바일에서는 5열이면 카드가 54px까지 좁아져 이름이 서너 글자씩 잘린다. 3열로
-          두 줄(3+2)에 나누는 편이 읽기 낫다.
-
-          대안 조합·MemberSelect·/combos의 칩은 그대로 둔다. 거기까지 키우면 결과 화면이
-          세로로 너무 길어지고, "한눈에 알아본다"는 이득은 주력 조합에서 대부분 나온다. */}
-      <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 mb-3">
-        {team.members.map((m) => {
-          const name = `${memberName(m, lang)}${roster.treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}`;
-          return (
-            <div
-              key={m.id}
-              className="relative rounded-lg overflow-hidden border border-slate-700 bg-slate-900/40"
-            >
-              <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} shape="portrait" />
-              <span
-                title={name}
-                className="absolute inset-x-0 bottom-0 px-1 pt-6 pb-1.5 text-[13px] font-semibold text-center leading-tight line-clamp-3 break-keep text-slate-100 drop-shadow-[0_1px_2px_rgba(2,6,23,0.95)] bg-gradient-to-t from-slate-950 via-slate-950/85 to-transparent"
-              >
-                {name}
-              </span>
-            </div>
-          );
-        })}
-      </div>
+      <TeamMemberCards members={team.members} treasureIds={roster.treasureIds} />
       {reasoning && (
         <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
           <p className="text-xs text-nikke-accent font-semibold mb-1.5">
@@ -259,17 +266,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
               {t('score')} {alternative.totalScore}
             </span>
           </div>
-          <div className="flex flex-wrap gap-1.5 mb-2">
-            {alternative.members.map((m) => (
-              <span
-                key={m.id}
-                className="flex items-center gap-1.5 text-xs bg-slate-800/60 border border-slate-700 rounded-full pl-1 pr-2.5 py-1 text-slate-300"
-              >
-                <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} size="xs" />
-                {memberName(m, lang)}{roster.treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}
-              </span>
-            ))}
-          </div>
+          <TeamMemberCards members={alternative.members} treasureIds={roster.treasureIds} />
           {/* 근거 문장(headline)은 lib/synergyEngine.js가 한국어로 조립한다. 그 문장 안에는
               synergyNotes.json·characterInvestmentNotes.json 같은 **데이터 파일의 한국어 원문**이
               그대로 박히기 때문에, 코드만 다국어화해도 문장 절반이 한국어로 남는다(2026-08-11 조사).

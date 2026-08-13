@@ -138,7 +138,13 @@ const walkScope = (dir) => {
     // 최상위 함수 선언(= 컴포넌트/헬퍼)을 경계로 잘라 각 구간을 따로 본다.
     const starts = [];
     lines.forEach((l, i) => { if (/^(export default )?function [A-Za-z]/.test(l)) starts.push(i); });
-    if (!starts.length) return;
+    // ⚠️ 여기는 반드시 continue다. 예전에 return이었는데, 그러면 최상위 함수 선언이 없는
+    //    파일(예: components/AuthProvider.js — 전부 화살표 함수)을 만나는 순간 그 디렉터리
+    //    순회가 통째로 끝나버렸다. AuthProvider.js가 알파벳 두 번째라, components/ 11개 중
+    //    **9개가 한 번도 검사되지 않았다.** 하필 이 검사를 만들게 한 사고의 당사자인
+    //    ResultPanel.js가 그 9개에 들어 있었다(2026-08-13 역테스트로 발견).
+    //    검사가 있다는 사실이 검사되고 있다는 뜻은 아니다.
+    if (!starts.length) continue;
     starts.push(lines.length);
     for (let k = 0; k < starts.length - 1; k++) {
       const body = lines.slice(starts[k], starts[k + 1]).join('\n');
