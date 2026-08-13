@@ -180,13 +180,22 @@ export function filterRosterByTower(ownedCharacters, tower) {
 //
 // treasureTiers가 없는 캐릭터(아직 조사 안 됨)나 특정 모드 값이 비어 있는 경우에는
 // 그냥 기본 티어를 쓴다 — 없는 데이터를 추정으로 메우지 않는다.
-function tierScore(character, mode, treasureIds) {
+// 이 캐릭터가 이 모드에서 실제로 받는 티어 등급(SSS~F). 애장품을 장착했고 그 모드의
+// treasureTiers가 있으면 그걸 쓰고, 아니면 characterDatabase의 기본 티어를 쓴다.
+//
+// 화면(CharacterPicker의 티어 배지·정렬)도 이 함수를 쓴다. 예전에는 화면이 기본 티어만
+// 읽어서, 애장품을 표시해도 배지가 안 바뀌었다 — 헬름은 기본 B인데 애장품 보스전이 SS라
+// 실제 채점과 화면이 크게 어긋났다(2026-08-13 유저 지적). 같은 함수를 공유하면 어긋날 수 없다.
+export function effectiveTier(character, mode, treasureIds) {
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const note = INVESTMENT_NOTE_BY_NAME.get(character?.title);
   const useTreasureTier =
     treasureIds && note?.treasureTiers && treasureIds.has(character?.id);
-  const grade = (useTreasureTier ? note.treasureTiers[key] : null) || character?.tiers?.[key];
-  return TIER_SCORE[grade] || 0;
+  return (useTreasureTier ? note.treasureTiers[key] : null) || character?.tiers?.[key] || null;
+}
+
+function tierScore(character, mode, treasureIds) {
+  return TIER_SCORE[effectiveTier(character, mode, treasureIds)] || 0;
 }
 
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).

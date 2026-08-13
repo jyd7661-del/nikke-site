@@ -6,7 +6,7 @@ import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { characterName, characterSearchText, localizedCharacter } from '@/lib/characterNames';
 import { cdbForRosterId } from '@/lib/rosterBridge';
-import { MODE_TO_TIER_KEY } from '@/lib/synergyEngine';
+import { effectiveTier } from '@/lib/synergyEngine';
 
 // 카드 오른쪽 위 티어 배지.
 //
@@ -31,6 +31,12 @@ const TIER_COLOR = {
   F: 'bg-slate-700 text-slate-300',
 };
 
+// 티어 문자열 → 정렬용 숫자. characterDatabase.json에 실제로 들어 있는 값은
+// SSS / SS / S / A / B / C / D / E / F 아홉 가지다(전수 확인).
+// 여기 없는 값이나 빈 값은 0이 되어 맨 뒤로 간다 — 없는 데이터를 중간 어딘가로
+// 추정해 끼워 넣지 않는다.
+const TIER_RANK = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
+
 const BURST_ACCENT = {
   1: 'bg-sky-400',
   2: 'bg-violet-400',
@@ -39,8 +45,20 @@ const BURST_ACCENT = {
 
 export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onToggleTreasure, onClear, aiMode }) {
   const { lang, t } = useLanguage();
-  // 지금 고른 용도에 해당하는 티어 키. 엔진과 같은 표를 쓰므로 둘이 어긋날 수 없다.
-  const tierKey = MODE_TO_TIER_KEY[aiMode] || 'story';
+
+  // 애장품 표시는 화면 id(characters.js) 기준인데 엔진은 characterDatabase id로 판정한다.
+  // 카드마다 Set을 새로 만들면 168번 돌므로 한 번만 변환해 재사용한다.
+  const treasureCdbIds = useMemo(() => {
+    const s = new Set();
+    (treasureIds ? [...treasureIds] : []).forEach((uiId) => {
+      const cdb = cdbForRosterId(uiId);
+      if (cdb) s.add(cdb.id);
+    });
+    return s;
+  }, [treasureIds]);
+
+  // 이 캐릭터가 지금 용도에서 실제로 받는 등급. 애장품 표시가 반영된다.
+  const tierOf = (uiChar) => effectiveTier(cdbForRosterId(uiChar.id), aiMode, treasureCdbIds);
   const [query, setQuery] = useState('');
   const [burstFilter, setBurstFilter] = useState('all');
 
@@ -53,11 +71,24 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
     });
   }, [query, burstFilter]);
 
+  // 카드 정렬은 **화면에서 계산한다.** data/characters.js의 배열 순서에 의존하지 않는다.
+  //
+  // 예전에는 배열이 손으로 T0~T3 순서로 정렬돼 있었고 배지도 그 값을 찍었다. 배지를 용도별
+  // DB 티어로 바꾸자 순서와 배지가 따로 놀았다(SS 다음에 D가 오는 식). 배열을 다시 손으로
+  // 정렬하는 건 답이 아니다 — 캐릭터가 계속 추가되고, 용도(캠페인/보스전/PvP)마다 순서가
+  // 다르므로 손으로 유지할 수 있는 순서가 애초에 하나로 정해지지 않는다.
+  // 그래서 지금 고른 용도의 티어로 매번 내림차순 정렬한다. 새 캐릭터는 데이터만 넣으면
+  // 자동으로 제자리에 들어가고, 용도를 바꾸면 순서도 따라 바뀐다.
   const grouped = useMemo(() => {
     const g = { 1: [], 2: [], 3: [] };
     for (const c of filtered) g[c.burst].push(c);
+    // 티어 값이 없는 캐릭터는 맨 뒤로. 같은 티어끼리는 원래 배열 순서를 유지한다
+    // (Array.prototype.sort는 ES2019부터 안정 정렬이 보장된다).
+    for (const b of [1, 2, 3]) {
+      g[b].sort((x, y) => (TIER_RANK[tierOf(y)] || 0) - (TIER_RANK[tierOf(x)] || 0));
+    }
     return g;
-  }, [filtered]);
+  }, [filtered, aiMode, treasureCdbIds]);
 
   return (
     <div className="bg-nikke-panel rounded-xl p-5 border border-slate-800/80 shadow-lg shadow-black/20">
@@ -121,7 +152,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                 // 캐릭터(data/characters.js의 hasTreasure)에만 버튼을 노출한다.
                 const treasureAvailable = !!c.hasTreasure;
                 // 값이 없으면 배지를 아예 안 그린다 — 없는 데이터를 추정으로 메우지 않는다.
-                const tier = cdbForRosterId(c.id)?.tiers?.[tierKey] || null;
+                const tier = tierOf(c);
                 return (
                   <button
                     key={c.id}
