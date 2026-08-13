@@ -304,6 +304,32 @@ const todayISO = new Date().toISOString().slice(0, 10);
   }
 }
 
+// 스킬 수치의 출처·레벨 기준이 기록돼 있는지. 2026-08-13 추가.
+//
+// 도감 196페이지가 "출처: prydwen.gg"라고 적어놓고 **레벨 1 기준의 낡은 수치**를 보여주고
+// 있었는데(노이즈 Chorus 5.86% — 실제 10레벨은 10.66%), 몇 레벨 기준인지 아무 데도 적혀
+// 있지 않아 아무도 이상하다고 느끼지 못했다. 기록이 없으면 틀렸는지조차 알 수 없다.
+{
+  const cs = freshness?.characterSkills;
+  if (!cs?.asOf) {
+    warn('SKILLS_FRESHNESS_MISSING',
+      'dataFreshness.characterSkills 가 없다 — 스킬 수치를 언제 어느 레벨 기준으로 수집했는지 ' +
+      '기록이 없으면 낡아도 알 수 없다. `node scripts/refreshSkillsFromPrydwen.mjs --write` 로 갱신할 것');
+  } else {
+    if (!cs.skillLevelBasis) {
+      warn('SKILLS_LEVEL_BASIS_MISSING',
+        'dataFreshness.characterSkills.skillLevelBasis 가 비어 있다 — 스킬 수치가 몇 레벨 기준인지 ' +
+        '명시해야 한다(현재 데이터는 레벨 10 기준)');
+    }
+    const newer = cdb.filter((c) => /^\d{4}-\d{2}-\d{2}$/.test(c.releaseDate || '') && c.releaseDate > cs.asOf);
+    if (newer.length) {
+      warn('SKILLS_MAYBE_STALE',
+        `characterSkills.asOf(${cs.asOf}) 이후에 출시된 캐릭터가 ${newer.length}명 있음 — ` +
+        `스킬 수치가 아직 수집되지 않았을 수 있다: ` + newer.map((c) => `${c.title}(${c.releaseDate})`).join(', '));
+    }
+  }
+}
+
 // totemCondition(속성 한정 토템) 검증. 2026-08-07 추가.
 // 아니스: 스파클링 서머나 일레그: 붐 앤 쇼크처럼 아군 버프가 특정 속성에게만 들어가는 토템은
 // totemCondition으로 조건을 건다. 여기서 오타가 나면 조건이 조용히 '항상 거짓'이 되어 그
