@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "verify": "node scripts/checkData.mjs && node scripts/testI18n.mjs && node scripts/testCharacterNames.mjs && node scripts/testGlossary.mjs && node scripts/checkAdPlacement.mjs"
+    "verify": "node scripts/checkData.mjs && node scripts/testI18n.mjs && node scripts/testCharacterNames.mjs && node scripts/testGlossary.mjs && node scripts/checkAdPlacement.mjs",
+    "check:canonical": "node scripts/checkCanonical.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.32.1",

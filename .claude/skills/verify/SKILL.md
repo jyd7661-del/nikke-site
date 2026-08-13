@@ -27,6 +27,23 @@ node scripts/checkAdPlacement.mjs
 | `findTotems.mjs` | **1군 0명** | 토템 후보 누락 |
 | `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
 
+## 빌드가 있어야 도는 검사
+
+`checkCanonical`은 `.next/server/app/*.html`을 읽으므로 **`next build` 뒤에만** 의미가 있다.
+그래서 `npm run verify`에 넣지 않았다(빌드 없이 돌리면 늘 실패한다).
+
+```bash
+npx next build && npm run check:canonical
+```
+
+| 스크립트 | 기준선 | 무엇을 보는가 |
+|---|---|---|
+| `checkCanonical.mjs` | **ERROR 0 / 201개** | 사이트맵에 실리는 주소마다 자기 자신을 가리키는 canonical이 있는가 |
+
+`/`·`/combos`·`/board`는 `'use client'`라 페이지에서 metadata를 export할 수 없어 **별도 레이아웃
+파일**로 canonical을 붙였다. 이 구조는 (1) 레이아웃을 지우면 태그가 사라지고 (2) 자식 라우트가
+부모의 canonical을 **상속**해 엉뚱한 주소를 가리키게 되는데, 둘 다 화면에는 아무 증상이 없다.
+
 ## 판정
 
 - **`checkData`가 ERROR를 내면 그 변경은 되돌리는 것이 원칙이다.** 먼저 고치고 다시 돌린다.

@@ -32,6 +32,8 @@ export function generateMetadata({ params }) {
       `${ELEMENT_KR[c.element] || c.element} ${CLASS_KR[c.class] || c.class}, 버스트 ${c.burst}. ` +
       `캠페인 ${t.story || '—'} · 보스전 ${t.bossing || '—'} · PvP ${t.pvp || '—'} 티어, ` +
       `스킬 3종과 등장 조합 ${teams.length}개 정리.`,
+    // 정본 주소 — 캐릭터마다 자기 주소를 가리킨다.
+    alternates: { canonical: `/nikke/${c.id}` },
     openGraph: {
       title: `${c.name_kr} — 니케 조합 추천`,
       images: c.img ? [nikkeImageUrl(c.img)] : [],

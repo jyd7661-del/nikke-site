@@ -12,6 +12,7 @@
 export const metadata = {
   title: '개인정보처리방침 | 니케 조합 추천',
   description: '니케 조합 추천 사이트의 개인정보처리방침입니다.',
+  alternates: { canonical: '/privacy' },
 };
 
 export default function PrivacyPage() {

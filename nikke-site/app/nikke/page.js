@@ -11,6 +11,9 @@ export const metadata = {
   description:
     `승리의 여신: 니케 캐릭터 ${CHARACTERS.length}명의 모드별 티어, 스킬, 등장 조합을 정리한 도감. ` +
     '캐릭터를 고르면 상세 정보와 추천 조합을 볼 수 있습니다.',
+  // 정본 주소. ?utm_source= 같은 쿼리가 붙은 주소가 별개 URL로 색인되는 것을 막는다.
+  // metadataBase(app/layout.js)가 있어 상대 경로가 절대 주소로 풀린다.
+  alternates: { canonical: '/nikke' },
 };
 
 // 출시일 내림차순(최신 먼저) — 신규 캐릭터를 찾는 방문이 대부분이다
