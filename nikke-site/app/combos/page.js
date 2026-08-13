@@ -152,10 +152,6 @@ export default function CombosPage() {
         </p>
       )}
 
-      <div className="mb-6">
-        <AdSlot label={t('ad_combos_page')} size="banner" />
-      </div>
-
       {loading && <p className="text-sm text-slate-500">{t('loading')}</p>}
       {!loading && combos.length === 0 && isSupabaseConfigured && (
         <p className="text-sm text-slate-500">{t('combos_empty')}</p>
@@ -280,6 +276,18 @@ export default function CombosPage() {
           );
         })}
       </div>
+
+      {/* 광고는 **등록된 조합이 실제로 있을 때만** 그린다.
+          원래는 목록 위에 무조건 그렸는데, 등록 조합이 0건이라 이 페이지가
+          "불러오는 중…" 또는 "아직 등록된 조합이 없습니다" 한 줄 + 광고인 상태였다.
+          2026-08-13 애드센스가 사이트 전체를 "게시자 콘텐츠가 없는 화면에 Google 게재 광고"로
+          반려했는데(docs/ops.md), 이 페이지가 그 사유에 문자 그대로 해당한다.
+          loading 중에도 그리지 않는다 — 정책 문구의 "아직 준비 중인 화면"이 그것이다. */}
+      {!loading && combos.length > 0 && (
+        <div className="my-8">
+          <AdSlot label={t('ad_combos_page')} size="banner" />
+        </div>
+      )}
     </main>
   );
 }

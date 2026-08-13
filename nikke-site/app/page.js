@@ -145,10 +145,6 @@ export default function Home() {
         </div>
       )}
 
-      <div className="mb-6">
-        <AdSlot label={t('top_banner_ad')} size="banner" />
-      </div>
-
       <CharacterPicker
         ownedIds={ownedIds}
         treasureIds={treasureIds}
@@ -206,6 +202,15 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      {/* 원래 이 슬롯은 CharacterPicker 위(첫 화면)에 있었다. 2026-08-13 애드센스가
+          "게시자 콘텐츠가 없는 화면에 Google 게재 광고"로 정책 위반 판정을 냈는데,
+          미게재 상태에서 첫 화면이 빈 광고 영역으로 시작하는 것이 그 사유에 해당한다.
+          맨 아래로 내려 콘텐츠 뒤에만 광고가 오게 했다. 추천받기 버튼 바로 옆·아래는
+          오클릭 유발로 또 다른 정책 위험이라 일부러 피했다. */}
+      <div className="my-8">
+        <AdSlot label={t('footer_ad')} size="banner" />
+      </div>
 
       <footer className="text-center text-xs text-slate-600 mt-10 pb-4">
         {t('footer_disclaimer_1')}

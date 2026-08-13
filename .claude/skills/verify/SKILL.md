@@ -1,5 +1,5 @@
 ---
-description: 니케 사이트의 자동 검사 5종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진을 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 6종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
@@ -13,6 +13,7 @@ node scripts/testI18n.mjs
 node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
 node scripts/findTotems.mjs
+node scripts/checkAdPlacement.mjs
 ```
 
 ## 기준선 — 이 값과 다르면 보고할 것
@@ -24,6 +25,7 @@ node scripts/findTotems.mjs
 | `testCharacterNames.mjs` | **26건 통과** | 언어별 표기, 폴백, 3개국어 검색, 로스터 168명 전수 |
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
 | `findTotems.mjs` | **1군 0명** | 토템 후보 누락 |
+| `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
 
 ## 판정
 

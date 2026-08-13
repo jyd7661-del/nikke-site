@@ -14,7 +14,7 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 | 축 | 뜻 | 현재 상태 |
 |---|---|---|
 | **성장** | 검색 유입·방문 | Vercel Analytics + Search Console 가동, 색인 201 URL |
-| **수익** | 광고 수입 | 애드센스 **사이트 검토 대기**. CMP 동의 배너 미설정(EEA 수익 누락) |
+| **수익** | 광고 수입 | 애드센스 **정책 위반 반려**(2026-08-13, "콘텐츠 없는 화면의 광고"). `docs/ops.md` 참고 |
 | **자동화** | 사람 손 없이 도는 업무 | 주간 데이터 조사 1건. 도감은 데이터가 곧 페이지라 유지비 0 |
 
 진행 상황의 **단일 출처는 `docs/open-items.md`의 "성장 계획 3축" 절**이다. 여기 요약을
@@ -37,6 +37,7 @@ node scripts/testI18n.mjs            # 22건
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/findTotems.mjs          # 기준선: 1군 0명
+node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 ```
 
 이 스크립트들이 이 프로젝트의 안전망이다. **뭔가 고친 뒤에는 반드시 다시 돌린다.**
