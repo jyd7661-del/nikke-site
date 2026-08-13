@@ -85,7 +85,9 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
               <span className={`inline-block w-1.5 h-1.5 rounded-full ${BURST_ACCENT[b]}`} />
               {t(`burst_label_${b}`)}
             </h3>
-            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3">
+            {/* 도감(/nikke)과 같은 열 수로 맞췄다 (2026-08-13). 6열 → 8열.
+                10열도 해봤지만 "솔린 : 프로스트…"처럼 알트 이름이 잘려 구분이 안 돼 8열로 되돌렸다. */}
+            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-2">
               {grouped[b].map((c) => {
                 const active = ownedIds.has(c.id);
                 const hasTreasure = treasureIds?.has(c.id);

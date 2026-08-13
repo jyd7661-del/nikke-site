@@ -57,8 +57,12 @@ export default function Header() {
 
   return (
     <header className="border-b border-slate-800/80 bg-nikke-bg/80 backdrop-blur sticky top-0 z-20">
-      <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-lg shrink-0 group">
+      {/* 모바일에서 한 줄에 다 넣으면 375px 화면에서 476px까지 삐져나가 **모든 페이지에
+          가로 스크롤**이 생겼다(2026-08-13 실측: 로고 151 + 내비 293 + 간격, 가용 343).
+          flex-wrap 으로 좁은 화면에서는 두 줄로 나눈다 —
+          1줄 로고 + 언어 + 로그인 / 2줄 메뉴 링크. sm 이상은 기존처럼 한 줄. */}
+      <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-x-3 gap-y-2">
+        <Link href="/" className="flex items-center gap-2 font-extrabold text-lg shrink-0 group mr-auto">
           <svg
             width="22"
             height="22"
@@ -75,7 +79,8 @@ export default function Header() {
             <span className="text-nikke-accent">{t('site_name_brand')}</span> {t('site_name_suffix')}
           </span>
         </Link>
-        <nav className="flex items-center gap-1 sm:gap-2 text-sm text-slate-300">
+        {/* 메뉴 링크: 좁은 화면에서는 w-full + order-last 로 둘째 줄을 통째로 차지한다 */}
+        <nav className="order-last w-full flex items-center gap-1 text-sm text-slate-300 sm:order-none sm:w-auto sm:gap-2">
           {NAV_LINKS.map((link) => {
             const active = pathname === link.href;
             return (
@@ -90,8 +95,11 @@ export default function Header() {
               </Link>
             );
           })}
+        </nav>
 
-          <div className="flex items-center gap-0.5 ml-1 pl-2 border-l border-slate-800 text-xs">
+        {/* 언어 전환 + 로그인: 좁은 화면에서도 첫 줄에 로고와 함께 남는다 */}
+        <div className="flex items-center gap-1 text-sm text-slate-300">
+          <div className="flex items-center gap-0.5 pl-0 sm:ml-1 sm:pl-2 sm:border-l border-slate-800 text-xs">
             {LOCALES.map((l) => (
               <button
                 key={l}
@@ -150,7 +158,7 @@ export default function Header() {
               )}
             </div>
           )}
-        </nav>
+        </div>
       </div>
     </header>
   );

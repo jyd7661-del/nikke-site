@@ -113,7 +113,8 @@ export default function Home() {
   const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
 
   return (
-    <main className="max-w-5xl mx-auto px-4 py-8">
+    // 도감(/nikke)과 같은 폭. 캐릭터 카드가 196개라 좁으면 스크롤만 길어진다 (2026-08-13)
+    <main className="max-w-7xl mx-auto px-4 py-8">
       <header className="mb-8 pt-2">
         <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight bg-gradient-to-r from-nikke-accent to-teal-200 bg-clip-text text-transparent">
           {t('home_title')}
