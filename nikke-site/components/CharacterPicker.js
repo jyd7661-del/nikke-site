@@ -93,7 +93,9 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
       //    실행되지 않아도 요소는 이미 올바른 최종 위치에 있으므로 그런 고장이 없다.
       el.animate(
         [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'none' }],
-        { duration: 260, easing: 'cubic-bezier(0.2, 0, 0, 1)' }
+        // 260ms는 눈으로 따라가기엔 빨라서 순간이동처럼 보인다는 지적이 있어 420ms로 늘렸다.
+        // 카드가 화면 절반을 가로지르는 경우가 있어(헬름은 24번째→8번째) 이 정도가 필요하다.
+        { duration: 420, easing: 'cubic-bezier(0.2, 0, 0, 1)' }
       );
     });
     prevRects.current = nextRects;
