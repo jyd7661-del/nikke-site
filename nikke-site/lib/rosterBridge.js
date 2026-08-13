@@ -25,6 +25,12 @@ const rosterIdToCdb = new Map(
     .filter(([, cdbChar]) => Boolean(cdbChar))
 );
 
+// UI id 하나를 characterDatabase 항목으로 바꾼다. 화면에서 티어 같은 원본 값을 보여줄 때 쓴다.
+// 여기서도 cdbId 매핑을 그대로 타므로 rita→liter 같은 13명이 조용히 빠지지 않는다.
+export function cdbForRosterId(id) {
+  return rosterIdToCdb.get(id) || null;
+}
+
 // 보유 캐릭터 id 배열(+선택적으로 애장품 장착한 id 목록)을 받아
 // { resolved, unresolved, treasureCdbIds } 반환.
 export function resolveRosterIdsToCdb(ownedIds, treasureIds = new Set()) {

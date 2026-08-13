@@ -152,6 +152,9 @@ export default function Home() {
         onToggle={toggle}
         onToggleTreasure={toggleTreasure}
         onClear={clear}
+        // 카드의 티어 배지를 지금 고른 용도 기준으로 그리기 위해 넘긴다.
+        // 용도 선택 UI는 아래 ResultPanel에 있고 상태는 여기(page)가 들고 있다.
+        aiMode={aiMode}
       />
 
       <div className="flex items-center justify-between mt-5 mb-6">

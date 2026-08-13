@@ -5,13 +5,30 @@ import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { characterName, characterSearchText, localizedCharacter } from '@/lib/characterNames';
+import { cdbForRosterId } from '@/lib/rosterBridge';
+import { MODE_TO_TIER_KEY } from '@/lib/synergyEngine';
 
+// 카드 오른쪽 위 티어 배지.
+//
+// 예전에는 data/characters.js에 손으로 적어둔 단일 tier(T0~T3)를 그대로 찍었다. 그 값은
+// "2026년 7월 메타 기준"이라 낡았고 **용도 구분이 없어서** 실제 데이터와 크게 어긋났다
+// (2026-08-13 유저 지적으로 확인. 155명 대조):
+//   배지 T0인데 캠페인·보스전 둘 다 B 이하  12명 (노이즈 D/B/SS, 루마니 D/D/SS, 라푼젤 C/B/SS …)
+//   배지 T2·T3인데 어느 모드든 SS 이상       3명 (라플라스: 얼티밋 히어로는 SS/SS/SS인데 T3였다)
+//   배지와 DB 티어의 상관계수 캠페인 0.46 / 보스전 0.48 / PvP 0.56 — 어느 모드도 설명하지 못한다
+//
+// 이제 **지금 고른 용도의 characterDatabase 티어**를 그대로 보여준다. prydwen 출처가 붙은
+// A등급 값이고, 추천 점수를 매길 때 엔진이 쓰는 것과 같은 값이라 화면과 결과가 어긋나지 않는다.
 const TIER_COLOR = {
-  T0: 'bg-amber-400 text-amber-950',
-  T1: 'bg-sky-400 text-sky-950',
-  T2: 'bg-emerald-400 text-emerald-950',
-  T3: 'bg-slate-400 text-slate-950',
-  T4: 'bg-slate-600 text-slate-100',
+  SSS: 'bg-amber-300 text-amber-950',
+  SS: 'bg-amber-400 text-amber-950',
+  S: 'bg-orange-400 text-orange-950',
+  A: 'bg-sky-400 text-sky-950',
+  B: 'bg-emerald-400 text-emerald-950',
+  C: 'bg-slate-400 text-slate-950',
+  D: 'bg-slate-600 text-slate-100',
+  E: 'bg-slate-700 text-slate-300',
+  F: 'bg-slate-700 text-slate-300',
 };
 
 const BURST_ACCENT = {
@@ -20,8 +37,10 @@ const BURST_ACCENT = {
   3: 'bg-rose-400',
 };
 
-export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onToggleTreasure, onClear }) {
+export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onToggleTreasure, onClear, aiMode }) {
   const { lang, t } = useLanguage();
+  // 지금 고른 용도에 해당하는 티어 키. 엔진과 같은 표를 쓰므로 둘이 어긋날 수 없다.
+  const tierKey = MODE_TO_TIER_KEY[aiMode] || 'story';
   const [query, setQuery] = useState('');
   const [burstFilter, setBurstFilter] = useState('all');
 
@@ -74,8 +93,13 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
         </div>
       </div>
 
-      <p className="text-xs text-slate-500 mb-4">
+      <p className="text-xs text-slate-500 mb-1">
         {t('picker_hint')}
+      </p>
+      {/* 배지가 '지금 고른 용도' 기준이라는 걸 밝힌다. 용도 선택 UI가 이 목록 아래에 있어서
+          말해주지 않으면 무슨 기준의 등급인지 알 수 없다. */}
+      <p className="text-xs text-slate-600 mb-4">
+        {t('tier_badge_hint')(t(`mode_${aiMode}`))}
       </p>
 
       {[1, 2, 3].map((b) =>
@@ -96,6 +120,8 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                 // 결과 화면에 "(애장품)"이 잘못 표시되던 문제. 애장품이 실제로 출시된
                 // 캐릭터(data/characters.js의 hasTreasure)에만 버튼을 노출한다.
                 const treasureAvailable = !!c.hasTreasure;
+                // 값이 없으면 배지를 아예 안 그린다 — 없는 데이터를 추정으로 메우지 않는다.
+                const tier = cdbForRosterId(c.id)?.tiers?.[tierKey] || null;
                 return (
                   <button
                     key={c.id}
@@ -108,13 +134,16 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                   >
                     <div className="relative">
                       <CharacterAvatar character={localizedCharacter(c, lang)} shape="portrait" />
-                      <span
-                        className={`absolute top-1 right-1 text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                          TIER_COLOR[c.tier] || 'bg-slate-600'
-                        }`}
-                      >
-                        {c.tier}
-                      </span>
+                      {tier && (
+                        <span
+                          title={t(`mode_${aiMode}`)}
+                          className={`absolute top-1 right-1 text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                            TIER_COLOR[tier] || 'bg-slate-600 text-slate-100'
+                          }`}
+                        >
+                          {tier}
+                        </span>
+                      )}
                       {active && (
                         <span className="absolute top-1 left-1 w-5 h-5 rounded-full bg-nikke-accent text-slate-900 flex items-center justify-center text-xs font-bold">
                           ✓
