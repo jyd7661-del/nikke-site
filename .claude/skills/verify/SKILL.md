@@ -1,5 +1,5 @@
 ---
-description: 니케 사이트의 자동 검사 6종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·광고 배치를 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 7종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
@@ -14,6 +14,7 @@ node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
 node scripts/findTotems.mjs
 node scripts/checkAdPlacement.mjs
+node scripts/checkWeeklyReport.mjs
 ```
 
 ## 기준선 — 이 값과 다르면 보고할 것
@@ -26,6 +27,18 @@ node scripts/checkAdPlacement.mjs
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
 | `findTotems.mjs` | **1군 0명** | 토템 후보 누락 |
 | `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
+| `checkWeeklyReport.mjs` | **마지막 보고서 9일 이내 / 미처리 목록** | 주간 조사 예약 작업이 돌았는지, 그 결과를 사람이 처리했는지 |
+
+## `checkWeeklyReport`는 막지 않는다
+
+이 검사는 **항상 exit 0**이다. 여기서 걸리는 것은 코드 결함이 아니라 운영 신호이고,
+예약 작업이 늦었다고 무관한 코드 푸시를 막으면 안 되기 때문이다(`checkData`의 WARN 3과 같은 성격).
+막지 않는 대신 **세션 시작 화면에 반드시 보이게** 하는 것이 목적이다.
+
+- **미처리 보고서**가 뜨면 → 1절(A등급)은 이미 파일에 반영돼 있으니 diff를 보고 커밋하고,
+  2~6절(B등급 제안)의 반영 여부를 정한 뒤 `reports/reviewed.json`에 날짜를 추가한다.
+- **"예약 작업이 멈췄을 수 있습니다"**가 뜨면 → 그 작업은 Cowork(claude.ai)에서 돈다.
+  **클로드 코드에서는 보이지 않으므로** 사람이 claude.ai에서 상태를 확인해야 한다.
 
 ## 빌드가 있어야 도는 검사
 

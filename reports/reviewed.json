@@ -1,0 +1,8 @@
+{
+  "note": "처리가 끝난 주간 조사 회차. scripts/checkWeeklyReport.mjs가 읽는다. 1절(A등급) diff를 커밋하고 2~6절(B등급) 제안의 반영 여부까지 정했으면 날짜를 추가한다.",
+  "reviewed": [
+    "2026-07-30",
+    "2026-08-07"
+  ],
+  "pendingNote": "2026-08-10은 아직 미처리다 — 판단 대기 5건(prydwen 티어 불일치 4건, Siren 별칭 등)이 docs/open-items.md에 그대로 열려 있다."
+}

@@ -38,6 +38,7 @@ node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/findTotems.mjs          # 기준선: 1군 0명
 node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
+node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
 ```
 
 이 스크립트들이 이 프로젝트의 안전망이다. **뭔가 고친 뒤에는 반드시 다시 돌린다.**
@@ -119,8 +120,11 @@ node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 
 ### git
 
-- **`git add -A` 금지.** `git status`에 41개가 뜨지만 30개는 **줄바꿈(CRLF/LF) 차이**이며
-  clone 시점부터 있던 상태다. 반드시 **파일을 이름으로 지정해 `git add`** 할 것.
+- **`git add -A` 금지.** 반드시 **파일을 이름으로 지정해 `git add`** 할 것.
+- **`git status`의 미커밋 변경을 습관적으로 무시하지 말 것.** 예전에는 41개가 뜨는데 30개가
+  줄바꿈(CRLF/LF) 차이라 무시해도 됐지만, **2026-08-14 기준 `git status`는 0이다.**
+  지금 거기 뭔가 떠 있다면 진짜 변경이고, **주간 조사 예약 작업이 남긴 것일 수 있다**
+  (그 작업은 파일만 고치고 커밋하지 않는다). `docs/weekly-research.md` 참고.
 - 커밋 메시지는 **무엇을 왜 고쳤는지**를 적는다. 특히 실측·역테스트 결과를 남긴다.
 - `.env.local`에 Supabase 키와 `ANTHROPIC_API_KEY`가 있다. **절대 커밋하지 말 것.**
 
