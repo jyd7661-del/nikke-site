@@ -41,6 +41,9 @@ node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
 ```
 
+> 🔴 **2026-08-15 유저 지정 최우선 과제가 있다.** 다른 것을 시작하기 전에
+> `docs/open-items.md` 맨 위의 "다음 세션 최우선 과제 — 도감 스킬 설명 한국어화 마무리"를 읽을 것.
+
 이 스크립트들이 이 프로젝트의 안전망이다. **뭔가 고친 뒤에는 반드시 다시 돌린다.**
 `checkData`가 ERROR를 내면 그 변경은 되돌리는 것이 원칙이다.
 
