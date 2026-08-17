@@ -15,6 +15,7 @@ import {
   CLASS_KR, ELEMENT_KR, CORP_KR, WEAPON_KR, MODE_KR, TAG_KR,
 } from '@/lib/dex';
 import { nikkeImageUrl } from '@/lib/nikkeImage';
+import DexSkillList from '@/components/DexSkillList';
 
 export function generateStaticParams() {
   return CHARACTERS.map((c) => ({ id: c.id }));
@@ -133,24 +134,13 @@ export default function NikkeDetailPage({ params }) {
         <p className="text-xs text-slate-600 mt-2">출처: prydwen.gg 티어리스트</p>
       </section>
 
-      {/* 스킬 — 글로벌 서버 영문 원문 그대로 (임의 번역하지 않는다) */}
-      <section className="mb-8">
-        <h2 className="text-lg font-bold text-white mb-3">스킬</h2>
-        <div className="space-y-3">
-          {(c.skills || []).map((s, i) => (
-            <div key={i} className="rounded-lg bg-slate-800/40 p-4">
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="font-bold text-slate-100">{s.name}</h3>
-                <span className="text-xs text-slate-500 shrink-0">
-                  {s.type}{s.cd && s.cd !== 'N/A' ? ` · 쿨타임 ${s.cd}초` : ''}
-                </span>
-              </div>
-              <p className="text-sm text-slate-400 mt-2 leading-relaxed">{s.desc}</p>
-            </div>
-          ))}
-        </div>
-        <p className="text-xs text-slate-600 mt-2">스킬 설명은 글로벌 서버 영문 원문입니다.</p>
-      </section>
+      {/* 스킬 — 사이트 언어 설정을 따라간다.
+          이 페이지는 서버 컴포넌트라 useLanguage()를 쓸 수 없어서, 스킬 블록만 클라이언트
+          컴포넌트로 떼어냈다(components/DexSkillList.js). 세 언어를 props로 넘기므로
+          정적 생성은 그대로 유지되고 토글에만 반응한다.
+          한국어 문구는 게임 내 공식 텍스트이며 나무위키를 경로로 수집했다(위키 서술은 제외).
+          아직 없는 캐릭터는 영어로 폴백한다 — `docs/open-items.md` 참고. */}
+      <DexSkillList skills={c.skills || []} />
 
       {/* 투자·운용 노트 — characterInvestmentNotes.json에 있는 캐릭터만 */}
       {invNote && (
