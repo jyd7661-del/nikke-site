@@ -251,6 +251,9 @@
       "ambiguousBurst": true,
       "aliases": [
         "Surf-ing Through Campaign ft. Rapihelm (CDR + RH Variant)"
+      ],
+      "requiresTreasure": [
+        "Helm"
       ]
     },
     {
@@ -306,6 +309,9 @@
       "note": "[Source: prydwen.gg Team Database] For Low deficit players, there is nothing better than a good SBS! And who better to pair her with than Alice! Alice provides the single target focus damage that SBS does not have while there is a large number of mobs on the screen. Meanwhile, SBS with elemental damage is simply.. lovely! 2+ years since her release, and she is still probably the best low deficit DPS to exist in Nikke, even with all the new tech we have with units like Rapi etc. But who says no to using Rapi? If you lack Siren, just use Rapi to cover all your bases for wind weak content! She will assist not only Alice in focus target DPS, but also SBS by doing chip damage to mobs. All is well and easy in low deficit as long as you have SBS. You may take advantage of Maid Mast's Distributed Damage and ATK buffs to further buff your Scarlet, provided that you are able to properly burst gen with Alice. Substitutions: HelmT may be replaced by Maid Mast. [다른 출처의 같은 조합 설명 — \"Tornado Incoming\"] [Source: prydwen.gg character page] Best Wind team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife. (속성: Wind)",
       "aliases": [
         "Tornado Incoming"
+      ],
+      "requiresTreasure": [
+        "Helm"
       ]
     },
     {
@@ -319,7 +325,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] This team consists of Ein, who is a strong AoE mobber in Campaign especially at High Deficit thanks to her True Damage. Rapi: Red Hood is used as the other B3 because there is no other Electric B3 yet that can fill this role better (Red Hood & Alice come close). HelmTr is used to activate Crown's S2 and provide emergency heal on Burst if needed. Siren is used as CDR. Substitutions: - (속성: Electric)"
+      "note": "[Source: prydwen.gg Team Database] This team consists of Ein, who is a strong AoE mobber in Campaign especially at High Deficit thanks to her True Damage. Rapi: Red Hood is used as the other B3 because there is no other Electric B3 yet that can fill this role better (Red Hood & Alice come close). HelmTr is used to activate Crown's S2 and provide emergency heal on Burst if needed. Siren is used as CDR. Substitutions: - (속성: Electric)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-cindy-ein-cdr-rh-vari",
@@ -360,7 +369,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] This team is one of the best Electric stage demolishers, featuring Ein's True Damage and reliable AoE clearing as well as Rapipi's insane AoE potential, HelmTr synergizes well with Ein's lack of Core Damage and supports the team with Burst Gen (which the other 4 units lack). She also triggers Crown's S2. Substitutions: - (속성: Electric)"
+      "note": "[Source: prydwen.gg Team Database] This team is one of the best Electric stage demolishers, featuring Ein's True Damage and reliable AoE clearing as well as Rapipi's insane AoE potential, HelmTr synergizes well with Ein's lack of Core Damage and supports the team with Burst Gen (which the other 4 units lack). She also triggers Crown's S2. Substitutions: - (속성: Electric)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-rapipi-ein-cdr-rh-var",
@@ -387,7 +399,10 @@
         "Naga"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] Rapipi + HelmTr have been a staple Water comp for Campaign, although they are not as prominent as the rest due to HelmTr's lack of AoE potential. However, HelmTr can provide healing and insane single-target damage that, when timed properly, can change the tides of a battle, especially against Farters. Substitutions: - (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] Rapipi + HelmTr have been a staple Water comp for Campaign, although they are not as prominent as the rest due to HelmTr's lack of AoE potential. However, HelmTr can provide healing and insane single-target damage that, when timed properly, can change the tides of a battle, especially against Farters. Substitutions: - (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-surf-ing-through-campaign-ft-rapilud-cdr-variant",
@@ -427,7 +442,10 @@
         "Ludmilla: Winter Owner"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] The triple DPS variant of Water comp, featuring Rapipi and HelmTr as primary B3 and XLud as off-Burst B3 and debuffer. Substitutions: - (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] The triple DPS variant of Water comp, featuring Rapipi and HelmTr as primary B3 and XLud as off-Burst B3 and debuffer. Substitutions: - (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-clash-ing-through-campaign-ft-rrh-rh",
@@ -763,7 +781,10 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg Team Database] This is the most commonly used team in Elysion tower. It has nice AoE + huge DPS from Rapi and Vesti, decent heal with Helm Treasure and very strong heal - tank for team with HP buff from Anchor. A very brain dead team, should put on auto and forget. Substitutions: This Team is part of Meta Teams - Tribe Tower Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] This is the most commonly used team in Elysion tower. It has nice AoE + huge DPS from Rapi and Vesti, decent heal with Helm Treasure and very strong heal - tank for team with HP buff from Anchor. A very brain dead team, should put on auto and forget. Substitutions: This Team is part of Meta Teams - Tribe Tower Guide. Check here for further information and viable substitutes.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-missilis-best-tribe-tower-team",
@@ -867,7 +888,10 @@
         "Mast: Romantic Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Cinderella just keeps winning and replaces Rapi: Red Hood in her funneling team. Switch Cinderella: Crystal Wave to Sniper mode for phase 1, and MG mode for phase 2. Burst Maid Mast with Cinderella as much as possible. However, there will be situations where you need Crown burst for her shield. Substitutions: Anis: Star may be replaced with Little Mermaid or Rapi: Red Hood. Cinderella: Crystal Wave may be replaced with Rapi: Red Hood. Helm (Treasure) may be replaced with Snow White: Heavy Arms. (속성: Iron)"
+      "note": "[Source: prydwen.gg Team Database] Cinderella just keeps winning and replaces Rapi: Red Hood in her funneling team. Switch Cinderella: Crystal Wave to Sniper mode for phase 1, and MG mode for phase 2. Burst Maid Mast with Cinderella as much as possible. However, there will be situations where you need Crown burst for her shield. Substitutions: Anis: Star may be replaced with Little Mermaid or Rapi: Red Hood. Cinderella: Crystal Wave may be replaced with Rapi: Red Hood. Helm (Treasure) may be replaced with Snow White: Heavy Arms. (속성: Iron)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-artillery-vs-moth",
@@ -990,6 +1014,9 @@
       "note": "[Source: prydwen.gg Team Database] Rapi is so strong she can even match Helm Tr with high ATK, high Ele and Phase 3 Treasure version on Water weak boss. Just pay attention during helm Burst, you don't want her Burst lands on random mob. Substitutions: You can replace Rapi with Ludmilla - Winter Owner or Quency: Escape queen, but that's another DPS you have to invest. Just invest in Rapi - Crown - Siren - Mast Maid and 1 element DPS to save your precious resource. (속성: Water) [다른 출처의 같은 조합 설명 — \"Wheelchair\"] [Source: prydwen.gg Team Database] Time Crown's invulnerability at the beginning of phase 2 or she will die. Burst Maid Mast with Rapi: Red Hood as much as possible. Substitutions: Anis: Star may be replaced with Siren or Moran (Treasure). Crown may be replaced with Brid: Silent Track. Rapi: Red Hood may be replaced with Mihara: Bonding Chain. Mast: Romantic Maid may be replaced with Naga, Privaty (Treasure), or Helm (Treasure). (속성: Fire)",
       "aliases": [
         "Wheelchair"
+      ],
+      "requiresTreasure": [
+        "Helm"
       ]
     },
     {
@@ -1061,7 +1088,10 @@
         "Mast: Romantic Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] This team chews through Harvester AI like Snow White seeing a fat worm. Snow White will take care of the pesky mobs and solo kill Harvester herself. If you want to achieve a faster run, time Helm's Burst to not hit a mob. Burst Maid Mast every third burst (Crown → Crown → Mast). If Maid Anchor is used, burst Maid Mast with the stronger DPS. Substitutions: Crown may be replaced with Anchor: Innocent Maid or Nayuta. Anis: Star may be replaced with Siren or Rapi: Red Hood. Snow White: Heavy Arms may be replcaed with Dorothy: Serendipity or Cindrella: Crystal Wave. Helm (Treasure) may be replaced by Privaty (Treasure). Mast: Romantic Maid may be replaced by Privaty (Treasure) or Elegg: Boom and Shock. (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] This team chews through Harvester AI like Snow White seeing a fat worm. Snow White will take care of the pesky mobs and solo kill Harvester herself. If you want to achieve a faster run, time Helm's Burst to not hit a mob. Burst Maid Mast every third burst (Crown → Crown → Mast). If Maid Anchor is used, burst Maid Mast with the stronger DPS. Substitutions: Crown may be replaced with Anchor: Innocent Maid or Nayuta. Anis: Star may be replaced with Siren or Rapi: Red Hood. Snow White: Heavy Arms may be replcaed with Dorothy: Serendipity or Cindrella: Crystal Wave. Helm (Treasure) may be replaced by Privaty (Treasure). Mast: Romantic Maid may be replaced by Privaty (Treasure) or Elegg: Boom and Shock. (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-snow-white-went-wandering",
@@ -1458,7 +1488,10 @@
         "Privaty"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] It is ideal to mock with different subsitutions to find what is best for your account. Your investments can help guide you to what would be the best option for a double hit. Substitutions: Rei Ayanami can be replaced with Alice or a buffer for RapiRH such as Maid Mast, or even Mihara: Bonding Chain - consequently replacing Mihara in the next team with another unit. Privaty Treasure may be replaced by Maid Mast. (속성: Fire)"
+      "note": "[Source: prydwen.gg Team Database] It is ideal to mock with different subsitutions to find what is best for your account. Your investments can help guide you to what would be the best option for a double hit. Substitutions: Rei Ayanami can be replaced with Alice or a buffer for RapiRH such as Maid Mast, or even Mihara: Bonding Chain - consequently replacing Mihara in the next team with another unit. Privaty Treasure may be replaced by Maid Mast. (속성: Fire)",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pw-double-fire-2",
@@ -1536,7 +1569,10 @@
         "Elegg: Boom and Shock"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Crown is ideally used against Chatterbox or Material H, since her shields can help against the numerous jumps CB makes. Hence, players may use this team. Substitutions: Siren or AnisS can also be a viable option for B1 if more damage is needed. However, Liter/Moran can perform at almost the same level as Siren on Water for most players. Summer Elegg may be replaced by Maid Mast. Helm may be used over Privaty(Treasure) or Elegg/MMast if healing is required or if a unit is not built/needed elsewhere. xLudmilla is a very strong option for Water bosses with core, where she may be used over SElegg or MMast if she is built, or even Privaty(Treasure) if she is not built. (속성: Water)"
+      "note": "[Source: prydwen.gg Team Database] Crown is ideally used against Chatterbox or Material H, since her shields can help against the numerous jumps CB makes. Hence, players may use this team. Substitutions: Siren or AnisS can also be a viable option for B1 if more damage is needed. However, Liter/Moran can perform at almost the same level as Siren on Water for most players. Summer Elegg may be replaced by Maid Mast. Helm may be used over Privaty(Treasure) or Elegg/MMast if healing is required or if a unit is not built/needed elsewhere. xLudmilla is a very strong option for Water bosses with core, where she may be used over SElegg or MMast if she is built, or even Privaty(Treasure) if she is not built. (속성: Water)",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pw-main-team-alternate-water",
@@ -1687,7 +1723,10 @@
         "Helm"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] - Substitutions: Zwei Treasure may be replaced by Miranda Treasure. Mint may be replaced with Grave or Bunny Ade. (속성: Iron)"
+      "note": "[Source: prydwen.gg Team Database] - Substitutions: Zwei Treasure may be replaced by Miranda Treasure. Mint may be replaced with Grave or Bunny Ade. (속성: Iron)",
+      "requiresTreasure": [
+        "Zwei"
+      ]
     },
     {
       "id": "pw-alternate-combo-team-1",
@@ -1700,7 +1739,10 @@
         "Centi"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] Remember to replace Maxwell with Red Hood or another DPS if the intention is to hit two times only. Or just use the main team recommended instead of this one if you are planning to hit two times Substitutions: Grave may be replaced with Nayuta or Bunny Ade. Centi Treasure may be replaced with Summer Helm or another buffer like Privaty or Maid Mast. Maxwell may be replaced with Red Hood or Raven if players do not intend to hit three times. (속성: Iron)"
+      "note": "[Source: prydwen.gg Team Database] Remember to replace Maxwell with Red Hood or another DPS if the intention is to hit two times only. Or just use the main team recommended instead of this one if you are planning to hit two times Substitutions: Grave may be replaced with Nayuta or Bunny Ade. Centi Treasure may be replaced with Summer Helm or another buffer like Privaty or Maid Mast. Maxwell may be replaced with Red Hood or Raven if players do not intend to hit three times. (속성: Iron)",
+      "requiresTreasure": [
+        "Centi"
+      ]
     },
     {
       "id": "pw-alternate-combo-team-2",
@@ -1740,7 +1782,10 @@
         "Centi"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg Team Database] - Substitutions: Crown may be replaced wtih Grave, Nayuta or Bunny Ade. Centi Treasure may be replaced with Summer Helm or another buffer like Privaty or Maid Mast. (속성: Iron)"
+      "note": "[Source: prydwen.gg Team Database] - Substitutions: Crown may be replaced wtih Grave, Nayuta or Bunny Ade. Centi Treasure may be replaced with Summer Helm or another buffer like Privaty or Maid Mast. (속성: Iron)",
+      "requiresTreasure": [
+        "Centi"
+      ]
     },
     {
       "id": "pwc-2b-mast-wombo-combo",
@@ -1993,6 +2038,9 @@
       "aliases": [
         "Elysion Tower ft. HelmT #1",
         "Elysions's Saver"
+      ],
+      "requiresTreasure": [
+        "Helm"
       ]
     },
     {
@@ -2078,7 +2126,10 @@
         "Helm"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] A PvP team that features unkillable Nayuta + Anis Star, combined with PrivatyTr for Stun and AoE pressure."
+      "note": "[Source: prydwen.gg character page] A PvP team that features unkillable Nayuta + Anis Star, combined with PrivatyTr for Stun and AoE pressure.",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-nayuta-anis-s-concert-ii",
@@ -2090,7 +2141,10 @@
         "Biscuit"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] A PvP team that features unkillable Nayuta + Anis Star, combined with HelmTr for single-target nuke and lifesteal."
+      "note": "[Source: prydwen.gg character page] A PvP team that features unkillable Nayuta + Anis Star, combined with HelmTr for single-target nuke and lifesteal.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-anis-blanc-s-concert-i",
@@ -2139,7 +2193,10 @@
         "Cinderella"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This Arena team (also works for CA) is a 2 RL comp (with Quantum on Anis, Helm, or Biscuit [or Anis + 1 of them]) that uses HelmTr's lifesteal + Nayuta's heal share to survive barrages of damage, Cindy to block SG attacks and ensure a full chain against Rosanna (who will kill HelmTr), and Biscuit to provide Anis with long periods of Immunity, allowing her to survive until enemy Indomitability ends. Nayuta + Anis + Cindy BA combine firepower to unleash devastating damage.Using Tempering or Vigor on HelmTr & Biscuit is recommended. Nayu must NOT be the second highest ATK in team to avoid being Rosanna-countered. Substitutions: Anis: Star can be P1 or P2. In P2, she procs Biscuit's immune slower or not at all, which can be good and bad. In P1, she is almost guaranteed to proc it."
+      "note": "[Source: prydwen.gg character page] This Arena team (also works for CA) is a 2 RL comp (with Quantum on Anis, Helm, or Biscuit [or Anis + 1 of them]) that uses HelmTr's lifesteal + Nayuta's heal share to survive barrages of damage, Cindy to block SG attacks and ensure a full chain against Rosanna (who will kill HelmTr), and Biscuit to provide Anis with long periods of Immunity, allowing her to survive until enemy Indomitability ends. Nayuta + Anis + Cindy BA combine firepower to unleash devastating damage.Using Tempering or Vigor on HelmTr & Biscuit is recommended. Nayu must NOT be the second highest ATK in team to avoid being Rosanna-countered. Substitutions: Anis: Star can be P1 or P2. In P2, she procs Biscuit's immune slower or not at all, which can be good and bad. In P1, she is almost guaranteed to proc it.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-best-anis-pvp-team-2",
@@ -2152,7 +2209,12 @@
         "Moran"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team features incredible oppressive stalling experience. It beats many teams (including Variant 1) and is one of the best teams for CA. High Charge Speed OL is recommended to prevent MoranTr from getting sniped by opposing HelmTr. Substitutions: BayTr can be replaced by Mana."
+      "note": "[Source: prydwen.gg character page] This team features incredible oppressive stalling experience. It beats many teams (including Variant 1) and is one of the best teams for CA. High Charge Speed OL is recommended to prevent MoranTr from getting sniped by opposing HelmTr. Substitutions: BayTr can be replaced by Mana.",
+      "requiresTreasure": [
+        "Moran",
+        "Helm",
+        "Bay"
+      ]
     },
     {
       "id": "pwc-best-anis-pvp-team-3",
@@ -2178,7 +2240,10 @@
         "Dolla"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Isabel operates a Shotgun, so by law we are obliged to introduce this team. Tove increases Isabel's ATK and ATK SPD and supplies her with Max Ammo, allowing her to shoot more and harder. Dolla also grants small offensive buffs, but most importantly she is here for CDR. DrakeTr provides ATK buff to Isabel and herself.If you have ever thought about it, do NOT use BSoda here. We have also asked people to try with Leona and MastM instead of Dolla, and both reduce the team's damage against Electric-weak monsters at least.Unlike the other two teams featured in this guide, this team lacks healing, which can be a problem in some Raids. Substitutions: Dolla can be replaced with Helm: Aqua Marine or Leona. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] Isabel operates a Shotgun, so by law we are obliged to introduce this team. Tove increases Isabel's ATK and ATK SPD and supplies her with Max Ammo, allowing her to shoot more and harder. Dolla also grants small offensive buffs, but most importantly she is here for CDR. DrakeTr provides ATK buff to Isabel and herself.If you have ever thought about it, do NOT use BSoda here. We have also asked people to try with Leona and MastM instead of Dolla, and both reduce the team's damage against Electric-weak monsters at least.Unlike the other two teams featured in this guide, this team lacks healing, which can be a problem in some Raids. Substitutions: Dolla can be replaced with Helm: Aqua Marine or Leona. (속성: Electric)",
+      "requiresTreasure": [
+        "Drake"
+      ]
     },
     {
       "id": "pwc-isabel-and-scarlet-befriend-each-other",
@@ -2531,7 +2596,10 @@
         "Soline: Frost Ticket"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] XBrid deals good personal damage with invested gear and when paired with Tove (Treasure version, especially) and DrakeTr. She shines best against Fire-weak due to elemental advantage. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.HelmTr can be replaced by any B3. (속성: Fire)"
+      "note": "[Source: prydwen.gg character page] XBrid deals good personal damage with invested gear and when paired with Tove (Treasure version, especially) and DrakeTr. She shines best against Fire-weak due to elemental advantage. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.HelmTr can be replaced by any B3. (속성: Fire)",
+      "requiresTreasure": [
+        "Drake"
+      ]
     },
     {
       "id": "pwc-xbrid-buffing-atk-reliant-b3-in-miranda-s-comp",
@@ -2544,7 +2612,10 @@
         "Soline: Frost Ticket"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] XBrid can be used as an alternative B2 to buff ATK-reliant units, such as MiharaBC, HelmTr, Liberalio, and DieselWS. She can also be used as an alternative if you lack better B2. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume."
+      "note": "[Source: prydwen.gg character page] XBrid can be used as an alternative B2 to buff ATK-reliant units, such as MiharaBC, HelmTr, Liberalio, and DieselWS. She can also be used as an alternative if you lack better B2. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-xbrid-in-campaign",
@@ -2603,7 +2674,10 @@
         "Ada Wong"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] CentiTr makes Blanc teams without Biscuit safer to run, especially against TVesti."
+      "note": "[Source: prydwen.gg character page] CentiTr makes Blanc teams without Biscuit safer to run, especially against TVesti.",
+      "requiresTreasure": [
+        "Centi"
+      ]
     },
     {
       "id": "pwc-safer-noah",
@@ -2616,7 +2690,10 @@
         "Little Mermaid"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] CentiTr makes Noah teams without Biscuit safer to run, especially against TVesti."
+      "note": "[Source: prydwen.gg character page] CentiTr makes Noah teams without Biscuit safer to run, especially against TVesti.",
+      "requiresTreasure": [
+        "Centi"
+      ]
     },
     {
       "id": "pwc-safer-anything-else",
@@ -2625,7 +2702,10 @@
         "Centi"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] CentiTr also makes everything else safer."
+      "note": "[Source: prydwen.gg character page] CentiTr also makes everything else safer.",
+      "requiresTreasure": [
+        "Centi"
+      ]
     },
     {
       "id": "pwc-lapluh-pvp-defense-i",
@@ -2651,7 +2731,10 @@
         "Centi"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team uses Siren to stun enemy B1/B2/B3 (if possible depending on speed) and CentiTr to protect the team from early pressure. Substitutions: Trina can be replaced by any Clip RL, such as Rumani."
+      "note": "[Source: prydwen.gg character page] This team uses Siren to stun enemy B1/B2/B3 (if possible depending on speed) and CentiTr to protect the team from early pressure. Substitutions: Trina can be replaced by any Clip RL, such as Rumani.",
+      "requiresTreasure": [
+        "Centi"
+      ]
     },
     {
       "id": "pwc-lapluh-pvp-offense-ii",
@@ -2664,7 +2747,11 @@
         "Helm"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team is the same as Lapluh - PvP Offense I but uses MoranTr to stall instead of Siren to stun. Great against most Anis:S Blanc Biscuit teams. HelmTr + Liberalio are used to make Indom go to P5, who usually has a weaker Burst. Do not use this team if P5 has a strong Burst."
+      "note": "[Source: prydwen.gg character page] This team is the same as Lapluh - PvP Offense I but uses MoranTr to stall instead of Siren to stun. Great against most Anis:S Blanc Biscuit teams. HelmTr + Liberalio are used to make Indom go to P5, who usually has a weaker Burst. Do not use this team if P5 has a strong Burst.",
+      "requiresTreasure": [
+        "Moran",
+        "Helm"
+      ]
     },
     {
       "id": "pwc-so-much-true-damage",
@@ -2677,7 +2764,10 @@
         "Frima"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team features 1 big spec: True DMG. Everyone except Moran in this team deals True Damage, and Frima+Takina will provide up to 230% True Damage buff, enough to make this team viable to a certain level. Still, by using this team, you agree that Moran won't be the one using Burst (aka CDR Totem). If your Moran Treasure is Phase 3, don't waste her like this, replace her with other subs or just replace Frima's Treasure. Substitutions: Moran Treasure Phase 3 can be replaced by either D:Killer Wife or Rouge. Even Volume is fine.Frima Treasure can be replaced by Ada Wong, but we assume you have Ada and boss doesn't require you to heal constantly (Frima Treasure heals a lot). (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] This team features 1 big spec: True DMG. Everyone except Moran in this team deals True Damage, and Frima+Takina will provide up to 230% True Damage buff, enough to make this team viable to a certain level. Still, by using this team, you agree that Moran won't be the one using Burst (aka CDR Totem). If your Moran Treasure is Phase 3, don't waste her like this, replace her with other subs or just replace Frima's Treasure. Substitutions: Moran Treasure Phase 3 can be replaced by either D:Killer Wife or Rouge. Even Volume is fine.Frima Treasure can be replaced by Ada Wong, but we assume you have Ada and boss doesn't require you to heal constantly (Frima Treasure heals a lot). (속성: Iron)",
+      "requiresTreasure": [
+        "Moran"
+      ]
     },
     {
       "id": "pwc-campaign-coper",
@@ -2703,7 +2793,10 @@
         "Ada Wong"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both Laplace Treasure and Ada Wong, which means this team is a 2 True DMG B3 Hypercarry comp. Ada Wong provides healing to B3 and buffs the B3 vigorously. Substitutions: Liter can be replaced by Moran for increased survivability. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both Laplace Treasure and Ada Wong, which means this team is a 2 True DMG B3 Hypercarry comp. Ada Wong provides healing to B3 and buffs the B3 vigorously. Substitutions: Liter can be replaced by Moran for increased survivability. (속성: Iron)",
+      "requiresTreasure": [
+        "Laplace"
+      ]
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-ii",
@@ -2716,7 +2809,10 @@
         "Privaty"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both DPS Takina and Chisato as hypercarries. Maxwell and PrivatyTr provide the necessary buffs for them to perform. Substitutions: Maxwell and PrivatyTr can be replaced by other buffers/debuffers. ATK is preferred due to how much True Damage Takina can provide (despite downtime). Plus, Takina has no ATK buff.Liter can be replaced by Moran for increased survivability. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both DPS Takina and Chisato as hypercarries. Maxwell and PrivatyTr provide the necessary buffs for them to perform. Substitutions: Maxwell and PrivatyTr can be replaced by other buffers/debuffers. ATK is preferred due to how much True Damage Takina can provide (despite downtime). Plus, Takina has no ATK buff.Liter can be replaced by Moran for increased survivability. (속성: Iron)",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-iii",
@@ -2755,7 +2851,10 @@
         "Jackal"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team is for SpA Attack only. Chisato can cripple Moran with True DMG when assisted by Blanc. Chisato can also block HelmTr's Burst (very common with Moran). Make sure Chisato is linked, and do not use B3 that give themselves a higher ATK that it surpasses Chisato's, such as Liberalio and potentially SWHA. Substitutions: You don't need to use Jackal or the B3 mentioned, but you should protect Chisato and/or ideally use Blanc to counter Damage Reduction. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] This team is for SpA Attack only. Chisato can cripple Moran with True DMG when assisted by Blanc. Chisato can also block HelmTr's Burst (very common with Moran). Make sure Chisato is linked, and do not use B3 that give themselves a higher ATK that it surpasses Chisato's, such as Liberalio and potentially SWHA. Substitutions: You don't need to use Jackal or the B3 mentioned, but you should protect Chisato and/or ideally use Blanc to counter Damage Reduction. (속성: Iron)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-v",
@@ -2768,7 +2867,10 @@
         "Privaty"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] One of the best Iron-weak SR True DMG comps featuring Ada buffing Chisato while dishing out modest damage as well as PrivatyTr buffing the whole team. Takina must be DPS-invested. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] One of the best Iron-weak SR True DMG comps featuring Ada buffing Chisato while dishing out modest damage as well as PrivatyTr buffing the whole team. Takina must be DPS-invested. (속성: Iron)",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-zap-those-raptures-with-the-electric-girls",
@@ -2860,7 +2962,10 @@
         "Privaty"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] SCindy and RRH are the best Iron DPS. Substitutions: Mast: Romantic Maid can be replaced by Privaty (Treasure). (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] SCindy and RRH are the best Iron DPS. Substitutions: Mast: Romantic Maid can be replaced by Privaty (Treasure). (속성: Iron)",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-beautiful-inheritance-ii",
@@ -2936,7 +3041,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Best Fire team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.B1(CDR) can be Red Hood as solo B1, Liter, D:Killer Wife or Rapi: Red Hood.Alice or Rapi Red Hood can be replaced by Fire Asuka. (속성: Fire)"
+      "note": "[Source: prydwen.gg character page] Best Fire team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.B1(CDR) can be Red Hood as solo B1, Liter, D:Killer Wife or Rapi: Red Hood.Alice or Rapi Red Hood can be replaced by Fire Asuka. (속성: Fire)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-wet-land",
@@ -2948,7 +3056,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Best Water team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Rapi, Asuka, or can be someone else as well depending on stage. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] Best Water team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Rapi, Asuka, or can be someone else as well depending on stage. (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-thunderstorm-ahead",
@@ -2960,7 +3071,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Best Electric team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Cinderella, Anis: Sparkling Summer, Asuka, or can be someone else as well depending on stage. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] Best Electric team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Cinderella, Anis: Sparkling Summer, Asuka, or can be someone else as well depending on stage. (속성: Electric)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-metal-crown-solid",
@@ -2973,7 +3087,10 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] Best Iron team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.B1(CDR) can be Red Hood as solo B1, Liter, D:Killer Wife or Rapi: Red Hood.Rapi Red Hood can be replaced by Alice, Fire Asuka. Laplace Treasure or Maxwell. (속성: Iron)",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-all-in-on-alice-please",
@@ -3175,7 +3292,10 @@
         "Helm"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] Generic Neutral team that uses Cinderella instead of Raven or MiharaBC. HelmTr provides necessary burst gen and boosts team damage, whereas Nayuta gives ATK that pairs nicely with Diesel and helps clear projectiles. Liter is used for her high ATK buff that pairs well with Diesel, but you can also use Rouge. Substitutions: You can use other B1 CDR instead of Liter.You can also use other offense-buffing B2 instead of Nayuta, preferably one with ATK because Diesel loves one.You can replace HelmTr with an off-burst DPS or other supports like Ada Wong, who might actually be better than HelmTr because Diesel's ATK DMG is diluted."
+      "note": "[Source: prydwen.gg character page] Generic Neutral team that uses Cinderella instead of Raven or MiharaBC. HelmTr provides necessary burst gen and boosts team damage, whereas Nayuta gives ATK that pairs nicely with Diesel and helps clear projectiles. Liter is used for her high ATK buff that pairs well with Diesel, but you can also use Rouge. Substitutions: You can use other B1 CDR instead of Liter.You can also use other offense-buffing B2 instead of Nayuta, preferably one with ATK because Diesel loves one.You can replace HelmTr with an off-burst DPS or other supports like Ada Wong, who might actually be better than HelmTr because Diesel's ATK DMG is diluted.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-shotgun-team-1-generic",
@@ -3266,7 +3386,10 @@
         "Drake"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This Brilliant SG Team is a classic that can deal the most damage without using Blanc-Noir or Tia-Naga. Here, Drake can be used as Off-Burst as well as the Main Burst, depending on whether she is Phase 2 or Phase 3 Treasure.If a healer is needed, replace Viper Treasure with a healer (if it is Fire-Weak) or Drake/Soda: Twinkling Bunny (if it is Electric-Weak) or, better yet, change the team entirely and use our other recommended teams. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] This Brilliant SG Team is a classic that can deal the most damage without using Blanc-Noir or Tia-Naga. Here, Drake can be used as Off-Burst as well as the Main Burst, depending on whether she is Phase 2 or Phase 3 Treasure.If a healer is needed, replace Viper Treasure with a healer (if it is Fire-Weak) or Drake/Soda: Twinkling Bunny (if it is Electric-Weak) or, better yet, change the team entirely and use our other recommended teams. (속성: Water)",
+      "requiresTreasure": [
+        "Viper"
+      ]
     },
     {
       "id": "pwc-another-sg-team-ft-draket",
@@ -3344,7 +3467,10 @@
         "Jackal"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] A classic nuke team, but this time with new units running the show! Scarlet gets buffed by Trina, while Pepper softens the Highest ATK unit. Scarlet, Drake (Treasure), and Pepper will also provide immense frontline pressure, making this a very hard to deal with team without using important, high tier units."
+      "note": "[Source: prydwen.gg character page] A classic nuke team, but this time with new units running the show! Scarlet gets buffed by Trina, while Pepper softens the Highest ATK unit. Scarlet, Drake (Treasure), and Pepper will also provide immense frontline pressure, making this a very hard to deal with team without using important, high tier units.",
+      "requiresTreasure": [
+        "Drake"
+      ]
     },
     {
       "id": "pwc-3rl-nuke-assist",
@@ -3358,7 +3484,10 @@
       ],
       "mode": "pvp",
       "note": "[Source: prydwen.gg character page] A classic nuke team, where Drake (Treasure) is there to simply provide Burst Generation and slight buffs. Using Maiden or Maid-Priv as main B3 will allow them to deal insane damage once they reach full Burst thanks to Drake (Treasure)’s buffs to SGs.",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "requiresTreasure": [
+        "Drake"
+      ]
     },
     {
       "id": "pwc-wind-weak-sr-angle-1",
@@ -3383,7 +3512,11 @@
         "Privaty"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A variant of the Siren + Bursting Velvet team that usually uses 3 supports. We replace 1 of them in hopes that E.H.'s personal damage can make up for Siren & Velvet's DPS loss. You can also use her as a replacement if you lack supports. Here, E.H. is generously ATK DMG-buffed by Siren, HelmTr, and PrivatyTr (or Crown off-burst if you use her). Substitutions: PrivatyTr or HelmTr can be replaced by Crown off-burst. Do not use Label B1 here because E.H. already has too much ATK buff. Ideally, the team has ≥1 burst gen support (spammable SR/RL, MG for Siren, or special kits). (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] A variant of the Siren + Bursting Velvet team that usually uses 3 supports. We replace 1 of them in hopes that E.H.'s personal damage can make up for Siren & Velvet's DPS loss. You can also use her as a replacement if you lack supports. Here, E.H. is generously ATK DMG-buffed by Siren, HelmTr, and PrivatyTr (or Crown off-burst if you use her). Substitutions: PrivatyTr or HelmTr can be replaced by Crown off-burst. Do not use Label B1 here because E.H. already has too much ATK buff. Ideally, the team has ≥1 burst gen support (spammable SR/RL, MG for Siren, or special kits). (속성: Wind)",
+      "requiresTreasure": [
+        "Helm",
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-the-boring-sanis-team",
@@ -3460,7 +3593,10 @@
         "Elegg: Boom and Shock"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] In this team, Doro acts as our primary DPS, HelmTr as our secondary DPS, and SElegg as our off-burst support + DPS. HelmTr provides the necessary healing + burst gen.Only use against Water-weak. Good for Harvester AI because SElegg can continually kill the rocks and mobs, allowing the team to focus-fire on the boss's core all the time. Substitutions: HelmTr can be replaced with XLud. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] In this team, Doro acts as our primary DPS, HelmTr as our secondary DPS, and SElegg as our off-burst support + DPS. HelmTr provides the necessary healing + burst gen.Only use against Water-weak. Good for Harvester AI because SElegg can continually kill the rocks and mobs, allowing the team to focus-fire on the boss's core all the time. Substitutions: HelmTr can be replaced with XLud. (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-doro-s-redemption-arc-ii-ft-selegg",
@@ -3473,7 +3609,10 @@
         "Elegg: Boom and Shock"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] A Siren-and-Crown-less variant of the first team, featuring Liter and Grave. In this comp, Liter synergizes well with HelmTr and SElegg, providing ATK buff before their Burst Skill(s)—which amplifies their damage. Doro also gains extra Ammo and Pierce DMG from Grave and Liter. Grave and Liter also work together to achieve/abuse 8.2s CDR, allowing for a total of 15 Full Burst rotations.Only use against Water-weak. Substitutions: HelmTr can be replaced with XLud. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] A Siren-and-Crown-less variant of the first team, featuring Liter and Grave. In this comp, Liter synergizes well with HelmTr and SElegg, providing ATK buff before their Burst Skill(s)—which amplifies their damage. Doro also gains extra Ammo and Pierce DMG from Grave and Liter. Grave and Liter also work together to achieve/abuse 8.2s CDR, allowing for a total of 15 Full Burst rotations.Only use against Water-weak. Substitutions: HelmTr can be replaced with XLud. (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-you-are-doroless-ft-selegg",
@@ -3486,7 +3625,10 @@
         "Elegg: Boom and Shock"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] If you don't have Doro, or your Doro is unbuilt, and your HelmTr and XLud are omega-strong, this team might be more effective for you. In this team, we don't have \"carry DPS\", but we stack buffs/debuffs from HelmTr, XLud, and SElegg to achieve greatness and higher total team damage. XLud provides Damage Taken, which amplifies the whole team's damage, including SElegg's. This team might only be effective against bosses with core due to XLud's kit being reliant on it. Substitutions: Siren and Crown can be replaced with Liter and Grave respectively; works the same way as with Doro's alternative team. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] If you don't have Doro, or your Doro is unbuilt, and your HelmTr and XLud are omega-strong, this team might be more effective for you. In this team, we don't have \"carry DPS\", but we stack buffs/debuffs from HelmTr, XLud, and SElegg to achieve greatness and higher total team damage. XLud provides Damage Taken, which amplifies the whole team's damage, including SElegg's. This team might only be effective against bosses with core due to XLud's kit being reliant on it. Substitutions: Siren and Crown can be replaced with Liter and Grave respectively; works the same way as with Doro's alternative team. (속성: Water)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-basic-duo-teams",
@@ -3648,7 +3790,10 @@
         "Takina Inoue"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Flora gives True DMG, so why not pair her with True DMG DPS? Substitutions: if the boss heavily favors Pierce, replace Chisato with Ada Wong to hyperbuff Laplace (Treasure). If you don't have Laplace (Treasure), you can swap in SWHA or Helm (Treasure). (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] Flora gives True DMG, so why not pair her with True DMG DPS? Substitutions: if the boss heavily favors Pierce, replace Chisato with Ada Wong to hyperbuff Laplace (Treasure). If you don't have Laplace (Treasure), you can swap in SWHA or Helm (Treasure). (속성: Iron)",
+      "requiresTreasure": [
+        "Laplace"
+      ]
     },
     {
       "id": "pwc-guernsey-lily",
@@ -3700,7 +3845,10 @@
         "Maxwell: Ordinary Mechanic"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] The best Missilis Tower after Lapluh, Mom, and Flora (Treasure) arrive. Substitutions: Any B3 can be replaced by Neon: Vision Eye or Quency: Escape Queen."
+      "note": "[Source: prydwen.gg character page] The best Missilis Tower after Lapluh, Mom, and Flora (Treasure) arrive. Substitutions: Any B3 can be replaced by Neon: Vision Eye or Quency: Escape Queen.",
+      "requiresTreasure": [
+        "Flora"
+      ]
     },
     {
       "id": "pwc-missilis-tower-buster-ii",
@@ -3905,7 +4053,10 @@
         "Helm"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Helm (Treasure) allows for a lot of extra Burst generation that would otherwise not be present in most team comps in Campaign! She is a huge help and the best off Burst unit to use over Naga in the FLEX slot."
+      "note": "[Source: prydwen.gg character page] Helm (Treasure) allows for a lot of extra Burst generation that would otherwise not be present in most team comps in Campaign! She is a huge help and the best off Burst unit to use over Naga in the FLEX slot.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-anomaly-interception-general-comp",
@@ -3929,7 +4080,10 @@
         "Helm"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] Redefining Burst generation in Elysion Tower, Helm (Treasure) really does it all! She can even act alongside Mast Anchor to provide immense Heal for the team as Rapi: Red Hood destroys the enemy raptures."
+      "note": "[Source: prydwen.gg character page] Redefining Burst generation in Elysion Tower, Helm (Treasure) really does it all! She can even act alongside Mast Anchor to provide immense Heal for the team as Rapi: Red Hood destroys the enemy raptures.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-can-you-get-past-it",
@@ -3993,7 +4147,10 @@
         "Helm"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] This team features Jill empowered by a Sustained DMG-focused buffer. In this team, Raven acts as a secondary DPS good for neutral, and Helm Treasure provides the team with the necessary burst gen. This team is logically only used as one of the bottom 3 teams in Electric SR. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] This team features Jill empowered by a Sustained DMG-focused buffer. In this team, Raven acts as a secondary DPS good for neutral, and Helm Treasure provides the team with the necessary burst gen. This team is logically only used as one of the bottom 3 teams in Electric SR. (속성: Electric)",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-general-bis-k-team",
@@ -4163,7 +4320,11 @@
         "Helm"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Use this team on Attack to demolish Biscuit teams that can be cheesed (not activated by avoiding damage to below 50%), unprotected Moran teams, and weaker Indom match-ups. Substitutions: HelmTr and CentiTr can be replaced as long as burst gen requirement, usually 2RL, is satisfied."
+      "note": "[Source: prydwen.gg character page] Use this team on Attack to demolish Biscuit teams that can be cheesed (not activated by avoiding damage to below 50%), unprotected Moran teams, and weaker Indom match-ups. Substitutions: HelmTr and CentiTr can be replaced as long as burst gen requirement, usually 2RL, is satisfied.",
+      "requiresTreasure": [
+        "Helm",
+        "Centi"
+      ]
     },
     {
       "id": "pwc-the-immune-hero",
@@ -4176,7 +4337,10 @@
         "Anis: Star"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Use this team on Attack to demolish Biscuit teams that can be cheesed (not activated by avoiding damage to below 50%), unprotected Moran teams, and weaker Indom match-ups. Substitutions: Anis: Star and HelmTr can be replaced as long as burst gen requirement, usually 2RL, is satisfied."
+      "note": "[Source: prydwen.gg character page] Use this team on Attack to demolish Biscuit teams that can be cheesed (not activated by avoiding damage to below 50%), unprotected Moran teams, and weaker Indom match-ups. Substitutions: Anis: Star and HelmTr can be replaced as long as burst gen requirement, usually 2RL, is satisfied.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-bonk-master",
@@ -4390,7 +4554,10 @@
         "Mana"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team utilizes Damage Reduction to its maximum potential by combining units who can trigger Nero's passive and benefit from her \"payback\". In this 3 RL comp, Helm (Treasure)r, Rapunzel, and Mana continually heal the team while enjoying up to ~75% damage reduction buffs (dependent on investments, doll, and cube), whereas Moran and Nero tank for them. Nero can also gain ≥100% damage reduction here at maximum investments, meaning she will not take any damage at all for 10s after Full Burst! Not to mention, you are well-equipped with double revives, two Full Burst possibilities, charge speed bonus, and 10s lifesteal. That is some insane defense right there.Counterable by Scarlet stall teams or Snow Whiteift 2 RL teams involving Blanc + Rosanna to dispel Mana and counteract Damage Taken. Variants of this team include repositioning some units to let Rapunzel be the first B1 or to let Nero be the main tanker. Do note that Moran's Attract activates first, so she will be the one taunting primary attacks and Nero the secondary attacks as decoy (for Anis: Sparkling Summer's Ray, etc)."
+      "note": "[Source: prydwen.gg character page] This team utilizes Damage Reduction to its maximum potential by combining units who can trigger Nero's passive and benefit from her \"payback\". In this 3 RL comp, Helm (Treasure)r, Rapunzel, and Mana continually heal the team while enjoying up to ~75% damage reduction buffs (dependent on investments, doll, and cube), whereas Moran and Nero tank for them. Nero can also gain ≥100% damage reduction here at maximum investments, meaning she will not take any damage at all for 10s after Full Burst! Not to mention, you are well-equipped with double revives, two Full Burst possibilities, charge speed bonus, and 10s lifesteal. That is some insane defense right there.Counterable by Scarlet stall teams or Snow Whiteift 2 RL teams involving Blanc + Rosanna to dispel Mana and counteract Damage Taken. Variants of this team include repositioning some units to let Rapunzel be the first B1 or to let Nero be the main tanker. Do note that Moran's Attract activates first, so she will be the one taunting primary attacks and Nero the secondary attacks as decoy (for Anis: Sparkling Summer's Ray, etc).",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-admire-captain-s-fweeeet",
@@ -4403,7 +4570,11 @@
         "Helm: Aquamarine"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team uses MirandaTr's guaranteed crit to buff SMarci's S1 Nuke, together with Nayuta's and HelmTr's Burst Gen/ATK DMG (which SMarci lacks in buffing department) and SHelm's Damage Taken + CDR. Substitutions: Nayuta can be replaced by other B2 buffers, such as Ade: Agent Bunny. Helm: Aquamarine can be replaced by any off-burst CDR, but the team will be noticeably weaker. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] This team uses MirandaTr's guaranteed crit to buff SMarci's S1 Nuke, together with Nayuta's and HelmTr's Burst Gen/ATK DMG (which SMarci lacks in buffing department) and SHelm's Damage Taken + CDR. Substitutions: Nayuta can be replaced by other B2 buffers, such as Ade: Agent Bunny. Helm: Aquamarine can be replaced by any off-burst CDR, but the team will be noticeably weaker. (속성: Iron)",
+      "requiresTreasure": [
+        "Miranda",
+        "Helm"
+      ]
     },
     {
       "id": "pwc-red-wolf-s-fweeeet",
@@ -4729,7 +4900,10 @@
         "Mihara: Bonding Chain"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] In this team, the main focus is to kill Mihara: Bonding Chain early on and just surviving/stalling until her debuff slowly kills the enemies. You can choose to revive her so she can benefit from offensive buffs, either immediately with Mana or with Rapunzel in the second rotation.Remember, her off-burst damage is plenty good already! But, you can also remove Helm Treasure/Quiry/Mana and avoid placing B3 to her left if you want Mihara: Bonding Chain to Burst for more damage. Finally, you can place Mihara: Bonding Chain in P1 or P5 depending on whether you're attacking/defending and the team setups (read more: PvP targeting - https://www.prydwen.gg/nikke/guides/pvp-mechanics/) and flip this team accordingly. Substitutions: Helm Treasure can be replaced by Quiry, Rapunzel can be replaced by Mana."
+      "note": "[Source: prydwen.gg character page] In this team, the main focus is to kill Mihara: Bonding Chain early on and just surviving/stalling until her debuff slowly kills the enemies. You can choose to revive her so she can benefit from offensive buffs, either immediately with Mana or with Rapunzel in the second rotation.Remember, her off-burst damage is plenty good already! But, you can also remove Helm Treasure/Quiry/Mana and avoid placing B3 to her left if you want Mihara: Bonding Chain to Burst for more damage. Finally, you can place Mihara: Bonding Chain in P1 or P5 depending on whether you're attacking/defending and the team setups (read more: PvP targeting - https://www.prydwen.gg/nikke/guides/pvp-mechanics/) and flip this team accordingly. Substitutions: Helm Treasure can be replaced by Quiry, Rapunzel can be replaced by Mana.",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-rise-from-the-dead",
@@ -4742,7 +4916,10 @@
         "Noir"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Did we mention earlier that Mihara: Bonding Chain's buffs deactivate when she is dead? So, why not revive her instead and let her enjoy that juicy Sustained DMG▲ buff (and Burst Skill DMG if desired)? That's why we are introducing \"the revival team\". In this team, we kill Mihara: Bonding ChainBC and revive her with Mana and Rapu, and then use her B3 (because now enemies have 20 stacks of Ensnaring Chains, and we want to turn those into Dragging Chains!). In this example, we add Blanc to push this team further with Indomitability. You can use Noah if you want, but she might taunt hitters away, and problem ensues when Mihara: Bonding Chain doesn't die fast enough.Do note when using Mana: she is B3 and that means Mihara: Bonding Chain, if placed to her right, will not use her Burst Skill. However, this allows for creative positioning and usage of other Burst Skills if desired. Rapunzel is B1, so she herself does not impede her Burst Skill usage. Others might, though.Drake Treasure and Noir/Pepper are just placeholders that can be replaced by any units for faster or slower generation (please let Mihara: Bonding Chain die first and get revived before she gets indom-ed, otherwise no max stack debuffs on enemies). Faster is not always better. Substitutions: Rapunzel can be replaced with Mana. Drake-Treasure, Noir can be replaced by any unit for burst generation."
+      "note": "[Source: prydwen.gg character page] Did we mention earlier that Mihara: Bonding Chain's buffs deactivate when she is dead? So, why not revive her instead and let her enjoy that juicy Sustained DMG▲ buff (and Burst Skill DMG if desired)? That's why we are introducing \"the revival team\". In this team, we kill Mihara: Bonding ChainBC and revive her with Mana and Rapu, and then use her B3 (because now enemies have 20 stacks of Ensnaring Chains, and we want to turn those into Dragging Chains!). In this example, we add Blanc to push this team further with Indomitability. You can use Noah if you want, but she might taunt hitters away, and problem ensues when Mihara: Bonding Chain doesn't die fast enough.Do note when using Mana: she is B3 and that means Mihara: Bonding Chain, if placed to her right, will not use her Burst Skill. However, this allows for creative positioning and usage of other Burst Skills if desired. Rapunzel is B1, so she herself does not impede her Burst Skill usage. Others might, though.Drake Treasure and Noir/Pepper are just placeholders that can be replaced by any units for faster or slower generation (please let Mihara: Bonding Chain die first and get revived before she gets indom-ed, otherwise no max stack debuffs on enemies). Faster is not always better. Substitutions: Rapunzel can be replaced with Mana. Drake-Treasure, Noir can be replaced by any unit for burst generation.",
+      "requiresTreasure": [
+        "Drake"
+      ]
     },
     {
       "id": "pwc-rise-from-the-dead-adaptive-speed",
@@ -4963,7 +5140,10 @@
         "Liter"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team is more of a Museum team rather than a Solo Raid team, although you can use it in Solo Raid if you lack other units. It utilizes ZweiTr's lingering Crit buffs and combines them with Liter's huge ATK to boost Cindy's Burst Skill. The rotations follow ZweiTr-Mint-SWHA and Liter-Mint-Cindy in a tight tempo, requiring pre-charges to maximize rotation speed. This will allow you to get 14 Full Bursts. You also need to pre-charge Mint and release Full Charge after she Bursts but before Cindy Bursts, so her S1 buffs her. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] This team is more of a Museum team rather than a Solo Raid team, although you can use it in Solo Raid if you lack other units. It utilizes ZweiTr's lingering Crit buffs and combines them with Liter's huge ATK to boost Cindy's Burst Skill. The rotations follow ZweiTr-Mint-SWHA and Liter-Mint-Cindy in a tight tempo, requiring pre-charges to maximize rotation speed. This will allow you to get 14 Full Bursts. You also need to pre-charge Mint and release Full Charge after she Bursts but before Cindy Bursts, so her S1 buffs her. (속성: Electric)",
+      "requiresTreasure": [
+        "Zwei"
+      ]
     },
     {
       "id": "pwc-technical-ravenry",
@@ -5110,7 +5290,10 @@
         "Moran"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] The new BiS team against Black Snake. MoranT allows easier time tanking the boss attacks while HelmT heal back any damage done, and SwHA gets the job done. For the clones by killing one and stalling the kill on the 2nd one till HelmT burst is available to tank the spit is possible. Substitutions: Privaty Treasure may be replaced with Mast Romantic Maid, Can run Maiduo instead if no Crown. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] The new BiS team against Black Snake. MoranT allows easier time tanking the boss attacks while HelmT heal back any damage done, and SwHA gets the job done. For the clones by killing one and stalling the kill on the 2nd one till HelmT burst is available to tank the spit is possible. Substitutions: Privaty Treasure may be replaced with Mast Romantic Maid, Can run Maiduo instead if no Crown. (속성: Water)",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-ziz-wipe-vs-a-moran",
@@ -5222,7 +5405,10 @@
         "Privaty"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] It's a very easy to understand team: You deal big AoE damage, you kill everything on sight. Anis buffs both Neon and Rapi who have big explosion damage. Rapi and Neon are both excel in AoE and Single target pinning down. Very easy to use team Substitutions: Privaty Treasure can be replaced by M.Mast or even Snow White: Heavy Arm for faster burst gen"
+      "note": "[Source: prydwen.gg character page] It's a very easy to understand team: You deal big AoE damage, you kill everything on sight. Anis buffs both Neon and Rapi who have big explosion damage. Rapi and Neon are both excel in AoE and Single target pinning down. Very easy to use team Substitutions: Privaty Treasure can be replaced by M.Mast or even Snow White: Heavy Arm for faster burst gen",
+      "requiresTreasure": [
+        "Privaty"
+      ]
     },
     {
       "id": "pwc-neon-having-the-maids-for-herself",
@@ -5246,7 +5432,10 @@
         "Anis: Star"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Neon has basically replaced Cindy in most if not all Campaign bosses (or at least be used together). Attaining lower CP clears have never been so satisfying. She has better burst gen, can kill projectiles with basic attack, and scales better with existing meta units. Substitutions: MoranTr is used for Damage Reduction alongside Anis: Star for her heal. If Damage Reduction is not needed, remove MoranTr and use an extra buffer. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] Neon has basically replaced Cindy in most if not all Campaign bosses (or at least be used together). Attaining lower CP clears have never been so satisfying. She has better burst gen, can kill projectiles with basic attack, and scales better with existing meta units. Substitutions: MoranTr is used for Damage Reduction alongside Anis: Star for her heal. If Damage Reduction is not needed, remove MoranTr and use an extra buffer. (속성: Electric)",
+      "requiresTreasure": [
+        "Moran"
+      ]
     },
     {
       "id": "pwc-neon-explodes-mobs-in-missilis-tower",
@@ -5558,7 +5747,10 @@
       ],
       "mode": "raid",
       "note": "[Source: prydwen.gg character page] For AI Ultra, you can run this team because Raven deals very good damage herself, and even better when you can destroy those parts. HelmTr can be replaced with Mast Maid for better buffing. (속성: Iron)",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-sisters-of-dot",
@@ -6101,7 +6293,10 @@
         "Jackal"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team needs immense investment to work properly as a 2RL hyper-fast nuke. Both Scarlet and Rosanna need to be SR15 to match Helm Treasure’s ATK stat. Both of them, in fact, need to beat Helm’s ATK stat so that they can get the Jackal link over Helm. This way, Rosanna and Scarlet are now ready to devastate the whole enemy team!"
+      "note": "[Source: prydwen.gg character page] This team needs immense investment to work properly as a 2RL hyper-fast nuke. Both Scarlet and Rosanna need to be SR15 to match Helm Treasure’s ATK stat. Both of them, in fact, need to beat Helm’s ATK stat so that they can get the Jackal link over Helm. This way, Rosanna and Scarlet are now ready to devastate the whole enemy team!",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pwc-god-comp",
