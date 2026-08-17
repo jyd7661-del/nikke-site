@@ -16,6 +16,7 @@ import {
 } from '@/lib/dex';
 import { nikkeImageUrl } from '@/lib/nikkeImage';
 import DexSkillList from '@/components/DexSkillList';
+import DexTierPanel from '@/components/DexTierPanel';
 
 export function generateStaticParams() {
   return CHARACTERS.map((c) => ({ id: c.id }));
@@ -121,11 +122,14 @@ export default function NikkeDetailPage({ params }) {
       {/* 티어 — prydwen 티어리스트 값 그대로 */}
       <section className="mb-8">
         <h2 className="text-lg font-bold text-white mb-3">모드별 티어</h2>
-        <div className="flex gap-3">
-          <TierBadge label="캠페인" tier={t.story} />
-          <TierBadge label="보스전" tier={t.bossing} />
-          <TierBadge label="PvP" tier={t.pvp} />
-        </div>
+        {/* 애장품 유무를 토글로 나눠 본다 — 도감은 서버 컴포넌트라 상태를 못 쓰므로
+            이 절만 클라이언트 컴포넌트로 뺐다(components/DexTierPanel.js).
+            TierBadge를 props로 넘겨 이 페이지의 배지 모양을 그대로 쓴다. */}
+        <DexTierPanel
+          tiers={t}
+          treasureTiers={invNote?.treasureTiers || null}
+          treasureTiersNote={invNote?.treasureTiersNote || null}
+        />
         {tags.length > 0 && (
           <ul className="mt-3 text-sm text-amber-400/90 space-y-1">
             {tags.map((tag) => TAG_KR[tag] && <li key={tag}>· {TAG_KR[tag]}</li>)}
