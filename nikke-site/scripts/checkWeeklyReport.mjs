@@ -42,7 +42,11 @@ if (!fs.existsSync(DIR)) {
 }
 
 const reports = fs.readdirSync(DIR)
-  .filter((f) => /^\d{4}-\d{2}-\d{2}\.md$/.test(f))
+  // `-auto` 접미사도 센다. 2026-08-18에 주간 점검이 코드(scripts/weeklyCheck.mjs)로 바뀌면서
+  // 파일명이 `YYYY-MM-DD-auto.md`가 됐는데, 이 필터가 `YYYY-MM-DD.md`만 보고 있어서
+  // **자동 보고서가 생겨도 감지기가 못 봤다.** 예약이 도는데 "안 돈다"고 나오는 셈이라,
+  // 감지기를 믿을 수 없게 만드는 종류의 버그다.
+  .filter((f) => /^\d{4}-\d{2}-\d{2}(-auto)?\.md$/.test(f))
   .map((f) => f.slice(0, 10))
   .sort();
 
@@ -69,14 +73,27 @@ if (!last) {
   const stale = days > STALE_DAYS;
   console.log(`   마지막 보고서 ${last} (${days}일 전)` + (stale ? '  ⚠️ 예약 작업이 멈췄을 수 있습니다' : ''));
   if (stale) {
-    console.log('   → Cowork(claude.ai)의 예약 작업 `nikke-site-data-research` 상태를 확인하세요.');
-    console.log('     클로드 코드에서는 그 작업이 보이지 않습니다(예약 실행 기능이 없음).');
+    // 2026-08-18에 실행 위치를 이 PC의 작업 스케줄러로 옮겼다(경위는 docs/weekly-research.md).
+    console.log('   → 이 PC의 작업 스케줄러 `니케 주간 점검` 상태를 확인하세요:');
+    console.log('     schtasks /Query /TN "니케 주간 점검" /FO LIST /V');
+    console.log('     PC가 그 시각에 꺼져 있었으면 실행이 건너뛰어집니다.');
   }
 }
 if (pending.length) {
   console.log(`   ⚠️ 미처리 보고서 ${pending.length}건: ${pending.join(', ')}`);
-  console.log('      1절(A등급)은 이미 파일에 반영돼 있으니 diff를 보고 커밋하고,');
-  console.log('      2~6절(B등급 제안)은 반영 여부를 정한 뒤 reports/reviewed.json에 날짜를 추가하세요.');
+  // 보고서가 두 종류다. 안내를 섞으면 엉뚱한 절차를 찾게 되므로 나눠서 말한다.
+  //   `-auto`  scripts/weeklyCheck.mjs 가 만든 자동 점검. 데이터를 고치지 않고 찾아내기만 한다
+  //   접미사 없음  예전 AI 세션 보고서. 1절은 이미 파일에 반영돼 있어 diff 확인이 필요했다
+  const autos = pending.filter((d) => fs.existsSync(path.join(DIR, `${d}-auto.md`)));
+  const manual = pending.filter((d) => !autos.includes(d));
+  if (autos.length) {
+    console.log(`      · 자동 점검 ${autos.join(', ')} — 데이터는 안 건드렸습니다. 보고서를 읽고`);
+    console.log('        반영할 것을 정한 뒤 reports/reviewed.json 에 날짜를 추가하세요.');
+  }
+  if (manual.length) {
+    console.log(`      · AI 조사 ${manual.join(', ')} — 1절(A등급)은 이미 파일에 반영돼 있으니 diff를 보고`);
+    console.log('        커밋하고, 2~6절(제안)은 반영 여부를 정한 뒤 reviewed.json 에 날짜를 추가하세요.');
+  }
 } else {
   console.log('   미처리 보고서 없음');
 }
