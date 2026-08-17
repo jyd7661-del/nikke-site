@@ -1,0 +1,27 @@
+# 1차 출처 6곳이 GitHub Actions 러너에서 열리는지 확인한다.
+#
+# 왜 이것부터 만드는가 (2026-08-17):
+#   주간 조사를 클라우드 routine으로 옮겼다가, 그 샌드박스가 외부 웹을 전면 차단해서
+#   실패했다. 스크래핑이 전부인 작업을 옮기면서 "새 환경에서 그 사이트가 열리나"를
+#   확인하지 않은 것이 원인이었다. 그래서 이번에는 그 확인부터 한다.
+#
+#   데이터센터 IP를 차단하는 사이트가 흔하므로(prydwen은 이미 node fetch를 403으로 막는다)
+#   여기서 6/6이 나오지 않으면 GitHub Actions로 옮기면 안 된다.
+name: 출처 접근 확인
+
+on:
+  workflow_dispatch:        # 손으로 돌려본다
+  schedule:
+    - cron: '0 1 * * 1'     # 월요일 01:00 UTC (10:00 KST) — 주간 조사와 같은 시각
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: 출처 접근 확인
+        working-directory: nikke-site
+        run: node scripts/probeSources.mjs
