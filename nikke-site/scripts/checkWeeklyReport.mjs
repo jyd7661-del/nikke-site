@@ -52,7 +52,15 @@ const reviewed = fs.existsSync(MARKER)
 
 const pending = reports.filter((d) => !reviewed.includes(d));
 const last = reports[reports.length - 1];
-const days = last ? Math.floor((Date.now() - Date.parse(last + 'T00:00:00Z')) / 86400000) : null;
+// ⚠️ 보고서 날짜를 UTC 자정으로 파싱하면 안 된다. 파일명은 **로컬 날짜**로 붙는데
+//    (weeklyCheck.mjs 참고) 여기서 UTC로 재면 한국 기준 최대 9시간이 어긋나 경과일이
+//    하루 밀린다. 양쪽 다 로컬 자정 기준으로 맞춘다.
+const localMidnight = (ymd) => {
+  const [y, m, d] = ymd.split('-').map(Number);
+  return new Date(y, m - 1, d).getTime();
+};
+const todayMidnight = (() => { const n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()).getTime(); })();
+const days = last ? Math.round((todayMidnight - localMidnight(last)) / 86400000) : null;
 
 console.log('■ 주간 조사 예약 작업');
 if (!last) {

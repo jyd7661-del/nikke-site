@@ -201,7 +201,12 @@ if (!verifyOk || !/ERROR 0/.test(verifyOut)) {
 }
 
 // ── 보고 ───────────────────────────────────────────────────────────────────
-const stamp = today.toISOString().slice(0, 10);
+// ⚠️ toISOString()은 **UTC 기준**이라 쓰면 안 된다. 한국(UTC+9)에서 오전 9시 이전에 돌면
+//    전날 날짜가 찍힌다. 실제로 2026-08-18 08:43에 실행했는데 파일명이 2026-08-17로 나왔다.
+//    예약이 월요일 10:00이라 평소엔 안 드러나지만, 손으로 돌리거나 실행이 밀리면 바로 어긋난다.
+//    보고서 날짜는 사람이 보는 날짜여야 하므로 **로컬 시간**으로 만든다.
+const pad = (n) => String(n).padStart(2, '0');
+const stamp = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
 const lines = [
   `# 주간 자동 점검 (${stamp})`,
   '',
