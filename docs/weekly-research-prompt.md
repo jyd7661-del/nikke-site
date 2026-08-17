@@ -42,6 +42,31 @@ CC BY-NC-SA 2.0 KR이 덮는 것은 **위키 기여자가 직접 쓴 글**(평�
 
 ---
 
+## 1-A. 외부 웹이 막혀 있으면 **빨리 포기하고 짧게 보고하라**
+
+2026-08-17 첫 실행에서 확인된 사실이다. **다시 조사하지 마라.**
+
+이 실행 환경은 허용목록 방식 egress 프록시를 쓴다:
+```
+CCR_AGENT_PROXY_ENABLED=1
+no_proxy=... anthropic.com, registry.npmjs.org, pypi.org, index.crates.io ...
+```
+패키지 저장소와 Anthropic만 통과하고 나머지는 전부 `curl: (56) CONNECT tunnel failed,
+response 403` / `WebFetch: EGRESS_BLOCKED`다. 게임 사이트만이 아니라 en.wikipedia.org도 막힌다.
+**플랫폼 정책이라 이 세션에서 바꿀 수 없다.**
+
+그래서 막혀 있으면 이렇게 하라:
+
+1. 출처 **한 곳만** 시험한다(prydwen 하나면 충분하다). 6곳을 다 두드리지 마라.
+2. 막혀 있으면 즉시 중단하고 `reports/YYYY-MM-DD.md`에 **한 문단짜리** 보고서를 쓴다.
+   제목에 `[출처 접근 차단 — 반영 없음]`을 붙인다. 프록시 진단·대조 실험을 반복하지 마라
+   (이미 확인된 사실이다).
+3. `WebSearch`는 동작하지만 **검색 스니펫일 뿐**이라 스킬 원문·티어표처럼 페이지를 그대로
+   봐야 하는 값은 얻을 수 없다. 2차 출처 단편으로 데이터를 채우지 마라.
+4. 커밋·푸시하고 끝낸다.
+
+> 첫 실행이 이 사실을 알아내는 데 37턴 201초를 썼다. 그 조사는 이미 끝났다.
+
 ## 2. 자동 반영 규칙 — **출처 2곳 이상이 일치할 때만**
 
 이것이 이 지시서의 핵심이다. 사용자가 직접 하나하나 검토하지 않기로 했으므로,
@@ -80,8 +105,23 @@ CC BY-NC-SA 2.0 KR이 덮는 것은 **위키 기여자가 직접 쓴 글**(평�
 `name_ja`가 없으면 `checkData`가 `NAME_MISSING` ERROR를 낸다. `id`는 공개 URL이므로
 소문자·숫자·하이픈만 쓴다(`ID_URL_UNSAFE` ERROR).
 
-> 2026-08-15 기준 미등록 신규: `aigis`(아이기스) · `queen-makoto`(마코토) · `yukiko`(유키코).
-> 페르소나 콜라보 3종이다. prydwen에 페이지는 있으나 티어가 아직 안 붙어 있었다.
+> **미등록 신규 3종 — 티어가 없어 아직 못 넣는다** (2026-08-17 확인, 로컬에서 직접 조사)
+>
+> 페르소나 콜라보 `aigis`(아이기스) · `queen-makoto`(퀸: 니지마 마코토) · `yukiko`(아마기 유키코).
+> prydwen에 페이지는 있으나 **세 명 모두 `rating_story`/`rating_boss`/`rating_pvp`가 `null`**이다.
+> 우리 규칙상 `tiers`가 필수이고 없으면 `checkData`가 `SHAPE_TIER` ERROR를 낸다.
+> game8은 총합 티어 하나만 준다(퀸=SS). 모드별 3개를 채울 수 없으므로 **값을 지어내지 말 것.**
+>
+> 이미 확보된 값(다시 조사하지 말 것):
+>
+> | | class | element | weapon | manufacturer | rarity | burst |
+> |---|---|---|---|---|---|---|
+> | aigis | Supporter | Iron | SMG | Abnormal | SR | II |
+> | queen-makoto | Attacker | Fire | SG | Abnormal | SSR | III |
+> | yukiko | Attacker | Fire | MG | Abnormal | SSR | III |
+>
+> 남은 것: `tiers`(3모드) · `name_kr` · `name_ja` · `releaseDate` · `skills[3]` · `img`.
+> **prydwen이 티어를 붙이면 그때 추가한다.** 매주 rating 필드만 확인하면 된다.
 
 ---
 
