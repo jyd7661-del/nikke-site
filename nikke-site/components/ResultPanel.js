@@ -89,9 +89,18 @@ function TeamMemberCards({ members, treasureIds }) {
       {members.map((m) => {
         const name = `${memberName(m, lang)}${treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}`;
         return (
-          <div
+          // 초상화를 누르면 그 니케의 도감 페이지로 간다(스킬을 바로 보려는 용도, 유저 건의 2026-08-15).
+          // ⚠️ 반드시 **새 탭**으로 연다. 추천 결과는 /api/ai-recommend 호출로 만들어진 화면 상태라
+          //    같은 탭에서 이동했다가 돌아오면 조합이 사라지고 AI 호출을 다시 하게 된다(= 비용도 다시 든다).
+          //    rel="noopener"는 새 탭이 window.opener로 이 페이지를 건드리지 못하게 막는다.
+          // m.id는 characterDatabase의 id라 도감 라우트 /nikke/[id]와 그대로 맞는다(예: helm → /nikke/helm).
+          <a
             key={m.id}
-            className="relative w-[88px] sm:w-[116px] rounded-lg overflow-hidden border border-slate-700 bg-slate-900/40"
+            href={`/nikke/${m.id}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={`${memberName(m, lang)} ${t('dex_open_hint')}`}
+            className="group relative w-[88px] sm:w-[116px] rounded-lg overflow-hidden border border-slate-700 bg-slate-900/40 block transition hover:border-nikke-accent focus:outline-none focus:ring-2 focus:ring-nikke-accent"
           >
             <CharacterAvatar character={{ img: m.img, name: memberName(m, lang) }} shape="portrait" />
             {/* 이름은 카드 안 아래쪽에 겹친다. 밑에 따로 칸을 두면 이름 줄 수에 따라 카드
@@ -102,7 +111,7 @@ function TeamMemberCards({ members, treasureIds }) {
             >
               {name}
             </span>
-          </div>
+          </a>
         );
       })}
     </div>
