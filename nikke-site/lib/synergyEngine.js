@@ -870,10 +870,22 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       if (have.length === need.length) {
         // 애장품이 전제인 조합은 실제로 장착했을 때만 인정한다.
         if (!treasureSatisfied(a.requiresTreasure)) return;
+        // 출처가 스스로 비권장이라 밝힌 조합은 아예 인정하지 않는다.
+        // 2026-08-15: prydwen이 "Highly NOT recommended, just putting them here as a tribute
+        // to the past"라고 적은 조합이 캠페인 추천 후보에 정상 등록돼 있었다. 출처가 쓰지
+        // 말라고 한 것을 추천하는 것은 기능이 아니라 틀린 정보다.
+        if (a.notRecommended) return;
         archetypeMatches.push({
           points: WEIGHTS.ARCHETYPE_FULL_MATCH,
           reason: `'${a.name}' 조합으로 알려진 구성입니다. ${a.note}`,
         });
+        // 쓸 수는 있으나 **주 용도가 다르다**고 출처가 밝힌 경우: 제외하지 않고 고지한다.
+        // "[조건 확인]" 접두사는 AI 프롬프트가 "반드시 설명에 포함하라"고 지시하는 표식이라
+        // (app/api/ai-recommend/route.js), 이 문장을 붙이면 화면 설명까지 자동으로 따라온다.
+        // 설계 원칙 2 — 조건을 밝히고 판단은 사용자에게 넘긴다.
+        if (a.sourceCaveat) {
+          archetypeMatches.push({ points: 0, reason: `[조건 확인] ${a.sourceCaveat}` });
+        }
       } else if (have.length > 0) {
         const missing = need.filter((n) => !titles.includes(n));
         archetypeMatches.push({
@@ -1608,6 +1620,8 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
       const c = byTitle.get(t);
       return c && treasureIds.has(c.id);
     })) return false;
+    // 출처가 스스로 비권장이라 밝힌 조합은 완전일치 후보에서도 뺀다(위 scoreTeam과 같은 이유).
+    if (a.notRecommended) return false;
     return true;
   });
 

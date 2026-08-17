@@ -695,7 +695,9 @@
         "Privaty"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg Team Database] This is the traditional team pushing story. They have semi wipe with Privaty (mostly, just stun), boss killing with Alice (requires extremely high investment but she’s worth), and damage buffers with Maxwell + Liter + Privaty. Problem is, they require you to “aim” manually, and it’s not a good experience aiming those small flying Raptures from afar. Highly NOT recommended, just putting them here as a tribute to the past. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes."
+      "note": "[Source: prydwen.gg Team Database] This is the traditional team pushing story. They have semi wipe with Privaty (mostly, just stun), boss killing with Alice (requires extremely high investment but she’s worth), and damage buffers with Maxwell + Liter + Privaty. Problem is, they require you to “aim” manually, and it’s not a good experience aiming those small flying Raptures from afar. Highly NOT recommended, just putting them here as a tribute to the past. Substitutions: This Team is part of Meta Teams - Story Guide. Check here for further information and viable substitutes.",
+      "notRecommended": true,
+      "notRecommendedReason": "원 출처(prydwen)가 \"Highly NOT recommended, just putting them here as a tribute to the past\"라고 명시한 조합입니다. 수동 조작으로 작은 비행 적을 조준해야 해서 실사용 경험이 나쁘다는 이유입니다."
     },
     {
       "id": "pw-vesgod-team",
@@ -5143,7 +5145,8 @@
       "note": "[Source: prydwen.gg character page] This team is more of a Museum team rather than a Solo Raid team, although you can use it in Solo Raid if you lack other units. It utilizes ZweiTr's lingering Crit buffs and combines them with Liter's huge ATK to boost Cindy's Burst Skill. The rotations follow ZweiTr-Mint-SWHA and Liter-Mint-Cindy in a tight tempo, requiring pre-charges to maximize rotation speed. This will allow you to get 14 Full Bursts. You also need to pre-charge Mint and release Full Charge after she Bursts but before Cindy Bursts, so her S1 buffs her. (속성: Electric)",
       "requiresTreasure": [
         "Zwei"
-      ]
+      ],
+      "sourceCaveat": "원 출처(prydwen)는 이 조합을 솔로 레이드용이 아니라 뮤지엄(Museum)용으로 봅니다. \"다른 유닛이 없으면 솔로 레이드에도 쓸 수는 있다\"는 단서가 붙어 있습니다."
     },
     {
       "id": "pwc-technical-ravenry",

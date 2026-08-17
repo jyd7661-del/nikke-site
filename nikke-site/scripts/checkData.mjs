@@ -126,6 +126,43 @@ archOrphans.forEach((m) => {
     ` — 이 이름을 쓰는 아키타입 ${affected}개는 절대 매칭되지 않음`);
 });
 
+// 아키타입의 조건 필드가 조용히 망가지지 않게 검사한다 (2026-08-15).
+//
+// requiresTreasure / notRecommended / sourceCaveat 는 전부 **엔진이 조합을 후보에서 빼거나
+// 경고를 붙이는 근거**다. 값이 잘못되면 에러 없이 추천 결과만 달라지므로 눈으로는 못 잡는다.
+// 실제로 requiresTreasure는 엔진 검사 장치가 2026-08-07부터 있었는데도 데이터가 483건 중
+// 4건만 채워져 있어 나머지가 무방비였다(2026-08-15 발견).
+syn.archetypes.forEach((a) => {
+  const where = `아키타입 '${a.id || a.name}'`;
+  if (a.requiresTreasure !== undefined) {
+    if (!Array.isArray(a.requiresTreasure) || a.requiresTreasure.length === 0) {
+      err('ARCH_TREASURE_SHAPE', `${where}의 requiresTreasure는 비어 있지 않은 배열이어야 함`);
+    } else {
+      a.requiresTreasure.forEach((t) => {
+        if (!TITLES.has(t)) {
+          err('ARCH_TREASURE_ORPHAN',
+            `${where}의 requiresTreasure '${t}'가 characterDatabase.json에 없음${suggest(t)}` +
+            ' — 엔진이 이 조건을 영원히 만족시키지 못해 조합이 통째로 사라짐');
+        } else if (!(a.members || []).includes(t)) {
+          err('ARCH_TREASURE_NOT_MEMBER',
+            `${where}의 requiresTreasure '${t}'가 이 조합 members에 없음` +
+            ' — 치환 안내를 조건으로 잘못 뽑았을 가능성');
+        }
+      });
+    }
+  }
+  if (a.notRecommended !== undefined && a.notRecommended !== true) {
+    err('ARCH_NOTREC_SHAPE', `${where}의 notRecommended는 true이거나 없어야 함`);
+  }
+  if (a.notRecommended === true && !a.notRecommendedReason) {
+    err('ARCH_NOTREC_NO_REASON',
+      `${where}가 notRecommended인데 이유가 없음 — 왜 뺐는지 남기지 않으면 나중에 되살릴 근거가 사라짐`);
+  }
+  if (a.sourceCaveat !== undefined && (typeof a.sourceCaveat !== 'string' || !a.sourceCaveat.trim())) {
+    err('ARCH_CAVEAT_SHAPE', `${where}의 sourceCaveat는 비어 있지 않은 문자열이어야 함`);
+  }
+});
+
 const metaTitles = new Set();
 Object.values(meta.usageTier || {}).forEach((slice) => Object.keys(slice).forEach((t) => metaTitles.add(t)));
 (meta.campaignCompositions?.list || []).forEach((c) => (c.members || []).forEach((m) => metaTitles.add(m)));
