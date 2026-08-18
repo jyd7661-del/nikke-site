@@ -706,7 +706,9 @@
         "cd": "N/A",
         "desc": "When a normal attack hits, there is a 5% chance of affecting self. ATK ▲ 7.92% for 5 sec.",
         "name_kr": "이글 아이",
-        "desc_kr": "일반 공격 명중 시 5% 확률로 자신에게 [공격력 7.92% ▲] [5초 유지]"
+        "desc_kr": "일반 공격 명중 시 5% 확률로 자신에게 [공격력 7.92% ▲] [5초 유지]",
+        "name_ja": "イーグルアイ",
+        "desc_ja": "通常攻撃が命中した時、5%の確率で自分に「攻撃力7.92%▲（5秒）」"
       },
       {
         "name": "Eagle's Gambit",
@@ -714,7 +716,9 @@
         "cd": "9",
         "desc": "Affects self. Max Ammunition Capacity ▲ 112.77% for 5 sec.",
         "name_kr": "이글 택틱",
-        "desc_kr": "자신에게 [최대 장탄 수 112.77% ▲] [5초 유지]"
+        "desc_kr": "자신에게 [최대 장탄 수 112.77% ▲] [5초 유지]",
+        "name_ja": "イーグルタクティク",
+        "desc_ja": "自分に「最大装弾数112.77%▲（5秒）」"
       },
       {
         "name": "Eagle Shot",
@@ -722,7 +726,9 @@
         "cd": "40",
         "desc": "Affects enemy unit(s) within attack range. Deals 720% of final ATK as damage.",
         "name_kr": "이글 샷",
-        "desc_kr": "공격 범위 내 적들에게 [공격력 720% 대미지] 4."
+        "desc_kr": "공격 범위 내 적들에게 [공격력 720% 대미지] 4.",
+        "name_ja": "イーグルショット",
+        "desc_ja": "攻撃範囲内の敵に「攻撃力の720%のダメージ」"
       }
     ]
   },
@@ -752,7 +758,9 @@
         "cd": "N/A",
         "desc": "There is a 10% chance of activating when attacked. Affects self. DEF ▲ 9.09% for 10 sec.",
         "name_kr": "팔콘 윙",
-        "desc_kr": "피격 시 10% 확률로 자신에게 [방어력 9.09%▲] [10초 유지]"
+        "desc_kr": "피격 시 10% 확률로 자신에게 [방어력 9.09%▲] [10초 유지]",
+        "name_ja": "ファルコンウィング",
+        "desc_ja": "撃たれた時、10%の確率で自分に「防御力9.09%▲（10秒）」"
       },
       {
         "name": "Falcon Nest",
@@ -760,7 +768,9 @@
         "cd": "15",
         "desc": "Affects self. Recover 20.19% of attack damage as HP over 8 sec.",
         "name_kr": "팔콘 네스트",
-        "desc_kr": "자신에게 [공격 대미지 비례 20.19% 회복] [8초 유지]"
+        "desc_kr": "자신에게 [공격 대미지 비례 20.19% 회복] [8초 유지]",
+        "name_ja": "ファルコンネスト",
+        "desc_ja": "自分に「攻撃ダメージの20.19%回復（8秒）」"
       },
       {
         "name": "Falcon Boost",
@@ -768,7 +778,9 @@
         "cd": "40",
         "desc": "Affects self. Max HP ▲ 112.5% for 10 sec.",
         "name_kr": "팔콘 부스트",
-        "desc_kr": "자신에게 [최대 체력 112.5%▲] [10초 유지] 4."
+        "desc_kr": "자신에게 [최대 체력 112.5%▲] [10초 유지] 4.",
+        "name_ja": "ファルコンブースト",
+        "desc_ja": "自分に「最大HP112.5%▲（10秒）」"
       }
     ]
   },
@@ -798,7 +810,9 @@
         "cd": "N/A",
         "desc": "There is a 10% chance of activating after casting normal attack(s). Affects the target(s). Deals 75.6% of final ATK as additional damage.",
         "name_kr": "오울 크로",
-        "desc_kr": "일반 공격 시 10% 확률로 대상에게 [최종 공격력 75.6% 추가 대미지]"
+        "desc_kr": "일반 공격 시 10% 확률로 대상에게 [최종 공격력 75.6% 추가 대미지]",
+        "name_ja": "オウルクロー",
+        "desc_ja": "通常攻撃をした時、10%の確率で対象に「攻撃力の75.6%の追加ダメージ▲」"
       },
       {
         "name": "Owl Wind",
@@ -806,7 +820,9 @@
         "cd": "10",
         "desc": "Affects 3 ally unit(s) with the highest ATK. Cover's DEF ▲ 128.57% for 5 sec.",
         "name_kr": "오울 윈드",
-        "desc_kr": "공격력이 가장 높은 아군 3기에게 [엄폐물 방어력 128.57% ▲] [5초 유지]"
+        "desc_kr": "공격력이 가장 높은 아군 3기에게 [엄폐물 방어력 128.57% ▲] [5초 유지]",
+        "name_ja": "オウルウィンド",
+        "desc_ja": "攻撃力が最も高い味方3機に「遮蔽物防御力アップ128.57%▲（5秒）」"
       },
       {
         "name": "Owl Feather",
@@ -814,7 +830,9 @@
         "cd": "20",
         "desc": "Affects all allies with Fire Element. Max Ammunition Capacity ▲ 280% for 10 sec.",
         "name_kr": "오울 페더",
-        "desc_kr": "작열 코드 아군 전체에게 [최대 장탄 수 280% ▲] [10초 유지] 4."
+        "desc_kr": "작열 코드 아군 전체에게 [최대 장탄 수 280% ▲] [10초 유지] 4.",
+        "name_ja": "オウルフェザー",
+        "desc_ja": "灼熱コードのみかた全体に「最大装弾数280%▲（10秒）」"
       }
     ]
   },
@@ -1371,7 +1389,9 @@
         "cd": "N/A",
         "desc": "Affects self. Activates after landing 10 normal attack(s). DEF ▲ 7.56% for 5 sec.",
         "name_kr": "썬샤인",
-        "desc_kr": "일반 공격 10회 명중 시 자신에게 [방어력 7.56% ▲] [5초 유지]"
+        "desc_kr": "일반 공격 10회 명중 시 자신에게 [방어력 7.56% ▲] [5초 유지]",
+        "name_ja": "サンシャイン",
+        "desc_ja": "通常攻撃が10回命中した時、自分に「防御力7.56%▲（5秒）」"
       },
       {
         "name": "Sunlight",
@@ -1379,7 +1399,9 @@
         "cd": "N/A",
         "desc": "There is a 20% chance to activate when attacked. ATK ▲ 9.09% for 5 sec.",
         "name_kr": "썬라이트",
-        "desc_kr": "피격 시 20% 확률로 자신에게 [공격력 9.09% ▲] [5초 유지]"
+        "desc_kr": "피격 시 20% 확률로 자신에게 [공격력 9.09% ▲] [5초 유지]",
+        "name_ja": "サンライト",
+        "desc_ja": "撃たれた時、20%の確率で自分に「攻撃力9.09%▲（5秒）」"
       },
       {
         "name": "Sunset",
@@ -1387,7 +1409,9 @@
         "cd": "40",
         "desc": "Affects self. Max Ammunition Capacity ▲ 787.5% for 10 sec.",
         "name_kr": "썬셋",
-        "desc_kr": "자신에게 [최대 장탄 수 787.5% ▲] [10초 유지] 4."
+        "desc_kr": "자신에게 [최대 장탄 수 787.5% ▲] [10초 유지] 4.",
+        "name_ja": "サンセット",
+        "desc_ja": "自分に「最大装弾数787.5%▲（10秒）」"
       }
     ]
   },
@@ -1417,7 +1441,9 @@
         "cd": "N/A",
         "desc": "Activates when the last bullet hits the target. Affects 1 ally unit(s) with the lowest HP. Recovers 4.86% of the caster’s final Max HP as HP.",
         "name_kr": "오션 샤워",
-        "desc_kr": "마지막 탄환 명중 시 체력이 가장 낮은 아군 1기에게 시전자 최대 체력 비례 4.86% 회복"
+        "desc_kr": "마지막 탄환 명중 시 체력이 가장 낮은 아군 1기에게 시전자 최대 체력 비례 4.86% 회복",
+        "name_ja": "オーシャンシャワー",
+        "desc_ja": "最後の弾丸が命中した時、HPが最も低い味方1機に「スキル発動者の最大HPの4.86%を回復」"
       },
       {
         "name": "Ocean Cleansing",
@@ -1425,7 +1451,9 @@
         "cd": "15",
         "desc": "Affects 1 ally unit(s) with the lowest HP. Recovers 9.69% of the caster's final Max HP as HP.",
         "name_kr": "오션 클렌징",
-        "desc_kr": "체력이 가장 낮은 아군 1기에게 [시전자 최대 체력 비례 9.69% 회복]"
+        "desc_kr": "체력이 가장 낮은 아군 1기에게 [시전자 최대 체력 비례 9.69% 회복]",
+        "name_ja": "オーシャンクレンジング",
+        "desc_ja": "HPが最も低い味方1機に「スキル発動者の最大HPの9.69%回復」"
       },
       {
         "name": "Ocean Dive",
@@ -1433,7 +1461,9 @@
         "cd": "40",
         "desc": "Affects all allies. Recovers 29.7% of the caster's final Max HP as HP.",
         "name_kr": "오션 다이브",
-        "desc_kr": "아군 전체에게 시전자 최대 체력 비례 29.7% 회복 4."
+        "desc_kr": "아군 전체에게 시전자 최대 체력 비례 29.7% 회복 4.",
+        "name_ja": "オーシャンダイブ",
+        "desc_ja": "味方全体に「スキル発動者の最大HPの29.7%回復」"
       }
     ]
   },
@@ -1461,19 +1491,25 @@
         "name": "Perennial Leaf",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when the last bullet hits the target. Affects the target. ATK ▼ 16.52% for 5 sec."
+        "desc": "Activates when the last bullet hits the target. Affects the target. ATK ▼ 16.52% for 5 sec.",
+        "name_ja": "フラワーリーフ",
+        "desc_ja": "最後の弾丸が命中した時、対象に「攻撃力16.52%▼（5秒）」"
       },
       {
         "name": "Hue of the Perennial",
         "type": "Active",
         "cd": "15",
-        "desc": "Affects 1 enemy unit(s) with the highest ATK. ATK ▼ 39.37% for 5 sec."
+        "desc": "Affects 1 enemy unit(s) with the highest ATK. ATK ▼ 39.37% for 5 sec.",
+        "name_ja": "フラワーカラー",
+        "desc_ja": "攻撃力が最も高い敵1機に「攻撃力39.37%▼（5秒）」"
       },
       {
         "name": "Perennial Perfume",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects 1 enemy unit(s) with the highest ATK. Deals 330.61% of final ATK as damage. Attract for 2 sec."
+        "desc": "Affects 1 enemy unit(s) with the highest ATK. Deals 330.61% of final ATK as damage. Attract for 2 sec.",
+        "name_ja": "フラワーパフューム",
+        "desc_ja": "攻撃力が最も高い敵1機に「攻撃力の330.61%のダメージ」「挑発（2秒）」"
       }
     ]
   },
@@ -2910,7 +2946,9 @@
         "cd": "N/A",
         "desc": "Affects all Supporter allies. Activates after 3 normal attack(s). Recover 6.07% of attack damage as HP over 5 sec.",
         "name_kr": "춤추는 요정",
-        "desc_kr": "일반 공격 3회 공격 시 지원형 아군 전체에게 [공격 대미지 비례 6.07% 회복] [5초 유지]"
+        "desc_kr": "일반 공격 3회 공격 시 지원형 아군 전체에게 [공격 대미지 비례 6.07% 회복] [5초 유지]",
+        "name_ja": "踊る妖精",
+        "desc_ja": "通常攻撃で3回攻撃した時、支援型の味方全体に「攻撃ダメージが6.07%回復(5秒)」"
       },
       {
         "name": "Fairy's Jest",
@@ -2918,7 +2956,9 @@
         "cd": "N/A",
         "desc": "Affects all allies. Activates when above 90% HP. HP Potency ▲ 23.46%. Activates when the last bullet hits the target while having over 90% HP. Affects all enemies. HP Potency ▼ 78.93% for 10 sec.",
         "name_kr": "요정의 장난",
-        "desc_kr": "자신의 체력이 90% 이상일 때 한하여 아군 전체에게 [체력 회복량 23.46% ▲] [지속] 마지막 탄환 명중 시 자신의 체력이 90% 이상이라면 적 전체에게 [체력 회복량 78.93% ▼] [10초 유지]"
+        "desc_kr": "자신의 체력이 90% 이상일 때 한하여 아군 전체에게 [체력 회복량 23.46% ▲] [지속] 마지막 탄환 명중 시 자신의 체력이 90% 이상이라면 적 전체에게 [체력 회복량 78.93% ▼] [10초 유지]",
+        "name_ja": "妖精のイタズラ",
+        "desc_ja": "自分のHPが90%以上の時のみ味方全体に「HP回復量23.46%▲」 最後の弾丸が命中した時、自分のHPが99.0%以上なら、敵全体に「HP回復量78.93%▼(10秒)」"
       },
       {
         "name": "Blue Butterfly Slumber",
@@ -2926,7 +2966,9 @@
         "cd": "60",
         "desc": "Affects 1 random fallen Attacker ally unit(s) randomly. Resurrect with 99% HP. Activates once per battle. Affects all Attacker allies. Recovers 38.61% of the caster's final Max HP as HP. ATK ▲ 77.22% for 10 sec.",
         "name_kr": "파란 나비의 꿈",
-        "desc_kr": "화력형 아군 전체에게 [시전자의 최종 최대 체력 비례 38.61% 회복] [공격력 77.22% ▲] [10초 유지] 사망한 화력형 아군 무작위 1기에게 [체력 99%로 부활] [전투 중 1회 발동]"
+        "desc_kr": "화력형 아군 전체에게 [시전자의 최종 최대 체력 비례 38.61% 회복] [공격력 77.22% ▲] [10초 유지] 사망한 화력형 아군 무작위 1기에게 [체력 99%로 부활] [전투 중 1회 발동]",
+        "name_ja": "青い蝶の夢",
+        "desc_ja": "火力型の味方全体に「スキル発動者の最大HPの38.61%回復」「攻撃力77.22%▲(10秒)」 死亡した火力型の味方ランダムに1機に「HP99%で復活(戦闘中1回発動)」"
       }
     ],
     "prydwenTags": [
@@ -3011,7 +3053,9 @@
         "cd": "N/A",
         "desc": "Activates when the last bullet hits the target. Affects all allies. DEF ▲ 19.02% for 5 sec.",
         "name_kr": "윈터 프리미엄",
-        "desc_kr": "마지막 탄환 명중 시 아군 전체에게 [방어력 19.02% ▲] [5초 유지]"
+        "desc_kr": "마지막 탄환 명중 시 아군 전체에게 [방어력 19.02% ▲] [5초 유지]",
+        "name_ja": "ウィンタープレミアム",
+        "desc_ja": "最後の弾丸が命中した時、味方全体に「防御力19.02%▲(5秒)」"
       },
       {
         "name": "VIP Gift",
@@ -3019,7 +3063,9 @@
         "cd": "N/A",
         "desc": "Affects all allies. Activates when any ally unit uses Burst Skills. Shopping: DEF ▲ 1.33%, stacks up to 4 time(s) and lasts for 20 sec. Affects all allies. Activates when the caster reaches max stacks of Shopping at the end of Full Burst. Burst gauge loading speed ▲ 7.9% for 5 sec.",
         "name_kr": "VIP 기프트",
-        "desc_kr": "아군이 버스트 스킬 사용 시 아군 전체에게 [쇼핑: 방어력 1.33% ▲] [4중첩] [20초 유지] 풀 버스트 타임 종료 시 자신이 쇼핑 최대 중첩 상태라면 아군 전체에게 [버스트 게이지 충전 속도 7.9% ▲] [5초 유지]"
+        "desc_kr": "아군이 버스트 스킬 사용 시 아군 전체에게 [쇼핑: 방어력 1.33% ▲] [4중첩] [20초 유지] 풀 버스트 타임 종료 시 자신이 쇼핑 최대 중첩 상태라면 아군 전체에게 [버스트 게이지 충전 속도 7.9% ▲] [5초 유지]",
+        "name_ja": "VIPギフト",
+        "desc_ja": "味方がバーストスキルを発動した時、味方全体に「ショッピング：防御力1.33%▲」「4スタック(20秒)」 フルバーストタイムが終了した時、自分がショッピングのフルスタック状態なら、味方全体に「バーストゲージのチャージスピード7.9%▲(5秒)」"
       },
       {
         "name": "Shopaholic Date",
@@ -3027,7 +3073,9 @@
         "cd": "20",
         "desc": "Affects self. Attract: Taunt all enemies for 5 sec. Recover 50.47% of attack damage as HP over 10 sec. Affects all allies. Reload Speed ▲ 63.17% for 10 sec. Re-enter Burst Skill Stage 1.",
         "name_kr": "유지",
-        "desc_kr": "액티브 재사용 시간 20.00초 쇼퍼홀릭 데이트 자신에게 [주목: 적 전체 도발] [5초 유지] [공격 대미지 비례 50.47% 회복] [10초 유지] 아군 전체에게 [재장전 속도 63.17% ▲] [10초 유지] [버스트 1단계 재진입]"
+        "desc_kr": "액티브 재사용 시간 20.00초 쇼퍼홀릭 데이트 자신에게 [주목: 적 전체 도발] [5초 유지] [공격 대미지 비례 50.47% 회복] [10초 유지] 아군 전체에게 [재장전 속도 63.17% ▲] [10초 유지] [버스트 1단계 재진입]",
+        "name_ja": "ショッパホリックデート",
+        "desc_ja": "自分に「ヘイト：敵全体を挑発 (5秒)」「攻撃ダメージの50.47%回復(10秒)」 味方全体に「リロード速度▲63.17%(10秒)」「バースト1段階再突入」"
       }
     ],
     "prydwenTags": [
@@ -5063,7 +5111,9 @@
         "cd": "N/A",
         "desc": "Affects all allies. Activates when entering Full Burst. Effect changes according to the number of activation time(s). Previous effects trigger repeatedly: Once: Recovers 1.05% of caster's final Max HP every 1 sec for 5 sec. Twice: Recovers 3.69% of caster's final Max HP every 1 sec for 5 sec. Three times: Recovers 6.86% of caster's final Max HP every 1 sec for 5 sec.",
         "name_kr": "해변의 햇살",
-        "desc_kr": "풀 버스트 타임 시작 시 아군 전체에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [시전자의 최종 최대 체력 비례 1.05% 회복] [1초 간격] [5초 유지] 2회 : [시전자의 최종 최대 체력 비례 3.69% 회복] [1초 간격] [5초 유지] 3회 : [시전자의 최종 최대 체력 비례 6.86% 회복] [1초 간격] [5초 유지]"
+        "desc_kr": "풀 버스트 타임 시작 시 아군 전체에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [시전자의 최종 최대 체력 비례 1.05% 회복] [1초 간격] [5초 유지] 2회 : [시전자의 최종 최대 체력 비례 3.69% 회복] [1초 간격] [5초 유지] 3회 : [시전자의 최종 최대 체력 비례 6.86% 회복] [1초 간격] [5초 유지]",
+        "name_ja": "海辺の日差し",
+        "desc_ja": "フルバーストタイムが発動した時、味方全体に「開始回数別効果、下位スタック適用」1回：「スキル発動者の最終最大HPの1.05%回復（1秒間隔、5秒間）」2回：「スキル発動者の最終最大HPの3.69%回復（1秒間隔、5秒）」3回：「スキル発動者の最終最大HPの6.86%回復（1秒間隔、5秒）」"
       },
       {
         "name": "Waves Kiss The Feet",
@@ -5071,7 +5121,9 @@
         "cd": "N/A",
         "desc": "Activates when using Burst Skill. Affects all Water Code allies. Effect changes according to the number of activation time(s). Previous effects trigger repeatedly: Once: Damage as strong element ▲ 20.85% for 3 sec. Twice: Damage as strong element ▲ 13.88% for 5 sec. Three times: Damage as strong element ▲ 8.36% for 10 sec.",
         "name_kr": "발을 적시는 파도",
-        "desc_kr": "버스트 스킬 사용 시 수냉 코드 아군 전체에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [우월 코드 공격 대미지 20.85% ▲] [3초 유지] 2회 : [우월 코드 공격 대미지 13.88% ▲] [5초 유지] 3회 : [우월 코드 공격 대미지 8.36% ▲] [10초 유지]"
+        "desc_kr": "버스트 스킬 사용 시 수냉 코드 아군 전체에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [우월 코드 공격 대미지 20.85% ▲] [3초 유지] 2회 : [우월 코드 공격 대미지 13.88% ▲] [5초 유지] 3회 : [우월 코드 공격 대미지 8.36% ▲] [10초 유지]",
+        "name_ja": "足を濡らす波",
+        "desc_ja": "バーストスキルを使用した時、水冷コードの味方全体に「開始回数別効果、下位スタック適用」1回：「有利コードの攻撃ダメージ20.85%▲（3秒）」2回：「有利コードの攻撃ダメージ20.85%▲（5秒）」3回：「有利コードの攻撃ダメージ20.85%▲（10秒）」"
       },
       {
         "name": "Tranquil Waters",
@@ -5079,7 +5131,9 @@
         "cd": "20",
         "desc": "Affects all Water Code allies. ATK ▲ 23.23% for 3 sec. Affects all allies. Max HP ▲ 27.87% of the Casters final max HP as HP for 10 seconds.",
         "name_kr": "고요한 수면",
-        "desc_kr": "수냉 코드 아군 전체에게 [공격력 23.23% ▲] [3초 유지] 아군 전체에게 [시전자의 최종 최대 체력 비례 최대 체력 27.87% ▲] [10초 유지]"
+        "desc_kr": "수냉 코드 아군 전체에게 [공격력 23.23% ▲] [3초 유지] 아군 전체에게 [시전자의 최종 최대 체력 비례 최대 체력 27.87% ▲] [10초 유지]",
+        "name_ja": "静かな水面",
+        "desc_ja": "水冷コードの味方全体に「23.23%▲（3秒）」 味方全体に「スキル発動者の最終最大HP基準で最大HP27.87%▲（10秒）」"
       }
     ],
     "prydwenTags": [
@@ -5164,7 +5218,9 @@
         "cd": "N/A",
         "desc": "Activates when using Burst Skill. Affects self. Effect changes according to the number of activation time(s). Previous effects trigger repeatedly: Once: Parts Damage ▲ 12.4% for 20 sec. Twice: Parts Damage ▲ 12.4% for 20 sec. Three times: Parts Damage ▲ 12.4% for 20 sec.",
         "name_kr": "어퍼 웨이브",
-        "desc_kr": "버스트 스킬 사용 시 자기 자신에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [파츠 대미지 12.4% ▲] [20초 유지] 2회 : [파츠 대미지 12.4% ▲] [20초 유지] 3회 : [파츠 대미지 12.4% ▲] [20초 유지]"
+        "desc_kr": "버스트 스킬 사용 시 자기 자신에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [파츠 대미지 12.4% ▲] [20초 유지] 2회 : [파츠 대미지 12.4% ▲] [20초 유지] 3회 : [파츠 대미지 12.4% ▲] [20초 유지]",
+        "name_ja": "アッパーウェーブ",
+        "desc_ja": "バーストスキルを使用した時、自分に「開始回数別の効果」「下位効果のスタック適用」1回：「パーツダメージ12.4%▲(20秒)」2回：「パーツダメージ12.4%▲(20秒)」3回：「パーツダメージ12.4%▲(20秒)」"
       },
       {
         "name": "Water Jet",
@@ -5172,7 +5228,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Burst Stage 3. Affects self. Effect changes according to the number of activation time(s). Previous effects trigger repeatedly: Once: Damage as strong element ▲ 20.56% for 10 sec. Twice: Damage as strong element ▲ 20.2% for 10 sec. Three times: Damage as strong element ▲ 20.2% for 10 sec.",
         "name_kr": "워터 제트",
-        "desc_kr": "버스트 3단계 돌입 시 자기 자신에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [우월 코드 공격 대미지 20.56% ▲] [10초 유지] 2회 : [우월 코드 공격 대미지 20.2% ▲] [10초 유지] 3회 : [우월 코드 공격 대미지 20.2% ▲] [10초 유지]"
+        "desc_kr": "버스트 3단계 돌입 시 자기 자신에게 [시작 횟수별 효과] [하위 효과 중복 적용] 1회 : [우월 코드 공격 대미지 20.56% ▲] [10초 유지] 2회 : [우월 코드 공격 대미지 20.2% ▲] [10초 유지] 3회 : [우월 코드 공격 대미지 20.2% ▲] [10초 유지]",
+        "name_ja": "ウォータージェット",
+        "desc_ja": "バースト3段階突入時、自分に「開始回数別の効果」「下位効果のスタック適用」1回：「有利コードの攻撃ダメージ20.56%▲(10秒)]2回：「有利コードの攻撃ダメージ20.2%▲(10秒)]3回：「有利コードの攻撃ダメージ20.2%▲(10秒)]"
       },
       {
         "name": "Full Hydro Shot",
@@ -5180,7 +5238,9 @@
         "cd": "40",
         "desc": "Affects self. Change the weapon in use: Damage: 33% of final ATK Last for: 7 sec Activates when the target is with a Fire code. Deals 11% of final ATK as additional damage.",
         "name_kr": "풀 하이드로 샷",
-        "desc_kr": "자신에게 [사용 무기 변경] 대미지 : 최종 공격력 33% [1] 유지 시간 : 7초 대상이 작열 속성이라면 [최종 공격력 11% 추가 대미지]"
+        "desc_kr": "자신에게 [사용 무기 변경] 대미지 : 최종 공격력 33% [1] 유지 시간 : 7초 대상이 작열 속성이라면 [최종 공격력 11% 추가 대미지]",
+        "name_ja": "フルハイドロショット",
+        "desc_ja": "自分に「使用武器変更」ダメージ：最終攻撃力33%、継続時間：7秒 対象が灼熱コードなら「最終攻撃力の11%の追加ダメージ」"
       }
     ],
     "prydwenTags": [
@@ -5321,7 +5381,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst. Affects all Electric Code allies. ATK ▲ 55.31% of caster's ATK, lasts for 10 sec. Reloading Speed ▲ 49.28% for 10 sec.",
         "name_kr": "스파클링 부스트",
-        "desc_kr": "풀 버스트 타임 시작 시 전격 코드 아군 전체에게 [시전자 공격력 55.31%만큼 공격력 ▲] [10초 유지] [재장전 속도 49.28% ▲] [10초 유지]"
+        "desc_kr": "풀 버스트 타임 시작 시 전격 코드 아군 전체에게 [시전자 공격력 55.31%만큼 공격력 ▲] [10초 유지] [재장전 속도 49.28% ▲] [10초 유지]",
+        "name_ja": "スパークリングブースト",
+        "desc_ja": "フルバーストタイムが発動した時、電撃コードの味方全体に「スキル発動者の攻撃力55.31%分の攻撃力▲（10秒）」「リロード速度49.28%▲（10秒）」"
       },
       {
         "name": "Sparkling Missile",
@@ -5329,7 +5391,9 @@
         "cd": "N/A",
         "desc": "Activates when firing the last bullet. Affects 2 enemy units(s) with the highest ATK. Deals 382.42% of final ATK as damage. Activates when firing the last bullet. Affects self. Damage to Interruption Parts ▲ 6.91% for 10 seconds.",
         "name_kr": "스파클링 미사일",
-        "desc_kr": "마지막 탄환 공격 시 공격력이 가장 높은 적 2기에게 [최종 공격력 382.42% 대미지] 마지막 탄환 공격 시 자신에게 [저지 부위 공격 대미지 6.91% ▲] [10초 유지]"
+        "desc_kr": "마지막 탄환 공격 시 공격력이 가장 높은 적 2기에게 [최종 공격력 382.42% 대미지] 마지막 탄환 공격 시 자신에게 [저지 부위 공격 대미지 6.91% ▲] [10초 유지]",
+        "name_ja": "スパークリングミサイル",
+        "desc_ja": "最後の弾丸を発射した時、攻撃力が最も高い敵2機に「最終攻撃力の382.42%のダメージ」 最後の弾丸を発射した時、自分に「阻止部位の攻撃ダメージ6.91%▲（10秒）」"
       },
       {
         "name": "Sparkling Wave",
@@ -5337,7 +5401,9 @@
         "cd": "40",
         "desc": "Affects self. Max Ammunition Capacity ▼ 73.92% for 10 sec. Reloading Speed ▲ 27.72% for 10 sec. Damage as strong element ▲ 42.24% for 10 sec.",
         "name_kr": "스파클링 웨이브",
-        "desc_kr": "자신에게 [최대 장탄 수 73.92% ▼] [10초 유지] [재장전 속도 27.72% ▲] [10초 유지] [우월 코드 공격 대미지 42.24% ▲] [10초 유지]"
+        "desc_kr": "자신에게 [최대 장탄 수 73.92% ▼] [10초 유지] [재장전 속도 27.72% ▲] [10초 유지] [우월 코드 공격 대미지 42.24% ▲] [10초 유지]",
+        "name_ja": "スパークリングウェーブ",
+        "desc_ja": "自分に「最大装弾数73.92%▼（10秒）」「リロード速度27.72%▲（10秒）」「有利コードの攻撃ダメージ42.24%▲（10秒）」"
       }
     ],
     "prydwenTags": [
@@ -5371,7 +5437,9 @@
         "cd": "N/A",
         "desc": "Activates after landing 30 normal attack(s). Affects the target. Deals 131.34% of final ATK as additional damage. Activates when entering Full Burst. Affects all allies. Effect changes according to the number of activation time(s). Previous effects triggers repeatedly. Once: Burst Skill cooldown ▼ 1.82 sec. Twice: Burst Skill cooldown ▼ 2.2 sec. Three times: Burst Skill cooldown ▼ 2.6 sec.",
         "name_kr": "위드 어드마이어",
-        "desc_kr": "일반 공격 30회 명중 시 대상에게 [최종 공격력 131.34% 추가 대미지] 풀 버스트 타임 시작 시 아군 전체에게 [시작 횟수 별 효과] [하위 효과 중복 적용] 1회 : [버스트 스킬 재사용 시간 1.82초 ▼] 2회 : [버스트 스킬 재사용 시간 2.2초 ▼] 3회 : [버스트 스킬 재사용 시간 2.6초 ▼]"
+        "desc_kr": "일반 공격 30회 명중 시 대상에게 [최종 공격력 131.34% 추가 대미지] 풀 버스트 타임 시작 시 아군 전체에게 [시작 횟수 별 효과] [하위 효과 중복 적용] 1회 : [버스트 스킬 재사용 시간 1.82초 ▼] 2회 : [버스트 스킬 재사용 시간 2.2초 ▼] 3회 : [버스트 스킬 재사용 시간 2.6초 ▼]",
+        "name_ja": "ウィズアドマイアー",
+        "desc_ja": "通常攻撃が30回命中した時、対象に「最終攻撃力の131.34%の追加ダメージ」 フルバーストタイムが発動した時、味方全体に「開始回数別の効果」「下位効果のスタック運用」：1回：「バーストスキルクールタイム1.82秒▼」2回：「バーストスキルクールタイム2.2秒▼」3回：「バーストスキルクールタイム2.6秒▼」"
       },
       {
         "name": "Aegis Cannon Suppression Fire",
@@ -5379,7 +5447,9 @@
         "cd": "4",
         "desc": "Affects 1 enemy unit randomly. Deals 105.58% of final ATK as damage. Affects the same target when they belong to Electric Code Damage Taken ▲ 5.64%, stacks up to 5 times and lasts for 5 sec.",
         "name_kr": "이지스 캐논 견제 사격",
-        "desc_kr": "무작위 적 1기에게 [최종 공격력 105.58% 대미지] 대상이 전격 코드라면 동일 적 대상에게 [받는 대미지 5.64% ▲] [5 중첩] [5초 유지]"
+        "desc_kr": "무작위 적 1기에게 [최종 공격력 105.58% 대미지] 대상이 전격 코드라면 동일 적 대상에게 [받는 대미지 5.64% ▲] [5 중첩] [5초 유지]",
+        "name_ja": "イージスキャノン牽制射撃",
+        "desc_ja": "ランダム敵1機に「最終攻撃力の105.58%のダメージ」対象が電撃コードなら、同じ敵に「受けるダメージ5.64%▲（5スタック、5秒）」"
       },
       {
         "name": "Aegis Cannon Overload",
@@ -5387,7 +5457,9 @@
         "cd": "20",
         "desc": "Affects all enemies. Deals 164.73% of final ATK as damage. Affects the same target(s) when they belong to Electric Code. Deals 164.73% of final ATK as additional damage.",
         "name_kr": "이지스 캐논 오버로드",
-        "desc_kr": "적 전체에게 [최종 공격력 164.83% 대미지] 대상이 전격 코드라면 동일 적 대상에게 [최종 공격력 164.83% 추가 대미지]"
+        "desc_kr": "적 전체에게 [최종 공격력 164.83% 대미지] 대상이 전격 코드라면 동일 적 대상에게 [최종 공격력 164.83% 추가 대미지]",
+        "name_ja": "イージスキャノンオーバーロード",
+        "desc_ja": "敵全体に「最終攻撃力の164.83%のダメージ」対象が電撃コードなら、同じ敵に「最終攻撃力の164.83%の追加ダメージ」"
       }
     ],
     "prydwenTags": [
@@ -5754,7 +5826,7 @@
         "name_kr": "우정의 서포트",
         "desc_kr": "일반 공격 5회 공격 시 공격력 가장 높은 아군 2기에게 [코어 대미지 40.07% ▲] [10초 유지] 일반 공격 5회 공격 시 남은 체력 비율이 가장 낮은 아군 2기에게 [시전자의 최종 최대 체력 비례 9.58% 회복]",
         "name_ja": "友情のサポート",
-        "desc_ja": "通常攻撃で5回攻撃した時、攻撃力が最も高い味方2機に 通常攻撃で5回攻撃した時、残りのHPの割合が最も低い味方2機に「スキル発動者の最終最大HPの9.58％回復」"
+        "desc_ja": "通常攻撃で5回攻撃した時、攻撃力が最も高い味方2機に 「コアダメージ40.07%▲(5秒)」 通常攻撃で5回攻撃した時、残りのHPの割合が最も低い味方2機に「スキル発動者の最終最大HPの9.58％回復」"
       },
       {
         "name": "As Long As We're With Friends",
@@ -5809,7 +5881,7 @@
         "name_kr": "카멜레온 은신술",
         "desc_kr": "일반 공격 5회 명중 시 자신에게 [시전자의 최대 체력 비례 엄폐물 최대 체력 32.75% ▲] [5초 유지] [주목 : 적 전체 도발] [5초 유지] 버스트 스킬 사용 시 자신에게 [시전자의 최종 최대 체력 비례 엄폐물 체력 회복 21.41% ▲] [공격 대미지 비례 21.96% 회복] [10초 유지]",
         "name_ja": "カメレオンの隠れ身の術",
-        "desc_ja": "通常攻撃が5回命中した時、自分に バーストスキルを使用した時、自分に「スキル発動者の最終最大HPの21.41%分遮蔽物HP回復▲」「攻撃ダメージの21.96%を回復（10秒 ）」"
+        "desc_ja": "通常攻撃が5回命中した時、自分に 「スキル発動者の最大HPの32.75%分 遮蔽物最大HP▲（5秒）」 「ヘイト：敵全体を挑発（5秒）」 バーストスキルを使用した時、自分に「スキル発動者の最終最大HPの21.41%分遮蔽物HP回復▲」「攻撃ダメージの21.96%を回復（10秒 ）」"
       },
       {
         "name": "Lizard's Protection",
@@ -5819,7 +5891,7 @@
         "name_kr": "도마뱀의 보호",
         "desc_kr": "자신에게 [시전자의 최종 최대 체력 비례 35.07% 보호막] [10초 유지] 자신을 제외한 아군 전체에게 [시전자의 최종 최대 체력 비례 10.21% 보호막] [10초 유지] 아군 전체에게 [버스트 재진입 1단계]",
         "name_ja": "トカゲの保護",
-        "desc_ja": "自分に「スキル発動者の最終最大HPの35.07% 自分を除く味方全体に「スキル発動者の最終最大HPの10.21％のバリア（10秒）」 味方全体に「バースト再突入1段階」"
+        "desc_ja": "自分に「スキル発動者の最終最大HPの35.07% のバリア（10秒）」 自分を除く味方全体に「スキル発動者の最終最大HPの10.21％のバリア（10秒）」 味方全体に「バースト再突入1段階」"
       }
     ],
     "prydwenTags": [
@@ -6330,7 +6402,9 @@
         "cd": "N/A",
         "desc": "Activates when landing attacks 30 time(s) using pellets. Affects 2 enemy unit(s) nearest to the crosshair. Deals 202.84% of final ATK as additional damage.",
         "name_kr": "열정 충만 메이드",
-        "desc_kr": "펠릿 30회 명중 시 조준선에 가장 가까운 적 2기에게 [최종 공격력 202.84% 추가 피해]"
+        "desc_kr": "펠릿 30회 명중 시 조준선에 가장 가까운 적 2기에게 [최종 공격력 202.84% 추가 피해]",
+        "name_ja": "やる気満々メイド",
+        "desc_ja": "ペレットが30回命中した時、照準線に最も近い敵2機に「最終攻撃力の202.84%の追加ダメージ」"
       },
       {
         "name": "Loving Maid",
@@ -6338,7 +6412,9 @@
         "cd": "N/A",
         "desc": "Activates when more than 5 pellet(s) hit with a single normal attack. Affects self. Reloading Speed ▲ 20.88% for 2 sec. Activates when hitting 30 time(s) using pellets during Full Burst Time. Affects self. Reload 1 round(s). ATK ▲ 11.22%, stacks up to 5 time(s) and lasts for 2 sec.",
         "name_kr": "사랑 가득 메이드",
-        "desc_kr": "일반 공격 1회로 펠릿 5개 이상 명중 시 자신에게 [재장전 속도 20.88% ▲] [2초 유지] 풀 버스트 타임 지속 기간 중 펠릿 30회 명중 시 자신에게 [탄환 충전 1발] [공격력 11.22% ▲] [5회 중첩] [2초 유지]"
+        "desc_kr": "일반 공격 1회로 펠릿 5개 이상 명중 시 자신에게 [재장전 속도 20.88% ▲] [2초 유지] 풀 버스트 타임 지속 기간 중 펠릿 30회 명중 시 자신에게 [탄환 충전 1발] [공격력 11.22% ▲] [5회 중첩] [2초 유지]",
+        "name_ja": "愛情たっぷりメイド",
+        "desc_ja": "通常攻撃1回でペレットが5個以上命中した時、自分に「リロード速度20.88%」「2秒間維持」 フルバーストタイムの持続時間中、ペレットが30回命中した時、自分に「弾丸チャージ1発」「攻撃力11.22%▲」「5スタック」「2秒間維持」"
       },
       {
         "name": "Your Bashful Maid!",
@@ -6346,7 +6422,9 @@
         "cd": "40",
         "desc": "Affects self. Attack Damage ▲ 10.56% for 10 sec. Critical Damage ▲ 88.17% for 10 sec. Affects all enemies. Deals 1066.66% of final ATK as damage.",
         "name_kr": "부끄러운! 당신의 메이드",
-        "desc_kr": "자신에게 [공격 대미지 10.56% ▲] [10초 유지] [크리티컬 대미지 88.17% ▲] [10초 유지] 적 전체에게 [최종 공격력 1066.66% 대미지]"
+        "desc_kr": "자신에게 [공격 대미지 10.56% ▲] [10초 유지] [크리티컬 대미지 88.17% ▲] [10초 유지] 적 전체에게 [최종 공격력 1066.66% 대미지]",
+        "name_ja": "あなたのはにかみメイド",
+        "desc_ja": "自分に「攻撃ダメージ10.56％▲」「10秒間維持」「クリティカルダメージ88.17％▲」「10秒間維持」 敵全体に「最終攻撃力の1066.66%のダメージ」"
       }
     ],
     "prydwenTags": [
@@ -7178,7 +7256,9 @@
         "cd": "N/A",
         "desc": "Activates at the start of the battle. Affects self. Forcefully uses Skill 2. Activates when an ally or self destroys an enemy's part. Affects self. Sustained Damage ▲ 5.1% for 30 sec. Activates when an ally or self destroys an enemy's part. Affects self during Dancing Flower. Dancing Flower Duration ▲ 10.02 sec. Activates when an ally or self destroys an enemy's part. Affects all enemies who are in Sakura Petals status. Sakura Petals Duration ▲ 10.02 sec.",
         "name_kr": "피어나다",
-        "desc_kr": "전투 시작 시 자신에게 [스킬 2 강제 사용] 자신을 포함한 아군 누군가 파츠 파괴 시 자신에게 [지속 대미지 5.1% ▲] [30초 유지] 자신을 포함한 아군 누군가 파츠 파괴 시 자신이 춤추는 꽃 상태라면 자신에게 [춤추는 꽃 유지 시간 10.02초 ▲] 자신을 포함한 아군 누군가 파츠 파괴 시 벚꽃잎 상태인 적 전체에게 [벚꽃잎 유지 시간 10.02초 ▲]"
+        "desc_kr": "전투 시작 시 자신에게 [스킬 2 강제 사용] 자신을 포함한 아군 누군가 파츠 파괴 시 자신에게 [지속 대미지 5.1% ▲] [30초 유지] 자신을 포함한 아군 누군가 파츠 파괴 시 자신이 춤추는 꽃 상태라면 자신에게 [춤추는 꽃 유지 시간 10.02초 ▲] 자신을 포함한 아군 누군가 파츠 파괴 시 벚꽃잎 상태인 적 전체에게 [벚꽃잎 유지 시간 10.02초 ▲]",
+        "name_ja": "花のほころび",
+        "desc_ja": "戦問開始時、自分に「スキル2強制使用」自分を含む味方の誰かがパーツを破壊した時、自分に「持続ダメージ5.1%▲」「30秒間維持」 自分を含む味方の誰かがパーツを破壊した時、自分が花の舞状態なら、自分に「花の舞維持時間10.02秒▲」 自分を含む味方の誰かがパーツを破壊した時桜かんむり状態の敵全体に「桜かんむり維持時間10.02秒▲」"
       },
       {
         "name": "Full Glory",
@@ -7186,7 +7266,9 @@
         "cd": "30",
         "desc": "Affects self. Dancing Flower: Attack Damage ▲ 15.64% for 15 sec. Affects the enemy with the highest ATK. Sakura Petals: Deals 256% of final ATK as sustained damage every 1 Sec for 15 sec.",
         "name_kr": "흐드러지다",
-        "desc_kr": "자신에게 [춤추는 꽃 : 공격 대미지 15.64% ▲] [15초 유지] 공격력이 가장 높은 적 1기에게 [벚꽃잎 : 최종 공격력 256% 지속 대미지] [1초 간격] [15초 유지]"
+        "desc_kr": "자신에게 [춤추는 꽃 : 공격 대미지 15.64% ▲] [15초 유지] 공격력이 가장 높은 적 1기에게 [벚꽃잎 : 최종 공격력 256% 지속 대미지] [1초 간격] [15초 유지]",
+        "name_ja": "競い咲き",
+        "desc_ja": "自分に「花の舞：攻撃ダメージ15.64％▲」「15秒間維持」 攻撃力が最も高い敵1機に「桜かんむり：最終攻撃力の256%の持続ダメージ」「1秒間隔」「15秒間維持」"
       },
       {
         "name": "Ephemeral Spender",
@@ -7194,7 +7276,9 @@
         "cd": "40",
         "desc": "Affects random enemies. Deals 457. 14% of final ATK as damage. Attacks sequentially for 10 time(s). Affects the same target(s). Deals 35.16% of final ATK as sustained damage every 1 sec, stacks up to 10 times(s) and lasts for 10 sec.",
         "name_kr": "화양연화",
-        "desc_kr": "무작위 적들에게 [최종 공격력 457.14% 대미지] [10회 순차 공격] 동일 적 대상에게 [최종 공격력 35.16% 지속 대미지] [1초 간격] [10중첩] [10초 유지]"
+        "desc_kr": "무작위 적들에게 [최종 공격력 457.14% 대미지] [10회 순차 공격] 동일 적 대상에게 [최종 공격력 35.16% 지속 대미지] [1초 간격] [10중첩] [10초 유지]",
+        "name_ja": "花の生涯",
+        "desc_ja": "ランダムの敵に「最終攻撃力の457.14%のダメージ」「10回順番に攻撃」 同じ敵に「最終攻撃力の3516%の持続ダメージ」「1秒間隔」「10スタック」「10秒間維持」"
       }
     ],
     "prydwenTags": [
@@ -7227,7 +7311,9 @@
         "cd": "N/A",
         "desc": "Activates at the start of the battle. Affects self. Damage dealt to Shield ▲ 601.01% continuously. (It only affects the damage dealt to the shield, not to the Rapture itself) Activates when recovery takes effect. Affects self. ATK ▲ 96.98% for 25 sec.",
         "name_kr": "호승심",
-        "desc_kr": "전투 시작 시 자신에게 [보호막에 가하는 대미지 601.01% ▲] [지속] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 회복 효과 적용 시 자신에게 [공격력 96.98% ▲] [25초 유지]"
+        "desc_kr": "전투 시작 시 자신에게 [보호막에 가하는 대미지 601.01% ▲] [지속] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 회복 효과 적용 시 자신에게 [공격력 96.98% ▲] [25초 유지]",
+        "name_ja": "負けず嫌い（アスカ）",
+        "desc_ja": "戦闘開始時、自分に「シールドに与えるダメージ601.01%▲」「持続」（ラブチャー本体ではなく、シールドに適用されるダメージに限る） 回復効果が適用された時、自分に「攻撃力96.98%▲」「25秒間維持」"
       },
       {
         "name": "Assault Tactics",
@@ -7235,7 +7321,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst. Affects self when in Shield status. Damage as strong element ▲ 30.02% for 10 sec. Activates when entering Full Burst. Affects all Fire Code allies. Damage dealt when attacking core ▲ 60.07% for 10 sec.",
         "name_kr": "돌격 전술",
-        "desc_kr": "풀 버스트 타임 시작 시 자신이 보호막 적용 상태라면 자신에게 [우월 코드 공격 대미지 30.02% ▲] [10초 유지] 풀 버스트 타임 시작 시 작열 코드 아군 전체에게 [코어 대미지 60.07% ▲] [10초 유지]"
+        "desc_kr": "풀 버스트 타임 시작 시 자신이 보호막 적용 상태라면 자신에게 [우월 코드 공격 대미지 30.02% ▲] [10초 유지] 풀 버스트 타임 시작 시 작열 코드 아군 전체에게 [코어 대미지 60.07% ▲] [10초 유지]",
+        "name_ja": "突撃戦術",
+        "desc_ja": "フルバーストタイムが発動した時、自分がシールド適用状態なら自分に「有利コードの攻撃ダメージ30.02%▲」「10秒間維持」 フルバーストタイムが発動した時、灼熱コードの味方全体に「コアダメージ60.07%▲」「10秒間維持」"
       },
       {
         "name": "Piercing Bullets",
@@ -7243,7 +7331,9 @@
         "cd": "40",
         "desc": "Affects self. Gain Pierce for 25 sec. Attack damage ▲ 150.04% for 10 sec. Recovers 3.16% of attack damage as HP over 10 sec. Hit Rate ▲ 101. 37% for 10 sec.",
         "name_kr": "관통 특화 탄환",
-        "desc_kr": "자신에게 [관통 특화] [25초 유지] [공격 대미지 150.04% ▲] [10초 유지] [공격 대미지 비례 3.16% 회복] [10초 유지] [명중률 101.37% ▲] [10초 유지]"
+        "desc_kr": "자신에게 [관통 특화] [25초 유지] [공격 대미지 150.04% ▲] [10초 유지] [공격 대미지 비례 3.16% 회복] [10초 유지] [명중률 101.37% ▲] [10초 유지]",
+        "name_ja": "貫通特化弾丸",
+        "desc_ja": "自分に「貫通特化」「25秒間維持」「攻撃ダメージ150.04％▲」「10秒間維持」「攻撃ダメージの3.16%回復」「10秒間維持」「命中率101.37%▲」「10秒間維持」"
       }
     ],
     "prydwenTags": [
@@ -7276,7 +7366,9 @@
         "cd": "N/A",
         "desc": "Activates after 100 normal attack(s). Affects self. Damage as strong element ▲ 30.23% for 3 sec. Activates after landing 100 normal attack(s). Affects the enemy within attack range nearest to the crosshair. Deals 112.37% of final ATK as damage.",
         "name_kr": "선두 제압",
-        "desc_kr": "일반 공격 100회 공격 시 자신에게 [우월 코드 공격 대미지 30.23% ▲] [3초 유지] 일반 공격 100회 명중 시 조준선에 가장 가까운 공격 범위 내 적들에게 [최종 공격력 112.37% 대미지]"
+        "desc_kr": "일반 공격 100회 공격 시 자신에게 [우월 코드 공격 대미지 30.23% ▲] [3초 유지] 일반 공격 100회 명중 시 조준선에 가장 가까운 공격 범위 내 적들에게 [최종 공격력 112.37% 대미지]",
+        "name_ja": "先頭制圧",
+        "desc_ja": "通常攻撃で100回攻撃した時、自分に「有利コードの攻撃ダメージ30.23%▲」「3秒間維持」 通常攻撃が100回命中した時、照準線に最も返い攻撃範囲内の敵に「最終攻撃力の112.37%のダメージ」"
       },
       {
         "name": "Attack Support",
@@ -7284,7 +7376,9 @@
         "cd": "N/A",
         "desc": "Activates at the start of the battle. Affects self. Damage dealt to Shield 700.5% continuously (It only affects the damage dealt to the shield, not to the Rapture itself) Activates when entering Burst stage 3. Affects all Fire Code allies. ATK ▲ 25.03% of caster's ATK for 10 sec.",
         "name_kr": "공격 지원",
-        "desc_kr": "전투 시작 시 자신에게 [보호막에 가하는 대미지 700.5% ▲] [지속] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 버스트 3단계 진입 시 작열 코드 아군 전체에게 [시전자 기준 공격력 25.03% ▲] [10초 유지]"
+        "desc_kr": "전투 시작 시 자신에게 [보호막에 가하는 대미지 700.5% ▲] [지속] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 버스트 3단계 진입 시 작열 코드 아군 전체에게 [시전자 기준 공격력 25.03% ▲] [10초 유지]",
+        "name_ja": "攻撃支援",
+        "desc_ja": "戦闘開始時、自分に「シールドに与えるダメージ700.5%▲」「持続」（ラブチャー本体ではなく、シールドに適用されるダメージに限る） バースト3段階突入時、灼熱コードの味方全体に「スキル発動者基準で攻撃力25.03%▲」「10秒間維持」"
       },
       {
         "name": "Annihilation: High Explosives",
@@ -7292,7 +7386,9 @@
         "cd": "40",
         "desc": "Affects all Fire Code allies. Creates a Shield equal to 13.44% of the caster's final Max HP for 10 sec. Attack damage ▲ 48.02% for 10 sec. Affects all enemies. Deals 990.2% of final ATK as damage.",
         "name_kr": "섬멸용 고폭탄",
-        "desc_kr": "작열 코드 아군 전체에게 [시전자의 최종 최대 체력 비례 13.44% 보호막] [10초 유지] [공격 대미지 48.02% ▲] [10초 유지] 적 전체에게 [최종 공격력 990.2% 대미지]"
+        "desc_kr": "작열 코드 아군 전체에게 [시전자의 최종 최대 체력 비례 13.44% 보호막] [10초 유지] [공격 대미지 48.02% ▲] [10초 유지] 적 전체에게 [최종 공격력 990.2% 대미지]",
+        "name_ja": "殲滅用榴弾",
+        "desc_ja": "灼熱コードの味方全体に「スキル発動者の最終最大HPの13.44%のシールド」「10秒間維持」「攻撃ダメージ48,02%▲」「10秒間維持」 敵全体に「最終攻撃力の990.2%のダメージ」"
       }
     ],
     "prydwenTags": [
@@ -7325,7 +7421,9 @@
         "cd": "N/A",
         "desc": "Activates when landing an attack with Full Charge. Affects all allies. Damage dealt to Shield ▲ 100.09% for 3 sec. (It only affects the damage dealt to the shield, not to the Rapture itself) Activates when hitting the target's core. Affects all allies. Pierce Damage ▲ 40.99% for 10 sec.",
         "name_kr": "일점 저격",
-        "desc_kr": "풀 차지 공격 시 아군 전체에게 [보호막에 가하는 대미지 100.09% ▲] [3초 유지] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 대상 코어 명중 시 아군 전체에게 [관통 대미지 40.99% ▲] [10초 유지]"
+        "desc_kr": "풀 차지 공격 시 아군 전체에게 [보호막에 가하는 대미지 100.09% ▲] [3초 유지] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 대상 코어 명중 시 아군 전체에게 [관통 대미지 40.99% ▲] [10초 유지]",
+        "name_ja": "一点狙撃",
+        "desc_ja": "フルチャージして攻撃した時、味方全体に「シールドに与えるダメージ100.09％▲」「3秒間維持」（ラブチャー本体ではなく、シールドに適用されるダメージに限る） 対象のコアに命中した時、味方全体に「貫通ダメージ40.99%へ］「10秒間維持」"
       },
       {
         "name": "Full Focus",
@@ -7333,7 +7431,9 @@
         "cd": "10",
         "desc": "Affects self. Gain Pierce for 5 sec. ATK ▲ 30.78% for 5 sec. Affects all allies. ATK ▲ 30.78% of caster's ATK for 5 sec.",
         "name_kr": "정신 집중",
-        "desc_kr": "자신에게 [관통 특화] [5초 유지] [공격력 30.78%] [5초 유지] 아군 전체에게 [시전자 기준 공격력 30.78% ▲] [5초 유지]"
+        "desc_kr": "자신에게 [관통 특화] [5초 유지] [공격력 30.78%] [5초 유지] 아군 전체에게 [시전자 기준 공격력 30.78% ▲] [5초 유지]",
+        "name_ja": "精神集中",
+        "desc_ja": "自分に「貫通特化」「5秒間維持」「攻撃力30.78%▲」「5秒間維持」 味方全体に「スキル発動者基準で攻撃力30.78%▲」「5秒間維持」"
       },
       {
         "name": "GPS Guided Missile",
@@ -7341,7 +7441,9 @@
         "cd": "20",
         "desc": "Affects all enemies. Deals 639. 36% of final ATK as damage. Affects all allies. Attack damage ▲ 40.99% for 10 sec.",
         "name_kr": "좌표 유도식 미사일",
-        "desc_kr": "적 전체에게 [최종 공격력 639.36% 대미지] 아군 전체에게 [공격 대미지 40.99% ▲] [10초 유지]"
+        "desc_kr": "적 전체에게 [최종 공격력 639.36% 대미지] 아군 전체에게 [공격 대미지 40.99% ▲] [10초 유지]",
+        "name_ja": "座標誘導式ミサイル",
+        "desc_ja": "敵全体に「最終攻撃力の639.36%のダメージ」 味方全体に「攻撃ダメージ40.99%▲」「10秒間維持」"
       }
     ],
     "prydwenTags": [
@@ -7374,7 +7476,9 @@
         "cd": "N/A",
         "desc": "Activates after landing 60 normal attack(s). Effects self. Shooting Manual: Hit Rate ▲ 5.04%, stacks up to 3 times and lasts for 5 sec. Activates after landing 120 normal attack(s). Effects I ally(s) with the lowest HP percentage. Recovers 8.04% of caster's final Max HP as HP.",
         "name_kr": "사격 매뉴얼",
-        "desc_kr": "일반 공격 60회 공격 시 자신에게 [사격 매뉴얼 : 명중률 5.04% ▲] [3 중첩] [5초 유지] 일반 공격 120회 공격 시 남은 체력 비율이 가장 낮은 아군 1기에게 [시전자 최종 최대 체력 비례 8.04% 회복]"
+        "desc_kr": "일반 공격 60회 공격 시 자신에게 [사격 매뉴얼 : 명중률 5.04% ▲] [3 중첩] [5초 유지] 일반 공격 120회 공격 시 남은 체력 비율이 가장 낮은 아군 1기에게 [시전자 최종 최대 체력 비례 8.04% 회복]",
+        "name_ja": "射撃マニュアル",
+        "desc_ja": "通常攻撃で60回攻撃した時、自分に「射撃マニュアル：命中率5.04%▲」「3スタック」「5秒間維持」 通常攻撃で120回攻撃した時、残りのHPの割合が最も低い味方1機に「スキル発動者の最終最大HPの8.04%回復」"
       },
       {
         "name": "Recovery Agent",
@@ -7382,7 +7486,9 @@
         "cd": "N/A",
         "desc": "Only activates when in Shooting Manual status. Affects all allies. Damage dealt to Shield ▲ 150% continuously. (It only affects the damage dealt to the shield, not to the Rapture itself) Only activates when Shooting Manual is fully stacked. Affects self. HP Potency ▲ 30.05% continuously.",
         "name_kr": "회복 보조",
-        "desc_kr": "자신이 사격 매뉴얼 상태일 때 한하여 아군 전체에게 [보호막에 가하는 대미지 150% ▲] [지속] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 자신이 사격 매뉴얼 최대 중첩 상태일 때 한하여 자신에게 [주는 회복량 30.05% ▲] [지속]"
+        "desc_kr": "자신이 사격 매뉴얼 상태일 때 한하여 아군 전체에게 [보호막에 가하는 대미지 150% ▲] [지속] (랩쳐의 본체가 아닌 보호막에 적용되는 대미지에 한함) 자신이 사격 매뉴얼 최대 중첩 상태일 때 한하여 자신에게 [주는 회복량 30.05% ▲] [지속]",
+        "name_ja": "回復補助",
+        "desc_ja": "自分が射撃マニュアル状態の時に限り、味方全体に「シールドに与えるダメージ150%▲」「持続」（ラブチャー本体ではなく、シールドに適用されるダメージに限る） 自分が射撃マニュアルのフルスタック状態の時のみ、自分に「与える回復量30.05%▲」［持続」"
       },
       {
         "name": "Command to Rest",
@@ -7390,7 +7496,9 @@
         "cd": "40",
         "desc": "Affects all allies. Recovers 5.06% of caster's final Max HP every sec for 5 sec continuously.",
         "name_kr": "휴식 명령",
-        "desc_kr": "아군 전체에게 [시전자 최종 최대 체력 비례 5.06% 회복] [1초 간격] [10초 유지]"
+        "desc_kr": "아군 전체에게 [시전자 최종 최대 체력 비례 5.06% 회복] [1초 간격] [10초 유지]",
+        "name_ja": "休息命令",
+        "desc_ja": "味方全体に「スキル発動者の最終最大HPの5.06%持続回復」［1秒間隔」「5秒間維持」"
       }
     ],
     "prydwenTags": [
@@ -7478,7 +7586,9 @@
         "cd": "N/A",
         "desc": "Activates only when Explore Route Stage 1 is fully stacked. Affects self. Distributed Damage ▲ 49.58% continuously. Activates only when Explore Route Stage 2 is fully stacked. Affects self. Damage dealt when attacking core ▲ 25.25% continuously. Activates only when Explore Route Stage 3 is fully stacked. Affects self. Critical Rate ▲ 16.73% continuously.",
         "name_kr": "루트 확정",
-        "desc_kr": "자신이 루트 탐색 1단계 최대 중첩 상태일 때 한하여 자신에게 [분배 대미지 49.58% ▲] [지속] 자신이 루트 탐색 2단계 최대 중첩 상태일 때 한하여 자신에게 [코어 대미지 25.25% ▲] [지속] 자신이 루트 탐색 3단계 최대 중첩 상태일 때 한하여 자신에게 [크리티컬 확률 16.73% ▲] [지속]"
+        "desc_kr": "자신이 루트 탐색 1단계 최대 중첩 상태일 때 한하여 자신에게 [분배 대미지 49.58% ▲] [지속] 자신이 루트 탐색 2단계 최대 중첩 상태일 때 한하여 자신에게 [코어 대미지 25.25% ▲] [지속] 자신이 루트 탐색 3단계 최대 중첩 상태일 때 한하여 자신에게 [크리티컬 확률 16.73% ▲] [지속]",
+        "name_ja": "ルート確定",
+        "desc_ja": "自分に「分配ダメージ49.58%▲」「持続」 自分がルート探索2段階フルスタック状態の時のみに自分に「コアダメージ25.25%▲」「持続」 自分がルート探索3段階フルスタック状態の時のみに自分に- 「クリティカル確率16.73%▲」「持続」"
       },
       {
         "name": "Explore Route",
@@ -7486,7 +7596,9 @@
         "cd": "N/A",
         "desc": "Activates after landing 2 normal attack(s). Effects self. Effects in each phase vary. Previous effects trigger repeatedly. Stage 1: Affects self. Hit Rate ▲ 1.36%, stacks up to 10 time(s) and lasts for 2 sec. ATK ▲ 2.45%, stacks up to 10 time(s) and lasts for 2 sec. Stage 2: Activates when Explore Route Stage 1 is fully stacked. Affects self. Hit Rate ▲ 2.71%, stacks up to 10 time(s) and lasts for 1 sec. ATK ▲ 4.9%, stacks up to 10 time(s) and lasts for 1 sec. Stage 3: Activates when Explore Route Stage 2 is fully stocked. Affects self. Hit Rate ▲ 4.08%, stacks up to 5 time(s) and lasts for 0.5 sec. ATK ▲ 7.36%, stacks up to 5 time(s) and lasts for 0.5 sec.",
         "name_kr": "루트 탐색",
-        "desc_kr": "일반 공격 2회 공격 시 자신에게 [단계 별 효과] [하위 효과 중복 적용] 1단계 : 자신에게 [명중률 1.36% ▲] [10 중첩] [2초 유지] [공격력 2.45% ▲] [10 중첩] [2초 유지] 2단계 : 루트 탐색 1단계 최대 중첩 상태라면 자신에게 [명중률 2.71% ▲] [10 중첩] [1초 유지] [공격력 4.9% ▲] [10 중첩] [1초 유지] 3단계 : 루트 탐색 2단계 최대 중첩 상태라면 자신에게 [명중률 4.08% ▲] [5 중첩] [0.5초 유지] [공격력 7.36% ▲] [5 중첩] [0.5초 유지]"
+        "desc_kr": "일반 공격 2회 공격 시 자신에게 [단계 별 효과] [하위 효과 중복 적용] 1단계 : 자신에게 [명중률 1.36% ▲] [10 중첩] [2초 유지] [공격력 2.45% ▲] [10 중첩] [2초 유지] 2단계 : 루트 탐색 1단계 최대 중첩 상태라면 자신에게 [명중률 2.71% ▲] [10 중첩] [1초 유지] [공격력 4.9% ▲] [10 중첩] [1초 유지] 3단계 : 루트 탐색 2단계 최대 중첩 상태라면 자신에게 [명중률 4.08% ▲] [5 중첩] [0.5초 유지] [공격력 7.36% ▲] [5 중첩] [0.5초 유지]",
+        "name_ja": "ルート探索",
+        "desc_ja": "通常攻撃で2回攻撃した時、自分に「段階別の効果」「下位効果のスタック適用」1段階：自分に「命中率1.36%▲」「10スタック」「2秒間維持」「攻撃力2.45%▲」「10スタック」「2秒間維持」 2段階: ルート探索1段階フルスタック状態なら、自分に「命中率2.71%▲」「10スタック」「1秒間維持」「攻撃力4.9%▲」「10スタック」「1秒間維持」 3段階: ルート探索2段階フルスタック状態なら、自分に「命中率4.08%▲」「5スタック」「0.5秒間維持」「攻撃力7.36%▲」「5スタック」「0.5秒間維持」"
       },
       {
         "name": "The Great Thief",
@@ -7494,7 +7606,9 @@
         "cd": "40",
         "desc": "Affects self. Attack Damage ▲ 57.08% for 10 sec. Reloading Speed ▲ 25.87% for 10 sec. Affects all enemies. Deals 1736.31% of final ATK as Distributed Damage.",
         "name_kr": "위대한 도둑",
-        "desc_kr": "자신에게 [공격 대미지 57.08% ▲] [10초 유지] [재장전 속도 25.87% ▲] [10초 유지] 적 전체에게 [최종 공격력 1736.31% 분배 대미지]"
+        "desc_kr": "자신에게 [공격 대미지 57.08% ▲] [10초 유지] [재장전 속도 25.87% ▲] [10초 유지] 적 전체에게 [최종 공격력 1736.31% 분배 대미지]",
+        "name_ja": "素晴らしき大泥棒",
+        "desc_ja": "自分に「攻撃ダメージ57.08%▲」「10秒間維持」「リロード速度25.87%▲」「10秒間維持」敵全体に「最終攻撃力の1736.31%の分配ダメージ」"
       }
     ]
   },
@@ -7896,7 +8010,9 @@
         "cd": "N/A",
         "desc": "Activates after landing 50 normal attack(s). Affects the target(s). Deals 471.86% of final ATK as additional damage. Activates only when in Annihilation State status. Affects self. Annihilation State's additional effect: Target: Affects 2 enemy unit(s) within the attack range nearest to the crosshair every 10 shot(s). Damage: Deals 15.62% of final ATK as damage. Additional effect: Anti A.T. Field: Damage Taken ▲ 0.83% for 30 sec, stacks up to 30 time(s).",
         "name_kr": "안티 AT  필드",
-        "desc_kr": "일반 공격 50회 명중시 대상에게 최종 공격력 471.86% 추가 대미지 자신이 섬멸 태세 상태일 때 한하여 자신에게 [섬멸 태세 추가 효과] 대상 : 10발 당 조준선에 가장 가까운 공격 범위내 적 2기 대미지 : 최종 공격력 15.62% 대미지 추가 효과 : [안티 AT 필드 : 받는 대미지 0.83% ▲] [30중첩] [30초 유지]"
+        "desc_kr": "일반 공격 50회 명중시 대상에게 최종 공격력 471.86% 추가 대미지 자신이 섬멸 태세 상태일 때 한하여 자신에게 [섬멸 태세 추가 효과] 대상 : 10발 당 조준선에 가장 가까운 공격 범위내 적 2기 대미지 : 최종 공격력 15.62% 대미지 추가 효과 : [안티 AT 필드 : 받는 대미지 0.83% ▲] [30중첩] [30초 유지]",
+        "name_ja": "アンチA.T.フィールド",
+        "desc_ja": "通常攻撃が50回命中した時、対象に「最終攻撃力の471,86%の追加ダメージ」 自分が殲滅態勢状態の時に限り、自分に「殲滅態勢の追加効果」：対象：10発ごとに照準線に最も近い攻撃範囲内の敵2機ダメージ：最終攻撃力の15.62%のダメージ追加効果：「アンチA.T.フィールド：受けるダメージ0.83%▲」「30スタック」「30秒間維持」"
       },
       {
         "name": "Emergency Repair",
@@ -7904,7 +8020,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst. Affects self when in Annihilation State status. Attack Damage ▲ 30.97% for 10 sec. Activates when using Annihilation. Affects self. Emergency Repair: Function: Reduces MG heating up speed and clears ammo. Fixes recharge speed and restores HP based on the Max HP proportion continuously. Effect 1: MG heating up speed ▼ 100% for 3 sec. Effect 2: Clears 100% of ammo. Effect 3: Constantly recovers 3.77% of caster's final Max HP every 1 sec over 3 sec. Effect 4: Fixes the recharge speed with a 60% increase for 1 shot(s).",
         "name_kr": "긴급 수복",
-        "desc_kr": "풀 버스트 타임 시작 시 자신이 섬멸 태세 상태라면 자신에게 [공격대미지 30.97% ▲] [10초 유지] 섬멸시 자신에게 [긴급 수복] : 기능 : 머신건 예열 속도 감소 & 탄환 제거를 하는 대신 재장전 속도 고정 & 최대 체력 비례 지속 회복 효과 1 : [머신건 예열 속도 100% ▼] [3초 유지] 효과 2 : [탄환 100% 제거] 효과 3 : [시전자의 최종 최대 체력 비례 3.77% 지속 회복] [1초 간격] [3초 유지] 효과 4 : [재장전 속도 60% 증가 상태로 고정] [1발 유지]"
+        "desc_kr": "풀 버스트 타임 시작 시 자신이 섬멸 태세 상태라면 자신에게 [공격대미지 30.97% ▲] [10초 유지] 섬멸시 자신에게 [긴급 수복] : 기능 : 머신건 예열 속도 감소 & 탄환 제거를 하는 대신 재장전 속도 고정 & 최대 체력 비례 지속 회복 효과 1 : [머신건 예열 속도 100% ▼] [3초 유지] 효과 2 : [탄환 100% 제거] 효과 3 : [시전자의 최종 최대 체력 비례 3.77% 지속 회복] [1초 간격] [3초 유지] 효과 4 : [재장전 속도 60% 증가 상태로 고정] [1발 유지]",
+        "name_ja": "緊急修復",
+        "desc_ja": "フルバーストタイムが発動した時、自分が殲滅態勢状態なら自分に「攻撃ダメージ30.97％▲」「10秒間維持」 殲滅の効果発動時、自分に「緊急修復」：機能：マシンガン立ち上げ速度低下＆残弾数が低下する代わりにリロード速度固定＆最大HPに比例して持続回復効果1：「マシンガン立ち上げ速度100%▼」「3秒間維持」効果2：「残弾数100%減少」効果3：「スキル発動者の最終最大HPの3.77%持続回復」「1秒間隔」「3秒間維持］効果4：「リロード速度60%増加状態で固定」［1発間維持」"
       },
       {
         "name": "Annihilation State",
@@ -7912,7 +8030,9 @@
         "cd": "40",
         "desc": "Affects self. Annihilation State: Function: Reduces the normal attack damage while increasing attack capabilities. Effect 1: Normal Attack Damage Multiplier ▼ 40% for 9 sec. Effect 2: Reloads 21% magazine(s). Effect 3: ATK ▲ 46.8% of caster's ATK for 9 sec. Effect 4: Attack Damage ▲ 36% for 9 sec. Affects the target(s) afflicted with Anti A.T. Field. Annihilation:Function: After Annihilation State ends, fires powerful attacks at targets affected by Anti A.T. Field. Deals 6.62% of final ATK as additional damage. Mirrors the stack count of Anti A.T. Field for certain targets. Anti A.T. Field status is removed after the effect is triggered.",
         "name_kr": "섬멸 태세",
-        "desc_kr": "자신에게 [섬멸 태세] : 기능 : 일반 공격 대미지가 감소하는 대신 공격 능력 증가 효과 1 : [일반 공격 대미지 40% 배율 ▼] [9초 유지] 효과 2 : [탄환 충전 21%] 효과 3 : [시전자 기준 공격력 46.8% ▲] [9초 유지] 효과 4 : [공격 대미지 36% ▲] [9초 유지] 안티 AT 필드 상태인 대상에게 [섬멸] : 기능 : 섬멸 태세 종료 시 안티 AT 필드가 걸린 대상에게 강력한 공격 [최종 공격력 6.62% 추가 대미지] [개별 대상 안티 AT 필드 중첩 복사] [효과 적용 후 안티 AT 필드 제거]"
+        "desc_kr": "자신에게 [섬멸 태세] : 기능 : 일반 공격 대미지가 감소하는 대신 공격 능력 증가 효과 1 : [일반 공격 대미지 40% 배율 ▼] [9초 유지] 효과 2 : [탄환 충전 21%] 효과 3 : [시전자 기준 공격력 46.8% ▲] [9초 유지] 효과 4 : [공격 대미지 36% ▲] [9초 유지] 안티 AT 필드 상태인 대상에게 [섬멸] : 기능 : 섬멸 태세 종료 시 안티 AT 필드가 걸린 대상에게 강력한 공격 [최종 공격력 6.62% 추가 대미지] [개별 대상 안티 AT 필드 중첩 복사] [효과 적용 후 안티 AT 필드 제거]",
+        "name_ja": "殲滅態勢",
+        "desc_ja": "自分に「殱滅態勢」：機能：通常攻撃ダメージが減少する代わりに、攻撃能力増加効果1：「通常攻撃ダメージ40％倍率▼」「9秒間維持」効果2：「弾丸チャージ21%」効果3：「スキル発動者基準で攻撃力46.8%▲」「9秒間維持」効果4：「攻撃ダメージ36%▲」「9秒間維持」 アンチA.T.フィールド状態の対象に1殲滅」：機能：殲滅態勢が終了した時、アンチA.T.フィールドの効果中の対象に、強力な攻撃「最終攻撃力6.62%の追加ダメージ」「個別対象ごとにアンチA.T.フィールドスタックコピー」「効果適用後、アンチA.T.フィールド解除」"
       }
     ],
     "prydwenTags": [
@@ -7945,7 +8065,9 @@
         "cd": "N/A",
         "desc": "Activates after landing 18 normal attack(s). Affects the target when the target is in Anti A.T. Field status. Deals 590. 64% of final ATK as additional damage. Stack count of Anti A.T. Field ▲ 10. Activates after landing 7 normal attack(s) when self is in Attack State status. Affects the target(s). Deals 286.37% of final ATK as additional damage. Activates when entering Full Burst. Affects all allies in Annihilation State status. Units affected by Annihilation State's additional effect ▲ 1 for 9 sec. Attack range of Annihilation State's additional effect ▲ 500% for 9 sec. ATK ▲ 17.6% of caster's ATK for 9 sec.",
         "name_kr": "섬멸 지원",
-        "desc_kr": "일반 공격 18회 명중 시 대상이 안티 AT 필드 상태라면 대상에게 [최종 공격력 590.64% 추가 대미지 [안티 AT 필드 중첩량 10개 ▲] 자신이 공격 태세 상태라면 일반 공격 7회 명중 시 대상에게 [최종 공격력 286.37% 추가 대미지] 풀 버스트 타임 시작 시 섬멸 태세 상태인 아군 전체에게 [섬멸 태세 추가효과 적용대상 1 ▲] [9초 유지] [섬멸 태세 추가효과 공격 범위 500% ▲] [9초 유지] [시전자 기준 공격력 17.6% ▲] [9초 유지]"
+        "desc_kr": "일반 공격 18회 명중 시 대상이 안티 AT 필드 상태라면 대상에게 [최종 공격력 590.64% 추가 대미지 [안티 AT 필드 중첩량 10개 ▲] 자신이 공격 태세 상태라면 일반 공격 7회 명중 시 대상에게 [최종 공격력 286.37% 추가 대미지] 풀 버스트 타임 시작 시 섬멸 태세 상태인 아군 전체에게 [섬멸 태세 추가효과 적용대상 1 ▲] [9초 유지] [섬멸 태세 추가효과 공격 범위 500% ▲] [9초 유지] [시전자 기준 공격력 17.6% ▲] [9초 유지]",
+        "name_ja": "殲滅支援",
+        "desc_ja": "通常攻撃が18回命中した時、対象がアンチA.T.フィールド状態なら、対象に「最終攻撃力の590.64%の追加ダメージ」「アンチA.T，フィールドスタック量10個▲」 自分が攻撃態勢状態なら、通常攻撃が7回命中した時、対象に「最終攻撃力の286.37%の追加ダメージ」フルバーストタイムが発動した時、殲滅態勢状態の味方全体に「殲滅態勢の追加効果適用対象Ⅰ▲」「9秒間維持」「殲滅勢の追加効果攻撃範囲500％▲1［9秒間維持」「スキル発動者基準で攻撃力17.6%▲1「9秒間維持」"
       },
       {
         "name": "Maintenance and Resupply",
@@ -7953,7 +8075,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst. Affects all allies with a Machine Gun, who have used their Burst Skills. MG heating up speed ▲ 100% for 13 sec. Activates when entering Full Burst. Affects all allies. ATK ▲ 11.61% of caster's ATK for 10 sec.",
         "name_kr": "정비 및 보급",
-        "desc_kr": "풀 버스트 타임 시작 시 직전에 버스트 스킬을 사용한 머신건 아군 전체에게 [머신건 예열 속도 100% ▲] [13초 유지] 풀 버스트 타임 시작 시 아군 전체에게 [시전자 기준 공격력 11.61% ▲] [10초 유지]"
+        "desc_kr": "풀 버스트 타임 시작 시 직전에 버스트 스킬을 사용한 머신건 아군 전체에게 [머신건 예열 속도 100% ▲] [13초 유지] 풀 버스트 타임 시작 시 아군 전체에게 [시전자 기준 공격력 11.61% ▲] [10초 유지]",
+        "name_ja": "整備補給",
+        "desc_ja": "フルバーストタイムが発動した時、直前にバーストスキルを使用したマシンガンの味方全体に「マシンガン立ち上げ速度100％▲」「13秒間維持」 フルバーストタイムが発動した時、味方全体に「スキル発動者基準で攻撃力11.61%▲」「10秒間維持」"
       },
       {
         "name": "Attack State",
@@ -7961,7 +8085,9 @@
         "cd": "40",
         "desc": "Affects self. Attack State: Attack Damage ▲ 35.9% for 10 sec. ATK ▲ 63.36% of caster's ATK for 10 sec. Affects all enemies. Deals 990.2% of final ATK as Burst Skill damage.",
         "name_kr": "공격 태세",
-        "desc_kr": "자신에게 [공격 태세] : [공격 대미지 35.9% ▲] [10초 유지] [시전자 기준 공격력 63.36% ▲] [10초 유지] 적 전체에게 [최종 공격력 990.2% 버스트 스킬 대미지]"
+        "desc_kr": "자신에게 [공격 태세] : [공격 대미지 35.9% ▲] [10초 유지] [시전자 기준 공격력 63.36% ▲] [10초 유지] 적 전체에게 [최종 공격력 990.2% 버스트 스킬 대미지]",
+        "name_ja": "攻撃態勢",
+        "desc_ja": "自分に「攻撃態勢」：「攻撃ダメージ35.9%」「10秒間維持」「スキル発動者基準で攻撃力63,36%▲」「10秒間維持］ 敵全体に「最終攻撃力の990.2%のダメージ」"
       }
     ],
     "prydwenTags": [
@@ -8434,7 +8560,9 @@
         "cd": "N/A",
         "desc": "Activates when attacking with Full Charge. Affects all allies. Projectile Explosion Damage ▲ 20% for 3 sec. Pierce Damage ▲ 13.09% for 3 sec. ATK ▲ 20% of the caster’s ATK for 3 sec. Activates only while in Performance status. Affects self. Potency of HP restored ▲ 49.92% continuously. Gains Pierce continuously.",
         "name_kr": "무대, 시작할게.",
-        "desc_kr": "풀 차지 공격 시 아군 전체에게 [ 발사체 폭발 대미지 20% ▲] [3초 유지] [ 관통 대미지 13.09% ▲] [3초 유지] [시전자 기준 공격력 20% ▲] [3초 유지] 자신이 퍼포먼스 상태일 때 한하여 [주는 체력 회복량 49.92% ▲] [지속] [관통 특화] [지속]"
+        "desc_kr": "풀 차지 공격 시 아군 전체에게 [ 발사체 폭발 대미지 20% ▲] [3초 유지] [ 관통 대미지 13.09% ▲] [3초 유지] [시전자 기준 공격력 20% ▲] [3초 유지] 자신이 퍼포먼스 상태일 때 한하여 [주는 체력 회복량 49.92% ▲] [지속] [관통 특화] [지속]",
+        "name_ja": "ステージを始めよう",
+        "desc_ja": "フルチャージして攻撃した時、味方全体に「発射体爆発ダメージ20%▲」「3秒間維持」「貫通ダメージ13.09%▲」「3秒間維持」「スキル発動者基準で攻撃力20%▲」「3秒間維持」 自分がパフォーマンス状態の時に限り、自分に「与えるHP回復量49.92%▲」「持続」「貫通特化」「持続」"
       },
       {
         "name": "One More Song!",
@@ -8442,7 +8570,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst. Affects self. Max HP ▲ 19.98% for 10 sec. Activates when Sing Along takes effect while Prika is in Performance status. Encore: Function: Extends the duration of Performance for Prika and strengthens allies. Effect 1: Affects the member who initiated Sing Along. Assigned Part: Singing. This effect is continuous and cannot be removed. Effect 2: Affects all allies. Performance duration ▲ 21 sec. Effect 3: Affects all allies. Attack Damage ▲ 25.01% for 10 sec. Effect 4: Affects self. Cooldown of Burst Skill ▲ 21 sec.",
         "name_kr": "한 곡 더!",
-        "desc_kr": "풀 버스트 타임 시작 시 자신에게 [최대 체력 19.98% ▲] [10초 유지] 떼창 적용 시 자신이 퍼포먼스 상태라면 [앵콜] : 기능 : 자신의 퍼포먼스 시간을 연장하고 아군을 강화 효과 1 : 떼창 시전자에게 [ 무대 파트 : 보컬] [지속] [해제 불가] 효과 2 : 아군 전체에게 [퍼포먼스 유지시간 21초 ▲ ] 효과 3 : 아군 전체에게 [공격 대미지 25.01% ▲] [10초 유지] 효과 4 : 자신에게 [버스트 스킬 재사용 시간 21초 ▲]"
+        "desc_kr": "풀 버스트 타임 시작 시 자신에게 [최대 체력 19.98% ▲] [10초 유지] 떼창 적용 시 자신이 퍼포먼스 상태라면 [앵콜] : 기능 : 자신의 퍼포먼스 시간을 연장하고 아군을 강화 효과 1 : 떼창 시전자에게 [ 무대 파트 : 보컬] [지속] [해제 불가] 효과 2 : 아군 전체에게 [퍼포먼스 유지시간 21초 ▲ ] 효과 3 : 아군 전체에게 [공격 대미지 25.01% ▲] [10초 유지] 효과 4 : 자신에게 [버스트 스킬 재사용 시간 21초 ▲]",
+        "name_ja": "もう1曲！",
+        "desc_ja": "フルバーストタイムが発動した時、自分に「最大HP19.98%▲」「10秒間維持」 シンガロングが適用された時、自分がパフォーマンス状態なら「アンコール」： 機能：自分のパフォーマンス時間を延長して味方を強化 効果1：シンガロングのスキル発動者に「ステージパート：ボーカル」「持続」「解除不可」 効果2：味方全体に「パフォーマンス維持時間21秒▲」 効果3：味方全体に「攻撃ダメージ25.01%▲」「10秒間維持」 効果4：自分に「バーストスキルクールタイム21秒▲」"
       },
       {
         "name": "Get Ready for an Amazing Show!",
@@ -8450,7 +8580,9 @@
         "cd": "40",
         "desc": "Affects all allies. Performance: Function: Strengthens allies and restores HP. Effect 1: Restores 3.04% of the caster’s final max HP as HP every 1 sec for 25 sec. This effect cannot be removed. Effect 2: Charge Damage ▲ 25% for 25 sec. This effect cannot be removed.",
         "name_kr": "최고의 무대를 보여줄게!",
-        "desc_kr": "아군 전체에게 [퍼포먼스] : 기능 : 아군 회복 및 강화 효과 1 : [시전자의 최종 최대 체력 비례 3.04% 지속 회복] [1초 간격] [25초 유지] [해제 불가] 효과 2 : [차지 대미지 25% ▲] [25초 유지] [해제 불가]"
+        "desc_kr": "아군 전체에게 [퍼포먼스] : 기능 : 아군 회복 및 강화 효과 1 : [시전자의 최종 최대 체력 비례 3.04% 지속 회복] [1초 간격] [25초 유지] [해제 불가] 효과 2 : [차지 대미지 25% ▲] [25초 유지] [해제 불가]",
+        "name_ja": "最高のステージを見せてやる！",
+        "desc_ja": "味方全体に「パフォーマンス」： 機能：味方回復&強化 効果1：「スキル発動者の最終最大HPの3.04%持続回復」「1秒間隔」「25秒間維持」「解除不可」 効果2：「チャージダメージ25%▲」「25秒間維持」「解除不可」"
       }
     ],
     "prydwenTags": [
@@ -8755,7 +8887,9 @@
         "cd": "N/A",
         "desc": "Activates when entering battle. Affects 1 random enemy. Possession lasts for 6 sec. Ability: Find and capture ghosts possessing the enemy. Required hit count: 100 time(s) in total, cumulative across all allies. Effect: Captures 1 ghost when the required hit count reaches 100%. A maximum of 13 ghost(s) can be captured. Recurring interval: 6 sec Affects all Water Code allies. Effects differ based on the number of ghosts. Previous effects trigger repeatedly. Only activates when there is at least 1 ghost. ATK ▲ 16.2% of the caster's ATK continuously. Only activates when there are more than 4 ghost(s). Damage as strong element ▲ 35% continuously.",
         "name_kr": "헬로 고스트",
-        "desc_kr": "전투 시작 시 무작위 적 1기에게 [빙의] [6초 유지] 기능 : 적에게 빙의된 유령을 찾아 포획 필요 명중 횟수 : 100회 (아군 전체 일괄 누적) 효과 : [명중 횟수 100% 달성 시 유령 1개 포획] [최대 13개] 반복 주기 : 6초 수냉 코드 아군 전체에게 [유령 개수 별 효과] [하위 효과 중복 적용] 유령 개수가 1개 이상일 때 한하여 [시전자 기준 공격력 16.2% ▲] [지속] 유령 개수가 4개 이상일 때 한하여 [우월 코드 공격 시 대미지 35% ▲] [지속]"
+        "desc_kr": "전투 시작 시 무작위 적 1기에게 [빙의] [6초 유지] 기능 : 적에게 빙의된 유령을 찾아 포획 필요 명중 횟수 : 100회 (아군 전체 일괄 누적) 효과 : [명중 횟수 100% 달성 시 유령 1개 포획] [최대 13개] 반복 주기 : 6초 수냉 코드 아군 전체에게 [유령 개수 별 효과] [하위 효과 중복 적용] 유령 개수가 1개 이상일 때 한하여 [시전자 기준 공격력 16.2% ▲] [지속] 유령 개수가 4개 이상일 때 한하여 [우월 코드 공격 시 대미지 35% ▲] [지속]",
+        "name_ja": "ハローゴースト",
+        "desc_ja": "戦闘開始時、ランダムな敵1機に「憑依」「6秒間維持」機能：敵にキャプチャー可能な幽霊が憑依する必要命中回数：100回（味方全体で累計）効果：「命中回数100%到達時に幽キャプチャー数1増加」「最大13」再発動周期：6秒 水冷コードの味方全体に「幽キャプチャー数別効果」「下位効果のスタック適用」 幽霊キャプチャー数が1以上の時のみ「スキル発動者基準で攻撃力16.2%▲」「持続」 幽霊キャプチャー数が4以上の時のみ「有利コードの攻撃ダメージ35%▲」「持続」"
       },
       {
         "name": "Ghostbuster",
@@ -8763,7 +8897,9 @@
         "cd": "N/A",
         "desc": "Activates when using Burst Skill. Affects self. ATK ▲ 40% for 10 sec. Activates when a ghost is captured while at maximum ghost capacity. Affects all enemies. Deals 1100% of final ATK as damage.",
         "name_kr": "고스트 버스터",
-        "desc_kr": "버스트 스킬 사용 시 자신에게 [공격력 40% ▲] [10초 유지] 유령 개수가 최대 상태에서 유령 포획 시 적 전체에게 [최종 공격력 1100% 대미지]"
+        "desc_kr": "버스트 스킬 사용 시 자신에게 [공격력 40% ▲] [10초 유지] 유령 개수가 최대 상태에서 유령 포획 시 적 전체에게 [최종 공격력 1100% 대미지]",
+        "name_ja": "ゴーストバスター",
+        "desc_ja": "バーストスキルを使用した時、自分に「攻撃力40%▲」「10秒間維持」 幽霊キャプチャー数が最大の状態で幽霊キャプチャー発動時、敵全体に「最終攻撃力の1100%のダメージ」"
       },
       {
         "name": "13 Ghosts",
@@ -8771,7 +8907,9 @@
         "cd": "40",
         "desc": "Affects random enemy units if the number of ghosts is not 13. Deals 800% of final ATK as damage. Attacks sequentially for 6 time(s). Number of ghosts ▼ 6. Maintains at least 1 ghost. Affects random enemy units if the number of ghosts is 13. Deals 800% of final ATK as damage. Attacks sequentially for 13 time(s). Number of ghosts ▼ 9.",
         "name_kr": "13 고스트",
-        "desc_kr": "자신의 유령 개수가 13이 아니라면 무작위 적들에게 [최종 공격력 800% 대미지] [6회 순차 공격] [유령 개수 6개 ▼] [최소 1개 유지] 자신의 유령 개수가 13이라면 무작위 적들에게 [최종 공격력 800% 대미지] [13회 순차 공격] [유령 개수 9개 ▼]"
+        "desc_kr": "자신의 유령 개수가 13이 아니라면 무작위 적들에게 [최종 공격력 800% 대미지] [6회 순차 공격] [유령 개수 6개 ▼] [최소 1개 유지] 자신의 유령 개수가 13이라면 무작위 적들에게 [최종 공격력 800% 대미지] [13회 순차 공격] [유령 개수 9개 ▼]",
+        "name_ja": "サーティーンゴースト",
+        "desc_ja": "自分の幽霊キャプチャー数が13でない時、ランダムな敵に「最終攻撃力の800%のダメージ」「6回順番に攻撃」「幽霊キャプチャー数6▼」「最低1を維持」 自分の幽霊キャプチャー数が13の時、ランダムな敵に「最終攻撃力の800%のダメージ」「13回順番に攻撃」「幽霊キャプチャー数9▼」"
       }
     ],
     "prydwenTags": [
@@ -8804,7 +8942,9 @@
         "cd": "N/A",
         "desc": "Activates when hitting the target with 80 pellets. Affects self. Gains Pierce for 3 round(s). Hit Rate ▲ 98.18% for 3 round(s). Attack damage ▲ 72% for 3 round(s). Pellet count is fixed at 1 for 3 round(s). Activates when hitting the target with 160 pellets. Affects self. Expands Pierce range by 200% for 3 round(s).",
         "name_kr": "섬광",
-        "desc_kr": "펠릿 80회 명중 시 자신에게 [관통 특화] [3발 유지] [명중률 98.18% ▲] [3발 유지] [공격 대미지 72% ▲] [3발 유지] [펠릿 개수 1개로 고정] [3발 유지] 펠릿 160회 명중 시 자신에게 [관통 범위 200% 확장] [3발 유지]"
+        "desc_kr": "펠릿 80회 명중 시 자신에게 [관통 특화] [3발 유지] [명중률 98.18% ▲] [3발 유지] [공격 대미지 72% ▲] [3발 유지] [펠릿 개수 1개로 고정] [3발 유지] 펠릿 160회 명중 시 자신에게 [관통 범위 200% 확장] [3발 유지]",
+        "name_ja": "閃耀",
+        "desc_ja": "ペレットが80回命中した時、自分に「貫通特化」「3発間維持」「命中率98.18%▲」「3発間維持」「攻撃ダメージ72%▲」「3発間維持」「ペレットの数を1個に固定」「3発間維持」 ペレットが160回命中した時、自分に「貫通範囲200%拡大」「3発間維持」"
       },
       {
         "name": "Radiant Wings",
@@ -8812,7 +8952,9 @@
         "cd": "N/A",
         "desc": "Activates when entering battle. Affects self. Pierce damage ▲ 55.08% continuously. Activates only during Full Burst. Affects self. ATK ▲ 75.24% continuously. Hit Rate ▲ 40.68% continuously.",
         "name_kr": "광익",
-        "desc_kr": "전투 시작 시 자신에게 [관통 대미지 55.08% ▲] [지속] 풀 버스트 타임 지속 중일 때 한하여 자신에게 [공격력 75.24% ▲] [지속] [명중률 40.68%] [지속]"
+        "desc_kr": "전투 시작 시 자신에게 [관통 대미지 55.08% ▲] [지속] 풀 버스트 타임 지속 중일 때 한하여 자신에게 [공격력 75.24% ▲] [지속] [명중률 40.68%] [지속]",
+        "name_ja": "光翼",
+        "desc_ja": "戦闘開始時、自分に「貫通ダメージ55.08%▲」「持続」 フルバーストタイム発動中のみ、自分に「攻撃力75.24%▲」「持続」「命中率40.68%▲」「持続」"
       },
       {
         "name": "False Salvation",
@@ -8820,7 +8962,9 @@
         "cd": "40",
         "desc": "Affects self. Attack speed ▲ 65% for 15 sec. ATK ▲ 88.12% for 15 sec. Number of pellets ▲ 5 for 15 sec.",
         "name_kr": "위구원",
-        "desc_kr": "자신에게 [공격 속도 65% ▲] [15초 유지] [공격력 88.12% ▲] [15초 유지] [펠릿 개수 5개 ▲] [15초 유지]"
+        "desc_kr": "자신에게 [공격 속도 65% ▲] [15초 유지] [공격력 88.12% ▲] [15초 유지] [펠릿 개수 5개 ▲] [15초 유지]",
+        "name_ja": "偽救",
+        "desc_ja": "自分に「攻撃速度65%▲」「15秒間維持」「攻撃力88.12%▲」「15秒間維持」「ペレット数5個▲」「15秒間維持」"
       }
     ],
     "prydwenTags": [
@@ -9500,7 +9644,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst for the first time after using own Burst Skill. Affects self. Intro: Critical damage ▲ 20.28% continuously. This effect cannot be dispelled. Effect persists after revival. Activates when entering Full Burst for the first time without using own Burst Skill. Affects self. Highlight: Critical damage ▲ 20.28% continuously. This effect cannot be dispelled. Effect persists after revival. Activates when entering Full Burst. Affects self in Intro status. Sustained damage ▲ 60.19% for 10 sec. Activates when entering Full Burst. Affects self in Highlight status. Sustained damage ▲ 235.03% for 10 sec.",
         "name_kr": "아아, 마이크 테스트",
-        "desc_kr": "첫 풀 버스트 타임 시작 시 자신이 직전에 버스트 스킬을 사용했다면 자신에게 [인트로 : 크리티컬 대미지 20.28% ▲] [지속] [해제 불가] [부활 시 유지] 첫 풀 버스트 타임 시작 시 자신이 직전에 버스트 스킬을 사용하지 않았다면 자신에게 [클라이막스 : 크리티컬 대미지 20.28% ▲] [지속] [해제 불가] [부활 시 유지] 풀 버스트 타임 시작 시 인트로 상태라면 자신에게 [지속 대미지 60.19% ▲] [10초 유지] 풀 버스트 타임 시작 시 클라이막스 상태라면 자신에게 [지속 대미지 235.03% ▲] [10초 유지]"
+        "desc_kr": "첫 풀 버스트 타임 시작 시 자신이 직전에 버스트 스킬을 사용했다면 자신에게 [인트로 : 크리티컬 대미지 20.28% ▲] [지속] [해제 불가] [부활 시 유지] 첫 풀 버스트 타임 시작 시 자신이 직전에 버스트 스킬을 사용하지 않았다면 자신에게 [클라이막스 : 크리티컬 대미지 20.28% ▲] [지속] [해제 불가] [부활 시 유지] 풀 버스트 타임 시작 시 인트로 상태라면 자신에게 [지속 대미지 60.19% ▲] [10초 유지] 풀 버스트 타임 시작 시 클라이막스 상태라면 자신에게 [지속 대미지 235.03% ▲] [10초 유지]",
+        "name_ja": "あーあー、マイクテスト",
+        "desc_ja": "初めてフルバーストタイムが発動した時、直前に自分がバーストスキルを使用していれば自分に 「イントロ：クリティカルダメージ20.28%▲」「持続」「解除不可」「復活後も維持」 初めてフルバーストタイムが発動した時、直前に自分がバーストスキルを使用していなければ自分に 「クライマックス：クリティカルダメージ20.28%▲」「持続」「解除不可」「復活後も維持」 フルバーストタイムが発動した時、イントロ状態なら自分に 「持続ダメージ60.19%▲」「10秒間維持」 フルバーストタイムが発動した時、クライマックス状態なら自分に 「持続ダメージ235.03%▲」「10秒間維持」"
       },
       {
         "name": "I’m Gonna Sing Now!",
@@ -9508,7 +9654,9 @@
         "cd": "N/A",
         "desc": "Activates when an ally or self destroys an enemy’s part. Affects all allies (except self). Mute: Gains immunity to Noise Pollution continuously, stacks up to 3 time(s). Activates when an ally or self destroys an enemy’s part. Affects self. Sustained damage ▲ 68.04% for 15 sec. Activates when attacking with Full Charge. Affects self. Sustained damage ▲ 318.14% for 3 sec, stacks up to 2 time(s). Activates when entering Full Burst. Affects the stage target. Deals 63.33% of final ATK as sustained damage every 1 sec for 9 sec.",
         "name_kr": "노래할게요!",
-        "desc_kr": "자신을 포함한 아군 누군가 파츠 파괴 시 자신을 제외한 아군 전체에게 [음소거 : 소음 공해 면역] [3 중첩] [지속] 자신을 포함한 아군 누군가 파츠 파괴 시 자신에게 [지속 대미지 68.04% ▲] [15초 유지] 풀 차지 공격 시 자신에게 [지속 대미지 318.14% ▲] [2 중첩] [3초 유지] 풀 버스트 타임 시작 시 타겟에게 [최종 공격력 63.33% 지속 대미지] [1초 간격] [9초 유지]"
+        "desc_kr": "자신을 포함한 아군 누군가 파츠 파괴 시 자신을 제외한 아군 전체에게 [음소거 : 소음 공해 면역] [3 중첩] [지속] 자신을 포함한 아군 누군가 파츠 파괴 시 자신에게 [지속 대미지 68.04% ▲] [15초 유지] 풀 차지 공격 시 자신에게 [지속 대미지 318.14% ▲] [2 중첩] [3초 유지] 풀 버스트 타임 시작 시 타겟에게 [최종 공격력 63.33% 지속 대미지] [1초 간격] [9초 유지]",
+        "name_ja": "歌います！",
+        "desc_ja": "自分を含む味方の誰かがパーツを破壊した時、自分を除く味方全体に 「消音：騒音公害免疫」「3スタック」「持続」 自分を含む味方の誰かがパーツを破壊した時、自分に 「持続ダメージ68.04%▲」「15秒間維持」 フルチャージして攻撃した時、自分に 「持続ダメージ318.14%▲」「2スタック」「3秒間維持」 フルバーストタイムが発動した時、ターゲットに 「最終攻撃力の63.33%の持続ダメージ」「1秒間隔」「9秒間維持」"
       },
       {
         "name": "La La La ♫",
@@ -9516,7 +9664,9 @@
         "cd": "40",
         "desc": "Affects all enemies. Damage taken ▲ 25.09% for 10 sec. Deals 18.43% of final ATK as sustained damage every 1 sec for 9 sec. Affects the enemy if the enemy is the stage target. Deals 181.2% of final ATK as sustained damage every 1 sec for 9 sec. Affects all allies (except self) if self is in Highlight status. Noise Pollution: Hit rate ▼ 100% for 1 sec. Affects all allies if self is in Highlight status. Stack count of Mute ▼ 1.",
         "name_kr": "라라라♬",
-        "desc_kr": "적 전체에게 [받는 대미지 25.09% ▲] [10초 유지] [최종 공격력 18.43% 지속 대미지] [1초 간격] [9초 유지] 대상이 타겟이라면 동일 적 대상에게 [최종 공격력 181.2% 지속 대미지] [1초 간격] [9초 유지] 자신이 클라이막스 상태라면 자신을 제외한 아군 전체에게 [소음 공해 : 명중률 100% ▼] [1초 유지] 자신이 클라이막스 상태라면 아군 전체에게 [음소거 중첩량 1개 ▼]"
+        "desc_kr": "적 전체에게 [받는 대미지 25.09% ▲] [10초 유지] [최종 공격력 18.43% 지속 대미지] [1초 간격] [9초 유지] 대상이 타겟이라면 동일 적 대상에게 [최종 공격력 181.2% 지속 대미지] [1초 간격] [9초 유지] 자신이 클라이막스 상태라면 자신을 제외한 아군 전체에게 [소음 공해 : 명중률 100% ▼] [1초 유지] 자신이 클라이막스 상태라면 아군 전체에게 [음소거 중첩량 1개 ▼]",
+        "name_ja": "ラララ♬",
+        "desc_ja": "敵全体に 「受けるダメージ25.09%▲」「10秒間維持」「最終攻撃力の18.43%の持続ダメージ」「1秒間隔」「9秒間維持」 対象がターゲットなら、同じ敵に 「最終攻撃力の181.2%の持続ダメージ」「1秒間隔」「9秒間維持」 自分がクライマックス状態なら、自分を除く味方全体に 「騒音公害：命中率100%▼」「1秒間維持」 自分がクライマックス状態なら、味方全体に 「消音スタック量1個▼」"
       }
     ],
     "prydwenTags": [
@@ -9659,7 +9809,7 @@
         "name_kr": "만남과 이별(상상)",
         "desc_kr": "전투 시작 시 자신에게 [망상 : 시전자의 최종 최대 체력 비례 30.15% 보호막 ] [지속] 망상 상태 종료 시 자신에게 [망상 파괴] [최대 2회] [지속] 효과 1 : [상상 실연 : 1인 공격 대상에서 제외 직접 피격 시 해제] [1초 X 망상 파괴 횟수만큼 유지] 효과 2 : [기절] [1초 X 망상 파괴 횟수만큼 유지] 일반 공격 시 자신이 망상 상태가 아니라면 자신에게 [망상 : 시전자의 최종 최대 체력 비례 30.15% 보호막 ] [지속] 버스트 스킬 사용 시 자신이 망상 상태가 아니라면 자신에게 [망상 : 시전자의 최종 최대 체력 비례 30.15% 보호막 ] [지속]",
         "name_ja": "出会いと別れ（想像）",
-        "desc_ja": "戦闘開始時、自分に「妄想：スキル発動者の最大HP30.15%のバリア」「持続」 妄想状態が終了した時、自分に「妄想崩壊」「最大2回」「持続」効果1：「想像失恋：単一攻撃対象から除外直接攻撃を受けると解除」「1秒×妄想崩壊回数分だけ維持」効果2：「気絶」「1秒×妄想崩壊回数分だけ維持」 通常攻撃をした時、自分が妄想状態でなければ自分に「妄想：スキル発動者の最終最大HPの30.15%のバリア」「維持」[:case:begin('バーストスキルを使用した時、自分が妄想状態でなければ自分に バーストスキルを使用した時、自分が妄想状態でなければ自分に"
+        "desc_ja": "戦闘開始時、自分に「妄想：スキル発動者の最大HP30.15%のバリア」「持続」 妄想状態が終了した時、自分に「妄想崩壊」「最大2回」「持続」効果1：「想像失恋：単一攻撃対象から除外直接攻撃を受けると解除」「1秒×妄想崩壊回数分だけ維持」効果2：「気絶」「1秒×妄想崩壊回数分だけ維持」 通常攻撃をした時、自分が妄想状態でなければ自分に「妄想：スキル発動者の最終最大HPの30.15%のバリア」「維持」 バーストスキルを使用した時、自分が妄想状態でなければ自分に 「妄想：スキル発動者の最終最大HP30.15%のバリア」「持続」"
       },
       {
         "name": "Sweetness of Love (Imagined)",
@@ -9930,7 +10080,9 @@
         "cd": "N/A",
         "desc": "Activates only while not in Terminated Contract status. Affects all allies. Exclusive Recovery Agreement: Max HP ▲ 10% of the caster's max HP continuously. Activates when recovery takes effect if the recovery is not coming from this unit. Affects self. Proof of Violation: Potency of HP restored ▼ 10% continuously, up to 3 time(s).",
         "name_kr": "독점 서약",
-        "desc_kr": "자신이 서약 해지 상태가 아닐 때 한하여 아군 전체에게 [회복 독점 서약 : 시전자 기준 최대 체력 10% ▲] [지속] 회복 효과 적용 시 자신이 사용한 회복 효과가 아니라면 자신에게 [서약 위반 증거 : 주는 체력 회복량 10% ▼] [최대 3개] [지속]"
+        "desc_kr": "자신이 서약 해지 상태가 아닐 때 한하여 아군 전체에게 [회복 독점 서약 : 시전자 기준 최대 체력 10% ▲] [지속] 회복 효과 적용 시 자신이 사용한 회복 효과가 아니라면 자신에게 [서약 위반 증거 : 주는 체력 회복량 10% ▼] [최대 3개] [지속]",
+        "name_ja": "独占誓約",
+        "desc_ja": "自分が誓約解除状態ではない時のみ、味方全体に 「回復独占誓約：スキル発動者基準で最大HP10%▲」「持続」 回復効果が適用された時、自分が発動した効果でなければ自分に 「誓約違反立証：与えるHP回復量10%▼」「最大3個」「持続」"
       },
       {
         "name": "Legal Effect",
@@ -9938,7 +10090,9 @@
         "cd": "N/A",
         "desc": "Activates after 3 Full Charge attack(s). Affects all allies in Exclusive Recovery Agreement status. Recovers 1.32% of the caster's final max HP as HP. Activates when entering Full Burst. Affects all allies. Generates a shield with 9.5% of the caster's final max HP for 10 sec. Activates when Proof of Violation reaches max stacks. Affects self. Terminated Contract: Gains immunity to Proof of Violation continuously. Recovers 0.24% of the caster's final max HP as HP every 1 sec continuously.",
         "name_kr": "서약 효력",
-        "desc_kr": "풀 차지 공격 3회 공격 시 회복 독점 서약 상태인 아군 전체에게 [시전자의 최종 최대 체력 비례 1.32% 회복 ] 풀 버스트 타임 시작 시 아군 전체에게 [시전자의 최종 최대 체력 비례 9.5% 보호막 ] [10초 유지] 자신의 서약 위반 증거가 최대 수량이라면 자신에게 [서약 해지 : 서약 위반 증거 면역] [지속] [시전자의 최종 최대 체력 비례 0.24% 회복 ] [1초 간격] [지속]"
+        "desc_kr": "풀 차지 공격 3회 공격 시 회복 독점 서약 상태인 아군 전체에게 [시전자의 최종 최대 체력 비례 1.32% 회복 ] 풀 버스트 타임 시작 시 아군 전체에게 [시전자의 최종 최대 체력 비례 9.5% 보호막 ] [10초 유지] 자신의 서약 위반 증거가 최대 수량이라면 자신에게 [서약 해지 : 서약 위반 증거 면역] [지속] [시전자의 최종 최대 체력 비례 0.24% 회복 ] [1초 간격] [지속]",
+        "name_ja": "誓約発効",
+        "desc_ja": "フルチャージ状態で3回攻撃した時、回復独占誓約状態の味方全体に 「スキル発動者の最終最大HPの1.32%回復」 フルバーストタイムが発動した時、味方全体に 「スキル発動者の最終最大HPの9.5%のバリア」「10秒間維持」 自分の誓約違反立証が最大数なら、自分に 「誓約解除：誓約違反立証免疫」「持続」 「スキル発動者の最終最大HPの0.24%回復」「1秒間隔」「持続」"
       },
       {
         "name": "Special Provisions",
@@ -9946,7 +10100,9 @@
         "cd": "40",
         "desc": "Affects all allies. Recovers 44.68% of the caster's final max HP. Affects self. Gains Pierce for 10 sec.",
         "name_kr": "특약 효력",
-        "desc_kr": "아군 전체에게 [시전자의 최종 최대 체력 비례 44.68% 회복] 자신에게 [관통 특화] [10초 유지]"
+        "desc_kr": "아군 전체에게 [시전자의 최종 최대 체력 비례 44.68% 회복] 자신에게 [관통 특화] [10초 유지]",
+        "name_ja": "特約発効",
+        "desc_ja": "味方全体に「スキル発動者の最終最大HPの44.68%回復」 自分に「貫通特化」「10秒間維持」"
       }
     ]
   },

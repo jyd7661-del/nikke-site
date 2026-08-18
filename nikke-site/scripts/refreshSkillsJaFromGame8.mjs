@@ -42,6 +42,30 @@
 //   ⚠️ 페이지 전체에서 표현을 찾으면 안 된다 — 한 페이지에 攻撃力…와 防御力…가 둘 다 있으면
 //      집합 비교로는 통과해버린다. 2026-08-18에 실제로 그렇게 놓쳤다.
 //
+// ■ 페이지 이름이 우리 name_ja와 다르다 — data/game8Alias.json (2026-08-18 추가)
+//
+//   game8은 공식 풀네임 대신 자기네 통칭으로 문서를 만든다. 페이지 어디에도 풀네임이 없어서
+//   기계로는 이을 수 없다(실측: 水着ドロシー 문서에 'ドロシー：セレンディピティ' 0건).
+//     ドロシー：セレンディピティ -> 水着ドロシー      I-DOLL・フラワー -> フラワー
+//     エヌ：ミラクルフェアリー   -> クリスマスエヌ    ソルジャーE.G.  -> ソルジャーEG
+//   그래서 별칭은 **사람이 짝지은 추론(B)** 이다. 24명이 이것 때문에 통째로 빠져 있었다.
+//   추론을 그대로 믿지 않기 위해 아래 정체성 검사를 붙였다.
+//
+// ■ 정체성 검사 — 엉뚱한 문서를 긁지 않았는가 (모든 캐릭터에 적용)
+//
+//   페이지 상단 표의 属性·武器·バースト를 우리 DB와 대조한다. 별칭이 한 칸 어긋나면
+//   (예: ソルジャーEG를 FA 문서에 잇는 실수) 여기서 걸린다 — 솔저 3인, I-DOLL 3인은
+//   속성·무기·버스트가 전부 다르다.
+//
+//   ⚠️ クラス(火力/防御/支援)는 **일부러 뺐다.** game8이 3명을 틀리게 적고 있다:
+//        ミハラ 防御 / ソリン 支援 / ハラン 防御  <- game8
+//        전부 나무위키 '화력형' + prydwen 'Attacker'와 어긋난다(2026-08-18 실측).
+//      2개 출처가 우리 DB와 같으므로 우리 값을 유지하고, 이 항목은 경고로만 남긴다.
+//   ⚠️ 属性 '불'은 game8 표기가 燃焼가 아니라 **灼熱**이다. 이걸 빼먹으면 36명이
+//      "표 파싱 실패"로 조용히 떨어진다(처음에 실제로 그랬다).
+//   ⚠️ 레드후드의 버스트 칸은 'バーストΛ'(전 단계 겸용)이라 1/2/3로 못 읽는다.
+//      읽히지 않는 칸은 검사하지 않고 넘긴다 — 오탐을 만들지 않기 위해서다.
+//
 // 사용법:
 //   node scripts/refreshSkillsJaFromGame8.mjs           # 조사만
 //   node scripts/refreshSkillsJaFromGame8.mjs --write   # 검증 통과분만 저장
@@ -54,6 +78,7 @@ import os from 'node:os';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const DB = path.join(ROOT, 'data/characterDatabase.json');
 const MAPFILE = path.join(ROOT, 'data/game8PageMap.json');
+const ALIASFILE = path.join(ROOT, 'data/game8Alias.json');
 const CACHE = path.join(os.tmpdir(), 'game8-cache');
 const WRITE = process.argv.includes('--write');
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36';
@@ -115,13 +140,25 @@ function extractSkills(html) {
       if (/のモーション動画$|^モーション動画$|^関連記事$/.test(lines[i])) { end = i; break; }
     }
     const seg = lines.slice(head.i, end);
-    // 마지막 '効果' 이후의 '・' 줄만 설명이다(쿨타임 절의 '・40秒'을 걸러내려면 이렇게 해야 한다).
+    // 마지막 '効果' 이후가 설명이다(쿨타임 절의 '・40秒'을 걸러내려면 이렇게 해야 한다).
     let effIdx = -1;
     seg.forEach((l, i) => { if (l === '効果') effIdx = i; });
     if (effIdx < 0) return null;
+    // ⚠️ '・'로 시작하는 줄만 모으면 안 된다. 효과가 여러 줄로 이어지는 스킬(프리카·시라츠루·
+    //    스칼렛 블랙섀도)은 둘째 줄부터 '・'가 없어서 **그 줄의 숫자가 통째로 사라진다**.
+    //    실제로 이 3명이 "숫자 불일치"로 계속 떨어지고 있었다 — 페이지 내용은 우리와 같았다.
+    // ⚠️ 이어 붙이기 전에 위키 템플릿 잔재를 걷어낸다. game8 원문에는
+    //      [:case:begin('…본문과 같은 내용…'.present?)] …본문… [:case:end]
+    //    가 그대로 새어 나온다. 괄호 안은 바로 아래 본문의 복사본이라 지우지 않으면
+    //    같은 문장이 두 번 들어간다. (name_kr의 '{{hover' 사고와 같은 부류다.)
     const desc = seg.slice(effIdx + 1)
-      .filter((l) => l.startsWith('・'))
-      .map((l) => l.replace(/^・/, ''))
+      .filter((l) => l !== '【' && l !== '】')
+      .join('\n')
+      .replace(/\[:case:begin\([\s\S]*?\.present\?\)\]/g, '')
+      .replace(/\[:case:end\]/g, '')
+      .split('\n')
+      .map((l) => l.replace(/^・/, '').trim())
+      .filter(Boolean)
       .join(' ').replace(/\s+/g, ' ').trim();
     if (!desc) return null;
     out.push({ name: head.name, desc });
@@ -157,6 +194,40 @@ const TARGET_JA = [
 ];
 const tagsOf = (txt, table) => new Set(table.filter(([k]) => String(txt).includes(k)).map(([, v]) => v));
 
+// 페이지 상단 표: '바스트/속성' 라벨 두 줄 뒤에 값 두 줄이 온다. '무기/클래스'도 같은 모양.
+const BURST_JA = { 'バーストⅠ': '1', 'バーストⅡ': '2', 'バーストⅢ': '3', 'バーストI': '1', 'バーストII': '2', 'バーストIII': '3' };
+const ELEM_JA = { '灼熱': 'fire', '燃焼': 'fire', '水冷': 'water', '風圧': 'wind', '鉄甲': 'iron', '電撃': 'electric' };
+const WEAP_JA = { 'アサルトライフル': 'ar', 'ショットガン': 'sg', 'スナイパーライフル': 'sr', 'ロケットランチャー': 'rl', 'マシンガン': 'mg', 'サブマシンガン': 'smg' };
+const CLASS_JA = { '火力': 'attacker', '支援': 'supporter', '防御': 'defender' };
+
+function pageStats(html) {
+  const L = toLines(html);
+  const out = {};
+  for (let i = 0; i < L.length - 3; i++) {
+    // 첫 번째 표만 본다. 아래쪽 '관련 캐릭터' 표까지 읽으면 남의 값으로 덮인다.
+    if (!out.burstSeen && L[i] === 'バースト' && L[i + 1] === '属性') {
+      out.burstSeen = true; out.burst = BURST_JA[L[i + 2]]; out.element = ELEM_JA[L[i + 3]];
+    }
+    if (!out.weaponSeen && L[i] === '武器' && L[i + 1] === 'クラス') {
+      out.weaponSeen = true; out.weapon = WEAP_JA[L[i + 2]]; out.class = CLASS_JA[L[i + 3]];
+    }
+  }
+  return out;
+}
+
+// 반환: [치명적 문제 목록, 경고 목록]
+function checkIdentity(html, c) {
+  const s = pageStats(html);
+  if (!s.burstSeen || !s.weaponSeen) return [['상단 표를 찾지 못함'], []];
+  const bad = [];
+  for (const k of ['element', 'weapon', 'burst']) {
+    if (!s[k]) continue;                       // 읽히지 않은 칸은 검사하지 않는다
+    if (String(s[k]) !== String(c[k])) bad.push(`${k}: 페이지 ${s[k]} vs DB ${c[k]}`);
+  }
+  const warn = (s.class && s.class !== c.class) ? [`class: 페이지 ${s.class} vs DB ${c.class} (우리 값 유지)`] : [];
+  return [bad, warn];
+}
+
 function verify(ja, c) {
   const problems = [];
   for (let i = 0; i < 3; i++) {
@@ -184,14 +255,22 @@ function verify(ja, c) {
 const raw = JSON.parse(fs.readFileSync(DB, 'utf8'));
 const cdb = Array.isArray(raw) ? raw : raw.characters;
 const pageMap = JSON.parse(fs.readFileSync(MAPFILE, 'utf8'));
+const alias = JSON.parse(fs.readFileSync(ALIASFILE, 'utf8'));
+// 별칭이 가리키는 game8 이름이 실제 매핑에 있어야 한다. 오타를 조용히 넘기지 않는다.
+for (const [ours, theirs] of Object.entries(alias)) {
+  if (!pageMap[theirs]) { console.error(`별칭 오류: ${ours} -> ${theirs} 는 game8PageMap에 없다`); process.exit(1); }
+}
 
-const ok = []; const failed = [];
+const ok = []; const failed = []; const warned = [];
 for (const c of cdb) {
   if (!c.name_ja || !(c.skills || []).length) { failed.push([c.id, 'name_ja 또는 스킬 없음']); continue; }
-  const url = pageMap[c.name_ja];
+  const url = pageMap[c.name_ja] || pageMap[alias[c.name_ja]];
   if (!url) { failed.push([c.id, `페이지 매핑 없음 (${c.name_ja})`]); continue; }
   const html = fetchPage(url);
   if (!html) { failed.push([c.id, '페이지 받기 실패']); continue; }
+  const [idBad, idWarn] = checkIdentity(html, c);
+  if (idBad.length) { failed.push([c.id, `다른 캐릭터 문서로 보임 — ${idBad.join(', ')}`]); continue; }
+  if (idWarn.length) warned.push([c.id, idWarn.join(', ')]);
   const ja = extractSkills(html);
   if (!ja) { failed.push([c.id, '스킬 절 파싱 실패']); continue; }
   const problems = verify(ja, c);
@@ -203,7 +282,8 @@ console.log(`검증 통과 ${ok.length}명 / 실패 ${failed.length}명 (전체 
 if (failed.length) {
   const kinds = {};
   for (const [id, why] of failed) {
-    const k = /대상 조건 모순/.test(why) ? '대상 조건 모순'
+    const k = /다른 캐릭터 문서/.test(why) ? '정체성 불일치'
+      : /대상 조건 모순/.test(why) ? '대상 조건 모순'
       : /숫자 불일치/.test(why) ? '숫자 불일치'
         : /매핑 없음/.test(why) ? '페이지 매핑 없음'
           : /파싱 실패/.test(why) ? '파싱 실패' : '기타';
@@ -215,6 +295,11 @@ if (failed.length) {
     list.slice(0, 8).forEach(([id, why]) => console.log(`     ${id.padEnd(28)} ${why.slice(0, 105)}`));
     if (list.length > 8) console.log(`     ... 외 ${list.length - 8}명`);
   }
+}
+
+if (warned.length) {
+  console.log('\n■ 참고 — game8 값이 우리와 다르지만 우리 값을 유지한 항목');
+  warned.forEach(([id, why]) => console.log(`     ${id.padEnd(28)} ${why}`));
 }
 
 if (!WRITE) { console.log('\n조사만 했습니다. 저장하려면 --write'); process.exit(0); }
