@@ -41,8 +41,8 @@ node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
 ```
 
-> 🔴 **2026-08-15 유저 지정 최우선 과제가 있다.** 다른 것을 시작하기 전에
-> `docs/open-items.md` 맨 위의 "다음 세션 최우선 과제 — 도감 스킬 설명 한국어화 마무리"를 읽을 것.
+> 다른 것을 시작하기 전에 `docs/open-items.md` 맨 위를 읽을 것 — 열려 있는 항목과
+> 각 항목의 판단 근거가 거기 있다.
 
 이 스크립트들이 이 프로젝트의 안전망이다. **뭔가 고친 뒤에는 반드시 다시 돌린다.**
 `checkData`가 ERROR를 내면 그 변경은 되돌리는 것이 원칙이다.
@@ -156,6 +156,10 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
   만들지 않는다. 새 문장이 필요하면 데이터 파일에 근거와 함께 넣는다
 - **서버 컴포넌트라 클라이언트 i18n을 못 쓴다**(`app/privacy`와 같은 제약). 한국어로 렌더하되
   `title`(영문)·`name_ja`(일문)를 본문에 함께 실어 세 언어 검색어를 모두 색인시킨다
+- 다만 **언어별로 갈려야 하는 블록은 클라이언트 컴포넌트로 뗀다** — 스킬 설명은
+  `components/DexSkillList.js`, 애장품 티어 토글은 `components/DexTierPanel.js`.
+  정적 생성은 유지되고 토글에만 반응한다. ⚠️ 서버→클라이언트로 **함수는 props로 못 넘긴다**
+  (`next build`가 "Functions cannot be passed directly to Client Components"로 실패한다)
 - 한국어 라벨(화력형·수냉·작열 등)은 `data/glossary.json`의 확정 표기를 따른다. 임의 번역 금지
 
 ---
