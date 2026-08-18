@@ -1872,19 +1872,25 @@
         "name": "On the Ball!",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates after 40 normal attack(s). Affects Self. Attack speed ▲ 7.26% for 3 sec."
+        "desc": "Activates after 40 normal attack(s). Affects Self. Attack speed ▲ 7.26% for 3 sec.",
+        "name_kr": "유능하게!",
+        "desc_kr": "일반공격 40회 공격 시 자신에게 [공격속도 7.26% ▲] [3초 유지]"
       },
       {
         "name": "Grow Up!",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Only affects self at Max HP. Critical Rate ▲ 21.62% permanently Critical Damage ▲ 62.27% permanently."
+        "desc": "Only affects self at Max HP. Critical Rate ▲ 21.62% permanently Critical Damage ▲ 62.27% permanently.",
+        "name_kr": "어른스럽게!",
+        "desc_kr": "자신의 체력이 최대일 때 한하여 자신에게 [크리티컬 확률 21.62% ▲] [8] [지속] [크리티컬 대미지 62.27% ▲] [9] [지속]"
       },
       {
         "name": "My Word, My Bond!",
         "type": "Active",
         "cd": "40",
-        "desc": "Affects enemies within attack range. Deals damage equal to 396% of final ATK. Cast on the same enemies when at Max HP. Deals 924% of final ATK as additional damage."
+        "desc": "Affects enemies within attack range. Deals damage equal to 396% of final ATK. Cast on the same enemies when at Max HP. Deals 924% of final ATK as additional damage.",
+        "name_kr": "나도 한다면 해!",
+        "desc_kr": "공격범위 내 적들에게 [최종 공격력 396% 대미지] 자신의 체력이 최대라면 [최종 공격력 924% 추가 대미지]"
       }
     ]
   },
@@ -4386,19 +4392,25 @@
         "name": "Glaring Eyes",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when casting a normal attack. Affects self. Charge Speed ▲ 3.81%, stacks up to 10 time(s) and lasts for 5 sec. Activates when entering battle. Affects self. Convert excess value over 100% of Charge Speed to Charge Damage. Charge Damage ▲ 240% of the excess value continuously."
+        "desc": "Activates when casting a normal attack. Affects self. Charge Speed ▲ 3.81%, stacks up to 10 time(s) and lasts for 5 sec. Activates when entering battle. Affects self. Convert excess value over 100% of Charge Speed to Charge Damage. Charge Damage ▲ 240% of the excess value continuously.",
+        "name_kr": "글레링 아이즈",
+        "desc_kr": "일반 공격 시 자신에게 [차지 속도 3.81% ▲] [10중첩] [5초 유지] 전투 시작 시 자신에게 [차지 속도 100% 초과 시 초과된 값을 차지 대미지로 변환] [초과된 값의 240% 차지 대미지 ▲] [지속]"
       },
       {
         "name": "Wild Tooth",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when entering battle. Affects self. Gain Pierce continuously. Activates during Beast Cage. Affects all allies. DEF ▲ 50.68% of caster's DEF for 10 sec. Activates during The Last Howl. Affects self. Recovers 23.04% of attack damage as HP over 10 sec. Activates when casting Red Wolf. Affects self. ATK ▲ 71.42% for 10 sec."
+        "desc": "Activates when entering battle. Affects self. Gain Pierce continuously. Activates during Beast Cage. Affects all allies. DEF ▲ 50.68% of caster's DEF for 10 sec. Activates during The Last Howl. Affects self. Recovers 23.04% of attack damage as HP over 10 sec. Activates when casting Red Wolf. Affects self. ATK ▲ 71.42% for 10 sec.",
+        "name_kr": "와일드 투스",
+        "desc_kr": "전투 시작 시 자신에게 [관통 특화] [지속] 자신이 비스트 케이지 적용 시 아군 전체에게 [시전자 기준 방어력 50.68% ▲] [10초 유지] 자신이 엔드 하울링 적용 시 자신에게 [공격 대미지 비례 23.04% 회복] [10초 유지] 자신이 레드 울프 발동 시 자신에게 [공격력 71.42% ▲] [10초 유지]"
       },
       {
         "name": "Red Wolf",
         "type": "Active",
         "cd": "40",
-        "desc": "When used in Step 1: Beast Cage Affects all allies. ATK ▲ 77.55% of caster's ATK for 10 sec. Affects self. Cooldown of Burst Skill ▼ 40 sec. Activates once per battle. When used in Step 2: The Last Howl Affects self. Attract: Taunt all enemies for 10 sec. HP Potency ▲ 74.88% for 10 sec. Cooldown of Burst Skill ▼ 40 sec. Activates once per battle. When used in Step 3: Red Wolf Affects self. Change the Weapon in use: Damage: 51.46% of final ATK Full Charge Damage: 250% of damage Last for: 10 sec Additional Effects: Expand Pierce range by 100% for 10 sec. Charge Speed ▲ 100.8% for 10 sec."
+        "desc": "When used in Step 1: Beast Cage Affects all allies. ATK ▲ 77.55% of caster's ATK for 10 sec. Affects self. Cooldown of Burst Skill ▼ 40 sec. Activates once per battle. When used in Step 2: The Last Howl Affects self. Attract: Taunt all enemies for 10 sec. HP Potency ▲ 74.88% for 10 sec. Cooldown of Burst Skill ▼ 40 sec. Activates once per battle. When used in Step 3: Red Wolf Affects self. Change the Weapon in use: Damage: 51.46% of final ATK Full Charge Damage: 250% of damage Last for: 10 sec Additional Effects: Expand Pierce range by 100% for 10 sec. Charge Speed ▲ 100.8% for 10 sec.",
+        "name_kr": "레드 울프",
+        "desc_kr": "<Step 1에서 사용 시 : 비스트 케이지> 아군 전체에게 [시전자 기준 공격력 77.55% ▲] [10초 유지] 자신에게 [버스트 스킬 재사용 시간 40초 ▼] [전투 중 1회 발동] <Step 2에서 사용 시 : 엔드 하울링> 자신에게 [주목 : 적 전체를 도발] [10초 유지] [체력 회복량 74.88% ▲] [10초 유지] [버스트 스킬 재사용 시간 40초 ▼] [전투 중 1회 발동] <Step 3에서 사용 시 : 레드 울프> 자신에게 [사용 무기 변경] : 대미지 : 최종 공격력 51.46% 대미지 [5] 풀 차지 대미지 : 250% 유지 시간 : 10초 추가 효과 [관통 범위 100% 확장] [10초 유지] [차지 속도 100.8% ▲] [10초 유지]"
       }
     ]
   },
@@ -5861,19 +5873,25 @@
         "name": "Heat Emission",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when Prediction status ends. Affects self. Removes 100% of bullets. Heat Emission: Reload Ratio ▼ 50%. Removes Heat Emission under certain conditions. Activates only when in Heat Emission status. Affects self. Recovers 2% of final Max HP every I sec continuously. Activates only when in Heat Emission status. Affects all allies. Burst Gauge filling speed ▲ 38.96% continuously. Pierce Damage ▲ 48.4% continuously."
+        "desc": "Activates when Prediction status ends. Affects self. Removes 100% of bullets. Heat Emission: Reload Ratio ▼ 50%. Removes Heat Emission under certain conditions. Activates only when in Heat Emission status. Affects self. Recovers 2% of final Max HP every I sec continuously. Activates only when in Heat Emission status. Affects all allies. Burst Gauge filling speed ▲ 38.96% continuously. Pierce Damage ▲ 48.4% continuously.",
+        "name_kr": "방열",
+        "desc_kr": "미래 예지 상태 종료 시 자신에게 [탄환 100% 제거] [방열 : 재장전 비율 50% ▼] [방열 제거 조건] 자신이 방열 상태일 때 한하여 자신에게 [최종 최대 체력 비례 2% 회복] [1초 간격] [지속] 자신이 방열 상태일 때 한하여 아군 전체에게 [버스트 게이지 충전 속도 38.96% ▲] [지속] [관통 대미지 48.4% ▲] [지속]"
       },
       {
         "name": "Overheat",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates after landing 15 normal attack(s). Affects self. Overheat 1: ATK ▲ 15.48%. Removed upon reloading to max ammunition. Activates when normal attack hits after Prediction status takes effect. Affects self. Changes according to the number of hits, Previous effects trigger repeatedly. 30 time(s): when in Prediction and Overheat I status. Overheat II: ATK ▲ 20.66% continuously. 60 time(s): when in Prediction and Overheat Il status. Overheat III: Attack Damage ▲ 30.8% continuously."
+        "desc": "Activates after landing 15 normal attack(s). Affects self. Overheat 1: ATK ▲ 15.48%. Removed upon reloading to max ammunition. Activates when normal attack hits after Prediction status takes effect. Affects self. Changes according to the number of hits, Previous effects trigger repeatedly. 30 time(s): when in Prediction and Overheat I status. Overheat II: ATK ▲ 20.66% continuously. 60 time(s): when in Prediction and Overheat Il status. Overheat III: Attack Damage ▲ 30.8% continuously.",
+        "name_kr": "과열",
+        "desc_kr": "일반 공격 15회 명중 시 자신에게 [과열 l : 공격력 15.48% ▲] [최대 장탄 재장전 완료 시 삭제] 미래 예지 상태 적용 후 일반 공격 명중 시 자신에게 [공격 명중 횟수 별 효과] [하위 효과 중복 적용] 30회 : 미래 예지와 과열 l 상태일 때 한하여 [과열 ll : 공격력 20.66% ▲] [지속] 60회 : 미래 예지와 과열 ll 상태일 때 한하여 [과열 lll : 공격 대미지 30.8% ▲] [지속]"
       },
       {
         "name": "Plot Spoiler",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects self. Prediction: Current HP ▼ 1% every I sec, lasts for 10 sec. Grants unlimited ammunition for 10 sec. Gains Pierce for 10 sec. Pierce Damage ▲ 52.8% for 10 sec. Critical Rate ▲ 85.19% for 10 sec. Affects all allies. Attack Damage ▲ 48.2% for 10 sec. Pierce Damage ▲ 39.98% for 10 sec. Max Ammunition Capacity ▲ 3 round(s) for 10 sec."
+        "desc": "Affects self. Prediction: Current HP ▼ 1% every I sec, lasts for 10 sec. Grants unlimited ammunition for 10 sec. Gains Pierce for 10 sec. Pierce Damage ▲ 52.8% for 10 sec. Critical Rate ▲ 85.19% for 10 sec. Affects all allies. Attack Damage ▲ 48.2% for 10 sec. Pierce Damage ▲ 39.98% for 10 sec. Max Ammunition Capacity ▲ 3 round(s) for 10 sec.",
+        "name_kr": "라이터즈",
+        "desc_kr": "스포일러 자신에게 [미래 예지] [현재 체력 1% ▼] [1초 간격] [10초 유지] [장탄 수 무한] [10초 유지] [관통 특화] [10초 유지] [관통 대미지 52.8% ▲] [10초 유지] [크리티컬 확률 85.19% ▲] [10초 유지] 아군 전체에게 [공격 대미지 48.2% ▲] [10초 유지] [관통 대미지 39.98% ▲] [10초 유지] [최대 장탄 수 3발 ▲] [10초 유지]"
       }
     ]
   },
@@ -6671,19 +6689,25 @@
         "name": "Thief's Calling Card",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when hitting a Rapture with a normal attack if the Rapture is not in Calling Card status. Affects the target. Calling Card: DEF ▼ 32.19% for 5 sec. Activates when hitting a Rapture with a normal attack if the Rapture is not in Calling Card status. Affects self. Thief's Dagger: Hit Rate ▲ 25.75%, stacks up to 3 time(s) and lasts for 5 sec. Activates when hitting a target with a normal attack if the target is in Calling Card status. Effects self. Attack damage ▲ 75.17% for 1 round(s)."
+        "desc": "Activates when hitting a Rapture with a normal attack if the Rapture is not in Calling Card status. Affects the target. Calling Card: DEF ▼ 32.19% for 5 sec. Activates when hitting a Rapture with a normal attack if the Rapture is not in Calling Card status. Affects self. Thief's Dagger: Hit Rate ▲ 25.75%, stacks up to 3 time(s) and lasts for 5 sec. Activates when hitting a target with a normal attack if the target is in Calling Card status. Effects self. Attack damage ▲ 75.17% for 1 round(s).",
+        "name_kr": "괴도의 예고장",
+        "desc_kr": "일반 공격 명중 시 예고장 상태가 아닌 랩쳐라면 대상에게 [예고장 : 방어력 32.19% ▼] [5초 유지] 일반 공격 명중 시 대상이 예고장 상태가 아닌 랩쳐라면 자신에게 [괴도의 단검 : 명중률 25.75% ▲] [3 중첩] [5초 유지] 일반 공격 명중 시 대상이 예고장 상태일때 자신에게 [공격 대미지 75.17% ▲] [1발 유지]"
       },
       {
         "name": "Thief's Vision",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when Thief's Dagger is fully stacked. Affects the target(s) in Calling Card status after the stacks are removed. Deals 84.33% of final ATK as additional damage. Calling Card status is removed after the effect is triggered. Activates when Thief's Dagger is fully stacked. Affects self after the stacks are removed Distributed Damage ▲ 12.86% continuously, stacks up to 3 time(s). Stacks are removed after Burst Skill is cast. Activates after landing 10 normal attack(s). Effects self. ATK▲ 85.12% for 5 sec. Distributed Damage ▲ 31.92% for 10 sec."
+        "desc": "Activates when Thief's Dagger is fully stacked. Affects the target(s) in Calling Card status after the stacks are removed. Deals 84.33% of final ATK as additional damage. Calling Card status is removed after the effect is triggered. Activates when Thief's Dagger is fully stacked. Affects self after the stacks are removed Distributed Damage ▲ 12.86% continuously, stacks up to 3 time(s). Stacks are removed after Burst Skill is cast. Activates after landing 10 normal attack(s). Effects self. ATK▲ 85.12% for 5 sec. Distributed Damage ▲ 31.92% for 10 sec.",
+        "name_kr": "괴도의 시선",
+        "desc_kr": "자신이 괴도의 단검 최대 중첩 상태라면 중첩 해제 후 예고장 상태의 대상에게 [최종 공격력 84.33% 추가 대미지] [효과 적용 후 예고장 제거 자신이 괴도의 단검 최대 중첩 상태라면 중첩 해제 후 자신에게 [분배 대미지 12.86% ▲] [3 중첩] [버스트 스킬 사용 후 중첩 제거] [지속] 일반 공격 10회 공격 시 자신에게 [공격력 85.12% 추가 ▲] [5초 유지] [분배 대미지 31.92% ▲] [10 유지]"
       },
       {
         "name": "Secret Trick: Rampages of Thieves",
         "type": "Active",
         "cd": "40",
-        "desc": "Affects all enemies. Deals 1457.28% of final ATK as Distributed Damage."
+        "desc": "Affects all enemies. Deals 1457.28% of final ATK as Distributed Damage.",
+        "name_kr": "비기 괴도 난무",
+        "desc_kr": "적 전체에게 [최종 공격력 1457.28% 분배 대미지]"
       }
     ],
     "prydwenTags": [
@@ -6714,19 +6738,25 @@
         "name": "Secure Route",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates only when Explore Route Stage 1 is fully stacked. Affects self. Distributed Damage ▲ 49.58% continuously. Activates only when Explore Route Stage 2 is fully stacked. Affects self. Damage dealt when attacking core ▲ 25.25% continuously. Activates only when Explore Route Stage 3 is fully stacked. Affects self. Critical Rate ▲ 16.73% continuously."
+        "desc": "Activates only when Explore Route Stage 1 is fully stacked. Affects self. Distributed Damage ▲ 49.58% continuously. Activates only when Explore Route Stage 2 is fully stacked. Affects self. Damage dealt when attacking core ▲ 25.25% continuously. Activates only when Explore Route Stage 3 is fully stacked. Affects self. Critical Rate ▲ 16.73% continuously.",
+        "name_kr": "루트 확정",
+        "desc_kr": "자신이 루트 탐색 1단계 최대 중첩 상태일 때 한하여 자신에게 [분배 대미지 49.58% ▲] [지속] 자신이 루트 탐색 2단계 최대 중첩 상태일 때 한하여 자신에게 [코어 대미지 25.25% ▲] [지속] 자신이 루트 탐색 3단계 최대 중첩 상태일 때 한하여 자신에게 [크리티컬 확률 16.73% ▲] [지속]"
       },
       {
         "name": "Explore Route",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates after landing 2 normal attack(s). Effects self. Effects in each phase vary. Previous effects trigger repeatedly. Stage 1: Affects self. Hit Rate ▲ 1.36%, stacks up to 10 time(s) and lasts for 2 sec. ATK ▲ 2.45%, stacks up to 10 time(s) and lasts for 2 sec. Stage 2: Activates when Explore Route Stage 1 is fully stacked. Affects self. Hit Rate ▲ 2.71%, stacks up to 10 time(s) and lasts for 1 sec. ATK ▲ 4.9%, stacks up to 10 time(s) and lasts for 1 sec. Stage 3: Activates when Explore Route Stage 2 is fully stocked. Affects self. Hit Rate ▲ 4.08%, stacks up to 5 time(s) and lasts for 0.5 sec. ATK ▲ 7.36%, stacks up to 5 time(s) and lasts for 0.5 sec."
+        "desc": "Activates after landing 2 normal attack(s). Effects self. Effects in each phase vary. Previous effects trigger repeatedly. Stage 1: Affects self. Hit Rate ▲ 1.36%, stacks up to 10 time(s) and lasts for 2 sec. ATK ▲ 2.45%, stacks up to 10 time(s) and lasts for 2 sec. Stage 2: Activates when Explore Route Stage 1 is fully stacked. Affects self. Hit Rate ▲ 2.71%, stacks up to 10 time(s) and lasts for 1 sec. ATK ▲ 4.9%, stacks up to 10 time(s) and lasts for 1 sec. Stage 3: Activates when Explore Route Stage 2 is fully stocked. Affects self. Hit Rate ▲ 4.08%, stacks up to 5 time(s) and lasts for 0.5 sec. ATK ▲ 7.36%, stacks up to 5 time(s) and lasts for 0.5 sec.",
+        "name_kr": "루트 탐색",
+        "desc_kr": "일반 공격 2회 공격 시 자신에게 [단계 별 효과] [하위 효과 중복 적용] 1단계 : 자신에게 [명중률 1.36% ▲] [10 중첩] [2초 유지] [공격력 2.45% ▲] [10 중첩] [2초 유지] 2단계 : 루트 탐색 1단계 최대 중첩 상태라면 자신에게 [명중률 2.71% ▲] [10 중첩] [1초 유지] [공격력 4.9% ▲] [10 중첩] [1초 유지] 3단계 : 루트 탐색 2단계 최대 중첩 상태라면 자신에게 [명중률 4.08% ▲] [5 중첩] [0.5초 유지] [공격력 7.36% ▲] [5 중첩] [0.5초 유지]"
       },
       {
         "name": "The Great Thief",
         "type": "Active",
         "cd": "40",
-        "desc": "Affects self. Attack Damage ▲ 57.08% for 10 sec. Reloading Speed ▲ 25.87% for 10 sec. Affects all enemies. Deals 1736.31% of final ATK as Distributed Damage."
+        "desc": "Affects self. Attack Damage ▲ 57.08% for 10 sec. Reloading Speed ▲ 25.87% for 10 sec. Affects all enemies. Deals 1736.31% of final ATK as Distributed Damage.",
+        "name_kr": "위대한 도둑",
+        "desc_kr": "자신에게 [공격 대미지 57.08% ▲] [10초 유지] [재장전 속도 25.87% ▲] [10초 유지] 적 전체에게 [최종 공격력 1736.31% 분배 대미지]"
       }
     ]
   },
@@ -6895,19 +6925,25 @@
         "name": "Hero's Fate",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates every time EXP stacks 10. Affects self. Hero Level Up: Reaches a maximum of Level 11. Hero Level Up Reward: Reloads 10.26%. Hero Level Up Reward: Recovers 2.44% of caster's final Max HP Activates when Hero levels up. Affects all Water Code allies. Damage as strong element ▲ 1.16% * Hero Level continuously. ATK ▲ 0.91% of caster's ATK * Hero Level continuously."
+        "desc": "Activates every time EXP stacks 10. Affects self. Hero Level Up: Reaches a maximum of Level 11. Hero Level Up Reward: Reloads 10.26%. Hero Level Up Reward: Recovers 2.44% of caster's final Max HP Activates when Hero levels up. Affects all Water Code allies. Damage as strong element ▲ 1.16% * Hero Level continuously. ATK ▲ 0.91% of caster's ATK * Hero Level continuously.",
+        "name_kr": "용사의 숙명",
+        "desc_kr": "경험치 10 중첩마다 자신에게 [용사 레벨 업 : 최대 11레벨까지 성장] [용사 레벨 업 보상 : 탄환 충전 10.26%] [용사 레벨 업 보상 : 시전자의 최종 최대 체력 비례 2.44% 회복] 용사 레벨 업 시 수냉 코드 아군 전체에게 [우월 코드 공격 대미지 1.16% X 용사 레벨 수 ▲] [지속] [시전자 기준 공격력 0.91% X 용사 레벨 수 ▲] [지속]"
       },
       {
         "name": "Hero's Gift",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates after landing 6 normal attack(s) without hitting the core. Affects self. EXP: ATK ▲ 1.81%, stacks up to 100 time(s) continuously. Activates when hitting the Core for 3 time(s). Affects self. EXP: ATK ▲ 1.81%, stacks up to 100 time(s) continuously. Activates when Hero Level is 2 or above. Affects self. Damage as strong element ▲ 7.46% continuously."
+        "desc": "Activates after landing 6 normal attack(s) without hitting the core. Affects self. EXP: ATK ▲ 1.81%, stacks up to 100 time(s) continuously. Activates when hitting the Core for 3 time(s). Affects self. EXP: ATK ▲ 1.81%, stacks up to 100 time(s) continuously. Activates when Hero Level is 2 or above. Affects self. Damage as strong element ▲ 7.46% continuously.",
+        "name_kr": "용사의 자질",
+        "desc_kr": "일반 공격 6회 명중 시 코어가 아니라면 자신에게 [경험치 : 공격력 1.81% ▲] [100 중첩] [지속] 코어 3회 명중 시 자신에게 [경험치 : 공격력 1.81% ▲] [100 중첩] [지속] 자신이 용사 레벨이 2 이상일 때 한하여 자신에게 [우월 코드 공격 대미지 7.46% ▲] [지속]"
       },
       {
         "name": "Extermination",
         "type": "Active",
         "cd": "40",
-        "desc": "Affects all Water Code allies. Attack Damage ▲ 10.14% for 10 sec. Damage as strong element ▲ 18.75% for 10 sec. Affects 1 enemy unit(s) with the highest Max HP. Deals continuous damage equal to 20.87% of the final ATK * Hero Level every sec for 10 sec."
+        "desc": "Affects all Water Code allies. Attack Damage ▲ 10.14% for 10 sec. Damage as strong element ▲ 18.75% for 10 sec. Affects 1 enemy unit(s) with the highest Max HP. Deals continuous damage equal to 20.87% of the final ATK * Hero Level every sec for 10 sec.",
+        "name_kr": "익스터미네이션",
+        "desc_kr": "수냉 코드 아군 전체에게 [공격 대미지 10.14% ▲] [10초 유지] [우월 코드 공격 대미지 18.75% ▲] [10초 유지] 최대 체력이 가장 높은 적 1기에게 [최종 공격력 20.87% X 용사 레벨 수 지속 대미지] [1초 간격] [10초 유지]"
       }
     ],
     "prydwenTags": [

@@ -76,10 +76,33 @@ const decode = (s) => s
 // ⚠️ '|'를 그냥 지우면 안 된다. 처음에 지웠다가 '버스트 I|I'가 '버스트 II'가 되어,
 //    솔린 알트(실제 버스트 I)를 II로 읽고 "DB 3 vs 나무위키 II"라는 **가짜 충돌**을 만들었다.
 //    '|'는 위키 표 구분자가 샌 것이므로 **앞부분만** 취한다: '버스트 I|I' → '버스트 I'.
+// 실측으로 확인한 버스트 표기 변종 (2026-08-13, 2026-08-18):
+//   '버스트 III'  ASCII 대문자 I ×3            — 다수
+//   '버스트 Ⅲ'    전각 로마숫자 U+2162          — 마나
+//   '버스트 lll'  **소문자 L** ×3 (U+6C)        — 그레이브·팬텀·퀀시·길로틴
+//                 인포박스는 대문자 I인데 스킬 절만 소문자 l을 쓰는 문서가 많다
+//   '버스트 I|I'  위키 표 구분자가 샘            — 솔린
+//   '버스트 Λ'    그리스 대문자 람다 U+39B       — 레드 후드
+//                 단계(Step 1/2/3) 어디서나 쓸 수 있는 유연 버스트의 특수 표기다
+// 정규화하지 않으면 해당 캐릭터만 조용히 빠진다. 실제로 8명이 그렇게 빠져 있었다.
 const normalizeLine = (l) => l
   .replace(/[Ⅰ-Ⅲ]/g, (ch) => 'I'.repeat(ch.charCodeAt(0) - 0x215f))
-  .replace(/^(버스트\s*(?:I{1,3}|[123]))\|.*$/, '$1')
+  // 버스트 표기 자리의 소문자 l 만 대문자 I 로 본다. 본문 전체를 치환하면 스킬 설명의
+  // 영문 단어까지 망가진다.
+  .replace(/^(버스트\s*)([lI]{1,3})$/, (_, head, body) => head + body.replace(/l/g, 'I'))
+  // '버스트 I|I' (솔린) — 파이프를 **I로 읽는다**. 로마자 III의 가운데 획이 '|'로 들어간 오식이다.
+  //
+  // 2026-08-13에는 반대로 처리했다("앞부분만 취해 버스트 I"). 유저가 "솔린도 1버스트야"라고
+  // 해서 그게 맞다고 봤는데, 그건 **알트(프로스트 티켓)** 이야기였다. 2026-08-18에 숫자로
+  // 판별했다 — 이 문서의 스킬 절 숫자가 기본 솔린(버스트 3)의 영어 데이터와 7/7 전부 일치하고
+  // 프로스트 티켓과는 6/9만 맞는다. 따라서 이 절은 기본 솔린이고 'I|I'는 III다.
+  // 인포박스도 '버스트 III'이고 prydwen도 3이다.
+  .replace(/^(버스트\s*)([I|]{2,4})$/, (_, head, body) => head + body.replace(/\|/g, 'I'))
   .trim();
+
+// 레드 후드처럼 단계 유연 버스트는 로마숫자 대신 Λ로 적힌다. 슬롯 숫자를 못 읽으므로
+// 버스트 대조를 건너뛰되, **그 사실을 기록해** 조용히 넘어가지 않게 한다.
+const FLEX_BURST_MARK = 'Λ';
 
 function toLines(html) {
   const stripped = html
@@ -102,7 +125,9 @@ function extractSkillsAt(lines, start) {
   //    1) 인포박스에도 '버스트 III' 같은 줄이 있어서 스킬 절보다 **앞**에 나온다(마나: 277번 줄).
   //    2) 같은 헤더가 연달아 두 번 나오는 문서가 있다(크러스트: 396·397번 줄 둘 다 '버스트 II').
   //    그래서 "스킬 1 → 그 뒤 첫 스킬 2 → 그 뒤 첫 버스트" 순서로 하나씩 찾아 내려간다.
-  const isBurst = (l) => /^버스트\s*(I{1,3}|[123])$/.test(l);
+  // Λ(단계 유연 버스트, 레드 후드)도 버스트 헤더다. 숫자가 아니어서 슬롯 대조는 못 하지만
+  // 헤더로 인식하지 못하면 그 캐릭터의 스킬을 통째로 못 가져온다.
+  const isBurst = (l) => new RegExp('^버스트\\s*(I{1,3}|[123]|' + FLEX_BURST_MARK + ')$').test(l);
   const i1 = 0; // seg[0] === '스킬 1'
   const i2 = seg.findIndex((l, i) => i > i1 && l === '스킬 2');
   if (i2 < 0) return null;
@@ -135,15 +160,33 @@ function extractSkillsAt(lines, start) {
 // 그래서 문서 안의 모든 '스킬 1' 위치에서 후보를 뽑고, **우리 영어 데이터의 숫자와 가장 잘
 // 맞는 후보**를 고른다. 이미 신뢰하는 검증(숫자 대조)을 선택 기준으로 재사용하는 셈이라,
 // 고른 결과가 곧 검증된 결과다.
-function extractSkillsBest(html, enSkills) {
+// 2026-08-18 보강: 숫자 점수만으로 고르면 **버스트가 다른 절을 집는 일이 생긴다.**
+//   솔린 문서에는 기본 솔린(버스트 III)과 솔린 : 프로스트 티켓(버스트 I)이 함께 있는데,
+//   두 캐릭터의 스킬 수치가 겹치는 부분이 있어 점수가 비슷하게 나온다.
+//   버스트는 우리가 이미 확실히 아는 값이므로, **버스트가 맞는 후보를 먼저 거른다.**
+//   그러고도 남는 후보가 여럿이면 그때 숫자 점수로 고른다.
+function extractSkillsBest(html, enSkills, burst) {
   const lines = toLines(html);
   const starts = [];
   lines.forEach((l, i) => { if (l === '스킬 1') starts.push(i); });
   if (!starts.length) return null;
+
+  const roman = { I: 1, II: 2, III: 3 };
+  const burstOf = (cand) => {
+    const slot = cand[2].slot.replace(/^버스트\s*/, '');
+    if (slot === FLEX_BURST_MARK) return null;   // 단계 유연 — 숫자가 없다
+    return roman[slot] || Number(slot) || null;
+  };
+
+  const cands = starts.map((s) => extractSkillsAt(lines, s)).filter(Boolean);
+  if (!cands.length) return null;
+
+  // 버스트가 맞는 것(또는 유연 버스트라 판단 불가한 것)만 남긴다.
+  const matching = cands.filter((c) => { const b = burstOf(c); return b === null || String(b) === String(burst); });
+  const pool = matching.length ? matching : cands;
+
   let best = null; let bestScore = -1;
-  for (const s of starts) {
-    const cand = extractSkillsAt(lines, s);
-    if (!cand) continue;
+  for (const cand of pool) {
     let hit = 0; let total = 0;
     for (let i = 0; i < 3; i++) {
       const en = numsOf(enSkills[i]?.desc);
@@ -182,12 +225,19 @@ const hasNear = (set, n) => {
 
 function verify(krSkills, enSkills, burst) {
   const problems = [];
+  const skippedBurstCheck = [];
   // 버스트 단계 대조 — 슬롯 문자열의 로마숫자를 숫자로
   const roman = { I: 1, II: 2, III: 3 };
   const slot = krSkills[2].slot.replace(/^버스트\s*/, '');
-  const krBurst = roman[slot] || Number(slot);
-  if (krBurst && String(krBurst) !== String(burst)) {
-    problems.push(`버스트 불일치: DB ${burst} vs 나무위키 ${krSkills[2].slot}`);
+  if (slot === FLEX_BURST_MARK) {
+    // 단계 유연 버스트는 슬롯 숫자가 없다. 대조를 건너뛰되 **건너뛰었다는 사실을 남긴다** —
+    // 조용히 통과시키면 나중에 "이 캐릭터는 버스트를 확인했다"고 잘못 믿게 된다.
+    skippedBurstCheck.push(`${burst}단계로 기록된 캐릭터 — 나무위키 표기가 Λ(단계 유연)라 버스트 대조 생략`);
+  } else {
+    const krBurst = roman[slot] || Number(slot);
+    if (krBurst && String(krBurst) !== String(burst)) {
+      problems.push(`버스트 불일치: DB ${burst} vs 나무위키 ${krSkills[2].slot}`);
+    }
   }
   for (let i = 0; i < 3; i++) {
     const en = numsOf(enSkills[i]?.desc);
@@ -198,13 +248,14 @@ function verify(krSkills, enSkills, burst) {
       problems.push(`스킬${i + 1} 숫자 불일치: 영어 ${[...en].join('/')} vs 한국어 ${[...kr].join('/')}`);
     }
   }
+  if (skippedBurstCheck.length) skipped.push(...skippedBurstCheck);
   return problems;
 }
 
 const raw = JSON.parse(fs.readFileSync(DB, 'utf8'));
 const cdb = Array.isArray(raw) ? raw : raw.characters;
 
-const ok = []; const failed = [];
+const ok = []; const failed = []; const skipped = [];
 for (const c of cdb) {
   if (!c.name_kr || !(c.skills || []).length) { failed.push([c.id, '데이터 없음']); continue; }
   const titles = TITLE_OVERRIDE[c.id]
@@ -214,7 +265,7 @@ for (const c of cdb) {
   for (const t of titles) {
     const html = fetchNamu(t);
     if (!html) continue;
-    const s = extractSkillsBest(html, c.skills);
+    const s = extractSkillsBest(html, c.skills, c.burst);
     if (s) { kr = s; used = t; break; }
   }
   if (!kr) { failed.push([c.id, '문서/스킬 절 못 찾음']); continue; }
