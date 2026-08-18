@@ -1000,6 +1000,47 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 티어 판정 기록 (data/tierJudgments.json)
+//
+// weeklyCheck가 "이 불일치는 이미 사람이 판정했다"고 판단하는 근거 파일이다. 즉 **이 파일이
+// 틀리면 주간 점검이 진짜 불일치를 조용히 내려버린다.** 그래서 형태를 강하게 검사한다.
+//
+// 특히 `ours`는 지금 DB의 티어와 같아야 한다. 우리 값을 나중에 고쳐놓고 기록을 안 고치면,
+// 기록은 옛 값 쌍을 가리키므로 새 불일치가 판정되지 않은 채 남는다.
+// ---------------------------------------------------------------------------
+{
+  const judgments = read('tierJudgments.json');
+  const MODES = ['story', 'bossing', 'pvp'];
+  const VERDICTS = ['keep', 'hold'];
+  const seen = new Set();
+  judgments.forEach((j, i) => {
+    const who = `tierJudgments[${i}] (${j.id} ${j.mode})`;
+    if (!IDS.has(j.id)) {
+      err('JUDGE_UNKNOWN_ID', `${who}: id '${j.id}'가 characterDatabase에 없음 — 이 기록은 아무 것도 안 덮는다`);
+      return;
+    }
+    if (!MODES.includes(j.mode)) { err('JUDGE_SHAPE', `${who}: mode는 ${MODES.join('/')} 중 하나여야 함`); return; }
+    if (!VERDICTS.includes(j.verdict)) err('JUDGE_SHAPE', `${who}: verdict='${j.verdict}' — ${VERDICTS.join('/')} 중 하나여야 함`);
+    if (!DOMAIN.grades.includes(j.ours) || !DOMAIN.grades.includes(j.prydwen)) {
+      err('JUDGE_SHAPE', `${who}: ours='${j.ours}' prydwen='${j.prydwen}' — 허용 등급이 아님`);
+    }
+    if (j.ours === j.prydwen) err('JUDGE_SHAPE', `${who}: 두 값이 같다 — 불일치가 아닌 것을 판정해둔 셈이다`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(j.decidedOn))) err('JUDGE_SHAPE', `${who}: decidedOn 날짜 형식(YYYY-MM-DD)이 아님`);
+    if (!String(j.why || '').trim()) {
+      err('JUDGE_NO_REASON', `${who}: why가 비어 있음 — 근거 없는 판정은 다음 사람이 검증할 수 없다`);
+    }
+    const key = `${j.id}|${j.mode}`;
+    if (seen.has(key)) err('JUDGE_DUP', `${who}: 같은 캐릭터·모드 판정이 두 번 있다`);
+    seen.add(key);
+    const nowOurs = BY_TITLE.get(cdb.find((c) => c.id === j.id).title)?.tiers?.[j.mode];
+    if (nowOurs && nowOurs !== j.ours) {
+      err('JUDGE_STALE', `${who}: 기록의 우리 값 '${j.ours}'가 지금 DB의 '${nowOurs}'와 다름 — ` +
+        '기록이 낡아 주간 점검이 이 불일치를 판정된 것으로 착각하지 않는다(다시 판정할 것)');
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // 리포트
 // ---------------------------------------------------------------------------
 const line = '─'.repeat(72);

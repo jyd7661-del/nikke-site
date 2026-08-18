@@ -141,8 +141,22 @@ if (resolvedByName.length) {
 // ⚠️ 여기서 **자동으로 고치지 않는다.** 2026-08-15에 prydwen 하나만 보고 8건을 고치려다,
 //    nikke.gg·game8·enikk를 더 대조하니 7건에서 prydwen이 아웃라이어였다.
 //    단일 출처는 '확인할 거리'이지 정답이 아니다.
+//
+// 2026-08-18 보강 — **이미 판정한 불일치는 매주 다시 올리지 않는다.**
+//   2026-08-15에 8건을 4개 출처로 대조해 전부 '유지'로 끝냈는데, 이 점검은 prydwen만 보므로
+//   그 8건을 매주 그대로 다시 올렸다. 사람이 볼 게 없는 항목이 보고서 맨 위를 계속 차지하면
+//   보고서 자체를 안 읽게 된다(설계 원칙 4 — 오탐이 나는 검사는 아무도 믿지 않는다).
+//   그래서 판정 내역을 data/tierJudgments.json에 남기고, **값이 그때와 같으면 참고로 내린다.**
+//   ⚠️ 판정은 '그 값 쌍'에만 유효하다. 우리 값이나 prydwen 값이 하나라도 달라지면 키가 어긋나
+//      다시 확인 항목으로 올라온다 — 조용히 묻히지 않게 하는 장치가 이것이다.
+const judgments = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tierJudgments.json'), 'utf8'));
+const jKey = (id, mode, ours, theirs) => `${id}|${mode}|${ours}|${theirs}`;
+const judged = new Map(judgments.map((j) => [jKey(j.id, j.mode, j.ours, j.prydwen), j]));
+const seenJudged = new Set();
+
 const MAP = { story: 'rating_story', bossing: 'rating_boss', pvp: 'rating_pvp' };
 const drift = [];
+const settled = [];
 for (const c of cdb) {
   const page = getCharPage(c.id);
   if (!page) continue;
@@ -151,20 +165,41 @@ for (const c of cdb) {
     const m = clean.match(new RegExp('"' + theirs + '"\\s*:\\s*"([^"]*)"'));
     if (!m) continue;
     if (c.tiers?.[ours] && m[1] && c.tiers[ours] !== m[1]) {
-      drift.push(`- ${c.name_kr} ${ours}: 우리 **${c.tiers[ours]}** vs prydwen **${m[1]}**`);
+      const key = jKey(c.id, ours, c.tiers[ours], m[1]);
+      const j = judged.get(key);
+      if (j) {
+        seenJudged.add(key);
+        settled.push(`${c.name_kr} ${ours}(${j.verdict === 'hold' ? '보류' : '유지'}, ${j.decidedOn})`);
+      } else {
+        drift.push(`- ${c.name_kr} ${ours}: 우리 **${c.tiers[ours]}** vs prydwen **${m[1]}**`);
+      }
     }
   }
 }
 if (drift.length) {
   findings.push({
-    title: `prydwen 티어와 어긋나는 값 ${drift.length}건`,
+    title: `prydwen 티어와 어긋나는 값 ${drift.length}건 (판정 기록에 없는 것만)`,
     body: drift.join('\n') +
       '\n\n⚠️ **바로 고치지 마세요.** prydwen은 한 곳일 뿐입니다. nikke.gg·game8·enikk를 함께 대조해' +
       ' 2곳 이상이 일치하는 값만 반영합니다. 2026-08-15에 8건 중 7건이 prydwen 아웃라이어였습니다.' +
+      ' 판정한 뒤에는 `data/tierJudgments.json`에 근거와 함께 남기세요 — 그래야 다음 주에 다시 안 올라옵니다.' +
       ' 경위는 `docs/open-items.md`.',
   });
 } else {
-  notes.push('prydwen 티어와 어긋나는 값 없음');
+  notes.push(`prydwen 티어와 어긋나는 값 없음 (판정 기록에 없는 것 기준)`);
+}
+if (settled.length) {
+  notes.push(`이미 판정한 티어 불일치 ${settled.length}건 — 값 그대로라 확인 불필요: ${settled.join(', ')}`);
+}
+// 판정해뒀는데 이번엔 안 걸린 것 = prydwen이 우리 값으로 바뀌었거나 우리가 값을 고친 것.
+// 낡은 기록을 그대로 두면 나중에 진짜 불일치를 덮어버리므로 정리 대상으로 알린다.
+const staleJudgments = judgments.filter((j) => !seenJudged.has(jKey(j.id, j.mode, j.ours, j.prydwen)));
+if (staleJudgments.length) {
+  findings.push({
+    title: `더 이상 맞지 않는 티어 판정 기록 ${staleJudgments.length}건`,
+    body: staleJudgments.map((j) => `- \`${j.id}\` ${j.mode}: 기록은 우리 ${j.ours} vs prydwen ${j.prydwen} (${j.decidedOn})인데 지금은 그 조합이 아님`).join('\n') +
+      '\n\n→ 값이 바뀐 것이니 `data/tierJudgments.json`에서 지우거나 새 값으로 다시 판정하세요.',
+  });
 }
 
 // ── 3. 자료 신선도 ─────────────────────────────────────────────────────────

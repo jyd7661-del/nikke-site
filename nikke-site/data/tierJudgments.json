@@ -1,0 +1,74 @@
+[
+  {
+    "id": "red-hood",
+    "mode": "pvp",
+    "ours": "S",
+    "prydwen": "A",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "nikke.gg SS · enikk 아레나 사용률 68.2%. prydwen만 낮게 준다"
+  },
+  {
+    "id": "noir",
+    "mode": "bossing",
+    "ours": "A",
+    "prydwen": "B",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "nikke.gg A(우리와 같음) · game8 종합 S"
+  },
+  {
+    "id": "rapi-red-hood",
+    "mode": "story",
+    "ours": "SSS",
+    "prydwen": "S",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "nikke.gg SSS · game8은 「ニケ最強はラピ：レッドフード」로 전체 1위"
+  },
+  {
+    "id": "rapi-red-hood",
+    "mode": "bossing",
+    "ours": "SSS",
+    "prydwen": "SS",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "nikke.gg SSS · game8 최강 1위 · enikk 솔로레이드 사용률 98.5%"
+  },
+  {
+    "id": "rapi-red-hood",
+    "mode": "pvp",
+    "ours": "A",
+    "prydwen": "E",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "nikke.gg A(우리와 같음). prydwen만 E(최하위)로 4등급 낮다 — 아웃라이어"
+  },
+  {
+    "id": "laplace-ultimate-hero",
+    "mode": "bossing",
+    "ours": "SS",
+    "prydwen": "S",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "game8 종합 SS. nikke.gg는 이 알트를 아직 안 다룬다"
+  },
+  {
+    "id": "maxwell-ordinary-mechanic",
+    "mode": "bossing",
+    "ours": "SS",
+    "prydwen": "A",
+    "verdict": "keep",
+    "decidedOn": "2026-08-15",
+    "why": "game8이 【Tier】 항목에 SS로 명시"
+  },
+  {
+    "id": "maxwell-ordinary-mechanic",
+    "mode": "pvp",
+    "ours": "B",
+    "prydwen": "A",
+    "verdict": "hold",
+    "decidedOn": "2026-08-15",
+    "why": "PvP 전용 등급을 주는 곳이 prydwen뿐이라 대세를 만들 수 없다. 한 등급 차이라 보류 — 새 출처가 이 알트를 다루면 재판정"
+  }
+]
