@@ -1,0 +1,934 @@
+{
+  "meta": {
+    "source": "enikk.app",
+    "sourceUrl": "https://enikk.app/soloraid",
+    "capturedOn": "2026-08-19",
+    "method": "솔로레이드 시즌 페이지 Teams 탭을 브라우저로 열어 화면 값을 그대로 옮겼다(A등급). enikk의 /api/graphql은 robots.txt가 Disallow라 쓰지 않는다.",
+    "selection": "사용 횟수(Parse Count) 내림차순 상위 25팀",
+    "caveat": "각 행은 (조합 × 서버) 단위다. 같은 조합이 서버별로 따로 잡히므로 parses는 전 서버 합계가 아니라 한 서버에서의 표본 수다. 화면에 서버 필터가 없어 어느 서버인지는 표시되지 않는다.",
+    "staleAfterDays": 60
+  },
+  "seasons": [
+    {
+      "raid": 39,
+      "boss": "Island Eater",
+      "weakness": "iron",
+      "teams": [
+        {
+          "members": [
+            "Crown",
+            "Naga",
+            "Anis: Star",
+            "Rapi: Red Hood",
+            "Privaty"
+          ],
+          "parses": 1528,
+          "maxDamage": "15.64B",
+          "avgDamage": "12.53B"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Cinderella: Crystal Wave",
+            "Anchor: Innocent Maid",
+            "EVE",
+            "Little Mermaid"
+          ],
+          "parses": 1082,
+          "maxDamage": "14.06B",
+          "avgDamage": "9.34B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Nayuta",
+            "Marciana: Marine Study",
+            "Helm",
+            "Helm: Aquamarine"
+          ],
+          "parses": 711,
+          "maxDamage": "8.45B",
+          "avgDamage": "5.94B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Mint",
+            "Raven",
+            "Prika",
+            "Red Hood"
+          ],
+          "parses": 671,
+          "maxDamage": "9.28B",
+          "avgDamage": "6.40B"
+        },
+        {
+          "members": [
+            "Moran",
+            "Chisato Nishikigi",
+            "Takina Inoue",
+            "Snow White: Heavy Arms",
+            "Ada Wong"
+          ],
+          "parses": 468,
+          "maxDamage": "6.78B",
+          "avgDamage": "5.17B"
+        },
+        {
+          "members": [
+            "Tove",
+            "Nayuta",
+            "Soda: Twinkling Bunny",
+            "Dorothy: Serendipity",
+            "Drake"
+          ],
+          "parses": 341,
+          "maxDamage": "6.21B",
+          "avgDamage": "4.22B"
+        },
+        {
+          "members": [
+            "Moran",
+            "Chisato Nishikigi",
+            "Laplace",
+            "Ada Wong",
+            "Takina Inoue"
+          ],
+          "parses": 254,
+          "maxDamage": "8.11B",
+          "avgDamage": "5.71B"
+        },
+        {
+          "members": [
+            "Moran",
+            "Prika",
+            "Raven",
+            "Mint",
+            "Red Hood"
+          ],
+          "parses": 202,
+          "maxDamage": "8.16B",
+          "avgDamage": "6.01B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Mast: Romantic Maid",
+            "Cinderella: Crystal Wave",
+            "EVE",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 198,
+          "maxDamage": "12.35B",
+          "avgDamage": "9.97B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Ade: Agent Bunny",
+            "Helm",
+            "Marciana: Marine Study",
+            "Helm: Aquamarine"
+          ],
+          "parses": 180,
+          "maxDamage": "6.91B",
+          "avgDamage": "4.59B"
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Mint",
+            "Red Hood",
+            "Raven",
+            "Prika"
+          ],
+          "parses": 179,
+          "maxDamage": "8.91B",
+          "avgDamage": "6.73B"
+        },
+        {
+          "members": [
+            "Tove",
+            "Arcana: Fortune Mate",
+            "Soda: Twinkling Bunny",
+            "Dorothy: Serendipity",
+            "Drake"
+          ],
+          "parses": 132,
+          "maxDamage": "6.06B",
+          "avgDamage": "4.36B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Marciana: Marine Study",
+            "Milk: Blooming Bunny",
+            "Nayuta",
+            "Helm: Aquamarine"
+          ],
+          "parses": 125,
+          "maxDamage": "8.49B",
+          "avgDamage": "6.77B"
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Cinderella: Crystal Wave",
+            "Milk: Blooming Bunny",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 108,
+          "maxDamage": "12.26B",
+          "avgDamage": "9.13B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Mint",
+            "Prika",
+            "EVE",
+            "Raven"
+          ],
+          "parses": 91,
+          "maxDamage": "10.62B",
+          "avgDamage": "7.30B"
+        },
+        {
+          "members": [
+            "Nayuta",
+            "Snow White",
+            "Maxwell",
+            "Zwei",
+            "Helm: Aquamarine"
+          ],
+          "parses": 77,
+          "maxDamage": "8.37B",
+          "avgDamage": "6.22B"
+        },
+        {
+          "members": [
+            "Cinderella: Crystal Wave",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Little Mermaid",
+            "Ludmilla: Winter Owner"
+          ],
+          "parses": 75,
+          "maxDamage": "10.43B",
+          "avgDamage": "8.35B"
+        },
+        {
+          "members": [
+            "Snow White",
+            "Zwei",
+            "Snow White: Heavy Arms",
+            "Nayuta",
+            "Helm: Aquamarine"
+          ],
+          "parses": 70,
+          "maxDamage": "7.54B",
+          "avgDamage": "5.88B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Nayuta",
+            "Snow White: Heavy Arms",
+            "Marciana: Marine Study",
+            "Helm: Aquamarine"
+          ],
+          "parses": 66,
+          "maxDamage": "7.66B",
+          "avgDamage": "5.99B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Mint",
+            "Snow White: Heavy Arms",
+            "Raven",
+            "Prika"
+          ],
+          "parses": 65,
+          "maxDamage": "6.47B",
+          "avgDamage": "5.39B"
+        },
+        {
+          "members": [
+            "Mint",
+            "Moran",
+            "Snow White: Heavy Arms",
+            "Raven",
+            "Prika"
+          ],
+          "parses": 63,
+          "maxDamage": "7.07B",
+          "avgDamage": "5.48B"
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Crown",
+            "Cinderella: Crystal Wave",
+            "EVE",
+            "Mast: Romantic Maid"
+          ],
+          "parses": 57,
+          "maxDamage": "11.97B",
+          "avgDamage": "9.06B"
+        },
+        {
+          "members": [
+            "Zwei",
+            "Nayuta",
+            "Red Hood",
+            "Snow White",
+            "Helm: Aquamarine"
+          ],
+          "parses": 52,
+          "maxDamage": "7.33B",
+          "avgDamage": "5.89B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Snow White: Heavy Arms",
+            "Takina Inoue",
+            "Chisato Nishikigi",
+            "Ada Wong"
+          ],
+          "parses": 52,
+          "maxDamage": "6.30B",
+          "avgDamage": "4.34B"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Mint",
+            "Rapi: Red Hood",
+            "Prika",
+            "Raven"
+          ],
+          "parses": 45,
+          "maxDamage": "11.17B",
+          "avgDamage": "8.33B"
+        }
+      ]
+    },
+    {
+      "raid": 37,
+      "boss": "Ultra",
+      "weakness": "water",
+      "teams": [
+        {
+          "members": [
+            "Tove",
+            "Dorothy: Serendipity",
+            "Arcana: Fortune Mate",
+            "Drake",
+            "Soline: Frost Ticket"
+          ],
+          "parses": 1281,
+          "maxDamage": "14.07B",
+          "avgDamage": "9.84B"
+        },
+        {
+          "members": [
+            "Crown",
+            "Liter",
+            "Helm",
+            "Ludmilla: Winter Owner",
+            "Elegg: Boom and Shock"
+          ],
+          "parses": 449,
+          "maxDamage": "11.09B",
+          "avgDamage": "7.46B"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Bready",
+            "Anchor: Innocent Maid",
+            "Mast: Romantic Maid",
+            "Diesel: Winter Sweets"
+          ],
+          "parses": 289,
+          "maxDamage": "12.05B",
+          "avgDamage": "9.59B"
+        },
+        {
+          "members": [
+            "Zwei",
+            "Snow White: Heavy Arms",
+            "Mint",
+            "Privaty",
+            "Little Mermaid"
+          ],
+          "parses": 282,
+          "maxDamage": "18.40B",
+          "avgDamage": "13.47B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Mint",
+            "Quency: Escape Queen",
+            "Red Hood",
+            "Prika"
+          ],
+          "parses": 245,
+          "maxDamage": "7.81B",
+          "avgDamage": "6.10B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Nayuta",
+            "Ludmilla: Winter Owner",
+            "Elegg: Boom and Shock",
+            "Helm"
+          ],
+          "parses": 237,
+          "maxDamage": "9.26B",
+          "avgDamage": "7.02B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Crown",
+            "Snow White: Heavy Arms",
+            "Privaty",
+            "Little Mermaid"
+          ],
+          "parses": 215,
+          "maxDamage": "17.01B",
+          "avgDamage": "13.23B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Nayuta",
+            "Snow White: Heavy Arms",
+            "Privaty",
+            "Little Mermaid"
+          ],
+          "parses": 208,
+          "maxDamage": "14.16B",
+          "avgDamage": "11.48B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Nayuta",
+            "Red Hood",
+            "Quency: Escape Queen",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 131,
+          "maxDamage": "6.53B",
+          "avgDamage": "5.09B"
+        },
+        {
+          "members": [
+            "Moran",
+            "Bready",
+            "Liberalio",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 127,
+          "maxDamage": "6.27B",
+          "avgDamage": "5.07B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Mint",
+            "Alice",
+            "Red Hood",
+            "Prika"
+          ],
+          "parses": 126,
+          "maxDamage": "8.34B",
+          "avgDamage": "6.21B"
+        },
+        {
+          "members": [
+            "Crown",
+            "Anis: Star",
+            "Helm",
+            "Ludmilla: Winter Owner",
+            "Elegg: Boom and Shock"
+          ],
+          "parses": 106,
+          "maxDamage": "12.03B",
+          "avgDamage": "8.92B"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Alice",
+            "Anis: Star",
+            "Bready",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 98,
+          "maxDamage": "11.66B",
+          "avgDamage": "8.35B"
+        },
+        {
+          "members": [
+            "Zwei",
+            "Snow White: Heavy Arms",
+            "Little Mermaid",
+            "Nayuta",
+            "Privaty"
+          ],
+          "parses": 90,
+          "maxDamage": "15.47B",
+          "avgDamage": "12.65B"
+        },
+        {
+          "members": [
+            "Zwei",
+            "Crown",
+            "Snow White: Heavy Arms",
+            "Privaty",
+            "Little Mermaid"
+          ],
+          "parses": 85,
+          "maxDamage": "18.59B",
+          "avgDamage": "14.20B"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Liberalio",
+            "Anchor: Innocent Maid",
+            "Neon: Vision Eye",
+            "Mast: Romantic Maid"
+          ],
+          "parses": 83,
+          "maxDamage": "10.21B",
+          "avgDamage": "8.13B"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Quency: Escape Queen",
+            "Anchor: Innocent Maid",
+            "Bready",
+            "Rapi: Red Hood"
+          ],
+          "parses": 75,
+          "maxDamage": "7.42B",
+          "avgDamage": "5.97B"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Liberalio",
+            "Anchor: Innocent Maid",
+            "Mast: Romantic Maid",
+            "Bready"
+          ],
+          "parses": 73,
+          "maxDamage": "10.64B",
+          "avgDamage": "8.35B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Nayuta",
+            "Quency: Escape Queen",
+            "Diesel: Winter Sweets",
+            "Red Hood"
+          ],
+          "parses": 70,
+          "maxDamage": "6.68B",
+          "avgDamage": "5.54B"
+        },
+        {
+          "members": [
+            "Mint",
+            "Anis: Star",
+            "Alice",
+            "Neon: Vision Eye",
+            "Prika"
+          ],
+          "parses": 68,
+          "maxDamage": "10.35B",
+          "avgDamage": "8.60B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Crown",
+            "Ludmilla: Winter Owner",
+            "Helm",
+            "Elegg: Boom and Shock"
+          ],
+          "parses": 59,
+          "maxDamage": "8.56B",
+          "avgDamage": "6.96B"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Alice",
+            "Anis: Star",
+            "Neon: Vision Eye",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 58,
+          "maxDamage": "10.21B",
+          "avgDamage": "8.20B"
+        },
+        {
+          "members": [
+            "Crown",
+            "Ludmilla: Winter Owner",
+            "Anis: Star",
+            "Privaty",
+            "Elegg: Boom and Shock"
+          ],
+          "parses": 56,
+          "maxDamage": "12.34B",
+          "avgDamage": "9.31B"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Snow White: Heavy Arms",
+            "Privaty",
+            "Elegg: Boom and Shock"
+          ],
+          "parses": 51,
+          "maxDamage": "18.01B",
+          "avgDamage": "13.30B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Nayuta",
+            "Red Hood",
+            "Quency: Escape Queen",
+            "Velvet"
+          ],
+          "parses": 48,
+          "maxDamage": "6.79B",
+          "avgDamage": "5.78B"
+        }
+      ]
+    },
+    {
+      "raid": 36,
+      "boss": "Egovista",
+      "weakness": "electric",
+      "teams": [
+        {
+          "members": [
+            "Isabel",
+            "Anis: Star",
+            "Cinderella",
+            "Arcana",
+            "Crown"
+          ],
+          "parses": 745,
+          "maxDamage": "16.57B",
+          "avgDamage": "11.90B"
+        },
+        {
+          "members": [
+            "Anis: Sparkling Summer",
+            "Ade: Agent Bunny",
+            "Moran",
+            "Maiden: Ice Rose",
+            "Privaty"
+          ],
+          "parses": 545,
+          "maxDamage": "8.08B",
+          "avgDamage": "5.60B"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Little Mermaid",
+            "Neon: Vision Eye",
+            "Liberalio",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 495,
+          "maxDamage": "8.19B",
+          "avgDamage": "6.38B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Takina Inoue",
+            "Ein",
+            "Rouge",
+            "Ada Wong"
+          ],
+          "parses": 320,
+          "maxDamage": "6.85B",
+          "avgDamage": "4.74B"
+        },
+        {
+          "members": [
+            "Liter",
+            "Mast: Romantic Maid",
+            "Neon: Vision Eye",
+            "Liberalio",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 201,
+          "maxDamage": "8.71B",
+          "avgDamage": "5.74B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Takina Inoue",
+            "Ein",
+            "Little Mermaid",
+            "Ada Wong"
+          ],
+          "parses": 177,
+          "maxDamage": "8.08B",
+          "avgDamage": "4.92B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Nayuta",
+            "Snow White: Heavy Arms",
+            "Jill Valentine",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 108,
+          "maxDamage": "5.64B",
+          "avgDamage": "4.20B"
+        },
+        {
+          "members": [
+            "Scarlet",
+            "Snow White: Heavy Arms",
+            "Mihara: Bonding Chain",
+            "Nayuta",
+            "Rapi: Red Hood"
+          ],
+          "parses": 85,
+          "maxDamage": "4.54B",
+          "avgDamage": "3.73B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Trina",
+            "Scarlet",
+            "Privaty"
+          ],
+          "parses": 71,
+          "maxDamage": "4.96B",
+          "avgDamage": "4.06B"
+        },
+        {
+          "members": [
+            "Nayuta",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Rouge",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 56,
+          "maxDamage": "4.04B",
+          "avgDamage": "3.48B"
+        },
+        {
+          "members": [
+            "Miranda",
+            "Takina Inoue",
+            "Ada Wong",
+            "Ein",
+            "Soline: Frost Ticket"
+          ],
+          "parses": 52,
+          "maxDamage": "5.35B",
+          "avgDamage": "3.91B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Trina",
+            "Scarlet",
+            "Snow White: Heavy Arms",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 42,
+          "maxDamage": "4.31B",
+          "avgDamage": "3.57B"
+        },
+        {
+          "members": [
+            "Anis: Sparkling Summer",
+            "Helm",
+            "Moran",
+            "Nayuta",
+            "Maiden: Ice Rose"
+          ],
+          "parses": 40,
+          "maxDamage": "6.89B",
+          "avgDamage": "5.37B"
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Nayuta",
+            "Neon: Vision Eye",
+            "Liberalio",
+            "Velvet"
+          ],
+          "parses": 39,
+          "maxDamage": "8.21B",
+          "avgDamage": "6.57B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Helm",
+            "Nayuta",
+            "Scarlet"
+          ],
+          "parses": 39,
+          "maxDamage": "4.62B",
+          "avgDamage": "3.64B"
+        },
+        {
+          "members": [
+            "Anis: Sparkling Summer",
+            "Mari Makinami Illustrious",
+            "Moran",
+            "Maiden: Ice Rose",
+            "Privaty"
+          ],
+          "parses": 34,
+          "maxDamage": "8.88B",
+          "avgDamage": "5.82B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Nayuta",
+            "Snow White: Heavy Arms",
+            "Diesel: Winter Sweets",
+            "Scarlet"
+          ],
+          "parses": 34,
+          "maxDamage": "4.90B",
+          "avgDamage": "4.07B"
+        },
+        {
+          "members": [
+            "Anis: Sparkling Summer",
+            "Rouge",
+            "Maiden: Ice Rose",
+            "Ade: Agent Bunny",
+            "Privaty"
+          ],
+          "parses": 33,
+          "maxDamage": "6.91B",
+          "avgDamage": "5.02B"
+        },
+        {
+          "members": [
+            "Anis: Sparkling Summer",
+            "Ade: Agent Bunny",
+            "Moran",
+            "Helm",
+            "Maiden: Ice Rose"
+          ],
+          "parses": 27,
+          "maxDamage": "6.33B",
+          "avgDamage": "5.02B"
+        },
+        {
+          "members": [
+            "Diesel: Winter Sweets",
+            "Rouge",
+            "Snow White: Heavy Arms",
+            "Nayuta",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 23,
+          "maxDamage": "4.75B",
+          "avgDamage": "3.75B"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Neon: Vision Eye",
+            "Moran",
+            "Liberalio",
+            "Anchor: Innocent Maid"
+          ],
+          "parses": 19,
+          "maxDamage": "7.57B",
+          "avgDamage": "6.29B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Mari Makinami Illustrious",
+            "Snow White: Heavy Arms",
+            "Helm",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 19,
+          "maxDamage": "4.37B",
+          "avgDamage": "3.52B"
+        },
+        {
+          "members": [
+            "Nayuta",
+            "Snow White: Heavy Arms",
+            "Moran",
+            "Rapi: Red Hood",
+            "Privaty"
+          ],
+          "parses": 18,
+          "maxDamage": "5.15B",
+          "avgDamage": "4.61B"
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Nayuta",
+            "Ein",
+            "Ada Wong",
+            "Mihara: Bonding Chain"
+          ],
+          "parses": 17,
+          "maxDamage": "4.68B",
+          "avgDamage": "4.24B"
+        },
+        {
+          "members": [
+            "Crown",
+            "Anis: Star",
+            "Cinderella",
+            "Anis: Sparkling Summer",
+            "Maiden: Ice Rose"
+          ],
+          "parses": 16,
+          "maxDamage": "11.27B",
+          "avgDamage": "10.45B"
+        }
+      ]
+    }
+  ]
+}

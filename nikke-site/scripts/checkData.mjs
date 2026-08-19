@@ -1000,6 +1000,60 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 솔로레이드 실사용 조합 (data/soloRaidTeams.json + data/enikkAlias.json)
+//
+// enikk.app 시즌 페이지의 Teams 탭을 **사람이 브라우저로 열어 읽어 옮긴** 값이다.
+// (enikk의 /api/graphql은 robots.txt가 Disallow라 스크립트로 긁지 않는다.)
+// 옮겨 적는 과정이 사람 손을 타므로, 이름이 하나라도 우리 title과 어긋나면 ERROR로 세운다 —
+// 조용히 다른 캐릭터로 읽히면 보스전 추천이 통째로 틀어진다.
+//
+// enikk은 콜라보 캐릭터를 짧게 적는다(Ada / Takina / Jill …). 그 대응은 enikkAlias.json에
+// 두고, **별칭을 적용한 뒤의 이름만** 데이터 파일에 저장한다.
+// ---------------------------------------------------------------------------
+{
+  const sr = read('soloRaidTeams.json');
+  const alias = read('enikkAlias.json');
+
+  for (const [short, full] of Object.entries(alias)) {
+    if (!TITLES.has(full)) err('ENIKK_ALIAS_UNKNOWN', `enikkAlias: '${short}' → '${full}' — 그런 title이 DB에 없다`);
+    if (TITLES.has(short)) err('ENIKK_ALIAS_USELESS', `enikkAlias: '${short}'는 이미 DB의 title이다 — 별칭이 필요 없거나 다른 캐릭터를 가린다`);
+  }
+
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(sr.meta?.capturedOn || ''))) {
+    err('SRTEAM_SHAPE', 'soloRaidTeams.meta.capturedOn 날짜(YYYY-MM-DD)가 없다 — 언제 본 화면인지 모르면 낡았는지 판단할 수 없다');
+  }
+  const seenRaid = new Set();
+  (sr.seasons || []).forEach((s) => {
+    const who = `soloRaidTeams 시즌 ${s.raid}`;
+    if (seenRaid.has(s.raid)) err('SRTEAM_DUP_SEASON', `${who}: 같은 시즌이 두 번 있다`);
+    seenRaid.add(s.raid);
+    if (!DOMAIN.element.includes(s.weakness)) {
+      err('SRTEAM_SHAPE', `${who}: weakness='${s.weakness}'는 허용 속성이 아니다 (enikk 표기 Electronic은 우리 'electric'으로 옮긴다)`);
+    }
+    (s.teams || []).forEach((t, i) => {
+      const w = `${who} #${i + 1}`;
+      if (!Array.isArray(t.members) || t.members.length !== 5 || new Set(t.members).size !== 5) {
+        err('SRTEAM_SHAPE', `${w}: 5인 조합이 아니거나 중복이 있다 — [${(t.members || []).join(', ')}]`);
+        return;
+      }
+      const unknown = t.members.filter((m) => !TITLES.has(m));
+      if (unknown.length) {
+        err('SRTEAM_UNKNOWN_MEMBER', `${w}: DB에 없는 이름 ${unknown.join(', ')} — ` +
+          '화면을 잘못 읽었거나 별칭이 빠졌다. 지어내지 말고 enikkAlias.json에 근거와 함께 추가할 것');
+      }
+      if (!Number.isInteger(t.parses) || t.parses <= 0) {
+        err('SRTEAM_SHAPE', `${w}: parses='${t.parses}' — 1 이상의 정수여야 한다`);
+      }
+    });
+    // 사용 횟수 내림차순으로 옮겼다고 적어뒀으니 실제로 그런지 본다(행이 밀려 적힌 것을 잡는다).
+    const ps = (s.teams || []).map((t) => t.parses);
+    if (ps.some((v, i) => i > 0 && v > ps[i - 1])) {
+      err('SRTEAM_ORDER', `${who}: parses가 내림차순이 아니다 — 화면과 행이 어긋났을 수 있다`);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // 티어 판정 기록 (data/tierJudgments.json)
 //
 // weeklyCheck가 "이 불일치는 이미 사람이 판정했다"고 판단하는 근거 파일이다. 즉 **이 파일이
