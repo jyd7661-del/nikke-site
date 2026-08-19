@@ -28,6 +28,7 @@ import synergyNotes from '../data/synergyNotes.json';
 import dataFreshness from '../data/dataFreshness.json';
 import treasureEffects from '../data/treasureEffects.json';
 import metaStats from '../data/metaStats.json';
+import soloRaidTeams from '../data/soloRaidTeams.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 
 // characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
@@ -1345,7 +1346,13 @@ const REAL_TEAM_SOURCE = {
   campaign: 'campaign',
   story: 'campaign',
   pvp: 'pvp',
-  // bossing / raid / tribe_tower: 5인 조합 단위 실사용 기록 없음
+  // 2026-08-19 추가. 그전까지 "보스전은 5인 조합 단위 실사용 기록이 없다"고 적혀 있었는데
+  // **틀린 결론이었다.** enikk 솔로레이드 시즌 페이지의 Teams 탭에 조합·사용 횟수가 그대로
+  // 있다(시즌 39만 1,015팀). 화면 기본 탭에 안 보였을 뿐이다.
+  // data/soloRaidTeams.json = 시즌 5개(원소 5종) × 사용 횟수 상위 25팀.
+  bossing: 'soloraid',
+  raid: 'soloraid',
+  // tribe_tower: 아직 없다. enikk에 towerCompositions가 있으니 같은 방식으로 채울 수 있다.
 };
 
 export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
@@ -1359,11 +1366,25 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
   const ownedTitles = new Set(ownedCharacters.map((c) => c.title));
 
-  // 캠페인은 "얼마나 많이 쓰였는가"(pctOfClears), PvP는 "얼마나 이겼는가"(승률)를 기준으로 삼는다.
+  // 캠페인은 "얼마나 많이 쓰였는가"(pctOfClears), PvP는 "얼마나 이겼는가"(승률),
+  // 보스전은 "그 보스에서 몇 번 쓰였는가"(parses)를 기준으로 삼는다.
+  //
+  // ⚠️ 보스전은 **속성이 맞는 시즌만** 본다. 솔로레이드는 시즌마다 보스 약점 속성이 다르고,
+  //    조합이 그 속성에 맞춰 짜이기 때문에 다른 시즌의 조합을 섞으면 근거가 아니라 잡음이 된다.
+  //    (예: 작열 시즌의 모더니아 조합을 철갑 보스에 추천하면 안 된다)
+  //    속성을 안 고른 경우에만 전 시즌을 본다 — 그때는 "어느 보스에서 쓰였는지"를 함께 밝힌다.
+  const soloRaidEntries = () => {
+    const seasons = (soloRaidTeams.seasons || []).filter(
+      (s) => !bossElement || s.weakness === bossElement,
+    );
+    return seasons.flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0 })));
+  };
   const entries =
     source === 'campaign'
       ? (metaStats.campaignCompositions?.list || []).map((e) => ({ e, rank: e.pctOfClears || 0 }))
-      : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
+      : source === 'soloraid'
+        ? soloRaidEntries()
+        : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
 
   let best = null;
   entries.forEach(({ e, rank }) => {
@@ -1381,13 +1402,20 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   if (!best) return null;
 
   const e = best.entry;
-  const headline =
-    source === 'campaign'
-      ? `[실전 기록] 이 5인 조합은 enikk.app 캠페인 클리어 기록에서 실제로 ` +
-        `${(e.totalUses || 0).toLocaleString()}회 사용되어 분석된 전체 클리어의 ${e.pctOfClears}%를 ` +
-        `차지합니다. 플레이어들이 실제로 가장 많이 쓰는 조합이라 시너지가 이미 검증된 구성입니다.`
-      : `[실전 기록] 이 5인 조합은 챔피언 아레나 실제 대전에서 승률 ${e.wr}%(${e.n}전, ` +
-        `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
+  let headline;
+  if (source === 'campaign') {
+    headline = `[실전 기록] 이 5인 조합은 enikk.app 캠페인 클리어 기록에서 실제로 ` +
+      `${(e.totalUses || 0).toLocaleString()}회 사용되어 분석된 전체 클리어의 ${e.pctOfClears}%를 ` +
+      `차지합니다. 플레이어들이 실제로 가장 많이 쓰는 조합이라 시너지가 이미 검증된 구성입니다.`;
+  } else if (source === 'soloraid') {
+    // 표본 수는 "한 서버에서의 기록"이다(전 서버 합계가 아니다). 그 사정을 문장에 담는다.
+    headline = `[실전 기록] 이 5인 조합은 enikk.app 솔로 레이드 시즌 ${e.season.raid}` +
+      `(${e.season.boss}) 기록에서 ${(e.parses || 0).toLocaleString()}회 사용됐습니다. ` +
+      `최고 ${e.maxDamage} / 평균 ${e.avgDamage}의 데미지 기록이 남아 있는 구성입니다.`;
+  } else {
+    headline = `[실전 기록] 이 5인 조합은 챔피언 아레나 실제 대전에서 승률 ${e.wr}%(${e.n}전, ` +
+      `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
+  }
 
   return {
     members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({
@@ -1398,7 +1426,9 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     reasons: [headline, ...best.scored.reasons],
     realUsage: source === 'campaign'
       ? { kind: 'campaign', totalUses: e.totalUses, pctOfClears: e.pctOfClears }
-      : { kind: 'pvp', wr: e.wr, n: e.n, adoption: e.adoption },
+      : source === 'soloraid'
+        ? { kind: 'soloraid', parses: e.parses, raid: e.season.raid, boss: e.season.boss, weakness: e.season.weakness }
+        : { kind: 'pvp', wr: e.wr, n: e.n, adoption: e.adoption },
   };
 }
 
