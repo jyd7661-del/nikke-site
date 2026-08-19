@@ -1014,9 +1014,21 @@ if (glossarySrc) {
   const sr = read('soloRaidTeams.json');
   const alias = read('enikkAlias.json');
 
-  for (const [short, full] of Object.entries(alias)) {
+  // ⚠️ 가장 위험한 경우: enikk의 짧은 이름이 **우리 DB에도 있는 title**인데 다른 인물인 것.
+  //    실제 사례 — enikk 'Rei'는 아야나미 레이(버스트3·작열)인데, 우리 DB의 title 'Rei'는
+  //    라이(버스트1·수냉·방어형)다. 이름만 맞춰보면 그냥 통과해서 **엉뚱한 캐릭터가 조합에
+  //    들어간다.** 이름 검사가 통과했다는 사실이 맞다는 뜻이 아니다(설계 원칙 3).
+  //    그래서 겹치는 이름은 collisionNotes에 '왜 그쪽이 아닌지'를 적어야만 통과시킨다.
+  for (const [short, full] of Object.entries(alias.aliases || {})) {
     if (!TITLES.has(full)) err('ENIKK_ALIAS_UNKNOWN', `enikkAlias: '${short}' → '${full}' — 그런 title이 DB에 없다`);
-    if (TITLES.has(short)) err('ENIKK_ALIAS_USELESS', `enikkAlias: '${short}'는 이미 DB의 title이다 — 별칭이 필요 없거나 다른 캐릭터를 가린다`);
+    if (short === full) err('ENIKK_ALIAS_USELESS', `enikkAlias: '${short}'는 우리 표기와 같다 — 별칭이 필요 없다`);
+    else if (TITLES.has(short) && !String((alias.collisionNotes || {})[short] || '').trim()) {
+      err('ENIKK_ALIAS_COLLISION', `enikkAlias: '${short}'는 우리 DB에도 있는 title인데 '${full}'로 옮기고 있다 — ` +
+        'collisionNotes에 다른 인물인 근거(버스트·속성 등)를 적지 않으면 통과시키지 않는다');
+    }
+  }
+  for (const short of Object.keys(alias.collisionNotes || {})) {
+    if (!(alias.aliases || {})[short]) err('ENIKK_ALIAS_UNKNOWN', `enikkAlias.collisionNotes: '${short}'에 대응하는 별칭이 없다`);
   }
 
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(sr.meta?.capturedOn || ''))) {

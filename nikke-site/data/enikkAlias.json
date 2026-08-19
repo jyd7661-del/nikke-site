@@ -1,7 +1,16 @@
 {
-  "Chisato": "Chisato Nishikigi",
-  "Takina": "Takina Inoue",
-  "Ada": "Ada Wong",
-  "Jill": "Jill Valentine",
-  "Mari": "Mari Makinami Illustrious"
+  "_note": "enikk.app 화면 표기 → 우리 characterDatabase.title. 화면에서 옮겨 적을 때만 쓴다.",
+  "aliases": {
+    "Chisato": "Chisato Nishikigi",
+    "Takina": "Takina Inoue",
+    "Ada": "Ada Wong",
+    "Jill": "Jill Valentine",
+    "Mari": "Mari Makinami Illustrious",
+    "Rei": "Rei Ayanami",
+    "Rei (Tentative Name)": "Rei Ayanami (Tentative Name)",
+    "Asuka": "Asuka Shikinami Langley"
+  },
+  "collisionNotes": {
+    "Rei": "⚠️ 우리 DB에도 'Rei'라는 title이 있는데 그건 라이(id rei, 버스트1·수냉·방어형, 2023-04-27)로 전혀 다른 인물이다. enikk 화면의 아이콘 표기가 'B3 Rei'였고, 아야나미 레이(rei-ayanami)가 버스트3·작열이라 그쪽이다. 라이였다면 B1로 찍힌다. 버스트 표기가 없었다면 옮기지 말 것."
+  }
 }

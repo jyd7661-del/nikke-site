@@ -27,7 +27,7 @@
   },
   "soloRaidTeams": {
     "asOf": "2026-08-19",
-    "source": "enikk.app 솔로레이드 시즌 페이지 Teams 탭(시즌 39·37·36). 사람이 브라우저로 열어 화면 값을 옮겼다 — enikk의 /api/graphql은 robots.txt Disallow라 쓰지 않는다",
+    "source": "enikk.app 솔로레이드 시즌 페이지 Teams 탭(시즌 39·38·37·36·35 = 철갑·풍압·수냉·전격·작열). 사람이 브라우저로 열어 화면 값을 옮겼다 — enikk의 /api/graphql은 robots.txt Disallow라 쓰지 않는다",
     "refreshMethod": "docs/data.md \"솔로레이드 실사용 조합\" 절 참고 (시즌 페이지 → Teams 탭 → 사용 횟수 정렬 → 25개씩)",
     "staleAfterDays": 60
   }
