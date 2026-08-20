@@ -1066,6 +1066,44 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 캠페인 실사용 조합 (metaStats.campaignCompositions)
+//
+// 2026-08-21부터 이것도 사람이 화면에서 옮긴다(그전에도 그랬지만 검사가 없었다).
+// **화면의 '% of clears'는 totalUses / analyzedClears와 정확히 일치한다**(19행 전수 확인).
+// 그래서 이 관계를 검사로 걸면 두 열 중 하나만 잘못 옮겨도 걸린다 — 전사 오류 탐지기다.
+// ---------------------------------------------------------------------------
+{
+  const cc = meta.campaignCompositions || {};
+  const analyzed = cc.meta?.analyzedClears;
+  if (!Number.isInteger(analyzed) || analyzed <= 0) {
+    err('CAMPCOMP_SHAPE', 'campaignCompositions.meta.analyzedClears가 없다 — % 교차검증을 할 수 없다');
+  }
+  const list = cc.list || [];
+  list.forEach((t, i) => {
+    const w = `campaignCompositions #${i + 1}`;
+    if (!Array.isArray(t.members) || t.members.length !== 5 || new Set(t.members).size !== 5) {
+      err('CAMPCOMP_SHAPE', `${w}: 5인 조합이 아니거나 중복이 있다`);
+      return;
+    }
+    const unknown = t.members.filter((m) => !TITLES.has(m));
+    if (unknown.length) err('CAMPCOMP_UNKNOWN_MEMBER', `${w}: DB에 없는 이름 ${unknown.join(', ')}`);
+    if (!Number.isInteger(t.totalUses) || t.totalUses <= 0) {
+      err('CAMPCOMP_SHAPE', `${w}: totalUses='${t.totalUses}' — 1 이상의 정수여야 한다`);
+    } else if (Number.isInteger(analyzed) && analyzed > 0) {
+      const derived = Number((t.totalUses / analyzed * 100).toFixed(2));
+      if (Math.abs(derived - Number(t.pctOfClears)) > 0.01) {
+        err('CAMPCOMP_PCT_MISMATCH', `${w}: pctOfClears=${t.pctOfClears}인데 ` +
+          `totalUses(${t.totalUses})/analyzedClears(${analyzed})는 ${derived} — 둘 중 하나를 잘못 옮겼다`);
+      }
+    }
+  });
+  const uses = list.map((t) => t.totalUses);
+  if (uses.some((v, i) => i > 0 && v > uses[i - 1])) {
+    err('CAMPCOMP_ORDER', 'campaignCompositions: totalUses가 내림차순이 아니다 — 화면과 행이 어긋났을 수 있다');
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 타워 실사용 조합 (data/towerCompositions.json)
 //
 // 솔로레이드와 같은 방식으로 사람이 화면에서 옮긴 값이라 검사도 같은 강도로 건다.
