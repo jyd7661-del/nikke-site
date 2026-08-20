@@ -29,6 +29,7 @@ import dataFreshness from '../data/dataFreshness.json';
 import treasureEffects from '../data/treasureEffects.json';
 import metaStats from '../data/metaStats.json';
 import soloRaidTeams from '../data/soloRaidTeams.json';
+import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 
 // characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
@@ -1352,7 +1353,10 @@ const REAL_TEAM_SOURCE = {
   // data/soloRaidTeams.json = 시즌 5개(원소 5종) × 사용 횟수 상위 25팀.
   bossing: 'soloraid',
   raid: 'soloraid',
-  // tribe_tower: 아직 없다. enikk에 towerCompositions가 있으니 같은 방식으로 채울 수 있다.
+  // 2026-08-20 추가. enikk 타워 > Compositions 탭에서 옮겼다(data/towerCompositions.json).
+  // 지금은 Tribe 풀(제한 없음)만 있다. 기업 타워(elysion/missilis/tetra/pilgrim)는 풀을 더
+  // 옮기면 자동으로 살아난다 — 없는 동안에는 후보가 비어 조용히 아키타입 갈래만 남는다.
+  tribe_tower: 'tower',
 };
 
 export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
@@ -1379,12 +1383,21 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     );
     return seasons.flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0 })));
   };
+  // 타워는 **그 타워의 풀만** 본다. 기업 타워는 애초에 로스터가 그 기업으로 걸러지므로
+  // 다른 풀의 조합은 어차피 매칭되지 않지만, 근거 문장이 엉뚱한 타워를 가리키면 안 된다.
+  const towerEntries = () => {
+    const want = opts.tower || null;
+    const pool = (towerCompositions.pools || []).find((p) => (p.tower || null) === want);
+    return (pool?.teams || []).map((t) => ({ e: { ...t, pool }, rank: t.uses || 0 }));
+  };
   const entries =
     source === 'campaign'
       ? (metaStats.campaignCompositions?.list || []).map((e) => ({ e, rank: e.pctOfClears || 0 }))
       : source === 'soloraid'
         ? soloRaidEntries()
-        : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
+        : source === 'tower'
+          ? towerEntries()
+          : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
 
   let best = null;
   entries.forEach(({ e, rank }) => {
@@ -1412,6 +1425,10 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     headline = `[실전 기록] 이 5인 조합은 enikk.app 솔로 레이드 시즌 ${e.season.raid}` +
       `(${e.season.boss}) 기록에서 ${(e.parses || 0).toLocaleString()}회 사용됐습니다. ` +
       `최고 ${e.maxDamage} / 평균 ${e.avgDamage}의 데미지 기록이 남아 있는 구성입니다.`;
+  } else if (source === 'tower') {
+    headline = `[실전 기록] 이 5인 조합은 enikk.app 타워 클리어 기록에서 ` +
+      `${(e.uses || 0).toLocaleString()}회 사용되어 분석된 전체 클리어의 ${e.pctOfClears}%를 차지합니다. ` +
+      `${(e.floors || 0).toLocaleString()}개 층에서 관측된 구성입니다.`;
   } else {
     headline = `[실전 기록] 이 5인 조합은 챔피언 아레나 실제 대전에서 승률 ${e.wr}%(${e.n}전, ` +
       `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
@@ -1428,7 +1445,9 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
       ? { kind: 'campaign', totalUses: e.totalUses, pctOfClears: e.pctOfClears }
       : source === 'soloraid'
         ? { kind: 'soloraid', parses: e.parses, raid: e.season.raid, boss: e.season.boss, weakness: e.season.weakness }
-        : { kind: 'pvp', wr: e.wr, n: e.n, adoption: e.adoption },
+        : source === 'tower'
+          ? { kind: 'tower', uses: e.uses, pctOfClears: e.pctOfClears, pool: e.pool.pool }
+          : { kind: 'pvp', wr: e.wr, n: e.n, adoption: e.adoption },
   };
 }
 

@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "source": "enikk.app",
+    "sourceUrl": "https://enikk.app/tower#compositions",
+    "capturedOn": "2026-08-20",
+    "server": "ALL",
+    "analyzedClears": 1052772,
+    "distinctRosters": 30177,
+    "method": "타워 > Compositions 탭을 브라우저로 열어 화면 값을 그대로 옮겼다(A등급). enikk의 /api/graphql은 robots.txt Disallow라 쓰지 않는다.",
+    "selection": "'Most Used Compositions' 기본 정렬(사용 횟수 내림차순) 1페이지 = 상위 10팀",
+    "caveat": "KR 서버만 걸러 받으려 했으나 2026-08-20 기준 enikk 쪽에서 'Could not load compositions / Internal Server Error'가 나서 전 서버(ALL) 기준으로 옮겼다. 기존 campaignCompositions·pvp도 전 서버 기준이라 같은 잣대다.",
+    "poolNote": "enikk의 '타워 로스터 풀' 칩 = 우리 tower 값. Tribe(제한 없음) / Elysion / Missilis / Tetra / Over-Spec. 지금은 Tribe만 옮겼다.",
+    "staleAfterDays": 45
+  },
+  "pools": [
+    {
+      "pool": "tribe",
+      "tower": null,
+      "teams": [
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Mast: Romantic Maid"
+          ],
+          "uses": 23586,
+          "pctOfClears": 10.7,
+          "floors": 1260
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Helm"
+          ],
+          "uses": 11007,
+          "pctOfClears": 5,
+          "floors": 1279
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Mast: Romantic Maid",
+            "Liberalio",
+            "Scarlet: Black Shadow",
+            "Crown"
+          ],
+          "uses": 8861,
+          "pctOfClears": 4,
+          "floors": 442
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Privaty"
+          ],
+          "uses": 7017,
+          "pctOfClears": 3.2,
+          "floors": 1144
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Moran",
+            "Rapi: Red Hood",
+            "Crown",
+            "Snow White: Heavy Arms"
+          ],
+          "uses": 4653,
+          "pctOfClears": 2.1,
+          "floors": 1118
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Cinderella: Crystal Wave",
+            "Mast: Romantic Maid"
+          ],
+          "uses": 4538,
+          "pctOfClears": 2.1,
+          "floors": 812
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Nayuta",
+            "Liberalio",
+            "Scarlet: Black Shadow",
+            "Crown"
+          ],
+          "uses": 4460,
+          "pctOfClears": 2,
+          "floors": 899
+        },
+        {
+          "members": [
+            "Crown",
+            "Anis: Star",
+            "Privaty",
+            "Snow White: Heavy Arms",
+            "Helm"
+          ],
+          "uses": 4304,
+          "pctOfClears": 1.9,
+          "floors": 516
+        },
+        {
+          "members": [
+            "Crown",
+            "Anis: Star",
+            "Snow White: Heavy Arms",
+            "Mast: Romantic Maid",
+            "Helm"
+          ],
+          "uses": 4100,
+          "pctOfClears": 1.9,
+          "floors": 563
+        },
+        {
+          "members": [
+            "Crown",
+            "Anis: Star",
+            "Cinderella: Crystal Wave",
+            "Rapi: Red Hood",
+            "Privaty"
+          ],
+          "uses": 4034,
+          "pctOfClears": 1.8,
+          "floors": 682
+        }
+      ]
+    }
+  ]
+}

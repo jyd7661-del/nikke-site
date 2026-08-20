@@ -1066,6 +1066,58 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 타워 실사용 조합 (data/towerCompositions.json)
+//
+// 솔로레이드와 같은 방식으로 사람이 화면에서 옮긴 값이라 검사도 같은 강도로 건다.
+// pool은 enikk의 '타워 로스터 풀' 칩, tower는 우리 isTowerEligible이 받는 값이다
+// (null = 트라이브 타워, 제한 없음).
+// ---------------------------------------------------------------------------
+{
+  const tc = read('towerCompositions.json');
+  const TOWERS = [null, 'elysion', 'missilis', 'tetra', 'pilgrim'];
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(tc.meta?.capturedOn || ''))) {
+    err('TOWERCOMP_SHAPE', 'towerCompositions.meta.capturedOn 날짜(YYYY-MM-DD)가 없다');
+  }
+  const seenPool = new Set();
+  (tc.pools || []).forEach((p) => {
+    const who = `towerCompositions 풀 '${p.pool}'`;
+    if (seenPool.has(p.pool)) err('TOWERCOMP_DUP_POOL', `${who}: 같은 풀이 두 번 있다`);
+    seenPool.add(p.pool);
+    if (!TOWERS.includes(p.tower === undefined ? 'x' : p.tower)) {
+      err('TOWERCOMP_SHAPE', `${who}: tower='${p.tower}' — null/elysion/missilis/tetra/pilgrim 중 하나여야 한다`);
+    }
+    (p.teams || []).forEach((t, i) => {
+      const w = `${who} #${i + 1}`;
+      if (!Array.isArray(t.members) || t.members.length !== 5 || new Set(t.members).size !== 5) {
+        err('TOWERCOMP_SHAPE', `${w}: 5인 조합이 아니거나 중복이 있다`);
+        return;
+      }
+      const unknown = t.members.filter((m) => !TITLES.has(m));
+      if (unknown.length) err('TOWERCOMP_UNKNOWN_MEMBER', `${w}: DB에 없는 이름 ${unknown.join(', ')}`);
+      if (!Number.isInteger(t.uses) || t.uses <= 0) err('TOWERCOMP_SHAPE', `${w}: uses='${t.uses}' — 1 이상의 정수여야 한다`);
+      // 기업 타워 풀이라면 멤버가 그 기업(또는 오버스펙) 자격을 갖춰야 한다.
+      // 자격 없는 멤버가 섞이면 그 조합은 엔진에서 영원히 매칭되지 않는다 — 조용한 사문화다.
+      if (p.tower) {
+        const wrong = t.members.filter((m) => {
+          const c = BY_TITLE.get(m);
+          if (!c) return false;
+          return p.tower === 'pilgrim'
+            ? !(c.manufacturer === 'pilgrim' || c.overspec === true)
+            : c.manufacturer !== p.tower;
+        });
+        if (wrong.length) {
+          err('TOWERCOMP_INELIGIBLE', `${w}: '${p.tower}' 타워에 들어갈 수 없는 멤버 ${wrong.join(', ')} — 풀을 잘못 옮겼을 수 있다`);
+        }
+      }
+    });
+    const us = (p.teams || []).map((t) => t.uses);
+    if (us.some((v, i) => i > 0 && v > us[i - 1])) {
+      err('TOWERCOMP_ORDER', `${who}: uses가 내림차순이 아니다 — 화면과 행이 어긋났을 수 있다`);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // 티어 판정 기록 (data/tierJudgments.json)
 //
 // weeklyCheck가 "이 불일치는 이미 사람이 판정했다"고 판단하는 근거 파일이다. 즉 **이 파일이
