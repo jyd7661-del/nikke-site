@@ -127,6 +127,7 @@ enikk은 콜라보를 짧게 적는다(`Ada`/`Takina`/`Jill`/`Mari`). 대부분�
 
 ---
 
+## prydwenTags — 조건부 캐릭터 표시
 
 prydwen 티어리스트가 캐릭터 아이콘에 붙여둔 라벨을 그대로 옮긴 값입니다.
 
