@@ -557,6 +557,16 @@ cdb.forEach((c) => {
     err('SHAPE_DOMAIN', who + ": burst='" + c.burst + "' — 1/2/3 중 하나여야 함");
   }
 
+  // 버스트 단계가 유연한 캐릭터(게임 내 Λ 표기)는 엔진의 하드 제약을 통과하는 방식이 다르다.
+  // 근거 없이 붙이면 아무 조합이나 성립해버리므로 출처를 반드시 남기게 한다.
+  if (c.burstFlex !== undefined) {
+    if (c.burstFlex !== true) err('SHAPE_BURSTFLEX', who + ': burstFlex는 true일 때만 적는다');
+    if (!String(c.burstFlexNote || '').trim()) {
+      err('SHAPE_BURSTFLEX', who + ': burstFlex를 붙였으면 burstFlexNote에 근거(출처 표기)를 남길 것 — ' +
+        '이 플래그는 버스트 하드 제약을 우회시키므로 근거 없이 붙으면 아무 조합이나 성립한다');
+    }
+  }
+
   const t = c.tiers || {};
   DOMAIN.tierKeys.forEach((k) => {
     if (t[k] === undefined) {

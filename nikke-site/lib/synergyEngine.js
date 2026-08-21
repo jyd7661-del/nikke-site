@@ -705,8 +705,11 @@ function findWastedBurstMembers(members, mode, treasureIds) {
   const wasted = [];
   const totemExempted = [];
   const burstOrder = new Map(); // id -> 같은 버스트 단계 내 순번(0부터)
+  // 유연 버스트 멤버(레드 후드)는 낭비 판정에서 제외한다 — 같은 단계에 다른 캐릭터가 몰려도
+  // 본인이 빈 단계로 옮겨 가면 되므로 "버스트를 못 쓰는 인원"이 아니다.
+  const flexIds = new Set(members.filter((m) => m.burstFlex).map((m) => m.id));
   ['1', '2', '3'].forEach((burst) => {
-    const group = members.filter((m) => String(m.burst) === burst);
+    const group = members.filter((m) => String(m.burst) === burst && !flexIds.has(m.id));
     if (group.length <= 1) {
       group.forEach((m) => burstOrder.set(m.id, 0));
       return;
@@ -767,11 +770,24 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   let score = 0;
 
   // --- 하드 제약: 버스트 I/II/III 각 1명 이상 (mechanics.burstPhase) ---
+  //
+  // ⚠️ **버스트 단계가 고정이 아닌 캐릭터가 있다**(`burstFlex`). 레드 후드는 게임 내 표기가
+  //    Λ라 1·2·3 어느 자리든 채운다. 우리 DB의 burst:"3"은 표시·정렬용 기본값일 뿐이다.
+  //    이걸 반영하지 않아 **PvP 채택률 1위 조합(나유타·헬름·에밀리아·레드후드·스노우화이트:HA)이
+  //    "버스트 1이 없다"며 통째로 탈락하고 있었다**(2026-08-21 실측: 실사용 조합 214건 중
+  //    29건이 무효였고 그중 9건이 이 이유였다. 9건 전부 유연 버스트를 반영하면 성립한다).
+  //
+  //    판정 방법: 고정 버스트 멤버만으로 단계를 세고, 비어 있는 단계 수를 유연 멤버 수가
+  //    메울 수 있으면 성립. 유연 멤버 하나가 한 단계를 맡는다.
+  const flexMembers = members.filter((m) => m.burstFlex);
   const burstCounts = { 1: 0, 2: 0, 3: 0 };
   members.forEach((m) => {
+    if (m.burstFlex) return;                       // 유연 멤버는 아래에서 빈 자리에 배정한다
     if (burstCounts[m.burst] !== undefined) burstCounts[m.burst] += 1;
   });
-  const missingBursts = ['1', '2', '3'].filter((b) => burstCounts[b] === 0);
+  const emptyStages = ['1', '2', '3'].filter((b) => burstCounts[b] === 0);
+  // 유연 멤버가 메우고도 남는 단계만 '없는 단계'로 본다.
+  const missingBursts = emptyStages.slice(flexMembers.length);
   const validBurstChain = missingBursts.length === 0;
   if (!validBurstChain) {
     reasons.push(
