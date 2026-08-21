@@ -651,16 +651,19 @@ Search Console에 색인이 잡히기까지 1~2주가 정상이다. 그 사이�
 | 6 | Search Console 새 속성 추가 → 사이트맵 제출 → **주소 변경 도구**로 이전 신고. 이걸 해야 색인 201개의 평가가 넘어간다 | 사람 |
 | 7 | `npx next build && npm run check:canonical` 로 201개 주소 확인, robots·sitemap·로그인·광고 슬롯 라이브 점검 | Claude |
 
-### 판단 대기 — 답만 주면 진행
+### ~~판단 대기~~ — 2026-08-21 전부 종결
 
-주간 보고서 2026-08-10 기준:
+주간 보고서 2026-08-10 기준으로 올라왔던 5건이다. 지금 상태:
 
-1. **prydwen 티어 불일치 4건** — Laplace: UH bossing SS→S, Maxwell: OM bossing SS→A /
-   pvp B→A, Noir bossing A→B. 7월 말 신규·파워업 유닛의 초기 과대평가 조정으로 보임 → **반영 권장**
-2. **`pvp.topTeams`의 `Red Hood`** — 기존 값이 오기였고 이번에 교정된 것으로 판단
-3. **`Arcana` 토템 등록** — 근거가 공략 권장 조합뿐 → **보류 권장**
-4. **`Siren` = `Little Mermaid` 별칭 추가** → **추가 권장**
-5. **`campaignCompositions` 갱신** — 20개 조합을 전부 펼쳐야 해 다음 회차로 미룸
+1. ~~**prydwen 티어 불일치 4건**~~ → **종결.** 2026-08-15에 4개 출처로 대조해 8건 전부
+   '유지'(1건 보류)로 끝났고, 2026-08-21에 `data/tierJudgments.json`으로 기록해 주간 점검이
+   다시 올리지 않게 했다. 위 "prydwen 티어 불일치 8건" 절 참고
+2. ~~**`pvp.topTeams`의 `Red Hood`**~~ → 위 판정에 포함(레드 후드 PvP 유지)
+3. **`Arcana` 토템 등록** → **보류 유지.** 근거가 공략 권장 조합뿐이라는 사정은 그대로다
+4. ~~**`Siren` = `Little Mermaid` 별칭**~~ → **이미 들어가 있다.** `weeklyCheck.mjs`의
+   `SLUG_ALIAS`에 근거와 함께 등록됨(prydwen "Siren" = 우리 "Little Mermaid")
+5. ~~**`campaignCompositions` 갱신**~~ → **완료(2026-08-21).** 분석 클리어 188,845 → 248,482,
+   19행. `% of clears ↔ totalUses/analyzedClears` 교차검증 검사도 함께 붙였다
 
 ### 도감 스킬 설명이 영어인 이유 (2026-08-13 조사)
 

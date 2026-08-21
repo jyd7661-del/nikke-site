@@ -101,7 +101,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 | 파일 | 내용 |
 |---|---|
 | `docs/engine.md` | 추천 로직 — 점수 체계, 토템, 낭비 판정, 타워 모드 |
-| `docs/data.md` | 데이터 파일 구조, prydwenTags, 오버스펙 플래그 |
+| `docs/data.md` | 데이터 파일 구조, prydwenTags, 오버스펙 플래그, **enikk 실사용 조합 3종 수집 규칙** |
 | `docs/ai.md` | AI 설명 생성, 캐시·레이트리밋·일일 상한 |
 | `docs/i18n.md` | 다국어(A·B·C단계), 커뮤니티 번역, 용어집·이름 보호 |
 | `docs/board.md` | 게시판 수정·삭제·비밀글 RLS |
@@ -140,6 +140,13 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 ### 데이터 갱신
 
 - **A(1차 출처에서 그대로 옮긴 값)만 자동 반영, B(추론·해석)는 제안만.**
+- **enikk.app은 API를 쓰지 않는다.** robots.txt가 `/api/`를 막고 있어 화면에서 사람이 옮긴다
+  (prydwen도 같은 구조이고, 우리 수집기는 전부 페이지만 긁는다). 자동 수집기를 만들지 말 것.
+  실사용 조합 3종(`soloRaidTeams`·`towerCompositions`·`metaStats.campaignCompositions`)의
+  수집 규칙과 오해하기 쉬운 값들은 `docs/data.md`에 있다
+- **사람이 옮긴 값에는 검사를 함께 넣는다.** 이름은 DB `title`과 글자 그대로 일치해야 하고,
+  정렬이 깨지면(=행이 밀려 적힘) ERROR다. 화면에 서로를 검증하는 두 열이 있으면
+  (`% of clears` ↔ `totalUses/analyzedClears`) 그 관계를 검사로 만든다
 - 캐릭터를 추가하면 `id/title/name_kr/name_ja/class/burst/element/weapon/releaseDate/tiers/
   skills[3]`을 모두 채운다. `name_ja`가 없으면 `checkData`가 ERROR를 낸다.
 - **`id`는 이제 공개 URL이다**(`/nikke/[id]`, sitemap). 소문자·숫자·하이픈만 쓴다 —
