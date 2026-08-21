@@ -1186,9 +1186,9 @@
           "Red Hood",
           "Snow White: Heavy Arms"
         ],
-        "wr": 67.9,
-        "n": 84,
-        "adoption": 9.3
+        "wr": 63.2,
+        "n": 76,
+        "adoption": 10.6
       },
       {
         "members": [
@@ -1198,21 +1198,9 @@
           "Noah",
           "Jackal"
         ],
-        "wr": 65.9,
-        "n": 82,
-        "adoption": 9.3
-      },
-      {
-        "members": [
-          "Anis: Star",
-          "Blanc",
-          "Anis: Sparkling Summer",
-          "Biscuit",
-          "Cinderella"
-        ],
-        "wr": 77,
-        "n": 74,
-        "adoption": 9
+        "wr": 58.8,
+        "n": 85,
+        "adoption": 9.8
       },
       {
         "members": [
@@ -1223,20 +1211,20 @@
           "Cinderella"
         ],
         "wr": 73.2,
-        "n": 56,
-        "adoption": 7.2
+        "n": 71,
+        "adoption": 9
       },
       {
         "members": [
           "Anis: Star",
           "Blanc",
-          "Privaty",
+          "Anis: Sparkling Summer",
           "Biscuit",
-          "Maiden: Ice Rose"
+          "Cinderella"
         ],
-        "wr": 78.8,
-        "n": 66,
-        "adoption": 6.9
+        "wr": 73.7,
+        "n": 76,
+        "adoption": 8.8
       },
       {
         "members": [
@@ -1246,33 +1234,21 @@
           "Red Hood",
           "Snow White: Heavy Arms"
         ],
-        "wr": 74.5,
-        "n": 55,
-        "adoption": 5.6
+        "wr": 65.7,
+        "n": 70,
+        "adoption": 8.5
       },
       {
         "members": [
-          "Rapunzel",
-          "Rumani",
-          "Trina",
-          "Centi",
-          "Scarlet"
+          "Anis: Star",
+          "Blanc",
+          "Privaty",
+          "Biscuit",
+          "Maiden: Ice Rose"
         ],
-        "wr": 37,
-        "n": 46,
-        "adoption": 5.3
-      },
-      {
-        "members": [
-          "Mast",
-          "Eunhwa: Tactical Upgrade",
-          "Rosanna",
-          "Vesti: Tactical Upgrade",
-          "Emma: Tactical Upgrade"
-        ],
-        "wr": 26.8,
-        "n": 41,
-        "adoption": 5.3
+        "wr": 72.9,
+        "n": 70,
+        "adoption": 8.2
       },
       {
         "members": [
@@ -1282,9 +1258,9 @@
           "Biscuit",
           "Label"
         ],
-        "wr": 73.3,
-        "n": 45,
-        "adoption": 5
+        "wr": 53.8,
+        "n": 39,
+        "adoption": 5.8
       },
       {
         "members": [
@@ -1294,33 +1270,21 @@
           "Biscuit",
           "Maiden: Ice Rose"
         ],
-        "wr": 65.8,
+        "wr": 78.9,
         "n": 38,
-        "adoption": 4.2
+        "adoption": 4.8
       },
       {
         "members": [
-          "Moran",
-          "Noise",
-          "Snow White: Heavy Arms",
-          "Noah",
-          "Ada Wong"
+          "Scarlet",
+          "Vesti: Tactical Upgrade",
+          "Trina",
+          "Rosanna",
+          "Jackal"
         ],
-        "wr": 60.7,
+        "wr": 46.4,
         "n": 28,
-        "adoption": 4.2
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Helm",
-          "Emilia",
-          "Red Hood",
-          "Centi"
-        ],
-        "wr": 54.2,
-        "n": 24,
-        "adoption": 4.2
+        "adoption": 4
       },
       {
         "members": [
@@ -1330,129 +1294,35 @@
           "Red Hood",
           "Emilia"
         ],
-        "wr": 61.5,
-        "n": 39,
-        "adoption": 3.7
+        "wr": 71,
+        "n": 31,
+        "adoption": 3.7,
+        "mergedOrderings": 3
       },
       {
         "members": [
-          "Scarlet",
-          "Vesti: Tactical Upgrade",
-          "Trina",
-          "Rosanna",
-          "Jackal"
-        ],
-        "wr": 60,
-        "n": 35,
-        "adoption": 3.7
-      },
-      {
-        "members": [
-          "Scarlet",
-          "Soda",
-          "Trina",
-          "Centi",
-          "Jackal"
-        ],
-        "wr": 51.9,
-        "n": 27,
-        "adoption": 3.4
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Centi",
-          "Helm",
-          "Red Hood",
-          "Laplace"
-        ],
-        "wr": 60,
-        "n": 25,
-        "adoption": 3.2
-      },
-      {
-        "members": [
-          "Mast",
-          "Eunhwa: Tactical Upgrade",
-          "Vesti: Tactical Upgrade",
-          "Rosanna",
-          "Emma: Tactical Upgrade"
-        ],
-        "wr": 21.7,
-        "n": 23,
-        "adoption": 3.2
-      },
-      {
-        "members": [
-          "Nero",
-          "Bay",
-          "Helm",
-          "Mana",
-          "Moran"
-        ],
-        "wr": 22.2,
-        "n": 18,
-        "adoption": 3.2
-      },
-      {
-        "members": [
-          "Mast",
-          "Vesti: Tactical Upgrade",
-          "Eunhwa: Tactical Upgrade",
-          "Rosanna",
-          "Emma: Tactical Upgrade"
-        ],
-        "wr": 24,
-        "n": 25,
-        "adoption": 2.9
-      },
-      {
-        "members": [
-          "Moran",
-          "Noise",
-          "Neon: Vision Eye",
-          "Noah",
-          "Emilia"
-        ],
-        "wr": 50,
-        "n": 18,
-        "adoption": 2.7
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Soda: Twinkling Bunny",
-          "Drake",
-          "Rosanna",
-          "Noir"
-        ],
-        "wr": 10,
-        "n": 10,
-        "adoption": 2.4
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Helm",
-          "Laplace",
-          "Red Hood",
-          "Centi"
-        ],
-        "wr": 61.1,
-        "n": 18,
-        "adoption": 2.1
-      },
-      {
-        "members": [
-          "Scarlet",
-          "Soda",
+          "Rapunzel",
           "Rumani",
           "Trina",
-          "Jackal"
+          "Centi",
+          "Scarlet"
         ],
-        "wr": 35.3,
-        "n": 17,
-        "adoption": 2.1
+        "wr": 32,
+        "n": 25,
+        "adoption": 3.7
+      },
+      {
+        "members": [
+          "Mast",
+          "Eunhwa: Tactical Upgrade",
+          "Vesti: Tactical Upgrade",
+          "Rosanna",
+          "Emma: Tactical Upgrade"
+        ],
+        "wr": 44.1,
+        "n": 34,
+        "adoption": 3.4,
+        "mergedOrderings": 3
       },
       {
         "members": [
@@ -1462,23 +1332,107 @@
           "Biscuit",
           "Cinderella"
         ],
-        "wr": 72,
-        "n": 25,
-        "adoption": 1.9
+        "wr": 63.3,
+        "n": 30,
+        "adoption": 3.4
+      },
+      {
+        "members": [
+          "Moran",
+          "Rumani",
+          "Neon: Vision Eye",
+          "Noah",
+          "Jackal"
+        ],
+        "wr": 57.7,
+        "n": 26,
+        "adoption": 3.4
+      },
+      {
+        "members": [
+          "Trina",
+          "Soda",
+          "Centi",
+          "Laplace: Ultimate Hero",
+          "Anis"
+        ],
+        "wr": 79.4,
+        "n": 34,
+        "adoption": 3.2,
+        "mergedOrderings": 2
+      },
+      {
+        "members": [
+          "Mast",
+          "Eunhwa: Tactical Upgrade",
+          "Flora",
+          "Vesti: Tactical Upgrade",
+          "Emma: Tactical Upgrade"
+        ],
+        "wr": 28.6,
+        "n": 28,
+        "adoption": 2.9
       },
       {
         "members": [
           "Nayuta",
+          "Centi",
           "Helm",
-          "Emilia",
           "Red Hood",
           "Laplace"
         ],
-        "wr": 57.1,
-        "n": 21,
-        "adoption": 1.9
+        "wr": 46.7,
+        "n": 15,
+        "adoption": 2.7
+      },
+      {
+        "members": [
+          "Moran",
+          "Noise",
+          "Neon: Vision Eye",
+          "Noah",
+          "Emilia"
+        ],
+        "wr": 52.9,
+        "n": 17,
+        "adoption": 2.4
+      },
+      {
+        "members": [
+          "Nero",
+          "Bay",
+          "Helm",
+          "Mana",
+          "Moran"
+        ],
+        "wr": 6.7,
+        "n": 15,
+        "adoption": 2.4
+      },
+      {
+        "members": [
+          "Mast",
+          "Vesti: Tactical Upgrade",
+          "Flora",
+          "Laplace",
+          "Rosanna"
+        ],
+        "wr": 29.4,
+        "n": 17,
+        "adoption": 2.1
       }
-    ]
+    ],
+    "meta": {
+      "source": "enikk.app/champion-arena#teams (Teams 탭 · Exact Ordered Teams)",
+      "server": "All servers",
+      "season": "Season 36",
+      "asOf": "2026-08-21",
+      "sourceLastUpdated": "2026-08-20",
+      "sort": "Adoption 내림차순 · Minimum samples 3 · 1페이지 25행",
+      "limitedDataNotice": "화면 고지 그대로: \"Coverage is limited to collected Champion Arena shards and does not include every shard on a server.\" 6 brackets pooled · 5 AI matches excluded. 즉 전수가 아니라 수집된 shard 표본이다.",
+      "orderingNote": "화면은 슬롯 순서까지 구분해 나열한다(Exact Ordered Teams). 우리 엔진은 5인 구성을 집합으로 매칭하므로 같은 구성의 순서 변형은 접고 채택률이 가장 높은 행만 남겼다(25행 → 20조합, mergedOrderings에 접힌 개수를 남김).",
+      "staleAfterDays": 21
+    }
   },
   "soloRaidByElement": {
     "meta": {

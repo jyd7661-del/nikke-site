@@ -14,7 +14,7 @@
 | `synergyNotes.json` | prydwen 아키타입, 시너지 페어, 카운터 | 아키타입 483 / 페어 13 / 카운터 4 |
 | `characterInvestmentNotes.json` | 애장품 필요 여부, 투자 우선순위, **토템 역할** | 76건 (토템 18명) |
 | `treasureEffects.json` | 애장품 효과 | 17명 (전원) |
-| `metaStats.json` | enikk.app 실사용 데이터 — 캐릭터별 채용률(`usageTier`), PvP 조합, **캠페인 조합** | 캠페인 조합 19 / PvP 상위 25 |
+| `metaStats.json` | enikk.app 실사용 데이터 — 캐릭터별 채용률(`usageTier`), PvP 조합, **캠페인 조합** | 캠페인 조합 19 / PvP 상위 20 |
 | `soloRaidTeams.json` | enikk 솔로레이드 **실사용 5인 조합** (시즌=원소별) | 5시즌 × 25팀 = 125 |
 | `towerCompositions.json` | enikk 타워 **실사용 5인 조합** (타워 풀별) | 5풀 × 10팀 = 50 |
 | `enikkAlias.json` | enikk 화면 표기 → 우리 `title` 별칭 + **이름 충돌 근거** | 별칭 8 / 충돌 1 |

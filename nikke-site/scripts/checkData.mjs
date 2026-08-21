@@ -166,7 +166,10 @@ syn.archetypes.forEach((a) => {
 const metaTitles = new Set();
 Object.values(meta.usageTier || {}).forEach((slice) => Object.keys(slice).forEach((t) => metaTitles.add(t)));
 (meta.campaignCompositions?.list || []).forEach((c) => (c.members || []).forEach((m) => metaTitles.add(m)));
-Object.values(meta.pvp || {}).forEach((arr) => (arr || []).forEach((e) => (e.members || []).forEach((m) => metaTitles.add(m))));
+// ⚠️ meta.pvp 아래가 전부 배열이라고 가정하면 안 된다 — 2026-08-21에 pvp.meta(객체)를 넣자
+//    이 줄이 TypeError로 죽었다. 검사기가 죽으면 ERROR 0이 아니라 **아무것도 검사되지 않는다.**
+Object.values(meta.pvp || {}).filter(Array.isArray)
+  .forEach((arr) => arr.forEach((e) => (e.members || []).forEach((m) => metaTitles.add(m))));
 Object.values(meta.soloRaidByElement || {}).forEach((t) => (t.entries || []).forEach((e) => metaTitles.add(e.title)));
 metaTitles.forEach((t) => {
   if (!TITLES.has(t)) {
@@ -1063,6 +1066,38 @@ if (glossarySrc) {
       err('SRTEAM_ORDER', `${who}: parses가 내림차순이 아니다 — 화면과 행이 어긋났을 수 있다`);
     }
   });
+}
+
+// ---------------------------------------------------------------------------
+// PvP 실사용 조합 (metaStats.pvp.topTeams)
+//
+// 챔피언 아레나 Teams 탭은 **슬롯 순서까지 구분해** 나열한다(같은 5명이 순서만 바꿔 여러 행).
+// 우리 엔진은 구성을 집합으로 매칭하므로 순서 변형을 접어서 넣는다 — 접지 않으면 같은 조합이
+// 후보 자리를 여러 개 차지한다. 그래서 **구성 중복이 남아 있으면 접다가 빠뜨린 것**이다.
+// ---------------------------------------------------------------------------
+{
+  const teams = meta.pvp?.topTeams || [];
+  const seenSet = new Set();
+  teams.forEach((t, i) => {
+    const w = `pvp.topTeams #${i + 1}`;
+    if (!Array.isArray(t.members) || t.members.length !== 5 || new Set(t.members).size !== 5) {
+      err('PVPTEAM_SHAPE', `${w}: 5인 조합이 아니거나 중복이 있다`);
+      return;
+    }
+    const unknown = t.members.filter((m) => !TITLES.has(m));
+    if (unknown.length) err('PVPTEAM_UNKNOWN_MEMBER', `${w}: DB에 없는 이름 ${unknown.join(', ')}`);
+    if (!(t.wr >= 0 && t.wr <= 100)) err('PVPTEAM_SHAPE', `${w}: wr='${t.wr}' — 0~100 이어야 한다`);
+    if (!Number.isInteger(t.n) || t.n <= 0) err('PVPTEAM_SHAPE', `${w}: n='${t.n}' — 1 이상의 정수여야 한다`);
+    const key = [...t.members].sort().join('|');
+    if (seenSet.has(key)) {
+      err('PVPTEAM_DUP_SET', `${w}: 앞의 행과 5인 구성이 같다(슬롯 순서만 다름) — 접어서 넣어야 한다`);
+    }
+    seenSet.add(key);
+  });
+  const ad = teams.map((t) => t.adoption);
+  if (ad.some((v, i) => i > 0 && v > ad[i - 1])) {
+    err('PVPTEAM_ORDER', 'pvp.topTeams: adoption이 내림차순이 아니다 — 화면과 행이 어긋났을 수 있다');
+  }
 }
 
 // ---------------------------------------------------------------------------
