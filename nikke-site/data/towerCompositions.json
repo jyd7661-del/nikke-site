@@ -2,7 +2,6 @@
   "meta": {
     "source": "enikk.app",
     "sourceUrl": "https://enikk.app/tower#compositions",
-    "capturedOn": "2026-08-21",
     "server": "ALL",
     "analyzedClears": 1057378,
     "distinctRosters": 30198,
@@ -11,7 +10,10 @@
     "caveat": "KR 서버만 걸러 받으려 했으나 2026-08-20 기준 enikk 쪽에서 'Could not load compositions / Internal Server Error'가 나서 전 서버(ALL) 기준으로 옮겼다. 기존 campaignCompositions·pvp도 전 서버 기준이라 같은 잣대다.",
     "poolNote": "enikk '타워 로스터 풀' 칩 = 우리 tower 값. Tribe→null / Elysion / Missilis / Tetra / Over-Spec→pilgrim(우리는 필그림 제조사 또는 오버스펙을 같은 자격으로 본다).",
     "staleAfterDays": 45,
-    "pctNote": "% of clears는 그 풀 안에서의 비율이다(전체 analyzedClears 기준이 아니다). 풀끼리 비교하지 말 것."
+    "pctNote": "% of clears는 그 풀 안에서의 비율이다(전체 analyzedClears 기준이 아니다). 풀끼리 비교하지 말 것.",
+    "capturedNote": "풀마다 화면을 연 날짜가 다르다 — pool.capturedOn을 볼 것.",
+    "powerNote": "avgPower/lowestPower는 화면에 찍힌 표기 그대로다('1.7M','55.8K'). 반올림된 라벨이라 숫자로 바꾸지 않았다. lowestPower = 그 조합으로 클리어한 기록 중 가장 낮은 전투력 = **진입 문턱의 실측치**다. 값이 화면에 렌더되지 않은 칸은 지어내지 않고 비웠다.",
+    "noTreasureNote": "enikk에는 애장품(Favorite Item) 정보가 없다. 멤버별 돌파/코어 단계와 CP는 화면에 있지만 그것은 그 조합을 쓴 특정 플레이어의 상태이지 조합의 필요 조건이 아니므로 옮기지 않았다."
   },
   "pools": [
     {
@@ -28,7 +30,9 @@
           ],
           "uses": 23586,
           "pctOfClears": 10.7,
-          "floors": 1260
+          "floors": 1260,
+          "avgPower": "898K",
+          "lowestPower": "74.6K"
         },
         {
           "members": [
@@ -40,7 +44,9 @@
           ],
           "uses": 11007,
           "pctOfClears": 5,
-          "floors": 1279
+          "floors": 1279,
+          "avgPower": "1.3M",
+          "lowestPower": "34.4K"
         },
         {
           "members": [
@@ -52,7 +58,9 @@
           ],
           "uses": 8861,
           "pctOfClears": 4,
-          "floors": 442
+          "floors": 442,
+          "avgPower": "1.5M",
+          "lowestPower": "150.8K"
         },
         {
           "members": [
@@ -64,7 +72,9 @@
           ],
           "uses": 7017,
           "pctOfClears": 3.2,
-          "floors": 1144
+          "floors": 1144,
+          "avgPower": "1.9M",
+          "lowestPower": "102.7K"
         },
         {
           "members": [
@@ -76,7 +86,9 @@
           ],
           "uses": 4653,
           "pctOfClears": 2.1,
-          "floors": 1118
+          "floors": 1118,
+          "avgPower": "1.3M",
+          "lowestPower": "139.2K"
         },
         {
           "members": [
@@ -88,7 +100,9 @@
           ],
           "uses": 4538,
           "pctOfClears": 2.1,
-          "floors": 812
+          "floors": 812,
+          "avgPower": "1.3M",
+          "lowestPower": "95.6K"
         },
         {
           "members": [
@@ -100,7 +114,8 @@
           ],
           "uses": 4460,
           "pctOfClears": 2,
-          "floors": 899
+          "floors": 899,
+          "lowestPower": "75.6K"
         },
         {
           "members": [
@@ -112,7 +127,9 @@
           ],
           "uses": 4304,
           "pctOfClears": 1.9,
-          "floors": 516
+          "floors": 516,
+          "avgPower": "1.8M",
+          "lowestPower": "161.5K"
         },
         {
           "members": [
@@ -124,7 +141,8 @@
           ],
           "uses": 4100,
           "pctOfClears": 1.9,
-          "floors": 563
+          "floors": 563,
+          "lowestPower": "140.6K"
         },
         {
           "members": [
@@ -136,9 +154,12 @@
           ],
           "uses": 4034,
           "pctOfClears": 1.8,
-          "floors": 682
+          "floors": 682,
+          "avgPower": "2.2M",
+          "lowestPower": "218.7K"
         }
-      ]
+      ],
+      "capturedOn": "2026-08-20"
     },
     {
       "pool": "elysion",
@@ -155,7 +176,9 @@
           ],
           "uses": 77487,
           "pctOfClears": 38.1,
-          "floors": 1272
+          "floors": 1272,
+          "avgPower": "1.7M",
+          "lowestPower": "55.8K"
         },
         {
           "members": [
@@ -167,7 +190,9 @@
           ],
           "uses": 19616,
           "pctOfClears": 9.6,
-          "floors": 1208
+          "floors": 1208,
+          "avgPower": "2.2M",
+          "lowestPower": "51.6K"
         },
         {
           "members": [
@@ -179,7 +204,9 @@
           ],
           "uses": 10897,
           "pctOfClears": 5.4,
-          "floors": 1234
+          "floors": 1234,
+          "avgPower": "1.4M",
+          "lowestPower": "45.3K"
         },
         {
           "members": [
@@ -191,7 +218,9 @@
           ],
           "uses": 5902,
           "pctOfClears": 2.9,
-          "floors": 1218
+          "floors": 1218,
+          "avgPower": "1.1M",
+          "lowestPower": "41.6K"
         },
         {
           "members": [
@@ -203,7 +232,9 @@
           ],
           "uses": 5585,
           "pctOfClears": 2.7,
-          "floors": 969
+          "floors": 969,
+          "avgPower": "2.2M",
+          "lowestPower": "55.5K"
         },
         {
           "members": [
@@ -215,7 +246,9 @@
           ],
           "uses": 4337,
           "pctOfClears": 2.1,
-          "floors": 1145
+          "floors": 1145,
+          "avgPower": "2.4M",
+          "lowestPower": "25.5K"
         },
         {
           "members": [
@@ -227,7 +260,9 @@
           ],
           "uses": 4106,
           "pctOfClears": 2,
-          "floors": 905
+          "floors": 905,
+          "avgPower": "2.4M",
+          "lowestPower": "35.2K"
         },
         {
           "members": [
@@ -239,7 +274,9 @@
           ],
           "uses": 2447,
           "pctOfClears": 1.2,
-          "floors": 861
+          "floors": 861,
+          "avgPower": "1.2M",
+          "lowestPower": "51.2K"
         },
         {
           "members": [
@@ -251,7 +288,9 @@
           ],
           "uses": 2402,
           "pctOfClears": 1.2,
-          "floors": 687
+          "floors": 687,
+          "avgPower": "1.6M",
+          "lowestPower": "47K"
         },
         {
           "members": [
@@ -263,9 +302,12 @@
           ],
           "uses": 2310,
           "pctOfClears": 1.1,
-          "floors": 799
+          "floors": 799,
+          "avgPower": "2.6M",
+          "lowestPower": "54.6K"
         }
-      ]
+      ],
+      "capturedOn": "2026-08-21"
     },
     {
       "pool": "missilis",
@@ -282,7 +324,9 @@
           ],
           "uses": 33908,
           "pctOfClears": 16.1,
-          "floors": 1295
+          "floors": 1295,
+          "avgPower": "1.3M",
+          "lowestPower": "29.2K"
         },
         {
           "members": [
@@ -294,7 +338,9 @@
           ],
           "uses": 25987,
           "pctOfClears": 12.3,
-          "floors": 1271
+          "floors": 1271,
+          "avgPower": "1.6M",
+          "lowestPower": "39.8K"
         },
         {
           "members": [
@@ -306,7 +352,9 @@
           ],
           "uses": 14473,
           "pctOfClears": 6.9,
-          "floors": 1218
+          "floors": 1218,
+          "avgPower": "2.2M",
+          "lowestPower": "35.7K"
         },
         {
           "members": [
@@ -318,7 +366,9 @@
           ],
           "uses": 14111,
           "pctOfClears": 6.7,
-          "floors": 1227
+          "floors": 1227,
+          "avgPower": "1.5M",
+          "lowestPower": "26.2K"
         },
         {
           "members": [
@@ -330,7 +380,9 @@
           ],
           "uses": 9314,
           "pctOfClears": 4.4,
-          "floors": 1081
+          "floors": 1081,
+          "avgPower": "2.2M",
+          "lowestPower": "31.8K"
         },
         {
           "members": [
@@ -342,7 +394,9 @@
           ],
           "uses": 8952,
           "pctOfClears": 4.2,
-          "floors": 1047
+          "floors": 1047,
+          "avgPower": "874.5K",
+          "lowestPower": "14.9K"
         },
         {
           "members": [
@@ -354,7 +408,9 @@
           ],
           "uses": 7998,
           "pctOfClears": 3.8,
-          "floors": 854
+          "floors": 854,
+          "avgPower": "3M",
+          "lowestPower": "52.6K"
         },
         {
           "members": [
@@ -366,7 +422,9 @@
           ],
           "uses": 7264,
           "pctOfClears": 3.4,
-          "floors": 1106
+          "floors": 1106,
+          "avgPower": "1.6M",
+          "lowestPower": "31.8K"
         },
         {
           "members": [
@@ -378,7 +436,9 @@
           ],
           "uses": 5540,
           "pctOfClears": 2.6,
-          "floors": 1096
+          "floors": 1096,
+          "avgPower": "1.2M",
+          "lowestPower": "43.2K"
         },
         {
           "members": [
@@ -390,9 +450,12 @@
           ],
           "uses": 5285,
           "pctOfClears": 2.5,
-          "floors": 985
+          "floors": 985,
+          "avgPower": "1.6M",
+          "lowestPower": "31.7K"
         }
-      ]
+      ],
+      "capturedOn": "2026-08-21"
     },
     {
       "pool": "tetra",
@@ -409,7 +472,9 @@
           ],
           "uses": 18949,
           "pctOfClears": 8,
-          "floors": 1258
+          "floors": 1258,
+          "avgPower": "1.4M",
+          "lowestPower": "59.3K"
         },
         {
           "members": [
@@ -421,7 +486,9 @@
           ],
           "uses": 17674,
           "pctOfClears": 7.4,
-          "floors": 1230
+          "floors": 1230,
+          "avgPower": "1.2M",
+          "lowestPower": "60.9K"
         },
         {
           "members": [
@@ -433,7 +500,9 @@
           ],
           "uses": 16062,
           "pctOfClears": 6.8,
-          "floors": 1164
+          "floors": 1164,
+          "avgPower": "2.1M",
+          "lowestPower": "108.3K"
         },
         {
           "members": [
@@ -445,7 +514,9 @@
           ],
           "uses": 14563,
           "pctOfClears": 6.1,
-          "floors": 1087
+          "floors": 1087,
+          "avgPower": "2.6M",
+          "lowestPower": "150.8K"
         },
         {
           "members": [
@@ -457,7 +528,9 @@
           ],
           "uses": 9785,
           "pctOfClears": 4.1,
-          "floors": 1207
+          "floors": 1207,
+          "avgPower": "1.7M",
+          "lowestPower": "39.9K"
         },
         {
           "members": [
@@ -469,7 +542,9 @@
           ],
           "uses": 6668,
           "pctOfClears": 2.8,
-          "floors": 1181
+          "floors": 1181,
+          "avgPower": "1.1M",
+          "lowestPower": "103.6K"
         },
         {
           "members": [
@@ -481,7 +556,9 @@
           ],
           "uses": 6402,
           "pctOfClears": 2.7,
-          "floors": 1165
+          "floors": 1165,
+          "avgPower": "1.4M",
+          "lowestPower": "117.9K"
         },
         {
           "members": [
@@ -493,7 +570,9 @@
           ],
           "uses": 6303,
           "pctOfClears": 2.6,
-          "floors": 971
+          "floors": 971,
+          "avgPower": "2.5M",
+          "lowestPower": "520.6K"
         },
         {
           "members": [
@@ -505,7 +584,9 @@
           ],
           "uses": 5044,
           "pctOfClears": 2.1,
-          "floors": 1037
+          "floors": 1037,
+          "avgPower": "1.8M",
+          "lowestPower": "147.4K"
         },
         {
           "members": [
@@ -517,9 +598,12 @@
           ],
           "uses": 4993,
           "pctOfClears": 2.1,
-          "floors": 1026
+          "floors": 1026,
+          "avgPower": "2.6M",
+          "lowestPower": "78.6K"
         }
-      ]
+      ],
+      "capturedOn": "2026-08-21"
     },
     {
       "pool": "overspec",
@@ -536,7 +620,9 @@
           ],
           "uses": 12556,
           "pctOfClears": 6.9,
-          "floors": 1984
+          "floors": 1984,
+          "avgPower": "1.4M",
+          "lowestPower": "55.8K"
         },
         {
           "members": [
@@ -548,7 +634,9 @@
           ],
           "uses": 5678,
           "pctOfClears": 3.1,
-          "floors": 1345
+          "floors": 1345,
+          "avgPower": "1.5M",
+          "lowestPower": "78.5K"
         },
         {
           "members": [
@@ -560,7 +648,9 @@
           ],
           "uses": 5427,
           "pctOfClears": 3,
-          "floors": 1064
+          "floors": 1064,
+          "avgPower": "1.4M",
+          "lowestPower": "55.1K"
         },
         {
           "members": [
@@ -572,7 +662,9 @@
           ],
           "uses": 3928,
           "pctOfClears": 2.1,
-          "floors": 1513
+          "floors": 1513,
+          "avgPower": "1.3M",
+          "lowestPower": "7.4K"
         },
         {
           "members": [
@@ -584,7 +676,9 @@
           ],
           "uses": 3698,
           "pctOfClears": 2,
-          "floors": 1321
+          "floors": 1321,
+          "avgPower": "2.8M",
+          "lowestPower": "38.6K"
         },
         {
           "members": [
@@ -596,7 +690,9 @@
           ],
           "uses": 3111,
           "pctOfClears": 1.7,
-          "floors": 1184
+          "floors": 1184,
+          "avgPower": "2M",
+          "lowestPower": "58.2K"
         },
         {
           "members": [
@@ -608,7 +704,9 @@
           ],
           "uses": 2679,
           "pctOfClears": 1.5,
-          "floors": 940
+          "floors": 940,
+          "avgPower": "2.7M",
+          "lowestPower": "40.8K"
         },
         {
           "members": [
@@ -620,7 +718,9 @@
           ],
           "uses": 2616,
           "pctOfClears": 1.4,
-          "floors": 779
+          "floors": 779,
+          "avgPower": "1.9M",
+          "lowestPower": "66.5K"
         },
         {
           "members": [
@@ -632,7 +732,9 @@
           ],
           "uses": 2494,
           "pctOfClears": 1.4,
-          "floors": 1264
+          "floors": 1264,
+          "avgPower": "1.7M",
+          "lowestPower": "92.7K"
         },
         {
           "members": [
@@ -644,9 +746,12 @@
           ],
           "uses": 1989,
           "pctOfClears": 1.1,
-          "floors": 359
+          "floors": 359,
+          "avgPower": "425.4K",
+          "lowestPower": "33.2K"
         }
-      ]
+      ],
+      "capturedOn": "2026-08-21"
     }
   ]
 }

@@ -1434,13 +1434,50 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
       `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
   }
 
+  // --- 애장품 공백 메우기 (2026-08-21) ---
+  //
+  // enikk 실사용 기록에는 **애장품(Favorite Item) 정보가 없다.** 멤버별 돌파/코어와 CP는
+  // 화면에 있지만 그건 그 기록을 남긴 플레이어의 상태이지 조합의 필요 조건이 아니다.
+  // 그래서 "이 조합이 애장품 보유자의 기록인지"는 출처만으로는 알 수 없다.
+  //
+  // 그런데 우리에겐 이미 근거가 있다 — characterInvestmentNotes의 treasureTiers는 애장품
+  // 보유 시 실제 평가다(헬름 PvP A→SSS 처럼 최대 5등급까지 벌어진다). 실사용 조합 194건에
+  // 이런 캐릭터가 헬름 34 · 프리바티 32 · 목단 28 · 미란다 14회로 실제 들어 있다.
+  //
+  // 그러니 없는 정보를 지어내지 말고 **모르는 것을 모른다고 밝힌다**(설계 원칙 2).
+  //
+  // ⚠️ scoreTeam은 이미 "애장품이 없어 공략의 S가 아니라 B로 계산했다"는 안내를 낸다.
+  //    처음엔 여기서 티어 차이(B→S)를 다시 적었다가 **같은 말을 두 번 하는 꼴**이라 지웠다.
+  //    이 경로에만 있는 사실은 하나다 — 출처가 애장품 보유 여부를 알려주지 않는다는 것.
+  // 점수는 건드리지 않는다. 애장품을 체크한 사용자에겐 이미 scoreTeam이 상향 티어로 계산했고,
+  // 안 한 사용자에게 감점하면 실제로 키운 사람에게 틀린 추천을 하게 된다(기존 방침과 동일).
+  const tierKey = MODE_TO_TIER_KEY[mode] || 'story';
+  const treasureGaps = best.members.map((m) => {
+    if (treasureIds.has(m.id)) return null;            // 보유 → 이미 상향 티어로 채점됨
+    const withTreasure = INVESTMENT_NOTE_BY_NAME.get(m.title)?.treasureTiers?.[tierKey];
+    const base = m.tiers?.[tierKey];
+    if (!withTreasure || !base || withTreasure === base) return null;
+    return m.name_kr || m.title;
+  }).filter(Boolean);
+  const treasureReasons = [];
+  if (treasureGaps.length) {
+    // scoreTeam이 이미 "애장품이 없어 B로 계산했다"는 안내를 낸다. 그걸 되풀이하지 않고,
+    // **이 경로에만 있는 사실**(출처에 애장품 정보가 없다)만 한 줄로 덧붙인다.
+    treasureReasons.push(
+      '[출처 한계] 이 조합은 enikk.app의 실제 사용 기록이지만 그 기록에는 애장품 정보가 없습니다. '
+      + `위 애장품 안내에 해당하는 ${treasureGaps.join(', ')}을(를) 이 기록의 주인이 애장품과 함께 `
+      + '썼는지는 알 수 없습니다 — 많이 쓰인다는 사실이 애장품 없이도 된다는 뜻은 아닙니다.'
+    );
+  }
+
+
   return {
     members: orderMembersForDisplay(best.members, mode, treasureIds).map((m) => ({
       id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null,
     })),
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
     totalScore: best.scored.tierTotal,
-    reasons: [headline, ...best.scored.reasons],
+    reasons: [headline, ...best.scored.reasons, ...treasureReasons],
     realUsage: source === 'campaign'
       ? { kind: 'campaign', totalUses: e.totalUses, pctOfClears: e.pctOfClears }
       : source === 'soloraid'

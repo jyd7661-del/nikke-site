@@ -1113,14 +1113,17 @@ if (glossarySrc) {
 {
   const tc = read('towerCompositions.json');
   const TOWERS = [null, 'elysion', 'missilis', 'tetra', 'pilgrim'];
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(tc.meta?.capturedOn || ''))) {
-    err('TOWERCOMP_SHAPE', 'towerCompositions.meta.capturedOn 날짜(YYYY-MM-DD)가 없다');
-  }
+  // 캡처일은 **풀마다** 다르다(칩을 하나씩 열어 옮기므로 같은 날이 아닐 수 있다).
+  // 그래서 meta가 아니라 pool.capturedOn을 요구한다 — 한 풀만 낡는 상황을 놓치지 않으려면
+  // 파일 전체에 날짜 하나를 붙이면 안 된다.
   const seenPool = new Set();
   (tc.pools || []).forEach((p) => {
     const who = `towerCompositions 풀 '${p.pool}'`;
     if (seenPool.has(p.pool)) err('TOWERCOMP_DUP_POOL', `${who}: 같은 풀이 두 번 있다`);
     seenPool.add(p.pool);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(p.capturedOn || ''))) {
+      err('TOWERCOMP_SHAPE', `${who}: capturedOn 날짜(YYYY-MM-DD)가 없다 — 언제 본 화면인지 모르면 낡았는지 판단할 수 없다`);
+    }
     if (!TOWERS.includes(p.tower === undefined ? 'x' : p.tower)) {
       err('TOWERCOMP_SHAPE', `${who}: tower='${p.tower}' — null/elysion/missilis/tetra/pilgrim 중 하나여야 한다`);
     }
