@@ -2,15 +2,16 @@
   "meta": {
     "source": "enikk.app",
     "sourceUrl": "https://enikk.app/tower#compositions",
-    "capturedOn": "2026-08-20",
+    "capturedOn": "2026-08-21",
     "server": "ALL",
-    "analyzedClears": 1052772,
-    "distinctRosters": 30177,
+    "analyzedClears": 1057378,
+    "distinctRosters": 30198,
     "method": "타워 > Compositions 탭을 브라우저로 열어 화면 값을 그대로 옮겼다(A등급). enikk의 /api/graphql은 robots.txt Disallow라 쓰지 않는다.",
-    "selection": "'Most Used Compositions' 기본 정렬(사용 횟수 내림차순) 1페이지 = 상위 10팀",
+    "selection": "각 '타워 로스터 풀'의 'Most Used Compositions' 1페이지(사용 횟수 내림차순 상위 10팀)",
     "caveat": "KR 서버만 걸러 받으려 했으나 2026-08-20 기준 enikk 쪽에서 'Could not load compositions / Internal Server Error'가 나서 전 서버(ALL) 기준으로 옮겼다. 기존 campaignCompositions·pvp도 전 서버 기준이라 같은 잣대다.",
-    "poolNote": "enikk의 '타워 로스터 풀' 칩 = 우리 tower 값. Tribe(제한 없음) / Elysion / Missilis / Tetra / Over-Spec. 지금은 Tribe만 옮겼다.",
-    "staleAfterDays": 45
+    "poolNote": "enikk '타워 로스터 풀' 칩 = 우리 tower 값. Tribe→null / Elysion / Missilis / Tetra / Over-Spec→pilgrim(우리는 필그림 제조사 또는 오버스펙을 같은 자격으로 본다).",
+    "staleAfterDays": 45,
+    "pctNote": "% of clears는 그 풀 안에서의 비율이다(전체 analyzedClears 기준이 아니다). 풀끼리 비교하지 말 것."
   },
   "pools": [
     {
@@ -136,6 +137,514 @@
           "uses": 4034,
           "pctOfClears": 1.8,
           "floors": 682
+        }
+      ]
+    },
+    {
+      "pool": "elysion",
+      "tower": "elysion",
+      "poolTotal": 30,
+      "teams": [
+        {
+          "members": [
+            "D: Killer Wife",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Rapi: Red Hood",
+            "Helm"
+          ],
+          "uses": 77487,
+          "pctOfClears": 38.1,
+          "floors": 1272
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Privaty",
+            "Helm"
+          ],
+          "uses": 19616,
+          "pctOfClears": 9.6,
+          "floors": 1208
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Rapi: Red Hood",
+            "Helm",
+            "Vesti: Tactical Upgrade"
+          ],
+          "uses": 10897,
+          "pctOfClears": 5.4,
+          "floors": 1234
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "D: Killer Wife",
+            "Rapi: Red Hood",
+            "Anchor: Innocent Maid",
+            "Vesti: Tactical Upgrade"
+          ],
+          "uses": 5902,
+          "pctOfClears": 2.9,
+          "floors": 1218
+        },
+        {
+          "members": [
+            "Anchor: Innocent Maid",
+            "Mast: Romantic Maid",
+            "Rapi: Red Hood",
+            "Helm",
+            "Maiden: Ice Rose"
+          ],
+          "uses": 5585,
+          "pctOfClears": 2.7,
+          "floors": 969
+        },
+        {
+          "members": [
+            "D: Killer Wife",
+            "Privaty",
+            "Rapi: Red Hood",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid"
+          ],
+          "uses": 4337,
+          "pctOfClears": 2.1,
+          "floors": 1145
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Privaty: Unkind Maid",
+            "Helm"
+          ],
+          "uses": 4106,
+          "pctOfClears": 2,
+          "floors": 905
+        },
+        {
+          "members": [
+            "D: Killer Wife",
+            "Eunhwa: Tactical Upgrade",
+            "Vesti: Tactical Upgrade",
+            "Emma: Tactical Upgrade",
+            "Rapi: Red Hood"
+          ],
+          "uses": 2447,
+          "pctOfClears": 1.2,
+          "floors": 861
+        },
+        {
+          "members": [
+            "D: Killer Wife",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Rapi: Red Hood",
+            "Maiden: Ice Rose"
+          ],
+          "uses": 2402,
+          "pctOfClears": 1.2,
+          "floors": 687
+        },
+        {
+          "members": [
+            "Rapi: Red Hood",
+            "Anchor: Innocent Maid",
+            "Mast: Romantic Maid",
+            "Diesel: Winter Sweets",
+            "Helm"
+          ],
+          "uses": 2310,
+          "pctOfClears": 1.1,
+          "floors": 799
+        }
+      ]
+    },
+    {
+      "pool": "missilis",
+      "tower": "missilis",
+      "poolTotal": 44,
+      "teams": [
+        {
+          "members": [
+            "Tia",
+            "Ein",
+            "Naga",
+            "Quency: Escape Queen",
+            "Liter"
+          ],
+          "uses": 33908,
+          "pctOfClears": 16.1,
+          "floors": 1295
+        },
+        {
+          "members": [
+            "Tia",
+            "Liter",
+            "Naga",
+            "Neon: Vision Eye",
+            "Ein"
+          ],
+          "uses": 25987,
+          "pctOfClears": 12.3,
+          "floors": 1271
+        },
+        {
+          "members": [
+            "Tia",
+            "Liter",
+            "Naga",
+            "Neon: Vision Eye",
+            "Quency: Escape Queen"
+          ],
+          "uses": 14473,
+          "pctOfClears": 6.9,
+          "floors": 1218
+        },
+        {
+          "members": [
+            "Liter",
+            "Tia",
+            "Naga",
+            "Ein",
+            "Laplace"
+          ],
+          "uses": 14111,
+          "pctOfClears": 6.7,
+          "floors": 1227
+        },
+        {
+          "members": [
+            "Tia",
+            "Naga",
+            "Neon: Vision Eye",
+            "Liter",
+            "Laplace"
+          ],
+          "uses": 9314,
+          "pctOfClears": 4.4,
+          "floors": 1081
+        },
+        {
+          "members": [
+            "Tia",
+            "Liter",
+            "Naga",
+            "Laplace",
+            "Maxwell"
+          ],
+          "uses": 8952,
+          "pctOfClears": 4.2,
+          "floors": 1047
+        },
+        {
+          "members": [
+            "Tia",
+            "Liter",
+            "Neon: Vision Eye",
+            "Mihara: Bonding Chain",
+            "Naga"
+          ],
+          "uses": 7998,
+          "pctOfClears": 3.8,
+          "floors": 854
+        },
+        {
+          "members": [
+            "Quency: Escape Queen",
+            "Laplace",
+            "Naga",
+            "Liter",
+            "Tia"
+          ],
+          "uses": 7264,
+          "pctOfClears": 3.4,
+          "floors": 1106
+        },
+        {
+          "members": [
+            "Maxwell",
+            "Naga",
+            "Liter",
+            "Tia",
+            "Ein"
+          ],
+          "uses": 5540,
+          "pctOfClears": 2.6,
+          "floors": 1096
+        },
+        {
+          "members": [
+            "Liter",
+            "Mihara: Bonding Chain",
+            "Tia",
+            "Ein",
+            "Naga"
+          ],
+          "uses": 5285,
+          "pctOfClears": 2.5,
+          "floors": 985
+        }
+      ]
+    },
+    {
+      "pool": "tetra",
+      "tower": "tetra",
+      "poolTotal": 62,
+      "teams": [
+        {
+          "members": [
+            "Anis: Star",
+            "Prika",
+            "Mint",
+            "Alice",
+            "Anis: Sparkling Summer"
+          ],
+          "uses": 18949,
+          "pctOfClears": 8,
+          "floors": 1258
+        },
+        {
+          "members": [
+            "Prika",
+            "Milk: Blooming Bunny",
+            "Alice",
+            "Mint",
+            "Anis: Star"
+          ],
+          "uses": 17674,
+          "pctOfClears": 7.4,
+          "floors": 1230
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Mint",
+            "Ludmilla: Winter Owner",
+            "Prika",
+            "Alice"
+          ],
+          "uses": 16062,
+          "pctOfClears": 6.8,
+          "floors": 1164
+        },
+        {
+          "members": [
+            "Ludmilla: Winter Owner",
+            "Anis: Star",
+            "Alice",
+            "Ade: Agent Bunny",
+            "Anis: Sparkling Summer"
+          ],
+          "uses": 14563,
+          "pctOfClears": 6.1,
+          "floors": 1087
+        },
+        {
+          "members": [
+            "Ade: Agent Bunny",
+            "Anis: Star",
+            "Moran",
+            "Alice",
+            "Anis: Sparkling Summer"
+          ],
+          "uses": 9785,
+          "pctOfClears": 4.1,
+          "floors": 1207
+        },
+        {
+          "members": [
+            "Anis: Sparkling Summer",
+            "Prika",
+            "Anis: Star",
+            "Mint",
+            "Milk: Blooming Bunny"
+          ],
+          "uses": 6668,
+          "pctOfClears": 2.8,
+          "floors": 1181
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Moran",
+            "Alice",
+            "Ade: Agent Bunny",
+            "Milk: Blooming Bunny"
+          ],
+          "uses": 6402,
+          "pctOfClears": 2.7,
+          "floors": 1165
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Alice",
+            "Ludmilla: Winter Owner",
+            "Ade: Agent Bunny",
+            "Moran"
+          ],
+          "uses": 6303,
+          "pctOfClears": 2.6,
+          "floors": 971
+        },
+        {
+          "members": [
+            "Mint",
+            "Anis: Star",
+            "Prika",
+            "Milk: Blooming Bunny",
+            "Ludmilla: Winter Owner"
+          ],
+          "uses": 5044,
+          "pctOfClears": 2.1,
+          "floors": 1037
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Alice",
+            "Ludmilla: Winter Owner",
+            "Blanc",
+            "Noir"
+          ],
+          "uses": 4993,
+          "pctOfClears": 2.1,
+          "floors": 1026
+        }
+      ]
+    },
+    {
+      "pool": "overspec",
+      "tower": "pilgrim",
+      "poolTotal": 91,
+      "teams": [
+        {
+          "members": [
+            "Nayuta",
+            "Rapi: Red Hood",
+            "Anis: Star",
+            "Crown",
+            "Snow White: Heavy Arms"
+          ],
+          "uses": 12556,
+          "pctOfClears": 6.9,
+          "floors": 1984
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Crown",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Anis: Star"
+          ],
+          "uses": 5678,
+          "pctOfClears": 3.1,
+          "floors": 1345
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Nayuta",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Crown"
+          ],
+          "uses": 5427,
+          "pctOfClears": 3,
+          "floors": 1064
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Neon: Vision Eye",
+            "Snow White: Heavy Arms",
+            "Rapi: Red Hood"
+          ],
+          "uses": 3928,
+          "pctOfClears": 2.1,
+          "floors": 1513
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Scarlet: Black Shadow",
+            "Snow White: Heavy Arms"
+          ],
+          "uses": 3698,
+          "pctOfClears": 2,
+          "floors": 1321
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Snow White: Heavy Arms",
+            "Rapi: Red Hood",
+            "Liberalio"
+          ],
+          "uses": 3111,
+          "pctOfClears": 1.7,
+          "floors": 1184
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Snow White: Heavy Arms",
+            "Mihara: Bonding Chain"
+          ],
+          "uses": 2679,
+          "pctOfClears": 1.5,
+          "floors": 940
+        },
+        {
+          "members": [
+            "Little Mermaid",
+            "Nayuta",
+            "Liberalio",
+            "Scarlet: Black Shadow",
+            "Crown"
+          ],
+          "uses": 2616,
+          "pctOfClears": 1.4,
+          "floors": 779
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Cinderella: Crystal Wave",
+            "Snow White: Heavy Arms",
+            "Rapi: Red Hood",
+            "Crown"
+          ],
+          "uses": 2494,
+          "pctOfClears": 1.4,
+          "floors": 1264
+        },
+        {
+          "members": [
+            "Crown",
+            "Scarlet: Black Shadow",
+            "Red Hood",
+            "Modernia",
+            "Rapunzel"
+          ],
+          "uses": 1989,
+          "pctOfClears": 1.1,
+          "floors": 359
         }
       ]
     }

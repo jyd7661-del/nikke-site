@@ -32,8 +32,8 @@
     "staleAfterDays": 60
   },
   "towerCompositions": {
-    "asOf": "2026-08-20",
-    "source": "enikk.app 타워 > Compositions 탭(전 서버, Tribe 풀 상위 10팀). 사람이 브라우저로 열어 화면 값을 옮겼다",
+    "asOf": "2026-08-21",
+    "source": "enikk.app 타워 > Compositions 탭(전 서버). 풀 5종(Tribe·Elysion·Missilis·Tetra·Over-Spec) 각 상위 10팀. 사람이 브라우저로 열어 화면 값을 옮겼다",
     "refreshMethod": "docs/data.md \"타워 실사용 조합\" 절 참고",
     "staleAfterDays": 45
   }
