@@ -1079,6 +1079,29 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 캐릭터별 채용률 등급 (metaStats.usageTier)
+//
+// 엔진이 REAL_TIER_SCORE로 점수를 매기는 값이라 등급 문자열이 어긋나면 **조용히 0점**이 된다
+// (없는 키는 undefined → 0). 오타 하나로 그 캐릭터의 실사용 가산점이 통째로 사라진다.
+// ---------------------------------------------------------------------------
+{
+  const SLICES = ['campaign', 'soloraid', 'arena', 'overall'];
+  const GRADES = ['S', 'A', 'B', 'C', 'D', 'F'];
+  const ut = meta.usageTier || {};
+  SLICES.forEach((s) => {
+    if (!ut[s] || !Object.keys(ut[s]).length) err('USAGETIER_MISSING_SLICE', `usageTier.${s} 슬라이스가 비었다 — 그 모드의 실사용 가산점이 전부 0이 된다`);
+  });
+  Object.entries(ut).forEach(([slice, entries]) => {
+    if (!SLICES.includes(slice)) err('USAGETIER_SHAPE', `usageTier.${slice}: 모르는 슬라이스 이름 — 엔진의 MODE_TO_META_SLICE가 참조하지 않는다`);
+    Object.entries(entries || {}).forEach(([title, e]) => {
+      const w = `usageTier.${slice}['${title}']`;
+      if (!GRADES.includes(e?.tier)) err('USAGETIER_SHAPE', `${w}: tier='${e?.tier}' — ${GRADES.join('/')} 중 하나여야 한다`);
+      if (!(e?.usage >= 0 && e.usage <= 100)) err('USAGETIER_SHAPE', `${w}: usage='${e?.usage}' — 0~100 이어야 한다`);
+    });
+  });
+}
+
+// ---------------------------------------------------------------------------
 // PvP 실사용 조합 (metaStats.pvp.topTeams)
 //
 // 챔피언 아레나 Teams 탭은 **슬롯 순서까지 구분해** 나열한다(같은 5명이 순서만 바꿔 여러 행).

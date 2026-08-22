@@ -42,5 +42,11 @@
     "source": "enikk.app 챔피언 아레나 Teams 탭 · Season 36 · All servers(수집된 shard 한정). 사람이 브라우저로 열어 화면 값을 옮겼다",
     "refreshMethod": "docs/data.md \"enikk 실사용 조합\" 절 참고",
     "staleAfterDays": 21
+  },
+  "usageTier": {
+    "asOf": "2026-08-22",
+    "source": "enikk.app /meta 슬라이스 4종(캠페인·솔로레이드·챔피언아레나·종합). 등급도 enikk이 직접 매긴 값이다",
+    "refreshMethod": "docs/data.md \"enikk 실사용 조합\" 절 참고 — /meta?slice=campaign|soloraid|arena|overall",
+    "staleAfterDays": 21
   }
 }

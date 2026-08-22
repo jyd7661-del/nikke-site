@@ -54,6 +54,22 @@ Discord `discord.gg/sQheBjh3mT` · Ko-Fi `ko-fi.com/swayre`(운영자 swayre)다
   상태이지 조합의 필요 조건이 아니다. 그래서 엔진이 `[출처 한계]` 한 줄로 "이 기록의 주인이
   애장품과 함께 썼는지는 알 수 없다"고 밝힌다
 
+### 캐릭터별 채용률 등급 — 이제 우리가 산출하지 않는다 (2026-08-22)
+
+`metaStats.usageTier`의 S~F 등급은 예전에 **우리가 채용률에서 산출**한 값이었다
+(S>=90 / A>=30 / B>=8 / C>=3 / D<3). 근거는 "enikk이 주는 건 채용률 숫자뿐"이었다.
+
+그런데 enikk에는 `/meta` 페이지가 있고 **등급을 직접 매겨 게시한다.** 화면 고지도 함께 있다 —
+"these rankings are generated from tracked usage data, not editorial ratings".
+그래서 2026-08-22부터는 그 등급을 그대로 옮긴다(A등급). 우리 산출 규칙은 더 쓰지 않는다.
+
+- 슬라이스 주소: `/meta?slice=campaign|soloraid|arena|overall`
+- **D·F는 싣지 않는다** — 엔진의 `REAL_TIER_SCORE`에서 둘 다 0점이라 점수에 영향이 없다
+- 표본이 슬라이스마다 다르다: 캠페인 249K팀 / 솔로레이드 28,818팀 / 아레나 1,057 라인업 /
+  종합 1.3M팀(솔로레이드 35%·아레나 15%·타워 15%·캠페인 35% 가중)
+- ⚠️ 우리 DB에 없는 캐릭터는 빠진다. 2026-08-22 기준 **Yukiko(79.3%)·Queen (Makoto)(78.4%)가
+  솔로레이드 A등급인데 우리에게 없어서 제외**됐다. `meta.notInOurDatabase`에 적어뒀다
+
 ### 이름이 같은데 다른 인물 — `enikkAlias.json`
 
 enikk은 콜라보를 짧게 적는다(`Ada`/`Takina`/`Jill`/`Mari`). 대부분은 단순 별칭이지만
