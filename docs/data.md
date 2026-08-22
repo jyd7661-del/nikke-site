@@ -63,6 +63,10 @@ Discord `discord.gg/sQheBjh3mT` · Ko-Fi `ko-fi.com/swayre`(운영자 swayre)다
 "these rankings are generated from tracked usage data, not editorial ratings".
 그래서 2026-08-22부터는 그 등급을 그대로 옮긴다(A등급). 우리 산출 규칙은 더 쓰지 않는다.
 
+⚠️ **이 등급은 `characterDatabase.tiers`와 다른 척도다.** enikk은 최고가 `S`(6단계),
+prydwen은 최고가 `SSS`(9단계)다. 같은 글자 `S`가 서로 다른 위치를 뜻하므로 **두 값을 섞거나
+한 표로 합치면 안 된다.** 엔진이 점수표를 따로 두고 있고 그 이유는 `docs/engine.md` 4-2에 있다.
+
 - 슬라이스 주소: `/meta?slice=campaign|soloraid|arena|overall`
 - **D·F는 싣지 않는다** — 엔진의 `REAL_TIER_SCORE`에서 둘 다 0점이라 점수에 영향이 없다
 - 표본이 슬라이스마다 다르다: 캠페인 249K팀 / 솔로레이드 28,818팀 / 아레나 1,057 라인업 /
