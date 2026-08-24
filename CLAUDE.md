@@ -113,6 +113,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 | `docs/security.md` | 보안 사고 이력과 대응 |
 | `docs/ops.md` | Supabase·Vercel·배포·환경변수 |
 | `docs/pitfalls.md` | 개발 환경의 함정 |
+| `docs/new-character.md` | **새 캐릭터 추가 실행 순서** — 밟은 함정 5개 포함 |
 | `docs/weekly-research.md` | 주간 데이터 조사 예약 작업 |
 | `docs/open-items.md` | **성장 계획 3축 진행 상황(단일 출처)** · 열려 있는 작업·판단 대기 항목 |
 | `docs/claude-code.md` | 클로드 코드 이관·설정 방법 |
