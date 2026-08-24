@@ -80,3 +80,26 @@ bash cowork-lock.sh release "니케"                   # 끝나면 즉시
 
 Vercel 배포 시각·API 응답이 전부 UTC다. 한국 시간은 **+9시간**.
 `2026-08-11T01:52Z` = 한국 시간 **오전 10:52**. 이걸 착각해 대화 내내 날짜를 하루 밀려 말한 적이 있다.
+
+## 셸이 백슬래시를 먹는다 — 코드/문서에 제어문자가 들어간다 (2026-08-24)
+
+`node -e` 나 heredoc으로 파일을 쓸 때 문자열 안의 백슬래시가 한 겹 사라진다.
+그래서 정규식 `/^<Script\\b/` 를 쓰려던 것이 `/^<Script` + **백스페이스 문자(0x08)** + `/`
+로 들어갔다. 눈으로 보면 `\b` 와 구별이 안 되고, `sed`로 출력해도 똑같아 보인다.
+**정규식은 조용히 아무것도 매치하지 않게 된다.**
+
+같은 날 두 번 밟았다 — `scripts/checkAdPlacement.mjs` 와 `docs/ops.md`.
+전자는 역테스트가 잡았고(고의로 고장 냈는데 안 걸려서 발견), 후자는 사후 스캔으로 잡았다.
+
+**대응:**
+
+- 정규식에 `\b` `\d` `\s` 같은 이스케이프가 필요하면 **다른 방법으로 우회한다.**
+  예: `/^<Script\\b/.test(tag)` → `tag.startsWith('<Script')`
+- 파일을 쓴 뒤 **제어문자를 스캔한다:**
+
+```bash
+node -e "const s=require('fs').readFileSync('파일','utf8');console.log([...s].filter(c=>c.charCodeAt(0)<32&&![9,10,13].includes(c.charCodeAt(0))).length)"
+```
+
+- 한글·백틱이 많은 문서 편집은 셸 대신 **Edit/Write 도구**를 쓰는 편이 안전하다
+  (같은 이유로 예전에 `docs/open-items.md`·`CLAUDE.md`의 표가 깨진 적이 있다).

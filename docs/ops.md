@@ -219,6 +219,50 @@ sitemap·robots가 전부 따라온다(주소를 한 파일로 모아둔 덕. �
 | 주소 형태가 아닌 값 | 0개 (빌드를 깨뜨리지 않는다) ✅ |
 | 값이 옛 주소 그대로 | 0개 (무한 리다이렉트 방지) ✅ |
 
+### 🟡 새 도메인으로 검토 요청 — **결과 대기 (2026-08-24)**
+
+`nikketeamguide.com`을 애드센스에 등록하고 소유권 확인 → **검토 요청까지 마쳤다.**
+상태 `준비 중` ("사이트의 광고 게재 가능 여부 검토 중"). 두 단계 모두 초록 체크.
+
+가는 길에 **두 개의 서로 다른 벽**에 막혔다. 둘 다 화면에는 아무 증상이 없었다.
+
+**벽 1 — apex가 리다이렉트 껍데기였다.** 위의 "정식 주소는 apex다" 절 참고.
+
+**벽 2 — 애드센스 로더가 HTML에 진짜 `<script>` 태그로 나가지 않았다.**
+apex를 고친 뒤에도 소유권 확인이 계속 실패했다. apex는 200을 내고
+`grep -c googlesyndication`도 1을 냈는데, 그 1건이 script 태그가 아니었다:
+
+```
+<link rel="preload" href="https://pagead2.googlesyndication.com/..." as="script"/>
+```
+
+`app/layout.js`가 로더를 `next/script`(`<Script strategy="afterInteractive">`)로 붙이고
+있었다. **Next.js는 HTML에 preload 링크만 내보내고 진짜 `<script>` 태그는 브라우저에서
+JS로 만든다.** 브라우저로 열면 광고가 정상으로 보이므로 사람 눈으로는 절대 못 잡는다.
+
+빌드 산출물로 실측(`NEXT_PUBLIC_ADSENSE_CLIENT_ID`를 넣고 빌드):
+
+| 방식 | `<script>` 태그 | `preload` |
+|---|---|---|
+| `next/script` · afterInteractive | 0개 | 1개 |
+| `next/script` · beforeInteractive | 0개 | 1개 |
+| **평범한 `<script>` (채택)** | **1개, `<head>` 안** | 0개 |
+
+`beforeInteractive`로 바꿔도 안 된다는 것이 중요하다 — 처음에 그걸로 고쳤다고 믿을 뻔했다.
+
+**검사를 함께 넣었다** — `scripts/checkAdPlacement.mjs`에 `ADSENSE_LOADER_NEXT_SCRIPT` /
+`ADSENSE_LOADER_NOT_IN_HEAD` / `ADSENSE_LOADER_MISSING` 3종. 역테스트 4가지 전부 확인.
+첫 역테스트에서 정작 우리를 문 케이스를 **못 잡아** 검사 자체의 버그를 찾았다 —
+셸이 백슬래시를 먹어 정규식 `/^<Script\b/`의 `\b`가 **백스페이스 문자(0x08)**로
+들어가 있었다. 역테스트가 없었으면 "검사를 넣었다"고 믿은 채 통과했을 것이다.
+
+> 세 번 연속 "사이트를 확인할 수 없습니다"가 떴을 때 **한 번은 apex 문제, 두 번은 로더
+> 문제**였다. 같은 에러 문구가 서로 다른 원인을 가리킬 수 있다 — 고쳤다고 생각되면
+> **원인을 실측으로 다시 확인**하고 넘어갈 것.
+
+옛 사이트 `nikke-site.vercel.app` 항목은 목록에 그대로 두었다(`주의 필요`).
+지금은 apex로 308 리다이렉트되므로 실질 내용이 없다. 지울지는 사람이 정한다.
+
 ### 🔴 재심사 결과 — **재반려 (2026-08-23). 사유가 지난번과 다르다**
 
 메일: 2026-08-23 11:16 KST, `adsense-noreply@google.com`,
