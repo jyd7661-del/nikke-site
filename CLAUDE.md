@@ -4,7 +4,8 @@
 PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·정보를 나눌 수 있다.
 
 - 코드: `nikke-site/` (Next.js 14 App Router · Tailwind · Vercel 배포)
-- 배포: https://nikke-site.vercel.app · DB/인증: Supabase (`yttfwroeyplwrchyitud`)
+- 배포: https://nikketeamguide.com (2026-08-24 자체 도메인 전환. 옛 `nikke-site.vercel.app`은 308로 넘긴다)
+  · DB/인증: Supabase (`yttfwroeyplwrchyitud`)
 - 운영자 겸 기획자 1인. 사이트가 번영하도록 데이터 관리·수집·유지보수·고객응대를 함께 한다.
 
 ## 목표 — 성장 · 수익 · 자동화 3축 (2026-08-13 확정)

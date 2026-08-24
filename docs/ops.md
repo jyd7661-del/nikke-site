@@ -145,18 +145,58 @@ sitemap 201개 URL 중 `<ins class="adsbygoogle">`가 실제로 들어가는 곳
 그래서 **원인을 하나씩 분리**하기로 했다 — 도메인을 먼저 바꾸고 재심사, 그래도 같은 사유면
 그때는 콘텐츠 문제가 확실해지므로 영어 원문 블록 교체로 간다(`docs/open-items.md`).
 
-#### 전환 체크리스트 (도메인을 사면 이 순서대로)
+#### 전환 체크리스트 — 2026-08-24 진행 (7번 애드센스만 남음)
 
 | # | 할 일 | 주의 |
 |---|---|---|
-| 1 | 도메인 구매 (연 1~2만원 수준) | — |
-| 2 | Vercel 프로젝트에 도메인 연결 (Settings → Domains) | — |
-| 3 | Vercel 환경변수 `NEXT_PUBLIC_SITE_URL=https://새도메인` 추가 후 **재배포** | 재배포해야 런타임에 반영된다 |
-| 4 | `npm run check:canonical` | 201건 통과 확인. 스크립트도 같은 환경변수를 읽는다 |
+| 1 | ✅ 도메인 구매 (연 1~2만원 수준) | — |
+| 2 | ✅ Vercel 프로젝트에 도메인 연결 (Settings → Domains) | — |
+| 3 | ✅(방식 변경) Vercel 환경변수 `NEXT_PUBLIC_SITE_URL=https://새도메인` 추가 후 **재배포** | 실제로는 환경변수 대신 **`data/siteConfig.json`에 적었다**. 대시보드에만 있는 값은 git에 흔적이 안 남아 다음 세션이 알 수 없기 때문이다. 환경변수는 여전히 우선순위가 높아 미리보기 배포에서 덮어쓸 수 있다 |
+| 4 | ✅ `npm run check:canonical` | 201건 통과 확인. 스크립트도 같은 환경변수를 읽는다 |
 | 5 | ~~구 주소 → 새 주소 **301 리다이렉트**~~ | ✅ **코드에 이미 넣어뒀다**(`next.config.js`). 3번에서 환경변수를 새 주소로 바꾸는 순간 자동으로 켜진다 |
-| 6 | Search Console **새 속성 등록** + sitemap 재제출 | ⚠️ `app/layout.js`의 인증 토큰은 **옛 속성용**이다. 새 속성은 토큰이 다르니 DNS TXT(도메인 속성) 인증이 편하다. **기존 태그를 지우면 옛 속성 소유권이 풀린다** |
-| 7 | 애드센스에 **새 사이트 추가** → 검토 요청 | `public/ads.txt`는 정적 파일이라 새 도메인에서 자동으로 서빙된다 |
-| 8 | Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`components/Header.js:41`) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
+| 6 | ✅ Search Console **새 속성 등록**(도메인 속성 `sc-domain:nikketeamguide.com`, DNS TXT 인증) + sitemap 제출(상태 성공 · 발견 201) | ⚠️ `app/layout.js`의 인증 토큰은 **옛 속성용**이다. 새 속성은 토큰이 다르니 DNS TXT(도메인 속성) 인증이 편하다. **기존 태그를 지우면 옛 속성 소유권이 풀린다** |
+| 7 | ⏳ 애드센스에 **새 사이트 추가** → 검토 요청 | `public/ads.txt`는 정적 파일이라 새 도메인에서 자동으로 서빙된다 |
+| 8 | ✅ Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`components/Header.js:41`) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
+
+#### ⚠️ 정식 주소는 **apex**다 — www로 잡았다가 같은 날 되돌렸다 (2026-08-24)
+
+처음에는 `www.nikketeamguide.com`을 정식으로 잡고 apex를 www로 308 리다이렉트했다.
+Search Console·Supabase·sitemap까지 www 기준으로 다 맞춘 뒤 **애드센스에서 막혔다.**
+
+**애드센스는 사이트를 루트 도메인 단위로만 저장한다.** 사이트 추가 칸에
+`www.nikketeamguide.com`을 입력해도 목록에는 `nikketeamguide.com` 한 줄로 들어가고
+(새 행이 생기지 않는다), 크롤러는 그 호스트만 보러 간다. 그런데 당시 apex는:
+
+```
+$ curl -sSI https://nikketeamguide.com/
+HTTP/1.1 308 Permanent Redirect
+Content-Type: text/plain
+Location: https://www.nikketeamguide.com/
+
+$ curl -sS https://nikketeamguide.com/ | grep -c googlesyndication
+0
+```
+
+본문이 `Redirecting...` 한 줄뿐이라 애드센스 코드도 `ads.txt`도 읽히지 않았다.
+소유권 확인이 **"사이트를 확인할 수 없습니다"로 두 번 연속 실패**했고(재현 확인),
+목록의 `Ads.txt 상태`도 `찾을 수 없음`이었다. 세 확인 방법(코드 스니펫·ads.txt·메타 태그)이
+전부 같은 호스트를 가져오므로 **방법을 바꿔도 소용없다.**
+
+**고친 방법** — Vercel Settings → Domains에서 둘을 맞바꿨다.
+
+| 도메인 | 전 | 후 |
+|---|---|---|
+| `nikketeamguide.com` | 308 → www | **Production** |
+| `www.nikketeamguide.com` | Production | 308 → apex |
+
+그리고 `data/siteConfig.json`의 `productionUrl`을 apex로 바꿔 재배포하면 canonical 201개·
+sitemap·robots가 전부 따라온다(주소를 한 파일로 모아둔 덕. 손으로 고칠 곳은 없다).
+
+바꾼 순서도 중요하다 — **apex를 먼저 Production으로 올리고**, 배포로 canonical을 apex로
+옮긴 다음, **맨 마지막에 www를 리다이렉트로 돌렸다.** 반대로 하면 둘 다 리다이렉트가 되어
+사이트가 잠시 사라지거나, canonical이 리다이렉트만 하는 주소를 가리키는 구간이 생긴다.
+
+> **www를 정식으로 되돌리지 말 것.** 되돌리면 애드센스 소유권 확인이 다시 깨진다.
 
 코드 준비는 이미 끝나 있다 — `lib/site.js`가 환경변수 하나를 읽고 `app/layout.js`·`app/robots.js`·
 `app/sitemap.js`·`scripts/checkCanonical.mjs`가 전부 그 값을 쓴다(커밋 `306009b`).
