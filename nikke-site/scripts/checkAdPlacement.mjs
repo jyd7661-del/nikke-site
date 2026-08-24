@@ -12,6 +12,22 @@
 //
 // 홈(app/page.js)처럼 본문이 정적으로 항상 있는 페이지는 대상이 아니다. 여기까지 가드를
 // 요구하면 오탐이 나고, **오탐이 나는 검사는 아무도 믿지 않는다**(원칙 §4).
+//
+// ── 2026-08-24 추가: 애드센스 로더 태그 검사 ─────────────────────────────────
+// 새 도메인에서 소유권 확인이 "사이트를 확인할 수 없습니다"로 **세 번 연속** 실패했다.
+// 원인은 app/layout.js가 로더를 next/script(<Script>)로 붙이고 있던 것이다.
+// afterInteractive든 beforeInteractive든 Next.js는 HTML에 <link rel="preload">만
+// 내보내고 진짜 <script> 태그는 브라우저에서 JS로 만든다(두 strategy 모두 빌드
+// 산출물로 실측: script 0개 / preload 1개). 사람이 브라우저로 보면 광고가 정상이라
+// **화면에는 아무 증상이 없다** — 전형적인 "조용한 누락"(원칙 §3).
+//
+// 판정 단위는 app/layout.js 안의 로더 한 곳이다(원칙 §4). 빌드 산출물로 재는 쪽이
+// 고장의 단위에 더 가깝지만, NEXT_PUBLIC_ADSENSE_CLIENT_ID가 Vercel에만 있어
+// 로컬 빌드에는 로더가 아예 없다 — 그래서 평소 /verify에서는 늘 건너뛰는 검사가 된다.
+// **건너뛰는 검사는 없는 것과 같으므로** 원인 지점을 소스에서 직접 본다.
+// 빌드 산출물로 확인하려면(도메인·레이아웃을 건드렸을 때 권장):
+//   NEXT_PUBLIC_ADSENSE_CLIENT_ID=ca-pub-1541956672617594 npx next build
+//   grep -o '<script[^>]*googlesyndication[^>]*>' .next/server/app/index.html
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -79,10 +95,51 @@ for (const file of walk(APP_DIR)) {
   }
 }
 
+// ── 애드센스 로더 태그 ───────────────────────────────────────────────────────
+const LAYOUT = join(ROOT, 'app/layout.js');
+const layoutSrc = readFileSync(LAYOUT, 'utf8');
+const LOADER_SRC = 'adsbygoogle.js';
+
+const headStart = layoutSrc.indexOf('<head>');
+const headEnd = layoutSrc.indexOf('</head>');
+const loaderAt = layoutSrc.indexOf(LOADER_SRC);
+
+let loaderNote;
+if (loaderAt === -1) {
+  errors.push(
+    `[ADSENSE_LOADER_MISSING] app/layout.js — 애드센스 로더(${LOADER_SRC})가 없다. ` +
+      '지우면 광고가 아예 안 뜨고 소유권 확인도 실패한다 (docs/ops.md)'
+  );
+  loaderNote = '없음';
+} else {
+  // 로더를 감싼 태그가 <Script>(next/script)인지 <script>(평범한 태그)인지 본다.
+  const openAt = layoutSrc.lastIndexOf('<', loaderAt);
+  const tag = layoutSrc.slice(openAt, openAt + 8);
+  const isNextScript = tag.startsWith('<Script');
+  const inHead = headStart !== -1 && headEnd !== -1 && headStart < loaderAt && loaderAt < headEnd;
+
+  if (isNextScript) {
+    errors.push(
+      '[ADSENSE_LOADER_NEXT_SCRIPT] app/layout.js — 애드센스 로더를 next/script(<Script>)로 ' +
+        '붙였다. Next.js는 HTML에 <link rel="preload">만 내보내고 진짜 <script> 태그는 ' +
+        '브라우저에서 JS로 만든다. 화면에는 광고가 정상으로 보이지만 **애드센스 소유권 확인이 ' +
+        '실패한다**(2026-08-24 세 번 연속 실패, 실측). 평범한 <script> 태그를 쓸 것 (docs/ops.md)'
+    );
+  }
+  if (!inHead) {
+    errors.push(
+      '[ADSENSE_LOADER_NOT_IN_HEAD] app/layout.js — 애드센스 로더가 <head>…</head> 밖에 있다. ' +
+        '애드센스 안내문이 요구하는 위치는 <head> 안이다 (docs/ops.md)'
+    );
+  }
+  loaderNote = isNextScript ? '<Script>(next/script) ❌' : inHead ? '<script> · <head> 안 ✅' : '<script> · head 밖 ❌';
+}
+
 console.log('광고 배치 검사 — AdSlot을 쓰는 페이지');
 for (const c of checked) {
   console.log(`  ${c.rel} — 슬롯 ${c.count}개 · ${c.runtime ? '런타임 로딩(판정 대상)' : '정적 본문(대상 아님)'}`);
 }
+console.log(`  app/layout.js — 애드센스 로더: ${loaderNote}`);
 console.log('─'.repeat(72));
 
 if (errors.length) {
@@ -90,4 +147,4 @@ if (errors.length) {
   for (const e of errors) console.log('   ' + e);
   process.exit(1);
 }
-console.log('ERROR 0 — 콘텐츠 없는 화면에 광고를 그리는 페이지 없음');
+console.log('ERROR 0 — 콘텐츠 없는 화면에 광고를 그리는 페이지 없음 · 애드센스 로더 정상');

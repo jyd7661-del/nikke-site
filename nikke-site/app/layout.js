@@ -1,5 +1,4 @@
 import './globals.css';
-import Script from 'next/script';
 import { Analytics } from '@vercel/analytics/next';
 import { AuthProvider } from '@/components/AuthProvider';
 import { LanguageProvider } from '@/components/LanguageProvider';
@@ -29,6 +28,23 @@ const ADSENSE_CLIENT_ID = process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID;
 export default function RootLayout({ children }) {
   return (
     <html lang="ko">
+      <head>
+        {/* ⚠️ 애드센스 로더는 **평범한 <script> 태그**여야 한다. next/script를 쓰면
+            안 된다 — afterInteractive든 beforeInteractive든 Next.js는 HTML에
+            <link rel="preload">만 내보내고 진짜 <script>는 브라우저에서 JS로 만든다
+            (2026-08-24 두 strategy 모두 빌드 산출물로 실측: script 태그 0개 / preload 1개).
+            사람 눈에는 광고가 정상으로 보이지만, **애드센스 소유권 확인 크롤러는 원본
+            HTML의 <script> 태그를 찾기 때문에** "사이트를 확인할 수 없습니다"로 계속
+            실패한다. 실제로 세 번 연속 실패했고 이것이 원인이었다.
+            scripts/checkAdSenseTag.mjs 가 빌드 산출물에서 이 태그를 검사한다. */}
+        {ADSENSE_CLIENT_ID && (
+          <script
+            async
+            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
+            crossOrigin="anonymous"
+          />
+        )}
+      </head>
       <body className="bg-nikke-bg text-slate-100 min-h-screen">
         <LanguageProvider>
           <AuthProvider>
@@ -41,14 +57,6 @@ export default function RootLayout({ children }) {
             쿠키를 쓰지 않아 동의 배너(CMP) 없이도 적법하게 동작한다.
             Vercel 대시보드에서 Web Analytics를 Enable해야 수집이 시작된다. */}
         <Analytics />
-        {ADSENSE_CLIENT_ID && (
-          <Script
-            async
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT_ID}`}
-            crossOrigin="anonymous"
-            strategy="afterInteractive"
-          />
-        )}
       </body>
     </html>
   );
