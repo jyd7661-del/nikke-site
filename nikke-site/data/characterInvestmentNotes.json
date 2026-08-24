@@ -13,7 +13,17 @@
       "investmentProfile": "저점부터 매우 높음. 스킬 7/7/7만 찍어도 충분히 활약하고, 10/10/10 종결까지 가면 더 좋아지지만 필수는 아님. 투자 부담이 낮은 편이라 신규 유저도 빠르게 주력으로 쓸 수 있음.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬 (모두 중요, 우선순위 차이 거의 없음)",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가 = 크리티컬 확률 = 크리티컬 대미지",
-      "notes": "혼자 쓰는 것(나만의 별 상태)이 다른 1버스트와 같이 쓰는 것보다 좋음. 리틀 머메이드를 밀어내고 새로운 1버스트 1황."
+      "notes": "혼자 쓰는 것(나만의 별 상태)이 다른 1버스트와 같이 쓰는 것보다 좋음. 리틀 머메이드를 밀어내고 새로운 1버스트 1황.",
+      "treasureNote_en": "A top-tier Burst 1 pick even without her Treasure. Take her first regardless of whether you have it.",
+      "treasureNote_ja": "宝ものがなくてもバースト1の最優先枠。宝ものの有無に関わらず最優先で採用する。",
+      "investmentProfile_en": "Very strong from a low investment floor. Skills at 7/7/7 are already plenty, and going to 10/10/10 helps but is not required. The low investment burden means new players can make her a core unit quickly.",
+      "investmentProfile_ja": "低投資の時点から非常に強い。スキル7/7/7でも十分に活躍し、10/10/10まで伸ばせばさらに良くなるが必須ではない。投資負担が軽いため新規プレイヤーでも早く主力にできる。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill (all matter; there is almost no priority difference)",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル（すべて重要で、優先度の差はほとんどない）",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo = Crit Rate = Crit Damage",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数 = クリティカル確率 = クリティカルダメージ",
+      "notes_en": "Running her alone (in her My Star state) is better than pairing her with another Burst 1. She has displaced Little Mermaid as the new best Burst 1 unit.",
+      "notes_ja": "単独で使う（自分だけの星の状態）ほうが、他のバースト1と併用するより良い。リトルマーメイドを押しのけて新たなバースト1の最上位となった。"
     },
     {
       "name": "Crown",
@@ -23,7 +33,17 @@
       "investmentProfile": "저점부터 매우 높음(4/4/4만 찍어도 서포터로서 기능). 다만 스킬 3개 중요도가 동일해서 종결(10/10/10)까지 꾸준히 투자할 가치가 있음. 오버로드는 딜러들보다 우선순위를 낮게 둬도 무방.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬 (버릴 스킬이 없음, 순서대로 투자)",
       "overloadPriority": "우월코드 대미지 증가 >= 공격력 증가 >= 장탄 증가 (딜러 오버작을 먼저 끝낸 뒤 진행 추천)",
-      "notes": "궁합 우선순위: 애장품 헬름 1순위, 나가 2순위, 라푼젤/마르차나 3순위. 나가와 함께 쓸 때는 크라운을 맨 왼쪽에 배치해야 나가의 회복 대상이 됨. 루주 같은 '유사 힐'은 크라운 2스킬 발동 조건에 포함되지 않음."
+      "notes": "궁합 우선순위: 애장품 헬름 1순위, 나가 2순위, 라푼젤/마르차나 3순위. 나가와 함께 쓸 때는 크라운을 맨 왼쪽에 배치해야 나가의 회복 대상이 됨. 루주 같은 '유사 힐'은 크라운 2스킬 발동 조건에 포함되지 않음.",
+      "treasureNote_en": "The top Burst 2 pick even without her Treasure (\"the Burst 2 god\"). Note that her Skill 2 attack damage buff only stays up if she is paired with an ally who provides healing.",
+      "treasureNote_ja": "宝ものがなくてもバースト2の最優先枠（「バースト2の神」）。ただしスキル2の攻撃ダメージバフを常時発動させるには、回復ソースを持つ味方と組む必要がある。",
+      "investmentProfile_en": "Very strong from a low floor (4/4/4 is enough for her to function as a supporter). All three skills matter equally, so investing all the way to 10/10/10 is worthwhile. Her Overload can be deprioritised behind your damage dealers.",
+      "investmentProfile_ja": "低投資の時点から非常に強い（4/4/4でもサポーターとして機能する）。ただしスキル3つの重要度が同じなので、10/10/10の完成まで投資し続ける価値がある。オーバーロードはアタッカーより優先度を下げても問題ない。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill (no skill to skip; invest in order)",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル（捨てスキルがなく、順番に投資する）",
+      "overloadPriority_en": "Elemental Damage >= ATK >= Max Ammo (recommended after you have finished Overload rolling on your damage dealers)",
+      "overloadPriority_ja": "有利コードダメージ >= 攻撃力 >= 最大装填数（アタッカーのオーバーロード厳選を終えてから進めるのがおすすめ）",
+      "notes_en": "Pairing priority: Treasure Helm first, Naga second, Rapunzel/Marciana third. When running her with Naga, place Crown in the leftmost slot so she becomes Naga's heal target. Pseudo-heals such as Rouge's do not satisfy Crown's Skill 2 trigger condition.",
+      "notes_ja": "相性の優先度：宝ものヘルムが1番手、ナガが2番手、ラプンツェル／マルチャーナが3番手。ナガと併用するときはクラウンを最も左に配置してナガの回復対象にする。ルージュのような「疑似回復」はクラウンのスキル2の発動条件に含まれない。"
     },
     {
       "name": "Helm",
@@ -41,7 +61,21 @@
       "overloadPriority": "우월코드 증가 >= 공격력 증가 > 차지속도 (장탄 옵션은 비추천 - 1스킬이 '마지막 탄환 명중 시' 조건이라 장탄이 많으면 오히려 발동이 늦어짐)",
       "notes": "토템(버스트 대기)으로 써도, 3버스트 딜러로 써도 좋은 범용성. 크라운과 최우선 궁합 - 크라운 2스킬의 '회복 효과를 받았을 때' 조건을 상시로 채워줌.",
       "totemRole": true,
-      "totemNote": "버스트3 슬롯을 같은 단계의 다른 캐릭터(빠른 쿨타임)가 이미 안정적으로 커버하고 있다면, 헬름은 자신의 버스트 스킬('Aegis Cannon', 쿨타임 40초)을 자주 못 써도 가치가 유지되는 대표적 토템이다. 1스킬('Frontline Command')은 마지막 탄환 명중 시 전 아군 평타 크리티컬 확률 +8.65%(5초), 2스킬('Fire Away')은 풀버스트 진입 시 전 아군 공격력 +11.7%(10초)를 상시로 걸어주고, 버스트 스킬 자체도 쓸 때마다 전 아군 HP를 공격 피해의 32.17%만큼 10초간 회복시켜준다. 애장품 3단계는 버스트 스킬 자체를 강화하는 효과라 토템으로만 쓸 경우 2단계로도 충분하다는 것이 커뮤니티 중론이다. 크라운(2스킬이 '회복 효과를 받았을 때' 조건)과 특히 궁합이 좋아, 헬름의 지속 회복이 크라운의 버프를 상시로 트리거해준다. (출처: 인벤 2025-07-24 「1티어 수냉 토템! 수영복 한정 니케 일레그, 성능과 세팅법」 — \"토템이란 버스트를 사용하지 않는 다섯 번째 자리에 놓는 니케\"라는 정의와 추천 목록) 및 prydwen Meta teams의 Vesgod 조합에서 애장품 헬름이 해당 자리에 기용된다."
+      "totemNote": "버스트3 슬롯을 같은 단계의 다른 캐릭터(빠른 쿨타임)가 이미 안정적으로 커버하고 있다면, 헬름은 자신의 버스트 스킬('Aegis Cannon', 쿨타임 40초)을 자주 못 써도 가치가 유지되는 대표적 토템이다. 1스킬('Frontline Command')은 마지막 탄환 명중 시 전 아군 평타 크리티컬 확률 +8.65%(5초), 2스킬('Fire Away')은 풀버스트 진입 시 전 아군 공격력 +11.7%(10초)를 상시로 걸어주고, 버스트 스킬 자체도 쓸 때마다 전 아군 HP를 공격 피해의 32.17%만큼 10초간 회복시켜준다. 애장품 3단계는 버스트 스킬 자체를 강화하는 효과라 토템으로만 쓸 경우 2단계로도 충분하다는 것이 커뮤니티 중론이다. 크라운(2스킬이 '회복 효과를 받았을 때' 조건)과 특히 궁합이 좋아, 헬름의 지속 회복이 크라운의 버프를 상시로 트리거해준다. (출처: 인벤 2025-07-24 「1티어 수냉 토템! 수영복 한정 니케 일레그, 성능과 세팅법」 — \"토템이란 버스트를 사용하지 않는 다섯 번째 자리에 놓는 니케\"라는 정의와 추천 목록) 및 prydwen Meta teams의 Vesgod 조합에서 애장품 헬름이 해당 자리에 기용된다.",
+      "treasureNote_en": "Her Treasure is effectively mandatory. Before it released she saw only occasional Solo Raid use, but afterwards her evaluation flipped completely — both her utility and her damage are now top class. Investing in her on the assumption that you will not get the Treasure is not recommended.",
+      "treasureNote_ja": "宝ものが事実上必須。宝もの実装前はソロレイドでたまに使われる程度だったが、実装後はユーティリティもダメージも最上級へと評価が完全に逆転した。宝ものがない前提での投資は推奨されない。",
+      "investmentProfile_en": "With the Treasure assumed, she is very strong across the whole range from low to high investment. Skills 1 and 2 are the core and her Burst Skill is comparatively less urgent (minimum 7/7/4; 10/10/7 is enough if you only use her as a totem).",
+      "investmentProfile_ja": "宝もの前提なら、低投資から高投資まで全体的に非常に強い。スキルは1・2が核でバーストスキルは相対的に急がない（最低投資7/7/4、トーテム用途なら10/10/7でも十分）。",
+      "skillPriority_en": "Skill 1 >= Skill 2 > Burst Skill",
+      "skillPriority_ja": "スキル1 >= スキル2 > バーストスキル",
+      "overloadPriority_en": "Elemental Damage >= ATK > Charge Speed (Max Ammo is not recommended — her Skill 1 triggers on hitting with the last bullet, so more ammo actually delays it)",
+      "overloadPriority_ja": "有利コードダメージ >= 攻撃力 > チャージスピード（最大装填数は非推奨 — スキル1が「最後の弾丸が命中したとき」の条件なので、装填数が多いとかえって発動が遅くなる）",
+      "notes_en": "Versatile enough to work either as a totem (holding her Burst) or as a Burst 3 damage dealer. Her best pairing is Crown — she keeps Crown's Skill 2 condition, \"when affected by a healing effect\", satisfied at all times.",
+      "notes_ja": "トーテム（バースト待機）として使っても、バースト3のアタッカーとして使っても良い汎用性。クラウンとの相性が最優先 — クラウンのスキル2の「回復効果を受けたとき」という条件を常時満たしてくれる。",
+      "totemNote_en": "If another unit at the same burst stage with a shorter cooldown already covers the Burst 3 slot reliably, Helm is the classic totem whose value holds up even when she rarely gets to use her own Burst Skill (\"Aegis Cannon\", 40s cooldown). Skill 1 (\"Frontline Command\") grants all allies +8.65% normal-attack crit rate for 5 sec on hitting with the last bullet, Skill 2 (\"Fire Away\") grants all allies +11.7% ATK for 10 sec on entering Full Burst, and her Burst Skill itself heals all allies for 32.17% of the damage dealt over 10 sec each time it goes off. Treasure stage 3 only strengthens the Burst Skill itself, so the community consensus is that stage 2 is enough if you only use her as a totem. She pairs especially well with Crown (whose Skill 2 requires \"when affected by a healing effect\"), because Helm's sustained healing keeps Crown's buff triggered at all times. (Source: Inven, 2025-07-24, \"Tier 1 Water totem! The limited swimsuit NIKKE Elegg: performance and setup\" — the definition \"a totem is a NIKKE you put in the fifth slot without using her Burst\" and its recommendation list) and Treasure Helm is used in that slot in prydwen's Vesgod meta team.",
+      "totemNote_ja": "バースト3の枠を、同じ段階でクールタイムの短い別キャラがすでに安定してカバーしているなら、ヘルムは自分のバーストスキル（「Aegis Cannon」、クールタイム40秒）をあまり使えなくても価値が保たれる代表的なトーテムだ。スキル1（「Frontline Command」）は最後の弾丸が命中したときに味方全体へ通常攻撃のクリティカル確率+8.65%（5秒）を、スキル2（「Fire Away」）はフルバースト突入時に味方全体へ攻撃力+11.7%（10秒）を常時かけてくれるうえ、バーストスキル自体も使うたびに味方全体のHPを与ダメージの32.17%分、10秒かけて回復させる。宝ものの3段階はバーストスキル自体を強化する効果なので、トーテムとしてのみ使う場合は2段階で十分というのがコミュニティの総意だ。クラウン（スキル2が「回復効果を受けたとき」の条件）とは特に相性が良く、ヘルムの持続回復がクラウンのバフを常時トリガーしてくれる。（出典：インベン2025-07-24「Tier1水冷トーテム！水着限定ニケ エレグ、性能とセッティング法」— 「トーテムとはバーストを使わない5番目の枠に置くニケ」という定義と推奨リスト）およびprydwenのMeta teamsのVesgod編成で宝ものヘルムがその枠に起用されている。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (Story S / Boss SS / PvP SSS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（ストーリーS／ボス戦SS／PvP SSS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Liter",
@@ -51,7 +85,17 @@
       "investmentProfile": "투자 부담이 매우 낮은 대표적인 '저점이 높은' 캐릭터. 오버로드를 옵션작까지 신경 쓸 필요가 없고(만들기만 해도 충분), 스킬도 4/4/7 수준의 최소 투자로도 제 역할을 함. 다만 개인 화력이 거의 없다는 명확한 한계가 있어 고점은 서포터로서의 상한선에 묶여 있음.",
       "skillPriority": "버스트스킬 >= 1스킬 > 2스킬",
       "overloadPriority": "옵션작 불필요 (오버로드 장비를 만들어주는 수준에서 투자를 멈춰도 무방)",
-      "notes": "자체 공격력 버프가 없는 딜러와 궁합이 좋음(공격력 증가 효과가 이미 많은 딜러와는 상대적으로 비효율). 리틀 머메이드/라피: 레드 후드가 없을 때 1버스트 최우선 대안."
+      "notes": "자체 공격력 버프가 없는 딜러와 궁합이 좋음(공격력 증가 효과가 이미 많은 딜러와는 상대적으로 비효율). 리틀 머메이드/라피: 레드 후드가 없을 때 1버스트 최우선 대안.",
+      "treasureNote_en": "A Burst 1 unit used steadily since launch even without a Treasure. No particular Treasure dependency is noted.",
+      "treasureNote_ja": "宝ものがなくてもリリース初期から継続して使われるバースト1。宝ものへの依存については特に言及がない。",
+      "investmentProfile_en": "The textbook \"high floor\" unit with a very low investment burden. You do not need to roll Overload substats (simply crafting them is enough), and even a minimal 4/4/7 skill spread lets her do her job. Her clear limitation is that she has almost no personal damage, so her ceiling is capped at what a supporter can offer.",
+      "investmentProfile_ja": "投資負担が非常に軽い、代表的な「低投資でも強い」キャラ。オーバーロードはオプション厳選まで気にする必要がなく（作るだけで十分）、スキルも4/4/7程度の最低投資で役割を果たす。ただし個人火力がほとんどないという明確な限界があり、上限はサポーターとしての天井に縛られる。",
+      "skillPriority_en": "Burst Skill >= Skill 1 > Skill 2",
+      "skillPriority_ja": "バーストスキル >= スキル1 > スキル2",
+      "overloadPriority_en": "Substat rolling unnecessary (you can stop once the Overload gear is crafted)",
+      "overloadPriority_ja": "オプション厳選は不要（オーバーロード装備を作った時点で投資を止めても問題ない）",
+      "notes_en": "Works well with damage dealers who have no ATK buff of their own (comparatively inefficient with dealers who already have plenty of ATK-up effects). She is the top Burst 1 alternative when you do not have Little Mermaid or Rapi: Red Hood.",
+      "notes_ja": "自前の攻撃力バフを持たないアタッカーと相性が良い（攻撃力アップ効果をすでに多く持つアタッカーとは相対的に非効率）。リトルマーメイドやラピ：レッドフードがいないときのバースト1の最優先代替。"
     },
     {
       "name": "Snow White: Heavy Arms",
@@ -61,7 +105,17 @@
       "investmentProfile": "출시 시점 기준 전체 니케 중 최상급 화력으로 평가. 스킬은 모두 동일 비중으로 중요해 10/10/10 권장. 버스트 충전 속도가 매우 빨라(애장품 헬름보다도 빠름) 투자 저점부터 체감 성능이 높음.",
       "skillPriority": "버스트스킬 = 2스킬 = 1스킬",
       "overloadPriority": "우월코드 증가 >= 공격력 증가 > 장탄 증가 (종결: 우월코드 4, 공격력 4, 장탄 2 이상)",
-      "notes": "라피: 레드 후드보다 약 1.1~1.2배 강한 화력으로 평가됨. 리틀 머메이드/크라운 등 1·2버스트 최상위 픽과 조합 추천. 원본 스노우 화이트와 짝을 이루던 애장품 미란다와도 궁합 좋음. 수냉 코드 최상위 3버스트 딜러."
+      "notes": "라피: 레드 후드보다 약 1.1~1.2배 강한 화력으로 평가됨. 리틀 머메이드/크라운 등 1·2버스트 최상위 픽과 조합 추천. 원본 스노우 화이트와 짝을 이루던 애장품 미란다와도 궁합 좋음. 수냉 코드 최상위 3버스트 딜러.",
+      "treasureNote_en": "No mention of a required Treasure. What is recommended instead is Collection Item (weapon collection level) SR15, which is the general weapon collection system and different from Helm's Treasure.",
+      "treasureNote_ja": "宝もの必須という言及はない。代わりに推奨されるのは武器コレクション（収集レベル）SR15で、これはヘルムの宝ものとは異なる一般的な武器収集システムだ。",
+      "investmentProfile_en": "Rated as top-class damage among all NIKKEs at release. All three skills matter equally, so 10/10/10 is recommended. Her burst charge speed is very fast (faster even than Treasure Helm), so she feels strong from a low investment floor.",
+      "investmentProfile_ja": "実装時点で全ニケの中でも最上級の火力と評価される。スキルはすべて同じ比重で重要なため10/10/10推奨。バーストのチャージ速度が非常に速く（宝ものヘルムよりも速い）、低投資の時点から体感性能が高い。",
+      "skillPriority_en": "Burst Skill = Skill 2 = Skill 1",
+      "skillPriority_ja": "バーストスキル = スキル2 = スキル1",
+      "overloadPriority_en": "Elemental Damage >= ATK > Max Ammo (endgame: Elemental Damage 4, ATK 4, Max Ammo 2 or more)",
+      "overloadPriority_ja": "有利コードダメージ >= 攻撃力 > 最大装填数（完成形：有利コードダメージ4、攻撃力4、最大装填数2以上）",
+      "notes_en": "Rated at roughly 1.1–1.2 times the damage of Rapi: Red Hood. Recommended alongside top Burst 1 and II picks such as Little Mermaid and Crown. She also pairs well with Treasure Miranda, who used to be partnered with the original Snow White. A top-tier Water code Burst 3 damage dealer.",
+      "notes_ja": "ラピ：レッドフードのおよそ1.1〜1.2倍の火力と評価される。リトルマーメイドやクラウンなど、バースト1・IIの最上位ピックとの編成が推奨される。オリジナルのスノーホワイトと組んでいた宝ものミランダとも相性が良い。水冷コード最上位のバースト3アタッカー。"
     },
     {
       "name": "Nayuta",
@@ -73,7 +127,19 @@
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가 (종결: 우월코드 4, 공격력 4, 장탄 1, 나머지 자유)",
       "notes": "크라운보다 버프량은 약간 떨어지지만 자체 화력이 훨씬 강함. 풍압 코드가 우월코드인 콘텐츠(크라켄 등)에서는 크라운보다 우위, 우월코드가 아닐 때는 크라운이 더 유리. 기존 조합에서 크라운 자리를 그대로 대체 가능.",
       "totemRole": true,
-      "totemNote": "버스트2, 쿨타임 20초. [스킬 원문 근거] 2스킬 'Impermanence'가 3초마다 스스로 스택(Memory Absorption)을 쌓고, 스택이 오를 때마다 1스킬 'Hypocrisy'가 전 아군에게 공격력 ▲ 17.82%(시전자 공격력 기준)와 코어 공격 데미지 ▲ 15.72%를 5초간 건다 -- 버스트가 전혀 관여하지 않는 자가 순환 구조라, 버스트2를 크라운 같은 캐릭터가 커버 중이어도 팀 버프가 끊기지 않는다. (근거: scripts/findTotems.mjs — enikk 실사용 조합과 공략 권장 조합을 엔진에 돌려 \"버스트 순번에서 밀리는데도 반복 기용되는\" 캐릭터를 집계한 결과): 크라운과 함께 쓴 캠페인 조합이 실사용 1.12%(2,121회)로 집계되며 그 조합에서 나유타가 잉여 판정을 받았다."
+      "totemNote": "버스트2, 쿨타임 20초. [스킬 원문 근거] 2스킬 'Impermanence'가 3초마다 스스로 스택(Memory Absorption)을 쌓고, 스택이 오를 때마다 1스킬 'Hypocrisy'가 전 아군에게 공격력 ▲ 17.82%(시전자 공격력 기준)와 코어 공격 데미지 ▲ 15.72%를 5초간 건다 -- 버스트가 전혀 관여하지 않는 자가 순환 구조라, 버스트2를 크라운 같은 캐릭터가 커버 중이어도 팀 버프가 끊기지 않는다. (근거: scripts/findTotems.mjs — enikk 실사용 조합과 공략 권장 조합을 엔진에 돌려 \"버스트 순번에서 밀리는데도 반복 기용되는\" 캐릭터를 집계한 결과): 크라운과 함께 쓴 캠페인 조합이 실사용 1.12%(2,121회)로 집계되며 그 조합에서 나유타가 잉여 판정을 받았다.",
+      "treasureNote_en": "No mention of a required Treasure. Since she also serves as a damage dealer, Collection Item (weapon collection level) SR15 is recommended as mandatory.",
+      "treasureNote_ja": "宝もの必須の言及はない。本人がアタッカーの役割も兼ねるため、コレクションアイテム（武器収集レベル）SR15は必須として推奨される。",
+      "investmentProfile_en": "Usable at a minimum of 4/4/4, with 7/7/7 as the cost-efficient line and 10/10/10 as the endgame. As a Burst 2 hybrid dealer-supporter who can replace Crown, she is practical from a low investment floor.",
+      "investmentProfile_ja": "最低4/4/4でも使用でき、コスパ帯は7/7/7、完成形は10/10/10。クラウンを代替できるバースト2のアタッカー兼サポーターとして、低投資の時点から実戦性が高い。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (endgame: Elemental Damage 4, ATK 4, Max Ammo 1, rest free)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（完成形：有利コードダメージ4、攻撃力4、最大装填数1、残りは自由）",
+      "notes_en": "Her buff numbers are slightly lower than Crown's, but her own damage is far higher. In content where Wind is the advantageous code (Kraken and the like) she edges out Crown; when it is not the advantageous code, Crown is better. She can slot straight into Crown's place in existing teams.",
+      "notes_ja": "クラウンよりバフ量はやや劣るが、自身の火力ははるかに高い。風圧コードが有利コードとなるコンテンツ（クラーケンなど）ではクラウンより優位、有利コードでないときはクラウンのほうが有利。既存編成のクラウンの枠をそのまま代替できる。",
+      "totemNote_en": "Burst 2, 20s cooldown. [Based on the skill text] Her Skill 2 \"Impermanence\" stacks Memory Absorption on herself every 3 sec, and each time the stack rises her Skill 1 \"Hypocrisy\" grants all allies ATK ▲ 17.82% (scaling off the caster's ATK) and core attack damage ▲ 15.72% for 5 sec — a self-sustaining loop that her Burst plays no part in, so the team buff never stops even when a unit like Crown is covering Burst 2. (Basis: scripts/findTotems.mjs — the result of running enikk real-usage teams and guide-recommended teams through the engine to count characters that are \"repeatedly fielded even though they lose the burst rotation\"): a campaign team using her with Crown is recorded at 1.12% real usage (2,121 runs), and Nayuta was flagged as surplus in that team.",
+      "totemNote_ja": "バースト2、クールタイム20秒。［スキル原文が根拠］スキル2「Impermanence」が3秒ごとに自分でスタック（Memory Absorption）を溜め、スタックが上がるたびにスキル1「Hypocrisy」が味方全体へ攻撃力 ▲ 17.82%（術者の攻撃力基準）とコア攻撃ダメージ ▲ 15.72%を5秒かける — バーストがまったく関与しない自己循環構造なので、バースト2をクラウンのようなキャラがカバー中でもチームバフが途切れない。（根拠：scripts/findTotems.mjs — enikkの実使用編成と攻略推奨編成をエンジンにかけ、「バースト順で押し出されるのに繰り返し起用される」キャラを集計した結果）：クラウンと組んだキャンペーン編成が実使用1.12%（2,121回）として集計され、その編成でナユタが余剰判定を受けた。"
     },
     {
       "name": "Rapi: Red Hood",
@@ -83,7 +149,17 @@
       "investmentProfile": "최소 4/4/4, 가성비 라인은 1스킬/버스트 10, 2스킬 7, 종결은 10/10/10. 1·3버스트 겸용 가능.",
       "skillPriority": "1스킬 = 버스트스킬 > 2스킬 (2스킬도 결국 10까지 투자할 가치 있음)",
       "overloadPriority": "장탄 증가 = 우월코드 증가 > 공격력 증가 (장탄 최소 3개, 우월코드/공격력 각 최대 4개; 머신건이라 명중 옵션은 불필요)",
-      "notes": "출시 당시 첫 '오버스펙' 니케로 평가받을 정도로 강력했음. 1버스트 결원 시 자동으로 1버스트로 전환되는 스킬셋(니케 최초 이중 우월코드: 작열+철갑). 크라운/홍련: 흑영/엘리스와 1버스트 조합, 또는 나가를 토템으로 추가해 안정성 확보. PVP는 머신건 특성상 비추천."
+      "notes": "출시 당시 첫 '오버스펙' 니케로 평가받을 정도로 강력했음. 1버스트 결원 시 자동으로 1버스트로 전환되는 스킬셋(니케 최초 이중 우월코드: 작열+철갑). 크라운/홍련: 흑영/엘리스와 1버스트 조합, 또는 나가를 토템으로 추가해 안정성 확보. PVP는 머신건 특성상 비추천.",
+      "treasureNote_en": "At the time this guide was written (before the Treasure system released) there is no mention of a Treasure. As a Burst 1 she is effectively a locked-in pick; as a Burst 3 the supporting pieces to run alongside her are scarce, so building a team around her is comparatively awkward.",
+      "treasureNote_ja": "この攻略の作成時点（宝ものシステム実装前）では宝ものに関する言及がない。バースト1としては事実上の固定枠級だが、バースト3としては一緒に使えるパーツが不足しており、編成の組み立てが相対的に難しいという評価。",
+      "investmentProfile_en": "Minimum 4/4/4; the cost-efficient line is Skill 1 and Burst at 10 with Skill 2 at 7; endgame is 10/10/10. She can serve as either Burst 1 or Burst 3.",
+      "investmentProfile_ja": "最低4/4/4、コスパ帯はスキル1とバーストを10、スキル2を7、完成形は10/10/10。バースト1とバースト3のどちらでも運用できる。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2 (Skill 2 is still worth taking to 10 eventually)",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2（スキル2も最終的には10まで投資する価値がある）",
+      "overloadPriority_en": "Max Ammo = Elemental Damage > ATK (at least 3 Max Ammo lines, up to 4 each of Elemental Damage and ATK; she is a machine gun so Hit Rate lines are unnecessary)",
+      "overloadPriority_ja": "最大装填数 = 有利コードダメージ > 攻撃力（最大装填数は最低3個、有利コードダメージと攻撃力は各最大4個。マシンガンなので命中率オプションは不要）",
+      "notes_en": "She was strong enough at release to be called the first \"Overspec\" NIKKE. Her skill set automatically converts her to Burst 1 when the Burst 1 slot is empty (the first NIKKE with a dual advantage code: Fire + Iron). Run her as Burst 1 with Crown, Scarlet: Black Shadow or Alice, or add Naga as a totem for stability. Not recommended for PvP because of how machine guns behave there.",
+      "notes_ja": "実装当時は最初の「オーバースペック」ニケと評されるほど強力だった。バースト1が欠員のときは自動的にバースト1へ切り替わるスキル構成（ニケ初の二重有利コード：灼熱＋鉄甲）。クラウン、紅蓮：ブラックシャドウ、アリスとバースト1編成を組むか、ナガをトーテムとして加えて安定性を確保する。PvPはマシンガンの特性上おすすめしない。"
     },
     {
       "name": "Mast: Romantic Maid",
@@ -95,7 +171,19 @@
       "overloadPriority": "딜러가 아니고 스킬에 장탄 조건도 없어 오버로드 우선순위가 낮음. 장비 제작 수준으로 충분.",
       "notes": "앵커: 이노센트 메이드와 반드시 세트로 사용해야 하는 캐릭터(단독 성능은 평범하나 세트로 쓰면 서로의 단점을 보완). 분배 대미지 딜러(홍련: 흑영, 도로시, 퀀시: 이스케이프 퀸)와 시너지 좋음. 크라운 다음가는 버프량으로 평가되며 엘리시온 타워에서는 필수 편성급.",
       "totemRole": true,
-      "totemNote": "버스트2, 쿨타임 40초. [스킬 원문 근거 + 유저 확인] 흔히 말하는 \"토템\"(버스트를 안 쓰는 자리)과는 다르다 — 마스트는 버스트를 쓰되, 매 사이클이 아니라 스택을 모은 뒤에 쓴다. 1스킬 'A Pirate's Heart'가 버스트 1단계에 진입할 때마다 취기(Drunken)를 1스택씩 최대 3까지 쌓고, 취기 상태에서는 전 아군에게 크리티컬 확률 ▲ 11.85%와 공격력 ▲ 20.69%를 상시로 건다. 그리고 2스킬(전 아군 분산 데미지·재장전 속도 ▲, 스택 수 비례)과 버스트 스킬(전 아군 크리티컬 데미지 ▲ 23.51% + 공격 데미지 ▲ 8.89%, 취기면 추가로 공격력 ▲ 11.85% × 스택 수)이 둘 다 스택 수에 비례하므로, 3스택을 채운 뒤 버스트를 쓰는 것이 최대 효율이다. 그래서 크라운(버스트2·쿨 20초)이 1·2번째 사이클을 돌리고 3번째 사이클에 마스트가 버스트를 쓰는 로테이션이 정석이며, 커뮤니티에서 '크크마'(크라운-크라운-마스트)라고 부른다. 최대 스택 상태로 풀버스트가 끝나면 숙취(Hangover, 10초 기절) 페널티가 붙으므로 3스택에서 반드시 써주는 것이 좋다. 캠페인 실사용 조합 20건 중 14건이 마스트 포함이고 전부 크라운과 함께다(등록 항목 중 실사용 근거 최상위, PvE 가중치 40.90 / 2위 헬름 4.18)."
+      "totemNote": "버스트2, 쿨타임 40초. [스킬 원문 근거 + 유저 확인] 흔히 말하는 \"토템\"(버스트를 안 쓰는 자리)과는 다르다 — 마스트는 버스트를 쓰되, 매 사이클이 아니라 스택을 모은 뒤에 쓴다. 1스킬 'A Pirate's Heart'가 버스트 1단계에 진입할 때마다 취기(Drunken)를 1스택씩 최대 3까지 쌓고, 취기 상태에서는 전 아군에게 크리티컬 확률 ▲ 11.85%와 공격력 ▲ 20.69%를 상시로 건다. 그리고 2스킬(전 아군 분산 데미지·재장전 속도 ▲, 스택 수 비례)과 버스트 스킬(전 아군 크리티컬 데미지 ▲ 23.51% + 공격 데미지 ▲ 8.89%, 취기면 추가로 공격력 ▲ 11.85% × 스택 수)이 둘 다 스택 수에 비례하므로, 3스택을 채운 뒤 버스트를 쓰는 것이 최대 효율이다. 그래서 크라운(버스트2·쿨 20초)이 1·2번째 사이클을 돌리고 3번째 사이클에 마스트가 버스트를 쓰는 로테이션이 정석이며, 커뮤니티에서 '크크마'(크라운-크라운-마스트)라고 부른다. 최대 스택 상태로 풀버스트가 끝나면 숙취(Hangover, 10초 기절) 페널티가 붙으므로 3스택에서 반드시 써주는 것이 좋다. 캠페인 실사용 조합 20건 중 14건이 마스트 포함이고 전부 크라운과 함께다(등록 항목 중 실사용 근거 최상위, PvE 가중치 40.90 / 2위 헬름 4.18).",
+      "treasureNote_en": "No mention of a Treasure.",
+      "treasureNote_ja": "宝ものに関する言及はない。",
+      "investmentProfile_en": "Overload setup matters little for her, so a light build is enough. Skills: minimum 4/4/4, cost-efficient Skill 1 at 7 / Skill 2 at 10 / Burst at 10, endgame 10/10/10.",
+      "investmentProfile_ja": "オーバーロードのセッティングの重要度が低く、軽く作るだけで十分。スキルは最低4/4/4、コスパ帯はスキル1が7・スキル2が10・バーストが10、完成形は10/10/10。",
+      "skillPriority_en": "Burst Skill >= Skill 2 > Skill 1",
+      "skillPriority_ja": "バーストスキル >= スキル2 > スキル1",
+      "overloadPriority_en": "She is not a damage dealer and none of her skills key off ammo, so Overload is low priority. Simply crafting the gear is enough.",
+      "overloadPriority_ja": "アタッカーではなくスキルに装填数の条件もないため、オーバーロードの優先度は低い。装備を作る程度で十分。",
+      "notes_en": "A character who must be run as a set with Anchor: Innocent Maid — her solo performance is ordinary, but as a pair they cover each other's weaknesses. Good synergy with distributed-damage dealers (Scarlet: Black Shadow, Dorothy, Quency: Escape Queen). Rated as the second-best buffer after Crown, and close to mandatory in the Elysion Tower.",
+      "notes_ja": "アンカー：イノセントメイドと必ずセットで使うキャラ（単独性能は平凡だが、セットで使うと互いの弱点を補い合う）。分配ダメージのアタッカー（紅蓮：ブラックシャドウ、ドロシー、クエンシー：エスケープクイーン）と相性が良い。クラウンに次ぐバフ量と評価され、エリシオンタワーでは必須編成級。",
+      "totemNote_en": "Burst 2, 40s cooldown. [Based on the skill text + user confirmation] She is different from the usual \"totem\" (a slot where you never use the Burst) — Mast does use her Burst, just not every cycle: she banks stacks first. Skill 1 \"A Pirate's Heart\" adds one Drunken stack, up to 3, each time she enters Burst stage 1, and while Drunken she permanently grants all allies crit rate ▲ 11.85% and ATK ▲ 20.69%. Both her Skill 2 (all allies: distributed damage and reload speed ▲, scaling with stack count) and her Burst Skill (all allies: crit damage ▲ 23.51% + attack damage ▲ 8.89%, plus ATK ▲ 11.85% × stack count while Drunken) scale with the stack count, so using the Burst after reaching 3 stacks is the maximum-efficiency line. The standard rotation therefore has Crown (Burst 2, 20s cooldown) drive the first and second cycles and Mast use her Burst on the third — the Korean community calls this \"K-K-M\" (Crown-Crown-Mast). If Full Burst ends while she is at max stacks she takes a Hangover penalty (10s stun), so it is best to always spend the Burst at 3 stacks. Mast appears in 14 of the 20 recorded real-usage campaign teams, always alongside Crown (the strongest real-usage evidence among registered entries; PvE weight 40.90, versus 4.18 for second-place Helm).",
+      "totemNote_ja": "バースト2、クールタイム40秒。［スキル原文が根拠＋ユーザー確認］いわゆる「トーテム」（バーストを使わない枠）とは異なる — マストはバーストを使うが、毎サイクルではなくスタックを溜めてから使う。スキル1「A Pirate's Heart」がバースト1段階に入るたびに酔い（Drunken）を1スタックずつ最大3まで溜め、酔い状態では味方全体にクリティカル確率 ▲ 11.85%と攻撃力 ▲ 20.69%を常時かける。さらにスキル2（味方全体の分配ダメージ・リロード速度 ▲、スタック数に比例）とバーストスキル（味方全体のクリティカルダメージ ▲ 23.51%＋攻撃ダメージ ▲ 8.89%、酔い状態なら追加で攻撃力 ▲ 11.85% × スタック数）がどちらもスタック数に比例するため、3スタックを溜めてからバーストを使うのが最大効率だ。そのためクラウン（バースト2・クールタイム20秒）が1・2サイクル目を回し、3サイクル目にマストがバーストを使うローテーションが定石で、韓国コミュニティではこれを「ククマ」（クラウン-クラウン-マスト）と呼ぶ。最大スタックのままフルバーストが終わると二日酔い（Hangover、10秒スタン）のペナルティが付くので、3スタックで必ず使い切るのが良い。キャンペーンの実使用編成20件のうち14件がマストを含み、すべてクラウンと一緒である（登録項目の中で実使用の根拠が最上位。PvE重み40.90、2位のヘルムは4.18）。"
     },
     {
       "name": "Anchor: Innocent Maid",
@@ -105,7 +193,17 @@
       "investmentProfile": "스킬 최소 4/4/4, 가성비/종결 라인 1스킬10 2스킬10 버스트7(또는 10). 오버로드는 마스트와 마찬가지로 중요도가 낮아 가볍게만 투자해도 충분.",
       "skillPriority": "1스킬 >= 2스킬 > 버스트스킬",
       "overloadPriority": "딜러가 아니라서 오버로드 우선순위가 낮음. 장비 제작 수준으로 충분.",
-      "notes": "마스트: 로망틱 메이드와 반드시 세트로 사용. 두 캐릭터의 분배 대미지 버프를 합치면 약 75%까지 증가. 체력 회복도 겸비해 별도 힐러 없이도 유지력 확보 가능. 홍련: 흑영/도로시/퀀시: 이스케이프 퀸과 시너지 좋음. 엘리시온 타워 필수 편성급."
+      "notes": "마스트: 로망틱 메이드와 반드시 세트로 사용. 두 캐릭터의 분배 대미지 버프를 합치면 약 75%까지 증가. 체력 회복도 겸비해 별도 힐러 없이도 유지력 확보 가능. 홍련: 흑영/도로시/퀀시: 이스케이프 퀸과 시너지 좋음. 엘리시온 타워 필수 편성급.",
+      "treasureNote_en": "No mention of a Treasure.",
+      "treasureNote_ja": "宝ものに関する言及はない。",
+      "investmentProfile_en": "Skills: minimum 4/4/4; the cost-efficient and endgame line is Skill 1 at 10, Skill 2 at 10, Burst at 7 (or 10). As with Mast, Overload matters little, so a light investment is enough.",
+      "investmentProfile_ja": "スキルは最低4/4/4、コスパ帯・完成形はスキル1が10・スキル2が10・バーストが7（または10）。マストと同様にオーバーロードの重要度は低く、軽く投資するだけで十分。",
+      "skillPriority_en": "Skill 1 >= Skill 2 > Burst Skill",
+      "skillPriority_ja": "スキル1 >= スキル2 > バーストスキル",
+      "overloadPriority_en": "Not a damage dealer, so Overload is low priority. Simply crafting the gear is enough.",
+      "overloadPriority_ja": "アタッカーではないためオーバーロードの優先度は低い。装備を作る程度で十分。",
+      "notes_en": "Always run her as a set with Mast: Romantic Maid. Stacking both of their distributed-damage buffs pushes the increase to roughly 75%. She also heals, so the pair can hold up without a dedicated healer. Good synergy with Scarlet: Black Shadow, Dorothy and Quency: Escape Queen. Close to mandatory in the Elysion Tower.",
+      "notes_ja": "マスト：ロマンチックメイドと必ずセットで使う。2人の分配ダメージバフを合わせるとおよそ75%まで増加する。HP回復も兼ね備えるため、専用のヒーラーなしでも継戦力を確保できる。紅蓮：ブラックシャドウ、ドロシー、クエンシー：エスケープクイーンと相性が良い。エリシオンタワーでは必須編成級。"
     },
     {
       "name": "Mint",
@@ -115,7 +213,17 @@
       "investmentProfile": "최소 4/4/4, 가성비 7/7/7, 실전 종결 10/7~10/10, 종결 10/10/10. 버스트 스킬을 반드시 사용해야 모든 효과가 발동해 토템으로는 사용할 수 없음.",
       "skillPriority": "표기된 명시적 서열은 없으나 1스킬·버스트스킬을 우선 종결하고 2스킬은 실전 종결 단계에서 7~10 사이로 유동적으로 투자 가능.",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가 = 크리티컬 확률 = 크리티컬 대미지 (오버로드 전반의 우선순위는 낮은 편)",
-      "notes": "프리카와 함께 쓰는 '민프' 조합이 정석. 단독 사용 시 보컬 상태일 때만 버프가 들어가는 약점이 있는데 프리카가 이를 상시화해 줌. 아니스/스노우 화이트/네온 등 관통·폭발 대미지 딜러와 시너지 좋음. 크라운+마스트 다음가는 최상위 세트 시너지로 평가."
+      "notes": "프리카와 함께 쓰는 '민프' 조합이 정석. 단독 사용 시 보컬 상태일 때만 버프가 들어가는 약점이 있는데 프리카가 이를 상시화해 줌. 아니스/스노우 화이트/네온 등 관통·폭발 대미지 딜러와 시너지 좋음. 크라운+마스트 다음가는 최상위 세트 시너지로 평가.",
+      "treasureNote_en": "No Treasure is mentioned for Mint herself. However, if you run her with Snow White instead of Prika, her partner Zwei's Treasure is listed as mandatory.",
+      "treasureNote_ja": "ミント自身については宝ものの言及がない。ただしプリカなしでスノーホワイトとの編成で運用する場合は、パートナーであるツバイの宝ものが必須として挙げられている。",
+      "investmentProfile_en": "Minimum 4/4/4, cost-efficient 7/7/7, practical endgame 10/7~10/10, full endgame 10/10/10. She must actually use her Burst Skill for all of her effects to trigger, so she cannot be used as a totem.",
+      "investmentProfile_ja": "最低4/4/4、コスパ帯7/7/7、実戦の完成形10/7〜10/10、完成形10/10/10。バーストスキルを必ず使わないと全効果が発動しないため、トーテムとしては使えない。",
+      "skillPriority_en": "No explicit order is given, but finish Skill 1 and the Burst Skill first; Skill 2 can flex between 7 and 10 at the practical-endgame stage.",
+      "skillPriority_ja": "明示的な順序の記載はないが、スキル1とバーストスキルを先に完成させ、スキル2は実戦の完成形段階で7〜10の間で柔軟に投資できる。",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo = Crit Rate = Crit Damage (Overload is low priority for her overall)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数 = クリティカル確率 = クリティカルダメージ（オーバーロード全般の優先度は低め）",
+      "notes_en": "The standard line is the \"Min-Pri\" pairing with Prika. Used alone her weakness is that her buff only applies while she is in Vocal state, and Prika keeps that up permanently. Good synergy with penetration and explosive damage dealers such as Anis, Snow White and Neon. Rated as the top set synergy after Crown + Mast.",
+      "notes_ja": "プリカと組む「ミンプリ」編成が定石。単独使用ではボーカル状態のときだけバフが乗るという弱点があるが、プリカがそれを常時化してくれる。アニス、スノーホワイト、ネオンなど貫通・爆発ダメージのアタッカーと相性が良い。クラウン＋マストに次ぐ最上位のセットシナジーと評価される。"
     },
     {
       "name": "Prika",
@@ -127,7 +235,19 @@
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가 = 크리티컬 확률 = 크리티컬 대미지 (오버로드 전반의 우선순위는 낮은 편)",
       "notes": "민트와 반드시 함께 사용해야 하는 세트 캐릭터('민프' 조합). 프리카-민트 순으로 배치하면 자동으로 버스트 순서가 맞춰짐. 지속 회복 효과까지 있어 유지력도 챙기는 조합. 크라운+마스트를 위협할 정도로 강력한 세트 시너지로 평가되며 솔로레이드/특수요격전에서 최상급 평가.",
       "totemRole": true,
-      "totemNote": "버스트2, 쿨타임 40초. [스킬 원문 근거] 1스킬 \"Let's Get the Show Started\"가 풀차지 공격만으로 전 아군에게 공격력 ▲ 11.11%(시전자 공격력 기준), 관통 데미지 ▲ 7.73%, 발사체 폭발 데미지 ▲ 11.82%를 건다. 게다가 프리카의 버스트 스킬은 자신의 버스트 쿨타임을 21초 '증가'시키는 대가 구조라, 애초에 버스트를 자주 쓰라고 설계된 캐릭터가 아니다. (근거: scripts/findTotems.mjs — enikk 실사용 조합과 공략 권장 조합을 엔진에 돌려 \"버스트 순번에서 밀리는데도 반복 기용되는\" 캐릭터를 집계한 결과): 민트(버스트2·쿨20초)와 짝을 이루는 공략 권장 조합 13건 전부에서 프리카가 잉여 판정을 받았다. 유저 제보로도 \"프리카+민트 조합이 좋은 편인데 추천에 한 번도 나온 적이 없다\"는 지적이 있었고, 실제로 프리카가 0점 처리되어 조합 점수가 밀리고 있었다."
+      "totemNote": "버스트2, 쿨타임 40초. [스킬 원문 근거] 1스킬 \"Let's Get the Show Started\"가 풀차지 공격만으로 전 아군에게 공격력 ▲ 11.11%(시전자 공격력 기준), 관통 데미지 ▲ 7.73%, 발사체 폭발 데미지 ▲ 11.82%를 건다. 게다가 프리카의 버스트 스킬은 자신의 버스트 쿨타임을 21초 '증가'시키는 대가 구조라, 애초에 버스트를 자주 쓰라고 설계된 캐릭터가 아니다. (근거: scripts/findTotems.mjs — enikk 실사용 조합과 공략 권장 조합을 엔진에 돌려 \"버스트 순번에서 밀리는데도 반복 기용되는\" 캐릭터를 집계한 결과): 민트(버스트2·쿨20초)와 짝을 이루는 공략 권장 조합 13건 전부에서 프리카가 잉여 판정을 받았다. 유저 제보로도 \"프리카+민트 조합이 좋은 편인데 추천에 한 번도 나온 적이 없다\"는 지적이 있었고, 실제로 프리카가 0점 처리되어 조합 점수가 밀리고 있었다.",
+      "treasureNote_en": "No mention of a Treasure.",
+      "treasureNote_ja": "宝ものに関する言及はない。",
+      "investmentProfile_en": "Minimum 4/4/4, cost-efficient 7/7/7, practical endgame 10/7/10, full endgame 10/10/10. Running her without Mint is effectively impossible.",
+      "investmentProfile_ja": "最低4/4/4、コスパ帯7/7/7、実戦の完成形10/7/10、完成形10/10/10。ミントなしでの単独運用は事実上不可能。",
+      "skillPriority_en": "Finish Skill 1 and the Burst Skill first; Skill 2 at 7 is enough at the practical-endgame stage.",
+      "skillPriority_ja": "スキル1とバーストスキルを先に完成させ、スキル2は実戦の完成形段階では7でも十分。",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo = Crit Rate = Crit Damage (Overload is low priority for her overall)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数 = クリティカル確率 = クリティカルダメージ（オーバーロード全般の優先度は低め）",
+      "notes_en": "A set character who must always be run with Mint (the \"Min-Pri\" pairing). Placing them in Prika-then-Mint order lines the burst sequence up automatically. She also brings sustained healing, so the pair covers durability too. Rated as a set synergy strong enough to rival Crown + Mast, and top class in Solo Raid and Special Interception.",
+      "notes_ja": "ミントと必ず一緒に使うセットキャラ（「ミンプリ」編成）。プリカ→ミントの順に配置すると自動的にバーストの順番が揃う。持続回復もあるため継戦力も確保できる編成。クラウン＋マストを脅かすほど強力なセットシナジーと評価され、ソロレイドや特殊迎撃戦で最上級の評価。",
+      "totemNote_en": "Burst 2, 40s cooldown. [Based on the skill text] Skill 1 \"Let's Get the Show Started\" grants all allies ATK ▲ 11.11% (scaling off the caster's ATK), penetration damage ▲ 7.73% and projectile explosion damage ▲ 11.82% purely from full-charge shots. On top of that, Prika's Burst Skill is built around a trade-off that *increases* her own burst cooldown by 21 sec, so she was never designed to use her Burst often. (Basis: scripts/findTotems.mjs — the result of running enikk real-usage teams and guide-recommended teams through the engine to count characters that are \"repeatedly fielded even though they lose the burst rotation\"): Prika was flagged as surplus in all 13 guide-recommended teams that pair her with Mint (Burst 2, 20s cooldown). A user also reported that \"the Prika + Mint team is quite good but has never once shown up in the recommendations\", and indeed Prika was being scored as zero, dragging the team's score down.",
+      "totemNote_ja": "バースト2、クールタイム40秒。［スキル原文が根拠］スキル1「Let's Get the Show Started」がフルチャージ攻撃だけで味方全体に攻撃力 ▲ 11.11%（術者の攻撃力基準）、貫通ダメージ ▲ 7.73%、発射体の爆発ダメージ ▲ 11.82%をかける。さらにプリカのバーストスキルは自分のバーストクールタイムを21秒「増やす」引き換え構造であり、そもそもバーストを頻繁に使うよう設計されたキャラではない。（根拠：scripts/findTotems.mjs — enikkの実使用編成と攻略推奨編成をエンジンにかけ、「バースト順で押し出されるのに繰り返し起用される」キャラを集計した結果）：ミント（バースト2・クールタイム20秒）と組む攻略推奨編成13件すべてでプリカが余剰判定を受けた。ユーザーからも「プリカ＋ミントの編成は良いはずなのに一度も推薦に出てこない」という指摘があり、実際にプリカが0点扱いとなって編成スコアが下がっていた。"
     },
     {
       "name": "Moran",
@@ -143,7 +263,19 @@
       "investmentProfile": "육성 난도가 높은 편(애장품 3단계 + 스킬 10 필요). 최소 4/7/4, 가성비 7/7/7, 실전종결 7/10/10, 종결 10/10/10.",
       "skillPriority": "2스킬을 최소 세팅부터 우선 7까지 올리고, 그다음 버스트·1스킬 순으로 종결",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가 = 크리티컬 확률 = 크리티컬 대미지 (오버로드 자체 중요도는 낮은 편)",
-      "notes": "애장품 이후 스테이지/솔로레이드 핵심 1버스트로 급부상, PVP에서도 여전히 우수. 아니스: 스타와 함께 스테이지 조합에 주로 편성(아니스+애목단+3버스트 딜러 둘). 현재 시점 우선 제작 추천 애장품 중 하나(헬름과 함께 최우선급)."
+      "notes": "애장품 이후 스테이지/솔로레이드 핵심 1버스트로 급부상, PVP에서도 여전히 우수. 아니스: 스타와 함께 스테이지 조합에 주로 편성(아니스+애목단+3버스트 딜러 둘). 현재 시점 우선 제작 추천 애장품 중 하나(헬름과 함께 최우선급).",
+      "treasureNote_en": "Her Treasure (stage 3) is mandatory. Without stage 3 she has no ally buff at all and delivers only half her performance. After the Treasure her skill structure changes wholesale, giving her the 7-second-class burst cooldown reduction that is the required stat for a Burst 1 unit, plus an ATK buff of 42.57% scaling off the caster.",
+      "treasureNote_ja": "宝もの（3段階）が必須。3段階を満たせないと味方バフ自体がなく、半分の性能しか発揮できない。宝もの以降はスキル構造が丸ごと変わり、バースト1に必須のステータスである7秒台のバーストクールタイム短縮と、術者基準の攻撃力42.57%増加バフを得る。",
+      "investmentProfile_en": "Fairly demanding to raise (Treasure stage 3 plus skill level 10 required). Minimum 4/7/4, cost-efficient 7/7/7, practical endgame 7/10/10, full endgame 10/10/10.",
+      "investmentProfile_ja": "育成難度は高め（宝もの3段階＋スキル10が必要）。最低4/7/4、コスパ帯7/7/7、実戦の完成形7/10/10、完成形10/10/10。",
+      "skillPriority_en": "Raise Skill 2 to 7 first from the minimum build, then finish the Burst Skill and Skill 1 in that order",
+      "skillPriority_ja": "最小構成からまずスキル2を7まで上げ、その後バーストスキル・スキル1の順で完成させる",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo = Crit Rate = Crit Damage (Overload itself is low priority for her)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数 = クリティカル確率 = クリティカルダメージ（オーバーロード自体の重要度は低め）",
+      "notes_en": "After her Treasure she rose sharply to become a core Burst 1 for stages and Solo Raid, and she remains excellent in PvP. She is usually fielded in stage teams together with Anis: Star (Anis + Treasure Moran + two Burst 3 dealers). One of the Treasures currently recommended for priority crafting (top tier alongside Helm).",
+      "notes_ja": "宝もの以降はステージ／ソロレイドの中核バースト1として急浮上し、PvPでも依然として優秀。ステージ編成ではアニス：スターと一緒に組まれることが多い（アニス＋宝ものモラン＋バースト3アタッカー2人）。現時点で優先製作が推奨される宝ものの一つ（ヘルムと並んで最優先級）。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (Story SS / Boss SS / PvP SSS). Without the Treasure, the base tiers in characterDatabase.json apply (Story D / Boss D / PvP SS).",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（ストーリーSS／ボス戦SS／PvP SSS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティア（ストーリーD／ボス戦D／PvP SS）に従う。"
     },
     {
       "name": "Liberalio",
@@ -153,7 +285,17 @@
       "investmentProfile": "최소 4/4/4, 가성비 7/7/7, 종결 10/10/10. 모든 스킬이 동일하게 중요.",
       "skillPriority": "버스트스킬 = 1스킬 = 2스킬",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 차지속도 증가 > 장탄 증가 (차지속도가 다른 딜러보다 특이하게 중요 - 공격력 버프 지속 3초 동안 차지속도 비율만큼 추가 사격)",
-      "notes": "홍련: 흑영과 최우선 궁합(홍련의 새로운 파트너로 평가). 마스트/앵커 조합과 함께 3버스트로 편성. 풍스카(풍압 속성 스카디)와 비슷하거나 더 강한 딜량."
+      "notes": "홍련: 흑영과 최우선 궁합(홍련의 새로운 파트너로 평가). 마스트/앵커 조합과 함께 3버스트로 편성. 풍스카(풍압 속성 스카디)와 비슷하거나 더 강한 딜량.",
+      "treasureNote_en": "No separate Treasure requirement is mentioned, but as a damage dealer her Collection Item (weapon collection level) investment matters a lot (SR5 at minimum, SR15 later).",
+      "treasureNote_ja": "宝もの必須という別途の言及はないが、アタッカーとしてコレクションアイテム（武器収集レベル）への投資の重要度が高い（最低SR5、のちにSR15まで）。",
+      "investmentProfile_en": "Minimum 4/4/4, cost-efficient 7/7/7, endgame 10/10/10. All of her skills matter equally.",
+      "investmentProfile_ja": "最低4/4/4、コスパ帯7/7/7、完成形10/10/10。すべてのスキルが同じくらい重要。",
+      "skillPriority_en": "Burst Skill = Skill 1 = Skill 2",
+      "skillPriority_ja": "バーストスキル = スキル1 = スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK > Charge Speed > Max Ammo (Charge Speed is unusually important for her compared with other dealers — during the 3-second ATK buff window she fires extra shots in proportion to her charge speed)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > チャージスピード > 最大装填数（チャージスピードが他のアタッカーより特異に重要 — 攻撃力バフが持続する3秒の間、チャージスピードの分だけ追加で射撃できる）",
+      "notes_en": "Her best pairing is Scarlet: Black Shadow (she is rated as Scarlet's new partner). Field her as the Burst 3 alongside the Mast/Anchor pair. Her damage is comparable to or stronger than \"Pung-ska\" (the Wind-code Scardi).",
+      "notes_ja": "紅蓮：ブラックシャドウとの相性が最優先（紅蓮の新たなパートナーと評価される）。マスト／アンカーの編成と合わせてバースト3として組み込む。ダメージ量は「風スカ」（風圧コードのスカディ）と同等かそれ以上。"
     },
     {
       "name": "Rapunzel",
@@ -163,7 +305,17 @@
       "investmentProfile": "실제 유저 통계 기준 옵작(오버로드 마무리) 완료 비율이 51%로 중간 수준 - 필수급까지는 아니지만 꾸준히 쓰이는 캐릭터. 스킬 투자는 실제로는 4/4/4(32%)에 머무는 유저가 가장 많고, 7/7/7(14.2%)까지 가는 경우는 적어 저투자로도 활용 가능.",
       "skillPriority": "명시적 우선순위 자료는 부족하나 실사용 통계상 3스킬을 동시에 균등 투자하는 경향(4/4/4 → 7/7/7 순차 상승).",
       "overloadPriority": "차지속도(채택률 50%, 평균 2줄), 장탄(채택률 48%, 평균 1줄) 순으로 채택 비중이 높음.",
-      "notes": "PVP(아레나)에서 체력 30% 이하일 때 발동하는 광역 스턴 버스트가 핵심 - 홍련의 일섬 타이밍과 정확히 맞물려 '기절 홍련' 덱의 핵심 부품으로 쓰임. 다만 라푼젤 육성이 지나치게 높으면 체력이 30% 밑으로 잘 안 떨어져 스턴이 안 터지는 역설이 있어 과투자를 주의해야 함."
+      "notes": "PVP(아레나)에서 체력 30% 이하일 때 발동하는 광역 스턴 버스트가 핵심 - 홍련의 일섬 타이밍과 정확히 맞물려 '기절 홍련' 덱의 핵심 부품으로 쓰임. 다만 라푼젤 육성이 지나치게 높으면 체력이 30% 밑으로 잘 안 떨어져 스턴이 안 터지는 역설이 있어 과투자를 주의해야 함.",
+      "treasureNote_en": "No dedicated Treasure. Real user statistics mostly put her Collection Item (weapon collection level) at around SR5.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）はSR5程度が適当というのが実ユーザー統計の多数意見。",
+      "investmentProfile_en": "By real user statistics her Overload completion rate is 51%, a middling level — not quite mandatory, but a character in steady use. In practice most players stop at 4/4/4 (32%) for skills, and few go as far as 7/7/7 (14.2%), so she is usable on a low investment.",
+      "investmentProfile_ja": "実ユーザー統計ではオーバーロード（厳選）完了率が51%と中程度 — 必須級とまではいかないが、継続して使われるキャラ。スキル投資は実際には4/4/4（32%）で止まるユーザーが最も多く、7/7/7（14.2%）まで行くのは少ないため低投資でも運用できる。",
+      "skillPriority_en": "There is little explicit priority data, but usage statistics show a tendency to invest evenly in all three skills (rising 4/4/4 → 7/7/7 in order).",
+      "skillPriority_ja": "明示的な優先順位の資料は乏しいが、実使用統計では3スキルを均等に投資する傾向（4/4/4 → 7/7/7 と順に上げる）。",
+      "overloadPriority_en": "Charge Speed (adoption 50%, 2 lines on average) then Max Ammo (adoption 48%, 1 line on average) carry the highest adoption weight.",
+      "overloadPriority_ja": "チャージスピード（採用率50%、平均2行）、最大装填数（採用率48%、平均1行）の順に採用比重が高い。",
+      "notes_en": "Her key trait in PvP (Arena) is the area stun burst that triggers when HP falls to 30% or below — it lines up exactly with Scarlet's Ilseom timing, making her a core part of the \"Stun Scarlet\" deck. Note the paradox: if you raise Rapunzel too far, her HP rarely drops below 30% and the stun never goes off, so avoid over-investing.",
+      "notes_ja": "PvP（アリーナ）でHPが30%以下になったときに発動する範囲スタンのバーストが核心 — 紅蓮の一閃のタイミングとぴったり噛み合い、「気絶紅蓮」デッキの中核パーツとして使われる。ただしラプンツェルを育てすぎるとHPが30%を下回りにくくなりスタンが発動しないという逆説があるため、過剰投資には注意が必要。"
     },
     {
       "name": "Little Mermaid",
@@ -173,7 +325,17 @@
       "investmentProfile": "실제 유저 통계 기준 옵작 완료 비율 100% - 보유자는 거의 예외 없이 끝까지 투자하는 최상급 우선순위 캐릭터. 스킬도 10/10/10 채택 비율이 99.9%로 사실상 전원 종결 투자.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬 (거의 전원이 셋 다 10으로 맞춤)",
       "overloadPriority": "우월코드 증가(채택률 94%, 평균 4줄) > 공격력 증가(채택률 90%, 평균 3줄) > 장탄 증가(채택률 74%, 평균 2줄) > 명중/크리티컬 확률/크리티컬 대미지(각 40%대, 평균 1줄)",
-      "notes": "풍압 코드 최상위 딜러로 꾸준히 채용됨. 나유타/홍련: 흑영/리버렐리오와 함께 풍압 유니온레이드·스테이지 조합에 자주 편성. 크라운/라피: 레드 후드/스노우 화이트: 헤비암즈와 조합해 빠른 버스트 순환 스테이지 조합에도 사용됨."
+      "notes": "풍압 코드 최상위 딜러로 꾸준히 채용됨. 나유타/홍련: 흑영/리버렐리오와 함께 풍압 유니온레이드·스테이지 조합에 자주 편성. 크라운/라피: 레드 후드/스노우 화이트: 헤비암즈와 조합해 빠른 버스트 순환 스테이지 조합에도 사용됨.",
+      "treasureNote_en": "No dedicated Treasure is mentioned. Instead, Collection Item (weapon collection level) SR15 is effectively the standard — 99.2% of real users run SR15.",
+      "treasureNote_ja": "専用の宝ものへの言及はない。代わりにコレクションアイテム（武器収集レベル）SR15が事実上の標準 — 実ユーザーの99.2%がSR15を採用している。",
+      "investmentProfile_en": "By real user statistics her Overload completion rate is 100% — owners invest to the end almost without exception, making her a top-priority character. Skills are at 10/10/10 for 99.9% of users, so effectively everyone finishes her.",
+      "investmentProfile_ja": "実ユーザー統計ではオーバーロード完了率100% — 所持者はほぼ例外なく最後まで投資する最上級の優先度のキャラ。スキルも10/10/10の採用率が99.9%で、事実上全員が完成投資している。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill (nearly everyone sets all three to 10)",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル（ほぼ全員が3つとも10に揃える）",
+      "overloadPriority_en": "Elemental Damage (adoption 94%, 4 lines on average) > ATK (adoption 90%, 3 lines) > Max Ammo (adoption 74%, 2 lines) > Hit Rate / Crit Rate / Crit Damage (around 40% each, 1 line)",
+      "overloadPriority_ja": "有利コードダメージ（採用率94%、平均4行） > 攻撃力（採用率90%、平均3行） > 最大装填数（採用率74%、平均2行） > 命中率／クリティカル確率／クリティカルダメージ（各40%台、平均1行）",
+      "notes_en": "Consistently fielded as a top-tier Wind code dealer. Often built into Wind Union Raid and stage teams alongside Nayuta, Scarlet: Black Shadow and Liberalio. Also used in fast burst-rotation stage teams together with Crown, Rapi: Red Hood and Snow White: Heavy Arms.",
+      "notes_ja": "風圧コード最上位のアタッカーとして継続的に採用される。ナユタ、紅蓮：ブラックシャドウ、リバーレリオとともに風圧のユニオンレイド・ステージ編成に組まれることが多い。クラウン、ラピ：レッドフード、スノーホワイト：ヘビーアームズと組んで、バースト循環の速いステージ編成にも使われる。"
     },
     {
       "name": "Trina",
@@ -183,7 +345,17 @@
       "investmentProfile": "PVP 전용 캐릭터로 옵작 완료 비율 56%. 오버로드 자체의 중요도가 낮음(평균 1~2줄만 채택). 스킬은 7/7/7(38.5%)이 가장 흔한 실투자 라인.",
       "skillPriority": "통계상 뚜렷한 서열 없이 3스킬 동시 투자(7/7/7)가 표준.",
       "overloadPriority": "차지속도(채택률 43%) = 장탄(채택률 39%), 둘 다 평균 1줄 수준으로 중요도는 낮은 편.",
-      "notes": "'홍련 파트너'로 분류 - 홍련의 버스트 스턴 타이밍(라푼젤과 유사한 메커니즘)에 맞춰 PVP 아레나에서 채용됨. PVE에서는 사용되지 않는 순수 PVP 전용 픽."
+      "notes": "'홍련 파트너'로 분류 - 홍련의 버스트 스턴 타이밍(라푼젤과 유사한 메커니즘)에 맞춰 PVP 아레나에서 채용됨. PVE에서는 사용되지 않는 순수 PVP 전용 픽.",
+      "treasureNote_en": "No Treasure mentioned. Collection Item SR5 recommended (68.7% of real users run SR5).",
+      "treasureNote_ja": "宝ものの言及はない。コレクションアイテムはSR5推奨（実ユーザーの68.7%がSR5を採用）。",
+      "investmentProfile_en": "A PvP-only character with a 56% Overload completion rate. Overload itself matters little (only 1–2 lines adopted on average). For skills, 7/7/7 (38.5%) is the most common line actually invested.",
+      "investmentProfile_ja": "PvP専用のキャラでオーバーロード完了率は56%。オーバーロード自体の重要度は低い（平均1〜2行のみ採用）。スキルは7/7/7（38.5%）が最も多い実投資ライン。",
+      "skillPriority_en": "Statistics show no clear order; investing in all three skills together (7/7/7) is the standard.",
+      "skillPriority_ja": "統計上はっきりした序列はなく、3スキル同時投資（7/7/7）が標準。",
+      "overloadPriority_en": "Charge Speed (adoption 43%) = Max Ammo (adoption 39%); both average about 1 line, so importance is low.",
+      "overloadPriority_ja": "チャージスピード（採用率43%）= 最大装填数（採用率39%）。どちらも平均1行程度で重要度は低め。",
+      "notes_en": "Classified as a \"Scarlet partner\" — fielded in PvP Arena to line up with Scarlet's burst stun timing (a mechanism similar to Rapunzel's). A pure PvP pick that sees no PvE use.",
+      "notes_ja": "「紅蓮パートナー」に分類される — 紅蓮のバーストスタンのタイミング（ラプンツェルと似たメカニズム）に合わせてPvPアリーナで採用される。PvEでは使われない純粋なPvP専用ピック。"
     },
     {
       "name": "Biscuit",
@@ -193,7 +365,17 @@
       "investmentProfile": "PVP 전용 캐릭터로 옵작 완료 비율 46%. 오버로드 중요도 낮음(평균 1줄). 스킬은 4/4/4(32.8%)와 7/7/7(23.3%)이 실사용 다수.",
       "skillPriority": "통계상 뚜렷한 서열 없음. 4/4/4에서 7/7/7로 순차 상승하는 투자 패턴.",
       "overloadPriority": "차지속도만 유효(채택률 44%, 평균 1줄), 그 외 옵션은 비중이 낮음.",
-      "notes": "아군에게 무적을 부여하는 PVP 생존기 역할 - 노아와 함께 '무적 지원' 조합의 핵심으로 신데렐라/미하라: 본딩 체인의 지속딜을 극한까지 밀어붙이는 '늦은 버스트' 계열 덱에 사용됨. PVE에서는 거의 쓰이지 않음."
+      "notes": "아군에게 무적을 부여하는 PVP 생존기 역할 - 노아와 함께 '무적 지원' 조합의 핵심으로 신데렐라/미하라: 본딩 체인의 지속딜을 극한까지 밀어붙이는 '늦은 버스트' 계열 덱에 사용됨. PVE에서는 거의 쓰이지 않음.",
+      "treasureNote_en": "No Treasure mentioned. Collection Item SR5 recommended (59.3% run SR5).",
+      "treasureNote_ja": "宝ものの言及はない。コレクションアイテムはSR5推奨（59.3%がSR5）。",
+      "investmentProfile_en": "A PvP-only character with a 46% Overload completion rate. Overload matters little (1 line on average). For skills, 4/4/4 (32.8%) and 7/7/7 (23.3%) make up most real usage.",
+      "investmentProfile_ja": "PvP専用のキャラでオーバーロード完了率は46%。オーバーロードの重要度は低い（平均1行）。スキルは4/4/4（32.8%）と7/7/7（23.3%）が実使用の多数。",
+      "skillPriority_en": "No clear order in the statistics. The investment pattern rises step by step from 4/4/4 to 7/7/7.",
+      "skillPriority_ja": "統計上はっきりした序列はない。4/4/4から7/7/7へ順に上げる投資パターン。",
+      "overloadPriority_en": "Only Charge Speed is meaningful (adoption 44%, 1 line on average); other options carry little weight.",
+      "overloadPriority_ja": "チャージスピードのみ有効（採用率44%、平均1行）。その他のオプションは比重が低い。",
+      "notes_en": "A PvP survivability role that grants allies invulnerability — together with Noah she is the core of \"invuln support\" teams, used in \"late burst\" decks that push the sustained damage of Cinderella and Mihara: Bonding Chain to the limit. Barely used in PvE.",
+      "notes_ja": "味方に無敵を付与するPvPの生存役 — ノアとともに「無敵サポート」編成の中核で、シンデレラやミハラ：ボンディングチェーンの持続ダメージを極限まで押し上げる「遅いバースト」系デッキで使われる。PvEではほとんど使われない。"
     },
     {
       "name": "Noah",
@@ -203,7 +385,17 @@
       "investmentProfile": "PVP 전용. 오버로드 옵션이 9개 라인에 고르게 분산 채택되어(단일 지배적 옵션 없음) 플레이어마다 세팅이 다양함. 스킬은 4/4/4(34.6%)와 7/7/7(29.3%)이 비슷한 비중으로 실사용됨.",
       "skillPriority": "통계상 뚜렷한 서열 없음.",
       "overloadPriority": "차지속도(51%) > 장탄(45%) > 차지대미지(43%) > 방어력(42%) > 공격력/크리티컬 확률/명중/우월코드/크리티컬 대미지(39~41%, 고른 분산)",
-      "notes": "'고밸류 니케'로 평가되는 PVP 탱커 - 3초 무적을 제공해 목단·헬름과 함께 2단 버스트를 노리는 '좀비덱'의 핵심 부품. 노이즈와 짝을 이루는 '노노' 엔진으로도 자주 쓰이며, 차지속도가 노이즈보다 살짝 빨라야 도발을 노이즈에게 넘겨 세이렌 스턴을 회피할 수 있다는 세부 팁이 있음."
+      "notes": "'고밸류 니케'로 평가되는 PVP 탱커 - 3초 무적을 제공해 목단·헬름과 함께 2단 버스트를 노리는 '좀비덱'의 핵심 부품. 노이즈와 짝을 이루는 '노노' 엔진으로도 자주 쓰이며, 차지속도가 노이즈보다 살짝 빨라야 도발을 노이즈에게 넘겨 세이렌 스턴을 회피할 수 있다는 세부 팁이 있음.",
+      "treasureNote_en": "No Treasure mentioned. For Collection Item, SR5 is the majority (51.1%) but SR15 is also common (38.1%), so there is a fair spread.",
+      "treasureNote_ja": "宝ものの言及はない。コレクションアイテムはSR5が多数（51.1%）だが、SR15もかなり多く（38.1%）ばらつきがある。",
+      "investmentProfile_en": "PvP-only. Her Overload options are adopted evenly across 9 lines (no single dominant option), so setups vary from player to player. Skills at 4/4/4 (34.6%) and 7/7/7 (29.3%) see similar amounts of real use.",
+      "investmentProfile_ja": "PvP専用。オーバーロードのオプションが9つのラインに均等に分散して採用されており（単一の支配的オプションがない）、プレイヤーごとにセッティングが多様。スキルは4/4/4（34.6%）と7/7/7（29.3%）が同程度の比重で実使用される。",
+      "skillPriority_en": "No clear order in the statistics.",
+      "skillPriority_ja": "統計上はっきりした序列はない。",
+      "overloadPriority_en": "Charge Speed (51%) > Max Ammo (45%) > Charge Damage (43%) > DEF (42%) > ATK / Crit Rate / Hit Rate / Elemental Damage / Crit Damage (39–41%, evenly spread)",
+      "overloadPriority_ja": "チャージスピード（51%） > 最大装填数（45%） > チャージダメージ（43%） > 防御力（42%） > 攻撃力／クリティカル確率／命中率／有利コードダメージ／クリティカルダメージ（39〜41%、均等に分散）",
+      "notes_en": "A PvP tank rated as a \"high-value NIKKE\" — her 3 seconds of invulnerability make her a core piece of the \"zombie deck\" that aims for a two-stage burst alongside Moran and Helm. She is also frequently used as the \"No-No\" engine paired with Noise, and there is a fine point that her charge speed should be slightly faster than Noise's so the taunt is handed to Noise and Siren's (Little Mermaid's) stun is dodged.",
+      "notes_ja": "「高バリューニケ」と評価されるPvPタンク — 3秒の無敵を提供し、モランやヘルムとともに2段バーストを狙う「ゾンビデッキ」の中核パーツ。ノイズと組む「ノノ」エンジンとしてもよく使われ、チャージスピードがノイズよりわずかに速くないと挑発をノイズに渡してセイレーン（リトルマーメイド）のスタンを回避できない、という細かなコツがある。"
     },
     {
       "name": "Centi",
@@ -219,7 +411,19 @@
       "investmentProfile": "옵작 완료 비율 39%. 오버로드 중요도 낮음(평균 1줄). 스킬은 4/4/4(40.9%)가 가장 흔한 실투자 라인.",
       "skillPriority": "통계상 뚜렷한 서열 없음, 4/4/4 저투자로도 다수가 활용.",
       "overloadPriority": "차지속도만 유효(채택률 37%, 평균 1줄).",
-      "notes": "PVE/PVP 겸용 버스트 충전 요원. 자칼-블랑-에이다 웡 계열 '불굴덱'이나 노이즈-노아-리버렐리오 계열 '2RL' 덱에서 버스트 충전용 파츠로 채용되며, 루마니와 상호 대체 가능한 자리로 취급됨. [2026-08-04 추가] 애장품 스킬 구조가 개편 예정(에펜바움 보도, 미확정): 기존 '개인 보호막으로 상대 버충 유도' 방식에서 '자버프 보유 시 체력 107% 시작 → 100% 이하로 떨어지면 재차 107%까지 회복' 방식으로 변경된다는 정보. 네온과 궁합이 좋아진다는 언급 있음. PVP 전용 캐릭터를 PVE로 끌어오려는 개편이라는 커뮤니티 비판도 존재. 확정 패치노트로 교차검증 필요."
+      "notes": "PVE/PVP 겸용 버스트 충전 요원. 자칼-블랑-에이다 웡 계열 '불굴덱'이나 노이즈-노아-리버렐리오 계열 '2RL' 덱에서 버스트 충전용 파츠로 채용되며, 루마니와 상호 대체 가능한 자리로 취급됨. [2026-08-04 추가] 애장품 스킬 구조가 개편 예정(에펜바움 보도, 미확정): 기존 '개인 보호막으로 상대 버충 유도' 방식에서 '자버프 보유 시 체력 107% 시작 → 100% 이하로 떨어지면 재차 107%까지 회복' 방식으로 변경된다는 정보. 네온과 궁합이 좋아진다는 언급 있음. PVP 전용 캐릭터를 PVE로 끌어오려는 개편이라는 커뮤니티 비판도 존재. 확정 패치노트로 교차검증 필요.",
+      "treasureNote_en": "She has a dedicated Treasure, and the Treasure route is the single most common real investment choice at 43.5% — more players pick it than the basic Collection Item SR5 (34.6%). User statistics classify her as the 3rd priority Treasure.",
+      "treasureNote_ja": "専用の宝ものがあり、実ユーザーの投資比率1位（43.5%）が宝ものルート — 基本のコレクションアイテムSR5（34.6%）よりも宝ものを選ぶ人のほうが多い。ユーザー統計では「宝もの優先度3位」に分類される。",
+      "investmentProfile_en": "Overload completion rate 39%. Overload matters little (1 line on average). For skills, 4/4/4 (40.9%) is the most common line actually invested.",
+      "investmentProfile_ja": "オーバーロード完了率39%。オーバーロードの重要度は低い（平均1行）。スキルは4/4/4（40.9%）が最も多い実投資ライン。",
+      "skillPriority_en": "No clear order in the statistics; many players get by on a low 4/4/4 investment.",
+      "skillPriority_ja": "統計上はっきりした序列はなく、4/4/4の低投資でも多くが活用している。",
+      "overloadPriority_en": "Only Charge Speed is meaningful (adoption 37%, 1 line on average).",
+      "overloadPriority_ja": "チャージスピードのみ有効（採用率37%、平均1行）。",
+      "notes_en": "A burst-charging unit for both PvE and PvP. She is fielded as a burst-charging part in Jackal-Blanc-Ada Wong style \"Indomitability\" decks and Noise-Noah-Liberalio style \"2RL\" decks, and is treated as interchangeable with Rumani. [Added 2026-08-04] Her Treasure skill structure is reportedly being reworked (per Eppenbaum, unconfirmed): from the current \"draw the opponent's burst charge with a personal shield\" design to \"start at 107% HP while she holds her self-buff, and recover back to 107% whenever it drops below 100%\". There is a mention that this improves her synergy with Neon. Some in the community criticise it as an attempt to drag a PvP-only character into PvE. Needs cross-checking against the finalised patch notes.",
+      "notes_ja": "PvE／PvP兼用のバーストチャージ要員。ジャッカル-ブラン-エイダ・ウォン系の「不屈デッキ」やノイズ-ノア-リバーレリオ系の「2RL」デッキでバーストチャージ用のパーツとして採用され、ルマニと相互に代替可能な枠として扱われる。［2026-08-04追加］宝もののスキル構造が改編予定（エッペンバウム報道、未確定）：従来の「個人シールドで相手のバーストチャージを誘導する」方式から、「自己バフ保有時にHP107%で開始し、100%以下に落ちると再び107%まで回復する」方式に変更されるという情報。ネオンとの相性が良くなるという言及がある。PvP専用キャラをPvEに引き込もうとする改編だというコミュニティの批判も存在する。確定したパッチノートとの交差検証が必要。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: C / bossing: A / pvp: SSS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: C ／ bossing: A ／ pvp: SSS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Jackal",
@@ -229,7 +433,17 @@
       "investmentProfile": "PVP 전용. 옵작 완료 비율 49%. 오버로드 중요도 낮음(평균 1줄). 스킬은 4/4/4(33.8%)가 가장 흔한 실투자 라인.",
       "skillPriority": "통계상 뚜렷한 서열 없음.",
       "overloadPriority": "차지속도만 유효(채택률 47%, 평균 1줄).",
-      "notes": "피해 분배(링크) 메커니즘을 이용한 PVP '불굴덱'(자블웡, 자블아인웡, 자블베웡 등)의 핵심 축 - 링크 대상 중 체력이 가장 낮은 아군에게 블랑의 불굴을 확정적으로 몰아주는 역할. 파트너 구성에 따라 다양한 변형 덱이 존재."
+      "notes": "피해 분배(링크) 메커니즘을 이용한 PVP '불굴덱'(자블웡, 자블아인웡, 자블베웡 등)의 핵심 축 - 링크 대상 중 체력이 가장 낮은 아군에게 블랑의 불굴을 확정적으로 몰아주는 역할. 파트너 구성에 따라 다양한 변형 덱이 존재.",
+      "treasureNote_en": "No Treasure mentioned. For Collection Item, SR5 first (55.7%), then SR15 if you can afford it.",
+      "treasureNote_ja": "宝ものの言及はない。コレクションアイテムはSR5（55.7%）を優先し、余裕があればSR15。",
+      "investmentProfile_en": "PvP-only. Overload completion rate 49%. Overload matters little (1 line on average). For skills, 4/4/4 (33.8%) is the most common line actually invested.",
+      "investmentProfile_ja": "PvP専用。オーバーロード完了率49%。オーバーロードの重要度は低い（平均1行）。スキルは4/4/4（33.8%）が最も多い実投資ライン。",
+      "skillPriority_en": "No clear order in the statistics.",
+      "skillPriority_ja": "統計上はっきりした序列はない。",
+      "overloadPriority_en": "Only Charge Speed is meaningful (adoption 47%, 1 line on average).",
+      "overloadPriority_ja": "チャージスピードのみ有効（採用率47%、平均1行）。",
+      "notes_en": "The central axis of PvP \"Indomitability\" decks built on the damage-sharing (link) mechanic — Jackal-Blanc-Ada Wong and its variants. Her role is to funnel Blanc's Indomitability reliably onto whichever linked ally has the lowest HP. Various deck variants exist depending on the partners you pick.",
+      "notes_ja": "被ダメージ分配（リンク）のメカニズムを利用したPvP「不屈デッキ」（ジャッカル-ブラン-エイダ・ウォンおよびその派生）の中心軸 — リンク対象のうちHPが最も低い味方にブランの不屈を確定的に集める役割。パートナー構成に応じて多様な派生デッキが存在する。"
     },
     {
       "name": "Noise",
@@ -239,7 +453,17 @@
       "investmentProfile": "PVE/PVP 겸용. 옵작 완료 비율 39%. 오버로드 중요도 낮음(평균 1줄). 스킬은 4/4/4(36.4%)가 가장 흔한 실투자 라인.",
       "skillPriority": "통계상 뚜렷한 서열 없음.",
       "overloadPriority": "차지속도만 유효(채택률 38%, 평균 1줄).",
-      "notes": "아군 체력 증가 버프와 도발을 제공하는 PVP 탱커 - 노아와 짝을 이루는 '노노' 엔진의 핵심으로, 신데렐라/리버렐리오 계열 '늦은 버스트'·'2RL' 덱에서 시간을 벌어주는 역할을 담당."
+      "notes": "아군 체력 증가 버프와 도발을 제공하는 PVP 탱커 - 노아와 짝을 이루는 '노노' 엔진의 핵심으로, 신데렐라/리버렐리오 계열 '늦은 버스트'·'2RL' 덱에서 시간을 벌어주는 역할을 담당.",
+      "treasureNote_en": "No Treasure mentioned. Collection Item SR5 by default; SR15 is recommended for PvP only.",
+      "treasureNote_ja": "宝ものの言及はない。コレクションアイテムはSR5が基本で、SR15はPvP限定で推奨される。",
+      "investmentProfile_en": "For both PvE and PvP. Overload completion rate 39%. Overload matters little (1 line on average). For skills, 4/4/4 (36.4%) is the most common line actually invested.",
+      "investmentProfile_ja": "PvE／PvP兼用。オーバーロード完了率39%。オーバーロードの重要度は低い（平均1行）。スキルは4/4/4（36.4%）が最も多い実投資ライン。",
+      "skillPriority_en": "No clear order in the statistics.",
+      "skillPriority_ja": "統計上はっきりした序列はない。",
+      "overloadPriority_en": "Only Charge Speed is meaningful (adoption 38%, 1 line on average).",
+      "overloadPriority_ja": "チャージスピードのみ有効（採用率38%、平均1行）。",
+      "notes_en": "A PvP tank providing an ally max-HP buff and a taunt — the core of the \"No-No\" engine paired with Noah, taking the role of buying time in Cinderella and Liberalio style \"late burst\" and \"2RL\" decks.",
+      "notes_ja": "味方のHP増加バフと挑発を提供するPvPタンク — ノアと組む「ノノ」エンジンの中核で、シンデレラやリバーレリオ系の「遅いバースト」・「2RL」デッキで時間を稼ぐ役割を担う。"
     },
     {
       "name": "Rumani",
@@ -249,7 +473,17 @@
       "investmentProfile": "PVP 전용, 버스트 충전 요원. 옵작 완료 비율 27%로 낮은 편 - 최소 투자(1/1/1, 42.9%)로 그치는 유저가 가장 많음. 오버로드 중요도도 매우 낮음(평균 1줄).",
       "skillPriority": "통계상 뚜렷한 서열 없음, 저투자(1/1/1)가 표준.",
       "overloadPriority": "차지속도만 유효(채택률 26%, 평균 1줄) - 사실상 오버로드 투자 자체의 실익이 크지 않음.",
-      "notes": "방어형으로 편성해 비스킷의 무적을 받아 버티는 '늦은 버스트'류 PVP 덱, 또는 센티 대신 들어가는 버스트 충전 요원으로 사용됨. 투자 우선순위가 낮은 편에 속하는 캐릭터."
+      "notes": "방어형으로 편성해 비스킷의 무적을 받아 버티는 '늦은 버스트'류 PVP 덱, 또는 센티 대신 들어가는 버스트 충전 요원으로 사용됨. 투자 우선순위가 낮은 편에 속하는 캐릭터.",
+      "treasureNote_en": "No Treasure mentioned. For Collection Item, SR5 is the overwhelming majority (68.7%).",
+      "treasureNote_ja": "宝ものの言及はない。コレクションアイテムはSR5が圧倒的多数（68.7%）。",
+      "investmentProfile_en": "PvP-only, a burst-charging unit. Her Overload completion rate is a low 27% — most players stop at the minimum investment (1/1/1, 42.9%). Overload matters very little too (1 line on average).",
+      "investmentProfile_ja": "PvP専用、バーストチャージ要員。オーバーロード完了率は27%と低め — 最小投資（1/1/1、42.9%）で止めるユーザーが最も多い。オーバーロードの重要度も非常に低い（平均1行）。",
+      "skillPriority_en": "No clear order in the statistics; a low 1/1/1 investment is the standard.",
+      "skillPriority_ja": "統計上はっきりした序列はなく、低投資（1/1/1）が標準。",
+      "overloadPriority_en": "Only Charge Speed is meaningful (adoption 26%, 1 line on average) — in practice there is little real benefit to investing in Overload at all.",
+      "overloadPriority_ja": "チャージスピードのみ有効（採用率26%、平均1行） — 事実上オーバーロード投資そのものの実益は大きくない。",
+      "notes_en": "Used in \"late burst\" PvP decks where she is fielded as a Defender and holds out on Biscuit's invulnerability, or as a burst-charging unit in place of Centi. A character on the lower end of investment priority.",
+      "notes_ja": "防御型として編成しビスケットの無敵を受けて耐える「遅いバースト」系のPvPデッキ、あるいはセンチの代わりに入るバーストチャージ要員として使われる。投資優先度は低めに属するキャラ。"
     },
     {
       "name": "Diesel: Winter Sweets",
@@ -259,7 +493,17 @@
       "investmentProfile": "최소 7/7/7, 가성비 9/9/9, 종결 10/10/10 - 세 스킬 모두 중요도가 비슷해 낮은 투자로는 성능이 크게 제한되는 편.",
       "skillPriority": "버스트스킬 = 1스킬 = 2스킬",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가 > 차지속도 증가 (종결: 우월코드 4, 공격력 4, 장탄 2 이상)",
-      "notes": "작열 코드 3버스트 화력형. 오버스펙급으로 평가되는 미하라: 본딩 체인 대비 약 90% 수준의 화력을 냄. 리타/라피: 레드 후드(공격력 버프), 리버렐리오(차지속도 버프), 크라운/마스트/그레이브(재장전 속도) 등 외부 버프 의존도가 높은 딜러. 작열 속성 솔로레이드·유니온레이드 전문 딜러로, 다수의 적을 상대하는 스테이지형 콘텐츠에서는 상대적으로 채용도가 낮음."
+      "notes": "작열 코드 3버스트 화력형. 오버스펙급으로 평가되는 미하라: 본딩 체인 대비 약 90% 수준의 화력을 냄. 리타/라피: 레드 후드(공격력 버프), 리버렐리오(차지속도 버프), 크라운/마스트/그레이브(재장전 속도) 등 외부 버프 의존도가 높은 딜러. 작열 속성 솔로레이드·유니온레이드 전문 딜러로, 다수의 적을 상대하는 스테이지형 콘텐츠에서는 상대적으로 채용도가 낮음.",
+      "treasureNote_en": "No dedicated Treasure is mentioned. As a damage dealer her Collection Item (weapon collection level) investment carries a lot of weight, so SR5 at minimum and SR15 later are recommended.",
+      "treasureNote_ja": "専用の宝ものへの言及はない。アタッカーとしてコレクションアイテム（武器収集レベル）への投資比重が大きく、最低SR5、のちにSR15まで推奨される。",
+      "investmentProfile_en": "Minimum 7/7/7, cost-efficient 9/9/9, endgame 10/10/10 — all three skills carry similar weight, so a low investment limits her performance considerably.",
+      "investmentProfile_ja": "最低7/7/7、コスパ帯9/9/9、完成形10/10/10 — 3つのスキルの重要度が近いため、低投資では性能がかなり制限される。",
+      "skillPriority_en": "Burst Skill = Skill 1 = Skill 2",
+      "skillPriority_ja": "バーストスキル = スキル1 = スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo > Charge Speed (endgame: Elemental Damage 4, ATK 4, Max Ammo 2 or more)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数 > チャージスピード（完成形：有利コードダメージ4、攻撃力4、最大装填数2以上）",
+      "notes_en": "A Fire code Burst 3 Attacker. She puts out roughly 90% of the damage of Mihara: Bonding Chain, who is rated at Overspec level. She is a dealer with heavy reliance on outside buffs — Liter and Rapi: Red Hood (ATK buff), Liberalio (charge speed buff), Crown / Mast / Grave (reload speed). A specialist dealer for Fire element Solo Raid and Union Raid; her adoption is comparatively lower in stage-type content where you face many enemies.",
+      "notes_ja": "灼熱コードのバースト3火力型。オーバースペック級と評価されるミハラ：ボンディングチェーンに対しておよそ90%の火力を出す。リター、ラピ：レッドフード（攻撃力バフ）、リバーレリオ（チャージスピードバフ）、クラウン／マスト／グレイブ（リロード速度）など、外部バフへの依存度が高いアタッカー。灼熱属性のソロレイド・ユニオンレイド専門のアタッカーで、多数の敵を相手にするステージ型コンテンツでは相対的に採用度が低い。"
     },
     {
       "name": "Mihara: Bonding Chain",
@@ -269,7 +513,17 @@
       "investmentProfile": "최소 4/4/4, 가성비 7/7/7, 종결 10/10/10. 자체 공격력 버프가 없어 외부 버프에 크게 의존하는 만큼 파티 구성이 투자 효율을 크게 좌우함.",
       "skillPriority": "버스트스킬 >= 1스킬 = 2스킬",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가",
-      "notes": "작열 코드 3버스트 머신건 딜러로, 라피: 레드 후드에 이어 두 번째로 꼽히는 '오버스펙' 캐릭터. 자체 버프가 없어 리타/크라운/헬름(애장품) 같은 외부 버프 캐릭터와 궁합이 핵심이며, 머신건 시너지가 있는 리틀 머메이드와도 잘 맞음. 보스전(솔로레이드) 특화이고 다수의 적을 상대하는 콘텐츠에서는 성능이 크게 떨어짐. 실측 화력은 라피: 레드 후드와 비슷한 수준으로 평가됨."
+      "notes": "작열 코드 3버스트 머신건 딜러로, 라피: 레드 후드에 이어 두 번째로 꼽히는 '오버스펙' 캐릭터. 자체 버프가 없어 리타/크라운/헬름(애장품) 같은 외부 버프 캐릭터와 궁합이 핵심이며, 머신건 시너지가 있는 리틀 머메이드와도 잘 맞음. 보스전(솔로레이드) 특화이고 다수의 적을 상대하는 콘텐츠에서는 성능이 크게 떨어짐. 실측 화력은 라피: 레드 후드와 비슷한 수준으로 평가됨.",
+      "treasureNote_en": "No dedicated Treasure is mentioned. As a damage dealer, Collection Item (weapon collection level) investment matters.",
+      "treasureNote_ja": "専用の宝ものへの言及はない。アタッカーとしてコレクションアイテム（武器収集レベル）への投資が重要。",
+      "investmentProfile_en": "Minimum 4/4/4, cost-efficient 7/7/7, endgame 10/10/10. She has no ATK buff of her own and leans heavily on outside buffs, so your party composition largely determines how efficient the investment is.",
+      "investmentProfile_ja": "最低4/4/4、コスパ帯7/7/7、完成形10/10/10。自前の攻撃力バフがなく外部バフに大きく依存するため、パーティ構成が投資効率を大きく左右する。",
+      "skillPriority_en": "Burst Skill >= Skill 1 = Skill 2",
+      "skillPriority_ja": "バーストスキル >= スキル1 = スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数",
+      "notes_en": "A Fire code Burst 3 machine-gun dealer, and the second character after Rapi: Red Hood to be called \"Overspec\". Because she has no self-buff, pairing her with outside buffers such as Liter, Crown and Treasure Helm is the key, and she also fits well with Little Mermaid thanks to machine-gun synergy. She specialises in boss fights (Solo Raid) and drops off sharply in content with many enemies. Measured damage puts her at a level similar to Rapi: Red Hood.",
+      "notes_ja": "灼熱コードのバースト3マシンガンアタッカーで、ラピ：レッドフードに次いで2番目に挙げられる「オーバースペック」キャラ。自前のバフがないため、リター、クラウン、宝ものヘルムのような外部バフキャラとの相性が核心で、マシンガンシナジーのあるリトルマーメイドとも噛み合う。ボス戦（ソロレイド）特化で、多数の敵を相手にするコンテンツでは性能が大きく落ちる。実測火力はラピ：レッドフードと同程度と評価される。"
     },
     {
       "name": "Cinderella",
@@ -279,7 +533,17 @@
       "investmentProfile": "최소 7/4/7, 가성비 9/4/9, 종결 10/7~10/10 - 2스킬은 상대적으로 비중이 낮아 7 수준에서 멈춰도 무방하지만 버스트·1스킬은 종결까지 투자할 가치가 큼.",
       "skillPriority": "버스트스킬 > 1스킬 >>>> 2스킬",
       "overloadPriority": "우월코드 증가 > 공격력 증가 > 장탄 증가",
-      "notes": "전격 코드 3버스트 방어형 런처 딜러로, 체력 비례 대미지 방식이라 속성 상성에 얽매이지 않고 두루 활약. 루주(체력/공격력 버프)와 궁합이 가장 좋고, 계절 한정 캐릭터인 아니스: 스파클링 서머(전격 코드 공격력·재장전 버프)나 메이든: 아이스 로즈(전격 코드 버프)와도 잘 맞음. 출시 이후 오랜 기간이 지난 시점에도 단일 대상 대미지 기준 최상위권 성능을 유지하는 것으로 평가되며, 타워·솔로레이드·요격전(특히 미러 컨테이너)·스테이지 전반에서 두루 채용됨."
+      "notes": "전격 코드 3버스트 방어형 런처 딜러로, 체력 비례 대미지 방식이라 속성 상성에 얽매이지 않고 두루 활약. 루주(체력/공격력 버프)와 궁합이 가장 좋고, 계절 한정 캐릭터인 아니스: 스파클링 서머(전격 코드 공격력·재장전 버프)나 메이든: 아이스 로즈(전격 코드 버프)와도 잘 맞음. 출시 이후 오랜 기간이 지난 시점에도 단일 대상 대미지 기준 최상위권 성능을 유지하는 것으로 평가되며, 타워·솔로레이드·요격전(특히 미러 컨테이너)·스테이지 전반에서 두루 채용됨.",
+      "treasureNote_en": "No dedicated Treasure is mentioned. As a damage dealer, Collection Item (weapon collection level) investment matters.",
+      "treasureNote_ja": "専用の宝ものへの言及はない。アタッカーとしてコレクションアイテム（武器収集レベル）への投資が重要。",
+      "investmentProfile_en": "Minimum 7/4/7, cost-efficient 9/4/9, endgame 10/7~10/10 — Skill 2 carries comparatively little weight and can stop around 7, but the Burst Skill and Skill 1 are well worth taking to the end.",
+      "investmentProfile_ja": "最低7/4/7、コスパ帯9/4/9、完成形10/7〜10/10 — スキル2は比重が相対的に低く7程度で止めても問題ないが、バーストスキルとスキル1は完成まで投資する価値が大きい。",
+      "skillPriority_en": "Burst Skill > Skill 1 >>>> Skill 2",
+      "skillPriority_ja": "バーストスキル > スキル1 >>>> スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数",
+      "notes_en": "An Electric code Burst 3 Defender launcher dealer. Because her damage scales off HP she performs broadly without being tied to elemental match-ups. Her best pairing is Rouge (HP/ATK buffs), and she also fits well with the seasonal limited characters Anis: Sparkling Summer (Electric code ATK and reload buffs) and Maiden: Ice Rose (Electric code buffs). Long after her release she is still rated as top class for single-target damage, and she is used broadly across Tower, Solo Raid, Interception (especially Mirror Container) and stages.",
+      "notes_ja": "電撃コードのバースト3防御型ランチャーアタッカーで、HP比例ダメージの方式のため属性の相性に縛られず幅広く活躍する。ルージュ（HP／攻撃力バフ）との相性が最も良く、季節限定キャラのアニス：スパークリングサマー（電撃コードの攻撃力・リロードバフ）やメイデン：アイスローズ（電撃コードバフ）とも噛み合う。実装から長い期間が過ぎた時点でも単体対象ダメージ基準で最上位圏の性能を維持していると評価され、タワー・ソロレイド・迎撃戦（特にミラーコンテナ）・ステージ全般で広く採用される。"
     },
     {
       "name": "Scarlet: Black Shadow",
@@ -289,7 +553,17 @@
       "investmentProfile": "최소 4/4/4, 가성비 7/7/7, 종결 10/7/10 - 2스킬은 7 수준에서 탄환 충전률이 100%를 넘어가 그 이상 투자 효율이 낮음.",
       "skillPriority": "버스트스킬 > 1스킬 > 2스킬",
       "overloadPriority": "우월코드 증가 >= 공격력 증가 > 장탄 증가 (오버로드 옵션 장탄 줄이 두 개 이상이면 재장전이 거의 필요 없어짐)",
-      "notes": "풍압 코드 3버스트 화력형 런처 딜러(약칭 흑련). 출시 당시 부족했던 풍압 딜러 자리를 채운 캐릭터로, 신데렐라 등장 이전까지는 최고점 조합의 핵심 딜러였음. 엘리스(공격력 최상위 아군 둘에게 차지속도 버프)와 함께 쓰면 공격 속도가 약 두 배로 빨라져 위력이 크게 상승. 잡몹·보스 모두 잘 처리해 스테이지/솔로레이드/유니온레이드/타워 등 대부분의 PVE 콘텐츠에서 활용되며, PVP는 순수 전투력으로 압도하는 경우가 아니면 잘 쓰이지 않음. 리버렐리오와 새로운 파트너 관계로 꼽히며, 크라운·라피: 레드 후드·리타 등과 조합해 사용. [2026-08-04 추가] 밸런스 상향 패치 이후에도 여전히 풍압 속성 최상위 티어를 유지한다는 평가가 다수(고뇨, 김진서). 구체적 수치는 원문 확인 필요."
+      "notes": "풍압 코드 3버스트 화력형 런처 딜러(약칭 흑련). 출시 당시 부족했던 풍압 딜러 자리를 채운 캐릭터로, 신데렐라 등장 이전까지는 최고점 조합의 핵심 딜러였음. 엘리스(공격력 최상위 아군 둘에게 차지속도 버프)와 함께 쓰면 공격 속도가 약 두 배로 빨라져 위력이 크게 상승. 잡몹·보스 모두 잘 처리해 스테이지/솔로레이드/유니온레이드/타워 등 대부분의 PVE 콘텐츠에서 활용되며, PVP는 순수 전투력으로 압도하는 경우가 아니면 잘 쓰이지 않음. 리버렐리오와 새로운 파트너 관계로 꼽히며, 크라운·라피: 레드 후드·리타 등과 조합해 사용. [2026-08-04 추가] 밸런스 상향 패치 이후에도 여전히 풍압 속성 최상위 티어를 유지한다는 평가가 다수(고뇨, 김진서). 구체적 수치는 원문 확인 필요.",
+      "treasureNote_en": "No dedicated Treasure is mentioned. As a damage dealer, Collection Item (weapon collection level) investment matters.",
+      "treasureNote_ja": "専用の宝ものへの言及はない。アタッカーとしてコレクションアイテム（武器収集レベル）への投資が重要。",
+      "investmentProfile_en": "Minimum 4/4/4, cost-efficient 7/7/7, endgame 10/7/10 — at level 7 her Skill 2 already pushes the ammo charge rate past 100%, so investing further is inefficient.",
+      "investmentProfile_ja": "最低4/4/4、コスパ帯7/7/7、完成形10/7/10 — スキル2は7の時点で弾丸チャージ率が100%を超えるため、それ以上の投資効率は低い。",
+      "skillPriority_en": "Burst Skill > Skill 1 > Skill 2",
+      "skillPriority_ja": "バーストスキル > スキル1 > スキル2",
+      "overloadPriority_en": "Elemental Damage >= ATK > Max Ammo (with two or more Max Ammo lines she barely needs to reload)",
+      "overloadPriority_ja": "有利コードダメージ >= 攻撃力 > 最大装填数（最大装填数の行が2つ以上あればリロードがほぼ不要になる）",
+      "notes_en": "A Wind code Burst 3 Attacker launcher dealer. She filled the Wind dealer slot that was thin at her release, and until Cinderella arrived she was the core dealer of the highest-ceiling teams. Running her with Alice (who grants charge speed to the two allies with the highest ATK) roughly doubles her attack speed and raises her output considerably. She handles both trash mobs and bosses well, so she is used across most PvE content — stages, Solo Raid, Union Raid and Tower — while she is rarely used in PvP unless you are overwhelming the opponent on raw combat power. She is named as Liberalio's new partner and is run alongside Crown, Rapi: Red Hood and Liter. [Added 2026-08-04] Many hold that she still keeps a top Wind element tier even after the balance buff patch (Gonyo, Kim Jinseo). The specific numbers need checking against the original sources.",
+      "notes_ja": "風圧コードのバースト3火力型ランチャーアタッカー。実装当時に不足していた風圧アタッカーの枠を埋めたキャラで、シンデレラ登場までは最高点編成の中核アタッカーだった。アリス（攻撃力最上位の味方2人にチャージスピードバフ）と併用すると攻撃速度がおよそ2倍になり威力が大きく上がる。雑魚もボスもうまく処理できるため、ステージ／ソロレイド／ユニオンレイド／タワーなど大半のPvEコンテンツで活用され、PvPは純粋な戦闘力で圧倒する場合でなければあまり使われない。リバーレリオとの新しいパートナー関係が挙げられ、クラウン、ラピ：レッドフード、リターなどと組んで使う。［2026-08-04追加］バランス上方修正パッチ以降も風圧属性の最上位ティアを維持しているという評価が多数（ゴニョ、キム・ジンソ）。具体的な数値は原文の確認が必要。"
     },
     {
       "name": "Phantom",
@@ -299,7 +573,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬",
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가 (유효 추가 옵션: 크리티컬 데미지, 크리티컬 확률)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "She has a dedicated Treasure, ranked at medium priority on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では中程度の優先度の宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK (useful extra options: Crit Damage, Crit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力（有効な追加オプション：クリティカルダメージ、クリティカル確率）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Zwei",
@@ -317,7 +601,21 @@
       "overloadPriority": "특별한 필수 오버로드 없음 (유효 추가 옵션: 명함 추천)",
       "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE, 스노우화이트, 파트너, (고점용).",
       "totemRole": true,
-      "totemNote": "버스트1, 쿨타임 20초. [스킬 원문 근거] 1스킬 'Pierce Equation'과 2스킬 'Frame Analysis'가 둘 다 **풀버스트 진입 시** 발동해 전 아군에게 관통 데미지 ▲ 11.89%(1발) / ▲ 5.94%(10초)와 크리티컬 확률 ▲ 11.01%(5초)를 건다. 2스킬은 평타 5회마다 전 아군 엄폐물도 회복시킨다. 츠바이 자신의 버스트와 무관하게 도는 구조다. 다만 관통 버프는 관통 딜러가 있어야 값어치가 있고, 크리티컬 확률 쪽이 범용이다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)"
+      "totemNote": "버스트1, 쿨타임 20초. [스킬 원문 근거] 1스킬 'Pierce Equation'과 2스킬 'Frame Analysis'가 둘 다 **풀버스트 진입 시** 발동해 전 아군에게 관통 데미지 ▲ 11.89%(1발) / ▲ 5.94%(10초)와 크리티컬 확률 ▲ 11.01%(5초)를 건다. 2스킬은 평타 5회마다 전 아군 엄폐물도 회복시킨다. 츠바이 자신의 버스트와 무관하게 도는 구조다. 다만 관통 버프는 관통 딜러가 있어야 값어치가 있고, 크리티컬 확률 쪽이 범용이다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)",
+      "treasureNote_en": "She has a dedicated Treasure, ranked at medium priority on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では中程度の優先度の宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, Snow White, partner, (for pushing your ceiling).",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、スノーホワイト、パートナー、（上限を伸ばす用）。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "No particular required Overload (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "特に必須のオーバーロードはない（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use cases: PvE, Snow White, partner, (for pushing your ceiling).",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE、スノーホワイト、パートナー、（上限を伸ばす用）。",
+      "totemNote_en": "Burst 1, 20s cooldown. [Based on the skill text] Both Skill 1 \"Pierce Equation\" and Skill 2 \"Frame Analysis\" trigger **on entering Full Burst**, granting all allies penetration damage ▲ 11.89% (1 shot) / ▲ 5.94% (10 sec) and crit rate ▲ 11.01% (5 sec). Skill 2 also restores all allies' cover every 5 normal attacks. This loop runs independently of Zwei's own Burst. Note that the penetration buff is only worth having if you field a penetration dealer, while the crit rate side is general-purpose. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
+      "totemNote_ja": "バースト1、クールタイム20秒。［スキル原文が根拠］スキル1「Pierce Equation」とスキル2「Frame Analysis」がどちらも**フルバースト突入時**に発動し、味方全体に貫通ダメージ ▲ 11.89%（1発）／▲ 5.94%（10秒）とクリティカル確率 ▲ 11.01%（5秒）をかける。スキル2は通常攻撃5回ごとに味方全体のカバーも回復させる。ツバイ自身のバーストとは無関係に回る構造だ。ただし貫通バフは貫通アタッカーがいてこそ価値があり、クリティカル確率のほうが汎用的である。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: B / bossing: S / pvp: B). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: B ／ bossing: S ／ pvp: B）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Privaty",
@@ -335,7 +633,21 @@
       "overloadPriority": "우월 코드 > 공격력 증가",
       "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
       "totemRole": true,
-      "totemNote": "1스킬('EX magazine')은 프리바티 본인의 버스트 스킬(쿨타임 40초) 사용 여부와 무관하게 '풀버스트 진입 시' 전 아군에게 자동으로 공격력 +18.77%, 재장전 속도 +22.88%(대신 최대 장탄수 -50.66%)를 10초간 부여한다. 즉 같은 버스트3 슬롯을 다른 캐릭터가 빠른 쿨타임으로 커버 중이어도, 프리바티의 팀 버프 자체는 매 풀버스트마다 그대로 발동하는 구조라 토템 기용에 특히 적합하다. 2026년 2월 전용 애장품 개편 이후로는 솔로 레이드에서 토템 겸 딜러로도 쓸 수 있는 수준까지 상향되었다는 평가가 있다. (출처: prydwen.gg Meta teams (Story) — 원-니케-아미 조합 설명에서 \"Alice and Privaty are free here\"로 자리가 자유롭다고 명시하고, B3 선택지 항목에서도 스턴 기믹과 아군 공격력 버프 용도로 소개)"
+      "totemNote": "1스킬('EX magazine')은 프리바티 본인의 버스트 스킬(쿨타임 40초) 사용 여부와 무관하게 '풀버스트 진입 시' 전 아군에게 자동으로 공격력 +18.77%, 재장전 속도 +22.88%(대신 최대 장탄수 -50.66%)를 10초간 부여한다. 즉 같은 버스트3 슬롯을 다른 캐릭터가 빠른 쿨타임으로 커버 중이어도, 프리바티의 팀 버프 자체는 매 풀버스트마다 그대로 발동하는 구조라 토템 기용에 특히 적합하다. 2026년 2월 전용 애장품 개편 이후로는 솔로 레이드에서 토템 겸 딜러로도 쓸 수 있는 수준까지 상향되었다는 평가가 있다. (출처: prydwen.gg Meta teams (Story) — 원-니케-아미 조합 설명에서 \"Alice and Privaty are free here\"로 자리가 자유롭다고 명시하고, B3 선택지 항목에서도 스턴 기믹과 아군 공격력 버프 용도로 소개)",
+      "treasureNote_en": "She has a dedicated Treasure, and on the recent community raising sheet it is a top-priority craft (treated as close to mandatory). Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では最優先で製作が推奨される宝もの（ほぼ必須級として扱われる）。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > ATK",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。",
+      "totemNote_en": "Skill 1 (\"EX magazine\") automatically grants all allies ATK +18.77% and reload speed +22.88% (at the cost of max ammo -50.66%) for 10 sec \"on entering Full Burst\", regardless of whether Privaty uses her own Burst Skill (40s cooldown). In other words, even when another character is covering the same Burst 3 slot on a shorter cooldown, Privaty's team buff still fires every Full Burst, which makes her especially well suited to totem use. Since the dedicated Treasure rework in February 2026, she is rated as having been buffed to the point where she can serve as both totem and dealer in Solo Raid. (Source: prydwen.gg Meta teams (Story) — the One NIKKE Army team description states \"Alice and Privaty are free here\", and the B3 options section also introduces her for stun gimmicks and ally ATK buffs.)",
+      "totemNote_ja": "スキル1「EX magazine」は、プリバティ本人のバーストスキル（クールタイム40秒）を使うかどうかに関わらず、「フルバースト突入時」に味方全体へ自動的に攻撃力+18.77%、リロード速度+22.88%（代わりに最大装填数-50.66%）を10秒付与する。つまり同じバースト3の枠を他のキャラが短いクールタイムでカバー中でも、プリバティのチームバフ自体は毎フルバーストごとにそのまま発動する構造で、トーテム起用に特に適している。2026年2月の専用宝もの改編以降は、ソロレイドでトーテム兼アタッカーとしても使える水準まで上方修正されたという評価がある。（出典：prydwen.gg Meta teams (Story) — ワン・ニケ・アーミー編成の説明で「Alice and Privaty are free here」と枠が自由であることを明記し、B3の選択肢の項目でもスタンギミックと味方攻撃力バフの用途で紹介されている）",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: SS / bossing: SS / pvp: SS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: SS ／ bossing: SS ／ pvp: SS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Miranda",
@@ -353,7 +665,21 @@
       "overloadPriority": "특별한 필수 오버로드 없음 (유효 추가 옵션: 명함 추천)",
       "notes": "큐브 추천: 렐릭 베어, 택티컬 베어, 택티컬 부스트. 사용처: PVE. [2026-08-04 추가] 전 속성 콘텐츠에서 범용적으로 채용된다는 평가(김진서) — 기존 '우선순위 높음' 서술과 일치.",
       "totemRole": true,
-      "totemNote": "버스트1, 쿨타임 20초. [스킬 원문 근거] 2스킬 'Wake Up!'이 **풀버스트 시작 시** 전 아군에게 크리티컬 데미지 ▲ 19.49%를 10초간 건다. 조건도 속성 제한도 없고 미란다 자신의 버스트 사용과 무관하다. 1스킬 'Health Up!'도 평타 30회마다 전 아군 명중률 ▲ 3.31%(SMG 아군 추가 ▲ 2.09%)를 자동으로 건다. 버스트1을 리터 같은 빠른 쿨타임 캐릭터가 커버 중이어도 이 두 버프는 그대로 유지된다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)"
+      "totemNote": "버스트1, 쿨타임 20초. [스킬 원문 근거] 2스킬 'Wake Up!'이 **풀버스트 시작 시** 전 아군에게 크리티컬 데미지 ▲ 19.49%를 10초간 건다. 조건도 속성 제한도 없고 미란다 자신의 버스트 사용과 무관하다. 1스킬 'Health Up!'도 평타 30회마다 전 아군 명중률 ▲ 3.31%(SMG 아군 추가 ▲ 2.09%)를 자동으로 건다. 버스트1을 리터 같은 빠른 쿨타임 캐릭터가 커버 중이어도 이 두 버프는 그대로 유지된다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)",
+      "treasureNote_en": "She has a dedicated Treasure, counted among the higher-priority ones on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では優先度が高めに挙げられる宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1 (Skill 1 at around 4 is enough at endgame)",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1（完成時はスキル1が4程度で十分）",
+      "overloadPriority_en": "No particular required Overload (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "特に必須のオーバーロードはない（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear, Tactical Boost. Use case: PvE. [Added 2026-08-04] Rated as broadly adopted across content of every element (Kim Jinseo) — consistent with the existing \"high priority\" description.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー、タクティカルブースト。使用先：PvE。［2026-08-04追加］全属性のコンテンツで汎用的に採用されるという評価（キム・ジンソ）— 既存の「優先度が高い」という記述と一致する。",
+      "totemNote_en": "Burst 1, 20s cooldown. [Based on the skill text] Skill 2 \"Wake Up!\" grants all allies crit damage ▲ 19.49% for 10 sec **at the start of Full Burst**. There is no condition and no elemental restriction, and it is independent of whether Miranda uses her own Burst. Skill 1 \"Health Up!\" likewise grants all allies hit rate ▲ 3.31% (SMG allies an extra ▲ 2.09%) automatically every 30 normal attacks. Both buffs hold even when a fast-cooldown character such as Liter is covering Burst 1. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
+      "totemNote_ja": "バースト1、クールタイム20秒。［スキル原文が根拠］スキル2「Wake Up!」が**フルバースト開始時**に味方全体へクリティカルダメージ ▲ 19.49%を10秒かける。条件も属性制限もなく、ミランダ自身のバースト使用とは無関係だ。スキル1「Health Up!」も通常攻撃30回ごとに味方全体へ命中率 ▲ 3.31%（SMGの味方は追加で ▲ 2.09%）を自動でかける。バースト1をリターのようなクールタイムの短いキャラがカバー中でも、この2つのバフはそのまま維持される。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: A / bossing: S / pvp: B). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: A ／ bossing: S ／ pvp: B）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Flora",
@@ -368,7 +694,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬 (종결 시 1스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 > 장탄수 증가 (유효 추가 옵션: 명함 추천)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE. [2026-08-04 추가] 이 낮은 우선순위 평가에는 이견이 있음: 애장품 출시 직후 에펜바움은 '스테이지의 신이 될까'라며 프리바티 다음 우선순위로 꼽았고 고뇨도 '떡상'(성능 대폭 상승)으로 긍정 평가한 반면, 김진서는 '사용하기 애매하다'며 실전 사용처에 회의적. 다수(에펜바움·고뇨: 고평가) 대 소수(김진서: 회의적) 구도이나 아직 확정된 합의는 아님 — 실사용 데이터로 재확인 필요."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE. [2026-08-04 추가] 이 낮은 우선순위 평가에는 이견이 있음: 애장품 출시 직후 에펜바움은 '스테이지의 신이 될까'라며 프리바티 다음 우선순위로 꼽았고 고뇨도 '떡상'(성능 대폭 상승)으로 긍정 평가한 반면, 김진서는 '사용하기 애매하다'며 실전 사용처에 회의적. 다수(에펜바움·고뇨: 고평가) 대 소수(김진서: 회의적) 구도이나 아직 확정된 합의는 아님 — 실사용 데이터로 재확인 필요.",
+      "treasureNote_en": "She has a dedicated Treasure, but on the recent community raising sheet it is a low-priority one to consider only once you have filled in the other essential Treasures and have room to spare. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあるが、最近のコミュニティ育成シート基準では他の必須の宝ものを先に揃えてから余裕があるときに検討する、優先度の低い宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1 (Skill 1 at around 7 is enough at endgame)",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1（完成時はスキル1が7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > Max Ammo (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE. [Added 2026-08-04] This low-priority rating is disputed: right after the Treasure released, Eppenbaum asked whether she would \"become the god of stages\" and put her at the priority right behind Privaty, and Gonyo also rated her positively as a big jump in performance, whereas Kim Jinseo called her \"awkward to use\" and was sceptical about where she actually fits in practice. It is a majority (Eppenbaum and Gonyo: high marks) versus minority (Kim Jinseo: sceptical) split, but there is no settled consensus yet — this needs re-checking against real usage data.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。［2026-08-04追加］この低い優先度の評価には異論がある：宝もの実装直後、エッペンバウムは「ステージの神になるか」としてプリバティに次ぐ優先度に挙げ、ゴニョも大幅な性能上昇として肯定的に評価した一方、キム・ジンソは「使いどころが微妙だ」として実戦での使用先に懐疑的だった。多数（エッペンバウム・ゴニョ：高評価）対少数（キム・ジンソ：懐疑的）の構図だが、まだ確定した合意ではない — 実使用データでの再確認が必要。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: SSS / bossing: SS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: SSS ／ bossing: SS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Laplace",
@@ -384,7 +722,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVP, 방어력 무시, 관통.",
       "skillPriority": "2스킬 > 버스트스킬 > 1스킬 (종결 시 1스킬 4, 버스트스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (유효 추가 옵션: 차지 속도 증가, 크리티컬 데미지)",
-      "notes": "큐브 추천: 렐릭 퀀텀. 사용처: PVP, 방어력 무시, 관통. 참고: 2026년 7월 출시된 파워업(이격) 캐릭터 '라플라스: 얼티밋 히어로'는 별도 항목으로 분리해 정리함(아래 참고)."
+      "notes": "큐브 추천: 렐릭 퀀텀. 사용처: PVP, 방어력 무시, 관통. 참고: 2026년 7월 출시된 파워업(이격) 캐릭터 '라플라스: 얼티밋 히어로'는 별도 항목으로 분리해 정리함(아래 참고).",
+      "treasureNote_en": "She has a dedicated Treasure, but on the recent community raising sheet it is a low-priority one to consider only once you have filled in the other essential Treasures and have room to spare. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあるが、最近のコミュニティ育成シート基準では他の必須の宝ものを先に揃えてから余裕があるときに検討する、優先度の低い宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvP, DEF ignore, penetration.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvP、防御力無視、貫通。",
+      "skillPriority_en": "Skill 2 > Burst Skill > Skill 1 (at endgame, Skill 1 at 4 and Burst Skill at around 7 are enough)",
+      "skillPriority_ja": "スキル2 > バーストスキル > スキル1（完成時はスキル1が4、バーストスキルが7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (useful extra options: Charge Speed, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（有効な追加オプション：チャージスピード、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Quantum. Use cases: PvP, DEF ignore, penetration. Note: \"Laplace: Ultimate Hero\", the power-up (alt) character released in July 2026, is covered as a separate entry (see below).",
+      "notes_ja": "おすすめキューブ：レリッククオンタム。使用先：PvP、防御力無視、貫通。参考：2026年7月に実装されたパワーアップ（別バージョン）キャラ「ラプラス：アルティメットヒーロー」は別項目として分けて整理している（下記参照）。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: B / bossing: A / pvp: SS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: B ／ bossing: A ／ pvp: SS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Tove",
@@ -400,7 +750,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE, 샷건덱 필수.",
       "skillPriority": "1스킬 > 2스킬 = 버스트스킬 (종결 시 1스킬 9 정도면 충분)",
       "overloadPriority": "특별한 필수 오버로드 없음 (유효 추가 옵션: 명함 추천)",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어, 택티컬 부스트. 사용처: PVE, 샷건덱 필수."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어, 택티컬 부스트. 사용처: PVE, 샷건덱 필수.",
+      "treasureNote_en": "She has a dedicated Treasure, and on the recent community raising sheet it is a top-priority craft (treated as close to mandatory). Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では最優先で製作が推奨される宝もの（ほぼ必須級として扱われる）。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, mandatory for shotgun decks.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、ショットガンデッキ必須。",
+      "skillPriority_en": "Skill 1 > Skill 2 = Burst Skill (at endgame, Skill 1 at around 9 is enough)",
+      "skillPriority_ja": "スキル1 > スキル2 = バーストスキル（完成時はスキル1が9程度で十分）",
+      "overloadPriority_en": "No particular required Overload (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "特に必須のオーバーロードはない（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear, Tactical Boost. Use cases: PvE, mandatory for shotgun decks.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー、タクティカルブースト。使用先：PvE、ショットガンデッキ必須。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: C / bossing: S / pvp: B). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: C ／ bossing: S ／ pvp: B）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Drake",
@@ -418,7 +780,21 @@
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (유효 추가 옵션: 명중률 증가)",
       "notes": "큐브 추천: 렐릭 베어. 사용처: PVE, 샷건덱.",
       "totemRole": true,
-      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 1스킬 'Overcharge'가 **풀버스트 시작 시** 전 아군에게 명중률 ▲ 7%와 공격력 ▲ 7%를 10초간 건다. 조건 없이 자동으로 들어간다. ⚠️ 다만 드레이크는 샷건덱에서 딜러로 쓰이는 캐릭터다 — totemRole은 '토템으로도 쓸 수 있다'는 뜻이지 '토템으로만 쓴다'는 뜻이 아니다(HANDOFF §4-5). 드레이크가 버스트3을 돌리는 조합에서는 이 표시가 아예 적용되지 않는다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)"
+      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 1스킬 'Overcharge'가 **풀버스트 시작 시** 전 아군에게 명중률 ▲ 7%와 공격력 ▲ 7%를 10초간 건다. 조건 없이 자동으로 들어간다. ⚠️ 다만 드레이크는 샷건덱에서 딜러로 쓰이는 캐릭터다 — totemRole은 '토템으로도 쓸 수 있다'는 뜻이지 '토템으로만 쓴다'는 뜻이 아니다(HANDOFF §4-5). 드레이크가 버스트3을 돌리는 조합에서는 이 표시가 아예 적용되지 않는다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)",
+      "treasureNote_en": "She has a dedicated Treasure, counted among the higher-priority ones on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では優先度が高めに挙げられる宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, shotgun decks.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、ショットガンデッキ。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2 (at endgame, Skill 2 at around 7 is enough)",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2（完成時はスキル2が7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (useful extra option: Hit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（有効な追加オプション：命中率）",
+      "notes_en": "Recommended cube: Relic Bear. Use cases: PvE, shotgun decks.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE、ショットガンデッキ。",
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skill 1 \"Overcharge\" grants all allies hit rate ▲ 7% and ATK ▲ 7% for 10 sec **at the start of Full Burst**. It applies automatically with no conditions. ⚠️ Note that Drake is used as a damage dealer in shotgun decks — totemRole means \"she can also be used as a totem\", not \"she is only used as a totem\" (HANDOFF §4-5). In teams where Drake drives Burst 3 this label does not apply at all. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル1「Overcharge」が**フルバースト開始時**に味方全体へ命中率 ▲ 7%と攻撃力 ▲ 7%を10秒かける。条件なしで自動的に入る。⚠️ ただしドレイクはショットガンデッキでアタッカーとして使われるキャラだ — totemRoleは「トーテムとしても使える」という意味であって「トーテムとしてのみ使う」という意味ではない（HANDOFF §4-5）。ドレイクがバースト3を回す編成では、この表示はまったく適用されない。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: C / bossing: S / pvp: A). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: C ／ bossing: S ／ pvp: A）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Julia",
@@ -434,7 +810,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 크리티컬 확률 (유효 추가 옵션: 장탄수 증가)",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE.",
+      "treasureNote_en": "She has a dedicated Treasure, but on the recent community raising sheet it is a low-priority one to consider only once you have filled in the other essential Treasures and have room to spare. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあるが、最近のコミュニティ育成シート基準では他の必須の宝ものを先に揃えてから余裕があるときに検討する、優先度の低い宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1",
+      "overloadPriority_en": "Elemental Damage > ATK > Crit Rate (useful extra option: Max Ammo)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > クリティカル確率（有効な追加オプション：最大装填数）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: D / bossing: B / pvp: C). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: D ／ bossing: B ／ pvp: C）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Sugar",
@@ -444,7 +832,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (유효 추가 옵션: 크리티컬 대미지, 크리티컬 확률)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE. [2026-08-04 추가] 애장품 출시 후 '기존 최상위 딜러 라피에 필적하는가'라는 도발적 평가가 나올 정도로 고성능이라는 의견(에펜바움, 고뇨)이 있으나, 시청자 반응은 엇갈림(2스택 버스트가 핵심이라는 의견 vs 다른 신규 애장품이 더 낫다는 의견). 실사용 데이터로 재확인 필요."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE. [2026-08-04 추가] 애장품 출시 후 '기존 최상위 딜러 라피에 필적하는가'라는 도발적 평가가 나올 정도로 고성능이라는 의견(에펜바움, 고뇨)이 있으나, 시청자 반응은 엇갈림(2스택 버스트가 핵심이라는 의견 vs 다른 신규 애장품이 더 낫다는 의견). 실사용 데이터로 재확인 필요.",
+      "treasureNote_en": "She has a dedicated Treasure, counted among the higher-priority ones on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では優先度が高めに挙げられる宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (useful extra options: Crit Damage, Crit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（有効な追加オプション：クリティカルダメージ、クリティカル確率）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE. [Added 2026-08-04] After her Treasure released, some rated her high enough to ask the provocative question of whether she \"rivals Rapi, the established top dealer\" (Eppenbaum, Gonyo), but viewer reactions were split (some say the 2-stack burst is the key point, others say the other new Treasures are better). Needs re-checking against real usage data.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。［2026-08-04追加］宝もの実装後、「既存の最上位アタッカーであるラピに匹敵するか」という挑発的な評価が出るほど高性能だという意見（エッペンバウム、ゴニョ）があるが、視聴者の反応は割れている（2スタックのバーストが核心だという意見 vs 他の新しい宝もののほうが良いという意見）。実使用データでの再確認が必要。"
     },
     {
       "name": "Bay",
@@ -460,7 +858,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVP, 좀비덱.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬 (종결 시 1스킬 7, 2스킬 7, 버스트스킬 7 정도면 충분)",
       "overloadPriority": "차지 속도 증가 > 방어력 증가 > 장탄수 증가",
-      "notes": "큐브 추천: 렐릭 템퍼링, 렐릭 비고르. 사용처: PVP, 좀비덱."
+      "notes": "큐브 추천: 렐릭 템퍼링, 렐릭 비고르. 사용처: PVP, 좀비덱.",
+      "treasureNote_en": "She has a dedicated Treasure, ranked at medium priority on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 2 (stage 3).",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では中程度の優先度の宝もの。コレクションアイテム／宝ものの最終目標段階：2段階（3段階）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvP, zombie deck.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvP、ゾンビデッキ。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill (at endgame, Skill 1 at 7, Skill 2 at 7 and Burst Skill at around 7 are enough)",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル（完成時はスキル1が7、スキル2が7、バーストスキルが7程度で十分）",
+      "overloadPriority_en": "Charge Speed > DEF > Max Ammo",
+      "overloadPriority_ja": "チャージスピード > 防御力 > 最大装填数",
+      "notes_en": "Recommended cubes: Relic Tempering, Relic Vigor. Use cases: PvP, zombie deck.",
+      "notes_ja": "おすすめキューブ：レリックテンパリング、レリックビガー。使用先：PvP、ゾンビデッキ。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: D / bossing: D / pvp: SS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: D ／ bossing: D ／ pvp: SS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Rosanna",
@@ -476,7 +886,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE / PVP, (전격 솔레 전용).",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬",
       "overloadPriority": "우월 코드 > 장탄수 증가 (유효 추가 옵션: 공격력 증가, 크리티컬 대미지, 크리티컬 확률)",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어, 렐릭 템퍼링. 사용처: PVE / PVP, (전격 솔레 전용). [2026-08-04 추가] 이 우선순위 평가에 이견 있음: 에펜바움 '전격 보스 한정'이라는 제한적 발동 조건 때문에 PVE에서 사실상 무용지물이라며 '기존에 로산나를 키운 사람이 아니면 애장품 승급 비추천'이라고 강하게 평가절하함. 다른 유튜버 3인의 교차검증은 없어 단일 소스 주장이므로 확신도 낮음 — 실사용 데이터로 재확인 필요."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어, 렐릭 템퍼링. 사용처: PVE / PVP, (전격 솔레 전용). [2026-08-04 추가] 이 우선순위 평가에 이견 있음: 에펜바움 '전격 보스 한정'이라는 제한적 발동 조건 때문에 PVE에서 사실상 무용지물이라며 '기존에 로산나를 키운 사람이 아니면 애장품 승급 비추천'이라고 강하게 평가절하함. 다른 유튜버 3인의 교차검증은 없어 단일 소스 주장이므로 확신도 낮음 — 실사용 데이터로 재확인 필요.",
+      "treasureNote_en": "She has a dedicated Treasure, ranked at medium priority on the recent community raising sheet. Final target stage for Collection Item / Treasure: stage 3.",
+      "treasureNote_ja": "専用の宝ものがあり、最近のコミュニティ育成シート基準では中程度の優先度の宝もの。コレクションアイテム／宝ものの最終目標段階：3段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP, (Electric Solo Raid only).",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP、（電撃ソロレイド専用）。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1",
+      "overloadPriority_en": "Elemental Damage > Max Ammo (useful extra options: ATK, Crit Damage, Crit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数（有効な追加オプション：攻撃力、クリティカルダメージ、クリティカル確率）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear, Relic Tempering. Use cases: PvE / PvP, (Electric Solo Raid only). [Added 2026-08-04] This priority rating is disputed: Eppenbaum marked her down hard, saying that her restrictive trigger condition of \"Electric bosses only\" makes her effectively useless in PvE, and that \"unless you have already raised Rosanna, upgrading the Treasure is not recommended\". There is no cross-check from the other three YouTubers, so this is a single-source claim and confidence is low — needs re-checking against real usage data.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー、レリックテンパリング。使用先：PvE／PvP、（電撃ソロレイド専用）。［2026-08-04追加］この優先度の評価には異論がある：エッペンバウムは「電撃ボス限定」という限定的な発動条件のためPvEでは事実上役に立たないとして、「もともとロザンナを育てていた人でなければ宝ものの昇級は非推奨」と強く評価を下げた。他のYouTuber3人による交差検証がなく単一ソースの主張のため確信度は低い — 実使用データでの再確認が必要。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: E / bossing: A / pvp: SS). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: E ／ bossing: A ／ pvp: SS）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Viper",
@@ -492,7 +914,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE / PVP, 샷건덱.",
       "skillPriority": "1스킬 = 버스트스킬 > 2스킬",
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE / PVP, 샷건덱."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE / PVP, 샷건덱.",
+      "treasureNote_en": "She has a dedicated Treasure, but on the recent community raising sheet it is a low-priority one to consider only once you have filled in the other essential Treasures and have room to spare. Final target stage for Collection Item / Treasure: stage 2.",
+      "treasureNote_ja": "専用の宝ものがあるが、最近のコミュニティ育成シート基準では他の必須の宝ものを先に揃えてから余裕があるときに検討する、優先度の低い宝もの。コレクションアイテム／宝ものの最終目標段階：2段階。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP, shotgun decks.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP、ショットガンデッキ。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use cases: PvE / PvP, shotgun decks.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE／PvP、ショットガンデッキ。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: D / bossing: B / pvp: A). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: D ／ bossing: B ／ pvp: A）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Exia",
@@ -508,7 +942,19 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 차지 속도 증가 장탄수 증가 금지",
-      "notes": "큐브 추천: 렐릭 베어, 렐릭 부스트. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어, 렐릭 부스트. 사용처: PVE.",
+      "treasureNote_en": "She has a dedicated Treasure, but on the recent community raising sheet it is a low-priority one to consider only once you have filled in the other essential Treasures and have room to spare. Final target stage for Collection Item / Treasure: stage 2 (stage 3).",
+      "treasureNote_ja": "専用の宝ものがあるが、最近のコミュニティ育成シート基準では他の必須の宝ものを先に揃えてから余裕があるときに検討する、優先度の低い宝もの。コレクションアイテム／宝ものの最終目標段階：2段階（3段階）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1",
+      "overloadPriority_en": "Elemental Damage > ATK > Charge Speed; Max Ammo is to be avoided",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > チャージスピード。最大装填数は禁止",
+      "notes_en": "Recommended cubes: Relic Bear, Relic Boost. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー、レリックブースト。使用先：PvE。",
+      "treasureTiersNote_en": "Per prydwen.gg as of 2026-08, this is her actual rating when you own the Treasure (story: B / bossing: B / pvp: D). Without the Treasure, the base tiers in characterDatabase.json apply.",
+      "treasureTiersNote_ja": "2026-08時点のprydwen.gg基準で、宝もの所持時の実際の評価（story: B ／ bossing: B ／ pvp: D）。宝もの未所持の場合はcharacterDatabase.jsonの基本ティアに従う。"
     },
     {
       "name": "Vesti: Tactical Upgrade",
@@ -518,7 +964,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE / PVP, 방어력 무시.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬 (종결 시 1스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (1~4) (유효 추가 옵션: 차지속도 증가, 크리티컬 확률, (PVP))",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE / PVP, 방어력 무시."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE / PVP, 방어력 무시.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP, DEF ignore.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP、防御力無視。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1 (at endgame, Skill 1 at around 7 is enough)",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1（完成時はスキル1が7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (1–4) (useful extra options: Charge Speed, Crit Rate, (PvP))",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（1〜4）（有効な追加オプション：チャージスピード、クリティカル確率、（PvP））",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use cases: PvE / PvP, DEF ignore.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE／PvP、防御力無視。"
     },
     {
       "name": "Label",
@@ -528,7 +984,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE / PVP.",
       "skillPriority": "2스킬 > 1스킬 = 버스트스킬 (종결 시 1스킬 7, 버스트스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 (PVE) 방어력 증가 (PVP) > 공격력 증가 > 장탄수 증가 (유효 추가 옵션: 명중률 증가)",
-      "notes": "큐브 추천: 렐릭 템퍼링, 렐릭 비고르, (PVP), 렐릭 베어. 사용처: PVE / PVP."
+      "notes": "큐브 추천: 렐릭 템퍼링, 렐릭 비고르, (PVP), 렐릭 베어. 사용처: PVE / PVP.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP。",
+      "skillPriority_en": "Skill 2 > Skill 1 = Burst Skill (at endgame, Skill 1 at 7 and Burst Skill at around 7 are enough)",
+      "skillPriority_ja": "スキル2 > スキル1 = バーストスキル（完成時はスキル1が7、バーストスキルが7程度で十分）",
+      "overloadPriority_en": "Elemental Damage (PvE) / DEF (PvP) > ATK > Max Ammo (useful extra option: Hit Rate)",
+      "overloadPriority_ja": "有利コードダメージ（PvE）／防御力（PvP） > 攻撃力 > 最大装填数（有効な追加オプション：命中率）",
+      "notes_en": "Recommended cubes: Relic Tempering, Relic Vigor, (PvP), Relic Bear. Use cases: PvE / PvP.",
+      "notes_ja": "おすすめキューブ：レリックテンパリング、レリックビガー、（PvP）、レリックベアー。使用先：PvE／PvP。"
     },
     {
       "name": "Brid: Silent Track",
@@ -538,7 +1004,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (유효 추가 옵션: 크리티컬 데미지, 크리티컬 확률, 명중률 증가)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (useful extra options: Crit Damage, Crit Rate, Hit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（有効な追加オプション：クリティカルダメージ、クリティカル確率、命中率）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Arcana: Fortune Mate",
@@ -548,7 +1024,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (1) 재장전 큐브 사용 시 장탄 수 필요 (유효 추가 옵션: 크리티컬 데미지, 크리티컬 확률)",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (1); Max Ammo is needed if you run a reload cube (useful extra options: Crit Damage, Crit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（1）。リロード系キューブを使う場合は最大装填数が必要（有効な追加オプション：クリティカルダメージ、クリティカル確率）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE。"
     },
     {
       "name": "Neon: Vision Eye",
@@ -558,7 +1044,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬",
       "overloadPriority": "우월 코드 > 차지 속도 증가 14% 이상 추천 > 공격력 증가 (유효 추가 옵션: 장탄수 증가, (1~2))",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > Charge Speed, 14% or more recommended > ATK (useful extra option: Max Ammo, (1–2))",
+      "overloadPriority_ja": "有利コードダメージ > チャージスピード（14%以上推奨） > 攻撃力（有効な追加オプション：最大装填数、（1〜2））",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Maiden: Ice Rose",
@@ -575,7 +1071,19 @@
         "element": "electric",
         "minAllies": 1,
         "note": "2스킬 버프가 전기 코드 아군에게만 들어간다"
-      }
+      },
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK (useful extra option: Charge Speed)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力（有効な追加オプション：チャージスピード）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use cases: PvE / PvP.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE／PvP。",
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skill 2 \"Blessings Upon You\" grants Electric code allies other than herself elemental damage ▲ 24.2% and ATK ▲ 12.35% (scaling off the caster's ATK) for 10 sec **whenever MP charges**. Skill 1 \"Meditation\" fills MP on entering burst stage 1 and on entering Full Burst, so it fires every cycle even if Maiden never uses her own Burst (in fact, using the Burst consumes all the banked MP). ⚠️ If there is no Electric ally at all, this buff reaches nobody, so it is gated by totemCondition. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル2「Blessings Upon You」が**MPがチャージされたとき**、自分を除く電撃コードの味方に有利コードダメージ ▲ 24.2%と攻撃力 ▲ 12.35%（術者の攻撃力基準）を10秒かける。MPはスキル1「Meditation」がバースト1段階突入時とフルバースト突入時に満たしてくれるため、メイデンが自分のバーストを使わなくても毎サイクル発動する（むしろバーストを使うと溜まったMPがすべて消費される）。⚠️ 電撃の味方が1人もいないとこのバフは誰にも入らないため、totemConditionで制限する。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）"
     },
     {
       "name": "Cinderella: Crystal Wave",
@@ -585,7 +1093,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (1~2) (유효 추가 옵션: 크리티컬 데미지, 크리티컬 확률)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE. [2026-08-04 추가] 유튜버 4인 모두 대체로 고평가하나 체급 인식에 온도차 있음: 고뇨('라피보다 셉니다')·김진서('비우코·우코 모두 1황 체급')는 최상위권(라피급 이상)으로 평가, 스페란도는 '철갑의 신데렐라'로 방어 특화 긍정 평가, 에펜바움은 '스테이지 최우선은 여전히 라피, 수렐루는 근접한 대체픽(10점 만점 9점)'으로 라피보다 한 단계 아래로 평가. 다수(고뇨·김진서: 라피급 이상) 대 소수(에펜바움: 라피보다 근소 하위) 구도."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE. [2026-08-04 추가] 유튜버 4인 모두 대체로 고평가하나 체급 인식에 온도차 있음: 고뇨('라피보다 셉니다')·김진서('비우코·우코 모두 1황 체급')는 최상위권(라피급 이상)으로 평가, 스페란도는 '철갑의 신데렐라'로 방어 특화 긍정 평가, 에펜바움은 '스테이지 최우선은 여전히 라피, 수렐루는 근접한 대체픽(10점 만점 9점)'으로 라피보다 한 단계 아래로 평가. 다수(고뇨·김진서: 라피급 이상) 대 소수(에펜바움: 라피보다 근소 하위) 구도.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (1–2) (useful extra options: Crit Damage, Crit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（1〜2）（有効な追加オプション：クリティカルダメージ、クリティカル確率）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE. [Added 2026-08-04] All four YouTubers rate her highly, but they differ on exactly how strong: Gonyo (\"she is stronger than Rapi\") and Kim Jinseo (\"top of the pile both off-element and on-element\") place her at the very top (at or above Rapi's level), Sperando praises her defensive specialisation as \"the Iron Cinderella\", while Eppenbaum puts her a step below Rapi — \"Rapi is still the first pick for stages; Summer Cinderella is a close alternative (9 out of 10)\". A majority (Gonyo, Kim Jinseo: at or above Rapi) versus minority (Eppenbaum: marginally below Rapi) split.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。［2026-08-04追加］YouTuber4人ともおおむね高評価だが、体格の認識には温度差がある：ゴニョ（「ラピより強いです」）とキム・ジンソ（「非有利コードでも有利コードでも1番手の体格」）は最上位圏（ラピ級以上）と評価し、スペランドは「鉄甲のシンデレラ」として防御特化を肯定的に評価、エッペンバウムは「ステージの最優先は依然としてラピ、水着シンデレラは近接した代替ピック（10点満点で9点）」としてラピより一段下に評価している。多数（ゴニョ・キム・ジンソ：ラピ級以上）対少数（エッペンバウム：ラピよりわずかに下）の構図。"
     },
     {
       "name": "Raven",
@@ -595,7 +1113,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "1스킬 > 2스킬 = 버스트스킬 (종결 시 2스킬 7, 버스트스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가 (유효 추가 옵션: 크리티컬 확률, 크리티컬 데미지)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 > Skill 2 = Burst Skill (at endgame, Skill 2 at 7 and Burst Skill at around 7 are enough)",
+      "skillPriority_ja": "スキル1 > スキル2 = バーストスキル（完成時はスキル2が7、バーストスキルが7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK (useful extra options: Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力（有効な追加オプション：クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Ada Wong",
@@ -607,7 +1135,19 @@
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가 (유효 추가 옵션: 크리티컬 확률, 크리티컬 데미지)",
       "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
       "totemRole": true,
-      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 1스킬이 '풀버스트 진입 시' 이미 버스트를 쓴 버스트3 아군에게 공격력 ▲ 35.46%(시전자 공격력 기준)를 10초간 걸어준다. 조건이 붙은 쪽은 버프를 '받는' 아군이지 에이다 본인이 아니므로, 에이다가 버스트를 쓰지 못하는 상황에서도 다른 버스트3 딜러를 그대로 버프한다. 본인 버스트도 자기 전용이라 넘겼을 때 팀 손실이 없다. 즉 버스트3가 남아도는 구성에서 세 번째 버스트3로 들어갔을 때 오히려 제 역할을 하는 형태다."
+      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 1스킬이 '풀버스트 진입 시' 이미 버스트를 쓴 버스트3 아군에게 공격력 ▲ 35.46%(시전자 공격력 기준)를 10초간 걸어준다. 조건이 붙은 쪽은 버프를 '받는' 아군이지 에이다 본인이 아니므로, 에이다가 버스트를 쓰지 못하는 상황에서도 다른 버스트3 딜러를 그대로 버프한다. 본인 버스트도 자기 전용이라 넘겼을 때 팀 손실이 없다. 즉 버스트3가 남아도는 구성에서 세 번째 버스트3로 들어갔을 때 오히려 제 역할을 하는 형태다.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2 (at endgame, Skill 2 at around 9 is enough)",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2（完成時はスキル2が9程度で十分）",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK (useful extra options: Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力（有効な追加オプション：クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。",
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Her Skill 1 grants ATK ▲ 35.46% (scaling off the caster's ATK) for 10 sec \"on entering Full Burst\" to Burst 3 allies who have already used their Burst. The condition applies to the ally *receiving* the buff, not to Ada herself, so she still buffs other Burst 3 dealers even in situations where she never gets to use her Burst. Her own Burst is self-only, so the team loses nothing when she yields it. In other words, she actually does her job precisely when she comes in as the third Burst 3 in a composition with a surplus of them.",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル1が「フルバースト突入時」に、すでにバーストを使ったバースト3の味方へ攻撃力 ▲ 35.46%（術者の攻撃力基準）を10秒かける。条件が付いているのはバフを「受ける」味方のほうでエイダ本人ではないため、エイダがバーストを使えない状況でも他のバースト3アタッカーをそのままバフする。本人のバーストも自分専用なので、譲ってもチームの損失がない。つまりバースト3が余る構成で3人目のバースト3として入ったときにこそ役割を果たす形だ。"
     },
     {
       "name": "Anis: Sparkling Summer",
@@ -624,7 +1164,19 @@
         "element": "electric",
         "minAllies": 1,
         "note": "1스킬 버프가 전기 코드 아군에게만 들어간다"
-      }
+      },
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP。",
+      "skillPriority_en": "Skill 1 = Skill 2 > Burst Skill (no Burst Skill investment needed at endgame)",
+      "skillPriority_ja": "スキル1 = スキル2 > バーストスキル（完成時はバーストスキルへの投資は不要）",
+      "overloadPriority_en": "Elemental Damage > Hit Rate > ATK; Max Ammo is to be avoided",
+      "overloadPriority_ja": "有利コードダメージ > 命中率 > 攻撃力。最大装填数は禁止",
+      "notes_en": "Recommended cube: Relic Bear. Use cases: PvE / PvP.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE／PvP。",
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skill 1 \"Sparkling Boost\" triggers \"on entering Full Burst\" and grants all Electric code allies ATK ▲ 32.68% (scaling off the caster's ATK) and reload speed ▲ 29.12% for 10 sec — the trigger is the team's Full Burst, not her own Burst, so this buff still comes out when another character is covering the Burst 3 slot. Conversely her own Burst is entirely a personal damage buff applied to herself (max ammo ▼, reload ▲, elemental damage ▲), so the team loses nothing when she yields the Burst. She is the Electric code counterpart to Elegg: Boom and Shock's Water version — an element-specific totem. Note that this buff only reaches Electric code allies, so if the team has none, her value as a totem disappears (checked via totemCondition).",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル1「Sparkling Boost」が「フルバースト突入時」に発動し、電撃コードの味方全体へ攻撃力 ▲ 32.68%（術者の攻撃力基準）とリロード速度 ▲ 29.12%を10秒かける — 発動条件はチームのフルバーストであって本人のバーストではないため、バースト3の枠を他のキャラがカバー中でもこのバフはそのまま出る。逆に本人のバーストはすべて自分にだけかかる個人火力バフ（最大装填数 ▼、リロード ▲、有利コードダメージ ▲）なので、バーストを譲ってもチームが失うものはない。エレグ：ブーム・アンド・ショックの水冷版に相当する電撃コード専用のトーテムだ。ただしこのバフは電撃コードの味方にしか入らないため、チームにその属性の味方がいなければトーテムとしての価値が失われる（totemConditionで検査）。"
     },
     {
       "name": "Maxwell",
@@ -634,7 +1186,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE, 관통.",
       "skillPriority": "1스킬 = 버스트스킬 > 2스킬 (종결 시 2스킬 4 정도면 충분)",
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가 (유효 추가 옵션: 차지 데미지 증가)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE, 관통. 참고: 2026년 7월 출시된 파워업(이격) 캐릭터 '맥스웰: 오디너리 미케닉'은 별도 항목으로 분리해 정리함(아래 참고)."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE, 관통. 참고: 2026년 7월 출시된 파워업(이격) 캐릭터 '맥스웰: 오디너리 미케닉'은 별도 항목으로 분리해 정리함(아래 참고).",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, penetration.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、貫通。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2 (at endgame, Skill 2 at around 4 is enough)",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2（完成時はスキル2が4程度で十分）",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK (useful extra option: Charge Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力（有効な追加オプション：チャージダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. Use cases: PvE, penetration. Note: \"Maxwell: Ordinary Mechanic\", the power-up (alt) character released in July 2026, is covered as a separate entry (see below).",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE、貫通。参考：2026年7月に実装されたパワーアップ（別バージョン）キャラ「マクスウェル：オーディナリーメカニック」は別項目として分けて整理している（下記参照）。"
     },
     {
       "name": "Isabel",
@@ -644,7 +1206,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE , 아르카나 파트너.",
       "skillPriority": "1스킬 = 2스킬 = 버스트스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (1) (유효 추가 옵션: 명중률 증가, 크리티컬 확률, 크리티컬 데미지)",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE , 아르카나 파트너."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE , 아르카나 파트너.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, Arcana partner.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、アルカナのパートナー。",
+      "skillPriority_en": "Skill 1 = Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 = スキル2 = バーストスキル",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (1) (useful extra options: Hit Rate, Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（1）（有効な追加オプション：命中率、クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use cases: PvE, Arcana partner.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE、アルカナのパートナー。"
     },
     {
       "name": "Ein",
@@ -654,7 +1226,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "버스트스킬 > 1스킬 > 2스킬",
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Burst Skill > Skill 1 > Skill 2",
+      "skillPriority_ja": "バーストスキル > スキル1 > スキル2",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Ludmilla: Winter Owner",
@@ -666,7 +1248,19 @@
       "overloadPriority": "우월 코드 > 장탄수 증가 > 공격력 증가",
       "notes": "큐브 추천: 택티컬 베어. 사용처: PVE.",
       "totemRole": true,
-      "totemNote": "버스트3, 쿨타임 40초. 버스트 스킬('Guiding Lantern')이 자신에게만 걸리는 공격력/재장전 버프라 버스트를 못 써도 팀이 잃는 것이 적고, 반대로 팀 기여분인 1스킬('The Queen's Gaze', 평타 60회마다 대상 받는 피해 ▲ 7.42%)은 평타만 쏘면 계속 발동한다. 이 구조 때문에 수냉 콘텐츠의 토템 자리에 자주 추천된다. (출처: 인벤 2025-07-24 「1티어 수냉 토템! 수영복 한정 니케 일레그, 성능과 세팅법」 — \"토템이란 버스트를 사용하지 않는 다섯 번째 자리에 놓는 니케\"라는 정의와 추천 목록)"
+      "totemNote": "버스트3, 쿨타임 40초. 버스트 스킬('Guiding Lantern')이 자신에게만 걸리는 공격력/재장전 버프라 버스트를 못 써도 팀이 잃는 것이 적고, 반대로 팀 기여분인 1스킬('The Queen's Gaze', 평타 60회마다 대상 받는 피해 ▲ 7.42%)은 평타만 쏘면 계속 발동한다. 이 구조 때문에 수냉 콘텐츠의 토템 자리에 자주 추천된다. (출처: 인벤 2025-07-24 「1티어 수냉 토템! 수영복 한정 니케 일레그, 성능과 세팅법」 — \"토템이란 버스트를 사용하지 않는 다섯 번째 자리에 놓는 니케\"라는 정의와 추천 목록)",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2",
+      "overloadPriority_en": "Elemental Damage > Max Ammo > ATK",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数 > 攻撃力",
+      "notes_en": "Recommended cube: Tactical Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：タクティカルベアー。使用先：PvE。",
+      "totemNote_en": "Burst 3, 40s cooldown. Her Burst Skill (\"Guiding Lantern\") is a self-only ATK/reload buff, so the team loses little when she cannot use her Burst; conversely her team contribution, Skill 1 (\"The Queen's Gaze\", target takes ▲ 7.42% more damage, every 60 normal attacks), keeps firing as long as she is shooting. That structure is why she is often recommended for the totem slot in Water content. (Source: Inven, 2025-07-24, \"Tier 1 Water totem! The limited swimsuit NIKKE Elegg: performance and setup\" — the definition \"a totem is a NIKKE you put in the fifth slot without using her Burst\" and its recommendation list)",
+      "totemNote_ja": "バースト3、クールタイム40秒。バーストスキル「Guiding Lantern」は自分だけにかかる攻撃力／リロードバフなので、バーストを使えなくてもチームが失うものは少なく、逆にチームへの貢献分であるスキル1「The Queen's Gaze」（通常攻撃60回ごとに対象の被ダメージ ▲ 7.42%）は通常攻撃を撃ってさえいれば発動し続ける。この構造のため水冷コンテンツのトーテム枠によく推奨される。（出典：インベン2025-07-24「Tier1水冷トーテム！水着限定ニケ エレグ、性能とセッティング法」— 「トーテムとはバーストを使わない5番目の枠に置くニケ」という定義と推奨リスト）"
     },
     {
       "name": "Ark Ranger Black",
@@ -676,7 +1270,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터.",
       "skillPriority": "1스킬 = 버스트스킬 > 2스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 (유효 추가 옵션: 크리티컬 확률, 크리티컬 데미지)",
-      "notes": "큐브 추천: 렐릭 베어. [2026-08-04 추가] 평가가 다소 갈림: 고뇨는 '풍압 딜러가 희귀해 상대적 가치가 높다'고 긍정 평가, 스페란도는 '똥총(낮은 기본화력)의 한계는 명확하다'며 비판적 평가. 2인뿐이라 다수/소수 구분은 어려우며, characterDatabase.json상 현재 티어(story A/bossing S/pvp A)는 고뇨 쪽 평가에 더 가까움 — 확인 필요."
+      "notes": "큐브 추천: 렐릭 베어. [2026-08-04 추가] 평가가 다소 갈림: 고뇨는 '풍압 딜러가 희귀해 상대적 가치가 높다'고 긍정 평가, 스페란도는 '똥총(낮은 기본화력)의 한계는 명확하다'며 비판적 평가. 2인뿐이라 다수/소수 구분은 어려우며, characterDatabase.json상 현재 티어(story A/bossing S/pvp A)는 고뇨 쪽 평가에 더 가까움 — 확인 필요.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7).",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK (useful extra options: Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力（有効な追加オプション：クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. [Added 2026-08-04] Opinion is somewhat split: Gonyo rates her positively, saying \"Wind dealers are scarce, so her relative value is high\", while Sperando is critical, saying \"the limits of her poor base gun are obvious\". With only two voices it is hard to call a majority or minority, and her current tiers in characterDatabase.json (story A / bossing S / pvp A) sit closer to Gonyo's read — needs checking.",
+      "notes_ja": "おすすめキューブ：レリックベアー。［2026-08-04追加］評価はやや割れている：ゴニョは「風圧アタッカーが希少なので相対的な価値が高い」と肯定的に評価し、スペランドは「基本火力の低い銃という限界は明確だ」と批判的に評価した。2人だけなので多数／少数の区別は難しく、characterDatabase.json上の現在のティア（story A／bossing S／pvp A）はゴニョ寄りの評価に近い — 確認が必要。"
     },
     {
       "name": "Elegg: Boom and Shock",
@@ -693,7 +1297,19 @@
         "element": "water",
         "minAllies": 1,
         "note": "1스킬 버프가 수냉 코드 아군에게만 들어간다"
-      }
+      },
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 = Burst Skill > Skill 2",
+      "skillPriority_ja": "スキル1 = バーストスキル > スキル2",
+      "overloadPriority_en": "Elemental Damage > Max Ammo (1–2) > ATK (useful extra options: Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数（1〜2） > 攻撃力（有効な追加オプション：クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。",
+      "totemNote_en": "Burst 3, 40s cooldown. Most of her skills are based on cumulative hit counts, so they work regardless of whether she uses her own Burst — Skill 1 \"Hello Ghost\" collects one ghost for every 100 cumulative attacks by the whole team (6 sec internal cooldown), up to 13, and buffs all Water code allies according to how many have gathered. In other words, the team buff still comes out when another character covers the Burst 3 slot, which suits totem use. That said, it is known that at the exact moment she reaches 13 stacks, having her use the Burst herself raises damage considerably. (Source: Inven, 2025-07-24, \"Tier 1 Water totem! The limited swimsuit NIKKE Elegg: performance and setup\" — the definition \"a totem is a NIKKE you put in the fifth slot without using her Burst\" and its recommendation list) Note that this buff only reaches Water code allies, so if the team has none, her value as a totem disappears (checked via totemCondition).",
+      "totemNote_ja": "バースト3、クールタイム40秒。スキルの大半が「累積ヒット数」ベースなので、本人のバースト使用の有無に関わらず作動する — スキル1「Hello Ghost」は味方全体の攻撃が累積100回になるごとに（内部クールタイム6秒）ゴーストを1個ずつ最大13個まで集め、集まった数に応じて水冷コードの味方全体にバフを与える。つまりバースト3の枠を他のキャラがカバー中でもチームバフはそのまま出るため、トーテム起用に適している。ただし13スタックに到達した瞬間だけは、本人がバーストを使うほうが火力が大きく上がると知られている。（出典：インベン2025-07-24「Tier1水冷トーテム！水着限定ニケ エレグ、性能とセッティング法」— 「トーテムとはバーストを使わない5番目の枠に置くニケ」という定義と推奨リスト）ただしこのバフは水冷コードの味方にしか入らないため、チームにその属性の味方がいなければトーテムとしての価値が失われる（totemConditionで検査）。"
     },
     {
       "name": "Rouge",
@@ -705,7 +1321,19 @@
       "overloadPriority": "장탄수 증가 (유효 추가 옵션: 명함 추천)",
       "notes": "큐브 추천: 렐릭 베어, 렐릭 부스트. 사용처: PVE.",
       "totemRole": true,
-      "totemNote": "버스트1, 쿨타임 20초. [스킬 원문 근거] 1스킬 'Card Throw'가 풀차지 공격 8회마다 전 아군의 버스트 스킬 쿨타임을 4.13초 줄여준다 -- 솔린: 프로스트 티켓과 같은 상시 버쿨감 구조라, 버스트1을 다른 캐릭터가 커버 중이어도 팀 전체의 버스트 사이클을 단축하는 값어치가 남는다. 2스킬은 후열 배치 시 자신과 양옆 2명에게 공격 데미지 ▲ 3.93%를 상시로 걸고, 이후 받는 피해 ▼ 8.98%까지 상시로 붙는다. 다만 버프 상당수가 최대 HP 계열이라 공격력·재장전 버프를 우선하는 기준에서는 계수 가치가 높지 않다는 점은 감안할 것."
+      "totemNote": "버스트1, 쿨타임 20초. [스킬 원문 근거] 1스킬 'Card Throw'가 풀차지 공격 8회마다 전 아군의 버스트 스킬 쿨타임을 4.13초 줄여준다 -- 솔린: 프로스트 티켓과 같은 상시 버쿨감 구조라, 버스트1을 다른 캐릭터가 커버 중이어도 팀 전체의 버스트 사이클을 단축하는 값어치가 남는다. 2스킬은 후열 배치 시 자신과 양옆 2명에게 공격 데미지 ▲ 3.93%를 상시로 걸고, 이후 받는 피해 ▼ 8.98%까지 상시로 붙는다. 다만 버프 상당수가 최대 HP 계열이라 공격력·재장전 버프를 우선하는 기준에서는 계수 가치가 높지 않다는 점은 감안할 것.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 > Skill 2 = Burst Skill",
+      "skillPriority_ja": "スキル1 > スキル2 = バーストスキル",
+      "overloadPriority_en": "Max Ammo (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "最大装填数（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cubes: Relic Bear, Relic Boost. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー、レリックブースト。使用先：PvE。",
+      "totemNote_en": "Burst 1, 20s cooldown. [Based on the skill text] Skill 1 \"Card Throw\" cuts every ally's Burst Skill cooldown by 4.13 sec for every 8 full-charge attacks — the same permanent burst-cooldown-reduction structure as Soline: Frost Ticket, so even when another character covers Burst 1, the value of shortening the whole team's burst cycle remains. Skill 2 permanently grants herself and the two allies beside her attack damage ▲ 3.93% when placed in the back row, and subsequently a permanent damage taken ▼ 8.98% as well. Bear in mind, though, that many of her buffs are max-HP based, so their coefficient value is not high by a standard that prioritises ATK and reload buffs.",
+      "totemNote_ja": "バースト1、クールタイム20秒。［スキル原文が根拠］スキル1「Card Throw」がフルチャージ攻撃8回ごとに味方全体のバーストスキルのクールタイムを4.13秒短縮する — ソリン：フロストチケットと同じ常時バーストクールタイム短縮の構造なので、バースト1を他のキャラがカバー中でもチーム全体のバーストサイクルを短縮する価値が残る。スキル2は後列配置時に自分と両隣の2人へ攻撃ダメージ ▲ 3.93%を常時かけ、その後は被ダメージ ▼ 8.98%も常時付く。ただしバフの相当数が最大HP系なので、攻撃力・リロードバフを優先する基準では係数の価値が高くない点は考慮すること。"
     },
     {
       "name": "Soline: Frost Ticket",
@@ -717,7 +1345,19 @@
       "overloadPriority": "특별한 필수 오버로드 없음 (유효 추가 옵션: 명함 추천)",
       "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE.",
       "totemRole": true,
-      "totemNote": "1스킬('I'll Check Your Ticket!')이 풀버스트 진입 시 전 아군의 버스트 스킬 쿨타임을 5.34초 감소시켜주는 상시 버쿨감(버스트 쿨타임 감소) 버프라, 버스트1 슬롯을 다른 캐릭터가 빠른 쿨타임으로 커버 중이어도 팀 전체의 버스트 사이클을 단축시켜주는 용도로 가치가 유지된다. 2스킬은 체력이 15% 밑으로 떨어진 아군을 자동으로 응급 회복시켜주는 안전판 역할도 겸한다. 버스트 스킬 자체(전 아군 회복)보다 이 상시 쿨타임 감소/응급 회복 패시브가 토템으로 기용될 때의 핵심 가치다. [스킬 원문 근거] 외부 공략에서 토템으로 지명된 기록은 아직 찾지 못했고, 위 판단은 characterDatabase.json에 실린 스킬 원문(풀버스트 진입 시 전 아군 버스트 쿨타임 감소)에서 직접 끌어낸 것이다."
+      "totemNote": "1스킬('I'll Check Your Ticket!')이 풀버스트 진입 시 전 아군의 버스트 스킬 쿨타임을 5.34초 감소시켜주는 상시 버쿨감(버스트 쿨타임 감소) 버프라, 버스트1 슬롯을 다른 캐릭터가 빠른 쿨타임으로 커버 중이어도 팀 전체의 버스트 사이클을 단축시켜주는 용도로 가치가 유지된다. 2스킬은 체력이 15% 밑으로 떨어진 아군을 자동으로 응급 회복시켜주는 안전판 역할도 겸한다. 버스트 스킬 자체(전 아군 회복)보다 이 상시 쿨타임 감소/응급 회복 패시브가 토템으로 기용될 때의 핵심 가치다. [스킬 원문 근거] 외부 공략에서 토템으로 지명된 기록은 아직 찾지 못했고, 위 판단은 characterDatabase.json에 실린 스킬 원문(풀버스트 진입 시 전 아군 버스트 쿨타임 감소)에서 직접 끌어낸 것이다.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 1 > Skill 2 = Burst Skill (at endgame, Skill 2 at 1 and Burst Skill at around 1 are enough)",
+      "skillPriority_ja": "スキル1 > スキル2 = バーストスキル（完成時はスキル2が1、バーストスキルが1程度で十分）",
+      "overloadPriority_en": "No particular required Overload (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "特に必須のオーバーロードはない（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE。",
+      "totemNote_en": "Skill 1 (\"I'll Check Your Ticket!\") is a permanent burst-cooldown-reduction buff that cuts every ally's Burst Skill cooldown by 5.34 sec on entering Full Burst, so even when a faster-cooldown character covers the Burst 1 slot, she keeps her value as a way to shorten the whole team's burst cycle. Skill 2 doubles as a safety net that automatically emergency-heals any ally whose HP drops below 15%. This permanent cooldown reduction and emergency healing — rather than the Burst Skill itself (an all-ally heal) — are the core value when she is fielded as a totem. [Based on the skill text] No record of an outside guide naming her as a totem has been found yet; the judgement above is drawn directly from the skill text in characterDatabase.json (reduces all allies' burst cooldown on entering Full Burst).",
+      "totemNote_ja": "スキル1「I'll Check Your Ticket!」は、フルバースト突入時に味方全体のバーストスキルのクールタイムを5.34秒短縮する常時バーストクールタイム短縮バフなので、バースト1の枠をクールタイムの短いキャラがカバー中でも、チーム全体のバーストサイクルを短縮する用途で価値が保たれる。スキル2はHPが15%を下回った味方を自動的に緊急回復させる安全弁の役割も兼ねる。バーストスキル自体（味方全体の回復）よりも、この常時クールタイム短縮と緊急回復のパッシブがトーテムとして起用されるときの核心的な価値だ。［スキル原文が根拠］外部の攻略でトーテムとして指名された記録はまだ見つかっておらず、上記の判断はcharacterDatabase.jsonに載っているスキル原文（フルバースト突入時に味方全体のバーストクールタイムを短縮）から直接導いたものである。"
     },
     {
       "name": "Milk: Blooming Bunny",
@@ -727,7 +1367,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE, 관통, 수동컨트롤 必.",
       "skillPriority": "버스트스킬 > 1스킬 = 2스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 장탄수 증가 (2) (유효 추가 옵션: 크리티컬 확률, 크리티컬 데미지)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE, 관통, 수동컨트롤 必."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE, 관통, 수동컨트롤 必.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, penetration, manual control required.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、貫通、手動操作必須。",
+      "skillPriority_en": "Burst Skill > Skill 1 = Skill 2",
+      "skillPriority_ja": "バーストスキル > スキル1 = スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK > Max Ammo (2) (useful extra options: Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > 最大装填数（2）（有効な追加オプション：クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. Use cases: PvE, penetration, manual control required.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE、貫通、手動操作必須。"
     },
     {
       "name": "Takina Inoue",
@@ -737,7 +1387,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬 (종결 시 1스킬 투자 불필요)",
       "overloadPriority": "우월 코드 > 공격력 증가",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1 (no Skill 1 investment needed at endgame)",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1（完成時はスキル1への投資は不要）",
+      "overloadPriority_en": "Elemental Damage > ATK",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Grave",
@@ -747,7 +1407,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE , 관통.",
       "skillPriority": "버스트스킬 > 1스킬 = 2스킬",
       "overloadPriority": "우월 코드 > 공격력 증가 > 크리티컬 데미지 (유효 추가 옵션: 크리티컬 확률)",
-      "notes": "큐브 추천: 레벨 높은 큐브, 렐릭 피어싱 추천. 사용처: PVE , 관통."
+      "notes": "큐브 추천: 레벨 높은 큐브, 렐릭 피어싱 추천. 사용처: PVE , 관통.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, penetration.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、貫通。",
+      "skillPriority_en": "Burst Skill > Skill 1 = Skill 2",
+      "skillPriority_ja": "バーストスキル > スキル1 = スキル2",
+      "overloadPriority_en": "Elemental Damage > ATK > Crit Damage (useful extra option: Crit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > クリティカルダメージ（有効な追加オプション：クリティカル確率）",
+      "notes_en": "Recommended cubes: a high-level cube; Relic Piercing recommended. Use cases: PvE, penetration.",
+      "notes_ja": "おすすめキューブ：レベルの高いキューブ、レリックピアシング推奨。使用先：PvE、貫通。"
     },
     {
       "name": "Ade: Agent Bunny",
@@ -759,7 +1429,19 @@
       "overloadPriority": "장탄수 증가 (유효 추가 옵션: 명함 추천)",
       "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE.",
       "totemRole": true,
-      "totemNote": "버스트2, 쿨타임 20초. [스킬 원문 근거] 1·2스킬이 모두 '유효 사거리 안의 대상에게 풀차지 명중' 조건이라 본인 버스트와 무관하게 평타만 쏘면 계속 발동한다 -- 전 아군 공격력 ▲ 15.2%(시전자 공격력 기준), 전 아군 관통 데미지 ▲ 18.36%. 버스트 쿨타임이 20초라 보통은 버스트2를 직접 커버하는 쪽이지만, 크라운처럼 더 빠르거나 강한 버스트2가 이미 자리를 잡은 구성에서는 이 상시 버프만으로도 자리값을 한다. (유저 확인: 실사용에서 토템으로 기용된다는 제보)"
+      "totemNote": "버스트2, 쿨타임 20초. [스킬 원문 근거] 1·2스킬이 모두 '유효 사거리 안의 대상에게 풀차지 명중' 조건이라 본인 버스트와 무관하게 평타만 쏘면 계속 발동한다 -- 전 아군 공격력 ▲ 15.2%(시전자 공격력 기준), 전 아군 관통 데미지 ▲ 18.36%. 버스트 쿨타임이 20초라 보통은 버스트2를 직접 커버하는 쪽이지만, 크라운처럼 더 빠르거나 강한 버스트2가 이미 자리를 잡은 구성에서는 이 상시 버프만으로도 자리값을 한다. (유저 확인: 실사용에서 토템으로 기용된다는 제보)",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Burst Skill > Skill 2 > Skill 1",
+      "skillPriority_ja": "バーストスキル > スキル2 > スキル1",
+      "overloadPriority_en": "Max Ammo (useful extra option: Hit Rate recommended)",
+      "overloadPriority_ja": "最大装填数（有効な追加オプション：命中率推奨）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE。",
+      "totemNote_en": "Burst 2, 20s cooldown. [Based on the skill text] Both Skill 1 and Skill 2 are conditioned on \"landing a full-charge shot on a target within effective range\", so they keep firing as long as she is shooting, independently of her own Burst — all allies ATK ▲ 15.2% (scaling off the caster's ATK) and all allies penetration damage ▲ 18.36%. With a 20s burst cooldown she would usually cover Burst 2 directly, but in a composition where a faster or stronger Burst 2 such as Crown already holds the slot, these permanent buffs alone justify her place.  (User confirmation: reported as fielded as a totem in real play.)",
+      "totemNote_ja": "バースト2、クールタイム20秒。［スキル原文が根拠］スキル1・2がどちらも「有効射程内の対象へフルチャージが命中」という条件なので、本人のバーストと無関係に通常攻撃を撃ってさえいれば発動し続ける — 味方全体の攻撃力 ▲ 15.2%（術者の攻撃力基準）、味方全体の貫通ダメージ ▲ 18.36%。バーストのクールタイムが20秒なので通常はバースト2を直接カバーする側だが、クラウンのようにより速いか強いバースト2がすでに枠を占めている構成では、この常時バフだけでも枠の価値を果たす。（ユーザー確認：実使用でトーテムとして起用されるという報告）"
     },
     {
       "name": "Velvet",
@@ -769,7 +1451,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE.",
       "skillPriority": "2스킬 > 1스킬 = 버스트스킬 (종결 시 1스킬 투자 불필요, 버스트스킬 투자 불필요)",
       "overloadPriority": "우월 코드 > 공격력 증가 (유효 추가 옵션: 크리티컬 확률, 크리티컬 데미지)",
-      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE."
+      "notes": "큐브 추천: 렐릭 베어. 사용처: PVE.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use case: PvE.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE。",
+      "skillPriority_en": "Skill 2 > Skill 1 = Burst Skill (at endgame, neither Skill 1 nor the Burst Skill needs investment)",
+      "skillPriority_ja": "スキル2 > スキル1 = バーストスキル（完成時はスキル1もバーストスキルも投資不要）",
+      "overloadPriority_en": "Elemental Damage > ATK (useful extra options: Crit Rate, Crit Damage)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力（有効な追加オプション：クリティカル確率、クリティカルダメージ）",
+      "notes_en": "Recommended cube: Relic Bear. Use case: PvE.",
+      "notes_ja": "おすすめキューブ：レリックベアー。使用先：PvE。"
     },
     {
       "name": "Nero",
@@ -779,7 +1471,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVP, 좀비덱.",
       "skillPriority": "1스킬 = 2스킬 > 버스트스킬 (종결 시 버스트스킬 7 정도면 충분)",
       "overloadPriority": "방어력 증가 > 공격력 증가 > 장탄수 증가",
-      "notes": "큐브 추천: 렐릭 템퍼링, 렐릭 비고르. 사용처: PVP, 좀비덱."
+      "notes": "큐브 추천: 렐릭 템퍼링, 렐릭 비고르. 사용처: PVP, 좀비덱.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR5 (SR15).",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR5（SR15）。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvP, zombie deck.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvP、ゾンビデッキ。",
+      "skillPriority_en": "Skill 1 = Skill 2 > Burst Skill (at endgame, the Burst Skill at around 7 is enough)",
+      "skillPriority_ja": "スキル1 = スキル2 > バーストスキル（完成時はバーストスキルが7程度で十分）",
+      "overloadPriority_en": "DEF > ATK > Max Ammo",
+      "overloadPriority_ja": "防御力 > 攻撃力 > 最大装填数",
+      "notes_en": "Recommended cubes: Relic Tempering, Relic Vigor. Use cases: PvP, zombie deck.",
+      "notes_ja": "おすすめキューブ：レリックテンパリング、レリックビガー。使用先：PvP、ゾンビデッキ。"
     },
     {
       "name": "Soda: Twinkling Bunny",
@@ -789,7 +1491,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE / PVP, 샷건덱.",
       "skillPriority": "2스킬 = 버스트스킬 > 1스킬 (종결 시 1스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 > 장탄수 증가 (1~2) > 공격력 증가 (유효 추가 옵션: 명중률 증가)",
-      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE / PVP, 샷건덱."
+      "notes": "큐브 추천: 렐릭 베어, 택티컬 베어. 사용처: PVE / PVP, 샷건덱.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE / PvP, shotgun decks.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE／PvP、ショットガンデッキ。",
+      "skillPriority_en": "Skill 2 = Burst Skill > Skill 1 (at endgame, Skill 1 at around 7 is enough)",
+      "skillPriority_ja": "スキル2 = バーストスキル > スキル1（完成時はスキル1が7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > Max Ammo (1–2) > ATK (useful extra option: Hit Rate)",
+      "overloadPriority_ja": "有利コードダメージ > 最大装填数（1〜2） > 攻撃力（有効な追加オプション：命中率）",
+      "notes_en": "Recommended cubes: Relic Bear, Tactical Bear. Use cases: PvE / PvP, shotgun decks.",
+      "notes_ja": "おすすめキューブ：レリックベアー、タクティカルベアー。使用先：PvE／PvP、ショットガンデッキ。"
     },
     {
       "name": "Snow White",
@@ -799,7 +1511,17 @@
       "investmentProfile": "커뮤니티 육성 시트(2026.7 갱신) 기준 스킬 빌드업과 오버로드 우선순위가 정리되어 있는 캐릭터. 사용처: PVE , 관통.",
       "skillPriority": "버스트스킬 > 2스킬 > 1스킬 (종결 시 1스킬 4, 2스킬 7 정도면 충분)",
       "overloadPriority": "우월 코드 > 공격력 증가 > 크리티컬 데미지 (유효 추가 옵션: 장탄수 증가)",
-      "notes": "큐브 추천: 렐릭 부스트, 렐릭 디스트로이. 사용처: PVE , 관통."
+      "notes": "큐브 추천: 렐릭 부스트, 렐릭 디스트로이. 사용처: PVE , 관통.",
+      "treasureNote_en": "No dedicated Treasure. Collection Item (weapon collection level) target: SR15.",
+      "treasureNote_ja": "専用の宝ものはない。コレクションアイテム（武器収集レベル）の目標：SR15。",
+      "investmentProfile_en": "A character whose skill build-up and Overload priority are laid out on the community raising sheet (updated 2026.7). Use cases: PvE, penetration.",
+      "investmentProfile_ja": "コミュニティ育成シート（2026.7更新）でスキルのビルドアップとオーバーロードの優先度が整理されているキャラ。使用先：PvE、貫通。",
+      "skillPriority_en": "Burst Skill > Skill 2 > Skill 1 (at endgame, Skill 1 at 4 and Skill 2 at around 7 are enough)",
+      "skillPriority_ja": "バーストスキル > スキル2 > スキル1（完成時はスキル1が4、スキル2が7程度で十分）",
+      "overloadPriority_en": "Elemental Damage > ATK > Crit Damage (useful extra option: Max Ammo)",
+      "overloadPriority_ja": "有利コードダメージ > 攻撃力 > クリティカルダメージ（有効な追加オプション：最大装填数）",
+      "notes_en": "Recommended cubes: Relic Boost, Relic Destroy. Use cases: PvE, penetration.",
+      "notes_ja": "おすすめキューブ：レリックブースト、レリックデストロイ。使用先：PvE、貫通。"
     },
     {
       "name": "Laplace: Ultimate Hero",
@@ -809,7 +1531,17 @@
       "investmentProfile": "[2026-08-04 신규 추가, 확신도 낮음 — 스킬작/오버/큐브 구체 수치는 확인 필요] 4개 채널 모두 '준수하다/괜찮다'는 기조로 수렴. 초기에는 스킬 구조상 탄약충전 버프를 못 받는다는 한계가 지적됐으나(고뇨), 이후 픽업 확률·한정 캐릭터 취급 논란은 근거 없음으로 해소됨. 풍압 속성 미실리스 타워 진입이 가능할 정도의 화력으로 평가(에펜바움). prydwen.gg(2026-07-30 갱신) 기준 Story/Bossing/PVP 모두 SS급으로 고르게 높은 평가.",
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
-      "notes": "맥스웰: 오디너리 미케닉과 함께 '풍라플/풍맥덱'(synergyNotes.json: wind-laplace-maxwell), 루주·트리나와 함께 '피뻥덱'(synergyNotes.json: laplace-maxwell-pip-deck)에 활용된다는 조합 정보 있음(스페란도). 출처: 고뇨, 스페란도, 에펜바움, 김진서, prydwen.gg(2026-07-30)."
+      "notes": "맥스웰: 오디너리 미케닉과 함께 '풍라플/풍맥덱'(synergyNotes.json: wind-laplace-maxwell), 루주·트리나와 함께 '피뻥덱'(synergyNotes.json: laplace-maxwell-pip-deck)에 활용된다는 조합 정보 있음(스페란도). 출처: 고뇨, 스페란도, 에펜바움, 김진서, prydwen.gg(2026-07-30).",
+      "treasureNote_en": "Laplace's power-up (alt) character, released 2026-07-23. Whether she has a dedicated Treasure is unconfirmed (as a new character she is not yet reflected on the community raising sheet).",
+      "treasureNote_ja": "2026-07-23に実装されたラプラスのパワーアップ（別バージョン）キャラ。専用の宝ものの有無は未確認（新キャラのためコミュニティ育成シートにまだ反映されていない）。",
+      "investmentProfile_en": "[Newly added 2026-08-04, low confidence — the specific skill-level, Overload and cube figures need checking] All four channels converge on a tone of \"solid / fine\". Early on, a limitation was pointed out that her skill structure prevents her from receiving ammo-charge buffs (Gonyo), but the later controversy over pickup rates and limited-character status was resolved as unfounded. Her damage is rated high enough to clear the Wind element Missilis Tower (Eppenbaum). Per prydwen.gg (updated 2026-07-30) she is evenly rated at SS class across Story, Bossing and PvP.",
+      "investmentProfile_ja": "［2026-08-04新規追加、確信度は低い — スキルレベル・オーバーロード・キューブの具体的な数値は確認が必要］4チャンネルすべてが「まずまず／悪くない」という基調に収束している。初期にはスキル構造上、弾薬チャージバフを受けられないという限界が指摘されたが（ゴニョ）、その後のピックアップ確率・限定キャラ扱いをめぐる論争は根拠なしとして解消された。風圧属性のミシリスタワーに突入できるほどの火力と評価される（エッペンバウム）。prydwen.gg（2026-07-30更新）基準ではStory／Bossing／PvPのすべてでSS級と、均等に高い評価。",
+      "skillPriority_en": "Needs checking (original text not obtained)",
+      "skillPriority_ja": "確認が必要（原文を未入手）",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "notes_en": "There is team information that she is used together with Maxwell: Ordinary Mechanic in the \"Wind Laplace / Wind Maxwell\" deck (synergyNotes.json: wind-laplace-maxwell), and with Rouge and Trina in the \"Pi-ppeong\" deck (synergyNotes.json: laplace-maxwell-pip-deck) (Sperando). Sources: Gonyo, Sperando, Eppenbaum, Kim Jinseo, prydwen.gg (2026-07-30).",
+      "notes_ja": "マクスウェル：オーディナリーメカニックとともに「風ラプラス／風マクスウェルデッキ」（synergyNotes.json: wind-laplace-maxwell）、ルージュ・トリナとともに「ピポンデッキ」（synergyNotes.json: laplace-maxwell-pip-deck）で活用されるという編成情報がある（スペランド）。出典：ゴニョ、スペランド、エッペンバウム、キム・ジンソ、prydwen.gg（2026-07-30）。"
     },
     {
       "name": "Maxwell: Ordinary Mechanic",
@@ -819,7 +1551,17 @@
       "investmentProfile": "[2026-08-04 신규 추가, 확신도 낮음 — 스킬작/오버/큐브 구체 수치는 확인 필요] 재장전 시 탄환 2배 + 공격력 대폭 증가(약 625% 언급) 스킬 구조로 '사기캐' 평가(고뇨). 스테이지 다양한 콘텐츠에서 만능으로 기용 가능한 '조커픽' 여부가 검증 대상(스페란도, 신중한 톤 — 뉴비에게 '뽑기 전 꼭 시청' 안내). 스노우 화이트: 헤비암즈 자리의 대체 조합으로 제시됨(김진서).",
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
-      "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서."
+      "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서.",
+      "treasureNote_en": "Maxwell's power-up (alt) character, released 2026-07-30. Whether she has a dedicated Treasure is unconfirmed (as a new character she is not yet reflected on the community raising sheet).",
+      "treasureNote_ja": "2026-07-30に実装されたマクスウェルのパワーアップ（別バージョン）キャラ。専用の宝ものの有無は未確認（新キャラのためコミュニティ育成シートにまだ反映されていない）。",
+      "investmentProfile_en": "[Newly added 2026-08-04, low confidence — the specific skill-level, Overload and cube figures need checking] Rated as a \"broken\" character for a skill structure that doubles her ammo on reload and raises ATK sharply (around 625% is quoted) (Gonyo). Whether she is a genuine \"joker pick\" usable universally across a range of stage content is still to be verified (Sperando, cautious in tone — he tells newer players to \"be sure to watch before you pull\"). She is put forward as a replacement in Snow White: Heavy Arms' slot (Kim Jinseo).",
+      "investmentProfile_ja": "［2026-08-04新規追加、確信度は低い — スキルレベル・オーバーロード・キューブの具体的な数値は確認が必要］リロード時に弾数2倍＋攻撃力大幅増加（およそ625%という言及）というスキル構造で「壊れキャラ」と評価される（ゴニョ）。ステージの多様なコンテンツで万能に起用できる「ジョーカーピック」かどうかは検証対象（スペランド、慎重なトーン — 初心者に「引く前に必ず視聴を」と案内）。スノーホワイト：ヘビーアームズの枠の代替編成として提示されている（キム・ジンソ）。",
+      "skillPriority_en": "Needs checking (original text not obtained)",
+      "skillPriority_ja": "確認が必要（原文を未入手）",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "notes_en": "Current tiers per characterDatabase.json: story C / bossing A / pvp B. See the swha-alt-marciana archetype in synergyNotes.json. Sources: Gonyo, Sperando, Kim Jinseo.",
+      "notes_ja": "characterDatabase.json基準の現在のティア：story C ／ bossing A ／ pvp B。synergyNotes.jsonのswha-alt-marcianaアーキタイプを参照。出典：ゴニョ、スペランド、キム・ジンソ。"
     },
     {
       "name": "Marciana: Marine Study",
@@ -829,7 +1571,17 @@
       "investmentProfile": "[2026-08-04 신규 추가, 확신도 낮음 — 스킬작/오버/큐브 구체 수치는 확인 필요] 재장전 시 탄환 2배 + 공격력 대폭 증가(약 625% 언급) 스킬 구조로 '사기캐' 평가(고뇨). 스테이지 다양한 콘텐츠에서 만능으로 기용 가능한 '조커픽' 여부가 검증 대상(스페란도, 신중한 톤 — 뉴비에게 '뽑기 전 꼭 시청' 안내). 스노우 화이트: 헤비암즈 자리의 대체 조합으로 제시됨(김진서).",
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
-      "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서."
+      "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서.",
+      "treasureNote_en": "Marciana's swimsuit version, released 2026-07-09 (nicknamed \"Su-malcha\" in Korean). Whether she has a dedicated Treasure is unconfirmed.",
+      "treasureNote_ja": "2026-07-09に実装されたマルチャーナの水着版（韓国では通称「スマルチャ」）。専用の宝ものの有無は未確認。",
+      "investmentProfile_en": "[Newly added 2026-08-04, low confidence — the specific skill-level, Overload and cube figures need checking] Rated as a \"broken\" character for a skill structure that doubles her ammo on reload and raises ATK sharply (around 625% is quoted) (Gonyo). Whether she is a genuine \"joker pick\" usable universally across a range of stage content is still to be verified (Sperando, cautious in tone — he tells newer players to \"be sure to watch before you pull\"). She is put forward as a replacement in Snow White: Heavy Arms' slot (Kim Jinseo).",
+      "investmentProfile_ja": "［2026-08-04新規追加、確信度は低い — スキルレベル・オーバーロード・キューブの具体的な数値は確認が必要］リロード時に弾数2倍＋攻撃力大幅増加（およそ625%という言及）というスキル構造で「壊れキャラ」と評価される（ゴニョ）。ステージの多様なコンテンツで万能に起用できる「ジョーカーピック」かどうかは検証対象（スペランド、慎重なトーン — 初心者に「引く前に必ず視聴を」と案内）。スノーホワイト：ヘビーアームズの枠の代替編成として提示されている（キム・ジンソ）。",
+      "skillPriority_en": "Needs checking (original text not obtained)",
+      "skillPriority_ja": "確認が必要（原文を未入手）",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "notes_en": "Current tiers per characterDatabase.json: story C / bossing A / pvp B. See the swha-alt-marciana archetype in synergyNotes.json. Sources: Gonyo, Sperando, Kim Jinseo.",
+      "notes_ja": "characterDatabase.json基準の現在のティア：story C ／ bossing A ／ pvp B。synergyNotes.jsonのswha-alt-marcianaアーキタイプを参照。出典：ゴニョ、スペランド、キム・ジンソ。"
     },
     {
       "name": "Naga",
@@ -841,7 +1593,19 @@
       "overloadPriority": "확인 필요 (원문 미확보)",
       "totemRole": true,
       "totemNote": "버스트2 슬롯에 같은 단계의 다른 캐릭터(예: 크라운, 버스트 쿨타임 20초)가 이미 매 풀버스트 사이클을 안정적으로 커버하고 있다면, 나가의 버스트 스킬('As Long As We're With Friends', 쿨타임 20초) 자체는 실제로 발동할 타이밍이 나오지 않을 수 있다. 이 경우 나가는 버스트 딜러가 아니라 '토템'(버스트 슬롯만 채우고 실질 역할은 패시브 버프)으로 기용된 것 -- 2스킬 'Support of Friendship'이 평타 5회마다 자동 발동해 체력 비율이 가장 낮은 아군 2명을 최대 HP의 5.58%만큼 회복시켜 팀 생존력을 상시 보강한다. 이런 역할이 필요할 때(예: 버스트2가 이미 빠른 쿨타임 1명으로 충분히 커버되는데 팀 생존력이 부족한 경우) 추가 기용을 고려할 만하다. (출처: 인벤 2025-07-24 「1티어 수냉 토템! 수영복 한정 니케 일레그, 성능과 세팅법」 — \"토템이란 버스트를 사용하지 않는 다섯 번째 자리에 놓는 니케\"라는 정의와 추천 목록)",
-      "notes": "출처: 사이트 운영자 실전 피드백(2026-08-04) -- 특정 조합에서 크라운(버스트2, 쿨타임 20초)과 함께 기용된 사례를 근거로 정리. characterDatabase.json 스킬 원문(Skill1 'Guardian of Friendship', Skill2 'Support of Friendship') 기준으로 회복/버프 수치를 인용."
+      "notes": "출처: 사이트 운영자 실전 피드백(2026-08-04) -- 특정 조합에서 크라운(버스트2, 쿨타임 20초)과 함께 기용된 사례를 근거로 정리. characterDatabase.json 스킬 원문(Skill1 'Guardian of Friendship', Skill2 'Support of Friendship') 기준으로 회복/버프 수치를 인용.",
+      "treasureNote_en": "Needs checking (original text not obtained)",
+      "treasureNote_ja": "確認が必要（原文を未入手）",
+      "investmentProfile_en": "Needs checking (original text not obtained)",
+      "investmentProfile_ja": "確認が必要（原文を未入手）",
+      "skillPriority_en": "Skill 2 (\"Support of Friendship\") first — when she is fielded as a totem, what you actually feel in practice is this permanent heal/buff that fires every 5 normal attacks rather than her Burst, so investment priority follows it.",
+      "skillPriority_ja": "スキル2「Support of Friendship」を優先 — トーテムとして起用するときは、バーストではなく通常攻撃5回ごとに発動するこの常時回復／バフこそが実戦の体感の核心なので、投資の優先度もここに合わせる。",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "notes_en": "Source: the site operator's own play feedback (2026-08-04) — put together on the basis of a case where she was fielded alongside Crown (Burst 2, 20s cooldown) in a particular team. Heal and buff figures are quoted from the skill text in characterDatabase.json (Skill 1 \"Guardian of Friendship\", Skill 2 \"Support of Friendship\").",
+      "notes_ja": "出典：サイト運営者の実戦フィードバック（2026-08-04）— 特定の編成でクラウン（バースト2、クールタイム20秒）とともに起用された事例を根拠に整理したもの。回復／バフの数値はcharacterDatabase.jsonのスキル原文（Skill1「Guardian of Friendship」、Skill2「Support of Friendship」）を基準に引用している。",
+      "totemNote_en": "If another character at the same stage (for example Crown, with a 20s burst cooldown) already covers every Full Burst cycle reliably in the Burst 2 slot, the timing for Naga's own Burst Skill (\"As Long As We're With Friends\", 20s cooldown) may never come around. In that case Naga has been fielded not as a burst dealer but as a \"totem\" — filling the burst slot while her real role is her passive buffs. Skill 2 \"Support of Friendship\" fires automatically every 5 normal attacks, healing the two allies with the lowest HP ratio for 5.58% of their max HP and shoring up team survivability at all times. When you need that role (for example when Burst 2 is already covered well enough by a single fast-cooldown unit but the team lacks survivability), adding her is worth considering. (Source: Inven, 2025-07-24, \"Tier 1 Water totem! The limited swimsuit NIKKE Elegg: performance and setup\" — the definition \"a totem is a NIKKE you put in the fifth slot without using her Burst\" and its recommendation list)",
+      "totemNote_ja": "バースト2の枠を同じ段階の別のキャラ（例：クラウン、バーストクールタイム20秒）がすでに毎フルバーストサイクルを安定してカバーしているなら、ナガのバーストスキル「As Long As We're With Friends」（クールタイム20秒）自体は実際に発動するタイミングが来ないことがある。この場合ナガはバーストアタッカーではなく「トーテム」（バーストの枠だけを埋め、実質的な役割はパッシブバフ）として起用されたことになる — スキル2「Support of Friendship」が通常攻撃5回ごとに自動発動し、HP比率が最も低い味方2人を最大HPの5.58%分回復させ、チームの生存力を常時補強する。こうした役割が必要なとき（例：バースト2がすでにクールタイムの短い1人で十分カバーされているのにチームの生存力が足りない場合）に追加起用を検討する価値がある。（出典：インベン2025-07-24「Tier1水冷トーテム！水着限定ニケ エレグ、性能とセッティング法」— 「トーテムとはバーストを使わない5番目の枠に置くニケ」という定義と推奨リスト）"
     },
     {
       "name": "Red Hood",
@@ -851,7 +1615,17 @@
       "investmentProfile": "확인 필요 (원문 미확보)",
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
-      "notes": "2026-08-07 정정: 이전에 'characterDatabase.json 기준 버스트 단계가 all(1/2/3단계 어디에도 자유롭게 편성 가능)'이라는 근거로 totemRole:true가 등록되어 있었으나, 실제 characterDatabase.json에는 burst가 '3'으로 고정되어 있어 그 근거가 사실과 다름을 확인했다. 유저도 실제 플레이에서 레드 후드를 토템으로 쓰지 않는다고 확인해주어, 근거가 불확실한 totemRole/totemNote를 제거한다. 실제로 토템 성향이 있는 캐릭터라면 출처를 다시 확인해 근거를 명시한 뒤 다시 등록해야 한다."
+      "notes": "2026-08-07 정정: 이전에 'characterDatabase.json 기준 버스트 단계가 all(1/2/3단계 어디에도 자유롭게 편성 가능)'이라는 근거로 totemRole:true가 등록되어 있었으나, 실제 characterDatabase.json에는 burst가 '3'으로 고정되어 있어 그 근거가 사실과 다름을 확인했다. 유저도 실제 플레이에서 레드 후드를 토템으로 쓰지 않는다고 확인해주어, 근거가 불확실한 totemRole/totemNote를 제거한다. 실제로 토템 성향이 있는 캐릭터라면 출처를 다시 확인해 근거를 명시한 뒤 다시 등록해야 한다.",
+      "treasureNote_en": "Needs checking (original text not obtained)",
+      "treasureNote_ja": "確認が必要（原文を未入手）",
+      "investmentProfile_en": "Needs checking (original text not obtained)",
+      "investmentProfile_ja": "確認が必要（原文を未入手）",
+      "skillPriority_en": "Needs checking (original text not obtained)",
+      "skillPriority_ja": "確認が必要（原文を未入手）",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "notes_en": "Correction 2026-08-07: totemRole: true had previously been registered on the grounds that \"her burst stage in characterDatabase.json is all (she can be freely slotted into burst stage 1/2/3)\", but characterDatabase.json actually has burst fixed at '3', so that basis was confirmed to be untrue. The user also confirmed that they do not use Red Hood as a totem in actual play, so the totemRole/totemNote with their uncertain basis are being removed. If she really does have totem tendencies, the source must be re-checked and the basis stated before registering her again.",
+      "notes_ja": "2026-08-07の訂正：以前は「characterDatabase.json基準でバースト段階がall（バースト段階 1/2/3 のどこにも自由に編成できる）」という根拠でtotemRole:trueが登録されていたが、実際のcharacterDatabase.jsonではburstが'3'に固定されており、その根拠が事実と異なることを確認した。ユーザーも実際のプレイでレッドフードをトーテムとして使わないと確認してくれたため、根拠が不確実なtotemRole／totemNoteを削除する。本当にトーテム性向のあるキャラであれば、出典を改めて確認し根拠を明示したうえで再登録すべきである。"
     },
     {
       "name": "Modernia",
@@ -862,7 +1636,17 @@
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
       "totemRole": true,
-      "totemNote": "버스트3, 쿨타임 40초. 버스트 스킬('New World')이 전 아군의 풀버스트 지속시간을 5초 늘려주고 자신은 15초간 무제한 탄약 + 광범위 자동조준으로 지속 딜을 넣는 구조라, 다른 버스트3 캐릭터가 쿨타임을 커버해줄 때 모더니아를 넣으면 매 사이클 풀버스트 창을 늘려주는 역할로 기능한다. 커뮤니티 토템 순위표에서 클루드/맥스웰과 함께 중위권 토템픽으로 언급된다(출처: arca.live 니케 채널)."
+      "totemNote": "버스트3, 쿨타임 40초. 버스트 스킬('New World')이 전 아군의 풀버스트 지속시간을 5초 늘려주고 자신은 15초간 무제한 탄약 + 광범위 자동조준으로 지속 딜을 넣는 구조라, 다른 버스트3 캐릭터가 쿨타임을 커버해줄 때 모더니아를 넣으면 매 사이클 풀버스트 창을 늘려주는 역할로 기능한다. 커뮤니티 토템 순위표에서 클루드/맥스웰과 함께 중위권 토템픽으로 언급된다(출처: arca.live 니케 채널).",
+      "treasureNote_en": "Needs checking (original text not obtained)",
+      "treasureNote_ja": "確認が必要（原文を未入手）",
+      "investmentProfile_en": "Needs checking (original text not obtained)",
+      "investmentProfile_ja": "確認が必要（原文を未入手）",
+      "skillPriority_en": "Needs checking (original text not obtained)",
+      "skillPriority_ja": "確認が必要（原文を未入手）",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "totemNote_en": "Burst 3, 40s cooldown. Her Burst Skill (\"New World\") extends Full Burst duration for the whole team by 5 sec while she herself deals sustained damage with unlimited ammo and wide auto-aim for 15 sec, so when another Burst 3 character covers the cooldown, adding Modernia works as a way to extend the Full Burst window every cycle. She is mentioned as a mid-tier totem pick alongside Klud and Maxwell on community totem rankings (source: the NIKKE channel on arca.live).",
+      "totemNote_ja": "バースト3、クールタイム40秒。バーストスキル「New World」が味方全体のフルバースト持続時間を5秒延ばし、自身は15秒間の無制限弾薬＋広範囲オートエイムで持続ダメージを入れる構造なので、他のバースト3キャラがクールタイムをカバーしてくれるときにモダニアを入れると、毎サイクルのフルバーストの枠を延ばす役割として機能する。コミュニティのトーテム順位表ではクルド／マクスウェルとともに中位のトーテムピックとして言及される（出典：arca.liveのニケチャンネル）。"
     },
     {
       "name": "D: Killer Wife",
@@ -873,31 +1657,49 @@
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
       "totemRole": true,
-      "totemNote": "버스트1, 쿨타임 20초로 원래도 빠른 편이지만, 패시브 자체가 '풀차지 공격 누적'으로 발동하는 상시형이라 토템으로도 잘 맞는다. 풀차지 공격 8회 누적 시 전 아군 버스트 쿨타임 4.13초 감소, 5회 누적 시 전 아군 공격력 +2.99%(10초)를 자동으로 걸어주고, 버스트 스킬은 적에게 표식을 남겨 아군이 그 부위를 맞히면 추가 버프를 받는 구조다. 범용성이 높아 '킬러D'라는 별명으로 토템 겸용 픽으로 자주 언급된다(출처: arca.live 니케 채널)."
+      "totemNote": "버스트1, 쿨타임 20초로 원래도 빠른 편이지만, 패시브 자체가 '풀차지 공격 누적'으로 발동하는 상시형이라 토템으로도 잘 맞는다. 풀차지 공격 8회 누적 시 전 아군 버스트 쿨타임 4.13초 감소, 5회 누적 시 전 아군 공격력 +2.99%(10초)를 자동으로 걸어주고, 버스트 스킬은 적에게 표식을 남겨 아군이 그 부위를 맞히면 추가 버프를 받는 구조다. 범용성이 높아 '킬러D'라는 별명으로 토템 겸용 픽으로 자주 언급된다(출처: arca.live 니케 채널).",
+      "treasureNote_en": "Needs checking (original text not obtained)",
+      "treasureNote_ja": "確認が必要（原文を未入手）",
+      "investmentProfile_en": "Needs checking (original text not obtained)",
+      "investmentProfile_ja": "確認が必要（原文を未入手）",
+      "skillPriority_en": "Needs checking (original text not obtained)",
+      "skillPriority_ja": "確認が必要（原文を未入手）",
+      "overloadPriority_en": "Needs checking (original text not obtained)",
+      "overloadPriority_ja": "確認が必要（原文を未入手）",
+      "totemNote_en": "Burst 1 with a 20s cooldown, which is fast to begin with, but her passives themselves fire permanently off \"cumulative full-charge attacks\", which also suits totem use. At 8 cumulative full-charge attacks she cuts every ally's burst cooldown by 4.13 sec, at 5 she automatically grants all allies ATK +2.99% (10 sec), and her Burst Skill leaves a mark on the enemy so that allies who hit that part receive an extra buff. Her versatility means she is often mentioned under the nickname \"Killer D\" as a pick that doubles as a totem (source: the NIKKE channel on arca.live).",
+      "totemNote_ja": "バースト1でクールタイム20秒ともともと速いほうだが、パッシブ自体が「フルチャージ攻撃の累積」で発動する常時型なのでトーテムとしてもよく噛み合う。フルチャージ攻撃が8回累積すると味方全体のバーストクールタイムを4.13秒短縮し、5回累積すると味方全体に攻撃力+2.99%（10秒）を自動でかけ、バーストスキルは敵に印を残して味方がその部位に当てると追加バフを受ける構造だ。汎用性が高く「キラーD」という愛称でトーテム兼用のピックとしてよく言及される（出典：arca.liveのニケチャンネル）。"
     },
     {
       "name": "Tia",
       "name_kr": "티아",
       "totemRole": true,
-      "totemNote": "버스트1, 쿨타임 40초. 1스킬 'Reptile Lover'가 엄폐물 회복이 일어날 때마다 전 아군에게 공격 데미지 ▲ 17.46%(10초)를 걸어주므로, 버스트1 슬롯을 다른 캐릭터가 빠른 쿨타임으로 커버 중이어도 팀 버프는 유지된다. 특이한 점은 버스트 스킬('Lizard's Protection')이 전 아군의 버스트 단계를 1로 되돌리는 재진입 효과라, 토템 자리에 두어도 상황에 따라 버스트를 쓰게 된다는 것이다(커뮤니티에서 '사실상 0버스트'라고 부르는 이유). (출처: prydwen.gg Meta teams (Story) 가이드) + 한국 커뮤니티 스토리덱 가이드에서 티아를 토템(@) 자리로 표기"
+      "totemNote": "버스트1, 쿨타임 40초. 1스킬 'Reptile Lover'가 엄폐물 회복이 일어날 때마다 전 아군에게 공격 데미지 ▲ 17.46%(10초)를 걸어주므로, 버스트1 슬롯을 다른 캐릭터가 빠른 쿨타임으로 커버 중이어도 팀 버프는 유지된다. 특이한 점은 버스트 스킬('Lizard's Protection')이 전 아군의 버스트 단계를 1로 되돌리는 재진입 효과라, 토템 자리에 두어도 상황에 따라 버스트를 쓰게 된다는 것이다(커뮤니티에서 '사실상 0버스트'라고 부르는 이유). (출처: prydwen.gg Meta teams (Story) 가이드) + 한국 커뮤니티 스토리덱 가이드에서 티아를 토템(@) 자리로 표기",
+      "totemNote_en": "Burst 1, 40s cooldown. Skill 1 \"Reptile Lover\" grants all allies attack damage ▲ 17.46% (10 sec) every time cover is restored, so the team buff holds even when another character covers the Burst 1 slot on a faster cooldown. What makes her unusual is that her Burst Skill (\"Lizard's Protection\") returns the whole team's burst stage to 1 — a re-entry effect — so even parked in the totem slot she will end up using her Burst depending on the situation (which is why the community calls her \"effectively a Burst 0\"). (Source: prydwen.gg Meta teams (Story) guide) plus Korean community story-deck guides that mark Tia in the totem (@) slot.",
+      "totemNote_ja": "バースト1、クールタイム40秒。スキル1「Reptile Lover」がカバー回復が起きるたびに味方全体へ攻撃ダメージ ▲ 17.46%（10秒）をかけるので、バースト1の枠を他のキャラがクールタイムの短さでカバー中でもチームバフは維持される。特異なのはバーストスキル「Lizard's Protection」が味方全体のバースト段階を1に戻す再突入効果だという点で、トーテムの枠に置いても状況によってはバーストを使うことになる（コミュニティが「事実上のバースト0」と呼ぶ理由）。（出典：prydwen.gg Meta teams (Story) ガイド）＋韓国コミュニティのストーリーデッキガイドでティアをトーテム（@）の枠として表記。"
     },
     {
       "name": "Noir",
       "name_kr": "누아르",
       "totemRole": true,
-      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 2스킬이 자신의 체력이 70% 이상일 때 전 아군에게 공격력 ▲ 8.32%(시전자 공격력 기준)를 '상시'로 걸어준다. 발동에 버스트가 필요 없어 버스트3 자리가 포화된 구성에서도 이 버프는 유지된다. 계수 자체는 크지 않으므로, 블랑과 함께 쓰는 원래 조합이 아니라면 우선순위는 낮다."
+      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 2스킬이 자신의 체력이 70% 이상일 때 전 아군에게 공격력 ▲ 8.32%(시전자 공격력 기준)를 '상시'로 걸어준다. 발동에 버스트가 필요 없어 버스트3 자리가 포화된 구성에서도 이 버프는 유지된다. 계수 자체는 크지 않으므로, 블랑과 함께 쓰는 원래 조합이 아니라면 우선순위는 낮다.",
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skill 2 grants all allies ATK ▲ 8.32% (scaling off the caster's ATK) \"permanently\" while her own HP is at 70% or above. It needs no Burst to trigger, so the buff holds even in a composition saturated with Burst 3 units. The coefficient itself is not large, so unless you are running her original pairing with Blanc, her priority is low.",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル2が自分のHPが70%以上のとき、味方全体へ攻撃力 ▲ 8.32%（術者の攻撃力基準）を「常時」かける。発動にバーストが要らないため、バースト3の枠が飽和した構成でもこのバフは維持される。係数自体は大きくないので、ブランと組む本来の編成でなければ優先度は低い。"
     },
     {
       "name": "Rei Ayanami (Tentative Name)",
       "name_kr": "아야나미 레이 (가칭)",
       "totemRole": true,
-      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 1·2스킬이 '풀버스트 진입 시' 발동해 전 아군에게 공격력 ▲ 6.86%를, 섬멸(Annihilation) 상태 아군에게는 추가로 ▲ 10.4%를 건다. 본인 버스트에 의존하지 않아 토템으로 작동하지만, 버스트 스킬이 적 전체에 654.54% 딜을 넣는 구조라 버스트를 넘기면 그만큼 화력을 잃는다. 화력보다 버프가 필요한 자리에서만 토템으로 고려할 것."
+      "totemNote": "버스트3, 쿨타임 40초. [스킬 원문 근거] 1·2스킬이 '풀버스트 진입 시' 발동해 전 아군에게 공격력 ▲ 6.86%를, 섬멸(Annihilation) 상태 아군에게는 추가로 ▲ 10.4%를 건다. 본인 버스트에 의존하지 않아 토템으로 작동하지만, 버스트 스킬이 적 전체에 654.54% 딜을 넣는 구조라 버스트를 넘기면 그만큼 화력을 잃는다. 화력보다 버프가 필요한 자리에서만 토템으로 고려할 것.",
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skills 1 and 2 fire \"on entering Full Burst\", granting all allies ATK ▲ 6.86% and allies in the Annihilation state a further ▲ 10.4%. She works as a totem because this does not depend on her own Burst, but her Burst Skill deals 654.54% damage to all enemies, so yielding the Burst costs you that much damage. Consider her as a totem only in a slot where you need the buff more than the damage.",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル1・2が「フルバースト突入時」に発動し、味方全体へ攻撃力 ▲ 6.86%を、殲滅（Annihilation）状態の味方にはさらに ▲ 10.4%をかける。本人のバーストに依存しないためトーテムとして機能するが、バーストスキルが敵全体に654.54%のダメージを入れる構造なので、バーストを譲るとその分の火力を失う。火力よりバフが必要な枠でのみトーテムとして検討すること。"
     },
     {
       "name": "Crust",
       "name_kr": "크러스트",
       "totemRole": true,
-      "totemNote": "버스트2, 쿨타임 20초. [스킬 원문 근거] 킷의 대부분이 버스트 밖에서 돈다. 1스킬 'Grill and Boil'은 평타 3회(마이야르) 또는 풀차지 3회(블랜칭)마다 전 아군에게 공격력 ▲ 5.9%(시전자 공격력 기준)를 걸고, 2스킬 'Reliable Cooking'은 같은 조건으로 전 아군에게 방어력 ▲ 5.91%와 **디버프 1개 해제**를 준다. 여기에 풀버스트 진입 시 마이야르/블랜칭 대상에게 공격력 ▲ 11.81%가 추가된다. 전부 평타·풀차지 기반이라 버스트2를 크라운 같은 캐릭터가 커버 중이어도 끊기지 않는다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)"
+      "totemNote": "버스트2, 쿨타임 20초. [스킬 원문 근거] 킷의 대부분이 버스트 밖에서 돈다. 1스킬 'Grill and Boil'은 평타 3회(마이야르) 또는 풀차지 3회(블랜칭)마다 전 아군에게 공격력 ▲ 5.9%(시전자 공격력 기준)를 걸고, 2스킬 'Reliable Cooking'은 같은 조건으로 전 아군에게 방어력 ▲ 5.91%와 **디버프 1개 해제**를 준다. 여기에 풀버스트 진입 시 마이야르/블랜칭 대상에게 공격력 ▲ 11.81%가 추가된다. 전부 평타·풀차지 기반이라 버스트2를 크라운 같은 캐릭터가 커버 중이어도 끊기지 않는다. (근거: scripts/findTotems.mjs 2군 검출 — 공략 권장 조합 3건 이상에서 버스트 순번에 밀린 채 반복 기용됨. 2026-08-09 유저 검토 승인)",
+      "totemNote_en": "Burst 2, 20s cooldown. [Based on the skill text] Most of her kit runs outside the Burst. Skill 1 \"Grill and Boil\" grants all allies ATK ▲ 5.9% (scaling off the caster's ATK) every 3 normal attacks (Maillard) or every 3 full-charge shots (Blanching), and Skill 2 \"Reliable Cooking\" grants all allies DEF ▲ 5.91% and **clears one debuff** on the same conditions. On top of that, entering Full Burst adds ATK ▲ 11.81% to Maillard/Blanching targets. All of it is driven by normal and full-charge attacks, so nothing is cut off when a character such as Crown covers Burst 2. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
+      "totemNote_ja": "バースト2、クールタイム20秒。［スキル原文が根拠］キットの大半がバーストの外で回る。スキル1「Grill and Boil」は通常攻撃3回（メイラード）またはフルチャージ3回（ブランチング）ごとに味方全体へ攻撃力 ▲ 5.9%（術者の攻撃力基準）をかけ、スキル2「Reliable Cooking」は同じ条件で味方全体へ防御力 ▲ 5.91%と**デバフ1個の解除**を与える。さらにフルバースト突入時にはメイラード／ブランチングの対象へ攻撃力 ▲ 11.81%が追加される。すべて通常攻撃・フルチャージ基準なので、バースト2をクラウンのようなキャラがカバー中でも途切れない。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）"
     },
     {
       "name": "Rei Ayanami",
@@ -908,7 +1710,9 @@
         "element": "fire",
         "minAllies": 1,
         "note": "2스킬 버프가 작열 코드 아군에게만 들어간다"
-      }
+      },
+      "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skill 2 \"Attack Support\" grants all Fire code allies ATK ▲ 16.97% (scaling off the caster's ATK) for 10 sec **on entering burst stage 3**. The trigger is \"entering burst stage 3\", not \"Rei uses her Burst\", so the buff still lands when another Burst 3 such as Rapi: Red Hood takes the rotation. ⚠️ She is **a different character from Rei Ayanami (Tentative Name)**, despite both being NERV — the Tentative Name version is Wind/AR and her buff targets all allies with no condition, which is why she is already registered as an unconditional totem. This one is Fire/MG and Fire-only, so a totemCondition applies. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
+      "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル2「Attack Support」が**バースト3段階に突入したとき**、灼熱コードの味方全体へ攻撃力 ▲ 16.97%（術者の攻撃力基準）を10秒かける。発動条件は「バースト3段階への突入」であって「レイがバーストを使用」ではないため、ラピ：レッドフードのような他のバースト3が順番を取ってもバフはそのまま入る。⚠️ 同じNERV所属の**アヤナミレイ(仮称)とは別のキャラだ** — 仮称のほうは風圧／ARでバフが味方全体対象（条件なし）のため、すでに条件なしのトーテムとして登録されている。こちらは灼熱／MGで灼熱限定なのでtotemConditionが付く。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）"
     }
   ]
 }
