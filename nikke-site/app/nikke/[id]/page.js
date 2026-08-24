@@ -70,8 +70,12 @@ export default function NikkeDetailPage({ params }) {
   const teamsForClient = shownTeams.map((a) => ({
     id: a.id,
     name: a.name,
+    name_en: a.name_en || null,
+    name_ja: a.name_ja || null,
     mode: a.mode,
     note: a.note || null,
+    note_en: a.note_en || null,
+    note_ja: a.note_ja || null,
     members: (a.members || []).map((title) => {
       const m = byTitle(title);
       return m
