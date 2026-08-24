@@ -153,13 +153,31 @@ sitemap 201개 URL 중 `<ins class="adsbygoogle">`가 실제로 들어가는 곳
 | 2 | Vercel 프로젝트에 도메인 연결 (Settings → Domains) | — |
 | 3 | Vercel 환경변수 `NEXT_PUBLIC_SITE_URL=https://새도메인` 추가 후 **재배포** | 재배포해야 런타임에 반영된다 |
 | 4 | `npm run check:canonical` | 201건 통과 확인. 스크립트도 같은 환경변수를 읽는다 |
-| 5 | 구 주소 → 새 주소 **301 리다이렉트** | 색인·순위 승계 |
+| 5 | ~~구 주소 → 새 주소 **301 리다이렉트**~~ | ✅ **코드에 이미 넣어뒀다**(`next.config.js`). 3번에서 환경변수를 새 주소로 바꾸는 순간 자동으로 켜진다 |
 | 6 | Search Console **새 속성 등록** + sitemap 재제출 | ⚠️ `app/layout.js`의 인증 토큰은 **옛 속성용**이다. 새 속성은 토큰이 다르니 DNS TXT(도메인 속성) 인증이 편하다. **기존 태그를 지우면 옛 속성 소유권이 풀린다** |
 | 7 | 애드센스에 **새 사이트 추가** → 검토 요청 | `public/ads.txt`는 정적 파일이라 새 도메인에서 자동으로 서빙된다 |
 | 8 | Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`components/Header.js:41`) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
 
 코드 준비는 이미 끝나 있다 — `lib/site.js`가 환경변수 하나를 읽고 `app/layout.js`·`app/robots.js`·
 `app/sitemap.js`·`scripts/checkCanonical.mjs`가 전부 그 값을 쓴다(커밋 `306009b`).
+
+**결정한 도메인: `nikketeamguide.com`** (2026-08-24). 사이트 영문명 "Nikke Team Guide"와 일치한다.
+`.com` 미등록 확인(RDAP). 후보였던 `nikketeam.com`·`nikkecombo.com`도 당시 비어 있었다.
+
+#### 리다이렉트는 이미 코드에 있다 (2026-08-23 추가, 도메인 없이도 안전)
+
+`next.config.js`가 `NEXT_PUBLIC_SITE_URL`을 보고 옛 호스트에서 새 호스트로 308 리다이렉트를
+만든다. **환경변수가 없거나 아직 `vercel.app`이면 규칙을 아예 만들지 않는다** — 그래서 도메인을
+사기 전에 넣어둬도 아무 일이 일어나지 않고, 3번을 하는 순간 켜진다.
+
+역테스트 4가지 전부 확인:
+
+| 상황 | 규칙 |
+|---|---|
+| 환경변수 없음(현재) | 0개 ✅ |
+| `https://nikketeamguide.com` | 1개 — `/:path*` → 새 주소, permanent ✅ |
+| 주소 형태가 아닌 값 | 0개 (빌드를 깨뜨리지 않는다) ✅ |
+| 값이 옛 주소 그대로 | 0개 (무한 리다이렉트 방지) ✅ |
 
 ### 🔴 재심사 결과 — **재반려 (2026-08-23). 사유가 지난번과 다르다**
 
