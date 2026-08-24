@@ -20,9 +20,10 @@ import path from 'node:path';
 const ROOT = path.resolve(import.meta.dirname, '..');
 const OUT = path.join(ROOT, '.next/server/app');
 // ⚠️ 주소를 여기 하드코딩하면 커스텀 도메인으로 옮긴 뒤 이 검사가 통째로 실패한다.
-//    lib/site.js와 **같은 환경변수**를 읽는다. 그래야 도메인 전환이 환경변수 하나로 끝난다.
-//    (lib/site.js는 ESM + Next 경로 별칭이라 여기서 import하지 않고 규칙만 맞춘다)
-const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://nikke-site.vercel.app')
+//    2026-08-24부터 lib/site.js·next.config.js와 **같은 파일**(data/siteConfig.json)을 읽는다.
+//    그전에는 세 파일이 각자 같은 문자열을 하드코딩하고 있어서 한쪽만 고치면 조용히 어긋났다.
+const siteConfig = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/siteConfig.json'), 'utf8'));
+const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || siteConfig.productionUrl)
   .replace(/\/+$/, '');
 
 if (!fs.existsSync(OUT)) {
