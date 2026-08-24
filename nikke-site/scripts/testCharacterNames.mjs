@@ -28,7 +28,16 @@ const src = fs.readFileSync(path.join(ROOT, 'lib', 'characterNames.js'), 'utf8')
   .replace(/^import characterDatabase from '\.\.\/data\/characterDatabase\.json';$/m,
     `import fs0 from 'node:fs';\nconst characterDatabase = JSON.parse(fs0.readFileSync(new URL('${href('data', 'characterDatabase.json')}'), 'utf8'));`)
   .replace(/^import \{ DEFAULT_LOCALE \} from '\.\/i18n';$/m,
-    `import { DEFAULT_LOCALE } from '${href('lib', 'i18n.js')}';`);
+    `import { DEFAULT_LOCALE } from '${href('lib', 'i18n.js')}';`)
+  // 2026-08-24: memberName 정의가 lib/memberName.js로 빠졌다 — 클라이언트 컴포넌트가
+  // 이 함수 하나 때문에 characterDatabase.json 666KB를 번들에 싣던 것을 막으려고 순수
+  // 모듈로 분리하고 여기서는 재수출만 한다(이름 규칙은 여전히 한 곳).
+  // ⚠️ 이 테스트는 파일을 임시 폴더로 복사해 불러오므로 **상대 import를 하나씩 절대
+  //    경로로 바꿔줘야 한다.** 빠뜨리면 ERR_MODULE_NOT_FOUND로 테스트가 통째로 죽는다
+  //    (실제로 분리 직후 그렇게 깨졌다). lib/characterNames.js에 상대 import를 새로
+  //    추가하면 여기도 함께 고칠 것.
+  .replace(/^export \{ memberName \} from '\.\/memberName';$/m,
+    `export { memberName } from '${href('lib', 'memberName.js')}';`);
 
 const tmp = path.join(os.tmpdir(), `charnames-test-${process.pid}.mjs`);
 fs.writeFileSync(tmp, src);

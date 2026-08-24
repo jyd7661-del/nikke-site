@@ -64,14 +64,7 @@ export function localizedCharacter(c, lang = DEFAULT_LOCALE) {
   return { ...c, name: characterName(c, lang) };
 }
 
-// 스코어링 엔진이 내려보낸 조합 멤버({ id, title, name_kr, name_ja, ... })의 표시 이름.
-//
-// ⚠️ 엔진 멤버의 id는 **characterDatabase의 id**라서 위 NAME_TABLE(로스터 id 기준)로는
-//    찾을 수 없다. 그래서 멤버 객체가 들고 온 표기를 그대로 쓴다.
-//    lib/synergyEngine.js가 name_ja를 함께 실어 보내야 일본어가 나온다.
-export function memberName(m, lang = DEFAULT_LOCALE) {
-  if (!m) return '';
-  if (lang === 'ja') return m.name_ja || m.name_kr || m.title || '';
-  if (lang === 'en') return m.title || m.name_kr || '';
-  return m.name_kr || m.title || '';
-}
+// memberName은 lib/memberName.js에 있다 — 데이터 파일을 읽지 않는 순수 모듈이라
+// 클라이언트 컴포넌트가 import해도 characterDatabase.json 666KB를 끌어오지 않는다.
+// 정의는 그쪽 한 곳뿐이고 여기서는 재수출만 한다(이름 규칙이 갈라지지 않게).
+export { memberName } from './memberName';

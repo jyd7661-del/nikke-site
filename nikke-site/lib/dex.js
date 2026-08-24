@@ -53,3 +53,7 @@ export const TAG_KR = {
   expert: '수동 조작 숙련 필요',
   partner: '특정 동료와 함께일 때 강함',
 };
+
+// 언어별 라벨은 lib/dexLabels.js에 있다(클라이언트 안전 모듈).
+// ⚠️ 여기서 재수출하지 않는다 — 클라이언트가 lib/dex를 import하면 characterDatabase.json
+//    666KB가 브라우저 번들에 실린다. 필요한 쪽에서 lib/dexLabels를 직접 import할 것.

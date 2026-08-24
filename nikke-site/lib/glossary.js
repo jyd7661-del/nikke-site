@@ -127,10 +127,14 @@ export const AMBIGUOUS_EN = new Set([
   'D', 'K', 'Power', 'Grave', 'Signal', 'Volume', 'Noise', 'Label', 'Novel', 'Crown',
   'Mint', 'Sugar', 'Milk', 'Soda', 'Crust', 'Bready', 'Clay', 'Rouge', 'Blanc', 'Noir',
   'EVE', 'Viper', 'Drake', 'Guilty', 'Sin', 'Mary', 'Julia', 'Alice', 'Emilia',
+  // 2026-08-24 추가 — 기업명 Abnormal. 도감 제조사 표기를 위해 용어집에 넣었는데
+  // 영어로는 흔한 형용사라 그대로 보호하면 본문이 깨진다.
+  'Abnormal',
 ]);
 
 export const AMBIGUOUS_JA = new Set([
   'シン', 'パワー', 'ミルク', 'ソーダ', 'ミント', 'シュガー', 'クラウン', 'ノア', 'アリア', '紅蓮',
+  'アブノーマル', // 2026-08-24 — 기업명이지만 일본어로도 흔한 외래어다
 ]);
 
 const AMBIGUOUS = { ko: AMBIGUOUS_KO, en: AMBIGUOUS_EN, ja: AMBIGUOUS_JA };
