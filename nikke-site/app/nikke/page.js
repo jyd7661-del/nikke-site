@@ -39,7 +39,12 @@ export default function NikkeIndexPage() {
             href={`/nikke/${c.id}`}
             className="rounded-lg bg-slate-800/40 hover:bg-slate-800 p-1.5 transition-colors"
           >
-            {c.img && (
+            {/* 신규 캐릭터는 위키에 상반신 초상화(_MI.png)가 올라오기까지 며칠~몇 주 걸린다.
+                img를 그냥 빼면 그 카드만 짧아지는 게 아니다 — 그리드 행 높이는 다른 카드가
+                정하므로 **큰 빈 상자**가 된다. 2026-08-24 라이브에서 페르소나 콜라보 2명이
+                목록 맨 앞 두 칸을 빈 상자로 차지하고 있었다.
+                그래서 같은 비율의 자리표시자를 그린다(components/CharacterAvatar와 같은 처리). */}
+            {c.img ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={nikkeImageUrl(c.img)}
@@ -47,6 +52,13 @@ export default function NikkeIndexPage() {
                 loading="lazy"
                 className="w-full aspect-[3/4] object-cover rounded bg-slate-800 mb-1.5"
               />
+            ) : (
+              <div
+                aria-hidden="true"
+                className="w-full aspect-[3/4] rounded bg-slate-800 mb-1.5 flex items-center justify-center text-slate-500 text-2xl font-bold"
+              >
+                {c.name_kr?.[0] || '?'}
+              </div>
             )}
             <div className="font-bold text-slate-100 text-xs leading-tight break-keep">{c.name_kr}</div>
             <div className="text-[11px] text-slate-500 mt-0.5 leading-tight">
