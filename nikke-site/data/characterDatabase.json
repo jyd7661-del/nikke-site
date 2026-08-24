@@ -602,7 +602,7 @@
         "cd": "N/A",
         "desc": "Affects self. Activates after landing 30 normal attacks. Critical rate ▲ 9.28% for 10 sec. HP ▼ 2.01%",
         "name_kr": "유열",
-        "desc_kr": "일반 공격 30회 [6] 명중 시 자신에게 [크리티컬 확률 9.28% ▲] [10초 유지] [현재 체력 2.01% ▼]",
+        "desc_kr": "일반 공격 30회 [7] 명중 시 자신에게 [크리티컬 확률 9.28% ▲] [10초 유지] [현재 체력 2.01% ▼]",
         "name_ja": "愉悦",
         "desc_ja": "通常攻撃が30回命中した時、自分に「クリティカル確率9.28%▲（10秒）」「現在のHP2.01%▼」"
       },
@@ -612,7 +612,7 @@
         "cd": "N/A",
         "desc": "Activates after landing 150 normal attack(s). Affects self. Critical Damage ▲ 14.69% for 5 sec. Activates when HP falls below 70%. Affects self. ATK ▲ 0.96% with every 1% of HP loss. This effect is active continuously.",
         "name_kr": "흑화",
-        "desc_kr": "일반 공격 150회 명중 시 자신에게 [크리티컬 대미지 14.69% ▲] [7] [5초 유지] 자신의 체력이 70% 이하일 때 한하여 자신에게 [잃은 체력 1%당 공격력 0.96% ▲] [8] [지속]",
+        "desc_kr": "일반 공격 150회 명중 시 자신에게 [크리티컬 대미지 14.69% ▲] [8] [5초 유지] 자신의 체력이 70% 이하일 때 한하여 자신에게 [잃은 체력 1%당 공격력 0.96% ▲] [9] [지속]",
         "name_ja": "黒化",
         "desc_ja": "通常攻撃が150回命中した時、自分に「クリティカルダメージ14.69%▲（5秒）」 自分のHPが70%以下の場合に限り、自分に「失ったHP1%当たりの攻撃力0.96%▲（持続）」"
       },
@@ -10433,6 +10433,100 @@
         "desc_kr": "자신에게 [사용 무기 변경 : 메티스 버스트 버스터] : [차지 시간] [과전류 단계별 효과] [단계별 효과만 적용] 차지 시간 : 3초 1단계 이하 : 3초 고정 2단계 : 2.5초 고정 3단계 : 2초 고정 4단계 : 1.5초 고정 5단계 이상 : 0.4초 고정 대미지 : 최종 공격력 350% 대미지 풀 차지 대미지 : 300% 최대 장탄 수 : 1발 추가 효과 : [관통 특화] 아군 전체에게 [공격 대미지 25% ▲] [10초 유지]",
         "name_ja": "メティスバスターバスター",
         "desc_ja": "自分に「使用武器変更：メティスバスターバスター」：「チャージ時間」「過電流の段階別の効果」「各段階の効果のみ適用」チャージ時間：3秒1段階以下：3秒に固定2段階：2.5秒に固定3段階：2秒に固定4段階：1.5秒に固定5段階以上：0.4秒に固定ダメージ：最終攻撃力の350%のダメージフルチャージダメージ：300%最大装弾数：1発追加効果：「貫通特化」 味方全体に「攻撃ダメージ25%▲」「10秒間維持」"
+      }
+    ]
+  },
+  {
+    "id": "queen-makoto",
+    "title": "Queen (Makoto Niijima)",
+    "name_kr": "퀸(니지마 마코토)",
+    "name_ja": "クイーン（新島真）",
+    "class": "attacker",
+    "burst": "3",
+    "element": "fire",
+    "weapon": "sg",
+    "manufacturer": "abnormal",
+    "rarity": "SSR",
+    "releaseDate": "2026-08-13",
+    "tiers": {
+      "story": "C",
+      "bossing": "A",
+      "pvp": "B"
+    },
+    "skills": [
+      {
+        "name": "Persona: Johanna",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. Persona - Johanna: This effect is continuous and cannot be removed.Function: Queen (Makoto) strengthens herself using her Persona. Effect 1: Nuke Boost: Elemental Advantage Attack Damage ▲ 13.59% continuously. This effect cannot be removed. Effect 2: Defense Master: DEF ▲ 14.78% continuously. This effect cannot be removed. Activates at the start of battle and when Full Burst ends. Affects self. ATK ▲ 50.28% for 15 sec. Activates when 1 More takes effect. Affects all enemies. Deals 548.99% of final ATK as distributed damage. Activates when Follow Up takes effect. Affects all enemies. Deals 548.99% of final ATK as distributed damage.",
+        "name_ja": "ペルソナ：ヨハンナ",
+        "desc_ja": "戦闘開始時、自分に「ペルソナ - ヨハンナ」「持続」「解除不可」：機能：ペルソナを使って自分を強化する効果1：「核熱ブースタ：有利コードの攻撃ダメージ13.59%▲」「持続」「解除不可」効果2：「防御の心得：防御力14.78%▲」「持続」「解除不可」 戦闘開始時およびフルバーストタイムが終了した時、自分に「攻撃力50.28%▲」「15秒間維持」 1moreが適用された時、敵全体に「最終攻撃力の548.99%の分配ダメージ」 追撃が適用された時、敵全体に「最終攻撃力の548.99%の分配ダメージ」",
+        "name_kr": "페르소나 : 요한나",
+        "desc_kr": "전투 시작 시 자신에게 [페르소나 - 요한나] [지속] [해제 불가] : 기능 : 페르소나를 통해 자신을 강화합니다. 효과 1 : [핵열 부스터 : 우월 코드 공격 대미지 13.59% ▲] [지속] [해제 불가] 효과 2 : [방어의 마음가짐 : 방어력 14.78% ▲] [지속] [해제 불가] 전투 시작 시와 풀 버스트 타임 종료 시 자신에게 [공격력 50.28% ▲] [15초 유지] 1more 적용 시 적 전체에게 [ 최종 공격력 548.99% 분배 대미지 ] 추격 적용 시 적 전체에게 [ 최종 공격력 548.99% 분배 대미지 ]"
+      },
+      {
+        "name": "Fist of Justice!",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. Attack Damage ▲ 30% continuously. Activates when using Burst Skill. Affects self. Fist of Justice!: This effect is continuous and cannot be removed. Function: Queen (Makoto) strengthens herself. Effect 1: Nuke Amp: Elemental Advantage Attack Damage ▲ 25.56% continuously. This effect cannot be removed. Effect 2: Rakukaja: DEF ▲ 17.95% continuously. This effect cannot be removed. Deactivation condition: When Full Burst ends. Activates when entering Burst Stage 3. Affects self. Distributed Damage ▲ 90.01% for 10 sec. Activates when 1 More takes effect. Affects all standard Burst 3 allies (except the skill user) in the Persona state. Baton Pass: ATK ▲ 35.2% of the skill user's ATK continuously. Stacks up to 3 times.",
+        "name_ja": "鉄・拳・制・裁！",
+        "desc_ja": "戦闘開始時、自分に「攻撃ダメージ30%▲」「持続」 バーストスキルを使用した時、自分に「鉄・拳・制・裁！」「持続」「解除不可」：機能：自分を強化する効果1：「核熱ハイブースタ：有利コードの攻撃ダメージ25.56%▲」「持続」「解除不可」効果2：「ラクカジャ：防御力17.95%▲」「持続」「解除不可」解除条件：フルバーストタイムが終了した時 バースト3段階突入時、自分に「分配ダメージ90.01%▲」「10秒間維持」 1moreが適用された時、自分を除く基本バースト段階が3のペルソナ状態の味方全体に「バトンタッチ：スキル発動者基準で攻撃力35.2%▲」「3スタック」「持続」",
+        "name_kr": "철·권·제·재!",
+        "desc_kr": "전투 시작 시 자신에게 [공격 대미지 30% ▲] [지속] 버스트 스킬 사용 시 자신에게 [철·권·제·재!] [지속] [해제 불가] : 기능 : 자신을 강화합니다. 효과 1 : [핵열 하이부스터 : 우월 코드 공격 대미지 25.56% ▲] [지속] [해제 불가] 효과 2 : [라쿠카쟈 : 방어력 17.95% ▲] [지속] [해제 불가] 제거 시점 : 풀 버스트 타임 종료 시 버스트 3단계 진입 시 자신에게 [ 분배 대미지 90.01% ▲] [10초 유지] 1more 적용 시 자신을 제외한 기본 버스트 단계가 Step3인 페르소나 상태 아군 전체에게 [배턴 터치 : 시전자 기준 공격력 35.2% ▲] [3중첩] [지속]"
+      },
+      {
+        "name": "Mafreidyne",
+        "type": "Active",
+        "cd": "40",
+        "desc": "Affects all enemies. Deals 1421.69% of final ATK as distributed damage. Activates if a Wind Code enemy is present. Affects self. 1 More: ATK ▲ 30.27% for 10 sec.",
+        "name_ja": "マハフレイダイン",
+        "desc_ja": "敵全体に「最終攻撃力の1421.69%の分配ダメージ」 対象が風圧コードなら自分に「1more：攻撃力30.27%▲」「10秒間維持」",
+        "name_kr": "마하프레이다인",
+        "desc_kr": "적 전체에게 [ 최종 공격력 1421.69% 분배 대미지 ] 풍압 코드 적이 있다면 자신에게 [1more : 공격력 30.27% ▲] [10초 유지]"
+      }
+    ]
+  },
+  {
+    "id": "yukiko",
+    "title": "Yukiko",
+    "name_kr": "아마기 유키코",
+    "name_ja": "天城雪子",
+    "class": "attacker",
+    "burst": "3",
+    "element": "fire",
+    "weapon": "mg",
+    "manufacturer": "abnormal",
+    "rarity": "SSR",
+    "releaseDate": "2026-08-20",
+    "tiers": {
+      "story": "A",
+      "bossing": "S",
+      "pvp": "C"
+    },
+    "skills": [
+      {
+        "name": "Persona: Konohana Sakuya",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. Persona - Konohana Sakuya: This effect is continuous and cannot be removed. Function: Yukiko heals her allies using her Persona. Effect 1: Activates every 3 sec. Affects all allies. Media: Restores HP equal to 5.7% of the skill user's final max HP. Activates at the start of battle and when Full Burst ends. Affects self. ATK ▲ 65.37% for 15 sec. Activates when 1 More takes effect. Affects all enemies. Deals 400.31% of final ATK as distributed damage.",
+        "name_kr": "페르소나 : 코노하나사쿠야",
+        "desc_kr": "전투 시작 시 자신에게 [페르소나 - 코노하나사쿠야] [지속] [해제 불가] : 기능 : 페르소나를 통해 아군을 회복합니다. 효과 1 : 3초 마다 아군 전체에게 [메디아 : 시전자의 최종 최대 체력 비례 5.7% 회복] 전투 시작 시와 풀 버스트 타임 종료 시 자신에게 [공격력 65.37% ▲] [15초 유지] 1more 적용 시 적 전체에게 [ 최종 공격력 400.31% 분배 대미지 ]"
+      },
+      {
+        "name": "Scarlet Flower",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. Attack Damage ▲ 55.31% continuously. Activates when using Burst Skill. Scarlet Flower: This effect is continuous and cannot be removed. Function: Yukiko strengthens herself. Effect 1: Activates every 3 sec. Affects all allies. Mediarama: Restores HP equal to 5.7% of the skill user's final max HP. Effect 2: Affects self. Fire Amp: Distributed Damage ▲ 90.01% continuously. This effect cannot be removed. Effect 3: Affects self. Scarlet Protection: Damage taken from Water Code enemies ▼ 17.95% continuously. This effect cannot be removed. Deactivation condition: When Full Burst ends. Activates when entering Burst Stage 3. Affects self. Elemental Advantage Attack Damage ▲ 48.15% for 10 sec. Activates when 1 More takes effect. Affects all standard Burst 3 allies (except the skill user) in the Persona state. Follow Up: ATK ▲ 80.25% of the skill user's ATK for 25 sec.",
+        "name_kr": "진홍의 꽃",
+        "desc_kr": "전투 시작 시 자신에게 [공격 대미지 55.31% ▲] [지속] 버스트 스킬 사용 시 [진홍의 꽃] [지속] [해제 불가] : 기능 : 자신을 강화합니다. 효과 1 : 3초 마다 아군 전체에게 [메디라마 : 시전자의 최종 최대 체력 비례 5.7% 회복] 효과 2 : 자신에게 [화염 부스터 : 분배 대미지 90.01% ▲] [지속] [해제 불가] 효과 3 : 자신에게 [진홍의 수호 : 수냉 코드 적으로부터 받는 대미지 17.95% ▼] [지속] [해제 불가] 제거 시점 : 풀 버스트 타임 종료 시 버스트 3단계 진입 시 자신에게 [ 우월 코드 공격 대미지 48.15% ▲] [10초 유지] 1more 적용 시 자신을 제외한 기본 버스트 단계가 Step3인 페르소나 상태 아군 전체에게 [추격 : 시전자 기준 공격력 80.25% ▲] [25초 유지]"
+      },
+      {
+        "name": "Maragidyne",
+        "type": "Active",
+        "cd": "40",
+        "desc": "Affects all enemies. Deals 1258.79% of final ATK as distributed damage. Activates if a Wind Code enemy is present. Affects self. 1 More: ATK ▲ 45.33% for 10 sec.",
+        "name_kr": "마하라기다인",
+        "desc_kr": "적 전체에게 [ 최종 공격력 1258.79% 분배 대미지 ] 풍압 코드 적이 있다면 자신에게 [1more : 공격력 45.33% ▲] [10초 유지]"
       }
     ]
   }

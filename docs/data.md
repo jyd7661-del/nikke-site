@@ -9,8 +9,8 @@
 
 | 파일 | 내용 | 현재 규모 |
 |---|---|---|
-| `characterDatabase.json` | 캐릭터 상세(스킬 3종, 쿨타임, 버스트, 원소, 클래스, 무기, 제조사, 출시일, 모드별 티어, prydwenTags, **이름 3개 국어 `title`/`name_kr`/`name_ja`**) | 196명 (SSR 168 / SR 19 / R 9) |
-| `characters.js` | **화면 캐릭터 선택 그리드가 읽는 UI 목록. SSR 전용** | 168 항목 |
+| `characterDatabase.json` | 캐릭터 상세(스킬 3종, 쿨타임, 버스트, 원소, 클래스, 무기, 제조사, 출시일, 모드별 티어, prydwenTags, **이름 3개 국어 `title`/`name_kr`/`name_ja`**) | 198명 (SSR 170 / SR 19 / R 9) |
+| `characters.js` | **화면 캐릭터 선택 그리드가 읽는 UI 목록. SSR 전용** | 170 항목 |
 | `synergyNotes.json` | prydwen 아키타입, 시너지 페어, 카운터 | 아키타입 483 / 페어 13 / 카운터 4 |
 | `characterInvestmentNotes.json` | 애장품 필요 여부, 투자 우선순위, **토템 역할** | 76건 (토템 18명) |
 | `treasureEffects.json` | 애장품 효과 | 17명 (전원) |

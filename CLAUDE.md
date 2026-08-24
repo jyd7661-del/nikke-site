@@ -159,7 +159,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 
 ### 도감 페이지 `/nikke` (2026-08-13 추가, 성장 계획 Phase 1)
 
-`characterDatabase.json` 하나로 인덱스 1 + 상세 196페이지를 **빌드 때 정적 생성**한다.
+`characterDatabase.json` 하나로 인덱스 1 + 상세 198페이지를 **빌드 때 정적 생성**한다(2026-08-24 기준. 캐릭터가 늘면 이 숫자도 따라 늘어난다).
 헬퍼는 `lib/dex.js`, 페이지는 `app/nikke/`.
 
 - **데이터가 곧 페이지다.** 캐릭터를 추가·수정하면 다음 배포에서 페이지와 sitemap이 함께
