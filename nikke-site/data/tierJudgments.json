@@ -78,7 +78,8 @@
     "prydwen": "A",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "nikke.gg Boss S(우리와 같음) · game8 종합 S. enikk 솔로레이드는 C(8.8%)로 낮지만 알트 오디너리 미케닉이 자리를 대신하고, nikke.gg Boss는 스토리보스·요격·코옵·유니온레이드까지 포함한다. 낮추라는 곳은 prydwen뿐"
+    "why": "백분위 비교(2026-08-24 재검토): 우리 보스전 S=상위 18% · prydwen A=31% · nikke.gg S=21%. 종합은 우리 20% vs game8 S=48%. enikk 솔로레이드 C(8.8%), 철갑 시즌 R39에서도 1.1%. 살아 있는 두 출처와 실사용이 모두 \"우리가 높게 잡았다\"를 가리키는 유일한 건이다. 다만 알트(오디너리 미케닉, 2026-07-30)가 채용을 흡수했을 수 있어 낮추기는 보류하고 유지. 유저 판단 대기",
+    "revisedOn": "2026-08-24"
   },
   {
     "id": "yulha",
@@ -87,7 +88,8 @@
     "prydwen": "C",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "nikke.gg Boss B(우리와 같음) · game8 종합 A(우리보다 높음). 낮추라는 곳은 prydwen뿐"
+    "why": "백분위 비교: 우리 보스전 B=50% · prydwen C=63% · nikke.gg B=48%. 종합은 우리 75% vs game8 A=71%로 거의 같다. 우리 값이 네 출처 한가운데다. 낮추라는 곳은 prydwen뿐",
+    "revisedOn": "2026-08-24"
   },
   {
     "id": "modernia",
@@ -96,7 +98,8 @@
     "prydwen": "B",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "nikke.gg Boss S · game8 종합 S — 둘 다 우리보다 높다. enikk 솔로레이드 B(29.2%), 화염 시즌 R35 채용 19.0%. 낮출 근거가 없다"
+    "why": "백분위 비교: 우리 보스전 A=33% · prydwen B=48% · nikke.gg S=21%. 종합은 우리 33% vs game8 S=48%. enikk 솔로레이드 B(29.2%), 화염 시즌 R35에서 19.0%로 실사용이 강하다 — 낮출 근거를 실사용이 막는다",
+    "revisedOn": "2026-08-24"
   },
   {
     "id": "2b",
@@ -105,7 +108,8 @@
     "prydwen": "C",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "nikke.gg Boss A · game8 종합 S — 둘 다 우리보다 높다. enikk 솔로레이드는 등재 밖(화염 시즌 R35에서 0%)이지만 낮추라는 곳은 prydwen뿐이고 우리 B는 prydwen C와 nikke.gg A 사이다"
+    "why": "백분위 비교: 우리 보스전 B=50% · prydwen C=63% · nikke.gg A=35%. 종합은 우리 55% vs game8 S=48%로 **game8이 우리보다 높다**. 살아 있는 출처 중 낮추라는 곳은 prydwen뿐이다",
+    "revisedOn": "2026-08-24"
   },
   {
     "id": "a2",
@@ -114,7 +118,8 @@
     "prydwen": "C",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "nikke.gg Boss A · game8 종합 A — 둘 다 우리보다 높다. enikk 솔로레이드는 등재 밖(화염 시즌 R35에서 0%). 우리 B는 prydwen C와 나머지 A 사이다"
+    "why": "백분위 비교: 우리 보스전 B=50% · prydwen C=63% · nikke.gg A=35%. 종합은 우리 48% vs game8 A=71%. 신호가 엇갈린다(보스전은 우리가 중간, 종합은 우리가 높음). 한 단계 차이라 유지",
+    "revisedOn": "2026-08-24"
   },
   {
     "id": "ark-ranger-black",
@@ -123,7 +128,8 @@
     "prydwen": "A",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "game8 종합 SS(우리보다 높음) · enikk 솔로레이드 B(18.2%), 바람 시즌 R38 채용 14.4%. nikke.gg는 2026-06-11 출시라 아직 미등재. 낮추라는 곳은 prydwen뿐"
+    "why": "백분위 비교: 우리 보스전 S=18% · prydwen A=31%. 종합은 우리 15% vs game8 SS=14%로 **거의 일치**한다. enikk 솔로레이드 B(18.2%), 바람 시즌 R38에서 14.4%. nikke.gg는 2026-06-11 출시라 미등재(그쪽 로스터가 2026-04-30에 멈춤)",
+    "revisedOn": "2026-08-24"
   },
   {
     "id": "jill-valentine",
@@ -132,6 +138,7 @@
     "prydwen": "B",
     "verdict": "keep",
     "decidedOn": "2026-08-24",
-    "why": "nikke.gg Boss S · game8 종합 S — 둘 다 우리보다 높다. enikk 솔로레이드는 등재 밖(전기 시즌 R36에서 3.3%). 낮추라는 곳은 prydwen뿐"
+    "why": "백분위 비교: 우리 보스전 A=33% · prydwen B=48% · nikke.gg S=21%. 종합은 우리 48% vs game8 S=48%로 일치. 낮추라는 곳은 prydwen뿐",
+    "revisedOn": "2026-08-24"
   }
 ]

@@ -48,5 +48,11 @@
     "source": "enikk.app /meta 슬라이스 4종(캠페인·솔로레이드·챔피언아레나·종합). 등급도 enikk이 직접 매긴 값이다",
     "refreshMethod": "docs/data.md \"enikk 실사용 조합\" 절 참고 — /meta?slice=campaign|soloraid|arena|overall",
     "staleAfterDays": 21
+  },
+  "tierSources": {
+    "asOf": "2026-08-24",
+    "source": "출처별 최신성(로스터가 멈춘 지점) + 이용 인구(similarweb 동일 스냅샷 글로벌 순위)를 실측한 값. data/tierSources.json",
+    "refreshMethod": "data/tierSources.json 의 howToRemeasure 절차대로 다시 잰다. 문서 갱신일은 쓰지 말 것(일괄 타임스탬프)",
+    "staleAfterDays": 90
   }
 }
