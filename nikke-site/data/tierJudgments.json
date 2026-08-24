@@ -70,5 +70,68 @@
     "verdict": "hold",
     "decidedOn": "2026-08-15",
     "why": "PvP 전용 등급을 주는 곳이 prydwen뿐이라 대세를 만들 수 없다. 한 등급 차이라 보류 — 새 출처가 이 알트를 다루면 재판정"
+  },
+  {
+    "id": "maxwell",
+    "mode": "bossing",
+    "ours": "S",
+    "prydwen": "A",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "nikke.gg Boss S(우리와 같음) · game8 종합 S. enikk 솔로레이드는 C(8.8%)로 낮지만 알트 오디너리 미케닉이 자리를 대신하고, nikke.gg Boss는 스토리보스·요격·코옵·유니온레이드까지 포함한다. 낮추라는 곳은 prydwen뿐"
+  },
+  {
+    "id": "yulha",
+    "mode": "bossing",
+    "ours": "B",
+    "prydwen": "C",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "nikke.gg Boss B(우리와 같음) · game8 종합 A(우리보다 높음). 낮추라는 곳은 prydwen뿐"
+  },
+  {
+    "id": "modernia",
+    "mode": "bossing",
+    "ours": "A",
+    "prydwen": "B",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "nikke.gg Boss S · game8 종합 S — 둘 다 우리보다 높다. enikk 솔로레이드 B(29.2%), 화염 시즌 R35 채용 19.0%. 낮출 근거가 없다"
+  },
+  {
+    "id": "2b",
+    "mode": "bossing",
+    "ours": "B",
+    "prydwen": "C",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "nikke.gg Boss A · game8 종합 S — 둘 다 우리보다 높다. enikk 솔로레이드는 등재 밖(화염 시즌 R35에서 0%)이지만 낮추라는 곳은 prydwen뿐이고 우리 B는 prydwen C와 nikke.gg A 사이다"
+  },
+  {
+    "id": "a2",
+    "mode": "bossing",
+    "ours": "B",
+    "prydwen": "C",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "nikke.gg Boss A · game8 종합 A — 둘 다 우리보다 높다. enikk 솔로레이드는 등재 밖(화염 시즌 R35에서 0%). 우리 B는 prydwen C와 나머지 A 사이다"
+  },
+  {
+    "id": "ark-ranger-black",
+    "mode": "bossing",
+    "ours": "S",
+    "prydwen": "A",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "game8 종합 SS(우리보다 높음) · enikk 솔로레이드 B(18.2%), 바람 시즌 R38 채용 14.4%. nikke.gg는 2026-06-11 출시라 아직 미등재. 낮추라는 곳은 prydwen뿐"
+  },
+  {
+    "id": "jill-valentine",
+    "mode": "bossing",
+    "ours": "A",
+    "prydwen": "B",
+    "verdict": "keep",
+    "decidedOn": "2026-08-24",
+    "why": "nikke.gg Boss S · game8 종합 S — 둘 다 우리보다 높다. enikk 솔로레이드는 등재 밖(전기 시즌 R36에서 3.3%). 낮추라는 곳은 prydwen뿐"
   }
 ]
