@@ -663,6 +663,21 @@ const WEIGHTS = {
   REAL_CAMPAIGN_PARTIAL_SCALE: 0.3,
 };
 
+// 아키타입 부분일치의 점수. **완전일치를 넘을 수 없다** — 힌트("이 캐릭터를 더 넣으면
+// 이 조합이 완성된다")가 실물("이 조합 그 자체다")보다 값질 수는 없기 때문이다.
+//
+// 2026-08-25 이전에는 천장이 없어서 4/5 부분일치가 20점으로 완전일치(14점)를 넘겼다.
+// 캡(3)과 맞물려 완전일치 조합의 이름이 근거에서 사라졌고(실측 73.2%), 이 점수는
+// 커뮤니티 게시판의 "AI 점수" 배지로 사용자에게 그대로 보인다.
+//
+// ⚠️ 검사 가능하도록 밖으로 뺐다. scripts/testEngineReasons.mjs가 이 함수의 최대값이
+//    ARCHETYPE_FULL_MATCH를 넘지 않는지 직접 확인한다 — 천장을 지우면 근거 문장은
+//    멀쩡한데 점수만 조용히 뒤집히므로, 문장 검사만으로는 못 잡는다(역테스트로 확인).
+export const ARCHETYPE_FULL_POINTS = WEIGHTS.ARCHETYPE_FULL_MATCH;
+export function archetypePartialPoints(haveCount) {
+  return Math.min(WEIGHTS.ARCHETYPE_PARTIAL_MATCH * haveCount, WEIGHTS.ARCHETYPE_FULL_MATCH);
+}
+
 // --- 같은 버스트 단계 인원 낭비 판정 ---
 // 2026-08-07 추가: 유저가 "3버스트에 3명이 있는데 셋 다 쿨타임이 40초라 2명만으로도 계속
 // 버스트가 돌아갈 수 있고, 나머지 1명은 버스트를 아예 못 쓰게 되는데 토템 역할을 할 수 있는
@@ -894,6 +909,39 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 점수가 큰 상위 ARCHETYPE_MATCH_CAP개만 실제 점수/근거에 반영한다. (다 같이 고쳐야지 —
   // findExactTeamMatch와 free-form AI 경로가 모두 이 scoreTeam()을 공유하므로 여기서 고치면
   // 두 경로 전부에 적용된다.)
+  //
+  // 2026-08-25 수정: **부분일치가 완전일치를 밀어내고 있었다.**
+  //
+  //   ARCHETYPE_PARTIAL_MATCH(5)는 아키타입이 2인 페어이던 시절에 잡은 값이고 주석에도
+  //   "절반 수준의 보너스"라고 적혀 있다. 그런데 아키타입이 5인 조합으로 커지면서
+  //   `5 × have.length`가 4명일 때 20점이 되어 완전일치(14)를 넘겼다. 캡이 3이라
+  //   "X 조합의 일부가 있다" 세 줄이 슬롯을 다 먹고, 정작 **5명이 정확히 일치하는
+  //   조합의 이름이 근거에서 통째로 사라졌다.**
+  //
+  //   실측(2026-08-25, 완전일치 아키타입 265건): 자기 조합 이름이 남은 비율 **26.8%**.
+  //   나머지 73.2%는 부분일치 3개에 밀려 사라졌다.
+  //
+  //   유저 판단 — "완성된 조합이 아무래도 버프 연결성이 더 좋을 테니까." 즉 완전일치는
+  //   부분일치보다 **항상 강한 근거**다. 그래서 두 가지를 고쳤다.
+  //     (1) 정렬에서 완전일치를 항상 앞에 둔다        -> 근거 문장 26.8% → 94.3%
+  //     (2) 부분일치 점수의 천장을 완전일치로 둔다     -> 점수 역전 제거
+  //   (2)는 새 숫자가 아니다. 기존 상수를 천장으로 쓸 뿐이고, 뜻은 "힌트(부분일치)가
+  //   실물(완전일치)보다 값질 수는 없다"이다. 점수는 이 배지가 커뮤니티 게시판에
+  //   그대로 보이므로 문장만 고쳐서는 끝나지 않는다(app/combos/page.js).
+  //
+  //   실측 비교 — 이름 유지 / 점수 변화(평균·최악):
+  //     현재            26.8%  /   ±0
+  //     정렬만          94.3%  /  -4.2 · -18
+  //     정렬+천장(채택)  94.3%  /  -7.9 · -18   ← 최악값은 같고 역전만 사라진다
+  //   추천 1위는 무작위 로스터 30개에서 **한 건도 바뀌지 않았다**(표시 점수는 tierTotal이라
+  //   아키타입 점수가 순위에 관여하지 않는다).
+  //
+  //   남는 5.7%는 그 팀이 완전일치하는 아키타입이 3개(캡)를 넘는 경우다. 이때는 자기
+  //   이름 대신 자매 변형의 이름이 나올 수 있지만 "알려진 조합이다"라는 사실은 전달된다.
+  //
+  // ⚠️ sourceCaveat는 완전일치 항목에 **같이 실어** 보낸다. 예전처럼 points:0으로 따로
+  //    push하면 점수 정렬에서 맨 뒤로 밀려 캡에 잘린다 — 출처가 "주 용도가 다르다"고
+  //    밝힌 경고가 조용히 사라지는 것이라, 지금 걸리는 자료가 1건뿐이어도 구조를 고친다.
   const compatModes = MODE_COMPAT[mode] || [mode];
   const archetypeMatches = [];
   synergyNotes.archetypes
@@ -910,41 +958,43 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         // to the past"라고 적은 조합이 캠페인 추천 후보에 정상 등록돼 있었다. 출처가 쓰지
         // 말라고 한 것을 추천하는 것은 기능이 아니라 틀린 정보다.
         if (a.notRecommended) return;
-        archetypeMatches.push({
-          points: WEIGHTS.ARCHETYPE_FULL_MATCH,
-          reason: R.archetype_full({
-            name: localized(a, 'name', lang),
-            note: localized(a, 'note', lang),
-          }),
-        });
         // 쓸 수는 있으나 **주 용도가 다르다**고 출처가 밝힌 경우: 제외하지 않고 고지한다.
         // "[조건 확인]" 접두사는 AI 프롬프트가 "반드시 설명에 포함하라"고 지시하는 표식이라
         // (app/api/ai-recommend/route.js), 이 문장을 붙이면 화면 설명까지 자동으로 따라온다.
         // 설계 원칙 2 — 조건을 밝히고 판단은 사용자에게 넘긴다.
-        if (a.sourceCaveat) {
-          archetypeMatches.push({
-            points: 0,
-            reason: R.source_caveat({ text: localized(a, 'sourceCaveat', lang) }),
-          });
-        }
+        archetypeMatches.push({
+          points: WEIGHTS.ARCHETYPE_FULL_MATCH,
+          full: true,
+          reasons: [
+            R.archetype_full({
+              name: localized(a, 'name', lang),
+              note: localized(a, 'note', lang),
+            }),
+            ...(a.sourceCaveat
+              ? [R.source_caveat({ text: localized(a, 'sourceCaveat', lang) })]
+              : []),
+          ],
+        });
       } else if (have.length > 0) {
         const missing = need.filter((n) => !titles.includes(n));
         archetypeMatches.push({
-          points: WEIGHTS.ARCHETYPE_PARTIAL_MATCH * have.length,
-          reason: R.archetype_partial({
+          points: archetypePartialPoints(have.length),
+          full: false,
+          reasons: [R.archetype_partial({
             name: localized(a, 'name', lang),
             have,
             missing,
-          }),
+          })],
         });
       }
     });
   archetypeMatches
-    .sort((x, y) => y.points - x.points)
+    // 완전일치를 항상 앞에 둔다. 그 다음에만 점수로 겨룬다.
+    .sort((x, y) => (Number(y.full) - Number(x.full)) || (y.points - x.points))
     .slice(0, WEIGHTS.ARCHETYPE_MATCH_CAP)
     .forEach((m) => {
       score += m.points;
-      reasons.push(m.reason);
+      reasons.push(...m.reasons);
     });
 
   // --- 시너지 페어 ---

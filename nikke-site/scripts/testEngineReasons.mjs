@@ -113,7 +113,19 @@ const byTitle = new Map(cdb.map((c) => [c.title, c]));
 const archetypes = Array.isArray(synergyNotes.archetypes)
   ? synergyNotes.archetypes
   : Object.values(synergyNotes.archetypes || {});
+// 같은 순회에서 **완전일치가 부분일치에 밀려나지 않는지**도 본다 (2026-08-25 결함).
+//
+//   부분일치 점수(`ARCHETYPE_PARTIAL_MATCH × 인원`)가 완전일치(14)를 넘겨서, 5명이
+//   정확히 일치하는 조합의 이름이 근거에서 사라지고 있었다 — 실측 26.8%만 살아남았다.
+//   정렬(완전일치 우선)과 부분일치 천장으로 고쳐 94.3%가 됐다.
+//
+//   회귀는 조용하다. 문장이 한 줄 없어질 뿐 에러도 점수 이상도 안 난다. 그래서 검사한다.
+//   **부분일치에 밀린 경우만** 문제로 센다 — 완전일치가 캡(3)을 넘겨 서로 밀어내는 것은
+//   정상이고(자매 변형이 여럿 등록된 조합), 그건 아래 `crowdedByFull`로 따로 센다.
 let archetypeChecked = 0;
+let ownNameKept = 0;
+let crowdedByFull = 0;
+const lostToPartial = [];
 for (const a of archetypes) {
   const members = (a.members || []).map((t) => byTitle.get(t));
   if (members.length !== 5 || members.some((m) => !m)) continue;
@@ -121,6 +133,31 @@ for (const a of archetypes) {
   const r = engine.scoreTeam(members, mode, { lang: 'en' });
   inspect(`archetype/${a.id}`, 'en', r.reasons || []);
   archetypeChecked += 1;
+
+  // 완전일치가 실제로 성립하는 경우에만 판정한다(애장품 전제·비권장·버스트 미충족 제외).
+  if (a.notRecommended || a.requiresTreasure || !r.valid) continue;
+  const lines = r.reasons || [];
+  const ownName = `This is the composition known as '${a.name_en || a.name}'.`;
+  if (lines.some((s) => String(s).startsWith(ownName))) { ownNameKept += 1; continue; }
+  const nFull = lines.filter((s) => String(s).startsWith('This is the composition known as')).length;
+  if (nFull >= 3) crowdedByFull += 1;          // 캡이 완전일치끼리 겨룬 결과 — 정상
+  else lostToPartial.push(a.id);
+}
+problems.push(...lostToPartial.map((id) =>
+  `archetype/${id}: 5명이 정확히 일치하는데 자기 조합 이름이 근거에서 사라졌다 ` +
+  `(부분일치가 완전일치를 밀어냄 — ARCHETYPE_PARTIAL_MATCH 천장과 정렬을 확인할 것)`));
+
+// 점수 쪽 불변식: 부분일치는 완전일치를 넘을 수 없다.
+//
+// 위의 문장 검사는 **정렬** 회귀만 잡는다. 천장을 지워도 정렬이 남아 있으면 문장은
+// 멀쩡하고 점수만 뒤집히는데, 그 점수는 게시판 배지로 그대로 보인다(역테스트에서 확인).
+// 그래서 여기서 직접 확인한다 — 아키타입 인원은 최대 5명이므로 부분일치는 1~4명이다.
+for (let n = 1; n <= 4; n += 1) {
+  const p = engine.archetypePartialPoints(n);
+  if (p > engine.ARCHETYPE_FULL_POINTS) {
+    problems.push(`아키타입 점수 역전: 부분일치 ${n}명 = ${p}점 > 완전일치 ${engine.ARCHETYPE_FULL_POINTS}점 ` +
+      `— 힌트가 실물보다 값질 수 없다(archetypePartialPoints의 천장 확인)`);
+  }
 }
 
 // headline 경로(findRealUsageTeamMatch)와 폴백 탐색(recommendTeams)도 태운다.
@@ -152,6 +189,8 @@ fs.rmSync(tmp, { recursive: true, force: true });
 
 console.log(`\n엔진 근거 문장 실행 테스트 — 구성 ${TEAMS.length}개 × ${LOCALES.length}개 언어 ` +
   `+ 아키타입 ${archetypeChecked}건 + 탐색 경로`);
+console.log(`완전일치 자기 이름 유지 ${ownNameKept}건 · 완전일치끼리 캡 경합 ${crowdedByFull}건 ` +
+  `· 부분일치에 밀림 ${lostToPartial.length}건(0이어야 함)`);
 if (problems.length) {
   console.log(`문제 ${problems.length}건\n`);
   problems.forEach((p, i) => console.log(`  ${i + 1}. ${p}`));
