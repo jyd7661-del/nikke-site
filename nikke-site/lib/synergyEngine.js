@@ -630,9 +630,8 @@ const WEIGHTS = {
   // synergyNotes.archetypes에 등록된 "이름 붙은 조합"을 통째로 포함하면 강한 가산점.
   // 커뮤니티에서 반복적으로 검증된 조합이므로 개별 티어 합보다 신뢰도가 높다고 봄.
   ARCHETYPE_FULL_MATCH: 14,
-  // 아키타입의 일부만 포함한 경우(예: 2명 중 1명만) — "이 캐릭터를 더 넣으면 좋아진다"는
-  // 힌트를 주기 위한 절반 수준의 보너스.
-  ARCHETYPE_PARTIAL_MATCH: 5,
+  // (부분일치 점수는 상수가 아니라 완성도 비례식이다 — 아래 archetypePartialPoints 참고.
+  //  2026-08-25에 ARCHETYPE_PARTIAL_MATCH: 5를 없앴다. 자유 상수가 하나 줄었다.)
   // 2026-08-07 수정: synergyNotes.archetypes가 500개 이상으로 늘어나면서, 인기 캐릭터가 낀 팀은
   // 수십~수백 개의 아키타입과 동시에 매칭되어 점수가 500~700점대로 폭주하는 버그가 있었다
   // (예: 크라운/헬름/스노우화이트:헤비암즈/프리바티/목단 조합 726.5점, D/킬러와이프/티아/나가/
@@ -663,19 +662,39 @@ const WEIGHTS = {
   REAL_CAMPAIGN_PARTIAL_SCALE: 0.3,
 };
 
-// 아키타입 부분일치의 점수. **완전일치를 넘을 수 없다** — 힌트("이 캐릭터를 더 넣으면
-// 이 조합이 완성된다")가 실물("이 조합 그 자체다")보다 값질 수는 없기 때문이다.
+// 아키타입 부분일치의 점수 = **완전일치 점수 × 완성도**.
 //
-// 2026-08-25 이전에는 천장이 없어서 4/5 부분일치가 20점으로 완전일치(14점)를 넘겼다.
-// 캡(3)과 맞물려 완전일치 조합의 이름이 근거에서 사라졌고(실측 73.2%), 이 점수는
-// 커뮤니티 게시판의 "AI 점수" 배지로 사용자에게 그대로 보인다.
+// ■ 부분일치는 무엇인가 (오해하기 쉽다)
 //
-// ⚠️ 검사 가능하도록 밖으로 뺐다. scripts/testEngineReasons.mjs가 이 함수의 최대값이
-//    ARCHETYPE_FULL_MATCH를 넘지 않는지 직접 확인한다 — 천장을 지우면 근거 문장은
-//    멀쩡한데 점수만 조용히 뒤집히므로, 문장 검사만으로는 못 잡는다(역테스트로 확인).
+//   채점 대상 팀은 항상 5명이 차 있다. 4/5 부분일치라는 건 "한 자리가 비었다"가 아니라
+//   **그 자리를 다른 캐릭터로 바꿔 넣은 변형**이라는 뜻이다. 유저 지적 그대로다 —
+//   "부분 일치도 어느 정도 완성된 조합이고 남은 칸은 사용자의 선택이 자유롭다."
+//   그래서 부분일치는 깎아내릴 대상이 아니라 **완성도만큼 인정할** 근거다.
+//
+// ■ 왜 비례식인가 (2026-08-25, 세 번 고쳤다)
+//
+//   원래: `ARCHETYPE_PARTIAL_MATCH(5) × 일치인원`
+//     (a) 4/5가 20점이라 완전일치(14)를 넘겼다 -> 완전일치 이름이 근거의 73.2%에서 사라짐
+//     (b) 아키타입 크기를 무시했다. 1/2(완성도 50%)와 1/5(20%)가 똑같이 5점
+//   1차 수정: 천장을 완전일치로 -> `min(5 × 인원, 14)`
+//     (c) 3/5도 4/5도 14점으로 **뭉개졌다.** 게다가 4/5가 완전일치와 동점이라
+//         "완전일치가 더 강하다"는 원래 목적도 절반만 달성했다
+//   지금: `완전일치 × (일치인원 / 전체인원)`
+//     - 등급이 살아난다        2.8 · 5.6 · 8.4 · 11.2 (5인 기준)
+//     - 항상 완전일치 미만이다  (일치인원 < 전체인원이므로 수학적으로 보장)
+//     - 아키타입 크기를 반영한다 1/2 = 7점 > 1/5 = 2.8점
+//     - **자유 상수가 없다.** ARCHETYPE_PARTIAL_MATCH(5)라는 임의값이 사라졌다
+//
+//   실측 비교는 docs/engine.md 4-3에 있다. 세 안 모두 근거 문장 유지율은 94.3%로 같다
+//   (그건 정렬이 결정하지 점수가 아니다). 차이는 등급 유지와 완전일치 미만 보장뿐이다.
+//
+// ⚠️ 검사 가능하도록 밖으로 뺐다. scripts/testEngineReasons.mjs가 불변식을 직접 확인한다 —
+//    이 식을 되돌려도 근거 문장은 멀쩡하고 점수만 조용히 뒤집히므로 문장 검사로는 못 잡는다
+//    (역테스트에서 실제로 놓쳤다).
 export const ARCHETYPE_FULL_POINTS = WEIGHTS.ARCHETYPE_FULL_MATCH;
-export function archetypePartialPoints(haveCount) {
-  return Math.min(WEIGHTS.ARCHETYPE_PARTIAL_MATCH * haveCount, WEIGHTS.ARCHETYPE_FULL_MATCH);
+export function archetypePartialPoints(haveCount, needCount) {
+  if (!needCount || haveCount >= needCount) return WEIGHTS.ARCHETYPE_FULL_MATCH;
+  return WEIGHTS.ARCHETYPE_FULL_MATCH * (haveCount / needCount);
 }
 
 // --- 같은 버스트 단계 인원 낭비 판정 ---
@@ -923,16 +942,21 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   //
   //   유저 판단 — "완성된 조합이 아무래도 버프 연결성이 더 좋을 테니까." 즉 완전일치는
   //   부분일치보다 **항상 강한 근거**다. 그래서 두 가지를 고쳤다.
-  //     (1) 정렬에서 완전일치를 항상 앞에 둔다        -> 근거 문장 26.8% → 94.3%
-  //     (2) 부분일치 점수의 천장을 완전일치로 둔다     -> 점수 역전 제거
-  //   (2)는 새 숫자가 아니다. 기존 상수를 천장으로 쓸 뿐이고, 뜻은 "힌트(부분일치)가
-  //   실물(완전일치)보다 값질 수는 없다"이다. 점수는 이 배지가 커뮤니티 게시판에
-  //   그대로 보이므로 문장만 고쳐서는 끝나지 않는다(app/combos/page.js).
+  //     (1) 정렬에서 완전일치를 항상 앞에 둔다   -> 근거 문장 26.8% → 94.3%
+  //     (2) 부분일치 점수를 완성도 비례식으로    -> 점수 역전 제거 (archetypePartialPoints)
+  //   점수까지 고치는 이유는 이 값이 커뮤니티 게시판의 "AI 점수" 배지로 사용자에게 그대로
+  //   보이기 때문이다(app/combos/page.js). 문장만 고쳐서는 끝나지 않는다.
+  //
+  //   ⚠️ (2)의 1차 시도는 `min(5 × 인원, 14)`였는데, **3/5와 4/5가 둘 다 14점으로
+  //      뭉개졌고 4/5는 완전일치와 동점**이 됐다. 유저 지적 — "부분 일치도 어느 정도
+  //      완성된 조합이고 남은 칸은 사용자의 선택이 자유로운데, 부분조합도 충분히 좋을 수
+  //      있다." 맞는 지적이라 완성도 비례식으로 다시 고쳤다. 자세한 내력은
+  //      archetypePartialPoints의 주석에 있다.
   //
   //   실측 비교 — 이름 유지 / 점수 변화(평균·최악):
-  //     현재            26.8%  /   ±0
+  //     고치기 전       26.8%  /   ±0
   //     정렬만          94.3%  /  -4.2 · -18
-  //     정렬+천장(채택)  94.3%  /  -7.9 · -18   ← 최악값은 같고 역전만 사라진다
+  //     정렬+비례(채택)  94.3%  /  -4.7 · -18
   //   추천 1위는 무작위 로스터 30개에서 **한 건도 바뀌지 않았다**(표시 점수는 tierTotal이라
   //   아키타입 점수가 순위에 관여하지 않는다).
   //
@@ -978,7 +1002,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       } else if (have.length > 0) {
         const missing = need.filter((n) => !titles.includes(n));
         archetypeMatches.push({
-          points: archetypePartialPoints(have.length),
+          points: archetypePartialPoints(have.length, need.length),
           full: false,
           reasons: [R.archetype_partial({
             name: localized(a, 'name', lang),
@@ -990,6 +1014,11 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     });
   archetypeMatches
     // 완전일치를 항상 앞에 둔다. 그 다음에만 점수로 겨룬다.
+    //
+    // ⚠️ 지금의 비례식에서는 부분일치가 수학적으로 항상 완전일치 미만이라 **이 정렬이 없어도
+    //    순서는 맞다**(역테스트에서 정렬만 빼봤더니 검사가 안 걸렸다). 그래도 남겨둔다 —
+    //    "완전일치가 먼저"는 점수식과 **독립적인** 규칙이고, 나중에 누가 부분일치 점수를
+    //    올리더라도 근거 문장만은 지켜준다. 이중 안전장치다.
     .sort((x, y) => (Number(y.full) - Number(x.full)) || (y.points - x.points))
     .slice(0, WEIGHTS.ARCHETYPE_MATCH_CAP)
     .forEach((m) => {
