@@ -38,6 +38,7 @@ node scripts/testI18n.mjs            # 24건
 node scripts/testEngineReasons.mjs   # 기준선: 문제 0건 (근거 문장 3개국어 실행 검사)
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
+node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
 node scripts/findTotems.mjs          # 기준선: 1군 0명
 node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
@@ -174,6 +175,12 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
   `components/DexSkillList.js`, 애장품 티어 토글은 `components/DexTierPanel.js`.
   정적 생성은 유지되고 토글에만 반응한다. ⚠️ 서버→클라이언트로 **함수는 props로 못 넘긴다**
   (`next build`가 "Functions cannot be passed directly to Client Components"로 실패한다)
+- **"실사용 데이터" 절**(2026-08-25 추가)만은 데이터 파일을 그대로 옮기는 게 아니라 **세어서**
+  만든다 — enikk 조합 214건을 캐릭터 기준으로 뒤집는다(`lib/usage.js` → `components/DexUsage.js`).
+  세는 것은 원본에서 기계적으로 따라 나오므로 새 판정이 아니지만, **더하면 안 되는 값이 있다**:
+  솔로레이드 `parses`는 서버별 표본이고 타워 `pctOfClears`는 풀 안의 비율이라 조합끼리 합산 금지.
+  198명 중 **98명만** 데이터가 붙는다(enikk이 상위만 게시한다). 나머지는 절을 안 그린다 —
+  그래서 집계가 통째로 실패해도 화면이 멀쩡해 보인다. `scripts/testDexUsage.mjs`가 그걸 막는다
 - 한국어 라벨(화력형·수냉·작열 등)은 `data/glossary.json`의 확정 표기를 따른다. 임의 번역 금지
 
 ---

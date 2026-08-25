@@ -1,5 +1,5 @@
 ---
-description: 니케 사이트의 자동 검사 7종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·광고 배치를 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 9종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
@@ -13,6 +13,7 @@ node scripts/testI18n.mjs
 node scripts/testEngineReasons.mjs
 node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
+node scripts/testDexUsage.mjs
 node scripts/findTotems.mjs
 node scripts/checkAdPlacement.mjs
 node scripts/checkWeeklyReport.mjs
@@ -27,6 +28,7 @@ node scripts/checkWeeklyReport.mjs
 | `testEngineReasons.mjs` | **문제 0건** | 근거 문장을 세 언어로 **실제로 만들어본다**. 인자 누락(`undefined`)과 데이터 번역 누락(영어·일본어에 한국어 누출)을 잡는다. 아키타입 345건 전수 포함 |
 | `testCharacterNames.mjs` | **26건 통과** | 언어별 표기, 폴백, 3개국어 검색, 로스터 전수(현재 170명) |
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
+| `testDexUsage.mjs` | **전부 통과 · 조합 214건 · 데이터가 붙는 캐릭터 98/198명** | 도감 "실사용 데이터" 절의 집계. 198명 **전원**을 원본 JSON에서 다시 세어 대조한다 — 이 절은 데이터가 없으면 안 그리는 설계라 집계가 통째로 실패해도 화면이 멀쩡해 보인다 |
 | `findTotems.mjs` | **1군 0명** | 토템 후보 누락 |
 | `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
 | `checkWeeklyReport.mjs` | **마지막 보고서 9일 이내 / 미처리 목록** | 주간 조사 예약 작업이 돌았는지, 그 결과를 사람이 처리했는지 |
@@ -53,7 +55,7 @@ npx next build && npm run check:canonical
 
 | 스크립트 | 기준선 | 무엇을 보는가 |
 |---|---|---|
-| `checkCanonical.mjs` | **ERROR 0 / 201개** | 사이트맵에 실리는 주소마다 자기 자신을 가리키는 canonical이 있는가 |
+| `checkCanonical.mjs` | **ERROR 0 / 203개** | 사이트맵에 실리는 주소마다 자기 자신을 가리키는 canonical이 있는가 |
 
 `/`·`/combos`·`/board`는 `'use client'`라 페이지에서 metadata를 export할 수 없어 **별도 레이아웃
 파일**로 canonical을 붙였다. 이 구조는 (1) 레이아웃을 지우면 태그가 사라지고 (2) 자식 라우트가

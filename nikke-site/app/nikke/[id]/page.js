@@ -22,6 +22,7 @@ import {
   CHARACTERS, getCharacter, byTitle, investmentFor, teamsFor,
   CLASS_KR, ELEMENT_KR, CORP_KR,
 } from '@/lib/dex';
+import { usageFor, USAGE_TOTALS, USAGE_SOURCE } from '@/lib/usage';
 import { nikkeImageUrl } from '@/lib/nikkeImage';
 import DexHeader from '@/components/DexHeader';
 import DexInfoTable from '@/components/DexInfoTable';
@@ -29,6 +30,7 @@ import DexTierSection from '@/components/DexTierSection';
 import DexSkillList from '@/components/DexSkillList';
 import DexInvestment from '@/components/DexInvestment';
 import DexTeams from '@/components/DexTeams';
+import DexUsage from '@/components/DexUsage';
 import DexCta from '@/components/DexCta';
 
 export function generateStaticParams() {
@@ -84,6 +86,32 @@ export default function NikkeDetailPage({ params }) {
     }),
   }));
 
+  // 실사용 데이터(enikk 집계). 없으면 null이고 DexUsage가 절을 통째로 안 그린다.
+  //
+  // ⚠️ 여기서도 멤버를 **서버에서** 캐릭터 객체로 풀어 넘긴다. 클라이언트에서 풀면
+  //    characterDatabase.json 666KB가 브라우저 번들에 실린다(DexTeams와 같은 이유).
+  // ⚠️ 조회 키는 title이다. id로 부르면 198명 전원이 null이 되고 **에러 없이 절만 사라진다** —
+  //    scripts/testDexUsage.mjs가 그 경우를 못으로 박아뒀다.
+  const u = usageFor(c.title);
+  const asMember = (title) => {
+    const m = byTitle(title);
+    return m ? { id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null } : { title };
+  };
+  // 모드별로 표본이 가장 큰 조합 하나씩만 싣는다(크라운은 61건에 등장한다 — 전부 실으면
+  // 페이지가 조합 목록으로 뒤덮인다). lib/usage.js가 이미 표본 내림차순으로 준다.
+  const usageForClient = u && {
+    totals: USAGE_TOTALS,
+    counts: u.counts,
+    tiers: u.tiers,
+    source: USAGE_SOURCE,
+    partners: u.partners.slice(0, 5).map((p) => ({ member: asMember(p.title), count: p.count })),
+    teams: ['raid', 'tower', 'campaign', 'pvp']
+      .map((kind) => u[kind][0])
+      .filter(Boolean)
+      .map((e) => ({ ...e, members: e.members.map(asMember) })),
+    subsets: u.pvpSubsets.slice(0, 3).map((e) => ({ ...e, members: e.members.map(asMember) })),
+  };
+
   // 헤더·정보표·CTA에는 **필요한 필드만** 넘긴다. 캐릭터 객체를 그대로 넘기면 skills가
   // 컴포넌트마다 RSC 페이로드에 중복 직렬화된다(스킬 본문은 DexSkillList로 한 번만 간다).
   const info = {
@@ -134,6 +162,10 @@ export default function NikkeDetailPage({ params }) {
 
       {/* 등장 조합 — prydwen 아키타입에서 이 캐릭터가 멤버인 것 */}
       <DexTeams teams={teamsForClient} totalCount={teams.length} />
+
+      {/* 실사용 데이터 — enikk에서 옮긴 조합 214건을 우리가 집계한 것.
+          위 '등장 조합'(prydwen의 추천 구성)과 성격이 다르다: 이쪽은 실제로 쓰인 기록이다. */}
+      <DexUsage usage={usageForClient} />
 
       {/* 도구로 보내는 퍼널 — 이 페이지의 최종 목적 */}
       <DexCta character={info} />
