@@ -1163,6 +1163,53 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// PvP 부분 조합 (metaStats.pvp.pairs / trios / quads)
+//
+// 엔진이 REAL_PAIR_INDEX / REAL_TRIO_INDEX / REAL_QUAD_INDEX로 **정확히 이 구성일 때만**
+// 매칭한다(lib/synergyEngine.js buildRealComboIndex → titleSetKey). 즉 멤버가 한 명이라도
+// 틀리거나 인원 수가 어긋나면 그 항목은 **영원히 매칭되지 않는 키**가 되고 아무 신호도 없다.
+//
+// 이름은 위쪽 META_ORPHAN이 meta.pvp 아래 모든 배열을 훑어 이미 잡는다(역테스트로 확인:
+// 'Anis: Star'를 'Anis Star'로 바꾸면 META_ORPHAN이 선다). 여기서 다시 세면 같은 사고가
+// 두 줄로 보고될 뿐이라 **인원 수·값 범위·정렬만** 본다 — 2026-08-25 역테스트에서 이 셋이
+// topTeams와 달리 무방비인 것을 확인하고 메웠다(pair에 3명 / adoption 밀어넣기 둘 다 통과했다).
+// ---------------------------------------------------------------------------
+{
+  const SUBSETS = [['pairs', 2], ['trios', 3], ['quads', 4]];
+  SUBSETS.forEach(([key, size]) => {
+    const list = meta.pvp?.[key];
+    if (list === undefined) return; // 없는 슬라이스는 엔진도 빈 인덱스로 돌아간다
+    if (!Array.isArray(list)) {
+      err('PVPCOMBO_SHAPE', `pvp.${key}가 배열이 아니다 — 엔진이 빈 인덱스로 돌아 실사용 가산점이 전부 사라진다`);
+      return;
+    }
+    const seenSet = new Set();
+    list.forEach((t, i) => {
+      const w = `pvp.${key} #${i + 1}`;
+      if (!Array.isArray(t.members) || t.members.length !== size || new Set(t.members).size !== size) {
+        err('PVPCOMBO_SHAPE', `${w}: ${size}인 구성이 아니거나 중복이 있다 — [${(t.members || []).join(', ')}]`);
+        return;
+      }
+      if (!(t.wr >= 0 && t.wr <= 100)) err('PVPCOMBO_SHAPE', `${w}: wr='${t.wr}' — 0~100 이어야 한다`);
+      if (!Number.isInteger(t.n) || t.n <= 0) err('PVPCOMBO_SHAPE', `${w}: n='${t.n}' — 1 이상의 정수여야 한다`);
+      if (!(t.adoption >= 0 && t.adoption <= 100)) err('PVPCOMBO_SHAPE', `${w}: adoption='${t.adoption}' — 0~100 이어야 한다`);
+      const setKey = [...t.members].sort().join('|');
+      if (seenSet.has(setKey)) {
+        err('PVPCOMBO_DUP_SET', `${w}: 앞의 행과 구성이 같다(순서만 다름) — 엔진은 집합으로 매칭하므로 ` +
+          '뒤의 행은 영원히 쓰이지 않는다. topTeams처럼 접어서 넣을 것');
+      }
+      seenSet.add(setKey);
+    });
+    // 화면 정렬 키는 adoption이다(pvp.meta.sort = 'Adoption 내림차순'). n은 내림차순이 아니므로
+    // n으로 검사하면 실제 데이터에서 오탐이 난다 — 2026-08-25 실측으로 확인하고 adoption만 본다.
+    const ad = list.map((t) => t.adoption);
+    if (ad.some((v, i) => i > 0 && v > ad[i - 1])) {
+      err('PVPCOMBO_ORDER', `pvp.${key}: adoption이 내림차순이 아니다 — 화면과 행이 어긋났을 수 있다`);
+    }
+  });
+}
+
+// ---------------------------------------------------------------------------
 // 캠페인 실사용 조합 (metaStats.campaignCompositions)
 //
 // 2026-08-21부터 이것도 사람이 화면에서 옮긴다(그전에도 그랬지만 검사가 없었다).
