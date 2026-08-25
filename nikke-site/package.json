@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "verify": "node scripts/checkData.mjs && node scripts/testI18n.mjs && node scripts/testCharacterNames.mjs && node scripts/testGlossary.mjs && node scripts/checkAdPlacement.mjs && node scripts/checkWeeklyReport.mjs",
+    "verify": "node scripts/checkData.mjs && node scripts/testI18n.mjs && node scripts/testEngineReasons.mjs && node scripts/testCharacterNames.mjs && node scripts/testGlossary.mjs && node scripts/checkAdPlacement.mjs && node scripts/checkWeeklyReport.mjs",
     "check:canonical": "node scripts/checkCanonical.mjs"
   },
   "dependencies": {

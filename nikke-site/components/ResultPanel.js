@@ -14,7 +14,8 @@ const AI_MODES = [
   { key: 'tribe_tower', labelKey: 'mode_tribe_tower' },
 ];
 
-// 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS / TOWER_LABEL과 반드시 일치해야 한다.
+// 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS와 반드시 일치해야 한다.
+// (타워 이름표는 lib/engineReasons.js가 언어별로 들고 있다 — tower_elysion 등)
 //
 // ⚠️ 요일을 2026-08-09에 고쳤습니다. 이전 값(월 전체 / 목·일 테트라)은 틀렸습니다.
 //
@@ -276,13 +277,12 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
             </span>
           </div>
           <TeamMemberCards members={alternative.members} treasureIds={roster.treasureIds} />
-          {/* 근거 문장(headline)은 lib/synergyEngine.js가 한국어로 조립한다. 그 문장 안에는
-              synergyNotes.json·characterInvestmentNotes.json 같은 **데이터 파일의 한국어 원문**이
-              그대로 박히기 때문에, 코드만 다국어화해도 문장 절반이 한국어로 남는다(2026-08-11 조사).
-              근거 문장의 주 소비자는 화면이 아니라 AI 프롬프트이고, AI는 이미 사용자 언어로
-              설명을 쓴다. 그래서 한국어일 때만 보여주고, 다른 언어에서는 조합·출처·점수만 남긴다.
-              데이터까지 번역하기로 방침이 바뀌면 이 조건을 지우면 된다. */}
-          {alternative.headline && lang === 'ko' && (
+          {/* 근거 문장(headline)은 lib/synergyEngine.js가 조립하고, 문장 골격은
+              lib/engineReasons.js가 언어별로 갖고 있다. 2026-08-25 이전에는 문장이 한국어
+              전용이라 `lang === 'ko'` 가드를 걸어 다른 언어에서는 이 줄을 통째로 숨겼다.
+              문장 골격(39개)과 인용되는 데이터(조합 483 · 투자 노트 241 · 페어/카운터/애장품 37)를
+              모두 3개국어로 옮기면서 그 전제가 사라져 가드를 걷어냈다. */}
+          {alternative.headline && (
             <p className="text-xs text-slate-500 leading-relaxed">{alternative.headline}</p>
           )}
         </div>

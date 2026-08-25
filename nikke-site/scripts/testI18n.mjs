@@ -180,41 +180,74 @@ for (const d of scanDirs) walkDate(path.join(ROOT, d));
 check('날짜 로케일 하드코딩 없음', hardDate.length === 0,
   `${hardDate.join(', ')} — lib/i18n.js의 dateLocale(lang)을 쓸 것`);
 
-// 11. 엔진 근거 문장(reasons/headline)을 언어 조건 없이 화면에 그리고 있지 않은가.
+// 11~13. 엔진 근거 문장 (lib/engineReasons.js)
 //
-//     lib/synergyEngine.js의 reasons는 **한국어로만** 만들어진다. 문장 안에
-//     synergyNotes.json 등 데이터 파일의 한국어 원문이 그대로 박혀 있어, 코드만
-//     번역해도 절반이 한국어로 남는다(2026-08-11 조사 후 "화면 노출부만 정리"로 결정).
-//     그래서 화면에 그릴 때는 반드시 lang === 'ko' 조건을 함께 걸어야 한다.
-//     조건 없이 꽂으면 일본어·영어 화면에 한국어 문장이 그대로 샌다 — 에러는 안 난다.
+//     2026-08-25 이전: 근거 문장은 lib/synergyEngine.js 안에 한국어로 박혀 있었고 화면은
+//     `lang === 'ko'`일 때만 그렸다. 여기 있던 검사는 **그 가드가 지워지는 것을 막는**
+//     검사였다. 문장 골격 39개와 인용되는 데이터(조합 483 · 투자 노트 241 ·
+//     페어/카운터/애장품 37)를 전부 3개국어로 옮겨 가드를 걷어냈으므로, 검사도 새 구조가
+//     깨지는 쪽을 보도록 바꿨다.
 //
-//     ⚠️ 검사 대상은 화면(app/·components/)뿐이다. lib/ 안의 reasons는 엔진이 만드는
-//        내부 값이고, app/api/ 는 서버라 langKey로 따로 처리한다. 여기까지 잡으면
-//        오탐이 나고, 오탐이 나는 검사는 아무도 믿지 않게 된다.
-const rawReason = [];
-const GUARD = /lang\s*===\s*'ko'/;
-const walkReason = (dir) => {
-  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
-    const fp = path.join(dir, e.name);
-    if (e.isDirectory()) { if (!['node_modules', '.next'].includes(e.name)) walkReason(fp); continue; }
-    if (!e.name.endsWith('.js')) continue;
-    if (fp.includes(`${path.sep}api${path.sep}`)) continue;
-    const lines = fs.readFileSync(fp, 'utf8').split('\n');
-    lines.forEach((l, i) => {
-      const trimmed = l.trim();
-      if (trimmed.startsWith('//') || trimmed.startsWith('*') || trimmed.startsWith('{/*')) return;
-      // JSX 자식으로 그리거나 title= 같은 속성으로 넘기는 경우만 본다.
-      if (!/\.(headline|reasons)\b/.test(l)) return;
-      if (!/[{=]/.test(l)) return;
-      // 가드가 같은 줄이나 바로 위 3줄 안에 있으면 통과 (조건과 렌더가 줄이 갈리는 게 흔하다)
-      const window = lines.slice(Math.max(0, i - 3), i + 1).join('\n');
-      if (!GUARD.test(window)) rawReason.push(`${path.relative(ROOT, fp)}:${i + 1}`);
-    });
-  }
-};
-for (const d of ['app', 'components']) walkReason(path.join(ROOT, d));
-check("엔진 근거 문장은 lang==='ko' 조건과 함께만 렌더", rawReason.length === 0,
-  `${rawReason.join(', ')} — reasons/headline은 한국어 전용이다`);
+//     새 구조에서 조용히 깨지는 경우는 셋이고 전부 에러가 나지 않는다:
+//       11. 한 언어에만 키가 있다          → 그 언어에서 문장이 `undefined`
+//       12. 엔진이 없는 키를 부른다        → 같은 결과. 함수형이면 TypeError
+//       13. 엔진에 한국어 문자열이 돌아온다 → 영어·일본어 화면에 한국어가 샌다
+const ENGINE_REASONS_PATH = path.join(ROOT, 'lib', 'engineReasons.js');
+const { ENGINE_REASONS } = await import(pathToFileURL(ENGINE_REASONS_PATH).href);
+
+// 11. 세 언어의 키 집합이 같은가 + 같은 키가 같은 타입인가.
+//     한쪽만 함수형이면 호출부에서 `R.key({...})`가 TypeError로 죽는다.
+const erKeys = Object.fromEntries(
+  LOCALES.map((l) => [l, Object.keys(ENGINE_REASONS[l] || {}).sort()])
+);
+const erDiff = [];
+for (const l of LOCALES) {
+  if (l === DEFAULT_LOCALE) continue;
+  const base = new Set(erKeys[DEFAULT_LOCALE]);
+  const here = new Set(erKeys[l]);
+  for (const k of base) if (!here.has(k)) erDiff.push(`${l}에 없음: ${k}`);
+  for (const k of here) if (!base.has(k)) erDiff.push(`${DEFAULT_LOCALE}에 없음(${l}에만): ${k}`);
+}
+for (const k of erKeys[DEFAULT_LOCALE]) {
+  const types = LOCALES.map((l) => typeof (ENGINE_REASONS[l] || {})[k]);
+  if (new Set(types).size > 1) erDiff.push(`타입 불일치: ${k} (${types.join('/')})`);
+}
+check('engineReasons 키 집합·타입이 세 언어 동일', erDiff.length === 0, erDiff.join(' / '));
+
+// 12. lib/synergyEngine.js가 부르는 키가 실제로 있는가.
+//     `R.some_key`와, 접두사로 조립하는 두 형태(`R['dmg_' + x]`, R[`tag_label_${tag}`])를 본다.
+//     동적 조립은 그 접두사로 시작하는 키가 하나라도 있으면 통과로 본다 — 여기서 완벽을
+//     노리면 오탐이 나고, 오탐이 나는 검사는 아무도 믿지 않는다.
+const engineSrc = fs.readFileSync(path.join(ROOT, 'lib', 'synergyEngine.js'), 'utf8');
+const known = new Set(erKeys[DEFAULT_LOCALE]);
+const missingKeys = [];
+for (const m of engineSrc.matchAll(/\bR\.([a-z0-9_]+)\b/g)) {
+  if (!known.has(m[1])) missingKeys.push(m[1]);
+}
+for (const m of engineSrc.matchAll(/\bR\[\s*['"`]([a-z0-9_]+)['"`]\s*\+/g)) {
+  if (![...known].some((k) => k.startsWith(m[1]))) missingKeys.push(`${m[1]}* (동적)`);
+}
+for (const m of engineSrc.matchAll(/\bR\[`([a-z0-9_]+)\$\{/g)) {
+  if (![...known].some((k) => k.startsWith(m[1]))) missingKeys.push(`${m[1]}* (동적)`);
+}
+check('엔진이 쓰는 engineReasons 키가 모두 존재', missingKeys.length === 0,
+  [...new Set(missingKeys)].join(', '));
+
+// 13. lib/synergyEngine.js에 한국어 문자열이 남아 있지 않은가.
+//     주석은 한국어로 쓰는 프로젝트이므로 **코드 줄만** 본다.
+const engineKoLines = [];
+engineSrc
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .split('\n')
+  .forEach((l, i) => {
+    const trimmed = l.trim();
+    if (trimmed.startsWith('//') || trimmed.startsWith('*')) return;
+    // 줄 끝 주석만 걷어낸다. `https://` 같은 URL은 앞이 공백/줄머리가 아니라 안 걸린다.
+    const code = l.replace(/(^|\s)\/\/.*$/, '');
+    if (/[가-힣]/.test(code)) engineKoLines.push(`lib/synergyEngine.js:${i + 1}`);
+  });
+check('엔진 코드에 한국어 문자열 없음', engineKoLines.length === 0,
+  `${engineKoLines.join(', ')} — 문장은 lib/engineReasons.js에 언어별로 넣을 것`);
 
 console.log(`\ni18n 사전 테스트 — 키 ${table[DEFAULT_LOCALE].length}개 × ${LOCALES.length}개 언어 / 함수형 ${fnKeys.length}개`);
 console.log(`통과 ${pass} / 실패 ${fails.length}`);

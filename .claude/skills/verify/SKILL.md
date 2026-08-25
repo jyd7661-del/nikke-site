@@ -10,6 +10,7 @@ description: 니케 사이트의 자동 검사 7종을 실행하고 기준선과
 cd nikke-site
 node scripts/checkData.mjs
 node scripts/testI18n.mjs
+node scripts/testEngineReasons.mjs
 node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
 node scripts/findTotems.mjs
@@ -22,7 +23,8 @@ node scripts/checkWeeklyReport.mjs
 | 스크립트 | 기준선 | 무엇을 보는가 |
 |---|---|---|
 | `checkData.mjs` | **ERROR 0 / WARN 3** | 데이터 정합성. WARN 3건은 `name_ja` 도입으로 생긴 `NAME_SUBSTRING`이며 정상 |
-| `testI18n.mjs` | **22건 통과** | 키 집합·중복·값 타입·함수형 호출·빈 값·폴백, 코드가 쓰는 키 존재, 컴포넌트마다 `useLanguage`, `t` 가림, 날짜 하드코딩, 근거 문장 가드 |
+| `testI18n.mjs` | **24건 통과** | 키 집합·중복·값 타입·함수형 호출·빈 값·폴백, 코드가 쓰는 키 존재, 컴포넌트마다 `useLanguage`, `t` 가림, 날짜 하드코딩, **engineReasons 3개국어 키 일치·엔진이 쓰는 키 존재·엔진 코드에 한국어 없음** |
+| `testEngineReasons.mjs` | **문제 0건** | 근거 문장을 세 언어로 **실제로 만들어본다**. 인자 누락(`undefined`)과 데이터 번역 누락(영어·일본어에 한국어 누출)을 잡는다. 아키타입 345건 전수 포함 |
 | `testCharacterNames.mjs` | **26건 통과** | 언어별 표기, 폴백, 3개국어 검색, 로스터 전수(현재 170명) |
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
 | `findTotems.mjs` | **1군 0명** | 토템 후보 누락 |

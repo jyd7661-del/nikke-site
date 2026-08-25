@@ -34,7 +34,8 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 ```bash
 cd nikke-site-git/nikke-site
 node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
-node scripts/testI18n.mjs            # 22건
+node scripts/testI18n.mjs            # 24건
+node scripts/testEngineReasons.mjs   # 기준선: 문제 0건 (근거 문장 3개국어 실행 검사)
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/findTotems.mjs          # 기준선: 1군 0명

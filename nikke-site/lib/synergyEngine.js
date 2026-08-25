@@ -31,6 +31,28 @@ import metaStats from '../data/metaStats.json';
 import soloRaidTeams from '../data/soloRaidTeams.json';
 import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
+import { engineText } from './engineReasons';
+
+// --- 근거 문장의 언어 처리 (2026-08-25) ---
+//
+// 근거 문장의 골격은 lib/engineReasons.js가, 문장 안에 인용되는 자료 원문은 데이터 파일의
+// `_en`/`_ja` 필드가 담당한다. 둘 중 하나만 번역하면 문장 절반이 한국어로 남는다.
+
+// 데이터 파일 항목의 언어별 표기. 해당 언어 번역이 없으면 한국어 원문으로 떨어뜨린다
+// (문장이 통째로 비는 것보다 낫다 — 없는 필드는 checkData가 따로 잡는다).
+const localized = (obj, field, lang) => {
+  if (!obj) return '';
+  if (lang !== 'ko') return obj[`${field}_${lang}`] || obj[field] || '';
+  return obj[field] || '';
+};
+
+// 근거 문장에 넣는 캐릭터 이름.
+//
+// ⚠️ ko/en은 지금까지처럼 영문 title을 쓴다. 이 문장은 화면뿐 아니라 **AI 프롬프트로도**
+//    들어가는데, 프롬프트의 멤버 목록이 title로 캐릭터를 식별하기 때문에 여기만 한국어
+//    이름으로 바꾸면 같은 캐릭터가 두 이름으로 등장한다. 일본어는 영문이 섞이면 AI가
+//    그대로 받아써서 문장이 튀므로 name_ja를 쓴다.
+const rName = (m, lang) => (lang === 'ja' ? (m?.name_ja || m?.title || '') : (m?.title || m?.name_kr || ''));
 
 // characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
 const TREASURE_EFFECT_BY_ID = new Map(treasureEffects.characters.map((t) => [t.characterId, t]));
@@ -136,12 +158,10 @@ export const FLEX_SLOT_PENALTY = 1;
 // abnormal(콜라보·특수) 25명은 기업 타워 자체가 없어 일반 타워 전용이다.
 export const TOWER_CORPS = ['elysion', 'missilis', 'tetra', 'pilgrim'];
 
-export const TOWER_LABEL = {
-  elysion: '엘리시온',
-  missilis: '미실리스',
-  tetra: '테트라',
-  pilgrim: '필그림/오버스펙',
-};
+// 기업 타워 이름은 **lib/engineReasons.js가 언어별로** 들고 있다(`tower_elysion` 등).
+// 2026-08-25 이전에는 여기에 한국어 전용 TOWER_LABEL이 있었는데, 근거 문장이 3개국어가
+// 되면서 같은 이름표가 두 곳에 생기게 됐다. 이름 규칙이 갈라지면 한쪽만 고치고 끝난다
+// (.claude/rules/ui-i18n.md의 같은 이유) — 그래서 여기 사본은 지웠다.
 
 export function isTowerEligible(character, tower) {
   if (!tower) return true; // 일반 트라이브 타워: 제한 없음
@@ -267,11 +287,13 @@ function hasFastBurstCooldown(character) {
 // "문구로 확인되는 경우"에만 작동하는 보수적인 신호다. 매칭이 없다고 시너지가 없다는 뜻은
 // 아니며, 그 경우는 기존 근거(아키타입/실전 데이터)로 판단한다. 추측이나 없는 근거를 만들어내지
 // 않는 것을 우선한다.
+// 타입 이름은 lib/engineReasons.js의 `dmg_<key>` 키로 언어별로 갖고 있다.
+// 여기서는 key만 들고 다니고, 문장을 만들 때 그 언어의 이름으로 바꾼다.
 const DAMAGE_TYPES = [
-  { key: 'projectile_explosion', re: /projectile explosion damage/i, label: '발사체 폭발 데미지' },
-  { key: 'true_damage', re: /true damage/i, label: '고정(트루) 데미지' },
-  { key: 'charge_damage', re: /(full charge|charge) damage/i, label: '차지 데미지' },
-  { key: 'piercing_damage', re: /piercing damage/i, label: '관통 데미지' },
+  { key: 'projectile_explosion', re: /projectile explosion damage/i },
+  { key: 'true_damage', re: /true damage/i },
+  { key: 'charge_damage', re: /(full charge|charge) damage/i },
+  { key: 'piercing_damage', re: /piercing damage/i },
 ];
 
 function splitSkillClauses(desc) {
@@ -293,7 +315,7 @@ function extractDamageTypeGrants(character) {
       }
       DAMAGE_TYPES.forEach((dt) => {
         if (dt.re.test(clause) && /▲/.test(clause)) {
-          grants.push({ type: dt.key, label: dt.label, scope });
+          grants.push({ type: dt.key, scope });
         }
       });
     });
@@ -375,7 +397,7 @@ function findSkillMechanicSynergies(members) {
         (m) => grantAppliesToAlly(caster, grant, m) && dealsDamageType(m, typeKey)
       );
       if (receivers.length > 0) {
-        found.push({ caster: caster.title, type: typeKey, label: grant.label, receivers: receivers.map((m) => m.title) });
+        found.push({ caster, type: typeKey, receivers });
       }
     });
   });
@@ -757,8 +779,11 @@ function orderMembersForDisplay(members, mode, treasureIds) {
 }
 
 export function scoreTeam(members, mode = 'campaign', opts = {}) {
+  // 근거 문장을 어느 언어로 조립할지. 지정하지 않으면 한국어(기존 동작).
+  const lang = opts.lang || 'ko';
+  const R = engineText(lang);
   if (!members || members.length === 0) {
-    return { totalScore: 0, valid: false, reasons: ['조합원이 없습니다.'] };
+    return { totalScore: 0, valid: false, reasons: [R.no_members] };
   }
   const treasureIds = opts.treasureIds || new Set();
   // 솔로 레이드/보스전 전용: 이번에 상대할 보스의 약점 속성 (예: 'Iron', 'Wind', 'Water',
@@ -790,20 +815,18 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   const missingBursts = emptyStages.slice(flexMembers.length);
   const validBurstChain = missingBursts.length === 0;
   if (!validBurstChain) {
-    reasons.push(
-      `버스트 ${missingBursts.join(', ')} 단계 캐릭터가 없어 풀버스트(전체 버스트)에 도달할 수 없습니다. ` +
-      `이 조합은 자동전투 효율이 크게 떨어집니다.`
-    );
+    reasons.push(R.burst_incomplete({ stages: missingBursts }));
   }
 
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
   const skillSynergies = findSkillMechanicSynergies(members);
   skillSynergies.forEach((syn) => {
     score += WEIGHTS.SKILL_MECHANIC_SYNERGY;
-    reasons.push(
-      `[스킬 근거] ${syn.caster}의 스킬에 '${syn.label} ▲' 버프 효과가 있고, ${syn.receivers.join(', ')}의 ` +
-      `공격은 스킬 문구상 ${syn.label}로 분류되어 있어 이 버프를 그대로 받습니다.`
-    );
+    reasons.push(R.skill_mechanic({
+      caster: rName(syn.caster, lang),
+      label: R['dmg_' + syn.type],
+      receivers: syn.receivers.map((m) => rName(m, lang)),
+    }));
   });
 
   // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리) ---
@@ -816,12 +839,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   );
   score += tierTotal * WEIGHTS.TIER_SUM;
   if (wastedMembers.length > 0) {
-    reasons.push(
-      `⚠️ ${wastedMembers.map((m) => m.title).join(', ')}는(은) 같은 버스트 단계를 다른 캐릭터가 ` +
-      `이미 쿨타임 기준으로 충분히 커버하고 있어 실제로 버스트를 발동할 기회가 거의 없고, 상시 ` +
-      `버프/유틸리티로 기여하는 토템 역할도 아니라서 이 조합에서는 사실상 자리를 낭비하고 있습니다. ` +
-      `이 자리를 다른 버스트 단계 보강이나 다른 캐릭터로 바꾸는 것을 추천합니다.`
-    );
+    reasons.push(R.wasted({ names: wastedMembers.map((m) => rName(m, lang)) }));
   }
 
   // --- 실사용 픽률 등급 합산 (enikk.app) ---
@@ -829,10 +847,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   score += realTierTotal * WEIGHTS.REAL_USAGE_TIER_SUM;
   const sTierRealMembers = members.filter((m) => realUsageTierScore(m, mode) >= REAL_TIER_SCORE.S);
   if (sTierRealMembers.length > 0) {
-    reasons.push(
-      `[실사용 데이터] ${sTierRealMembers.map((m) => m.title).join(', ')}는(은) enikk.app 실제 플레이어 ` +
-      `기록에서도 이 모드 S등급 픽률을 보이는 검증된 채용 캐릭터입니다.`
-    );
+    reasons.push(R.real_s_tier({ names: sTierRealMembers.map((m) => rName(m, lang)) }));
   }
 
   // --- 솔로 레이드 보스 약점 속성별 실사용률 (bossing/raid + bossElement 지정 시) ---
@@ -846,17 +861,19 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     const highUsage = elementUsageMembers.filter((x) => x.usage >= 80);
     if (highUsage.length > 0) {
       const table = metaStats.soloRaidByElement[bossElement];
-      reasons.push(
-        `[실전 기록] ${highUsage.map((x) => `${x.m.title}(${x.usage}%)`).join(', ')}는(은) ${bossElement} ` +
-        `약점 보스(시즌${table.season} '${table.boss}' 기준) 상대 실사용률이 매우 높은 픽입니다. (출처: enikk.app)`
-      );
+      reasons.push(R.element_usage_high({
+        entries: highUsage.map((x) => R.usage_entry({ name: rName(x.m, lang), usage: x.usage })),
+        element: bossElement,
+        season: table.season,
+        boss: table.boss,
+      }));
     }
     const lowUsage = elementUsageMembers.filter((x) => x.usage < 10);
     if (lowUsage.length > 0) {
-      reasons.push(
-        `[실전 기록] ${lowUsage.map((x) => `${x.m.title}(${x.usage}%)`).join(', ')}는(은) ${bossElement} ` +
-        `속성이지만 실제로는 이 약점 보스전에 잘 채용되지 않는 편입니다. (출처: enikk.app)`
-      );
+      reasons.push(R.element_usage_low({
+        entries: lowUsage.map((x) => R.usage_entry({ name: rName(x.m, lang), usage: x.usage })),
+        element: bossElement,
+      }));
     }
   }
 
@@ -870,7 +887,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   const treasureSatisfied = (need) =>
     !need || need.every((t) => treasureIds.has(idByTitle.get(t)));
   const withTreasureMark = (list, need) =>
-    list.map((n) => ((need || []).includes(n) ? n + "(애장품)" : n));
+    list.map((n) => ((need || []).includes(n) ? n + R.treasure_suffix : n));
 
   // --- 아키타입 매칭 ---
   // 2026-08-07 수정: 매칭되는 아키타입을 전부 더하지 않고, 일단 후보로만 모아뒀다가
@@ -895,22 +912,30 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         if (a.notRecommended) return;
         archetypeMatches.push({
           points: WEIGHTS.ARCHETYPE_FULL_MATCH,
-          reason: `'${a.name}' 조합으로 알려진 구성입니다. ${a.note}`,
+          reason: R.archetype_full({
+            name: localized(a, 'name', lang),
+            note: localized(a, 'note', lang),
+          }),
         });
         // 쓸 수는 있으나 **주 용도가 다르다**고 출처가 밝힌 경우: 제외하지 않고 고지한다.
         // "[조건 확인]" 접두사는 AI 프롬프트가 "반드시 설명에 포함하라"고 지시하는 표식이라
         // (app/api/ai-recommend/route.js), 이 문장을 붙이면 화면 설명까지 자동으로 따라온다.
         // 설계 원칙 2 — 조건을 밝히고 판단은 사용자에게 넘긴다.
         if (a.sourceCaveat) {
-          archetypeMatches.push({ points: 0, reason: `[조건 확인] ${a.sourceCaveat}` });
+          archetypeMatches.push({
+            points: 0,
+            reason: R.source_caveat({ text: localized(a, 'sourceCaveat', lang) }),
+          });
         }
       } else if (have.length > 0) {
         const missing = need.filter((n) => !titles.includes(n));
         archetypeMatches.push({
           points: WEIGHTS.ARCHETYPE_PARTIAL_MATCH * have.length,
-          reason:
-            `'${a.name}' 조합의 일부(${have.join(', ')})가 포함되어 있습니다. ` +
-            `${missing.join(', ')}를(을) 보유하면 이 조합의 완성도가 더 올라갑니다.`,
+          reason: R.archetype_partial({
+            name: localized(a, 'name', lang),
+            have,
+            missing,
+          }),
         });
       }
     });
@@ -928,19 +953,20 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (have.length !== p.members.length) return;
     if (!treasureSatisfied(p.requiresTreasure)) return;
     score += WEIGHTS.SYNERGY_PAIR;
-    reasons.push(
-      `${withTreasureMark(p.members, p.requiresTreasure).join(' + ')} 페어 시너지: ${p.reason}`
-    );
+    reasons.push(R.synergy_pair({
+      members: [withTreasureMark(p.members, p.requiresTreasure).join(' + ')],
+      reason: localized(p, 'reason', lang),
+    }));
   });
 
   // --- CDR 보유 여부 ---
   const cdrMembers = members.filter(providesCDR);
   if (cdrMembers.length > 0) {
     score += WEIGHTS.CDR_PRESENT;
-    reasons.push(`${cdrMembers.map((m) => m.title).join(', ')}가 쿨타임 감소를 제공해 풀버스트 순환이 빨라집니다.`);
+    reasons.push(R.cdr_present({ names: cdrMembers.map((m) => rName(m, lang)) }));
   } else {
     score += WEIGHTS.CDR_MISSING_PENALTY;
-    reasons.push('쿨타임 감소(CDR) 제공 캐릭터가 없어 풀버스트 진입 빈도가 낮을 수 있습니다.');
+    reasons.push(R.cdr_missing);
   }
 
   // --- 버스트 쿨타임 20초 캐릭터 ---
@@ -960,24 +986,14 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 점수는 깎지 않는다. 사용자의 실제 투자 수준을 우리가 모르는 상태에서 감점하면, 이미
   // 키운 사람에게 오히려 틀린 추천을 하게 된다. 대신 조건을 밝혀서 판단은 사용자가 하게 한다.
   // ('limited'는 이미 보유한 캐릭터에게는 의미가 없으므로 조합 설명에서는 다루지 않는다)
-  const CONDITIONAL_TAG_NOTE = {
-    invest: {
-      label: '충분한 투자(스킬 레벨/오버로드 등)가 갖춰졌을 때 제 성능이 나오는 캐릭터',
-      caveat: '아직 육성이 덜 됐다면 등급만큼의 성능이 나오지 않습니다. 다른 캐릭터를 먼저 키우는 편이 나을 수 있습니다.',
-    },
-    expert: {
-      label: '수동 조작 숙련이 있어야 제 성능이 나오는 캐릭터',
-      caveat: '오토 전투 위주로 플레이한다면 기대만큼의 결과가 안 나올 수 있습니다.',
-    },
-  };
-  Object.entries(CONDITIONAL_TAG_NOTE).forEach(([tag, { label, caveat }]) => {
+  ['invest', 'expert'].forEach((tag) => {
     const hit = members.filter((m) => (m.prydwenTags || []).includes(tag));
     if (!hit.length) return;
-    reasons.push(
-      `[조건 확인] ${hit.map((m) => m.title).join(', ')}은(는) ${label}입니다. ` +
-      `이 조합의 티어 평가는 그 조건이 갖춰진 상태를 기준으로 매겨진 값입니다 — ${caveat} ` +
-      `(출처: prydwen.gg 티어리스트 특수 표시)`
-    );
+    reasons.push(R.conditional_tag({
+      names: hit.map((m) => rName(m, lang)),
+      label: R[`tag_label_${tag}`],
+      caveat: R[`tag_caveat_${tag}`],
+    }));
   });
 
   // --- 파트너 조건 (2026-08-08 추가) ---
@@ -987,18 +1003,19 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (!req) return;
     const present = req.partners.filter((p) => members.some((x) => x.title === p.title));
     if (present.length) {
-      reasons.push(
-        `${m.title}은(는) 특정 동료가 있어야 제 성능이 나오는 캐릭터인데, 이 조합에는 ` +
-        `${present.map((p) => `${p.title}(함께 쓰인 비율 ${Math.round(p.ratio * 100)}%)`).join(', ')}이(가) ` +
-        `있어 조건이 충족됩니다.`
-      );
+      reasons.push(R.partner_present({
+        title: rName(m, lang),
+        partners: present.map((p) => R.partner_ratio({
+          name: p.title,
+          pct: Math.round(p.ratio * 100),
+        })),
+      }));
     } else {
-      reasons.push(
-        `[조건 확인] ${m.title}은(는) 특정 동료가 있어야 제 성능이 나오는 캐릭터입니다 ` +
-        `(prydwen.gg 티어리스트 표시). 실제 조합 ${req.teams}건을 보면 거의 항상 ` +
-        `${req.partners.map((p) => p.title).join(' 또는 ')}와(과) 함께 쓰이는데 이 조합에는 없어, ` +
-        `티어 등급만큼의 성능이 안 나올 수 있습니다.`
-      );
+      reasons.push(R.partner_missing({
+        title: rName(m, lang),
+        teams: req.teams,
+        partners: req.partners.map((p) => p.title),
+      }));
     }
   });
 
@@ -1010,7 +1027,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   if (mode === 'pvp') {
     synergyNotes.counters.forEach((c) => {
       if (titles.includes(c.unit)) {
-        reasons.push(`${c.unit} 보유: ${c.reason} (상대 조합에 따라 카운터로 활용 가능)`);
+        reasons.push(R.counter_info({ unit: c.unit, reason: localized(c, 'reason', lang) }));
       }
     });
   }
@@ -1029,24 +1046,20 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         seen.add(sourceLabel + ':' + key);
         score += wrBonus(entry.wr, scale);
         if (entry.wr >= 60 || entry.wr <= 40) {
-          reasons.push(
-            `[실전 기록] ${combo.join(' + ')} (${sourceLabel}) 조합은 챔피언 아레나 실제 대전에서 ` +
-            `승률 ${entry.wr}%(${entry.n}전, 채택률 ${entry.adoption}%)를 기록했습니다. (출처: enikk.app)`
-          );
+          reasons.push(R.real_pvp_subset({
+            combo, sourceLabel, wr: entry.wr, n: entry.n, adoption: entry.adoption,
+          }));
         }
       });
     };
-    addRealMatch(REAL_PAIR_INDEX, 2, WEIGHTS.REAL_PVP_PAIR_SCALE, '페어');
-    addRealMatch(REAL_TRIO_INDEX, 3, WEIGHTS.REAL_PVP_TRIO_SCALE, '트리오');
-    addRealMatch(REAL_QUAD_INDEX, 4, WEIGHTS.REAL_PVP_QUAD_SCALE, '4인 코어');
+    addRealMatch(REAL_PAIR_INDEX, 2, WEIGHTS.REAL_PVP_PAIR_SCALE, R.label_pair);
+    addRealMatch(REAL_TRIO_INDEX, 3, WEIGHTS.REAL_PVP_TRIO_SCALE, R.label_trio);
+    addRealMatch(REAL_QUAD_INDEX, 4, WEIGHTS.REAL_PVP_QUAD_SCALE, R.label_quad);
     if (titles.length === 5) {
       const exact = REAL_TEAM_INDEX.get(titleSetKey(titles));
       if (exact) {
         score += wrBonus(exact.wr, WEIGHTS.REAL_PVP_TEAM_SCALE);
-        reasons.push(
-          `[실전 기록] 이 5인 조합은 챔피언 아레나에서 실제로 승률 ${exact.wr}%(${exact.n}전, ` +
-          `채택률 ${exact.adoption}%)로 기록된 완전 일치 구성입니다. (출처: enikk.app)`
-        );
+        reasons.push(R.real_pvp_exact({ wr: exact.wr, n: exact.n, adoption: exact.adoption }));
       }
     }
   }
@@ -1062,11 +1075,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       if (exact) {
         exactMatched = true;
         score += (exact.pctOfClears || 0) * WEIGHTS.REAL_CAMPAIGN_FULL_SCALE;
-        reasons.push(
-          `[실전 기록] 이 5인 조합은 enikk.app 캠페인 클리어 기록에서 실제로 ${exact.totalUses.toLocaleString()}회 ` +
-          `사용되어 분석된 전체 클리어의 ${exact.pctOfClears}%를 차지하는, 플레이어들이 가장 많이 쓰는 캠페인 조합 ` +
-          `중 하나입니다. (출처: enikk.app)`
-        );
+        reasons.push(R.real_campaign_exact({
+          uses: exact.totalUses, pct: exact.pctOfClears, lang,
+        }));
       }
     }
     if (!exactMatched) {
@@ -1078,11 +1089,13 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         if (seenComp.has(compKey)) return;
         seenComp.add(compKey);
         score += (hit.comp.pctOfClears || 0) * WEIGHTS.REAL_CAMPAIGN_PARTIAL_SCALE;
-        reasons.push(
-          `[실전 기록] ${combo.join(', ')}는(은) enikk.app에서 ${hit.missing}와(과) 함께 쓰였을 때 ` +
-          `가장 많이 기록된 캠페인 조합(${hit.comp.totalUses.toLocaleString()}회, 전체의 ${hit.comp.pctOfClears}%)의 ` +
-          `핵심 4인입니다. ${hit.missing}를(을) 보유하면 이 실전 검증 조합을 완성할 수 있습니다. (출처: enikk.app)`
-        );
+        reasons.push(R.real_campaign_partial({
+          combo,
+          missing: hit.missing,
+          uses: hit.comp.totalUses,
+          pct: hit.comp.pctOfClears,
+          lang,
+        }));
       });
     }
   }
@@ -1101,14 +1114,18 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     //    조건형으로 쓰여 있어서, 그대로 넘기면 설명을 쓰는 AI가 "헬름의 애장품이 있다면 ~"
     //    으로 받아써서 **보유 중인데 미보유처럼 읽힌다**(2026-08-13 유저 제보로 재현 확인).
     //    자료 원문은 건드리지 않고, 앞에 현재 상태를 못박아 붙인다.
-    reasons.push(
-      `${m.title}는(은) 애장품을 장착한 상태입니다(가정이 아니라 현재 보유). ` +
-      `장착 효과: ${effect.treasureEffect}`
-    );
+    reasons.push(R.treasure_equipped({
+      title: rName(m, lang),
+      effect: localized(effect, 'treasureEffect', lang),
+    }));
     (effect.synergyWith || []).forEach((sw) => {
       if (titles.includes(sw.target)) {
         score += sw.bonus || 0;
-        reasons.push(`${m.title}(애장품 장착 중) + ${sw.target} 궁합: ${sw.reason}`);
+        reasons.push(R.treasure_synergy({
+          title: rName(m, lang),
+          target: sw.target,
+          reason: localized(sw, 'reason', lang),
+        }));
       }
     });
   });
@@ -1130,13 +1147,13 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       // (유저 지적: "애장품이 없으니까 잘못된 추천이잖아"). 지금 보유한 상태를 기준으로만
       // 읽히도록, 상승 여력이 아니라 현재의 한계로 서술한다.
       const gap = withTreasure
-        ? ` 지금은 애장품이 없어 공략의 ${withTreasure} 평가가 아니라 ${base} 성능으로 계산했습니다. ` +
-          `이 조합에서 ${m.title}의 기여는 ${base} 수준까지로 보고 판단해야 합니다.`
-        : ` 이 조합에서는 애장품 없는 기본 티어(${base}) 기준으로 계산했습니다.`;
-      reasons.push(
-        `[투자 참고] ${m.title}는(은) 공략 기준 애장품(Treasure) 의존도가 높은 캐릭터인데 애장품을 ` +
-        `장착하지 않은 상태입니다.${gap} ${note.treasureNote}`
-      );
+        ? R.treasure_gap_known({ title: rName(m, lang), base, withTreasure })
+        : R.treasure_gap_unknown({ base });
+      reasons.push(R.treasure_required({
+        title: rName(m, lang),
+        gap,
+        note: localized(note, 'treasureNote', lang),
+      }));
     }
   });
 
@@ -1156,17 +1173,19 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     explainedTotems.add(m.id);
     const others = members
       .filter((o) => o.id !== m.id && String(o.burst) === String(m.burst))
-      .map((o) => o.title);
+      .map((o) => rName(o, lang));
     // 2026-08-08 수정: "버스트를 쓰지 않아도 발동하는" 이라고 단정하던 문장을 고쳤다.
     // 유저 지적 — 마스트: 로망틱 메이드는 버스트를 아예 안 쓰는 게 아니라, 취기 스택이 3까지
     // 쌓이는 3번째 사이클에 버스트를 쓴다(커뮤니티에서 '크크마'라 부르는 로테이션).
     // 즉 "매 사이클 버스트 순번에 들어가지 않는다"는 맞지만 "버스트를 안 쓴다"는 틀리다.
     // 왜 낭비가 아닌지는 캐릭터마다 다르므로 totemNote에 맡긴다.
-    reasons.push(
-      `[토템 활용] 버스트${m.burst} 단계는 ${others.join(', ')}가 돌리면 매 사이클 커버되므로 ` +
-      `(쿨타임 기준 ${needed}명이면 충분), ${m.title}는(은) 매 사이클 버스트 순번에는 들어가지 않습니다. ` +
-      `그래도 이 자리는 낭비가 아닙니다. ${note.totemNote}`
-    );
+    reasons.push(R.totem_role({
+      burst: m.burst,
+      others,
+      needed,
+      title: rName(m, lang),
+      note: localized(note, 'totemNote', lang),
+    }));
   });
   // 2026-08-09 삭제: 여기 있던 두 번째 토템 설명 경로를 없앴습니다.
   //
@@ -1254,6 +1273,8 @@ const BURST_COUNT_DISTRIBUTIONS = buildBurstCountDistributions();
 
 // ownedCharacters: characterDatabase.json 항목 배열(보유한 캐릭터만)
 export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
+  const lang = opts.lang || 'ko';
+  const R = engineText(lang);
   const topN = opts.topN || 5;
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
@@ -1272,11 +1293,12 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       // 기업 타워는 제조사로 로스터가 잘리므로 "보유하지 않았다"는 표현이 사실과 다르다.
       // 보유는 하고 있는데 그 타워에 못 나가는 것이라, 문구를 나눠야 오해가 없다.
       error: tower
-        ? `${TOWER_LABEL[tower] || tower} 타워에 출전할 수 있는 버스트 ${missing.join(', ')} 캐릭터가 없어 ` +
-          `풀버스트 조합을 만들 수 없습니다. 기업 타워는 해당 제조사 니케만 출전할 수 있습니다` +
-          `${tower === 'pilgrim' ? '(오버스펙 니케 포함)' : ''}.`
-        : `버스트 ${missing.join(', ')} 캐릭터를 보유하고 있지 않아 완전한 풀버스트 조합을 만들 수 없습니다. ` +
-          `해당 버스트 단계의 캐릭터를 육성하는 것을 추천합니다.`,
+        ? R.tower_missing_burst({
+            tower: R[`tower_${tower}`] || tower,
+            stages: missing,
+            pilgrim: tower === 'pilgrim',
+          })
+        : R.roster_missing_burst({ stages: missing }),
       dataFreshness: getDataFreshnessMeta(),
     };
   }
@@ -1308,7 +1330,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       combos2.forEach((c2) => {
         combos3.forEach((c3) => {
           const members = [...c1, ...c2, ...c3];
-          const result = scoreTeam(members, mode, { treasureIds, bossElement });
+          const result = scoreTeam(members, mode, { treasureIds, bossElement, lang });
           candidateTeams.push({
             members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
             ...result,
@@ -1376,6 +1398,8 @@ const REAL_TEAM_SOURCE = {
 };
 
 export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
+  const lang = opts.lang || 'ko';
+  const R = engineText(lang);
   const source = REAL_TEAM_SOURCE[mode];
   if (!source) return null;
 
@@ -1423,7 +1447,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     if (titles.some((t) => excludeTitles.has(t))) return;
 
     const members = titles.map((t) => byTitle.get(t));
-    const scored = scoreTeam(members, mode, { treasureIds, bossElement });
+    const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
     if (!scored.valid) return; // 버스트 I/II/III 조건을 못 갖추면 제외
     if (!best || rank > best.rank) best = { entry: e, rank, members, scored };
   });
@@ -1433,21 +1457,21 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   const e = best.entry;
   let headline;
   if (source === 'campaign') {
-    headline = `[실전 기록] 이 5인 조합은 enikk.app 캠페인 클리어 기록에서 실제로 ` +
-      `${(e.totalUses || 0).toLocaleString()}회 사용되어 분석된 전체 클리어의 ${e.pctOfClears}%를 ` +
-      `차지합니다. 플레이어들이 실제로 가장 많이 쓰는 조합이라 시너지가 이미 검증된 구성입니다.`;
+    headline = R.headline_campaign({ uses: e.totalUses, pct: e.pctOfClears, lang });
   } else if (source === 'soloraid') {
     // 표본 수는 "한 서버에서의 기록"이다(전 서버 합계가 아니다). 그 사정을 문장에 담는다.
-    headline = `[실전 기록] 이 5인 조합은 enikk.app 솔로 레이드 시즌 ${e.season.raid}` +
-      `(${e.season.boss}) 기록에서 ${(e.parses || 0).toLocaleString()}회 사용됐습니다. ` +
-      `최고 ${e.maxDamage} / 평균 ${e.avgDamage}의 데미지 기록이 남아 있는 구성입니다.`;
+    headline = R.headline_soloraid({
+      raid: e.season.raid,
+      boss: e.season.boss,
+      parses: e.parses,
+      maxDamage: e.maxDamage,
+      avgDamage: e.avgDamage,
+      lang,
+    });
   } else if (source === 'tower') {
-    headline = `[실전 기록] 이 5인 조합은 enikk.app 타워 클리어 기록에서 ` +
-      `${(e.uses || 0).toLocaleString()}회 사용되어 분석된 전체 클리어의 ${e.pctOfClears}%를 차지합니다. ` +
-      `${(e.floors || 0).toLocaleString()}개 층에서 관측된 구성입니다.`;
+    headline = R.headline_tower({ uses: e.uses, pct: e.pctOfClears, floors: e.floors, lang });
   } else {
-    headline = `[실전 기록] 이 5인 조합은 챔피언 아레나 실제 대전에서 승률 ${e.wr}%(${e.n}전, ` +
-      `채택률 ${e.adoption}%)를 기록한 구성입니다. 실제로 이긴 기록이라 시너지가 검증된 조합입니다.`;
+    headline = R.headline_pvp({ wr: e.wr, n: e.n, adoption: e.adoption });
   }
 
   // --- 애장품 공백 메우기 (2026-08-21) ---
@@ -1473,17 +1497,13 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     const withTreasure = INVESTMENT_NOTE_BY_NAME.get(m.title)?.treasureTiers?.[tierKey];
     const base = m.tiers?.[tierKey];
     if (!withTreasure || !base || withTreasure === base) return null;
-    return m.name_kr || m.title;
+    return lang === 'ko' ? (m.name_kr || m.title) : rName(m, lang);
   }).filter(Boolean);
   const treasureReasons = [];
   if (treasureGaps.length) {
     // scoreTeam이 이미 "애장품이 없어 B로 계산했다"는 안내를 낸다. 그걸 되풀이하지 않고,
     // **이 경로에만 있는 사실**(출처에 애장품 정보가 없다)만 한 줄로 덧붙인다.
-    treasureReasons.push(
-      '[출처 한계] 이 조합은 enikk.app의 실제 사용 기록이지만 그 기록에는 애장품 정보가 없습니다. '
-      + `위 애장품 안내에 해당하는 ${treasureGaps.join(', ')}을(를) 이 기록의 주인이 애장품과 함께 `
-      + '썼는지는 알 수 없습니다 — 많이 쓰인다는 사실이 애장품 없이도 된다는 뜻은 아닙니다.'
-    );
+    treasureReasons.push(R.source_limit_treasure({ names: treasureGaps }));
   }
 
 
@@ -1536,6 +1556,8 @@ export function resolveOwnedCharacters(ownedIds) {
 // 인원이 실제로 못 쓰는 자리라면 이 완전일치 후보 비교에서도 점수에 넣지 않는다.
 // ---------------------------------------------------------------------------
 export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
+  const lang = opts.lang || 'ko';
+  const R = engineText(lang);
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
   const excludeTitles = new Set(opts.excludeTitles || []);
@@ -1732,7 +1754,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const filled = fillTeam(a);
     if (!filled) return;
     const members = filled.members;
-    const scored = scoreTeam(members, mode, { treasureIds, bossElement });
+    const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
     if (!scored.valid) return;
     // scoreTeam()이 이미 낭비 인원을 제외하고 계산한 tierTotal을 그대로 후보 비교 기준으로
     // 쓴다 — 아키타입 개수와 무관하게 안정적이고, 같은 버스트 단계 낭비 인원도 반영된다.
@@ -1756,10 +1778,11 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const fixedTitles = new Set(best.archetype.members || []);
     const filledTitles = best.members.filter((m) => !fixedTitles.has(m.title)).map((m) => m.title);
     slotReasons.push(
-      `[자유 슬롯] 이 조합은 원래 ${[...fixedTitles].join(', ')}만 고정이고 나머지 ` +
-      `${best.archetype.flexSlots.join(', ')} 자리는 비어 있는 구성입니다. ` +
-      `보유 캐릭터 중 조건에 맞고 이 모드 티어가 가장 높은 ${filledTitles.join(', ')}로 채웠습니다. ` +
-      `이 자리는 같은 조건을 만족하는 다른 캐릭터로 바꿔도 조합이 성립합니다.`
+      R.flex_slots({
+        fixed: [...fixedTitles],
+        slots: best.archetype.flexSlots,
+        filled: filledTitles,
+      })
     );
   }
 

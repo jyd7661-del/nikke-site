@@ -63,7 +63,8 @@ const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-4-5';
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP', tribe_tower: '타워' };
 
-// 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS / TOWER_LABEL과 일치해야 한다.
+// 기업 타워 선택지. lib/synergyEngine.js의 TOWER_CORPS와 일치해야 한다.
+// (타워 이름표는 lib/engineReasons.js가 언어별로 들고 있다 — tower_elysion 등)
 // 클라이언트 값을 그대로 믿지 않고 이 목록으로 검증한다 — 엉뚱한 값이 오면 엔진이 로스터를
 // 통째로 걸러내 "조합을 만들 수 없습니다"만 나오고 원인을 알기 어렵다.
 const TOWER_CORP_SET = new Set(['elysion', 'missilis', 'tetra', 'pilgrim']);
@@ -359,10 +360,10 @@ ${reasonsText}${noteBlock}
 
 // AI 호출이 실패했거나 일일 상한에 걸렸을 때 보여줄 대체 문장. 캐시에는 저장하지 않는다.
 //
-// ⚠️ reasons는 lib/synergyEngine.js가 **한국어로만** 조립한다. 문장 안에 데이터 파일의
-//    한국어 원문이 그대로 박혀 있어 코드만 번역해선 해결되지 않는다(2026-08-11 조사).
-//    그래서 한국어가 아닐 때는 근거 문장을 그대로 내보내지 않고, 해당 언어의 일반 문장으로
-//    대체한다. 어차피 화면에는 '오늘 AI 설명 한도에 도달했다'는 안내가 함께 뜬다.
+// 2026-08-11~2026-08-25: 예전엔 reasons가 한국어 전용이라 다른 언어에서는 근거를 버리고
+// 아래 일반 문장만 내보냈다. 이제 엔진이 opts.lang으로 사용자 언어의 근거를 만들므로
+// (lib/engineReasons.js) 언어와 무관하게 근거 문장을 그대로 쓴다. 일반 문장은 근거가
+// 하나도 없을 때의 최후 수단으로만 남는다.
 const FALLBACK_GENERIC = {
   ko: '보유 캐릭터 중 이 모드 티어 점수 합이 가장 높은 조합입니다.',
   en: 'This is the team with the highest combined tier score for this mode among the Nikkes you own.',
@@ -371,7 +372,6 @@ const FALLBACK_GENERIC = {
 
 function fallbackReasoning(reasons, langKey = 'ko') {
   const generic = FALLBACK_GENERIC[langKey] || FALLBACK_GENERIC.ko;
-  if (langKey !== 'ko') return generic;
   return (reasons || []).slice(0, 3).join(' ') || generic;
 }
 
@@ -492,6 +492,9 @@ export async function POST(req) {
       bossElement: bossElement || null,
       tower: towerKey,
       excludeTitles: Array.from(excludeSet),
+      // 근거 문장을 사용자 언어로 조립한다(2026-08-25). 이 문장은 AI 프롬프트의 입력이자
+      // 대체 조합 헤드라인·폴백 문장으로 화면에도 그대로 나간다.
+      lang: langKey,
     };
     const realUsageMatch = findRealUsageTeamMatch(characters, mode, matchOpts);
     const exactMatch = findExactTeamMatch(characters, mode, matchOpts);
@@ -535,6 +538,7 @@ export async function POST(req) {
         bossElement: bossElement || null,
         tower: towerKey,
         topN: 20,
+        lang: langKey,
       });
 
       if (!rec.teams || rec.teams.length === 0) {

@@ -30,11 +30,12 @@ function AiScoreBadge({ members, purpose }) {
   const { resolved, unresolved } = resolveRosterIdsToCdb(members);
   if (resolved.length === 0 || unresolved.length > 0) return null;
   const mode = inferMode(purpose);
-  const result = scoreTeam(resolved, mode);
-  // 근거 문장은 엔진이 한국어로만 만든다(위 ResultPanel 주석 참고). 한국어일 때만 툴팁을 단다.
+  // 근거 문장을 화면 언어로 만든다(2026-08-25). 예전엔 엔진이 한국어로만 만들어
+  // 한국어일 때만 툴팁을 달았다 — lib/engineReasons.js 참고.
+  const result = scoreTeam(resolved, mode, { lang });
   return (
     <span
-      title={lang === 'ko' ? result.reasons?.join(' / ') : undefined}
+      title={result.reasons?.join(' / ')}
       className={`text-xs rounded-full px-2 py-0.5 border ${
         result.valid
           ? 'text-nikke-accent bg-nikke-accent/10 border-nikke-accent/40'
