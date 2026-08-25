@@ -27,6 +27,6 @@ paths:
 - 클라이언트 컴포넌트에 넘기는 props는 **RSC 페이로드로 직렬화된다.** 캐릭터 객체를 통째로
   넘기면 `skills`(3개 × 3개국어 설명)까지 실린다. 화면이 쓰는 필드만 추려서 넘긴다.
 - 키를 추가·삭제하면 **한/영/일 세 언어 모두** 손댄다. 하나라도 빠지면 `testI18n`이 잡는다.
-- 고친 뒤 반드시 `/verify` (기준선 `testI18n` 22건 · `testCharacterNames` 26건).
+- 고친 뒤 반드시 `/verify` (기준선 `testI18n` 24건 · `testCharacterNames` 26건).
 
 자세한 내용: `docs/i18n.md`

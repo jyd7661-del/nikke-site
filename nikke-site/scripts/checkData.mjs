@@ -211,6 +211,35 @@ notes.characters.forEach((n) => {
       ` — 레드 후드와 동일한 유형의 허위 근거`);
   }
 
+  // 노트가 "현재 티어: story X / bossing Y / pvp Z"라고 적었으면 DB와 맞아야 한다.
+  //
+  // 2026-08-25: 맥스웰 : 오디너리 미케닉 항목에 **마르차나 : 마린 스터디의 문구가 통째로
+  // 복사**돼 있었다. 도감의 "투자·운용" 절과 엔진 근거에 그대로 나갔고, 3개국어 번역까지
+  // 따라가서 틀린 정보가 세 배로 퍼져 있었다.
+  //
+  // 이 유형은 "이름이 안 맞는다" 같은 기존 검사로는 안 잡힌다. 이름·id는 멀쩡하고 **본문만**
+  // 남의 것이기 때문이다. 다만 이 자료는 스스로를 검증할 값을 품고 있다 — 노트가 인용한
+  // 티어는 그 캐릭터의 DB 티어와 같아야 한다(BURST_ALL_CLAIM과 정확히 같은 구조).
+  //
+  // ⚠️ 한국어 원문만 본다. `_en`/`_ja`는 이 문장에서 파생된 번역이라 따로 재면 같은 실패를
+  //    두 번 세게 되고, 표기 형식도 언어마다 달라 오탐이 난다.
+  const tierClaim = /현재\s*티어\s*:\s*story\s+([A-Z]+)\s*\/\s*bossing\s+([A-Z]+)\s*\/\s*pvp\s+([A-Z]+)/i
+    .exec([n.investmentProfile, n.notes, n.treasureNote].filter(Boolean).join(' '));
+  if (!isCorrectionRecord && tierClaim) {
+    const claimed = tierClaim.slice(1, 4).join('/');
+    const actual = [c.tiers?.story, c.tiers?.bossing, c.tiers?.pvp].join('/');
+    if (claimed !== actual) {
+      const owner = notes.characters.find((o) => {
+        const oc = BY_TITLE.get(o.name);
+        return oc && [oc.tiers?.story, oc.tiers?.bossing, oc.tiers?.pvp].join('/') === claimed;
+      });
+      err('TIER_CLAIM_MISMATCH',
+        `${n.name}: 노트가 티어를 '${claimed}'라고 적었지만 characterDatabase.json 실제 값은 ` +
+        `'${actual}' — 다른 캐릭터의 문구가 복사됐을 수 있다` +
+        (owner && owner.name !== n.name ? ` (그 티어를 가진 캐릭터: ${owner.name})` : ''));
+    }
+  }
+
   // "버스트10"(스킬 레벨)을 "버스트 1"로 오독하지 않도록 뒤에 숫자가 더 붙으면 제외.
   // 팀 편성 맥락("1버스트 조합", "버스트2 슬롯의 다른 캐릭터")과 자기 자신에 대한 서술을
   // 기계적으로 구분할 수 없으므로 ERROR가 아니라 WARN으로만 보고한다.

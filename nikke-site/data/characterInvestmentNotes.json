@@ -1548,20 +1548,17 @@
       "name_kr": "맥스웰 : 오디너리 미케닉",
       "treasureRequired": false,
       "treasureNote": "2026-07-30 출시된 맥스웰의 파워업(이격) 캐릭터. 전용 애장품 여부 미확인(신캐라 커뮤니티 육성 시트에 아직 반영 안 됨).",
-      "investmentProfile": "[2026-08-04 신규 추가, 확신도 낮음 — 스킬작/오버/큐브 구체 수치는 확인 필요] 재장전 시 탄환 2배 + 공격력 대폭 증가(약 625% 언급) 스킬 구조로 '사기캐' 평가(고뇨). 스테이지 다양한 콘텐츠에서 만능으로 기용 가능한 '조커픽' 여부가 검증 대상(스페란도, 신중한 톤 — 뉴비에게 '뽑기 전 꼭 시청' 안내). 스노우 화이트: 헤비암즈 자리의 대체 조합으로 제시됨(김진서).",
       "skillPriority": "확인 필요 (원문 미확보)",
       "overloadPriority": "확인 필요 (원문 미확보)",
-      "notes": "characterDatabase.json 기준 현재 티어: story C / bossing A / pvp B. synergyNotes.json의 swha-alt-marciana 아키타입 참고. 출처: 고뇨, 스페란도, 김진서.",
+      "notes": "[2026-08-25 정정] 이 항목의 투자 프로필과 설명에 마르차나 : 마린 스터디의 문구가 그대로 복사돼 있었습니다. 노트가 주장한 티어(story C / bossing A / pvp B)는 마르차나의 값이고 이 캐릭터(story A / bossing SS / pvp B)와 다르며, 함께 인용된 아키타입 swha-alt-marciana도 마르차나 전용입니다. 맥스웰 : 오디너리 미케닉의 실제 투자 정보는 출처를 확보하지 못해 비워뒀습니다 — 추측으로 채우지 않습니다.",
       "treasureNote_en": "Maxwell's power-up (alt) character, released 2026-07-30. Whether she has a dedicated Treasure is unconfirmed (as a new character she is not yet reflected on the community raising sheet).",
       "treasureNote_ja": "2026-07-30に実装されたマクスウェルのパワーアップ（別バージョン）キャラ。専用の宝ものの有無は未確認（新キャラのためコミュニティ育成シートにまだ反映されていない）。",
-      "investmentProfile_en": "[Newly added 2026-08-04, low confidence — the specific skill-level, Overload and cube figures need checking] Rated as a \"broken\" character for a skill structure that doubles her ammo on reload and raises ATK sharply (around 625% is quoted) (Gonyo). Whether she is a genuine \"joker pick\" usable universally across a range of stage content is still to be verified (Sperando, cautious in tone — he tells newer players to \"be sure to watch before you pull\"). She is put forward as a replacement in Snow White: Heavy Arms' slot (Kim Jinseo).",
-      "investmentProfile_ja": "［2026-08-04新規追加、確信度は低い — スキルレベル・オーバーロード・キューブの具体的な数値は確認が必要］リロード時に弾数2倍＋攻撃力大幅増加（およそ625%という言及）というスキル構造で「壊れキャラ」と評価される（ゴニョ）。ステージの多様なコンテンツで万能に起用できる「ジョーカーピック」かどうかは検証対象（スペランド、慎重なトーン — 初心者に「引く前に必ず視聴を」と案内）。スノーホワイト：ヘビーアームズの枠の代替編成として提示されている（キム・ジンソ）。",
       "skillPriority_en": "Needs checking (original text not obtained)",
       "skillPriority_ja": "確認が必要（原文を未入手）",
       "overloadPriority_en": "Needs checking (original text not obtained)",
       "overloadPriority_ja": "確認が必要（原文を未入手）",
-      "notes_en": "Current tiers per characterDatabase.json: story C / bossing A / pvp B. See the swha-alt-marciana archetype in synergyNotes.json. Sources: Gonyo, Sperando, Kim Jinseo.",
-      "notes_ja": "characterDatabase.json基準の現在のティア：story C ／ bossing A ／ pvp B。synergyNotes.jsonのswha-alt-marcianaアーキタイプを参照。出典：ゴニョ、スペランド、キム・ジンソ。"
+      "notes_en": "[Correction 2026-08-25] The investment profile and notes on this entry were a verbatim copy of Marciana: Marine Study's. The tiers the note claimed (story C / bossing A / pvp B) are Marciana’s, not this character’s (story A / bossing SS / pvp B), and the archetype it cited, swha-alt-marciana, belongs to Marciana alone. The real investment information for Maxwell: Ordinary Mechanic is left blank because no source was secured — we do not fill it in by guessing.",
+      "notes_ja": "［2026-08-25 訂正］この項目の投資プロフィールと説明には、マルチャーナ：マリンスタディの文面がそのままコピーされていました。ノートが主張していたティア（story C / bossing A / pvp B）はマルチャーナの値で、このキャラクター（story A / bossing SS / pvp B）とは異なります。併せて引用されていたアーキタイプ swha-alt-marciana もマルチャーナ専用です。マクスウェル：オーディナリーメカニックの実際の投資情報は出典を確保できなかったため空欄にしています — 推測で埋めることはしません。"
     },
     {
       "name": "Marciana: Marine Study",
