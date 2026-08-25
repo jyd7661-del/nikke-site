@@ -15,9 +15,13 @@
         {
           "target": "Crown",
           "bonus": 6,
-          "reason": "헬름 애장품의 공격+전체 회복 효과가 크라운의 스킬 발동 조건과 맞물려, 애장품이 없을 때보다 크라운과의 조합 궁합이 크게 좋아집니다."
+          "reason": "헬름 애장품의 공격+전체 회복 효과가 크라운의 스킬 발동 조건과 맞물려, 애장품이 없을 때보다 크라운과의 조합 궁합이 크게 좋아집니다.",
+          "reason_en": "Helm's Treasure attack-plus-teamwide-heal effect meshes with Crown's skill activation condition, making the pairing with Crown far better than it is without the Treasure.",
+          "reason_ja": "宝ものヘルムの「攻撃＋全体回復」効果がクラウンのスキル発動条件と噛み合い、宝ものがない場合よりクラウンとの相性が大きく良くなる。"
         }
-      ]
+      ],
+      "treasureEffect_en": "Equipping the Treasure adds a new skill effect that heals the entire team along with the attack.",
+      "treasureEffect_ja": "宝ものを装備すると、攻撃効果とあわせて味方全体を回復させるスキル効果が新たに加わる。"
     },
     {
       "characterId": "zwei",
@@ -28,84 +32,118 @@
         {
           "target": "Mint",
           "bonus": 6,
-          "reason": "민트의 크리티컬 관련 버프가 즈바이 애장품의 약점을 정확히 보완해줘서 최상급 페어링으로 꼽힙니다."
+          "reason": "민트의 크리티컬 관련 버프가 즈바이 애장품의 약점을 정확히 보완해줘서 최상급 페어링으로 꼽힙니다.",
+          "reason_en": "Mint's critical-related buffs cover exactly the weakness of Zwei's Treasure, which is why this is regarded as a top-tier pairing.",
+          "reason_ja": "ミントのクリティカル関連バフが宝ものツバイの弱点をぴたりと補うため、最上位のペアリングとされている。"
         }
-      ]
+      ],
+      "treasureEffect_en": "Equipping the Treasure raises her firepower substantially, but it also makes her shortfall in critical rate and critical damage stand out.",
+      "treasureEffect_ja": "宝ものを装備すると火力は大きく上がるが、同時にクリティカル率・クリティカルダメージの不足という弱点も際立つ。"
     },
     {
       "characterId": "moran",
       "title": "Moran",
-      "treasureEffect": "애장품 3단계에서 스킬 구조가 통째로 바뀝니다. 열정(Fervor) 상태에서 풀버스트에 진입하면 전 아군의 버스트 스킬 쿨타임을 7.48초 감소시키고, 버스트 스킬('Fair and Square')은 전 아군에게 받는 피해 ▼35.14%, 방어력 ▲14.85%, 그리고 시전자 공격력 기준 공격력 ▲42.57%를 10초간 부여합니다. 애장품 3단계를 채우지 못하면 이 아군 버프가 아예 없어 절반의 성능만 나옵니다."
+      "treasureEffect": "애장품 3단계에서 스킬 구조가 통째로 바뀝니다. 열정(Fervor) 상태에서 풀버스트에 진입하면 전 아군의 버스트 스킬 쿨타임을 7.48초 감소시키고, 버스트 스킬('Fair and Square')은 전 아군에게 받는 피해 ▼35.14%, 방어력 ▲14.85%, 그리고 시전자 공격력 기준 공격력 ▲42.57%를 10초간 부여합니다. 애장품 3단계를 채우지 못하면 이 아군 버프가 아예 없어 절반의 성능만 나옵니다.",
+      "treasureEffect_en": "At Treasure phase 3 her whole skill structure changes. Entering Full Burst while in Fervor reduces the burst skill cooldown of all allies by 7.48 seconds, and her burst skill (\"Fair and Square\") grants all allies damage taken down 35.14%, DEF up 14.85%, and ATK up 42.57% based on the caster's ATK for 10 seconds. If you cannot reach Treasure phase 3, these team buffs are absent entirely and you only get half the performance.",
+      "treasureEffect_ja": "宝ものフェーズ3でスキル構造がまるごと変わる。「情熱（Fervor）」状態でフルバーストに入ると味方全体のバーストスキルのクールタイムを7.48秒短縮し、バーストスキル「Fair and Square」は味方全体に被ダメージ35.14%減少、防御力14.85%上昇、そして使用者の攻撃力を基準とした攻撃力42.57%上昇を10秒間付与する。宝ものフェーズ3に届かない場合はこの味方バフが丸ごと存在せず、性能は半分にとどまる。"
     },
     {
       "characterId": "centi",
       "title": "Centi",
-      "treasureEffect": "애장품 장착 시 전 아군 지원 능력이 크게 붙습니다. 초과 회복량을 최대 체력의 7%까지 비축(Stockpile)해 아군 체력이 떨어질 때 되돌려주고, 전 아군에게 시전자 공격력 기준 공격력 ▲4.6%를 최대 10중첩(8초)까지 쌓아줍니다. 버스트 스킬('Start Construction', 쿨타임 20초)은 적 방어력을 낮추면서 전 아군 체력을 시전자 최대 체력의 30.2%만큼 회복시킵니다."
+      "treasureEffect": "애장품 장착 시 전 아군 지원 능력이 크게 붙습니다. 초과 회복량을 최대 체력의 7%까지 비축(Stockpile)해 아군 체력이 떨어질 때 되돌려주고, 전 아군에게 시전자 공격력 기준 공격력 ▲4.6%를 최대 10중첩(8초)까지 쌓아줍니다. 버스트 스킬('Start Construction', 쿨타임 20초)은 적 방어력을 낮추면서 전 아군 체력을 시전자 최대 체력의 30.2%만큼 회복시킵니다.",
+      "treasureEffect_en": "Equipping the Treasure adds substantial teamwide support. She Stockpiles overhealing up to 7% of Max HP and returns it when an ally's HP drops, and she stacks ATK up 4.6% based on the caster's ATK on all allies up to 10 stacks (8 seconds). Her burst skill (\"Start Construction\", 20 second cooldown) lowers enemy DEF while restoring all allies' HP by 30.2% of the caster's Max HP.",
+      "treasureEffect_ja": "宝ものを装備すると味方全体への支援能力が大きく付く。超過回復量を最大HPの7%まで備蓄（Stockpile）し、味方のHPが減ったときに還元する。また味方全体に、使用者の攻撃力を基準とした攻撃力4.6%上昇を最大10スタック（8秒）まで積み上げる。バーストスキル「Start Construction」（クールタイム20秒）は敵の防御力を下げつつ、味方全体のHPを使用者の最大HPの30.2%ぶん回復させる。"
     },
     {
       "characterId": "phantom",
       "title": "Phantom",
-      "treasureEffect": "전 아군 버프가 아니라 본인 화력·적 약화에 특화된 애장품입니다. 버스트 스킬('Secret Trick: Rampage of Thieves', 쿨타임 40초)이 전체 적에게 최종 공격력 1457.28%의 분산 피해를 주고, 상대가 불 속성 스테이지 타겟이면 받는 피해를 30초간 ▲18% 늘립니다. 본인은 최대 장탄수 ▲50%를 얻습니다."
+      "treasureEffect": "전 아군 버프가 아니라 본인 화력·적 약화에 특화된 애장품입니다. 버스트 스킬('Secret Trick: Rampage of Thieves', 쿨타임 40초)이 전체 적에게 최종 공격력 1457.28%의 분산 피해를 주고, 상대가 불 속성 스테이지 타겟이면 받는 피해를 30초간 ▲18% 늘립니다. 본인은 최대 장탄수 ▲50%를 얻습니다.",
+      "treasureEffect_en": "This Treasure specialises in her own firepower and weakening enemies rather than buffing the team. Her burst skill (\"Secret Trick: Rampage of Thieves\", 40 second cooldown) deals distributed damage equal to 1457.28% of final ATK to all enemies, and if the opponent is a Fire element stage target, it raises their damage taken by 18% for 30 seconds. She herself gains Max Ammo up 50%.",
+      "treasureEffect_ja": "味方全体へのバフではなく、本人の火力と敵の弱体化に特化した宝もの。バーストスキル「Secret Trick: Rampage of Thieves」（クールタイム40秒）が敵全体に最終攻撃力1457.28%の分配ダメージを与え、相手が灼熱属性のステージ目標であれば被ダメージを30秒間18%増加させる。本人は最大装填数50%上昇を得る。"
     },
     {
       "characterId": "privaty",
       "title": "Privaty",
-      "treasureEffect": "풀버스트 진입 시 전 아군에게 공격력 ▲23.61%, 재장전 속도 ▲51.16%를 10초간 부여합니다(대신 최대 장탄수 ▼50.66%). 본인의 버스트 사용 여부와 무관하게 매 풀버스트마다 발동하는 구조라, 같은 버스트 단계를 다른 캐릭터가 커버하고 있어도 팀 버프가 그대로 들어갑니다."
+      "treasureEffect": "풀버스트 진입 시 전 아군에게 공격력 ▲23.61%, 재장전 속도 ▲51.16%를 10초간 부여합니다(대신 최대 장탄수 ▼50.66%). 본인의 버스트 사용 여부와 무관하게 매 풀버스트마다 발동하는 구조라, 같은 버스트 단계를 다른 캐릭터가 커버하고 있어도 팀 버프가 그대로 들어갑니다.",
+      "treasureEffect_en": "On entering Full Burst she grants all allies ATK up 23.61% and reload speed up 51.16% for 10 seconds (at the cost of Max Ammo down 50.66%). Because it fires on every Full Burst regardless of whether she uses her own burst, the team buff still lands even when another character is covering the same burst stage.",
+      "treasureEffect_ja": "フルバーストに入ると味方全体に攻撃力23.61%上昇、リロード速度51.16%上昇を10秒間付与する（代償として最大装填数は50.66%減少）。本人がバーストを使うかどうかに関係なくフルバーストのたびに発動する構造なので、同じバースト段階を他のキャラクターがカバーしていても、味方へのバフはそのまま入る。"
     },
     {
       "characterId": "miranda",
       "title": "Miranda",
-      "treasureEffect": "치명타 지원형 애장품입니다. 풀버스트 진입 시 전 아군에게 치명타 피해 ▲32.99%를 10초간 부여하고, 평타 30회마다 전 아군 명중률 ▲5.44%(SMG 사용 아군은 추가 ▲3.79%)를 걸어줍니다. 치명타 피해 계수를 직접 올려주는 몇 안 되는 버퍼라 크리티컬 기반 딜러와 궁합이 좋습니다."
+      "treasureEffect": "치명타 지원형 애장품입니다. 풀버스트 진입 시 전 아군에게 치명타 피해 ▲32.99%를 10초간 부여하고, 평타 30회마다 전 아군 명중률 ▲5.44%(SMG 사용 아군은 추가 ▲3.79%)를 걸어줍니다. 치명타 피해 계수를 직접 올려주는 몇 안 되는 버퍼라 크리티컬 기반 딜러와 궁합이 좋습니다.",
+      "treasureEffect_en": "A critical-support Treasure. On entering Full Burst she grants all allies critical damage up 32.99% for 10 seconds, and every 30 basic attacks she applies hit rate up 5.44% to all allies (an extra 3.79% for allies wielding SMGs). She is one of the few buffers who directly raises the critical damage coefficient, so she pairs well with critical-based damage dealers.",
+      "treasureEffect_ja": "クリティカル支援型の宝もの。フルバーストに入ると味方全体にクリティカルダメージ32.99%上昇を10秒間付与し、通常攻撃30回ごとに味方全体へ命中率5.44%上昇（サブマシンガンを使う味方にはさらに3.79%）を付与する。クリティカルダメージの係数を直接引き上げる数少ないバッファーなので、クリティカル型のアタッカーと相性が良い。"
     },
     {
       "characterId": "flora",
       "title": "Flora",
-      "treasureEffect": "보호막과 고정 피해를 함께 제공하는 애장품입니다. 인접 아군의 체력이 90% 이하로 떨어지면 전 아군에게 보호막을 만들어주고, 인접 아군이 최대 체력에 도달하면 전 아군에게 고정(트루) 피해 ▲30.97%를 부여합니다. 버스트 스킬은 전 아군 체력을 시전자 최대 체력의 10.45%만큼 회복시키면서 고정 피해 ▲42.39%, 시전자 공격력 기준 공격력 ▲85.86%를 겁니다."
+      "treasureEffect": "보호막과 고정 피해를 함께 제공하는 애장품입니다. 인접 아군의 체력이 90% 이하로 떨어지면 전 아군에게 보호막을 만들어주고, 인접 아군이 최대 체력에 도달하면 전 아군에게 고정(트루) 피해 ▲30.97%를 부여합니다. 버스트 스킬은 전 아군 체력을 시전자 최대 체력의 10.45%만큼 회복시키면서 고정 피해 ▲42.39%, 시전자 공격력 기준 공격력 ▲85.86%를 겁니다.",
+      "treasureEffect_en": "A Treasure that provides both a shield and true damage. When an adjacent ally's HP falls to 90% or below she creates a shield for all allies, and when an adjacent ally reaches Max HP she grants all allies true damage up 30.97%. Her burst skill restores all allies' HP by 10.45% of the caster's Max HP while applying true damage up 42.39% and ATK up 85.86% based on the caster's ATK.",
+      "treasureEffect_ja": "シールドと固定ダメージを両方供給する宝もの。隣接する味方のHPが90%以下に下がると味方全体にシールドを張り、隣接する味方が最大HPに達すると味方全体に固定（トゥルー）ダメージ30.97%上昇を付与する。バーストスキルは味方全体のHPを使用者の最大HPの10.45%ぶん回復させつつ、固定ダメージ42.39%上昇と、使用者の攻撃力を基準とした攻撃力85.86%上昇を付与する。"
     },
     {
       "characterId": "laplace",
       "title": "Laplace",
-      "treasureEffect": "전 아군 버프는 없고 본인 화력을 강화하는 애장품입니다. 'Hero Vision'이 최대로 쌓였을 때 버스트 스킬이 같은 대상에게 최종 공격력의 11.9%를 고정(트루) 피해로 추가합니다. 팀 기여형이 아니라 개인 딜 상한을 올리는 쪽입니다."
+      "treasureEffect": "전 아군 버프는 없고 본인 화력을 강화하는 애장품입니다. 'Hero Vision'이 최대로 쌓였을 때 버스트 스킬이 같은 대상에게 최종 공격력의 11.9%를 고정(트루) 피해로 추가합니다. 팀 기여형이 아니라 개인 딜 상한을 올리는 쪽입니다.",
+      "treasureEffect_en": "A Treasure with no teamwide buff that instead strengthens her own firepower. When \"Hero Vision\" is fully stacked, her burst skill adds 11.9% of final ATK as true damage against the same target. It raises her personal damage ceiling rather than contributing to the team.",
+      "treasureEffect_ja": "味方全体へのバフはなく、本人の火力を強化する宝もの。「Hero Vision」が最大まで積み上がったとき、バーストスキルが同じ対象に最終攻撃力の11.9%を固定（トゥルー）ダメージとして追加する。チーム貢献型ではなく、個人の火力上限を引き上げる方向のものだ。"
     },
     {
       "characterId": "tove",
       "title": "Tove",
-      "treasureEffect": "장탄수·치명타 지원형 애장품입니다. 전 아군의 최대 장탄수를 최대 3중첩까지 올려주고, 그 중첩이 가득 차면 전 아군에게 치명타 확률 ▲10.08%를 상시로 부여합니다. 또한 중첩 수에 비례해 전 아군에게 시전자 공격력 기준 공격력 ▲2.32%씩을 겁니다."
+      "treasureEffect": "장탄수·치명타 지원형 애장품입니다. 전 아군의 최대 장탄수를 최대 3중첩까지 올려주고, 그 중첩이 가득 차면 전 아군에게 치명타 확률 ▲10.08%를 상시로 부여합니다. 또한 중첩 수에 비례해 전 아군에게 시전자 공격력 기준 공격력 ▲2.32%씩을 겁니다.",
+      "treasureEffect_en": "An ammo and critical support Treasure. She raises all allies' Max Ammo up to 3 stacks, and once those stacks are full she grants all allies a permanent critical rate up 10.08%. She also applies ATK up 2.32% per stack to all allies, based on the caster's ATK.",
+      "treasureEffect_ja": "装填数とクリティカルを支援する宝もの。味方全体の最大装填数を最大3スタックまで引き上げ、そのスタックが満ちると味方全体にクリティカル率10.08%上昇を常時付与する。さらにスタック数に比例して、使用者の攻撃力を基準とした攻撃力2.32%上昇を味方全体に付与する。"
     },
     {
       "characterId": "drake",
       "title": "Drake",
-      "treasureEffect": "샷건 특화 버퍼가 되는 애장품입니다. 풀버스트 진입 시 전 아군에게 명중률 ▲20.09%, 공격력 ▲11.85%를 10초간 주고, 특히 샷건을 든 아군에게는 공격력 ▲63.88%와 최대 장탄수 ▲50.14%를 추가로 부여합니다. 샷건 딜러가 있는 조합에서 가치가 급등합니다."
+      "treasureEffect": "샷건 특화 버퍼가 되는 애장품입니다. 풀버스트 진입 시 전 아군에게 명중률 ▲20.09%, 공격력 ▲11.85%를 10초간 주고, 특히 샷건을 든 아군에게는 공격력 ▲63.88%와 최대 장탄수 ▲50.14%를 추가로 부여합니다. 샷건 딜러가 있는 조합에서 가치가 급등합니다.",
+      "treasureEffect_en": "A Treasure that turns her into a shotgun specialist buffer. On entering Full Burst she gives all allies hit rate up 20.09% and ATK up 11.85% for 10 seconds, and allies wielding shotguns additionally receive ATK up 63.88% and Max Ammo up 50.14%. Her value shoots up in any team that fields a shotgun damage dealer.",
+      "treasureEffect_ja": "ショットガンに特化したバッファーになる宝もの。フルバーストに入ると味方全体に命中率20.09%上昇と攻撃力11.85%上昇を10秒間与え、とりわけショットガンを持つ味方には攻撃力63.88%上昇と最大装填数50.14%上昇を追加で付与する。ショットガンのアタッカーがいる編成では価値が跳ね上がる。"
     },
     {
       "characterId": "julia",
       "title": "Julia",
-      "treasureEffect": "전 아군 버프 없이 본인 폭딜에 집중된 애장품입니다. 버스트 스킬('Climax', 쿨타임 40초)이 무작위 적에게 최종 공격력 544.5%의 피해를 5회 연속으로 주고, 'Crescendo'가 가득 쌓였을 때 같은 대상에게 544.5%를 한 번 더 추가합니다."
+      "treasureEffect": "전 아군 버프 없이 본인 폭딜에 집중된 애장품입니다. 버스트 스킬('Climax', 쿨타임 40초)이 무작위 적에게 최종 공격력 544.5%의 피해를 5회 연속으로 주고, 'Crescendo'가 가득 쌓였을 때 같은 대상에게 544.5%를 한 번 더 추가합니다.",
+      "treasureEffect_en": "A Treasure with no teamwide buff, focused entirely on her own burst damage. Her burst skill (\"Climax\", 40 second cooldown) deals 544.5% of final ATK to random enemies five times in a row, and when \"Crescendo\" is fully stacked it adds another 544.5% against the same target.",
+      "treasureEffect_ja": "味方全体へのバフがなく、本人の瞬間火力に集中した宝もの。バーストスキル「Climax」（クールタイム40秒）がランダムな敵に最終攻撃力544.5%のダメージを5回連続で与え、「Crescendo」が満タンのときは同じ対象にさらに544.5%を1回追加する。"
     },
     {
       "characterId": "sugar",
       "title": "Sugar",
-      "treasureEffect": "샷건 아군 전용 지원 애장품입니다. 풀버스트 진입 시 샷건을 든 전 아군에게 최대 장탄수 ▲83.8%를 15초간 부여합니다. 버프 대상이 샷건으로 한정되므로 샷건 딜러가 없는 조합에서는 효과가 거의 없습니다."
+      "treasureEffect": "샷건 아군 전용 지원 애장품입니다. 풀버스트 진입 시 샷건을 든 전 아군에게 최대 장탄수 ▲83.8%를 15초간 부여합니다. 버프 대상이 샷건으로 한정되므로 샷건 딜러가 없는 조합에서는 효과가 거의 없습니다.",
+      "treasureEffect_en": "A support Treasure exclusively for shotgun allies. On entering Full Burst she grants Max Ammo up 83.8% for 15 seconds to all allies wielding shotguns. Because the buff is limited to shotguns, it has almost no effect in a team without a shotgun damage dealer.",
+      "treasureEffect_ja": "ショットガンの味方専用の支援宝もの。フルバーストに入ると、ショットガンを持つ味方全体に最大装填数83.8%上昇を15秒間付与する。バフ対象がショットガンに限られるため、ショットガンのアタッカーがいない編成ではほとんど効果がない。"
     },
     {
       "characterId": "bay",
       "title": "Bay",
-      "treasureEffect": "생존 지원형 애장품입니다. 버스트 스킬 사용 시 본인이 살아있는 동안 전 아군의 피해를 분담하고 방어력을 올려주며, 풀차지 공격마다 자신을 제외한 전 아군의 체력을 시전자 최대 체력의 4%만큼 회복시킵니다. 전 아군이 받는 피해도 10초간 ▼8.87% 낮춥니다."
+      "treasureEffect": "생존 지원형 애장품입니다. 버스트 스킬 사용 시 본인이 살아있는 동안 전 아군의 피해를 분담하고 방어력을 올려주며, 풀차지 공격마다 자신을 제외한 전 아군의 체력을 시전자 최대 체력의 4%만큼 회복시킵니다. 전 아군이 받는 피해도 10초간 ▼8.87% 낮춥니다.",
+      "treasureEffect_en": "A survivability support Treasure. When she uses her burst skill, she shares the damage taken by all allies and raises their DEF for as long as she stays alive, and on every full-charge attack she restores the HP of all allies except herself by 4% of the caster's Max HP. She also lowers the damage all allies take by 8.87% for 10 seconds.",
+      "treasureEffect_ja": "生存支援型の宝もの。バーストスキルを使うと、本人が生きている間は味方全体のダメージを肩代わりし、防御力も引き上げる。またフルチャージ攻撃のたびに、自身を除く味方全体のHPを使用者の最大HPの4%ぶん回復させる。味方全体の被ダメージも10秒間8.87%下げる。"
     },
     {
       "characterId": "rosanna",
       "title": "Rosanna",
-      "treasureEffect": "전 아군 버프가 없는 암살형 애장품입니다. 버스트 스킬('Vendetta', 쿨타임 40초)이 공격형 적을 우선해 2명을 노려 최종 공격력 1310.4%의 피해를 주고, 은신(Concealment) 상태였다면 같은 대상에게 561.6%를 추가로 넣습니다."
+      "treasureEffect": "전 아군 버프가 없는 암살형 애장품입니다. 버스트 스킬('Vendetta', 쿨타임 40초)이 공격형 적을 우선해 2명을 노려 최종 공격력 1310.4%의 피해를 주고, 은신(Concealment) 상태였다면 같은 대상에게 561.6%를 추가로 넣습니다.",
+      "treasureEffect_en": "An assassin-type Treasure with no teamwide buff. Her burst skill (\"Vendetta\", 40 second cooldown) targets two enemies, prioritising Attacker-class ones, for 1310.4% of final ATK, and if she was in Concealment it adds another 561.6% against the same targets.",
+      "treasureEffect_ja": "味方全体へのバフがない暗殺型の宝もの。バーストスキル「Vendetta」（クールタイム40秒）が攻撃型の敵を優先して2人を狙い、最終攻撃力1310.4%のダメージを与える。潜伏（Concealment）状態だった場合は、同じ対象にさらに561.6%を追加する。"
     },
     {
       "characterId": "viper",
       "title": "Viper",
-      "treasureEffect": "버스트 재진입이 붙는 특이한 애장품입니다. 타겟이 등장하면 전 아군에게 공격력 ▲25.98%, 명중률 ▲11.13%를 10초간 부여하고, 버스트 스킬 사용 시 버스트 2단계로 다시 진입시킵니다. 버스트 순환 자체를 바꾸는 효과라 조합 설계에 영향이 큽니다."
+      "treasureEffect": "버스트 재진입이 붙는 특이한 애장품입니다. 타겟이 등장하면 전 아군에게 공격력 ▲25.98%, 명중률 ▲11.13%를 10초간 부여하고, 버스트 스킬 사용 시 버스트 2단계로 다시 진입시킵니다. 버스트 순환 자체를 바꾸는 효과라 조합 설계에 영향이 큽니다.",
+      "treasureEffect_en": "An unusual Treasure that comes with a burst re-entry. When a target appears she grants all allies ATK up 25.98% and hit rate up 11.13% for 10 seconds, and using her burst skill puts the team back into Burst stage 2. Because it changes the burst rotation itself, it has a large impact on team design.",
+      "treasureEffect_ja": "バーストの再進入が付く珍しい宝もの。ターゲットが出現すると味方全体に攻撃力25.98%上昇と命中率11.13%上昇を10秒間付与し、バーストスキルを使うとバースト2段階に再び入らせる。バーストの循環そのものを変える効果なので、編成設計への影響が大きい。"
     },
     {
       "characterId": "exia",
       "title": "Exia",
-      "treasureEffect": "전 아군 버프 없이 적 방어력을 깎는 애장품입니다. 버스트 스킬('Partisan Protocol', 쿨타임 20초)이 방어력이 가장 높은 적 10명에게 피해와 함께 방어력 ▼2.71%를 걸고, 'Collect Hacking Code'가 가득 차면 같은 대상에게 추가 피해와 받는 피해 ▲18.04%를 부여합니다."
+      "treasureEffect": "전 아군 버프 없이 적 방어력을 깎는 애장품입니다. 버스트 스킬('Partisan Protocol', 쿨타임 20초)이 방어력이 가장 높은 적 10명에게 피해와 함께 방어력 ▼2.71%를 걸고, 'Collect Hacking Code'가 가득 차면 같은 대상에게 추가 피해와 받는 피해 ▲18.04%를 부여합니다.",
+      "treasureEffect_en": "A Treasure with no teamwide buff that instead shreds enemy DEF. Her burst skill (\"Partisan Protocol\", 20 second cooldown) hits the 10 enemies with the highest DEF, dealing damage along with DEF down 2.71%, and when \"Collect Hacking Code\" is full it applies extra damage and damage taken up 18.04% to those same targets.",
+      "treasureEffect_ja": "味方全体へのバフがなく、敵の防御力を削る宝もの。バーストスキル「Partisan Protocol」（クールタイム20秒）が防御力の最も高い敵10人にダメージとともに防御力2.71%減少を付与し、「Collect Hacking Code」が満タンになると同じ対象に追加ダメージと被ダメージ18.04%増加を付与する。"
     }
   ]
 }

@@ -6666,7 +6666,9 @@
       "name_en": "Beautiful Performance",
       "name_ja": "Beautiful Performance（美しきパフォーマンス）",
       "note_en": "[Source: prydwen.gg character page] This team is more of a Museum team rather than a Solo Raid team, although you can use it in Solo Raid if you lack other units. It utilizes ZweiTr's lingering Crit buffs and combines them with Liter's huge ATK to boost Cindy's Burst Skill. The rotations follow ZweiTr-Mint-SWHA and Liter-Mint-Cindy in a tight tempo, requiring pre-charges to maximize rotation speed. This will allow you to get 14 Full Bursts. You also need to pre-charge Mint and release Full Charge after she Bursts but before Cindy Bursts, so her S1 buffs her. (Element: Electric)",
-      "note_ja": "［出典：prydwen.gg character page］この編成はソロレイド用というより展示向けの編成だが、他のユニットが足りないならソロレイドで使ってもよい。宝ものツバイの残留するクリティカルバフを活かし、そこにリターの巨大な攻撃力を重ねてシンデレラのバーストスキルを底上げする。ローテーションは宝ものツバイ→ミント→スノーホワイト：ヘビーアームズ、次にリター→ミント→シンデレラという詰めたテンポで回し、速度を最大化するには事前チャージが必要になる。これでフルバーストを14回撃てる。またミントも事前チャージしておき、彼女がバーストした後、シンデレラがバーストする前にフルチャージを撃つ必要がある。そうすればミントのスキル1がシンデレラをバフする。（属性：電撃）"
+      "note_ja": "［出典：prydwen.gg character page］この編成はソロレイド用というより展示向けの編成だが、他のユニットが足りないならソロレイドで使ってもよい。宝ものツバイの残留するクリティカルバフを活かし、そこにリターの巨大な攻撃力を重ねてシンデレラのバーストスキルを底上げする。ローテーションは宝ものツバイ→ミント→スノーホワイト：ヘビーアームズ、次にリター→ミント→シンデレラという詰めたテンポで回し、速度を最大化するには事前チャージが必要になる。これでフルバーストを14回撃てる。またミントも事前チャージしておき、彼女がバーストした後、シンデレラがバーストする前にフルチャージを撃つ必要がある。そうすればミントのスキル1がシンデレラをバフする。（属性：電撃）",
+      "sourceCaveat_en": "The original source (prydwen) treats this team as a Museum team, not a Solo Raid team. It carries the caveat that \"you can use it in Solo Raid if you lack other units.\"",
+      "sourceCaveat_ja": "元の出典（prydwen）は、この編成をソロレイド用ではなくミュージアム用と位置づけている。「他のユニットがいなければソロレイドでも使える」という但し書きが添えられている。"
     },
     {
       "id": "pwc-technical-ravenry",
@@ -8407,7 +8409,9 @@
         "Anchor: Innocent Maid"
       ],
       "type": "buff+heal+reload",
-      "reason": "메이드 듀오. 무조건부 공격버프 + 힐 + 재장전 속도 증가로 탄약 관리 부담을 없애줌."
+      "reason": "메이드 듀오. 무조건부 공격버프 + 힐 + 재장전 속도 증가로 탄약 관리 부담을 없애줌.",
+      "reason_en": "The Maid Duo. An unconditional ATK buff plus healing plus increased reload speed removes the burden of ammo management.",
+      "reason_ja": "メイドデュオ。無条件の攻撃バフに加え、回復とリロード速度上昇で弾薬管理の負担をなくしてくれる。"
     },
     {
       "members": [
@@ -8415,7 +8419,9 @@
         "Mast: Romantic Maid"
       ],
       "type": "burst-combo-manual",
-      "reason": "버스트II 2인 콤보로 커뮤니티에서 잘 알려진 조합. 크라운의 버스트 쿨타임(20초)이 항상 먼저 준비되기 때문에 오토에 맡기면 크라운만 계속 버스트를 쓰고 마스트의 버스트(강력한 공격버프)는 거의 발동하지 않는다 — 크라운 버스트 직후 곧바로 마스트 버스트를 수동으로 눌러줘야 실제로 발동한다. 마스트는 이 조합이 없어도 1/2스킬 버프만으로 이미 훌륭하므로 필수 조합은 아니며, 수동 버스트 조작이 가능한 유저에게 추천되는 강화 픽이다."
+      "reason": "버스트II 2인 콤보로 커뮤니티에서 잘 알려진 조합. 크라운의 버스트 쿨타임(20초)이 항상 먼저 준비되기 때문에 오토에 맡기면 크라운만 계속 버스트를 쓰고 마스트의 버스트(강력한 공격버프)는 거의 발동하지 않는다 — 크라운 버스트 직후 곧바로 마스트 버스트를 수동으로 눌러줘야 실제로 발동한다. 마스트는 이 조합이 없어도 1/2스킬 버프만으로 이미 훌륭하므로 필수 조합은 아니며, 수동 버스트 조작이 가능한 유저에게 추천되는 강화 픽이다.",
+      "reason_en": "A two-unit Burst II combo well known in the community. Crown's burst cooldown (20 seconds) is always ready first, so on auto the game keeps firing only Crown's burst and Mast's burst (a powerful ATK buff) almost never goes off — you have to press Mast's burst manually right after Crown's for it to actually trigger. Mast is already excellent on her Skill 1/2 buffs alone even without this pairing, so it is not a mandatory combo; it is an upgrade pick recommended for players who can handle manual burst control.",
+      "reason_ja": "コミュニティでよく知られたバーストIIの2人組。クラウンのバーストのクールタイム（20秒）が常に先に戻るため、オートに任せるとクラウンばかりがバーストを撃ち、マストのバースト（強力な攻撃バフ）はほとんど発動しない——クラウンのバースト直後に手動でマストのバーストを押して初めて実際に発動する。マストはこの組み合わせがなくてもスキル1／2のバフだけで十分優秀なので必須の組み合わせではなく、手動でバーストを操作できるプレイヤー向けの強化枠だ。"
     },
     {
       "members": [
@@ -8423,7 +8429,9 @@
         "Prika"
       ],
       "type": "buff",
-      "reason": "강력한 버프를 주고받지만 두 캐릭터가 세트로 있어야 성능이 나오는 경직적 페어."
+      "reason": "강력한 버프를 주고받지만 두 캐릭터가 세트로 있어야 성능이 나오는 경직적 페어.",
+      "reason_en": "They trade powerful buffs with each other, but it is a rigid pair: both characters must be present as a set for the performance to show.",
+      "reason_ja": "強力なバフを互いに与え合うが、2人がセットで揃わないと性能が出ない硬直的なペア。"
     },
     {
       "members": [
@@ -8431,7 +8439,9 @@
         "Naga"
       ],
       "type": "utility",
-      "reason": "딜러를 크게 가리지 않는 범용 버스트I+II 코어. 주의: 크라운을 보유하고 있다면 크라운이 이 페어의 상위호환이므로 크라운을 대신 채택하고 이 페어(특히 티아)는 제외할 것 — 크라운이 버스트II를 가져가면 나가는 토템으로 전환되어 이 페어의 전제(둘 다 실제 버스트를 발동하는 코어)가 깨진다."
+      "reason": "딜러를 크게 가리지 않는 범용 버스트I+II 코어. 주의: 크라운을 보유하고 있다면 크라운이 이 페어의 상위호환이므로 크라운을 대신 채택하고 이 페어(특히 티아)는 제외할 것 — 크라운이 버스트II를 가져가면 나가는 토템으로 전환되어 이 페어의 전제(둘 다 실제 버스트를 발동하는 코어)가 깨진다.",
+      "reason_en": "A general-purpose Burst I + II core that is not picky about the damage dealer. Caution: if you own Crown, Crown is a strict upgrade over this pair, so take Crown instead and drop this pair (Tia in particular) — once Crown takes the Burst II slot, Naga turns into a totem, which breaks this pair's premise that both units actually fire their bursts.",
+      "reason_ja": "アタッカーをほとんど選ばない汎用のバーストI＋IIのコア。注意：クラウンを所持しているなら、クラウンはこのペアの上位互換なので、クラウンを採用してこのペア（特にティア）は外すこと——クラウンがバーストIIを取ると、ナガはトーテムに転じ、「2人とも実際にバーストを発動するコア」というこのペアの前提が崩れる。"
     },
     {
       "members": [
@@ -8442,7 +8452,9 @@
       "reason": "즈바이 트레저의 크리티컬 부족을 민트가 정확히 메꿔줌.",
       "requiresTreasure": [
         "Zwei"
-      ]
+      ],
+      "reason_en": "Mint covers exactly the critical-hit shortfall of Zwei's Treasure.",
+      "reason_ja": "宝ものツバイのクリティカル不足を、ミントがぴたりと補ってくれる。"
     },
     {
       "members": [
@@ -8450,7 +8462,9 @@
         "Crown"
       ],
       "type": "debuff-trigger",
-      "reason": "델타의 받는피해 증가 디버프가 크라운 S2 반복 발동을 도움."
+      "reason": "델타의 받는피해 증가 디버프가 크라운 S2 반복 발동을 도움.",
+      "reason_en": "Delta's damage-taken-up debuff helps Crown re-trigger her Skill 2 repeatedly.",
+      "reason_ja": "デルタの被ダメージ増加デバフが、クラウンのスキル2の反復発動を助ける。"
     },
     {
       "members": [
@@ -8458,7 +8472,9 @@
         "Arcana"
       ],
       "type": "elemental-bossing-core",
-      "reason": "전기/철 속성 보스전 핵심 지원 페어."
+      "reason": "전기/철 속성 보스전 핵심 지원 페어.",
+      "reason_en": "The core support pair for Electric and Iron boss fights.",
+      "reason_ja": "電撃・鉄甲のボス戦における中核の支援ペア。"
     },
     {
       "members": [
@@ -8466,7 +8482,9 @@
         "Cinderella: Crystal Wave"
       ],
       "type": "core-damage-scaling",
-      "reason": "나가의 코어뎀 버프는 코어뎀 스케일링 딜러(신데렐라: 크리스탈웨이브)에만 유의미."
+      "reason": "나가의 코어뎀 버프는 코어뎀 스케일링 딜러(신데렐라: 크리스탈웨이브)에만 유의미.",
+      "reason_en": "Naga's core-damage buff is only meaningful for damage dealers that scale on core damage (Cinderella: Crystal Wave).",
+      "reason_ja": "ナガのコアダメージバフは、コアダメージを参照するアタッカー（シンデレラ：クリスタルウェーブ）にしか意味がない。"
     },
     {
       "members": [
@@ -8474,7 +8492,9 @@
         "Eunhwa: Tactical Upgrade"
       ],
       "type": "true-damage-buff",
-      "reason": "고정 데미지 버프를 주고받는 상호의존 듀오, PvP 순간딜 특화."
+      "reason": "고정 데미지 버프를 주고받는 상호의존 듀오, PvP 순간딜 특화.",
+      "reason_en": "A mutually dependent duo that trades true-damage buffs, specialised in PvP burst damage.",
+      "reason_ja": "固定ダメージバフを与え合う相互依存のデュオで、PvPの瞬間火力に特化している。"
     },
     {
       "members": [
@@ -8485,7 +8505,9 @@
       "reason": "라피의 화력에 헬름 트레저의 버스트 생성/힐이 더해지는 표준 화력조합 페어.",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "reason_en": "The standard damage-focused pair, adding Helm Treasure's burst generation and healing on top of Rapi's firepower.",
+      "reason_ja": "ラピの火力に、宝ものヘルムのバーストゲージ生成と回復を上乗せする標準的な火力ペア。"
     },
     {
       "members": [
@@ -8497,7 +8519,9 @@
       "burstRole": {
         "Red Hood": "1"
       },
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "reason_en": "Red Hood's Burst I ATK buff maximises Scarlet's one-shot-style burst damage.",
+      "reason_ja": "レッドフードのバーストIによる攻撃バフが、紅蓮の即殺型バーストダメージを最大化する。"
     },
     {
       "members": [
@@ -8505,7 +8529,9 @@
         "Rapi: Red Hood"
       ],
       "type": "atk-buff",
-      "reason": "맥스웰의 지속 공격버프가 라피 같은 하이퍼캐리 딜러와 잘 맞음."
+      "reason": "맥스웰의 지속 공격버프가 라피 같은 하이퍼캐리 딜러와 잘 맞음.",
+      "reason_en": "Maxwell's sustained ATK buff fits hypercarry damage dealers like Rapi well.",
+      "reason_ja": "マクスウェルの持続的な攻撃バフは、ラピのようなハイパーキャリーのアタッカーとよく噛み合う。"
     },
     {
       "members": [
@@ -8513,7 +8539,9 @@
         "Maxwell: Ordinary Mechanic"
       ],
       "type": "pvp-burst-nuke",
-      "reason": "맥스웰: 오디너리 미케닉의 최대체력 버프가 라플라스: 얼티밋 히어로의 생존력을 보강해 PVP 폭딜 타이밍을 확보해주는 조합. 국내 유튜버(스페란도)가 루주·트리나와 함께 반복 소개(2026-07-31 기준, 후속 확인 필요)."
+      "reason": "맥스웰: 오디너리 미케닉의 최대체력 버프가 라플라스: 얼티밋 히어로의 생존력을 보강해 PVP 폭딜 타이밍을 확보해주는 조합. 국내 유튜버(스페란도)가 루주·트리나와 함께 반복 소개(2026-07-31 기준, 후속 확인 필요).",
+      "reason_en": "Maxwell: Ordinary Mechanic's Max HP buff shores up Laplace: Ultimate Hero's survivability and secures her burst-damage window in PvP. A Korean YouTuber (Sperando) has covered this repeatedly alongside Rouge and Trina (as of 2026-07-31; needs follow-up confirmation).",
+      "reason_ja": "マクスウェル：オーディナリーメカニックの最大HPバフがラプラス：アルティメットヒーローの生存力を補強し、PvPでの瞬間火力のタイミングを確保する組み合わせ。韓国のYouTuber（スペランド）がルージュ・トリナと併せて繰り返し紹介している（2026-07-31時点、追跡確認が必要）。"
     }
   ],
   "counters": [
@@ -8522,28 +8550,36 @@
       "counters": [
         "Wind element units in PvP (e.g. Rei Ayanami: Tentative Name, Scarlet)"
       ],
-      "reason": "방어 무시 데미지 때문에 바람 속성 캐릭터가 특히 취약."
+      "reason": "방어 무시 데미지 때문에 바람 속성 캐릭터가 특히 취약.",
+      "reason_en": "Because the damage ignores DEF, Wind element characters are especially vulnerable.",
+      "reason_ja": "防御力を無視するダメージのため、風圧属性のキャラクターがとりわけ脆い。"
     },
     {
       "unit": "Blanc",
       "counters": [
         "즉사급 단일 버스트 딜러"
       ],
-      "reason": "무적/불멸 효과로 순삭형 버스트 데미지를 한 번 막아냄."
+      "reason": "무적/불멸 효과로 순삭형 버스트 데미지를 한 번 막아냄.",
+      "reason_en": "Blocks one instance of one-shot-style burst damage with an invulnerability/indomitability effect.",
+      "reason_ja": "無敵・不屈の効果によって、即殺型のバーストダメージを一度だけ防ぎきる。"
     },
     {
       "unit": "Noah",
       "counters": [
         "즉사급 단일 버스트 딜러"
       ],
-      "reason": "블랑과 유사한 불멸 계열 방어 수단."
+      "reason": "블랑과 유사한 불멸 계열 방어 수단.",
+      "reason_en": "An indomitability-type defensive tool similar to Blanc's.",
+      "reason_ja": "ブランと同種の、不屈系の防御手段。"
     },
     {
       "unit": "Moran",
       "counters": [
         "지속 딜 위주 조합"
       ],
-      "reason": "피해 감소 효과로 지속 데미지 딜러를 카운터."
+      "reason": "피해 감소 효과로 지속 데미지 딜러를 카운터.",
+      "reason_en": "Counters sustained-damage dealers with her damage reduction effect.",
+      "reason_ja": "被ダメージ軽減の効果によって、持続ダメージ型のアタッカーに刺さる。"
     }
   ]
 }
