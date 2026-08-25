@@ -2772,7 +2772,11 @@
       "note": "[Source: prydwen.gg character page] A PvP Attack team that features an undying Anis + an Indomitable B3 to breach some solid defense teams. Use FLEX slots to manipulate speed. [다른 출처의 같은 조합 설명 — \"Anis & Blanc's Concert II\"] [Source: prydwen.gg character page] A variant that makes Biscuit indomitable, guaranteeing Anis's survivability. Use FLEX slots to manipulate speed.",
       "aliases": [
         "Anis & Blanc's Concert II"
-      ]
+      ],
+      "name_en": "Anis & Blanc's Concert I",
+      "name_ja": "Anis & Blanc's Concert I（アニスとブランのコンサート I）",
+      "note_en": "[Source: prydwen.gg character page] A PvP Attack team that features an undying Anis + an Indomitable B3 to breach some solid defense teams. Use FLEX slots to manipulate speed. [The same team described by another source — \"Anis & Blanc's Concert II\"] [Source: prydwen.gg character page] A variant that makes Biscuit indomitable, guaranteeing Anis's survivability. Use FLEX slots to manipulate speed.",
+      "note_ja": "［出典：prydwen.gg character page］倒れないアニス＋不屈のB3で、堅い防衛編成を突破するPvPの攻撃編成。自由枠で速度を調整する。［別の出典による同じ編成の説明 — \"Anis & Blanc's Concert II\"］［出典：prydwen.gg character page］ビスケットを不屈にしてアニスの生存を保証する派生形。自由枠で速度を調整する。"
     },
     {
       "id": "pwc-delayed-indom-for-indom-war",
@@ -2783,7 +2787,11 @@
         "Jackal"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Using Anis's Re-enter to intentionally delay Indomitability, making your Indomitable B3 more likely to win Indomitability War."
+      "note": "[Source: prydwen.gg character page] Using Anis's Re-enter to intentionally delay Indomitability, making your Indomitable B3 more likely to win Indomitability War.",
+      "name_en": "Delayed Indom for Indom War",
+      "name_ja": "Delayed Indom for Indom War（不屈合戦のための不屈遅延）",
+      "note_en": "[Source: prydwen.gg character page] Using Anis's Re-enter to intentionally delay Indomitability, making your Indomitable B3 more likely to win Indomitability War.",
+      "note_ja": "［出典：prydwen.gg character page］アニスの再突入を使って不屈をわざと遅らせ、自分の不屈B3が「不屈合戦」で勝ちやすくする。"
     },
     {
       "id": "pwc-cindy-s-slow-theatrical",
@@ -2794,7 +2802,11 @@
         "Cinderella"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] The ol' slow Cindy comp with Anis instead of Rumani."
+      "note": "[Source: prydwen.gg character page] The ol' slow Cindy comp with Anis instead of Rumani.",
+      "name_en": "Cindy's Slow Theatrical",
+      "name_ja": "Cindy's Slow Theatrical（スロー・シンデレラ劇場）",
+      "note_en": "[Source: prydwen.gg character page] The ol' slow Cindy comp with Anis instead of Rumani.",
+      "note_ja": "［出典：prydwen.gg character page］おなじみの低速シンデレラ編成で、ルマニの代わりにアニスを入れたもの。"
     },
     {
       "id": "pwc-best-anis-pvp-team-1",
@@ -2810,7 +2822,11 @@
       "note": "[Source: prydwen.gg character page] This Arena team (also works for CA) is a 2 RL comp (with Quantum on Anis, Helm, or Biscuit [or Anis + 1 of them]) that uses HelmTr's lifesteal + Nayuta's heal share to survive barrages of damage, Cindy to block SG attacks and ensure a full chain against Rosanna (who will kill HelmTr), and Biscuit to provide Anis with long periods of Immunity, allowing her to survive until enemy Indomitability ends. Nayuta + Anis + Cindy BA combine firepower to unleash devastating damage.Using Tempering or Vigor on HelmTr & Biscuit is recommended. Nayu must NOT be the second highest ATK in team to avoid being Rosanna-countered. Substitutions: Anis: Star can be P1 or P2. In P2, she procs Biscuit's immune slower or not at all, which can be good and bad. In P1, she is almost guaranteed to proc it.",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "Best Anis PvP Team 1",
+      "name_ja": "Best Anis PvP Team 1（アニス最良PvP編成 1）",
+      "note_en": "[Source: prydwen.gg character page] This Arena team (also works for CA) is a 2 RL comp (with Quantum on Anis, Helm, or Biscuit [or Anis + 1 of them]) that uses HelmTr's lifesteal + Nayuta's heal share to survive barrages of damage, Cindy to block SG attacks and ensure a full chain against Rosanna (who will kill HelmTr), and Biscuit to provide Anis with long periods of Immunity, allowing her to survive until enemy Indomitability ends. Nayuta + Anis + Cindy BA combine firepower to unleash devastating damage. Using Tempering or Vigor on HelmTr & Biscuit is recommended. Nayu must NOT be the second highest ATK in team to avoid being Rosanna-countered. Substitutions: Anis: Star can be P1 or P2. In P2, she procs Biscuit's immune slower or not at all, which can be good and bad. In P1, she is almost guaranteed to proc it.",
+      "note_ja": "［出典：prydwen.gg character page］このアリーナ編成（チャンピオンアリーナでも機能する）は2RL構成で（アニス、ヘルム、ビスケットのいずれか［またはアニス＋そのうち1人］にクオンタムを装備）、宝ものヘルムのライフスティール＋ナユタの回復共有でダメージの連打を耐え、シンデレラでショットガン攻撃を防いで（宝ものヘルムを倒しにくる）ロザンナに対する連鎖を確実にし、ビスケットがアニスに長時間の無敵を提供して、敵の不屈が切れるまで生き延びさせる。ナユタ＋アニス＋シンデレラの通常攻撃が火力を合わせ、壊滅的なダメージを解き放つ。宝ものヘルムとビスケットにはテンパリングかビガーの装備を推奨。ロザンナにカウンターされないよう、ナユタがチーム内で2番目に攻撃力の高いユニットになってはいけない。差し替え：アニス：スターはP1にもP2にも置ける。P2ではビスケットの無敵の発動が遅くなるか、まったく発動しないことがあり、これは良し悪しがある。P1ならほぼ確実に発動する。"
     },
     {
       "id": "pwc-best-anis-pvp-team-2",
@@ -2828,7 +2844,11 @@
         "Moran",
         "Helm",
         "Bay"
-      ]
+      ],
+      "name_en": "Best Anis PvP Team 2",
+      "name_ja": "Best Anis PvP Team 2（アニス最良PvP編成 2）",
+      "note_en": "[Source: prydwen.gg character page] This team features incredible oppressive stalling experience. It beats many teams (including Variant 1) and is one of the best teams for CA. High Charge Speed OL is recommended to prevent MoranTr from getting sniped by opposing HelmTr. Substitutions: BayTr can be replaced by Mana.",
+      "note_ja": "［出典：prydwen.gg character page］この編成は、信じがたいほど圧迫的な足止めを実現する。多くの編成（派生1を含む）に勝ち、チャンピオンアリーナ向けの最良編成の一つだ。相手の宝ものヘルムに宝ものモランを狙撃されないよう、チャージスピードのオーバーロードを高めに積むことを推奨する。差し替え：宝ものベイはマナに置き換え可能。"
     },
     {
       "id": "pwc-best-anis-pvp-team-3",
@@ -2841,7 +2861,11 @@
         "Moran"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team is the best of the three but is very expensive (uses Biscuit). Usable for Rookie and SpA but may reduce viability of other comps in CA."
+      "note": "[Source: prydwen.gg character page] This team is the best of the three but is very expensive (uses Biscuit). Usable for Rookie and SpA but may reduce viability of other comps in CA.",
+      "name_en": "Best Anis PvP Team 3",
+      "name_ja": "Best Anis PvP Team 3（アニス最良PvP編成 3）",
+      "note_en": "[Source: prydwen.gg character page] This team is the best of the three but is very expensive (uses Biscuit). Usable for Rookie and SpA but may reduce viability of other comps in CA.",
+      "note_ja": "［出典：prydwen.gg character page］3つの中では最良の編成だが、非常にコストが高い（ビスケットを使う）。ルーキーアリーナやスペシャルアリーナで使えるが、チャンピオンアリーナでは他の編成の成立性を下げてしまう可能性がある。"
     },
     {
       "id": "pwc-isabel-operates-a-shotgun-remember",
@@ -2857,7 +2881,11 @@
       "note": "[Source: prydwen.gg character page] Isabel operates a Shotgun, so by law we are obliged to introduce this team. Tove increases Isabel's ATK and ATK SPD and supplies her with Max Ammo, allowing her to shoot more and harder. Dolla also grants small offensive buffs, but most importantly she is here for CDR. DrakeTr provides ATK buff to Isabel and herself.If you have ever thought about it, do NOT use BSoda here. We have also asked people to try with Leona and MastM instead of Dolla, and both reduce the team's damage against Electric-weak monsters at least.Unlike the other two teams featured in this guide, this team lacks healing, which can be a problem in some Raids. Substitutions: Dolla can be replaced with Helm: Aqua Marine or Leona. (속성: Electric)",
       "requiresTreasure": [
         "Drake"
-      ]
+      ],
+      "name_en": "Isabel Operates a Shotgun, Remember?",
+      "name_ja": "Isabel Operates a Shotgun, Remember?（イサベルはショットガン使いだ、覚えてる？）",
+      "note_en": "[Source: prydwen.gg character page] Isabel operates a Shotgun, so by law we are obliged to introduce this team. Tove increases Isabel's ATK and ATK SPD and supplies her with Max Ammo, allowing her to shoot more and harder. Dolla also grants small offensive buffs, but most importantly she is here for CDR. DrakeTr provides ATK buff to Isabel and herself. If you have ever thought about it, do NOT use BSoda here. We have also asked people to try with Leona and MastM instead of Dolla, and both reduce the team's damage against Electric-weak monsters at least. Unlike the other two teams featured in this guide, this team lacks healing, which can be a problem in some Raids. Substitutions: Dolla can be replaced with Helm: Aqua Marine or Leona. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］イサベルはショットガン使いなので、法にのっとってこの編成を紹介する義務がある。トーブがイサベルの攻撃力と攻撃速度を上げ、最大装填数も供給してくれるので、より多く、より強く撃てるようになる。ドラーも小さな攻撃バフを与えるが、何より重要なのはクールタイム短縮のためにここにいるという点だ。宝ものドレイクはイサベルと自分自身に攻撃力バフを与える。もし考えたことがあるなら言っておくが、ここでバニーソーダを使ってはいけない。ドラーの代わりにレオナやメイドマストを試してもらったこともあるが、少なくとも電撃弱点の敵に対してはどちらもチームのダメージを下げてしまう。このガイドで紹介する他の2編成と違い、この編成には回復がなく、レイドによってはそれが問題になり得る。差し替え：ドラーはヘルム：アクアマリンまたはレオナに置き換え可能。（属性：電撃）"
     },
     {
       "id": "pwc-isabel-and-scarlet-befriend-each-other",
@@ -2870,7 +2898,11 @@
         "Trina"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A bossing team that matches 2 niche units with 2 other niche units. Does not steal DPS/supports from other already established teams. Scarlet benefits from Trina's skills and Arcana's lingering buffs, and Trina helps with burst gen and survivability. Liter is the best B1 CDR here, although she can be replaced by anyone, including Volume.Do note that this team is unideal for Trina + Scarlet. This is because Trina's Burst Skill is needed to activate her broken S2 effects. Sacrificing it every other rotation for Arcana's will reduce Scarlet's auto-attack damage measurably. Substitutions: Liter can be replaced with Volume. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] A bossing team that matches 2 niche units with 2 other niche units. Does not steal DPS/supports from other already established teams. Scarlet benefits from Trina's skills and Arcana's lingering buffs, and Trina helps with burst gen and survivability. Liter is the best B1 CDR here, although she can be replaced by anyone, including Volume.Do note that this team is unideal for Trina + Scarlet. This is because Trina's Burst Skill is needed to activate her broken S2 effects. Sacrificing it every other rotation for Arcana's will reduce Scarlet's auto-attack damage measurably. Substitutions: Liter can be replaced with Volume. (속성: Electric)",
+      "name_en": "Isabel and Scarlet Befriend Each Other",
+      "name_ja": "Isabel and Scarlet Befriend Each Other（イサベルと紅蓮、友になる）",
+      "note_en": "[Source: prydwen.gg character page] A bossing team that matches 2 niche units with 2 other niche units. Does not steal DPS/supports from other already established teams. Scarlet benefits from Trina's skills and Arcana's lingering buffs, and Trina helps with burst gen and survivability. Liter is the best B1 CDR here, although she can be replaced by anyone, including Volume. Do note that this team is unideal for Trina + Scarlet. This is because Trina's Burst Skill is needed to activate her broken S2 effects. Sacrificing it every other rotation for Arcana's will reduce Scarlet's auto-attack damage measurably. Substitutions: Liter can be replaced with Volume. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］ニッチなユニット2人と、また別のニッチなユニット2人を組み合わせたボス戦編成。すでに確立された他の編成からアタッカーやサポーターを奪わずに済む。紅蓮はトリナのスキルとアルカナの持続バフの恩恵を受け、トリナはバースト生成と生存力を助ける。ここではリターが最良のB1クールタイム短縮役だが、ボリュームを含め誰に置き換えてもよい。ただしこの編成はトリナ＋紅蓮にとって理想的ではない点に注意。トリナの壊れたS2効果を発動させるには彼女のバーストスキルが必要だからだ。1ローテーションおきにそれをアルカナのために犠牲にすると、紅蓮の通常攻撃ダメージが目に見えて下がる。差し替え：リターはボリュームに置き換え可能。（属性：電撃）"
     },
     {
       "id": "pwc-isabel-goes-on-vacation-with-cinderella",
@@ -2883,7 +2915,11 @@
         "Cinderella"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A bossing team that revolves around Cinderella benefitting from Arcana's lingering buffs and quicker rotations. This team features 9-burst Cinderella accompanied by Rouge's, Arcana's, and Blanc's buffs/debuffs and healing. Blanc's Damage Taken scales well with Arcana + Isabel's already inflated ATK + ATK DMG. To carry this team to its greatest, learn how to manual Rouge for fast burst gen, which involves pre-reloading and pre-charging and a bunch of Max Ammo.Rouge also requires heavy manual gameplay in timing her CDR so that it triggers within Isabel's short 5s Full Burst. You will have to count, stop releasing Full Charge(s) before Full Burst, and make sure to land the 8th Full Charge only after Full Burst begins. Rouge's CDR has a small animation near her when triggered—pay a close attention! If this is not your fancy, avoid using this team (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] A bossing team that revolves around Cinderella benefitting from Arcana's lingering buffs and quicker rotations. This team features 9-burst Cinderella accompanied by Rouge's, Arcana's, and Blanc's buffs/debuffs and healing. Blanc's Damage Taken scales well with Arcana + Isabel's already inflated ATK + ATK DMG. To carry this team to its greatest, learn how to manual Rouge for fast burst gen, which involves pre-reloading and pre-charging and a bunch of Max Ammo.Rouge also requires heavy manual gameplay in timing her CDR so that it triggers within Isabel's short 5s Full Burst. You will have to count, stop releasing Full Charge(s) before Full Burst, and make sure to land the 8th Full Charge only after Full Burst begins. Rouge's CDR has a small animation near her when triggered—pay a close attention! If this is not your fancy, avoid using this team (속성: Electric)",
+      "name_en": "Isabel Goes on Vacation With Cinderella",
+      "name_ja": "Isabel Goes on Vacation With Cinderella（イサベル、シンデレラと休暇へ）",
+      "note_en": "[Source: prydwen.gg character page] A bossing team that revolves around Cinderella benefitting from Arcana's lingering buffs and quicker rotations. This team features 9-burst Cinderella accompanied by Rouge's, Arcana's, and Blanc's buffs/debuffs and healing. Blanc's Damage Taken scales well with Arcana + Isabel's already inflated ATK + ATK DMG. To carry this team to its greatest, learn how to manual Rouge for fast burst gen, which involves pre-reloading and pre-charging and a bunch of Max Ammo. Rouge also requires heavy manual gameplay in timing her CDR so that it triggers within Isabel's short 5s Full Burst. You will have to count, stop releasing Full Charge(s) before Full Burst, and make sure to land the 8th Full Charge only after Full Burst begins. Rouge's CDR has a small animation near her when triggered—pay a close attention! If this is not your fancy, avoid using this team (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］アルカナの持続バフと速いローテーションの恩恵をシンデレラが受けることを軸にしたボス戦編成。この編成は9バーストのシンデレラに、ルージュ、アルカナ、ブランのバフ／デバフと回復を添える。ブランの被ダメージ増加は、アルカナ＋イサベルによってすでに膨れ上がった攻撃力・攻撃ダメージとよく噛み合う。この編成を最大限に活かすには、素早いバースト生成のためにルージュを手動で扱う方法を覚える必要がある。事前リロードと事前チャージ、そして大量の最大装填数が要る。さらにルージュは、彼女のクールタイム短縮がイサベルの短い5秒のフルバースト中に発動するようタイミングを取る、かなりの手動操作を要求する。数を数え、フルバースト前はフルチャージを撃たずに止め、8回目のフルチャージをフルバースト開始後にだけ当てる必要がある。ルージュのクールタイム短縮は発動時に彼女の近くで小さなアニメーションが出る — よく見ておくこと。こうした操作が好みでないなら、この編成は避けたほうがよい。（属性：電撃）"
     },
     {
       "id": "pwc-would-ve-been-electric-meta-but-lapluh-turned-out-",
@@ -2896,7 +2932,11 @@
         "Laplace: Ultimate Hero"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] One of Lapluh's best teams for Wind-weak SR. This can catch up to if not match Mom-oriented teams. This team utilizes Arca-Isa's fast rotation to make Lapluh Burst more. Pre-charge + spam Trina for burst gen. Substitutions: Liter can be replaced by Rouge, but you need Max Ammo on Rouge and CDR preparation due to Full Charge mechanic. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] One of Lapluh's best teams for Wind-weak SR. This can catch up to if not match Mom-oriented teams. This team utilizes Arca-Isa's fast rotation to make Lapluh Burst more. Pre-charge + spam Trina for burst gen. Substitutions: Liter can be replaced by Rouge, but you need Max Ammo on Rouge and CDR preparation due to Full Charge mechanic. (속성: Wind)",
+      "name_en": "Would've Been Electric Meta, But Lapluh Turned Out Wind",
+      "name_ja": "Would've Been Electric Meta, But Lapluh Turned Out Wind（電撃メタになるはずが、ラプラスUHは風圧だった）",
+      "note_en": "[Source: prydwen.gg character page] One of Lapluh's best teams for Wind-weak SR. This can catch up to if not match Mom-oriented teams. This team utilizes Arca-Isa's fast rotation to make Lapluh Burst more. Pre-charge + spam Trina for burst gen. Substitutions: Liter can be replaced by Rouge, but you need Max Ammo on Rouge and CDR preparation due to Full Charge mechanic. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］風圧弱点のソロレイドにおけるラプラス：アルティメットヒーローの最良編成の一つ。モラン軸の編成に匹敵しないまでも追いつける。この編成はアルカナ＋イサベルの速いローテーションを利用して、ラプラスUHにより多くバーストさせる。バースト生成には事前チャージ＋トリナの連打を使う。差し替え：リターはルージュに置き換え可能だが、フルチャージの仕組みのためルージュに最大装填数とクールタイム短縮の下準備が必要になる。（属性：風圧）"
     },
     {
       "id": "pwc-bunny-with-a-fortunate-mate",
@@ -2909,7 +2949,11 @@
         "Drake"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Soda seems to have found a comfortable spot alongside Arcana in Iron-Weak. This matchup does not have survivability, but offers to deal more damage than this team would do with other currently available B2s. However, Nayuta may find use over Altcana if healing is needed. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] Soda seems to have found a comfortable spot alongside Arcana in Iron-Weak. This matchup does not have survivability, but offers to deal more damage than this team would do with other currently available B2s. However, Nayuta may find use over Altcana if healing is needed. (속성: Iron)",
+      "name_en": "Bunny with a fortunate mate",
+      "name_ja": "Bunny with a fortunate mate（幸運な相棒を得たバニー）",
+      "note_en": "[Source: prydwen.gg character page] Soda seems to have found a comfortable spot alongside Arcana in Iron-Weak. This matchup does not have survivability, but offers to deal more damage than this team would do with other currently available B2s. However, Nayuta may find use over Altcana if healing is needed. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］ソーダは鉄甲弱点でアルカナの隣に心地よい居場所を見つけたようだ。この組み合わせには生存力がないが、現在使える他のB2を入れた場合よりも高いダメージを出せる。ただし回復が必要ならアルカナ：フォーチュンメイトよりナユタのほうが役に立つこともある。（属性：鉄甲）"
     },
     {
       "id": "pwc-le-old-shield-duo-to-survive-modernia-laser",
@@ -2919,7 +2963,11 @@
         "Folkwang"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] A double shield cook that was used back in super early union raid days to survive against Modernia's cruel laser.Still relevant for players who are up against Modernia early on in Special Interception."
+      "note": "[Source: prydwen.gg character page] A double shield cook that was used back in super early union raid days to survive against Modernia's cruel laser.Still relevant for players who are up against Modernia early on in Special Interception.",
+      "name_en": "Le old Shield Duo to survive Modernia laser",
+      "name_ja": "Le old Shield Duo to survive Modernia laser（モダニアのレーザーを耐える古のシールドデュオ）",
+      "note_en": "[Source: prydwen.gg character page] A double shield cook that was used back in super early union raid days to survive against Modernia's cruel laser. Still relevant for players who are up against Modernia early on in Special Interception.",
+      "note_ja": "［出典：prydwen.gg character page］ユニオンレイドのごく初期に、モダニアの容赦ないレーザーを耐えるために使われたダブルシールドの工夫。特殊迎撃戦で早い段階からモダニアと戦うプレイヤーには今でも有効だ。"
     },
     {
       "id": "pwc-black-is-the-new-wind",
@@ -2930,7 +2978,11 @@
         "Ark Ranger Black"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] A proper crit-focused team featuring Black and another Neutral/supportive B3 (SWHA/Helm/Ada, for example). Weaker than MirandaTr's version but used to save MirandaTr for Nayuta. Due to this team's lack of Crit DMG buff, Crit DMG OL lines are very impactful on both DPS. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] A proper crit-focused team featuring Black and another Neutral/supportive B3 (SWHA/Helm/Ada, for example). Weaker than MirandaTr's version but used to save MirandaTr for Nayuta. Due to this team's lack of Crit DMG buff, Crit DMG OL lines are very impactful on both DPS. (속성: Wind)",
+      "name_en": "Black is the New Wind",
+      "name_ja": "Black is the New Wind（黒こそ新しい風圧）",
+      "note_en": "[Source: prydwen.gg character page] A proper crit-focused team featuring Black and another Neutral/supportive B3 (SWHA/Helm/Ada, for example). Weaker than MirandaTr's version but used to save MirandaTr for Nayuta. Due to this team's lack of Crit DMG buff, Crit DMG OL lines are very impactful on both DPS. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］アークレンジャー・ブラックと、もう一人の無属性／支援型B3（例：スノーホワイト：ヘビーアームズ、ヘルム、エイダ）を据えた、本格的なクリティカル特化編成。宝ものミランダ版より弱いが、宝ものミランダをナユタ用に温存するために使う。この編成にはクリティカルダメージのバフがないため、クリティカルダメージのオーバーロード行が両アタッカーにとって非常に効果的だ。（属性：風圧）"
     },
     {
       "id": "pwc-black-white-and-red",
@@ -2943,7 +2995,11 @@
         "Sakura: Bloom in Summer"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] This team gives Black her most desired stats: guaranteed Crit and Damage Taken. The last B3 can be anything (DPS or support), but SSakura benefits best from Black. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] This team gives Black her most desired stats: guaranteed Crit and Damage Taken. The last B3 can be anything (DPS or support), but SSakura benefits best from Black. (속성: Wind)",
+      "name_en": "Black, White, and Red",
+      "name_ja": "Black, White, and Red（黒と白と赤）",
+      "note_en": "[Source: prydwen.gg character page] This team gives Black her most desired stats: guaranteed Crit and Damage Taken. The last B3 can be anything (DPS or support), but SSakura benefits best from Black. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］この編成はアークレンジャー・ブラックが最も欲しがるステータス、すなわち確定クリティカルと被ダメージ増加を与える。最後のB3は何でもよい（アタッカーでも支援でも）が、サマーサクラがブラックから最も恩恵を受ける。（属性：風圧）"
     },
     {
       "id": "pwc-what-s-better-black-critting-or-a-black-crit-line",
@@ -2956,7 +3012,11 @@
         "Sakura: Bloom in Summer"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] This team gives Black her most desired stats: guaranteed Crit and Damage Taken. We use SRosanna and SSakura because they benefit from Black's teamwide buff. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] This team gives Black her most desired stats: guaranteed Crit and Damage Taken. We use SRosanna and SSakura because they benefit from Black's teamwide buff. (속성: Wind)",
+      "name_en": "What's Better: Black Critting or a Black Crit Line?",
+      "name_ja": "What's Better: Black Critting or a Black Crit Line?（ブラックのクリティカルか、クリティカル行か）",
+      "note_en": "[Source: prydwen.gg character page] This team gives Black her most desired stats: guaranteed Crit and Damage Taken. We use SRosanna and SSakura because they benefit from Black's teamwide buff. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］この編成はアークレンジャー・ブラックが最も欲しがるステータス、すなわち確定クリティカルと被ダメージ増加を与える。サマーロザンナとサマーサクラを使うのは、彼女たちがブラックのチーム全体バフの恩恵を受けるからだ。（属性：風圧）"
     },
     {
       "id": "pwc-power-idols",
@@ -2968,7 +3028,11 @@
         "Prika"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] Unlike MirandaTr's and ZweiTr's comps, this team doesn't have guaranteed crit, but it still delivers laudable damage! The B1-CDR can be anything. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] Unlike MirandaTr's and ZweiTr's comps, this team doesn't have guaranteed crit, but it still delivers laudable damage! The B1-CDR can be anything. (속성: Wind)",
+      "name_en": "Power Idols",
+      "name_ja": "Power Idols（パワーアイドルズ）",
+      "note_en": "[Source: prydwen.gg character page] Unlike MirandaTr's and ZweiTr's comps, this team doesn't have guaranteed crit, but it still delivers laudable damage! The B1-CDR can be anything. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］宝ものミランダや宝ものツバイの編成と違い、この編成には確定クリティカルがないが、それでも称賛に値するダメージを出す。B1のクールタイム短縮役は何でもよい。（属性：風圧）"
     },
     {
       "id": "pwc-crown-pushing-the-limits",
@@ -2981,7 +3045,11 @@
         "Naga"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Well, we talked earlier that Asuka and Rei are both amazing buffers and even considered them the Anis: Sparkling Summer(es) of Fire Team. While Rei's kit does not fully synergize with Alice's playstyle, Asuka does, and her Core Damage boost is just insane. No, it's not better than Naga's, but you can save Naga for other teams. In this team, Crown + Privaty will ensure infinite ammo, while D:Wife and Liter will enable smooth rotation. Unless you have a good Alice, using Rei to buff Asuka is also a viable strategy. If minmaxing is not a concern, you can also use Naga instead of Privaty to spice things up! Substitutions: Liter => D:KW or Red Hood"
+      "note": "[Source: prydwen.gg character page] Well, we talked earlier that Asuka and Rei are both amazing buffers and even considered them the Anis: Sparkling Summer(es) of Fire Team. While Rei's kit does not fully synergize with Alice's playstyle, Asuka does, and her Core Damage boost is just insane. No, it's not better than Naga's, but you can save Naga for other teams. In this team, Crown + Privaty will ensure infinite ammo, while D:Wife and Liter will enable smooth rotation. Unless you have a good Alice, using Rei to buff Asuka is also a viable strategy. If minmaxing is not a concern, you can also use Naga instead of Privaty to spice things up! Substitutions: Liter => D:KW or Red Hood",
+      "name_en": "Crown Pushing the Limits",
+      "name_ja": "Crown Pushing the Limits（限界に挑むクラウン）",
+      "note_en": "[Source: prydwen.gg character page] Well, we talked earlier that Asuka and Rei are both amazing buffers and even considered them the Anis: Sparkling Summer(es) of Fire Team. While Rei's kit does not fully synergize with Alice's playstyle, Asuka does, and her Core Damage boost is just insane. No, it's not better than Naga's, but you can save Naga for other teams. In this team, Crown + Privaty will ensure infinite ammo, while D:Wife and Liter will enable smooth rotation. Unless you have a good Alice, using Rei to buff Asuka is also a viable strategy. If minmaxing is not a concern, you can also use Naga instead of Privaty to spice things up! Substitutions: Liter => D:KW or Red Hood",
+      "note_ja": "［出典：prydwen.gg character page］先にも述べたとおり、アスカとレイはどちらも素晴らしいバッファーで、灼熱編成における「アニス：スパークリングサマー」的存在とさえ考えていた。レイのキットはアリスの立ち回りと完全には噛み合わないが、アスカは噛み合い、そのコアダメージ増加は尋常でない。ナガより優れているわけではないが、ナガを他の編成に温存できる。この編成ではクラウン＋プリバティが弾薬を切らさず、D：キラーワイフとリターが滑らかなローテーションを可能にする。優秀なアリスがいないなら、レイでアスカをバフする戦略も有効だ。細かい最適化を気にしないなら、プリバティの代わりにナガを入れて味付けを変えるのもよい。差し替え：リター ⇒ D：キラーワイフまたはレッドフード。"
     },
     {
       "id": "pwc-bunny-power",
@@ -2994,7 +3062,11 @@
         "Modernia"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Ammo Support is crucial to some units in this game, and the OG Bunny Duo of Blanc and Noir is the best way to mitigate it. Noir's ammo buffs suit all of the 3 units: Rei, Modernia, and especially Asuka. If you lack Max Ammo rolls, using Bunnies is a viable strat. Similar to S. Rosanna, Blanc's Damage Taken debuff is a separate undiluted multiplier and hence a major driver for Asuka's DPS. However, Blanc's shield is NOT individual. Substitutions: Modernia => Rei"
+      "note": "[Source: prydwen.gg character page] Ammo Support is crucial to some units in this game, and the OG Bunny Duo of Blanc and Noir is the best way to mitigate it. Noir's ammo buffs suit all of the 3 units: Rei, Modernia, and especially Asuka. If you lack Max Ammo rolls, using Bunnies is a viable strat. Similar to S. Rosanna, Blanc's Damage Taken debuff is a separate undiluted multiplier and hence a major driver for Asuka's DPS. However, Blanc's shield is NOT individual. Substitutions: Modernia => Rei",
+      "name_en": "Bunny Power",
+      "name_ja": "Bunny Power（バニーパワー）",
+      "note_en": "[Source: prydwen.gg character page] Ammo Support is crucial to some units in this game, and the OG Bunny Duo of Blanc and Noir is the best way to mitigate it. Noir's ammo buffs suit all of the 3 units: Rei, Modernia, and especially Asuka. If you lack Max Ammo rolls, using Bunnies is a viable strat. Similar to S. Rosanna, Blanc's Damage Taken debuff is a separate undiluted multiplier and hence a major driver for Asuka's DPS. However, Blanc's shield is NOT individual. Substitutions: Modernia => Rei",
+      "note_ja": "［出典：prydwen.gg character page］このゲームでは一部のユニットにとって弾薬支援が決定的に重要で、それを補う最良の手段が元祖バニーデュオのブランとノワールだ。ノワールの弾薬バフはレイ、モダニア、そしてとりわけアスカという3人すべてに合う。最大装填数の厳選が足りないなら、バニーを使うのは有効な戦略だ。サマーロザンナと同様、ブランの被ダメージ増加デバフは独立した希釈されない倍率であり、アスカのDPSを大きく押し上げる要因になる。ただしブランのシールドは個別ではない点に注意。差し替え：モダニア ⇒ レイ。"
     },
     {
       "id": "pwc-demolish-unprotected-p1-wind-unit",
@@ -3007,7 +3079,11 @@
         "Rapunzel"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] A sample setup to quickly kill an unprotected Blanc, Noah, or Scarlet Black Shadow in the first spot. Only Asuka and Rapunzel are essential in the team. The rest are replaceable. Needs Elemental DMG OL to work."
+      "note": "[Source: prydwen.gg character page] A sample setup to quickly kill an unprotected Blanc, Noah, or Scarlet Black Shadow in the first spot. Only Asuka and Rapunzel are essential in the team. The rest are replaceable. Needs Elemental DMG OL to work.",
+      "name_en": "Demolish Unprotected P1 Wind Unit",
+      "name_ja": "Demolish Unprotected P1 Wind Unit（無防備なP1の風圧ユニットを粉砕）",
+      "note_en": "[Source: prydwen.gg character page] A sample setup to quickly kill an unprotected Blanc, Noah, or Scarlet Black Shadow in the first spot. Only Asuka and Rapunzel are essential in the team. The rest are replaceable. Needs Elemental DMG OL to work.",
+      "note_ja": "［出典：prydwen.gg character page］1番手に置かれた無防備なブラン、ノア、紅蓮：ブラックシャドウを素早く仕留めるための構成例。編成上で必須なのはアスカとラプンツェルだけで、残りは置き換え可能。機能させるには有利コードダメージのオーバーロードが必要。"
     },
     {
       "id": "pwc-asuka-blanc-variant",
@@ -3021,7 +3097,11 @@
       ],
       "mode": "pvp",
       "note": "[Source: prydwen.gg character page] Basic speedy Blanc + Red Hood (Burst 1) team. Lifesteal should increase her odds of winning in most 1v1 indomitability standoffs.",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "name_en": "Asuka Blanc Variant",
+      "name_ja": "Asuka Blanc Variant（アスカ＋ブラン型）",
+      "note_en": "[Source: prydwen.gg character page] Basic speedy Blanc + Red Hood (Burst 1) team. Lifesteal should increase her odds of winning in most 1v1 indomitability standoffs.",
+      "note_ja": "［出典：prydwen.gg character page］基本形の高速ブラン＋レッドフード（バーストI）編成。ライフスティールにより、大半の1対1の不屈のにらみ合いで勝率が上がるはずだ。"
     },
     {
       "id": "pwc-asuka-x-rei-team-up-again",
@@ -3034,7 +3114,11 @@
         "Helm"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] The strongest no-Core Wind comp, featuring 2 EVA units. Liter Crown and Helm are the best supporters if you want to maximise Asuka and Rei’s damage. Since reload is quite irrelevant, you can Snow Whiteitch between Grave and Crown depending on the situation (Crown is still GOAT against A.I Kraken though). Rapi: Red Hood is the best if you are looking for just a single team comp and not for multiple teams. If Rei removes Wind-up, Rapi and Modernia might be the staple alongside her even on Raids where multiple teams are required.Both Raids or Wind-weak Campaign should fear this team. It can find itself being used outside Wind-weak Raids, but we will have to see how Rei practically performs first before giving you a 100% on that. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] The strongest no-Core Wind comp, featuring 2 EVA units. Liter Crown and Helm are the best supporters if you want to maximise Asuka and Rei’s damage. Since reload is quite irrelevant, you can Snow Whiteitch between Grave and Crown depending on the situation (Crown is still GOAT against A.I Kraken though). Rapi: Red Hood is the best if you are looking for just a single team comp and not for multiple teams. If Rei removes Wind-up, Rapi and Modernia might be the staple alongside her even on Raids where multiple teams are required.Both Raids or Wind-weak Campaign should fear this team. It can find itself being used outside Wind-weak Raids, but we will have to see how Rei practically performs first before giving you a 100% on that. (속성: Wind)",
+      "name_en": "Asuka x Rei Team Up Again",
+      "name_ja": "Asuka x Rei Team Up Again（アスカとレイ、再びタッグ）",
+      "note_en": "[Source: prydwen.gg character page] The strongest no-Core Wind comp, featuring 2 EVA units. Liter Crown and Helm are the best supporters if you want to maximise Asuka and Rei's damage. Since reload is quite irrelevant, you can switch between Grave and Crown depending on the situation (Crown is still GOAT against A.I Kraken though). Rapi: Red Hood is the best if you are looking for just a single team comp and not for multiple teams. If Rei removes Wind-up, Rapi and Modernia might be the staple alongside her even on Raids where multiple teams are required. Both Raids or Wind-weak Campaign should fear this team. It can find itself being used outside Wind-weak Raids, but we will have to see how Rei practically performs first before giving you a 100% on that. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］EVAユニット2人を据えた、コアなし相手で最強の風圧編成。アスカとレイのダメージを最大化したいなら、リター、クラウン、ヘルムが最良のサポーターだ。リロードがほぼ無関係なので、状況に応じてグレイブとクラウンを使い分けられる（とはいえA.I.クラーケン相手ではクラウンが依然として最強だ）。複数編成ではなく単一編成だけを求めるなら、ラピ：レッドフードが最良である。レイがワインドアップを解消してくれるなら、複数編成が要求されるレイドでも、彼女の隣にはラピとモダニアが定番になるかもしれない。レイドでも風圧弱点のキャンペーンでも、この編成は恐れられるべきだ。風圧弱点のレイド以外でも使われる可能性はあるが、それを100%と言うにはまずレイの実戦での働きを見る必要がある。（属性：風圧）"
     },
     {
       "id": "pwc-the-wind-terror",
@@ -3047,7 +3131,11 @@
         "Helm"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Wind element is in business now that they have another mega DPS unit to use. In the end, it’s better to run Scarlet Black Shadow and Asuka Shikinami Langley: Wille together without Rei or even Alice to achieve the highest result against a Wind-weak Boss. This is the best team to use straight up for Wind Weak Bosses. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] Wind element is in business now that they have another mega DPS unit to use. In the end, it’s better to run Scarlet Black Shadow and Asuka Shikinami Langley: Wille together without Rei or even Alice to achieve the highest result against a Wind-weak Boss. This is the best team to use straight up for Wind Weak Bosses. (속성: Wind)",
+      "name_en": "The Wind Terror",
+      "name_ja": "The Wind Terror（風圧の恐怖）",
+      "note_en": "[Source: prydwen.gg character page] Wind element is in business now that they have another mega DPS unit to use. In the end, it's better to run Scarlet Black Shadow and Asuka Shikinami Langley: Wille together without Rei or even Alice to achieve the highest result against a Wind-weak Boss. This is the best team to use straight up for Wind Weak Bosses. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］もう一人の超火力ユニットを手に入れたことで、風圧属性は商売繁盛だ。結局のところ、風圧弱点のボスに対して最高の結果を出すには、レイやアリスを入れずに紅蓮：ブラックシャドウと式波・アスカ・ラングレー：WILLEを一緒に使うほうが良い。風圧弱点のボスにはこの編成をそのまま使うのが最良だ。（属性：風圧）"
     },
     {
       "id": "pwc-tornado-bunnies",
@@ -3059,7 +3147,11 @@
         "Noir"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Bunnies in 2025? Well they still have their use, especially in running braindead MG comps. Noir being a Wind unit helps her cause as well. This comp provides a lot of healing amount, a lot of ammo for Rapi and Asuka to shoot (due to Noir’s + Asuka’s anmo refund). Bread and butter team, use it when you are too lazy to even think. Machine Guns love ammo and make Noir a very happy relevant unit. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] Bunnies in 2025? Well they still have their use, especially in running braindead MG comps. Noir being a Wind unit helps her cause as well. This comp provides a lot of healing amount, a lot of ammo for Rapi and Asuka to shoot (due to Noir’s + Asuka’s anmo refund). Bread and butter team, use it when you are too lazy to even think. Machine Guns love ammo and make Noir a very happy relevant unit. (속성: Wind)",
+      "name_en": "Tornado Bunnies",
+      "name_ja": "Tornado Bunnies（トルネード・バニーズ）",
+      "note_en": "[Source: prydwen.gg character page] Bunnies in 2025? Well they still have their use, especially in running braindead MG comps. Noir being a Wind unit helps her cause as well. This comp provides a lot of healing amount, a lot of ammo for Rapi and Asuka to shoot (due to Noir's + Asuka's ammo refund). Bread and butter team, use it when you are too lazy to even think. Machine Guns love ammo and make Noir a very happy relevant unit. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］2025年にバニー？いや、彼女たちにはまだ使い道がある。特に何も考えずに回せるMG編成ではそうだ。ノワールが風圧ユニットであることも彼女にとって追い風になっている。この編成は大量の回復量と、ラピやアスカが撃ち続けるための大量の弾薬を提供する（ノワールとアスカの弾薬還元による）。定番中の定番の編成で、考えるのも面倒なときに使えばよい。マシンガンは弾薬を愛しており、そのおかげでノワールはとても幸せで意味のあるユニットでいられる。（属性：風圧）"
     },
     {
       "id": "pwc-off-element-raid-wasuka",
@@ -3068,7 +3160,11 @@
         "Asuka: WILLE"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Asuka: Wille can be used to high effect in off elemental situations even without Rei Ayanami (Tentative Name). Her damage taken down has often been used to help Elemental DPS to deal more damage."
+      "note": "[Source: prydwen.gg character page] Asuka: Wille can be used to high effect in off elemental situations even without Rei Ayanami (Tentative Name). Her damage taken down has often been used to help Elemental DPS to deal more damage.",
+      "name_en": "Off element Raid WAsuka",
+      "name_ja": "Off element Raid WAsuka（属性外レイドのアスカWILLE）",
+      "note_en": "[Source: prydwen.gg character page] Asuka: Wille can be used to high effect in off elemental situations even without Rei Ayanami (Tentative Name). Her damage taken down has often been used to help Elemental DPS to deal more damage.",
+      "note_ja": "［出典：prydwen.gg character page］アスカ：WILLEは、アヤナミレイ(仮称)がいなくても属性外の状況で高い効果を発揮できる。彼女の被ダメージ増加は、属性アタッカーがより大きなダメージを出すのを助ける用途でよく使われてきた。"
     },
     {
       "id": "pwc-common-bay-team",
@@ -3080,7 +3176,11 @@
         "Centi"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team has 2 layers of protection: Noise or Moran provides the first layer, then Bay soaks damage. It's a 3 RL team, making it very hard to kill even with 3 RL Scarlet. And 2 RL Scarlet will never be able to kill 3 RL Noise team. The last B3 can be up to your choice, which can be:- Anis: Sparkling Summer,- Scarlet: Black Shadow,- Scarlet. This one is actually interesting, due to the damage share effect, this whole team will turn into a Thornmail instead, with each nikke providing a 30% chance to trigger Scarlet's S2 on being hit as long as Bay is alive."
+      "note": "[Source: prydwen.gg character page] This team has 2 layers of protection: Noise or Moran provides the first layer, then Bay soaks damage. It's a 3 RL team, making it very hard to kill even with 3 RL Scarlet. And 2 RL Scarlet will never be able to kill 3 RL Noise team. The last B3 can be up to your choice, which can be:- Anis: Sparkling Summer,- Scarlet: Black Shadow,- Scarlet. This one is actually interesting, due to the damage share effect, this whole team will turn into a Thornmail instead, with each nikke providing a 30% chance to trigger Scarlet's S2 on being hit as long as Bay is alive.",
+      "name_en": "Common Bay Team",
+      "name_ja": "Common Bay Team（一般的なベイ編成）",
+      "note_en": "[Source: prydwen.gg character page] This team has 2 layers of protection: Noise or Moran provides the first layer, then Bay soaks damage. It's a 3 RL team, making it very hard to kill even with 3 RL Scarlet. And 2 RL Scarlet will never be able to kill 3 RL Noise team. The last B3 can be up to your choice, which can be: - Anis: Sparkling Summer, - Scarlet: Black Shadow, - Scarlet. This one is actually interesting, due to the damage share effect, this whole team will turn into a Thornmail instead, with each nikke providing a 30% chance to trigger Scarlet's S2 on being hit as long as Bay is alive.",
+      "note_ja": "［出典：prydwen.gg character page］この編成には2層の防護がある。ノイズかモランが第1層を提供し、その後ベイがダメージを吸収する。3RL編成なので、3RLの紅蓮でも倒すのが非常に難しい。そして2RLの紅蓮では3RLのノイズ編成を決して倒せない。最後のB3は好みで選べる：アニス：スパークリングサマー、紅蓮：ブラックシャドウ、紅蓮。最後の選択は実に面白い。ダメージ共有効果のおかげで、ベイが生きている限り編成全体が「棘の鎧」と化し、各ニケが被弾時に30%の確率で紅蓮のS2を発動させるようになるからだ。"
     },
     {
       "id": "pwc-stall-team",
@@ -3093,7 +3193,11 @@
         "Rapunzel"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team relies on a huge amount of damage reduction and healing to tank through any type of DPS through to your face, while slowly builds up the damage dealt by 5 RL. It's super annoying, although Anne: Miracle Fairy will give them a hard time due to healing potency debuff."
+      "note": "[Source: prydwen.gg character page] This team relies on a huge amount of damage reduction and healing to tank through any type of DPS through to your face, while slowly builds up the damage dealt by 5 RL. It's super annoying, although Anne: Miracle Fairy will give them a hard time due to healing potency debuff.",
+      "name_en": "Stall team",
+      "name_ja": "Stall team（足止め編成）",
+      "note_en": "[Source: prydwen.gg character page] This team relies on a huge amount of damage reduction and healing to tank through any type of DPS through to your face, while slowly builds up the damage dealt by 5 RL. It's super annoying, although Anne: Miracle Fairy will give them a hard time due to healing potency debuff.",
+      "note_ja": "［出典：prydwen.gg character page］この編成は膨大な被ダメージ軽減と回復に頼り、正面から浴びるあらゆる種類の火力を受け止めつつ、5RLで与えるダメージをじわじわ積み上げていく。非常に鬱陶しいが、エヌ：ミラクルフェアリーは回復効果デバフによって彼女たちを苦しめてくれる。"
     },
     {
       "id": "pwc-general-team",
@@ -3103,7 +3207,11 @@
         "Noir"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Geneal team comp for Blanc and Noir."
+      "note": "[Source: prydwen.gg character page] Geneal team comp for Blanc and Noir.",
+      "name_en": "General Team",
+      "name_ja": "General Team（汎用編成）",
+      "note_en": "[Source: prydwen.gg character page] General team comp for Blanc and Noir.",
+      "note_ja": "［出典：prydwen.gg character page］ブランとノワール向けの汎用編成。"
     },
     {
       "id": "pwc-general-team-for-blanc-2",
@@ -3113,7 +3221,11 @@
         "Blanc"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Another general team for using Blanc."
+      "note": "[Source: prydwen.gg character page] Another general team for using Blanc.",
+      "name_en": "General Team for Blanc #2",
+      "name_ja": "General Team for Blanc #2（ブラン向け汎用編成 #2）",
+      "note_en": "[Source: prydwen.gg character page] Another general team for using Blanc.",
+      "note_ja": "［出典：prydwen.gg character page］ブランを使うためのもう一つの汎用編成。"
     },
     {
       "id": "pwc-maid-for-bready",
@@ -3124,7 +3236,11 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] The best team for Bready and probably what will be used in Water-weak Raids. This activates her On Hit route, which allows her to perform at a highly competitive level. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] The best team for Bready and probably what will be used in Water-weak Raids. This activates her On Hit route, which allows her to perform at a highly competitive level. (속성: Water)",
+      "name_en": "Maid-for-Bready",
+      "name_ja": "Maid-for-Bready（ブレッディのためのメイド）",
+      "note_en": "[Source: prydwen.gg character page] The best team for Bready and probably what will be used in Water-weak Raids. This activates her On Hit route, which allows her to perform at a highly competitive level. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］ブレッディにとって最良の編成で、おそらく水冷弱点のレイドで使われることになる。彼女の「命中時」ルートを発動させ、十分に競争力のある水準の働きをさせられる。（属性：水冷）"
     },
     {
       "id": "pwc-sustain-this-damage",
@@ -3135,7 +3251,11 @@
         "Helm"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This is the only team possible that activates her DoT Route. It is decent but will be weaker than the Maid Duo. We can replace Rosanna: Chic Ocean with better DoT Buffer when the time comes. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] This is the only team possible that activates her DoT Route. It is decent but will be weaker than the Maid Duo. We can replace Rosanna: Chic Ocean with better DoT Buffer when the time comes. (속성: Water)",
+      "name_en": "Sustain This Damage!",
+      "name_ja": "Sustain This Damage!（この持続ダメージを見よ）",
+      "note_en": "[Source: prydwen.gg character page] This is the only team possible that activates her DoT Route. It is decent but will be weaker than the Maid Duo. We can replace Rosanna: Chic Ocean with better DoT Buffer when the time comes. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］彼女の持続ダメージ（DoT）ルートを発動させられる唯一の編成。悪くはないがメイドデュオより弱い。より優れた持続ダメージのバッファーが登場したら、ロザンナ：シックオーシャンをそちらに置き換えられる。（属性：水冷）"
     },
     {
       "id": "pwc-harvester-is-an-anomaly",
@@ -3148,7 +3268,11 @@
         "Mast: Romantic Maid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] The new generic Water-weak Bossing team. Harvester has mobs, and Bready has distributed damage to take care of them. This allows your other Water DPS units to freely shoot the Boss. This team can be used to full auto Stage 7 (except for the QTE), given that the other B3 you use is Helm-Treasure for Burst generation. Substitutions: Helm (treasure) can be replaced by Ludmilla: Winter Owner and Quency: Escape Queen (속성: Water)"
+      "note": "[Source: prydwen.gg character page] The new generic Water-weak Bossing team. Harvester has mobs, and Bready has distributed damage to take care of them. This allows your other Water DPS units to freely shoot the Boss. This team can be used to full auto Stage 7 (except for the QTE), given that the other B3 you use is Helm-Treasure for Burst generation. Substitutions: Helm (treasure) can be replaced by Ludmilla: Winter Owner and Quency: Escape Queen (속성: Water)",
+      "name_en": "Harvester is an Anomaly",
+      "name_ja": "Harvester is an Anomaly（ハーベスターはアノマリー）",
+      "note_en": "[Source: prydwen.gg character page] The new generic Water-weak Bossing team. Harvester has mobs, and Bready has distributed damage to take care of them. This allows your other Water DPS units to freely shoot the Boss. This team can be used to full auto Stage 7 (except for the QTE), given that the other B3 you use is Helm-Treasure for Burst generation. Substitutions: Helm (treasure) can be replaced by Ludmilla: Winter Owner and Quency: Escape Queen (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］水冷弱点のボス戦における新しい汎用編成。ハーベスターは雑魚を出すが、ブレッディの分配ダメージがそれを処理してくれる。おかげで他の水冷アタッカーは自由にボスを撃てる。バースト生成用のもう一方のB3に宝ものヘルムを使えば、この編成でステージ7をフルオート（QTEを除く）で回せる。差し替え：宝ものヘルムはルドミラ：ウィンターオーナーやクエンシー：エスケープクイーンに置き換え可能。（属性：水冷）"
     },
     {
       "id": "pwc-let-me-copegg",
@@ -3158,7 +3282,11 @@
         "Bready"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A cope team for Bready, but it does work. If you are a fan of chubby Nikkes, this team is for you! You can even add similar waifus like Anis here, with Biscuit in the FLEX spot to buff Anis and Elegg! Adding Scarlet Black Shadow or Quency: Escape Queen in the other B3 spot is also a viable option. Keep in mind, however, that this is one of the weaker teams for Bready. (속성: Water)"
+      "note": "[Source: prydwen.gg character page] A cope team for Bready, but it does work. If you are a fan of chubby Nikkes, this team is for you! You can even add similar waifus like Anis here, with Biscuit in the FLEX spot to buff Anis and Elegg! Adding Scarlet Black Shadow or Quency: Escape Queen in the other B3 spot is also a viable option. Keep in mind, however, that this is one of the weaker teams for Bready. (속성: Water)",
+      "name_en": "Let Me Copegg",
+      "name_ja": "Let Me Copegg（言い訳させて）",
+      "note_en": "[Source: prydwen.gg character page] A cope team for Bready, but it does work. If you are a fan of chubby Nikkes, this team is for you! You can even add similar waifus like Anis here, with Biscuit in the FLEX spot to buff Anis and Elegg! Adding Scarlet Black Shadow or Quency: Escape Queen in the other B3 spot is also a viable option. Keep in mind, however, that this is one of the weaker teams for Bready. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］ブレッディ向けの苦しまぎれの編成だが、これでも機能する。ぽっちゃりしたニケが好きなら、この編成はあなたのためのものだ。ここにアニスのような似た趣味のキャラを加え、自由枠にビスケットを入れてアニスとエレグをバフすることさえできる。もう一方のB3の枠に紅蓮：ブラックシャドウやクエンシー：エスケープクイーンを加えるのも有効だ。ただし、これはブレッディ向けの編成としては弱いほうであることは頭に入れておいてほしい。（属性：水冷）"
     },
     {
       "id": "pwc-mary-the-water-buffer",
@@ -3171,7 +3299,11 @@
         "D: Killer Wife"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Strong team for Water raids. Substitutions: Dolla can replace D: Killer Wife (속성: Water)"
+      "note": "[Source: prydwen.gg character page] Strong team for Water raids. Substitutions: Dolla can replace D: Killer Wife (속성: Water)",
+      "name_en": "Mary the Water buffer",
+      "name_ja": "Mary the Water buffer（水冷バッファーのメアリー）",
+      "note_en": "[Source: prydwen.gg character page] Strong team for Water raids. Substitutions: Dolla can replace D: Killer Wife (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］水冷レイド向けの強力な編成。差し替え：D：キラーワイフはドラーに置き換え可能。（属性：水冷）"
     },
     {
       "id": "pwc-mono-fire-with-xbrid",
@@ -3184,7 +3316,11 @@
         "Mihara: Bonding Chain"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] This team is the new (and better) mono-Fire team with XBrid, who significantly buffs the output of Rapi: Red Hood B1, DieselWS, and MiharaBC. Rei Ayanami must Burst first because DieselWS wants to Burst second (mandatory). Very useful in Union Raid. (속성: Fire)"
+      "note": "[Source: prydwen.gg character page] This team is the new (and better) mono-Fire team with XBrid, who significantly buffs the output of Rapi: Red Hood B1, DieselWS, and MiharaBC. Rei Ayanami must Burst first because DieselWS wants to Burst second (mandatory). Very useful in Union Raid. (속성: Fire)",
+      "name_en": "Mono Fire with XBrid",
+      "name_ja": "Mono Fire with XBrid（XブリッドのモノFire）",
+      "note_en": "[Source: prydwen.gg character page] This team is the new (and better) mono-Fire team with XBrid, who significantly buffs the output of Rapi: Red Hood B1, DieselWS, and MiharaBC. Rei Ayanami must Burst first because DieselWS wants to Burst second (mandatory). Very useful in Union Raid. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］Xブリッドを起用した、新しく（そしてより強力な）灼熱単色編成。彼女はラピ：レッドフード（B1）、ディーゼル：ウィンタースイーツ、ミハラ：ボンディングチェーンの火力を大きく引き上げる。ディーゼル：ウィンタースイーツが2番目にバーストする必要があるため（必須）、綾波レイが最初にバーストしなければならない。ユニオンレイドで非常に有用。（属性：灼熱）"
     },
     {
       "id": "pwc-mono-fire-with-xbrid-crown",
@@ -3197,7 +3333,11 @@
         "Crown"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] The same Mono Fire team but with Crown instead of another Fire unit. Not as ideal but not everyone has Rei Ayanami due to its collab status. (속성: Fire)"
+      "note": "[Source: prydwen.gg character page] The same Mono Fire team but with Crown instead of another Fire unit. Not as ideal but not everyone has Rei Ayanami due to its collab status. (속성: Fire)",
+      "name_en": "Mono Fire with XBrid & Crown",
+      "name_ja": "Mono Fire with XBrid & Crown（Xブリッド＆クラウンのモノFire）",
+      "note_en": "[Source: prydwen.gg character page] The same Mono Fire team but with Crown instead of another Fire unit. Not as ideal but not everyone has Rei Ayanami due to its collab status. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］同じ灼熱単色編成だが、もう一人の灼熱ユニットの代わりにクラウンを入れた形。理想的とは言えないが、綾波レイはコラボ限定なので誰もが持っているわけではない。（属性：灼熱）"
     },
     {
       "id": "pwc-xbrid-punching-a-hole-in-alteisen-s-body",
@@ -3213,7 +3353,11 @@
       "note": "[Source: prydwen.gg character page] XBrid deals good personal damage with invested gear and when paired with Tove (Treasure version, especially) and DrakeTr. She shines best against Fire-weak due to elemental advantage. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.HelmTr can be replaced by any B3. (속성: Fire)",
       "requiresTreasure": [
         "Drake"
-      ]
+      ],
+      "name_en": "XBrid Punching a Hole in Alteisen's Body",
+      "name_ja": "XBrid Punching a Hole in Alteisen's Body（アルトアイゼンの装甲に穴を開けるXブリッド）",
+      "note_en": "[Source: prydwen.gg character page] XBrid deals good personal damage with invested gear and when paired with Tove (Treasure version, especially) and DrakeTr. She shines best against Fire-weak due to elemental advantage. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.HelmTr can be replaced by any B3. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］Xブリッドは装備を育てた上でトーブ（特に宝もの版）や宝ものドレイクと組ませると、本人の火力もしっかり出る。属性有利のため灼熱弱点相手で最も輝く。差し替え：ソリン：フロストチケットはD：キラーワイフやボリュームなど、他のバースト外クールタイム短縮役に置き換え可能。宝ものヘルムは任意のB3に置き換え可能。（属性：灼熱）"
     },
     {
       "id": "pwc-xbrid-buffing-atk-reliant-b3-in-miranda-s-comp",
@@ -3229,7 +3373,11 @@
       "note": "[Source: prydwen.gg character page] XBrid can be used as an alternative B2 to buff ATK-reliant units, such as MiharaBC, HelmTr, Liberalio, and DieselWS. She can also be used as an alternative if you lack better B2. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "XBrid Buffing ATK-Reliant B3 in Miranda's Comp",
+      "name_ja": "XBrid Buffing ATK-Reliant B3 in Miranda's Comp（ミランダ編成で攻撃力依存B3をバフするXブリッド）",
+      "note_en": "[Source: prydwen.gg character page] XBrid can be used as an alternative B2 to buff ATK-reliant units, such as MiharaBC, HelmTr, Liberalio, and DieselWS. She can also be used as an alternative if you lack better B2. Substitutions: SolineFT can be replaced by other off-burst CDR, such as DWife or Volume.",
+      "note_ja": "［出典：prydwen.gg character page］Xブリッドは、ミハラ：ボンディングチェーン、宝ものヘルム、リバーレリオ、ディーゼル：ウィンタースイーツのような攻撃力依存ユニットをバフする代替B2として使える。より良いB2がいない場合の代役にもなる。差し替え：ソリン：フロストチケットはD：キラーワイフやボリュームなど、他のバースト外クールタイム短縮役に置き換え可能。"
     },
     {
       "id": "pwc-xbrid-in-campaign",
@@ -3241,7 +3389,11 @@
         "Rapi: Red Hood"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] XBrid doing her job in Campaign, a game mode who glorifies ATK buffs more than anything else. Substitutions: Feel free to use any B3."
+      "note": "[Source: prydwen.gg character page] XBrid doing her job in Campaign, a game mode who glorifies ATK buffs more than anything else. Substitutions: Feel free to use any B3.",
+      "name_en": "XBrid in Campaign",
+      "name_ja": "XBrid in Campaign（キャンペーンのXブリッド）",
+      "note_en": "[Source: prydwen.gg character page] XBrid doing her job in Campaign, a game mode who glorifies ATK buffs more than anything else. Substitutions: Feel free to use any B3.",
+      "note_ja": "［出典：prydwen.gg character page］何よりも攻撃力バフが物を言うゲームモード、キャンペーンで仕事をするXブリッド。差し替え：B3は好きなものを使ってよい。"
     },
     {
       "id": "pwc-xbrid-in-elysion-tower",
@@ -3254,7 +3406,11 @@
         "Mast: Romantic Maid"
       ],
       "mode": "tribe_tower",
-      "note": "[Source: prydwen.gg character page] XBrid in Elysion Tower can replace AnchorM (in Maid Duo comp) or as a solo B2. Substitutions: For solo B2, you need to remove MastM. You can use MirandaTr + CDR, or use B1 CDR alongside 3 B3."
+      "note": "[Source: prydwen.gg character page] XBrid in Elysion Tower can replace AnchorM (in Maid Duo comp) or as a solo B2. Substitutions: For solo B2, you need to remove MastM. You can use MirandaTr + CDR, or use B1 CDR alongside 3 B3.",
+      "name_en": "XBrid in Elysion Tower",
+      "name_ja": "XBrid in Elysion Tower（エリシオンタワーのXブリッド）",
+      "note_en": "[Source: prydwen.gg character page] XBrid in Elysion Tower can replace AnchorM (in Maid Duo comp) or as a solo B2. Substitutions: For solo B2, you need to remove MastM. You can use MirandaTr + CDR, or use B1 CDR alongside 3 B3.",
+      "note_ja": "［出典：prydwen.gg character page］エリシオンタワーのXブリッドは、（メイドデュオ編成の）アンカー：イノセントメイドの代わりにも、単独B2としても使える。差し替え：単独B2にするならマスト：ロマンチックメイドを外す必要がある。宝ものミランダ＋クールタイム短縮役を使うか、B1のクールタイム短縮役とB3を3人並べる形にできる。"
     },
     {
       "id": "pwc-xbrid-just-being-a-b2",
@@ -3264,7 +3420,11 @@
         "Brid: Silent Track"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] XBrid being the BiS or an alternative B2."
+      "note": "[Source: prydwen.gg character page] XBrid being the BiS or an alternative B2.",
+      "name_en": "XBrid Just Being a B2",
+      "name_ja": "XBrid Just Being a B2（ただのB2としてのXブリッド）",
+      "note_en": "[Source: prydwen.gg character page] XBrid being the BiS or an alternative B2.",
+      "note_ja": "［出典：prydwen.gg character page］最適解、あるいは代替のB2として働くXブリッド。"
     },
     {
       "id": "pwc-centi-s-white-adventure",
@@ -3275,7 +3435,11 @@
         "Jackal"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Centi's main use will be in Blanc vs Blanc mirror match-ups. The flex and B3 units decide the speed of the team, so fill according to your need! Centi's job will be to go against a similar speed team and force the enemy to burst faster! This way, your blanc team lives longer, and you win! Might need rng in Champs arena still ofc ): (속성: Water)"
+      "note": "[Source: prydwen.gg character page] Centi's main use will be in Blanc vs Blanc mirror match-ups. The flex and B3 units decide the speed of the team, so fill according to your need! Centi's job will be to go against a similar speed team and force the enemy to burst faster! This way, your blanc team lives longer, and you win! Might need rng in Champs arena still ofc ): (속성: Water)",
+      "name_en": "Centi's White Adventure",
+      "name_ja": "Centi's White Adventure（センチの白い冒険）",
+      "note_en": "[Source: prydwen.gg character page] Centi's main use will be in Blanc vs Blanc mirror match-ups. The flex and B3 units decide the speed of the team, so fill according to your need! Centi's job will be to go against a similar speed team and force the enemy to burst faster! This way, your blanc team lives longer, and you win! Might need rng in Champs arena still ofc ): (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］センチの主な用途はブラン対ブランのミラーマッチだ。自由枠とB3が編成の速度を決めるので、必要に応じて埋めればよい。センチの仕事は同程度の速度の編成に対し、相手に先にバーストを撃たせることだ。そうすればこちらのブラン編成が長く生き残り、勝てる。もちろんチャンピオンアリーナでは依然として運が絡むこともある。（属性：水冷）"
     },
     {
       "id": "pwc-safer-blanc",
@@ -3291,7 +3455,11 @@
       "note": "[Source: prydwen.gg character page] CentiTr makes Blanc teams without Biscuit safer to run, especially against TVesti.",
       "requiresTreasure": [
         "Centi"
-      ]
+      ],
+      "name_en": "Safer Blanc",
+      "name_ja": "Safer Blanc（より安全なブラン編成）",
+      "note_en": "[Source: prydwen.gg character page] CentiTr makes Blanc teams without Biscuit safer to run, especially against TVesti.",
+      "note_ja": "［出典：prydwen.gg character page］宝ものセンチは、ビスケット抜きのブラン編成をより安全に運用できるようにしてくれる。特に宝ものベスティー：タクティカル・アップ相手で効く。"
     },
     {
       "id": "pwc-safer-noah",
@@ -3307,7 +3475,11 @@
       "note": "[Source: prydwen.gg character page] CentiTr makes Noah teams without Biscuit safer to run, especially against TVesti.",
       "requiresTreasure": [
         "Centi"
-      ]
+      ],
+      "name_en": "Safer Noah",
+      "name_ja": "Safer Noah（より安全なノア編成）",
+      "note_en": "[Source: prydwen.gg character page] CentiTr makes Noah teams without Biscuit safer to run, especially against TVesti.",
+      "note_ja": "［出典：prydwen.gg character page］宝ものセンチは、ビスケット抜きのノア編成をより安全に運用できるようにしてくれる。特に宝ものベスティー：タクティカル・アップ相手で効く。"
     },
     {
       "id": "pwc-safer-anything-else",
@@ -3319,7 +3491,11 @@
       "note": "[Source: prydwen.gg character page] CentiTr also makes everything else safer.",
       "requiresTreasure": [
         "Centi"
-      ]
+      ],
+      "name_en": "Safer Anything Else",
+      "name_ja": "Safer Anything Else（それ以外も安全に）",
+      "note_en": "[Source: prydwen.gg character page] CentiTr also makes everything else safer.",
+      "note_ja": "［出典：prydwen.gg character page］宝ものセンチはそれ以外のあらゆる編成も安全にしてくれる。"
     },
     {
       "id": "pwc-lapluh-pvp-defense-i",
@@ -3332,7 +3508,11 @@
         "Snow White: Heavy Arms"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] This team uses Noah to protect the team and Soda to stun enemies trying to counter Lapluh with Noah. While this team has counters, it can throw off inexperienced players. Substitutions: SWHA can be replaced by HelmTr."
+      "note": "[Source: prydwen.gg character page] This team uses Noah to protect the team and Soda to stun enemies trying to counter Lapluh with Noah. While this team has counters, it can throw off inexperienced players. Substitutions: SWHA can be replaced by HelmTr.",
+      "name_en": "Lapluh - PvP Defense I",
+      "name_ja": "Lapluh - PvP Defense I（ラプウー：PvP防衛 I）",
+      "note_en": "[Source: prydwen.gg character page] This team uses Noah to protect the team and Soda to stun enemies trying to counter Lapluh with Noah. While this team has counters, it can throw off inexperienced players. Substitutions: SWHA can be replaced by HelmTr.",
+      "note_ja": "［出典：prydwen.gg character page］この編成はノアで味方を守り、ノアを使ってラプラス：アルティメットヒーローに対処しようとする相手をソーダでスタンさせる。対策手段は存在するものの、慣れていないプレイヤーを崩すことはできる。差し替え：スノーホワイト：ヘビーアームズは宝ものヘルムに置き換え可能。"
     },
     {
       "id": "pwc-lapluh-pvp-offense-i",
@@ -3348,7 +3528,11 @@
       "note": "[Source: prydwen.gg character page] This team uses Siren to stun enemy B1/B2/B3 (if possible depending on speed) and CentiTr to protect the team from early pressure. Substitutions: Trina can be replaced by any Clip RL, such as Rumani.",
       "requiresTreasure": [
         "Centi"
-      ]
+      ],
+      "name_en": "Lapluh - PvP Offense I",
+      "name_ja": "Lapluh - PvP Offense I（ラプウー：PvP攻撃 I）",
+      "note_en": "[Source: prydwen.gg character page] This team uses Siren to stun enemy B1/B2/B3 (if possible depending on speed) and CentiTr to protect the team from early pressure. Substitutions: Trina can be replaced by any Clip RL, such as Rumani.",
+      "note_ja": "［出典：prydwen.gg character page］この編成はサイレンで相手のB1/B2/B3をスタンさせ（速度次第で可能な範囲で）、宝ものセンチで序盤の圧力から味方を守る。差し替え：トリナはルマニなど、装填数式のロケットランチャーであれば何にでも置き換え可能。"
     },
     {
       "id": "pwc-lapluh-pvp-offense-ii",
@@ -3365,7 +3549,11 @@
       "requiresTreasure": [
         "Moran",
         "Helm"
-      ]
+      ],
+      "name_en": "Lapluh - PvP Offense II",
+      "name_ja": "Lapluh - PvP Offense II（ラプウー：PvP攻撃 II）",
+      "note_en": "[Source: prydwen.gg character page] This team is the same as Lapluh - PvP Offense I but uses MoranTr to stall instead of Siren to stun. Great against most Anis:S Blanc Biscuit teams. HelmTr + Liberalio are used to make Indom go to P5, who usually has a weaker Burst. Do not use this team if P5 has a strong Burst.",
+      "note_ja": "［出典：prydwen.gg character page］この編成は「Lapluh - PvP Offense I」と同じ趣旨だが、サイレンでスタンさせる代わりに宝ものモランで時間を稼ぐ。アニス：スパークリングサマー＋ブラン＋ビスケットの編成の大半に強い。宝ものヘルム＋リバーレリオは、不屈を通常バーストの弱いP5に寄せるために使う。P5に強力なバーストがいる場合はこの編成を使わないこと。"
     },
     {
       "id": "pwc-so-much-true-damage",
@@ -3381,7 +3569,11 @@
       "note": "[Source: prydwen.gg character page] This team features 1 big spec: True DMG. Everyone except Moran in this team deals True Damage, and Frima+Takina will provide up to 230% True Damage buff, enough to make this team viable to a certain level. Still, by using this team, you agree that Moran won't be the one using Burst (aka CDR Totem). If your Moran Treasure is Phase 3, don't waste her like this, replace her with other subs or just replace Frima's Treasure. Substitutions: Moran Treasure Phase 3 can be replaced by either D:Killer Wife or Rouge. Even Volume is fine.Frima Treasure can be replaced by Ada Wong, but we assume you have Ada and boss doesn't require you to heal constantly (Frima Treasure heals a lot). (속성: Iron)",
       "requiresTreasure": [
         "Moran"
-      ]
+      ],
+      "name_en": "So Much True Damage",
+      "name_ja": "So Much True Damage（固定ダメージ尽くし）",
+      "note_en": "[Source: prydwen.gg character page] This team features 1 big spec: True DMG. Everyone except Moran in this team deals True Damage, and Frima+Takina will provide up to 230% True Damage buff, enough to make this team viable to a certain level. Still, by using this team, you agree that Moran won't be the one using Burst (aka CDR Totem). If your Moran Treasure is Phase 3, don't waste her like this, replace her with other subs or just replace Frima's Treasure. Substitutions: Moran Treasure Phase 3 can be replaced by either D:Killer Wife or Rouge. Even Volume is fine.Frima Treasure can be replaced by Ada Wong, but we assume you have Ada and boss doesn't require you to heal constantly (Frima Treasure heals a lot). (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］この編成の売りは一点、固定ダメージだ。モラン以外の全員が固定ダメージを与え、プリム＋井ノ上たきなが最大230%の固定ダメージバフを供給するので、一定水準までは十分に通用する。ただしこの編成を使うということは、モランがバーストを撃たない（＝クールタイム短縮のトーテム役に徹する）ことを受け入れるという意味でもある。宝ものモランがフェーズ3なら、こんな使い方で無駄にせず、他の候補に替えるか、プリムの宝ものの方を替えるべきだ。差し替え：フェーズ3の宝ものモランはD：キラーワイフかルージュに置き換え可能。ボリュームでも構わない。宝ものプリムはエイダ・ウォンに置き換え可能だが、それはエイダを所持していて、かつボスが常時回復を要求しない場合の話だ（宝ものプリムの回復量は大きい）。（属性：鉄甲）"
     },
     {
       "id": "pwc-campaign-coper",
@@ -3394,7 +3586,11 @@
         "Ada Wong"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Just as we said in the review, Chisato can be used as a stage target sniper, assuming you can hit it. With around 40% Hit Rate (2 OL lines on average), she will have spread as small as normal AR, so you should be fine hitting mid to far enemies. Substitutions: Siren can be replaced by Moran (Treasure) or Rapi: Red Hood."
+      "note": "[Source: prydwen.gg character page] Just as we said in the review, Chisato can be used as a stage target sniper, assuming you can hit it. With around 40% Hit Rate (2 OL lines on average), she will have spread as small as normal AR, so you should be fine hitting mid to far enemies. Substitutions: Siren can be replaced by Moran (Treasure) or Rapi: Red Hood.",
+      "name_en": "Campaign Coper",
+      "name_ja": "Campaign Coper（キャンペーンの妥協編成）",
+      "note_en": "[Source: prydwen.gg character page] Just as we said in the review, Chisato can be used as a stage target sniper, assuming you can hit it. With around 40% Hit Rate (2 OL lines on average), she will have spread as small as normal AR, so you should be fine hitting mid to far enemies. Substitutions: Siren can be replaced by Moran (Treasure) or Rapi: Red Hood.",
+      "note_ja": "［出典：prydwen.gg character page］評価でも述べたとおり、当てられるならば錦木千束はステージ目標を狙撃する役として使える。命中率およそ40%（平均してオーバーロード2行）あれば拡散は通常のアサルトライフル並みに小さくなるので、中距離から遠距離の敵にも問題なく当たるはずだ。差し替え：サイレンは（宝ものの）モランやラピ：レッドフードに置き換え可能。"
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-i",
@@ -3410,7 +3606,11 @@
       "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both Laplace Treasure and Ada Wong, which means this team is a 2 True DMG B3 Hypercarry comp. Ada Wong provides healing to B3 and buffs the B3 vigorously. Substitutions: Liter can be replaced by Moran for increased survivability. (속성: Iron)",
       "requiresTreasure": [
         "Laplace"
-      ]
+      ],
+      "name_en": "Iron-weak Solo Raid True DMG Team Idea I",
+      "name_ja": "Iron-weak Solo Raid True DMG Team Idea I（鉄甲弱点ソロレイドの固定ダメージ編成案 I）",
+      "note_en": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both Laplace Treasure and Ada Wong, which means this team is a 2 True DMG B3 Hypercarry comp. Ada Wong provides healing to B3 and buffs the B3 vigorously. Substitutions: Liter can be replaced by Moran for increased survivability. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］鉄甲弱点のソロレイド向けの妥当な編成案。ここでは宝ものラプラスとエイダ・ウォンを両方採用しており、つまり固定ダメージB3を2人据えたハイパーキャリー編成になる。エイダ・ウォンはB3に回復を与えつつ、強力にバフする。差し替え：生存力を上げたいならリターをモランに置き換え可能。（属性：鉄甲）"
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-ii",
@@ -3426,7 +3626,11 @@
       "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both DPS Takina and Chisato as hypercarries. Maxwell and PrivatyTr provide the necessary buffs for them to perform. Substitutions: Maxwell and PrivatyTr can be replaced by other buffers/debuffers. ATK is preferred due to how much True Damage Takina can provide (despite downtime). Plus, Takina has no ATK buff.Liter can be replaced by Moran for increased survivability. (속성: Iron)",
       "requiresTreasure": [
         "Privaty"
-      ]
+      ],
+      "name_en": "Iron-weak Solo Raid True DMG Team Idea II",
+      "name_ja": "Iron-weak Solo Raid True DMG Team Idea II（鉄甲弱点ソロレイドの固定ダメージ編成案 II）",
+      "note_en": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature both DPS Takina and Chisato as hypercarries. Maxwell and PrivatyTr provide the necessary buffs for them to perform. Substitutions: Maxwell and PrivatyTr can be replaced by other buffers/debuffers. ATK is preferred due to how much True Damage Takina can provide (despite downtime). Plus, Takina has no ATK buff.Liter can be replaced by Moran for increased survivability. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］鉄甲弱点のソロレイド向けの妥当な編成案。ここではアタッカーとしての井ノ上たきなと錦木千束を2枚看板のハイパーキャリーに据える。マクスウェルと宝ものプリバティが、二人が働くために必要なバフを供給する。差し替え：マクスウェルと宝ものプリバティは他のバッファーやデバッファーに置き換え可能。（空白時間があるとはいえ）井ノ上たきなが出せる固定ダメージ量を考えると攻撃力バフが望ましい。加えて、井ノ上たきな自身は攻撃力バフを持たない。生存力を上げたいならリターをモランに置き換え可能。（属性：鉄甲）"
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-iii",
@@ -3439,7 +3643,11 @@
         "Ada Wong"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature 3 DPS, but the primary focuses are Chisato & Takina. XDiesel here serves as a debuffer who can make good use of Ada Wong, who also synergizes well with Chisato. Substitutions: Moran can be replaced by Liter. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature 3 DPS, but the primary focuses are Chisato & Takina. XDiesel here serves as a debuffer who can make good use of Ada Wong, who also synergizes well with Chisato. Substitutions: Moran can be replaced by Liter. (속성: Iron)",
+      "name_en": "Iron-weak Solo Raid True DMG Team Idea III",
+      "name_ja": "Iron-weak Solo Raid True DMG Team Idea III（鉄甲弱点ソロレイドの固定ダメージ編成案 III）",
+      "note_en": "[Source: prydwen.gg character page] A reasonable team idea for Iron-weak Solo Raid. In this team, we feature 3 DPS, but the primary focuses are Chisato & Takina. XDiesel here serves as a debuffer who can make good use of Ada Wong, who also synergizes well with Chisato. Substitutions: Moran can be replaced by Liter. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］鉄甲弱点のソロレイド向けの妥当な編成案。ここではアタッカーを3人据えるが、主軸は錦木千束と井ノ上たきなだ。ディーゼル：ウィンタースイーツはデバッファーとして働き、錦木千束とも噛み合うエイダ・ウォンをうまく活かせる。差し替え：モランはリターに置き換え可能。（属性：鉄甲）"
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-iv",
@@ -3452,7 +3660,11 @@
         "Takina Inoue"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team adopts the same idea but uses Takina as off-burst. Takina as off-burst only loses personal DPS (and a small Damage Taken), so using the Burst of another B2 doesn't seem like a bad idea, even more the case if your Takina isn't DPS-built. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] This team adopts the same idea but uses Takina as off-burst. Takina as off-burst only loses personal DPS (and a small Damage Taken), so using the Burst of another B2 doesn't seem like a bad idea, even more the case if your Takina isn't DPS-built. (속성: Iron)",
+      "name_en": "Iron-weak Solo Raid True DMG Team Idea IV",
+      "name_ja": "Iron-weak Solo Raid True DMG Team Idea IV（鉄甲弱点ソロレイドの固定ダメージ編成案 IV）",
+      "note_en": "[Source: prydwen.gg character page] This team adopts the same idea but uses Takina as off-burst. Takina as off-burst only loses personal DPS (and a small Damage Taken), so using the Burst of another B2 doesn't seem like a bad idea, even more the case if your Takina isn't DPS-built. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］同じ発想の編成だが、井ノ上たきなをバースト外で使う。バースト外にしても失うのは本人のDPS（と小幅な被ダメージ増加）だけなので、別のB2のバーストを使うのは悪くない選択に見える。井ノ上たきなをアタッカー寄りに育てていないなら、なおさらだ。（属性：鉄甲）"
     },
     {
       "id": "pwc-anti-moran-helmtr",
@@ -3468,7 +3680,11 @@
       "note": "[Source: prydwen.gg character page] This team is for SpA Attack only. Chisato can cripple Moran with True DMG when assisted by Blanc. Chisato can also block HelmTr's Burst (very common with Moran). Make sure Chisato is linked, and do not use B3 that give themselves a higher ATK that it surpasses Chisato's, such as Liberalio and potentially SWHA. Substitutions: You don't need to use Jackal or the B3 mentioned, but you should protect Chisato and/or ideally use Blanc to counter Damage Reduction. (속성: Iron)",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "Anti Moran & HelmTr",
+      "name_ja": "Anti Moran & HelmTr（対 モラン＆宝ものヘルム）",
+      "note_en": "[Source: prydwen.gg character page] This team is for SpA Attack only. Chisato can cripple Moran with True DMG when assisted by Blanc. Chisato can also block HelmTr's Burst (very common with Moran). Make sure Chisato is linked, and do not use B3 that give themselves a higher ATK that it surpasses Chisato's, such as Liberalio and potentially SWHA. Substitutions: You don't need to use Jackal or the B3 mentioned, but you should protect Chisato and/or ideally use Blanc to counter Damage Reduction. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］この編成はスペシャルアリーナの攻撃専用だ。ブランの補助があれば、錦木千束は固定ダメージでモランを機能不全に追い込める。また（モランと組み合わせられることが非常に多い）宝ものヘルムのバーストを封じることもできる。錦木千束を必ずリンクさせ、リバーレリオや場合によってはスノーホワイト：ヘビーアームズのように、自身の攻撃力を錦木千束より高く盛るB3は使わないこと。差し替え：ジャッカルや挙げたB3を必ず使う必要はないが、錦木千束を守ること、そして被ダメージ軽減に対抗するためにできればブランを使うことが望ましい。（属性：鉄甲）"
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-v",
@@ -3484,7 +3700,11 @@
       "note": "[Source: prydwen.gg character page] One of the best Iron-weak SR True DMG comps featuring Ada buffing Chisato while dishing out modest damage as well as PrivatyTr buffing the whole team. Takina must be DPS-invested. (속성: Iron)",
       "requiresTreasure": [
         "Privaty"
-      ]
+      ],
+      "name_en": "Iron-weak Solo Raid True DMG Team Idea V",
+      "name_ja": "Iron-weak Solo Raid True DMG Team Idea V（鉄甲弱点ソロレイドの固定ダメージ編成案 V）",
+      "note_en": "[Source: prydwen.gg character page] One of the best Iron-weak SR True DMG comps featuring Ada buffing Chisato while dishing out modest damage as well as PrivatyTr buffing the whole team. Takina must be DPS-invested. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］鉄甲弱点ソロレイドの固定ダメージ編成として最上位の一つ。エイダ・ウォンが自身もそこそこのダメージを出しつつ錦木千束をバフし、宝ものプリバティが編成全体をバフする。井ノ上たきなはアタッカーとして育成しておく必要がある。（属性：鉄甲）"
     },
     {
       "id": "pwc-zap-those-raptures-with-the-electric-girls",
@@ -3497,7 +3717,11 @@
         "Anis: Sparkling Summer"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] This team revolves around 2 heavy DPS but in the final damage charts, Cinderella will always be on top. All of these DPS also share the same trait: having an insane amount of innate ATK buff. This makes Liter inferior to Rouge, who is more ideal for buffing Cinderella. This team works great for both Bossing and Electric-Weak Campaign, provided you can spam properly with Ein and Rouge. Anis: Sparkling Summer’s presence is usually more important because she acts as a buffer for Cindy. Exia (Treasure)/Scarlet can be used as an Off-Burst damage dealer if supports like Anis: Sparkling Summer and Naga don’t fascinate you or are used elsewhere.A variant or two would work best for you depending on your investment; Mirror Container AI is a good place to test them out. Comps with Cindy, whether using Ein or Naga as the fifth unit, have proven to reach Stage 9. Both variants feature Anis: Sparkling Summer.For Electric-Weak Raids, usually Crown will join the strongest DPS (in this case, Cindy’s team). However, outside Electric-Weak Raids, you can choose to use Blanc so that Crown can support other teams with potentially more effective DPS. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] This team revolves around 2 heavy DPS but in the final damage charts, Cinderella will always be on top. All of these DPS also share the same trait: having an insane amount of innate ATK buff. This makes Liter inferior to Rouge, who is more ideal for buffing Cinderella. This team works great for both Bossing and Electric-Weak Campaign, provided you can spam properly with Ein and Rouge. Anis: Sparkling Summer’s presence is usually more important because she acts as a buffer for Cindy. Exia (Treasure)/Scarlet can be used as an Off-Burst damage dealer if supports like Anis: Sparkling Summer and Naga don’t fascinate you or are used elsewhere.A variant or two would work best for you depending on your investment; Mirror Container AI is a good place to test them out. Comps with Cindy, whether using Ein or Naga as the fifth unit, have proven to reach Stage 9. Both variants feature Anis: Sparkling Summer.For Electric-Weak Raids, usually Crown will join the strongest DPS (in this case, Cindy’s team). However, outside Electric-Weak Raids, you can choose to use Blanc so that Crown can support other teams with potentially more effective DPS. (속성: Electric)",
+      "name_en": "Zap Those Raptures with the Electric Girls",
+      "name_ja": "Zap Those Raptures with the Electric Girls（電撃娘たちでラプチャーを感電させろ）",
+      "note_en": "[Source: prydwen.gg character page] This team revolves around 2 heavy DPS but in the final damage charts, Cinderella will always be on top. All of these DPS also share the same trait: having an insane amount of innate ATK buff. This makes Liter inferior to Rouge, who is more ideal for buffing Cinderella. This team works great for both Bossing and Electric-Weak Campaign, provided you can spam properly with Ein and Rouge. Anis: Sparkling Summer's presence is usually more important because she acts as a buffer for Cindy. Exia (Treasure)/Scarlet can be used as an Off-Burst damage dealer if supports like Anis: Sparkling Summer and Naga don't fascinate you or are used elsewhere. A variant or two would work best for you depending on your investment; Mirror Container AI is a good place to test them out. Comps with Cindy, whether using Ein or Naga as the fifth unit, have proven to reach Stage 9. Both variants feature Anis: Sparkling Summer. For Electric-Weak Raids, usually Crown will join the strongest DPS (in this case, Cindy's team). However, outside Electric-Weak Raids, you can choose to use Blanc so that Crown can support other teams with potentially more effective DPS. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］この編成は2人の主力アタッカーを軸にするが、最終的なダメージ集計では常にシンデレラが首位に立つ。ここに挙げたアタッカーには共通点があり、いずれも自前の攻撃力バフを異常なほど多く抱えている。そのためリターはルージュに劣り、シンデレラをバフするにはルージュのほうが理想的だ。アインとルージュでしっかり連射できるなら、この編成はボス戦にも電撃弱点のキャンペーンにも強い。アニス：スパークリングサマーの存在は、シンデレラのバッファーとして働くぶん、たいてい重要度が高い。アニス：スパークリングサマーやナガのようなサポーターに魅力を感じない、あるいは他所で使っているなら、（宝ものの）エクシアや紅蓮をバースト外のアタッカーとして使える。どの派生形が最適かは育成状況によるので、ミラーコンテナのAI戦で試すとよい。シンデレラ入りの編成は、5人目にアインを使ってもナガを使ってもステージ9到達が確認されている。いずれの派生形にもアニス：スパークリングサマーが入る。電撃弱点のレイドでは、たいていクラウンが最も強いアタッカー（ここではシンデレラの編成）に加わる。ただし電撃弱点以外のレイドでは、クラウンをより効果的なアタッカーのいる別編成に回せるよう、あえてブランを使う選択もある。（属性：電撃）"
     },
     {
       "id": "pwc-red-hood-buffer-team",
@@ -3511,7 +3735,11 @@
       ],
       "mode": "bossing",
       "note": "[Source: prydwen.gg character page] This is a comp that has recently set a new CP record for Crystal Chamber. The gameplay involves using Red Hood’s Burst B1 to line up with Anis: Sparkling Summer’s to avoid sabotaging her DPS (first with Cindy; second with Anis: Sparkling Summer; and then Anis: Sparkling Summer till the end of the battle). Red Hood’s Burst is also effective for Off-Burst DPS, and since Cindy also deals damage during her Off-Burst rotation, Cindy also benefits from it. (속성: Electric)",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "name_en": "Red Hood Buffer Team",
+      "name_ja": "Red Hood Buffer Team（バッファーとしてのレッドフード編成）",
+      "note_en": "[Source: prydwen.gg character page] This is a comp that has recently set a new CP record for Crystal Chamber. The gameplay involves using Red Hood's Burst B1 to line up with Anis: Sparkling Summer's to avoid sabotaging her DPS (first with Cindy; second with Anis: Sparkling Summer; and then Anis: Sparkling Summer till the end of the battle). Red Hood's Burst is also effective for Off-Burst DPS, and since Cindy also deals damage during her Off-Burst rotation, Cindy also benefits from it. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］最近クリスタルチェンバーで戦闘力の新記録を打ち立てた編成。立ち回りとしては、レッドフードのバーストをB1として使い、アニス：スパークリングサマーのバーストと噛み合わせて彼女のDPSを損なわないようにする（1巡目はシンデレラ、2巡目はアニス：スパークリングサマー、以降は戦闘終了までアニス：スパークリングサマー）。レッドフードのバーストはバースト外のアタッカーにも有効で、シンデレラもバースト外のローテーション中にダメージを出すため、その恩恵を受けられる。（属性：電撃）"
     },
     {
       "id": "pwc-off-with-those-rapture-heads-as-an-off-burst-dps",
@@ -3525,7 +3753,11 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] As we mentioned above, Cinderella is a great non Burst B3 DPS too. It's a very basic team with 2 piercers and one non Burst DPS. Works very impressively against Electric Weak stages. This team is for Campaign.",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "name_en": "Off With Those Rapture Heads as an Off Burst DPS",
+      "name_ja": "Off With Those Rapture Heads as an Off Burst DPS（バースト外アタッカーとしてラプチャーの首を刎ねろ）",
+      "note_en": "[Source: prydwen.gg character page] As we mentioned above, Cinderella is a great non Burst B3 DPS too. It's a very basic team with 2 piercers and one non Burst DPS. Works very impressively against Electric Weak stages. This team is for Campaign.",
+      "note_ja": "［出典：prydwen.gg character page］上でも触れたとおり、シンデレラはバーストを使わないB3アタッカーとしても優秀だ。貫通持ち2人とバースト外アタッカー1人という、ごく基本的な編成である。電撃弱点のステージに対して目を見張る働きをする。キャンペーン向けの編成。"
     },
     {
       "id": "pwc-hp-scaling-team",
@@ -3537,7 +3769,11 @@
         "Blanc"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] Rouge is the best Buffer for Cinderella and 2B - 2 Nikkes who scale on HP. We also have 1 spare slot to put another Nikke here, which can be Modernia or Scarlet as Off-Burst DPS, or Noir to make Cinderella reload less."
+      "note": "[Source: prydwen.gg character page] Rouge is the best Buffer for Cinderella and 2B - 2 Nikkes who scale on HP. We also have 1 spare slot to put another Nikke here, which can be Modernia or Scarlet as Off-Burst DPS, or Noir to make Cinderella reload less.",
+      "name_en": "HP Scaling Team",
+      "name_ja": "HP Scaling Team（HP参照編成）",
+      "note_en": "[Source: prydwen.gg character page] Rouge is the best Buffer for Cinderella and 2B - 2 Nikkes who scale on HP. We also have 1 spare slot to put another Nikke here, which can be Modernia or Scarlet as Off-Burst DPS, or Noir to make Cinderella reload less.",
+      "note_ja": "［出典：prydwen.gg character page］ルージュは、HPを参照する2人のニケ——シンデレラと2B——にとって最良のバッファーだ。ここには空き枠が1つあり、バースト外アタッカーとしてモダニアや紅蓮を入れてもよいし、シンデレラのリロード回数を減らすためにノワールを入れてもよい。"
     },
     {
       "id": "pwc-the-exia-coper-for-the-rougeless",
@@ -3550,7 +3786,11 @@
         "Dolla"
       ],
       "mode": "bossing",
-      "note": "[Source: prydwen.gg character page] A tricky team to set up because Mast’s Burst Skill records the two units with the highest ATK in the Burst 2 Stage, while Cindy gains her conversion buff in Burst 3 Stage. For this team to work, then Cindy’s base ATK together with OL must be higher than Anis: Sparkling Summer’s. If you can achieve this, this team is quite good theoretically. (속성: Electric)"
+      "note": "[Source: prydwen.gg character page] A tricky team to set up because Mast’s Burst Skill records the two units with the highest ATK in the Burst 2 Stage, while Cindy gains her conversion buff in Burst 3 Stage. For this team to work, then Cindy’s base ATK together with OL must be higher than Anis: Sparkling Summer’s. If you can achieve this, this team is quite good theoretically. (속성: Electric)",
+      "name_en": "The Exia Coper for the Rougeless",
+      "name_ja": "The Exia Coper for the Rougeless（ルージュ無し勢のエクシア妥協案）",
+      "note_en": "[Source: prydwen.gg character page] A tricky team to set up because Mast's Burst Skill records the two units with the highest ATK in the Burst 2 Stage, while Cindy gains her conversion buff in Burst 3 Stage. For this team to work, then Cindy's base ATK together with OL must be higher than Anis: Sparkling Summer's. If you can achieve this, this team is quite good theoretically. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］組み立てが厄介な編成だ。マストのバーストスキルは「バースト2」の段階で攻撃力上位2人を記録するのに対し、シンデレラは「バースト3」の段階で変換バフを得るからである。この編成を機能させるには、シンデレラの基礎攻撃力とオーバーロードの合計が、アニス：スパークリングサマーのそれを上回っていなければならない。それが達成できるなら、理屈のうえではかなり良い編成だ。（属性：電撃）"
     },
     {
       "id": "pwc-fast-nuke-2-rl",
@@ -3563,7 +3803,11 @@
         "Jackal"
       ],
       "mode": "pvp",
-      "note": "[Source: prydwen.gg character page] Cinderella's self damage is huge, enough that with Noise, she will kill everyone unless they have protection like Noah. The fun part is, even Rosanna can't save you."
+      "note": "[Source: prydwen.gg character page] Cinderella's self damage is huge, enough that with Noise, she will kill everyone unless they have protection like Noah. The fun part is, even Rosanna can't save you.",
+      "name_en": "Fast Nuke @ 2 RL",
+      "name_ja": "Fast Nuke @ 2 RL（2RLの高速爆撃）",
+      "note_en": "[Source: prydwen.gg character page] Cinderella's self damage is huge, enough that with Noise, she will kill everyone unless they have protection like Noah. The fun part is, even Rosanna can't save you.",
+      "note_ja": "［出典：prydwen.gg character page］シンデレラ本人のダメージは非常に大きく、ノイズと組ませればノアのような防護がない限り相手を全滅させられるほどだ。面白いのは、ロザンナでさえ救いにならないという点である。"
     },
     {
       "id": "pwc-beautiful-inheritance",
@@ -3579,7 +3823,11 @@
       "note": "[Source: prydwen.gg character page] SCindy and RRH are the best Iron DPS. Substitutions: Mast: Romantic Maid can be replaced by Privaty (Treasure). (속성: Iron)",
       "requiresTreasure": [
         "Privaty"
-      ]
+      ],
+      "name_en": "Beautiful Inheritance",
+      "name_ja": "Beautiful Inheritance（美しき継承）",
+      "note_en": "[Source: prydwen.gg character page] SCindy and RRH are the best Iron DPS. Substitutions: Mast: Romantic Maid can be replaced by Privaty (Treasure). (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］シンデレラ：クリスタルウェーブとラピ：レッドフードは鉄甲最強のアタッカーだ。差し替え：マスト：ロマンチックメイドは（宝ものの）プリバティに置き換え可能。（属性：鉄甲）"
     },
     {
       "id": "pwc-beautiful-inheritance-ii",
@@ -3592,7 +3840,11 @@
         "Mast: Romantic Maid"
       ],
       "mode": "campaign",
-      "note": "[Source: prydwen.gg character page] Campaign team strongest in Iron-weak/Fire-weak but can be used in Neutral. Unlike the Bossing variant that uses PrivT, Mast: Romantic Maid is more preferable for Mobbing. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] Campaign team strongest in Iron-weak/Fire-weak but can be used in Neutral. Unlike the Bossing variant that uses PrivT, Mast: Romantic Maid is more preferable for Mobbing. (속성: Iron)",
+      "name_en": "Beautiful Inheritance II",
+      "name_ja": "Beautiful Inheritance II（美しき継承 II）",
+      "note_en": "[Source: prydwen.gg character page] Campaign team strongest in Iron-weak/Fire-weak but can be used in Neutral. Unlike the Bossing variant that uses PrivT, Mast: Romantic Maid is more preferable for Mobbing. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］鉄甲弱点・灼熱弱点で最も強いキャンペーン編成だが、属性相性のない場面でも使える。宝ものプリバティを使うボス戦版とは違い、雑魚処理にはマスト：ロマンチックメイドのほうが好ましい。（属性：鉄甲）"
     },
     {
       "id": "pwc-summer-snow-warmth",
@@ -3605,7 +3857,11 @@
         "Little Mermaid"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] Snow White tags along with SCindy to unleash destructive Pierce. One of the potential teams in Union Raid. (속성: Iron)"
+      "note": "[Source: prydwen.gg character page] Snow White tags along with SCindy to unleash destructive Pierce. One of the potential teams in Union Raid. (속성: Iron)",
+      "name_en": "Summer + Snow = Warmth",
+      "name_ja": "Summer + Snow = Warmth（サマー＋スノー＝ぬくもり）",
+      "note_en": "[Source: prydwen.gg character page] Snow White tags along with SCindy to unleash destructive Pierce. One of the potential teams in Union Raid. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］スノーホワイトがシンデレラ：クリスタルウェーブに同行し、破壊的な貫通を叩き込む。ユニオンレイドで有力な編成の一つ。（属性：鉄甲）"
     },
     {
       "id": "pwc-mgs-team-up",
@@ -3618,7 +3874,11 @@
         "Privaty"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] One of the most common SCindy's teams in Wind-weak Solo Raid. SCindy supplies burst gen for the team and benefits from Reload Speed and Damage Taken. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] One of the most common SCindy's teams in Wind-weak Solo Raid. SCindy supplies burst gen for the team and benefits from Reload Speed and Damage Taken. (속성: Wind)",
+      "name_en": "MGs Team Up!",
+      "name_ja": "MGs Team Up!（マシンガン連合）",
+      "note_en": "[Source: prydwen.gg character page] One of the most common SCindy's teams in Wind-weak Solo Raid. SCindy supplies burst gen for the team and benefits from Reload Speed and Damage Taken. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］風圧弱点のソロレイドで最もよく使われるシンデレラ：クリスタルウェーブ編成の一つ。彼女は編成にバーストゲージ生成を供給しつつ、リロード速度と被ダメージ増加の恩恵を受ける。（属性：風圧）"
     },
     {
       "id": "pwc-annihilio-can-only-shudder",
@@ -3631,7 +3891,11 @@
         "Nayuta"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team combines Liter's ATK▲ with SCindy's frontloaded damage as well as NeonVE's medium burst gen with SCindy's. Nayuta, Liter, and XLud make SCindy's burst gen trigger more frequently. XLud also gives Damage Taken. Good rotation has none of them reloading outside Full Burst to maximize burst gen. Don't forget to pre-reload SCindy as this team has no Reload Speed buff. NeonVE + SCindy should be able to abuse Liter's higher CDR cap. Substitutions: Ludmilla: Winter Owner can be replaced by Mihara: Bonding Chain for higher personal damage but less team damage. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] This team combines Liter's ATK▲ with SCindy's frontloaded damage as well as NeonVE's medium burst gen with SCindy's. Nayuta, Liter, and XLud make SCindy's burst gen trigger more frequently. XLud also gives Damage Taken. Good rotation has none of them reloading outside Full Burst to maximize burst gen. Don't forget to pre-reload SCindy as this team has no Reload Speed buff. NeonVE + SCindy should be able to abuse Liter's higher CDR cap. Substitutions: Ludmilla: Winter Owner can be replaced by Mihara: Bonding Chain for higher personal damage but less team damage. (속성: Wind)",
+      "name_en": "Annihilio Can Only Shudder",
+      "name_ja": "Annihilio Can Only Shudder（アニヒラーティオも震えるしかない）",
+      "note_en": "[Source: prydwen.gg character page] This team combines Liter's ATK up with SCindy's frontloaded damage as well as NeonVE's medium burst gen with SCindy's. Nayuta, Liter, and XLud make SCindy's burst gen trigger more frequently. XLud also gives Damage Taken. Good rotation has none of them reloading outside Full Burst to maximize burst gen. Don't forget to pre-reload SCindy as this team has no Reload Speed buff. NeonVE + SCindy should be able to abuse Liter's higher CDR cap. Substitutions: Ludmilla: Winter Owner can be replaced by Mihara: Bonding Chain for higher personal damage but less team damage. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］この編成はリターの攻撃力アップとシンデレラ：クリスタルウェーブの前倒し火力を組み合わせ、さらにネオン：ビジョン・アイの中程度のバーストゲージ生成を彼女のそれと重ねる。ナユタ、リター、ルドミラ：ウィンターオーナーによって、シンデレラ：クリスタルウェーブのバーストゲージ生成がより頻繁に発動する。ルドミラ：ウィンターオーナーは被ダメージ増加も付与する。良いローテーションでは、バーストゲージ生成を最大化するため誰もフルバースト外でリロードしない。この編成にはリロード速度バフがないので、シンデレラ：クリスタルウェーブの事前リロードを忘れないこと。ネオン：ビジョン・アイ＋シンデレラ：クリスタルウェーブなら、リターの高いクールタイム短縮上限を活かせるはずだ。差し替え：ルドミラ：ウィンターオーナーをミハラ：ボンディングチェーンに置き換えると、本人の火力は上がるが編成全体の火力は下がる。（属性：風圧）"
     },
     {
       "id": "pwc-cleanse-in-clutch",
@@ -3643,7 +3907,11 @@
         "Clay"
       ],
       "mode": "raid",
-      "note": "[Source: prydwen.gg character page] This team has a highly situational niche, where Clay is able to cleanse debuffs off from our dps units so that they can function normally. This team is highly specialised for Bosses such as Thermite B or Heavy Metal, who are Wind Weak Bosses but have charge speed debuffs which cause ScarletBS to have much worse damage. Clay's Cleanse in this case helps her a lot since she can remove the debuff and allow Scarlet Black Shadow to function normally. (속성: Wind)"
+      "note": "[Source: prydwen.gg character page] This team has a highly situational niche, where Clay is able to cleanse debuffs off from our dps units so that they can function normally. This team is highly specialised for Bosses such as Thermite B or Heavy Metal, who are Wind Weak Bosses but have charge speed debuffs which cause ScarletBS to have much worse damage. Clay's Cleanse in this case helps her a lot since she can remove the debuff and allow Scarlet Black Shadow to function normally. (속성: Wind)",
+      "name_en": "Cleanse in Clutch",
+      "name_ja": "Cleanse in Clutch（土壇場の解除）",
+      "note_en": "[Source: prydwen.gg character page] This team has a highly situational niche, where Clay is able to cleanse debuffs off from our dps units so that they can function normally. This team is highly specialised for Bosses such as Thermite B or Heavy Metal, who are Wind Weak Bosses but have charge speed debuffs which cause ScarletBS to have much worse damage. Clay's Cleanse in this case helps her a lot since she can remove the debuff and allow Scarlet Black Shadow to function normally. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］非常に状況限定的な立ち位置の編成で、クレイがアタッカーからデバフを解除して本来の働きをさせるというもの。テルミットBやヘビーメタルのように、風圧弱点でありながらチャージ速度デバフを持ち、紅蓮：ブラックシャドウのダメージを大きく落としてくるボスに特化している。この場合クレイの解除は非常に有効で、デバフを取り除いて紅蓮：ブラックシャドウを正常に機能させられる。（属性：風圧）"
     },
     {
       "id": "pwc-fiery-land",
@@ -3658,7 +3926,11 @@
       "note": "[Source: prydwen.gg character page] Best Fire team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.B1(CDR) can be Red Hood as solo B1, Liter, D:Killer Wife or Rapi: Red Hood.Alice or Rapi Red Hood can be replaced by Fire Asuka. (속성: Fire)",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "Fiery Land",
+      "name_ja": "Fiery Land（灼熱の大地）",
+      "note_en": "[Source: prydwen.gg character page] Best Fire team for Campaign. Substitutions: Helm Treasure can be replaced with Naga. B1(CDR) can be Red Hood as solo B1, Liter, D:Killer Wife or Rapi: Red Hood. Alice or Rapi Red Hood can be replaced by Fire Asuka. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］キャンペーン向けの最良の灼熱編成。差し替え：宝ものヘルムはナガに置き換え可能。B1（クールタイム短縮役）はレッドフードの単独B1、リター、D：キラーワイフ、ラピ：レッドフードのいずれでもよい。アリスやラピ：レッドフードは灼熱のアスカに置き換え可能。（属性：灼熱）"
     },
     {
       "id": "pwc-wet-land",
@@ -3673,7 +3945,11 @@
       "note": "[Source: prydwen.gg character page] Best Water team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Rapi, Asuka, or can be someone else as well depending on stage. (속성: Water)",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "Wet Land",
+      "name_ja": "Wet Land（濡れた大地）",
+      "note_en": "[Source: prydwen.gg character page] Best Water team for Campaign. Substitutions: Helm Treasure can be replaced with Naga. Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife. B3 is usually Alice, Rapi, Asuka, or can be someone else as well depending on stage. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］キャンペーン向けの最良の水冷編成。差し替え：宝ものヘルムはナガに置き換え可能。ラピはレッドフードの単独B1、リター、D：キラーワイフに置き換え可能。B3はたいていアリス、ラピ、アスカだが、ステージ次第では他のキャラでもよい。（属性：水冷）"
     },
     {
       "id": "pwc-thunderstorm-ahead",
@@ -3688,7 +3964,11 @@
       "note": "[Source: prydwen.gg character page] Best Electric team for Campaign. Substitutions: Helm Treasure can be replaced with Naga.Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife.B3 is usually Alice, Cinderella, Anis: Sparkling Summer, Asuka, or can be someone else as well depending on stage. (속성: Electric)",
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "Thunderstorm Ahead",
+      "name_ja": "Thunderstorm Ahead（この先、雷雨）",
+      "note_en": "[Source: prydwen.gg character page] Best Electric team for Campaign. Substitutions: Helm Treasure can be replaced with Naga. Rapi can be replaced by Red Hood as solo B1, Liter, or D:Killer Wife. B3 is usually Alice, Cinderella, Anis: Sparkling Summer, Asuka, or can be someone else as well depending on stage. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］キャンペーン向けの最良の電撃編成。差し替え：宝ものヘルムはナガに置き換え可能。ラピはレッドフードの単独B1、リター、D：キラーワイフに置き換え可能。B3はたいていアリス、シンデレラ、アニス：スパークリングサマー、アスカだが、ステージ次第では他のキャラでもよい。（属性：電撃）"
     },
     {
       "id": "pwc-metal-crown-solid",
@@ -3704,7 +3984,11 @@
       "ambiguousBurst": true,
       "requiresTreasure": [
         "Helm"
-      ]
+      ],
+      "name_en": "Metal Crown Solid",
+      "name_ja": "Metal Crown Solid（メタル・クラウン・ソリッド）",
+      "note_en": "[Source: prydwen.gg character page] Best Iron team for Campaign. Substitutions: Helm Treasure can be replaced with Naga. B1(CDR) can be Red Hood as solo B1, Liter, D:Killer Wife or Rapi: Red Hood. Rapi Red Hood can be replaced by Alice, Fire Asuka, Laplace Treasure or Maxwell. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］キャンペーン向けの最良の鉄甲編成。差し替え：宝ものヘルムはナガに置き換え可能。B1（クールタイム短縮役）はレッドフードの単独B1、リター、D：キラーワイフ、ラピ：レッドフードのいずれでもよい。ラピ：レッドフードはアリス、灼熱のアスカ、宝ものラプラス、マクスウェルに置き換え可能。（属性：鉄甲）"
     },
     {
       "id": "pwc-all-in-on-alice-please",
@@ -3718,7 +4002,11 @@
       ],
       "mode": "campaign",
       "note": "[Source: prydwen.gg character page] Forget healing, Alice is the best DPS in town again (given that you are able to spam her ammo)! Infinite ammo on Alice allows her to bypass that Ammo OL requirement and focus on dealing deathly damage to her opponents! If you use Red Hood as B3, you have a double Pierce combo where D:KW will out perform Liter (if both are same investments). This team is for Campaign, and hence RedHood can be used as Solo B1 unit over Liter.",
-      "ambiguousBurst": true
+      "ambiguousBurst": true,
+      "name_en": "All-in on Alice, please!",
+      "name_ja": "All-in on Alice, please!（頼むからアリスに全ツッパ）",
+      "note_en": "[Source: prydwen.gg character page] Forget healing, Alice is the best DPS in town again (given that you are able to spam her ammo)! Infinite ammo on Alice allows her to bypass that Ammo OL requirement and focus on dealing deathly damage to her opponents! If you use Red Hood as B3, you have a double Pierce combo where D:KW will out perform Liter (if both are same investments). This team is for Campaign, and hence RedHood can be used as Solo B1 unit over Liter.",
+      "note_ja": "［出典：prydwen.gg character page］回復のことは忘れよう。（弾を撃ち続けられるなら）アリスは再び街一番のアタッカーだ。弾切れしないアリスは最大装填数のオーバーロード要件を回避でき、相手に致命的なダメージを与えることに専念できる。B3にレッドフードを使えば貫通の二段構えとなり、（育成度が同じなら）D：キラーワイフがリターを上回る。これはキャンペーン向けの編成なので、リターの代わりにレッドフードを単独B1として使える。"
     },
     {
       "id": "pwc-the-new-god-comp",
