@@ -46,7 +46,7 @@ const nz = (s) => typeof s === 'string' && s.trim().length > 0;
 // ---------------------------------------------------------------------------
 const EXPECTED = {
   'archetype.name(ko)': 0,     // 2026-08-25에 466건을 한국어로 옮겨 0이 됐다
-  'archetype.note(ko)': 203,   // 설명이 통째로 영어
+  'archetype.note(ko)': 0,     // 2026-08-25에 203건을 한국어로 옮겨 0이 됐다
   'skill.desc_kr': 6,          // 나무위키가 막은 캐릭터. idoll-flower는 "채우지 않기로" 결정된 건이다
   'skill.desc_ja': 9,          // game8이 아직 안 채운 페이지 (yukiko 등)
   'squad(번역 없음)': 62,        // 부대 이름. 지어내면 B등급이라 1차 출처에서 옮겨와야 한다
