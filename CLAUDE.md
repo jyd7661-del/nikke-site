@@ -34,11 +34,12 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 ```bash
 cd nikke-site-git/nikke-site
 node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
-node scripts/testI18n.mjs            # 24건
+node scripts/testI18n.mjs            # 25건
 node scripts/testEngineReasons.mjs   # 기준선: 문제 0건 (근거 문장 3개국어 실행 검사)
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
+node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
 node scripts/findTotems.mjs          # 기준선: 1군 0명
 node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
@@ -98,6 +99,14 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 고치자 같은 버그가 하나 더 나왔다.
 
 > 검사가 있다는 사실이 검증됐다는 뜻은 아니다. **오탐이 나는 검사는 아무도 믿지 않는다.**
+
+2026-08-25에 같은 실수를 또 했다. `testI18n` 24건이 전부 통과하는 동안 **한국어 화면에
+조합 이름·설명 466건이 영어로 나가고 있었다.** `testI18n`이 보는 것은 `lib/i18n.js`의
+**UI 라벨**이고, 유저가 본 것은 **데이터**였다. 판정 단위가 또 고장의 단위와 달랐다.
+
+> 그리고 새로 만든 검사도 두 번 틀렸다 — 일본어를 가나로만 판정해 42건 오탐,
+> 본문을 "한글이 하나라도"로 재서 260건 누락. **판정 규칙은 실측 분포를 보고 정한다.**
+> 경위는 `docs/i18n.md`의 "데이터 다국어" 절에 있다.
 
 ---
 
