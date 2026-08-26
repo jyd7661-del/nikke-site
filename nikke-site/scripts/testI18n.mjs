@@ -180,6 +180,28 @@ for (const d of scanDirs) walkDate(path.join(ROOT, d));
 check('날짜 로케일 하드코딩 없음', hardDate.length === 0,
   `${hardDate.join(', ')} — lib/i18n.js의 dateLocale(lang)을 쓸 것`);
 
+// 10-b. API가 내려보내는 errorKey가 사전에 다 있는가.
+//
+//    `app/api/*/route.js`의 응답 본문 `error`는 **한국어 고정**이다. 화면(ResultPanel)은
+//    함께 오는 `errorKey`를 먼저 번역해 쓰고, 키가 없으면 그 한국어로 내려간다.
+//    그래서 errorKey에 오타가 나면 **에러 없이 조용히 한국어가 뜬다** — 2026-08-25에
+//    일본어 화면에서 실제로 그 상태였고(그때는 errorKey 자체가 없었다) 검사가 없었다.
+const errKeyBad = [];
+const walkErrKey = (dir) => {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fp = path.join(dir, e.name);
+    if (e.isDirectory()) { if (!['node_modules', '.next'].includes(e.name)) walkErrKey(fp); continue; }
+    if (!e.name.endsWith('.js')) continue;
+    fs.readFileSync(fp, 'utf8').split(/\r?\n/).forEach((l, i) => {
+      const m = l.match(/errorKey:\s*'([a-z0-9_]+)'/);
+      if (m && !base.has(m[1])) errKeyBad.push(`${path.relative(ROOT, fp)}:${i + 1} '${m[1]}'`);
+    });
+  }
+};
+walkErrKey(path.join(ROOT, 'app'));
+check('API errorKey가 사전에 존재', errKeyBad.length === 0,
+  `${errKeyBad.join(', ')} — 사전에 없으면 그 언어 화면에 한국어 원문이 그대로 뜬다`);
+
 // 11~13. 엔진 근거 문장 (lib/engineReasons.js)
 //
 //     2026-08-25 이전: 근거 문장은 lib/synergyEngine.js 안에 한국어로 박혀 있었고 화면은

@@ -175,7 +175,14 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        setErrorMsg(data.error || t('ai_error_generic'));
+        // ⚠️ data.error는 서버가 만든 **한국어 고정** 문구다. 그걸 그대로 쓰면
+        //    일본어·영어 화면에 한국어가 뜬다(2026-08-25에 실제로 그랬다).
+        //    그래서 서버가 함께 보내는 errorKey를 먼저 쓰고, 키가 없을 때만 data.error로 내려간다.
+        //    엔진이 만든 rec.error는 이미 요청 언어라 errorKey 없이 그대로 온다.
+        const keyed = data.errorKey
+          ? (typeof t(data.errorKey) === 'function' ? t(data.errorKey)(data.errorArg) : t(data.errorKey))
+          : null;
+        setErrorMsg(keyed || data.error || t('ai_error_generic'));
         setPhase('error');
         return;
       }

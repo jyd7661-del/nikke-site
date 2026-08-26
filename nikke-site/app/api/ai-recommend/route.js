@@ -380,7 +380,7 @@ export async function POST(req) {
   try {
     body = await req.json();
   } catch {
-    return Response.json({ error: '요청 형식이 올바르지 않습니다.' }, { status: 400 });
+    return Response.json({ error: '요청 형식이 올바르지 않습니다.', errorKey: 'api_err_bad_request' }, { status: 400 });
   }
 
   const { characters, treasureIds, mode, bossElement, tower, excludeTitles, lang } = body || {};
@@ -388,21 +388,21 @@ export async function POST(req) {
   const towerKey = mode === 'tribe_tower' && TOWER_CORP_SET.has(tower) ? tower : null;
 
   if (!Array.isArray(characters) || characters.length === 0) {
-    return Response.json({ error: '보유중인 캐릭터를 먼저 선택해주세요.' }, { status: 400 });
+    return Response.json({ error: '보유중인 캐릭터를 먼저 선택해주세요.', errorKey: 'api_err_no_roster' }, { status: 400 });
   }
 
   // 하드 제약(버스트 I/II/III 각 1명 이상)은 호출 전에 미리 걸러 불필요한 API 비용을 막는다.
   const burstValues = new Set(characters.map((c) => String(c.burst)));
   if (!burstValues.has('1') || !burstValues.has('2') || !burstValues.has('3')) {
     return Response.json(
-      { error: '버스트 I/II/III 단계 캐릭터를 각각 최소 1명씩 보유해야 조합을 구성할 수 있습니다.' },
+      { error: '버스트 I/II/III 단계 캐릭터를 각각 최소 1명씩 보유해야 조합을 구성할 수 있습니다.', errorKey: 'api_err_need_all_bursts' },
       { status: 400 }
     );
   }
 
   if (!process.env.ANTHROPIC_API_KEY) {
     return Response.json(
-      { error: 'AI 추천 기능이 아직 설정되지 않았습니다. (관리자: Vercel 환경변수에 ANTHROPIC_API_KEY 추가 필요)' },
+      { error: 'AI 추천 기능이 아직 설정되지 않았습니다. (관리자: Vercel 환경변수에 ANTHROPIC_API_KEY 추가 필요)', errorKey: 'api_err_not_configured' },
       { status: 503 }
     );
   }
@@ -434,7 +434,7 @@ export async function POST(req) {
       ipHash = hashIp(getClientIp(req));
       if (await isOverDailyLimit(supabase, ipHash)) {
         return Response.json(
-          { error: `오늘 사용 가능한 AI 추천 횟수(${DAILY_LIMIT}회)를 모두 사용했습니다. 내일 다시 시도해주세요.` },
+          { error: `오늘 사용 가능한 AI 추천 횟수(${DAILY_LIMIT}회)를 모두 사용했습니다. 내일 다시 시도해주세요.`, errorKey: 'api_err_daily_limit', errorArg: DAILY_LIMIT },
           { status: 429 }
         );
       }
@@ -543,7 +543,9 @@ export async function POST(req) {
 
       if (!rec.teams || rec.teams.length === 0) {
         return Response.json(
-          { error: rec.error || '보유한 캐릭터로는 조건을 만족하는 조합을 만들 수 없습니다.' },
+          // rec.error는 엔진(engineReasons)이 만들어 **이미 요청 언어로 되어 있다**.
+          // 그래서 errorKey는 rec.error가 없을 때의 폴백 문구에만 붙인다.
+          { error: rec.error || '보유한 캐릭터로는 조건을 만족하는 조합을 만들 수 없습니다.', errorKey: rec.error ? undefined : 'api_err_no_team' },
           { status: 400 }
         );
       }
@@ -632,6 +634,6 @@ export async function POST(req) {
     });
   } catch (err) {
     console.error('ai-recommend error', err);
-    return Response.json({ error: 'AI 추천을 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' }, { status: 500 });
+    return Response.json({ error: 'AI 추천을 생성하는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.', errorKey: 'api_err_internal' }, { status: 500 });
   }
 }
