@@ -71,7 +71,9 @@ const EXPECTED = {
   'skill.desc_kr': 6,          // 나무위키가 막은 캐릭터. idoll-flower는 "채우지 않기로" 결정된 건이다
   'skill.desc_ja': 9,          // game8이 아직 안 채운 페이지 (yukiko 등)
   'squad(한국어 없음)': 0,       // 2026-08-25 나무위키에서 62종 전부 옮겼다
-  'squad(일본어 없음)': 62,      // 일본어는 game8에서 따로 옮겨야 한다. 음차는 틀린다(Matis->메티스)
+  'squad(일본어 없음)': 1,       // 2026-08-26 game8에서 61종 수집. 남은 1종은 WILLE —
+                               // game8이 'NERV'로 적는데 NERV는 우리 DB의 다른 부대라
+                               // 채택하지 않고 영문으로 폴백시켰다(refreshSquadJaFromGame8 주석)
   'raidBoss(번역 없음)': 5,      // 솔로레이드 보스명. 위와 같은 이유
 };
 
