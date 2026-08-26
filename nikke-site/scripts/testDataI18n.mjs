@@ -48,9 +48,16 @@ const HAS_JA = (s) => /[ぁ-んァ-ヶ一-龯]/.test(s || '');
 const HAS_CJK_KANA = (s) => /[가-힣ぁ-んァ-ヶ]/.test(s || '');
 const nz = (s) => typeof s === 'string' && s.trim().length > 0;
 // 본문 판정용. 영문 글자가 한글보다 많으면 "아직 영어"로 본다.
+//
+// ⚠️ 재기 전에 **구조 표식을 걷어낸다.** `[출처: prydwen.gg Team Database]`·
+//    `[다른 출처의 같은 조합 설명 — "..."]`·`(속성: Fire)`는 본문이 아니라 껍데기다.
+//    본문이 `- 대체: -` 뿐인 짧은 항목은 표식의 영문이 본문보다 많아서 오탐이 났다
+//    (2026-08-25 실측: pw-triple-fire-v1-1 등 3건). 껍데기를 빼고 알맹이만 본다.
+const STRIP_MARKERS = (s) => String(s || '').replace(/\[[^\]]*\]/g, ' ').replace(/\(속성:[^)]*\)/g, ' ');
 const MOSTLY_LATIN = (s) => {
-  const han = (s.match(/[가-힣]/g) || []).length;
-  const la = (s.match(/[A-Za-z]/g) || []).length;
+  const body = STRIP_MARKERS(s);
+  const han = (body.match(/[가-힣]/g) || []).length;
+  const la = (body.match(/[A-Za-z]/g) || []).length;
   return la > han;
 };
 
@@ -60,7 +67,7 @@ const MOSTLY_LATIN = (s) => {
 // ---------------------------------------------------------------------------
 const EXPECTED = {
   'archetype.name(ko)': 0,     // 2026-08-25에 466건을 한국어로 옮겨 0이 됐다
-  'archetype.note(ko)': 263,   // 영문 비율로 다시 재니 263건이다(앞서 '한글 유무'로 세어 260건을 놓쳤다)
+  'archetype.note(ko)': 0,     // 2026-08-25에 483건 전부 한국어로 옮겨 0이 됐다
   'skill.desc_kr': 6,          // 나무위키가 막은 캐릭터. idoll-flower는 "채우지 않기로" 결정된 건이다
   'skill.desc_ja': 9,          // game8이 아직 안 채운 페이지 (yukiko 등)
   'squad(번역 없음)': 62,        // 부대 이름. 지어내면 B등급이라 1차 출처에서 옮겨와야 한다
