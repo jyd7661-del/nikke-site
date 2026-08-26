@@ -293,7 +293,7 @@
     },
     {
       "id": "pw-blaze-ing-through-campaign-ft-rapi",
-      "name": "Blaze-ing Through Campaign ft. Rapi",
+      "name": "Blaze-ing Through Campaign ft. Rapi (라피 축의 캠페인 조합)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -310,7 +310,7 @@
     },
     {
       "id": "pw-blaze-ing-through-campaign-ft-solohood-cdr-rh-vari",
-      "name": "Blaze-ing Through Campaign ft. Solohood (CDR + RH Variant)",
+      "name": "Blaze-ing Through Campaign ft. Solohood (CDR+RH형)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -334,7 +334,7 @@
     },
     {
       "id": "pw-blaze-ing-through-campaign-ft-alice",
-      "name": "Blaze-ing Through Campaign ft. Alice",
+      "name": "Blaze-ing Through Campaign ft. Alice (앨리스 축의 캠페인 조합)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -351,7 +351,7 @@
     },
     {
       "id": "pw-blaze-ing-through-campaign-ft-asupi-cdr-variant",
-      "name": "Blaze-ing Through Campaign ft. Asupi (CDR Variant)",
+      "name": "Blaze-ing Through Campaign ft. Asupi (CDR형)",
       "members": [
         "Crown",
         "Asuka Shikinami Langley",
@@ -368,7 +368,7 @@
     },
     {
       "id": "pw-blaze-ing-through-campaign-ft-asulice-rapi-as-b1",
-      "name": "Blaze-ing Through Campaign ft. Asulice (Rapi as B1)",
+      "name": "Blaze-ing Through Campaign ft. Asulice (라피를 B1으로 운용)",
       "members": [
         "Crown",
         "Asuka Shikinami Langley",
@@ -385,7 +385,7 @@
     },
     {
       "id": "pw-breeze-ing-through-campaign-ft-sblice-rrh-cdr-vari",
-      "name": "Breeze-ing Through Campaign ft. SBLice (RRH CDR Variant)",
+      "name": "Breeze-ing Through Campaign ft. SBLice (RRH·CDR형)",
       "members": [
         "Crown",
         "Scarlet: Black Shadow",
@@ -408,7 +408,7 @@
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-cindy-ein-cdr-variant",
-      "name": "Zap-ping Through Campaign ft. Cindy & Ein (CDR Variant)",
+      "name": "Zap-ping Through Campaign ft. Cindy & Ein (CDR형)",
       "members": [
         "Crown",
         "Cinderella",
@@ -428,7 +428,7 @@
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-cindy-ein-cdr-rh-vari",
-      "name": "Zap-ping Through Campaign ft. Cindy & Ein (CDR + RH Variant)",
+      "name": "Zap-ping Through Campaign ft. Cindy & Ein (CDR+RH형)",
       "members": [
         "Crown",
         "Cinderella",
@@ -446,7 +446,7 @@
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-cindy-ein-non-cdr-var",
-      "name": "Zap-ping Through Campaign ft. Cindy & Ein (Non-CDR Variant)",
+      "name": "Zap-ping Through Campaign ft. Cindy & Ein (비CDR형)",
       "members": [
         "Crown",
         "Cinderella",
@@ -464,7 +464,7 @@
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-rapipi-ein-cdr-varian",
-      "name": "Zap-ping Through Campaign ft. Rapipi & Ein (CDR Variant)",
+      "name": "Zap-ping Through Campaign ft. Rapipi & Ein (CDR형)",
       "members": [
         "Crown",
         "Ein",
@@ -484,7 +484,7 @@
     },
     {
       "id": "pw-zap-ping-through-campaign-ft-rapipi-ein-cdr-rh-var",
-      "name": "Zap-ping Through Campaign ft. Rapipi & Ein (CDR + RH Variant)",
+      "name": "Zap-ping Through Campaign ft. Rapipi & Ein (CDR+RH형)",
       "members": [
         "Crown",
         "Ein",
@@ -502,7 +502,7 @@
     },
     {
       "id": "pw-surf-ing-through-campaign-ft-rapihelm-cdr-variant",
-      "name": "Surf-ing Through Campaign ft. Rapihelm (CDR + Variant)",
+      "name": "Surf-ing Through Campaign ft. Rapihelm (CDR형)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -522,7 +522,7 @@
     },
     {
       "id": "pw-surf-ing-through-campaign-ft-rapilud-cdr-variant",
-      "name": "Surf-ing Through Campaign ft. Rapilud (CDR + Variant)",
+      "name": "Surf-ing Through Campaign ft. Rapilud (CDR형)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -539,7 +539,7 @@
     },
     {
       "id": "pw-surf-ing-through-campaign-ft-rapilud-cdr-rh-varian",
-      "name": "Surf-ing Through Campaign ft. Rapilud (CDR + RH Variant)",
+      "name": "Surf-ing Through Campaign ft. Rapilud (CDR+RH형)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -557,7 +557,7 @@
     },
     {
       "id": "pw-surf-ing-through-campaign-ft-triple-dps-water",
-      "name": "Surf-ing Through Campaign ft. Triple DPS (Water)",
+      "name": "Surf-ing Through Campaign ft. Triple DPS (수냉)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -577,7 +577,7 @@
     },
     {
       "id": "pw-clash-ing-through-campaign-ft-rrh-rh",
-      "name": "Clash-ing Through Campaign ft. RRH & RH",
+      "name": "Clash-ing Through Campaign ft. RRH & RH (라피 : 레드 후드 + 레드 후드)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -595,7 +595,7 @@
     },
     {
       "id": "pw-clash-ing-through-campaign-ft-rrh-maxwell-cdr-vari",
-      "name": "Clash-ing Through Campaign ft. RRH & Maxwell (CDR Variant)",
+      "name": "Clash-ing Through Campaign ft. RRH & Maxwell (CDR형)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -612,7 +612,7 @@
     },
     {
       "id": "pw-clash-ing-through-campaign-ft-rrh-maxwell-cdr-rh-v",
-      "name": "Clash-ing Through Campaign ft. RRH & Maxwell (CDR + RH Variant)",
+      "name": "Clash-ing Through Campaign ft. RRH & Maxwell (CDR+RH형)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -630,7 +630,7 @@
     },
     {
       "id": "pw-clash-ing-through-campaign-ft-rh-maxwell-cdr-varia",
-      "name": "Clash-ing Through Campaign ft. RH & Maxwell (CDR Variant)",
+      "name": "Clash-ing Through Campaign ft. RH & Maxwell (CDR형)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -648,7 +648,7 @@
     },
     {
       "id": "pw-one-nikke-army-vesgod",
-      "name": "One-Nikke-Army-Vesgod",
+      "name": "One-Nikke-Army-Vesgod (베스티 : 택티컬 업 단기)",
       "members": [
         "Vesti: Tactical Upgrade",
         "N102",
@@ -665,7 +665,7 @@
     },
     {
       "id": "pw-one-nikke-army-rapi-redhood",
-      "name": "One-Nikke-Army-Rapi:RedHood",
+      "name": "One-Nikke-Army-Rapi:RedHood (라피 : 레드 후드 단기)",
       "members": [
         "Rapi: Red Hood",
         "N102",
@@ -685,7 +685,7 @@
     },
     {
       "id": "pw-one-nikke-army-modernia",
-      "name": "One-Nikke-Army-Modernia",
+      "name": "One-Nikke-Army-Modernia (모더니아 단기)",
       "members": [
         "N102",
         "Anis",
@@ -702,7 +702,7 @@
     },
     {
       "id": "pw-one-nikke-army-red-hood",
-      "name": "One-Nikke-Army-Red Hood",
+      "name": "One-Nikke-Army-Red Hood (레드 후드 단기)",
       "members": [
         "N102",
         "Anis",
@@ -720,7 +720,7 @@
     },
     {
       "id": "pw-one-nikke-army-sbs",
-      "name": "One-Nikke-Army-SBS",
+      "name": "One-Nikke-Army-SBS (홍련 : 흑영 단기)",
       "members": [
         "Scarlet: Black Shadow",
         "N102",
@@ -737,7 +737,7 @@
     },
     {
       "id": "pw-one-nikke-army-cindy",
-      "name": "One-Nikke-Army-Cindy",
+      "name": "One-Nikke-Army-Cindy (신데렐라 단기)",
       "members": [
         "Cinderella",
         "N102",
@@ -754,7 +754,7 @@
     },
     {
       "id": "pw-tia-naga",
-      "name": "Tia + Naga",
+      "name": "티아 + 나가",
       "members": [
         "Tia",
         "Naga"
@@ -776,7 +776,7 @@
     },
     {
       "id": "pw-el-macho",
-      "name": "El-Macho",
+      "name": "El-Macho (마스트 : 로망틱 메이드 + 앵커 : 이노센트 메이드)",
       "members": [
         "Mast: Romantic Maid",
         "Anchor: Innocent Maid"
@@ -795,7 +795,7 @@
     },
     {
       "id": "pw-crown",
-      "name": "Crown",
+      "name": "크라운",
       "members": [
         "Crown",
         "Naga"
@@ -814,7 +814,7 @@
     },
     {
       "id": "pw-auto-team",
-      "name": "Auto Team",
+      "name": "Auto Team (오토 조합)",
       "members": [
         "Liter",
         "Mast: Romantic Maid",
@@ -831,7 +831,7 @@
     },
     {
       "id": "pw-auto-team-no-liter",
-      "name": "Auto Team (No Liter)",
+      "name": "Auto Team (리타 없음)",
       "members": [
         "Little Mermaid",
         "Mast: Romantic Maid",
@@ -848,7 +848,7 @@
     },
     {
       "id": "pw-crowntr-team",
-      "name": "Crowntr Team",
+      "name": "Crowntr Team (애장품 크라운 조합)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -865,7 +865,7 @@
     },
     {
       "id": "pw-old-god-team",
-      "name": "Old \"God Team\"",
+      "name": "Old \"God Team\" (구 ‘갓 조합’)",
       "members": [
         "Liter",
         "Centi",
@@ -882,7 +882,7 @@
     },
     {
       "id": "pw-manual-play-with-lots-of-clicking",
-      "name": "Manual Play with Lots of Clicking",
+      "name": "Manual Play with Lots of Clicking (클릭이 많은 수동 조작 조합)",
       "members": [
         "Liter",
         "Centi",
@@ -901,7 +901,7 @@
     },
     {
       "id": "pw-vesgod-team",
-      "name": "Vesgod Team",
+      "name": "Vesgod Team (베스티 : 택티컬 업 조합)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -918,7 +918,7 @@
     },
     {
       "id": "pw-improvised-alice-maxwell-team",
-      "name": "Improvised Alice Maxwell Team",
+      "name": "Improvised Alice Maxwell Team (개량형 앨리스 + 맥스웰 조합)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -935,7 +935,7 @@
     },
     {
       "id": "pw-god-comp-1",
-      "name": "God Comp #1",
+      "name": "God Comp #1 (갓 조합 #1)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -952,7 +952,7 @@
     },
     {
       "id": "pw-god-comp-2",
-      "name": "God Comp #2",
+      "name": "God Comp #2 (갓 조합 #2)",
       "members": [
         "Takina Inoue",
         "Anis: Star",
@@ -971,7 +971,7 @@
     },
     {
       "id": "pw-god-comp-3",
-      "name": "God Comp #3",
+      "name": "God Comp #3 (갓 조합 #3)",
       "members": [
         "Crown",
         "Naga",
@@ -994,7 +994,7 @@
     },
     {
       "id": "pw-elysion-best-tribe-tower-team",
-      "name": "Elysion Best Tribe Tower Team",
+      "name": "Elysion Best Tribe Tower Team (엘리시온 최적 타워 조합)",
       "members": [
         "Rapi: Red Hood",
         "Mast: Romantic Maid",
@@ -1014,7 +1014,7 @@
     },
     {
       "id": "pw-missilis-best-tribe-tower-team",
-      "name": "Missilis Best Tribe Tower Team",
+      "name": "Missilis Best Tribe Tower Team (미실리스 최적 타워 조합)",
       "members": [
         "Laplace: Ultimate Hero",
         "Flora",
@@ -1036,7 +1036,7 @@
     },
     {
       "id": "pw-tetra-tribe-tower-team-1",
-      "name": "Tetra Tribe Tower Team #1",
+      "name": "Tetra Tribe Tower Team #1 (테트라 타워 조합 #1)",
       "members": [
         "Ludmilla: Winter Owner",
         "Rouge",
@@ -1056,7 +1056,7 @@
     },
     {
       "id": "pw-tetra-tribe-tower-team-2",
-      "name": "Tetra Tribe Tower Team #2",
+      "name": "Tetra Tribe Tower Team #2 (테트라 타워 조합 #2)",
       "members": [
         "Ludmilla: Winter Owner",
         "Rouge",
@@ -1073,7 +1073,7 @@
     },
     {
       "id": "pw-pilgrims-best-tribe-tower-team",
-      "name": "Pilgrims Best Tribe Tower Team",
+      "name": "Pilgrims Best Tribe Tower Team (필그림 최적 타워 조합)",
       "members": [
         "Rapi: Red Hood",
         "Anis: Star",
@@ -1090,7 +1090,7 @@
     },
     {
       "id": "pw-2-rl-instant-nuke",
-      "name": "2 RL Instant Nuke",
+      "name": "2 RL Instant Nuke (RL 2인 즉발 누크)",
       "members": [
         "Scarlet",
         "Trina",
@@ -1111,7 +1111,7 @@
     },
     {
       "id": "pw-pierce-heaven",
-      "name": "Pierce Heaven",
+      "name": "Pierce Heaven (관통 천국)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1129,7 +1129,7 @@
     },
     {
       "id": "pw-cinderella-vs-ultra",
-      "name": "Cinderella vs Ultra",
+      "name": "Cinderella vs Ultra (신데렐라 대 울트라)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1149,7 +1149,7 @@
     },
     {
       "id": "pw-artillery-vs-moth",
-      "name": "Artillery vs Moth",
+      "name": "Artillery vs Moth (포격 대 모스)",
       "members": [
         "Crown",
         "Zwei",
@@ -1166,7 +1166,7 @@
     },
     {
       "id": "pw-battle-without-your-king",
-      "name": "Battle without your King",
+      "name": "Battle without your King (왕 없는 싸움)",
       "members": [
         "Tia",
         "Anis: Star",
@@ -1185,7 +1185,7 @@
     },
     {
       "id": "pw-everyone-almost-is-a-dps-now",
-      "name": "Everyone (almost) is a DPS now",
+      "name": "Everyone (almost) is a DPS now (거의 전원이 딜러)",
       "members": [
         "Nayuta",
         "Anis: Star",
@@ -1205,7 +1205,7 @@
     },
     {
       "id": "pw-missing-the-great-swordwoman",
-      "name": "Missing the great swordwoman?",
+      "name": "Missing the great swordwoman? (그 검사가 그립다면)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1222,7 +1222,7 @@
     },
     {
       "id": "pw-maids-vs-octopus",
-      "name": "Maids vs Octopus",
+      "name": "Maids vs Octopus (메이드 대 문어)",
       "members": [
         "Mast: Romantic Maid",
         "Anchor: Innocent Maid",
@@ -1242,7 +1242,7 @@
     },
     {
       "id": "pw-afk-kraken-s7",
-      "name": "AFK Kraken S7",
+      "name": "AFK Kraken S7 (방치 크라켄 7스테이지)",
       "members": [
         "Anchor: Innocent Maid",
         "Rapi: Red Hood",
@@ -1262,7 +1262,7 @@
     },
     {
       "id": "pw-no-pilgrims",
-      "name": "No Pilgrims",
+      "name": "No Pilgrims (필그림 없이)",
       "members": [
         "Mast: Romantic Maid",
         "Moran",
@@ -1284,7 +1284,7 @@
     },
     {
       "id": "pw-rapi-and-helm-vs-harvester",
-      "name": "Rapi and Helm vs Harvester",
+      "name": "Rapi and Helm vs Harvester (라피·헬름 대 하베스터)",
       "members": [
         "Rapi: Red Hood",
         "Anis: Star",
@@ -1307,7 +1307,7 @@
     },
     {
       "id": "pw-pirates-vs-crab",
-      "name": "Pirates vs Crab",
+      "name": "Pirates vs Crab (해적 대 게)",
       "members": [
         "Mast: Romantic Maid",
         "Anis: Star",
@@ -1324,7 +1324,7 @@
     },
     {
       "id": "pw-the-3-5-anniversary",
-      "name": "The 3.5 Anniversary",
+      "name": "The 3.5 Anniversary (3.5주년 조합)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1344,7 +1344,7 @@
     },
     {
       "id": "pw-took-a-summer-winter-vacation-from-nikke",
-      "name": "Took a summer/winter vacation from NIKKE?",
+      "name": "Took a summer/winter vacation from NIKKE? (장기 휴식 후 복귀용)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1364,7 +1364,7 @@
     },
     {
       "id": "pw-the-proper-way",
-      "name": "The \"Proper\" Way",
+      "name": "The \"Proper\" Way (‘정공법’)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1381,7 +1381,7 @@
     },
     {
       "id": "pw-spider-slayer",
-      "name": "Spider Slayer",
+      "name": "Spider Slayer (스파이더 슬레이어)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1401,7 +1401,7 @@
     },
     {
       "id": "pw-snow-white-went-wandering",
-      "name": "Snow White went wandering",
+      "name": "Snow White went wandering (스노우 화이트는 떠났다)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1418,7 +1418,7 @@
     },
     {
       "id": "pw-no-pilgrims-vs-spider",
-      "name": "No Pilgrims vs Spider",
+      "name": "No Pilgrims vs Spider (필그림 없이 거미 공략)",
       "members": [
         "Mast: Romantic Maid",
         "Liter",
@@ -1437,7 +1437,7 @@
     },
     {
       "id": "pw-oh-crab",
-      "name": "Oh Crab!",
+      "name": "Oh Crab! (이런, 게다!)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -1454,7 +1454,7 @@
     },
     {
       "id": "pw-b1-rapi-vs-crab",
-      "name": "B1 Rapi vs Crab",
+      "name": "B1 Rapi vs Crab (B1 라피 대 게)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -1471,7 +1471,7 @@
     },
     {
       "id": "pw-elysion-tower-bossing-with-diesel",
-      "name": "Elysion Tower Bossing with Diesel™",
+      "name": "Elysion Tower Bossing with Diesel™ (디젤로 도는 엘리시온 타워 보스전)",
       "members": [
         "D: Killer Wife",
         "Mast: Romantic Maid",
@@ -1488,7 +1488,7 @@
     },
     {
       "id": "pw-mermaid-enjoyer",
-      "name": "Mermaid Enjoyer",
+      "name": "Mermaid Enjoyer (리틀 머메이드 애호가)",
       "members": [
         "Velvet",
         "Ludmilla: Winter Owner",
@@ -1505,7 +1505,7 @@
     },
     {
       "id": "pw-tetra-best-tribe-tower-team",
-      "name": "Tetra Best Tribe Tower Team",
+      "name": "Tetra Best Tribe Tower Team (테트라 최적 타워 조합)",
       "members": [
         "Anis: Star",
         "Milk: Blooming Bunny",
@@ -1525,7 +1525,7 @@
     },
     {
       "id": "pw-vesti-tactical-upgrade-aka-vesgod",
-      "name": "Vesti: Tactical Upgrade (aka Vesgod)",
+      "name": "Vesti: Tactical Upgrade (통칭 베스갓)",
       "members": [
         "Vesti: Tactical Upgrade"
       ],
@@ -1547,7 +1547,7 @@
     },
     {
       "id": "pw-other-one-nikke-army-teams",
-      "name": "Other One Nikke Army Teams",
+      "name": "Other One Nikke Army Teams (기타 원 니케 아미 조합)",
       "members": [
         "Rapi: Red Hood"
       ],
@@ -1569,7 +1569,7 @@
     },
     {
       "id": "pw-mint-ka-team",
-      "name": "Mint-ka Team",
+      "name": "Mint-ka Team (민트 + 프리카 조합)",
       "members": [
         "Prika",
         "Mint"
@@ -1591,7 +1591,7 @@
     },
     {
       "id": "pw-el-ma-chor",
-      "name": "El Ma-chor",
+      "name": "El Ma-chor (엘 마초)",
       "members": [
         "Mast: Romantic Maid",
         "Anchor: Innocent Maid"
@@ -1613,7 +1613,7 @@
     },
     {
       "id": "pw-auto-team-story",
-      "name": "Auto Team Story",
+      "name": "Auto Team Story (스토리용 오토 조합)",
       "members": [
         "Anis: Star",
         "Mast: Romantic Maid",
@@ -1630,7 +1630,7 @@
     },
     {
       "id": "pw-crownaga",
-      "name": "Crownaga",
+      "name": "Crownaga (크라운 + 나가)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1647,7 +1647,7 @@
     },
     {
       "id": "pw-duo-maids-team",
-      "name": "Duo Maids Team",
+      "name": "Duo Maids Team (메이드 듀오 조합)",
       "members": [
         "Anis: Star",
         "Mast: Romantic Maid",
@@ -1664,7 +1664,7 @@
     },
     {
       "id": "pw-pure-evil-team-1",
-      "name": "Pure Evil Team #1",
+      "name": "Pure Evil Team #1 (순수악 조합 #1)",
       "members": [
         "Crown",
         "Anis: Star",
@@ -1681,7 +1681,7 @@
     },
     {
       "id": "pw-pure-evil-team-2",
-      "name": "Pure Evil Team #2",
+      "name": "Pure Evil Team #2 (순수악 조합 #2)",
       "members": [
         "Anis: Star",
         "Prika",
@@ -1701,7 +1701,7 @@
     },
     {
       "id": "pw-mission-impossible-team",
-      "name": "Mission Impossible Team",
+      "name": "Mission Impossible Team (미션 임파서블 조합)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -1718,7 +1718,7 @@
     },
     {
       "id": "pw-solo-anis-star",
-      "name": "Solo Anis: Star",
+      "name": "Solo Anis: Star (아니스 : 스타 단기)",
       "members": [
         "Anis: Star"
       ],
@@ -1740,7 +1740,7 @@
     },
     {
       "id": "pw-alternate-best-ur-team-electric",
-      "name": "Alternate Best UR Team - Electric",
+      "name": "Alternate Best UR Team - Electric (유니온 레이드 대체 최적 조합 · 전격)",
       "members": [
         "Anis: Star",
         "Isabel",
@@ -1757,7 +1757,7 @@
     },
     {
       "id": "pw-old-meta-or-saving-anis-star",
-      "name": "Old Meta OR Saving Anis Star",
+      "name": "Old Meta OR Saving Anis Star (구 메타, 또는 아니스 : 스타 아껴두기)",
       "members": [
         "Moran",
         "Ade: Agent Bunny",
@@ -1774,7 +1774,7 @@
     },
     {
       "id": "pw-double-t2-v1-slightly-worse-but-more-common-to-inv",
-      "name": "Double T2 V1 - Slightly Worse but More Common to Invest Into",
+      "name": "Double T2 V1 — 조금 약하지만 육성해 둔 경우가 많은 형",
       "members": [
         "Moran",
         "Crown",
@@ -1791,7 +1791,7 @@
     },
     {
       "id": "pw-double-t2-v2-better-but-niche",
-      "name": "Double T2 V2 - Better but Niche",
+      "name": "Double T2 V2 — 더 강하지만 쓰임이 좁은 형",
       "members": [
         "Rosanna",
         "Crown",
@@ -1808,7 +1808,7 @@
     },
     {
       "id": "pw-triple-t3-v1-better-but-niche",
-      "name": "Triple T3 V1 - Better but Niche",
+      "name": "Triple T3 V1 — 더 강하지만 쓰임이 좁은 형",
       "members": [
         "Takina Inoue",
         "Ein",
@@ -1825,7 +1825,7 @@
     },
     {
       "id": "pw-triple-t3-v2-more-common-to-invest-into-but-slight",
-      "name": "Triple T3 V2 - More Common to Invest into but Slightly Worse",
+      "name": "Triple T3 V2 — 육성해 둔 경우가 많지만 조금 약한 형",
       "members": [
         "Moran",
         "Prika",
@@ -1842,7 +1842,7 @@
     },
     {
       "id": "pw-main-team-rapi-v1",
-      "name": "Main Team Rapi V1",
+      "name": "Main Team Rapi V1 (주력 조합 · 라피형 V1)",
       "members": [
         "Little Mermaid",
         "Brid: Silent Track",
@@ -1859,7 +1859,7 @@
     },
     {
       "id": "pw-main-team-rapi-v2",
-      "name": "Main Team Rapi V2",
+      "name": "Main Team Rapi V2 (주력 조합 · 라피형 V2)",
       "members": [
         "Rapi: Red Hood",
         "Brid: Silent Track",
@@ -1876,7 +1876,7 @@
     },
     {
       "id": "pw-main-team-rapiless",
-      "name": "Main Team Rapiless",
+      "name": "Main Team Rapiless (주력 조합 · 라피 없음)",
       "members": [
         "Anis: Star",
         "Brid: Silent Track",
@@ -1893,7 +1893,7 @@
     },
     {
       "id": "pw-double-fire-1",
-      "name": "Double Fire 1",
+      "name": "Double Fire 1 (작열 2인 1)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -1913,7 +1913,7 @@
     },
     {
       "id": "pw-double-fire-2",
-      "name": "Double Fire 2",
+      "name": "Double Fire 2 (작열 2인 2)",
       "members": [
         "Little Mermaid",
         "Brid: Silent Track",
@@ -1930,7 +1930,7 @@
     },
     {
       "id": "pw-triple-fire-v1-1",
-      "name": "Triple Fire V1 1",
+      "name": "Triple Fire V1 1 (작열 3인 V1-1)",
       "members": [
         "Liter",
         "Prika",
@@ -1947,7 +1947,7 @@
     },
     {
       "id": "pw-triple-fire-v1-2",
-      "name": "Triple Fire V1 2",
+      "name": "Triple Fire V1 2 (작열 3인 V1-2)",
       "members": [
         "Little Mermaid",
         "Brid: Silent Track",
@@ -1964,7 +1964,7 @@
     },
     {
       "id": "pw-triple-fire-v2-1",
-      "name": "Triple Fire V2 1",
+      "name": "Triple Fire V2 1 (작열 3인 V2-1)",
       "members": [
         "Liter",
         "Brid: Silent Track",
@@ -1981,7 +1981,7 @@
     },
     {
       "id": "pw-triple-fire-v2-2",
-      "name": "Triple Fire V2 2",
+      "name": "Triple Fire V2 2 (작열 3인 V2-2)",
       "members": [
         "Miranda",
         "Rosanna: Chic Ocean",
@@ -1998,7 +1998,7 @@
     },
     {
       "id": "pw-main-team-v1-water",
-      "name": "Main Team V1 Water",
+      "name": "Main Team V1 Water (주력 조합 V1 · 수냉)",
       "members": [
         "Moran",
         "Crown",
@@ -2018,7 +2018,7 @@
     },
     {
       "id": "pw-main-team-alternate-water",
-      "name": "Main Team Alternate Water",
+      "name": "Main Team Alternate Water (주력 대체 조합 · 수냉)",
       "members": [
         "Nayuta",
         "Snow White: Heavy Arms",
@@ -2040,7 +2040,7 @@
     },
     {
       "id": "pw-water-team-2-shotguns",
-      "name": "Water Team 2 - Shotguns",
+      "name": "Water Team 2 - Shotguns (수냉 조합 2 · SG)",
       "members": [
         "Tove",
         "Arcana: Fortune Mate",
@@ -2057,7 +2057,7 @@
     },
     {
       "id": "pw-triple-hit-swha",
-      "name": "Triple Hit SWHA",
+      "name": "Triple Hit SWHA (트리플 히트 · 스노우 화이트 : 헤비암즈)",
       "members": [
         "Anis: Star",
         "Mint",
@@ -2074,7 +2074,7 @@
     },
     {
       "id": "pw-triple-hit-helm",
-      "name": "Triple Hit Helm",
+      "name": "Triple Hit Helm (트리플 히트 · 헬름)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -2091,7 +2091,7 @@
     },
     {
       "id": "pw-the-obvious-wind-team",
-      "name": "The Obvious Wind Team",
+      "name": "The Obvious Wind Team (풍압의 정석 조합)",
       "members": [
         "Little Mermaid",
         "Nayuta",
@@ -2108,7 +2108,7 @@
     },
     {
       "id": "pw-double-hit-t2-wind",
-      "name": "Double Hit T2 Wind",
+      "name": "Double Hit T2 Wind (풍압 더블 히트 · 제2조합)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -2128,7 +2128,7 @@
     },
     {
       "id": "pw-triple-hit-t2-wind",
-      "name": "Triple Hit T2 Wind",
+      "name": "Triple Hit T2 Wind (풍압 트리플 히트 · 제2조합)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -2145,7 +2145,7 @@
     },
     {
       "id": "pw-triple-hit-t3-wind",
-      "name": "Triple Hit T3 Wind",
+      "name": "Triple Hit T3 Wind (풍압 트리플 히트 · 제3조합)",
       "members": [
         "Rapi: Red Hood",
         "Nayuta",
@@ -2162,7 +2162,7 @@
     },
     {
       "id": "pw-iron-main-pierce-team",
-      "name": "Iron Main Pierce Team",
+      "name": "Iron Main Pierce Team (철갑 · 관통 주력 조합)",
       "members": [
         "Anis: Star",
         "Mint",
@@ -2179,7 +2179,7 @@
     },
     {
       "id": "pw-iron-pierce-team-2",
-      "name": "Iron Pierce Team 2",
+      "name": "Iron Pierce Team 2 (철갑 · 관통 조합 2)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -2196,7 +2196,7 @@
     },
     {
       "id": "pw-iron-third-team",
-      "name": "Iron Third Team",
+      "name": "Iron Third Team (철갑 · 제3조합)",
       "members": [
         "Zwei",
         "Mint",
@@ -2216,7 +2216,7 @@
     },
     {
       "id": "pw-alternate-combo-team-1",
-      "name": "Alternate Combo Team 1",
+      "name": "Alternate Combo Team 1 (대체 콤보 조합 1)",
       "members": [
         "Liter",
         "Grave",
@@ -2236,7 +2236,7 @@
     },
     {
       "id": "pw-alternate-combo-team-2",
-      "name": "Alternate Combo Team 2",
+      "name": "Alternate Combo Team 2 (대체 콤보 조합 2)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -2253,7 +2253,7 @@
     },
     {
       "id": "pw-alternate-combo-3-two-team-t2",
-      "name": "Alternate Combo 3 / Two Team T2",
+      "name": "Alternate Combo 3 / Two Team T2 (대체 콤보 3 / 2조합 중 제2)",
       "members": [
         "Anis: Star",
         "Mint",
@@ -2271,7 +2271,7 @@
     },
     {
       "id": "pw-two-team-no-sw-no-bmilk-t1",
-      "name": "Two Team No SW No BMilk T1",
+      "name": "Two Team No SW No BMilk T1 (스노우 화이트·버니 밀크 없는 2조합 중 제1)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -2291,7 +2291,7 @@
     },
     {
       "id": "pwc-2b-mast-wombo-combo",
-      "name": "2b mast wombo combo",
+      "name": "2B Mast wombo combo (2B + 마스트 필살 콤보)",
       "members": [
         "2B",
         "Mast",
@@ -2307,7 +2307,7 @@
     },
     {
       "id": "pwc-a2-clearing-your-screen",
-      "name": "A2 clearing your screen",
+      "name": "A2 clearing your screen (A2가 화면을 쓸어버린다)",
       "members": [
         "Blanc",
         "A2",
@@ -2323,7 +2323,7 @@
     },
     {
       "id": "pwc-ultra-wong",
-      "name": "Ultra wong",
+      "name": "Ultra Wong (울트라 웡)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -2341,7 +2341,7 @@
     },
     {
       "id": "pwc-fishing-with-ada",
-      "name": "Fishing with Ada",
+      "name": "Fishing with Ada (에이다와 낚시를)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -2358,7 +2358,7 @@
     },
     {
       "id": "pwc-one-shot-one-kill",
-      "name": "One shot, one kill",
+      "name": "One shot, one kill (일격필살)",
       "members": [
         "Blanc",
         "Ada Wong",
@@ -2375,7 +2375,7 @@
     },
     {
       "id": "pwc-pew-pew-true-damage",
-      "name": "Pew pew true damage",
+      "name": "Pew pew true damage (트루 데미지 연사)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -2392,7 +2392,7 @@
     },
     {
       "id": "pwc-afk-is-a-thing",
-      "name": "AFK is a thing",
+      "name": "AFK is a thing (방치도 어엿한 전술)",
       "members": [
         "Miranda",
         "Rosanna: Chic Ocean",
@@ -2408,7 +2408,7 @@
     },
     {
       "id": "pwc-snow-perma-crit",
-      "name": "Snow perma crit",
+      "name": "Snow perma crit (스노우 화이트 상시 크리티컬)",
       "members": [
         "Miranda",
         "Grave",
@@ -2424,7 +2424,7 @@
     },
     {
       "id": "pwc-guillotine-flex-team",
-      "name": "Guillotine flex team",
+      "name": "Guillotine flex team (길로틴용 유연 조합)",
       "members": [
         "Moran",
         "Sakura",
@@ -2440,7 +2440,7 @@
     },
     {
       "id": "pwc-cool-ade",
-      "name": "Cool Ade",
+      "name": "Cool Ade (쿨한 에이드)",
       "members": [
         "Ade: Agent Bunny"
       ],
@@ -2453,7 +2453,7 @@
     },
     {
       "id": "pwc-wind-ade",
-      "name": "Wind Ade",
+      "name": "Wind Ade (풍압 에이드)",
       "members": [
         "Little Mermaid",
         "Ade: Agent Bunny",
@@ -2469,7 +2469,7 @@
     },
     {
       "id": "pwc-electric-ade",
-      "name": "Electric Ade",
+      "name": "Electric Ade (전격 에이드)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -2486,7 +2486,7 @@
     },
     {
       "id": "pwc-iron-ade",
-      "name": "Iron Ade",
+      "name": "Iron Ade (철갑 에이드)",
       "members": [
         "Miranda",
         "Ade: Agent Bunny",
@@ -2504,7 +2504,7 @@
     },
     {
       "id": "pwc-fire-ade",
-      "name": "Fire Ade",
+      "name": "Fire Ade (작열 에이드)",
       "members": [
         "Little Mermaid",
         "Ade: Agent Bunny",
@@ -2521,7 +2521,7 @@
     },
     {
       "id": "pwc-scarlet-reload-team",
-      "name": "Scarlet Reload team",
+      "name": "Scarlet Reload team (홍련 재장전 조합)",
       "members": [
         "Admi",
         "Scarlet",
@@ -2537,7 +2537,7 @@
     },
     {
       "id": "pwc-alice-the-queen-of-campaign-dps",
-      "name": "Alice, the Queen of Campaign DPS",
+      "name": "Alice, the Queen of Campaign DPS (캠페인 딜러의 여왕 앨리스)",
       "members": [
         "Crown",
         "Alice",
@@ -2552,7 +2552,7 @@
     },
     {
       "id": "pwc-is-that-is-that-uninvested-alice",
-      "name": "Is That... Is That Uninvested Alice?",
+      "name": "Is That... Is That Uninvested Alice? (그거… 육성 안 한 앨리스야?)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -2569,7 +2569,7 @@
     },
     {
       "id": "pwc-the-sg-meta-team",
-      "name": "The SG Meta Team",
+      "name": "The SG Meta Team (SG 메타 조합)",
       "members": [
         "Alice: Wonderland Bunny",
         "Tove",
@@ -2586,7 +2586,7 @@
     },
     {
       "id": "pwc-reload-heaven",
-      "name": "Reload Heaven",
+      "name": "Reload Heaven (재장전 천국)",
       "members": [
         "Rapi: Red Hood",
         "Mast: Romantic Maid",
@@ -2603,7 +2603,7 @@
     },
     {
       "id": "pwc-elysion-tower",
-      "name": "Elysion Tower",
+      "name": "Elysion Tower (엘리시온 타워)",
       "members": [
         "D: Killer Wife",
         "Mast: Romantic Maid",
@@ -2627,7 +2627,7 @@
     },
     {
       "id": "pwc-scarletto-s-arc",
-      "name": "Scarletto's Arc",
+      "name": "Scarletto's Arc (홍련의 이야기)",
       "members": [
         "Scarlet",
         "Anchor: Innocent Maid",
@@ -2643,7 +2643,7 @@
     },
     {
       "id": "pwc-h-e-a-l-i-n-g",
-      "name": "H E A L I N G",
+      "name": "H E A L I N G (회 복)",
       "members": [
         "Noise",
         "Anchor: Innocent Maid",
@@ -2660,7 +2660,7 @@
     },
     {
       "id": "pwc-new-player-team",
-      "name": "New Player team",
+      "name": "New Player team (초보자용 조합)",
       "members": [
         "N102",
         "Anis",
@@ -2675,7 +2675,7 @@
     },
     {
       "id": "pwc-anis-dominates-tetra-tower",
-      "name": "Anis Dominates Tetra Tower!",
+      "name": "Anis Dominates Tetra Tower! (아니스가 테트라 타워를 제압한다)",
       "members": [
         "Anis: Star",
         "Ade: Agent Bunny",
@@ -2692,7 +2692,7 @@
     },
     {
       "id": "pwc-if-you-need-survivability-heal",
-      "name": "If You Need Survivability + Heal",
+      "name": "If You Need Survivability + Heal (생존력과 회복이 필요할 때)",
       "members": [
         "Moran",
         "Crown",
@@ -2707,7 +2707,7 @@
     },
     {
       "id": "pwc-iron-weak-musical",
-      "name": "Iron-Weak Musical",
+      "name": "Iron-Weak Musical (철갑 약점 뮤지컬)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -2723,7 +2723,7 @@
     },
     {
       "id": "pwc-nayuta-anis-s-concert-i",
-      "name": "Nayuta & Anis's Concert I",
+      "name": "Nayuta & Anis's Concert I (나유타와 아니스의 콘서트 I)",
       "members": [
         "Nayuta",
         "Anis: Star",
@@ -2743,7 +2743,7 @@
     },
     {
       "id": "pwc-nayuta-anis-s-concert-ii",
-      "name": "Nayuta & Anis's Concert II",
+      "name": "Nayuta & Anis's Concert II (나유타와 아니스의 콘서트 II)",
       "members": [
         "Nayuta",
         "Anis: Star",
@@ -2762,7 +2762,7 @@
     },
     {
       "id": "pwc-anis-blanc-s-concert-i",
-      "name": "Anis & Blanc's Concert I",
+      "name": "Anis & Blanc's Concert I (아니스와 블랑의 콘서트 I)",
       "members": [
         "Anis: Star",
         "Blanc",
@@ -2780,7 +2780,7 @@
     },
     {
       "id": "pwc-delayed-indom-for-indom-war",
-      "name": "Delayed Indom for Indom War",
+      "name": "Delayed Indom for Indom War (불굴 싸움을 위한 불굴 지연)",
       "members": [
         "Blanc",
         "Anis: Star",
@@ -2795,7 +2795,7 @@
     },
     {
       "id": "pwc-cindy-s-slow-theatrical",
-      "name": "Cindy's Slow Theatrical",
+      "name": "Cindy's Slow Theatrical (슬로우 신데렐라 극장)",
       "members": [
         "Anis: Star",
         "Biscuit",
@@ -2810,7 +2810,7 @@
     },
     {
       "id": "pwc-best-anis-pvp-team-1",
-      "name": "Best Anis PvP Team 1",
+      "name": "Best Anis PvP Team 1 (아니스 최적 PvP 조합 1)",
       "members": [
         "Anis: Star",
         "Nayuta",
@@ -2830,7 +2830,7 @@
     },
     {
       "id": "pwc-best-anis-pvp-team-2",
-      "name": "Best Anis PvP Team 2",
+      "name": "Best Anis PvP Team 2 (아니스 최적 PvP 조합 2)",
       "members": [
         "Nero",
         "Bay",
@@ -2852,7 +2852,7 @@
     },
     {
       "id": "pwc-best-anis-pvp-team-3",
-      "name": "Best Anis PvP Team 3",
+      "name": "Best Anis PvP Team 3 (아니스 최적 PvP 조합 3)",
       "members": [
         "Anis: Star",
         "Nero",
@@ -2869,7 +2869,7 @@
     },
     {
       "id": "pwc-isabel-operates-a-shotgun-remember",
-      "name": "Isabel Operates a Shotgun, Remember?",
+      "name": "Isabel Operates a Shotgun, Remember? (이사벨은 SG 사수였다, 기억나?)",
       "members": [
         "Isabel",
         "Tove",
@@ -2889,7 +2889,7 @@
     },
     {
       "id": "pwc-isabel-and-scarlet-befriend-each-other",
-      "name": "Isabel and Scarlet Befriend Each Other",
+      "name": "Isabel and Scarlet Befriend Each Other (이사벨과 홍련, 친구가 되다)",
       "members": [
         "Isabel",
         "Arcana",
@@ -2906,7 +2906,7 @@
     },
     {
       "id": "pwc-isabel-goes-on-vacation-with-cinderella",
-      "name": "Isabel Goes on Vacation With Cinderella",
+      "name": "Isabel Goes on Vacation With Cinderella (이사벨, 신데렐라와 휴가를 떠나다)",
       "members": [
         "Arcana",
         "Blanc",
@@ -2923,7 +2923,7 @@
     },
     {
       "id": "pwc-would-ve-been-electric-meta-but-lapluh-turned-out-",
-      "name": "Would've Been Electric Meta, But Lapluh Turned Out Wind",
+      "name": "Would've Been Electric Meta, But Lapluh Turned Out Wind (전격 메타가 될 뻔했지만 라플라스 : 얼티밋 히어로는 풍압이었다)",
       "members": [
         "Liter",
         "Arcana",
@@ -2940,7 +2940,7 @@
     },
     {
       "id": "pwc-bunny-with-a-fortunate-mate",
-      "name": "Bunny with a fortunate mate",
+      "name": "Bunny with a fortunate mate (행운의 짝을 만난 바니)",
       "members": [
         "Tove",
         "Arcana: Fortune Mate",
@@ -2957,7 +2957,7 @@
     },
     {
       "id": "pwc-le-old-shield-duo-to-survive-modernia-laser",
-      "name": "Le old Shield Duo to survive Modernia laser",
+      "name": "Le old Shield Duo to survive Modernia laser (모더니아 레이저를 버티는 옛 실드 듀오)",
       "members": [
         "Aria",
         "Folkwang"
@@ -2971,7 +2971,7 @@
     },
     {
       "id": "pwc-black-is-the-new-wind",
-      "name": "Black is the New Wind",
+      "name": "Black is the New Wind (검정이 곧 새로운 풍압)",
       "members": [
         "Zwei",
         "Mint",
@@ -2986,7 +2986,7 @@
     },
     {
       "id": "pwc-black-white-and-red",
-      "name": "Black, White, and Red",
+      "name": "Black, White, and Red (검정과 하양과 빨강)",
       "members": [
         "Miranda",
         "Blanc",
@@ -3003,7 +3003,7 @@
     },
     {
       "id": "pwc-what-s-better-black-critting-or-a-black-crit-line",
-      "name": "What's Better: Black Critting or a Black Crit Line?",
+      "name": "What's Better: Black Critting or a Black Crit Line? (블랙의 크리티컬이냐, 크리티컬 라인이냐)",
       "members": [
         "Miranda",
         "Rosanna: Chic Ocean",
@@ -3020,7 +3020,7 @@
     },
     {
       "id": "pwc-power-idols",
-      "name": "Power Idols",
+      "name": "Power Idols (파워 아이돌즈)",
       "members": [
         "Mint",
         "Ark Ranger Black",
@@ -3036,7 +3036,7 @@
     },
     {
       "id": "pwc-crown-pushing-the-limits",
-      "name": "Crown Pushing the Limits",
+      "name": "Crown Pushing the Limits (한계에 도전하는 크라운)",
       "members": [
         "Liter",
         "Crown",
@@ -3053,7 +3053,7 @@
     },
     {
       "id": "pwc-bunny-power",
-      "name": "Bunny Power",
+      "name": "Bunny Power (바니 파워)",
       "members": [
         "Liter",
         "Blanc",
@@ -3070,7 +3070,7 @@
     },
     {
       "id": "pwc-demolish-unprotected-p1-wind-unit",
-      "name": "Demolish Unprotected P1 Wind Unit",
+      "name": "Demolish Unprotected P1 Wind Unit (무방비한 P1 풍압 유닛을 부순다)",
       "members": [
         "Noah",
         "Biscuit",
@@ -3087,7 +3087,7 @@
     },
     {
       "id": "pwc-asuka-blanc-variant",
-      "name": "Asuka Blanc Variant",
+      "name": "Asuka Blanc Variant (아스카 + 블랑형)",
       "members": [
         "Asuka Shikinami Langley",
         "Blanc",
@@ -3105,7 +3105,7 @@
     },
     {
       "id": "pwc-asuka-x-rei-team-up-again",
-      "name": "Asuka x Rei Team Up Again",
+      "name": "Asuka x Rei Team Up Again (아스카와 레이, 다시 한 팀)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3122,7 +3122,7 @@
     },
     {
       "id": "pwc-the-wind-terror",
-      "name": "The Wind Terror",
+      "name": "The Wind Terror (풍압의 공포)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3139,7 +3139,7 @@
     },
     {
       "id": "pwc-tornado-bunnies",
-      "name": "Tornado Bunnies",
+      "name": "Tornado Bunnies (토네이도 바니즈)",
       "members": [
         "Blanc",
         "Asuka: WILLE",
@@ -3155,7 +3155,7 @@
     },
     {
       "id": "pwc-off-element-raid-wasuka",
-      "name": "Off element Raid WAsuka",
+      "name": "Off element Raid WAsuka (속성 외 레이드의 아스카 WILLE)",
       "members": [
         "Asuka: WILLE"
       ],
@@ -3168,7 +3168,7 @@
     },
     {
       "id": "pwc-common-bay-team",
-      "name": "Common Bay Team",
+      "name": "Common Bay Team (일반적인 베이 조합)",
       "members": [
         "Noise",
         "Bay",
@@ -3184,7 +3184,7 @@
     },
     {
       "id": "pwc-stall-team",
-      "name": "Stall team",
+      "name": "Stall team (발 묶기 조합)",
       "members": [
         "Moran",
         "Bay",
@@ -3201,7 +3201,7 @@
     },
     {
       "id": "pwc-general-team",
-      "name": "General Team",
+      "name": "General Team (범용 조합)",
       "members": [
         "Blanc",
         "Noir"
@@ -3215,7 +3215,7 @@
     },
     {
       "id": "pwc-general-team-for-blanc-2",
-      "name": "General Team for Blanc #2",
+      "name": "General Team for Blanc #2 (블랑용 범용 조합 #2)",
       "members": [
         "Rouge",
         "Blanc"
@@ -3229,7 +3229,7 @@
     },
     {
       "id": "pwc-maid-for-bready",
-      "name": "Maid-for-Bready",
+      "name": "Maid-for-Bready (브래디를 위한 메이드)",
       "members": [
         "Mast: Romantic Maid",
         "Bready",
@@ -3244,7 +3244,7 @@
     },
     {
       "id": "pwc-sustain-this-damage",
-      "name": "Sustain This Damage!",
+      "name": "Sustain This Damage! (이 지속 데미지를 보라)",
       "members": [
         "Rosanna: Chic Ocean",
         "Bready",
@@ -3259,7 +3259,7 @@
     },
     {
       "id": "pwc-harvester-is-an-anomaly",
-      "name": "Harvester is an Anomaly",
+      "name": "Harvester is an Anomaly (하베스터는 이상 개체다)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3276,7 +3276,7 @@
     },
     {
       "id": "pwc-let-me-copegg",
-      "name": "Let Me Copegg",
+      "name": "Let Me Copegg (변명 좀 하자)",
       "members": [
         "Elegg",
         "Bready"
@@ -3290,7 +3290,7 @@
     },
     {
       "id": "pwc-mary-the-water-buffer",
-      "name": "Mary the Water buffer",
+      "name": "Mary the Water buffer (수냉 버퍼 메어리)",
       "members": [
         "Mary: Bay Goddess",
         "Rosanna: Chic Ocean",
@@ -3307,7 +3307,7 @@
     },
     {
       "id": "pwc-mono-fire-with-xbrid",
-      "name": "Mono Fire with XBrid",
+      "name": "Mono Fire with XBrid (브리드 : 사일런트 트랙과 함께하는 작열 단일 속성)",
       "members": [
         "Rapi: Red Hood",
         "Brid: Silent Track",
@@ -3324,7 +3324,7 @@
     },
     {
       "id": "pwc-mono-fire-with-xbrid-crown",
-      "name": "Mono Fire with XBrid & Crown",
+      "name": "Mono Fire with XBrid & Crown (브리드 : 사일런트 트랙 + 크라운의 작열 단일 속성)",
       "members": [
         "Rapi: Red Hood",
         "Brid: Silent Track",
@@ -3341,7 +3341,7 @@
     },
     {
       "id": "pwc-xbrid-punching-a-hole-in-alteisen-s-body",
-      "name": "XBrid Punching a Hole in Alteisen's Body",
+      "name": "XBrid Punching a Hole in Alteisen's Body (알트아이젠 장갑에 구멍을 내는 브리드 : 사일런트 트랙)",
       "members": [
         "Tove",
         "Brid: Silent Track",
@@ -3361,7 +3361,7 @@
     },
     {
       "id": "pwc-xbrid-buffing-atk-reliant-b3-in-miranda-s-comp",
-      "name": "XBrid Buffing ATK-Reliant B3 in Miranda's Comp",
+      "name": "XBrid Buffing ATK-Reliant B3 in Miranda's Comp (미란다 조합에서 공격력 의존 B3를 버프하는 브리드 : 사일런트 트랙)",
       "members": [
         "Miranda",
         "Brid: Silent Track",
@@ -3381,7 +3381,7 @@
     },
     {
       "id": "pwc-xbrid-in-campaign",
-      "name": "XBrid in Campaign",
+      "name": "XBrid in Campaign (캠페인의 브리드 : 사일런트 트랙)",
       "members": [
         "Little Mermaid",
         "Brid: Silent Track",
@@ -3397,7 +3397,7 @@
     },
     {
       "id": "pwc-xbrid-in-elysion-tower",
-      "name": "XBrid in Elysion Tower",
+      "name": "XBrid in Elysion Tower (엘리시온 타워의 브리드 : 사일런트 트랙)",
       "members": [
         "Rapi: Red Hood",
         "Brid: Silent Track",
@@ -3414,7 +3414,7 @@
     },
     {
       "id": "pwc-xbrid-just-being-a-b2",
-      "name": "XBrid Just Being a B2",
+      "name": "XBrid Just Being a B2 (그냥 B2로 쓰는 브리드 : 사일런트 트랙)",
       "members": [
         "Liter",
         "Brid: Silent Track"
@@ -3428,7 +3428,7 @@
     },
     {
       "id": "pwc-centi-s-white-adventure",
-      "name": "Centi's White Adventure",
+      "name": "Centi's White Adventure (센티의 하얀 모험)",
       "members": [
         "Blanc",
         "Centi",
@@ -3443,7 +3443,7 @@
     },
     {
       "id": "pwc-safer-blanc",
-      "name": "Safer Blanc",
+      "name": "Safer Blanc (더 안전한 블랑 조합)",
       "members": [
         "Jackal",
         "Snow White: Heavy Arms",
@@ -3463,7 +3463,7 @@
     },
     {
       "id": "pwc-safer-noah",
-      "name": "Safer Noah",
+      "name": "Safer Noah (더 안전한 노아 조합)",
       "members": [
         "Moran",
         "Noah",
@@ -3483,7 +3483,7 @@
     },
     {
       "id": "pwc-safer-anything-else",
-      "name": "Safer Anything Else",
+      "name": "Safer Anything Else (그 밖의 것도 안전하게)",
       "members": [
         "Centi"
       ],
@@ -3499,7 +3499,7 @@
     },
     {
       "id": "pwc-lapluh-pvp-defense-i",
-      "name": "Lapluh - PvP Defense I",
+      "name": "Lapluh - PvP Defense I (라플라스 : 얼티밋 히어로 · PvP 방어 I)",
       "members": [
         "Noah",
         "Soda",
@@ -3516,7 +3516,7 @@
     },
     {
       "id": "pwc-lapluh-pvp-offense-i",
-      "name": "Lapluh - PvP Offense I",
+      "name": "Lapluh - PvP Offense I (라플라스 : 얼티밋 히어로 · PvP 공격 I)",
       "members": [
         "Trina",
         "Little Mermaid",
@@ -3536,7 +3536,7 @@
     },
     {
       "id": "pwc-lapluh-pvp-offense-ii",
-      "name": "Lapluh - PvP Offense II",
+      "name": "Lapluh - PvP Offense II (라플라스 : 얼티밋 히어로 · PvP 공격 II)",
       "members": [
         "Moran",
         "Centi",
@@ -3557,7 +3557,7 @@
     },
     {
       "id": "pwc-so-much-true-damage",
-      "name": "So Much True Damage",
+      "name": "So Much True Damage (고정 데미지 범벅)",
       "members": [
         "Moran",
         "Takina Inoue",
@@ -3577,7 +3577,7 @@
     },
     {
       "id": "pwc-campaign-coper",
-      "name": "Campaign Coper",
+      "name": "Campaign Coper (캠페인 타협 조합)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -3594,7 +3594,7 @@
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-i",
-      "name": "Iron-weak Solo Raid True DMG Team Idea I",
+      "name": "Iron-weak Solo Raid True DMG Team Idea I (철갑 약점 솔로 레이드 고정 데미지 조합안 I)",
       "members": [
         "Liter",
         "Takina Inoue",
@@ -3614,7 +3614,7 @@
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-ii",
-      "name": "Iron-weak Solo Raid True DMG Team Idea II",
+      "name": "Iron-weak Solo Raid True DMG Team Idea II (철갑 약점 솔로 레이드 고정 데미지 조합안 II)",
       "members": [
         "Liter",
         "Takina Inoue",
@@ -3634,7 +3634,7 @@
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-iii",
-      "name": "Iron-weak Solo Raid True DMG Team Idea III",
+      "name": "Iron-weak Solo Raid True DMG Team Idea III (철갑 약점 솔로 레이드 고정 데미지 조합안 III)",
       "members": [
         "Moran",
         "Takina Inoue",
@@ -3651,7 +3651,7 @@
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-iv",
-      "name": "Iron-weak Solo Raid True DMG Team Idea IV",
+      "name": "Iron-weak Solo Raid True DMG Team Idea IV (철갑 약점 솔로 레이드 고정 데미지 조합안 IV)",
       "members": [
         "Moran",
         "Ade: Agent Bunny",
@@ -3668,7 +3668,7 @@
     },
     {
       "id": "pwc-anti-moran-helmtr",
-      "name": "Anti Moran & HelmTr",
+      "name": "Anti Moran & HelmTr (대 목단 · 애장품 헬름)",
       "members": [
         "Chisato Nishikigi",
         "Blanc",
@@ -3688,7 +3688,7 @@
     },
     {
       "id": "pwc-iron-weak-solo-raid-true-dmg-team-idea-v",
-      "name": "Iron-weak Solo Raid True DMG Team Idea V",
+      "name": "Iron-weak Solo Raid True DMG Team Idea V (철갑 약점 솔로 레이드 고정 데미지 조합안 V)",
       "members": [
         "Moran",
         "Takina Inoue",
@@ -3708,7 +3708,7 @@
     },
     {
       "id": "pwc-zap-those-raptures-with-the-electric-girls",
-      "name": "Zap Those Raptures with the Electric Girls",
+      "name": "Zap Those Raptures with the Electric Girls (전격 니케들로 랩처를 감전시켜라)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -3725,7 +3725,7 @@
     },
     {
       "id": "pwc-red-hood-buffer-team",
-      "name": "Red Hood Buffer Team",
+      "name": "Red Hood Buffer Team (버퍼로 쓰는 레드 후드 조합)",
       "members": [
         "Cinderella",
         "Crown",
@@ -3743,7 +3743,7 @@
     },
     {
       "id": "pwc-off-with-those-rapture-heads-as-an-off-burst-dps",
-      "name": "Off With Those Rapture Heads as an Off Burst DPS",
+      "name": "Off With Those Rapture Heads as an Off Burst DPS (버스트 밖 딜러로 랩처의 목을 쳐라)",
       "members": [
         "Crown",
         "Liter",
@@ -3761,7 +3761,7 @@
     },
     {
       "id": "pwc-hp-scaling-team",
-      "name": "HP Scaling Team",
+      "name": "HP Scaling Team (HP 참조 조합)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -3777,7 +3777,7 @@
     },
     {
       "id": "pwc-the-exia-coper-for-the-rougeless",
-      "name": "The Exia Coper for the Rougeless",
+      "name": "The Exia Coper for the Rougeless (루주가 없는 사람을 위한 엑시아 타협안)",
       "members": [
         "Exia",
         "Mast",
@@ -3794,7 +3794,7 @@
     },
     {
       "id": "pwc-fast-nuke-2-rl",
-      "name": "Fast Nuke @ 2 RL",
+      "name": "Fast Nuke @ 2 RL (RL 2인 고속 폭격)",
       "members": [
         "Noise",
         "Centi",
@@ -3811,7 +3811,7 @@
     },
     {
       "id": "pwc-beautiful-inheritance",
-      "name": "Beautiful Inheritance",
+      "name": "Beautiful Inheritance (아름다운 계승)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -3831,7 +3831,7 @@
     },
     {
       "id": "pwc-beautiful-inheritance-ii",
-      "name": "Beautiful Inheritance II",
+      "name": "Beautiful Inheritance II (아름다운 계승 II)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -3848,7 +3848,7 @@
     },
     {
       "id": "pwc-summer-snow-warmth",
-      "name": "Summer + Snow = Warmth",
+      "name": "Summer + Snow = Warmth (서머 + 스노우 = 온기)",
       "members": [
         "Zwei",
         "Mint",
@@ -3865,7 +3865,7 @@
     },
     {
       "id": "pwc-mgs-team-up",
-      "name": "MGs Team Up!",
+      "name": "MGs Team Up! (MG 연합)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -3882,7 +3882,7 @@
     },
     {
       "id": "pwc-annihilio-can-only-shudder",
-      "name": "Annihilio Can Only Shudder",
+      "name": "Annihilio Can Only Shudder (아니힐리오도 떨 수밖에)",
       "members": [
         "Neon: Vision Eye",
         "Liter",
@@ -3899,7 +3899,7 @@
     },
     {
       "id": "pwc-cleanse-in-clutch",
-      "name": "Cleanse in Clutch",
+      "name": "Cleanse in Clutch (막판의 해제)",
       "members": [
         "Liter",
         "Scarlet: Black Shadow",
@@ -3915,7 +3915,7 @@
     },
     {
       "id": "pwc-fiery-land",
-      "name": "Fiery Land",
+      "name": "Fiery Land (작열의 대지)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3934,7 +3934,7 @@
     },
     {
       "id": "pwc-wet-land",
-      "name": "Wet Land",
+      "name": "Wet Land (젖은 대지)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3953,7 +3953,7 @@
     },
     {
       "id": "pwc-thunderstorm-ahead",
-      "name": "Thunderstorm Ahead",
+      "name": "Thunderstorm Ahead (이 앞은 뇌우)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3972,7 +3972,7 @@
     },
     {
       "id": "pwc-metal-crown-solid",
-      "name": "Metal Crown Solid",
+      "name": "Metal Crown Solid (메탈 크라운 솔리드)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -3992,7 +3992,7 @@
     },
     {
       "id": "pwc-all-in-on-alice-please",
-      "name": "All-in on Alice, please!",
+      "name": "All-in on Alice, please! (제발 앨리스에게 올인)",
       "members": [
         "Crown",
         "Alice",
@@ -4010,7 +4010,7 @@
     },
     {
       "id": "pwc-the-new-god-comp",
-      "name": "The New God Comp",
+      "name": "The New God Comp (신·갓 조합)",
       "members": [
         "Crown",
         "Liter",
@@ -4028,7 +4028,7 @@
     },
     {
       "id": "pwc-tyrant-class-rapture-in-sight",
-      "name": "Tyrant Class Rapture in sight!",
+      "name": "Tyrant Class Rapture in sight! (타이란트급 랩처 발견)",
       "members": [
         "Dorothy",
         "Crown",
@@ -4045,7 +4045,7 @@
     },
     {
       "id": "pwc-anti-heavy-metal-or-anti-thermite",
-      "name": "Anti-Heavy Metal or Anti-Thermite",
+      "name": "Anti-Heavy Metal or Anti-Thermite (대 헤비 메탈 / 대 테르밋)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -4062,7 +4062,7 @@
     },
     {
       "id": "pwc-anti-obelisk-fire-weak",
-      "name": "Anti-Obelisk (Fire Weak)",
+      "name": "Anti-Obelisk (Fire Weak) (대 오벨리스크 · 작열 약점)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -4079,7 +4079,7 @@
     },
     {
       "id": "pwc-cleanse-comp",
-      "name": "Cleanse Comp",
+      "name": "Cleanse Comp (해제 조합)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -4094,7 +4094,7 @@
     },
     {
       "id": "pwc-breading-in-tetra-tower",
-      "name": "BREADing in Tetra Tower",
+      "name": "BREADing in Tetra Tower (테트라 타워에서 빵 굽기)",
       "members": [
         "Rouge",
         "Bready",
@@ -4109,7 +4109,7 @@
     },
     {
       "id": "pwc-anti-crystal-chamber",
-      "name": "Anti-Crystal Chamber",
+      "name": "Anti-Crystal Chamber (대 크리스탈 챔버)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -4126,7 +4126,7 @@
     },
     {
       "id": "pwc-crust-general",
-      "name": "Crust General",
+      "name": "Crust General (크러스트 범용)",
       "members": [
         "Crust"
       ],
@@ -4139,7 +4139,7 @@
     },
     {
       "id": "pwc-let-the-snipers-be-buff-ed",
-      "name": "Let the Snipers be Buff-eD",
+      "name": "Let the Snipers be Buff-eD (SR에게 D의 버프를)",
       "members": [
         "Crown",
         "D: Killer Wife",
@@ -4157,7 +4157,7 @@
     },
     {
       "id": "pwc-elysion-tower-2",
-      "name": "Elysion tower",
+      "name": "Elysion tower (엘리시온 타워)",
       "members": [
         "D: Killer Wife",
         "Diesel",
@@ -4174,7 +4174,7 @@
     },
     {
       "id": "pwc-ninja-cope",
-      "name": "Ninja Cope",
+      "name": "Ninja Cope (닌자로 타협)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -4190,7 +4190,7 @@
     },
     {
       "id": "pwc-1-queen-1-queen-2-queens",
-      "name": "1 Queen + 1 Queen = 2 Queens",
+      "name": "1 Queen + 1 Queen = 2 Queens (여왕 + 여왕 = 여왕 둘)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -4207,7 +4207,7 @@
     },
     {
       "id": "pwc-2-hyper-dps-not-enough-how-about-3",
-      "name": "2 Hyper DPS Not Enough? How About 3?",
+      "name": "2 Hyper DPS Not Enough? How About 3? (하이퍼 캐리 둘로 부족하면 셋은 어때)",
       "members": [
         "Liter",
         "Nayuta",
@@ -4224,7 +4224,7 @@
     },
     {
       "id": "pwc-ikuyo-azx",
-      "name": "IKUYO AZX!",
+      "name": "IKUYO AZX! (가자, AZX!)",
       "members": [
         "Little Mermaid",
         "Brid: Silent Track",
@@ -4241,7 +4241,7 @@
     },
     {
       "id": "pwc-cinderella-and-diesel-making-love",
-      "name": "Cinderella and Diesel Making Love",
+      "name": "Cinderella and Diesel Making Love (신데렐라와 디젤의 밀어)",
       "members": [
         "Cinderella",
         "Liter",
@@ -4261,7 +4261,7 @@
     },
     {
       "id": "pwc-shotgun-team-1-generic",
-      "name": "Shotgun Team 1 - Generic",
+      "name": "Shotgun Team 1 - Generic (SG 조합 1 · 범용)",
       "members": [
         "Tove",
         "Dorothy: Serendipity",
@@ -4278,7 +4278,7 @@
     },
     {
       "id": "pwc-shotgun-team-2-core-hits",
-      "name": "Shotgun Team 2 - Core hits",
+      "name": "Shotgun Team 2 - Core hits (SG 조합 2 · 코어 노림)",
       "members": [
         "Tia",
         "Tove",
@@ -4295,7 +4295,7 @@
     },
     {
       "id": "pwc-shotgun-team-3-drowning-in-water",
-      "name": "Shotgun Team 3 - Drowning in Water",
+      "name": "Shotgun Team 3 - Drowning in Water (SG 조합 3 · 물에 가라앉히기)",
       "members": [
         "Tove",
         "Leona",
@@ -4312,7 +4312,7 @@
     },
     {
       "id": "pwc-funneling-everything-into-doropity",
-      "name": "Funneling everything into Doropity",
+      "name": "Funneling everything into Doropity (모든 것을 도로시 : 세렌디피티에게 몰아주기)",
       "members": [
         "Tove",
         "Little Mermaid",
@@ -4329,7 +4329,7 @@
     },
     {
       "id": "pwc-3-rl-3-sg",
-      "name": "3 RL 3 SG",
+      "name": "3 RL 3 SG (RL 3인으로 SG 3인)",
       "members": [
         "Soda: Twinkling Bunny",
         "Bay",
@@ -4346,7 +4346,7 @@
     },
     {
       "id": "pwc-complimentary-train-to-hell",
-      "name": "Complimentary Train to Hell",
+      "name": "Complimentary Train to Hell (지옥행 무료 열차)",
       "members": [
         "Tove",
         "Grave",
@@ -4363,7 +4363,7 @@
     },
     {
       "id": "pwc-sg-team-ft-draket",
-      "name": "SG Team ft. DrakeT",
+      "name": "SG Team ft. DrakeT (애장품 드레이크가 들어간 SG 조합)",
       "members": [
         "Tove",
         "Viper",
@@ -4383,7 +4383,7 @@
     },
     {
       "id": "pwc-another-sg-team-ft-draket",
-      "name": "Another SG Team ft. DrakeT",
+      "name": "Another SG Team ft. DrakeT (애장품 드레이크 SG 조합 · 다른 안)",
       "members": [
         "Tove",
         "Blanc",
@@ -4400,7 +4400,7 @@
     },
     {
       "id": "pwc-yet-another-sg-team-ft-draket",
-      "name": "Yet Another SG Team ft. DrakeT",
+      "name": "Yet Another SG Team ft. DrakeT (애장품 드레이크 SG 조합 · 또 다른 안)",
       "members": [
         "Tia",
         "Tove",
@@ -4417,7 +4417,7 @@
     },
     {
       "id": "pwc-yet-another-sg-team-feat-draket",
-      "name": "YET ANOTHER SG TEAM feat. DrakeT",
+      "name": "YET ANOTHER SG TEAM feat. DrakeT (애장품 드레이크 SG 조합 · 그리고 또 다른 안)",
       "members": [
         "Tove",
         "Naga",
@@ -4434,7 +4434,7 @@
     },
     {
       "id": "pwc-not-an-sg-team-ft-draket",
-      "name": "Not an SG Team ft. DrakeT",
+      "name": "Not an SG Team ft. DrakeT (애장품 드레이크가 들어가지만 SG는 아닌 조합)",
       "members": [
         "Tia",
         "Liter",
@@ -4451,7 +4451,7 @@
     },
     {
       "id": "pwc-run-it-down-ft-5-sgs",
-      "name": "Run It Down ft. 5 SGs",
+      "name": "Run It Down ft. 5 SGs (SG 5인으로 밀어붙이기)",
       "members": [
         "Drake",
         "Sugar",
@@ -4468,7 +4468,7 @@
     },
     {
       "id": "pwc-2rl-a-threat-to-be-reckoned-with",
-      "name": "2RL - A Threat to be Reckoned With",
+      "name": "2RL - A Threat to be Reckoned With (2RL · 만만찮은 위협)",
       "members": [
         "Scarlet",
         "Trina",
@@ -4488,7 +4488,7 @@
     },
     {
       "id": "pwc-3rl-nuke-assist",
-      "name": "3RL - Nuke Assist",
+      "name": "3RL - Nuke Assist (3RL · 폭격 보조)",
       "members": [
         "Privaty: Unkind Maid",
         "Blanc",
@@ -4509,7 +4509,7 @@
     },
     {
       "id": "pwc-wind-weak-sr-angle-1",
-      "name": "Wind-Weak SR Angle 1",
+      "name": "Wind-Weak SR Angle 1 (풍압 약점 솔로 레이드 접근법 1)",
       "members": [
         "E.H.",
         "Snow White: Heavy Arms",
@@ -4525,7 +4525,7 @@
     },
     {
       "id": "pwc-wind-weak-sr-angle-2",
-      "name": "Wind-Weak SR Angle 2",
+      "name": "Wind-Weak SR Angle 2 (풍압 약점 솔로 레이드 접근법 2)",
       "members": [
         "Little Mermaid",
         "Velvet",
@@ -4546,7 +4546,7 @@
     },
     {
       "id": "pwc-the-boring-sanis-team",
-      "name": "The Boring SAnis Team",
+      "name": "The Boring SAnis Team (심심한 아니스 : 스파클링 서머 조합)",
       "members": [
         "Dorothy",
         "Crown",
@@ -4563,7 +4563,7 @@
     },
     {
       "id": "pwc-true-damage-team-completed",
-      "name": "True Damage Team... Completed?",
+      "name": "True Damage Team... Completed? (고정 데미지 조합… 완성?)",
       "members": [
         "Frima",
         "Rem",
@@ -4580,7 +4580,7 @@
     },
     {
       "id": "pwc-high-power-nuke-3rl",
-      "name": "High Power Nuke (3RL)",
+      "name": "High Power Nuke (3RL) (고화력 폭격 · 3RL)",
       "members": [
         "Ein",
         "Blanc",
@@ -4598,7 +4598,7 @@
     },
     {
       "id": "pwc-indom-the-savior-of-dps-with-delayed-aoe-3rl",
-      "name": "Indom, the Savior of DPS with Delayed AoE (3RL)",
+      "name": "Indom, the Savior of DPS with Delayed AoE (3RL) (불굴은 지연 광역 딜러의 구세주 · 3RL)",
       "members": [
         "Blanc",
         "Ein",
@@ -4614,7 +4614,7 @@
     },
     {
       "id": "pwc-ratatata-dps-team",
-      "name": "RATATATA DPS Team",
+      "name": "RATATATA DPS Team (다다다닷 화력 조합)",
       "members": [
         "Dorothy",
         "Elegg",
@@ -4630,7 +4630,7 @@
     },
     {
       "id": "pwc-doro-s-redemption-arc-i-ft-selegg",
-      "name": "Doro's Redemption Arc I (ft. SElegg)",
+      "name": "Doro's Redemption Arc I (ft. SElegg) (도로시 명예회복편 I · 일레그 : 붐 앤 쇼크 포함)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -4650,7 +4650,7 @@
     },
     {
       "id": "pwc-doro-s-redemption-arc-ii-ft-selegg",
-      "name": "Doro's Redemption Arc II (ft. SElegg)",
+      "name": "Doro's Redemption Arc II (ft. SElegg) (도로시 명예회복편 II · 일레그 : 붐 앤 쇼크 포함)",
       "members": [
         "Liter",
         "Grave",
@@ -4670,7 +4670,7 @@
     },
     {
       "id": "pwc-you-are-doroless-ft-selegg",
-      "name": "You Are Doroless (ft. SElegg)",
+      "name": "You Are Doroless (ft. SElegg) (도로시가 없는 당신에게 · 일레그 : 붐 앤 쇼크 포함)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -4690,7 +4690,7 @@
     },
     {
       "id": "pwc-basic-duo-teams",
-      "name": "Basic Duo Teams",
+      "name": "Basic Duo Teams (기본 듀오 조합)",
       "members": [
         "Liter",
         "Tia",
@@ -4706,7 +4706,7 @@
     },
     {
       "id": "pwc-rem-synergy",
-      "name": "Rem Synergy",
+      "name": "Rem Synergy (렘과의 궁합)",
       "members": [
         "Volume",
         "Rem",
@@ -4721,7 +4721,7 @@
     },
     {
       "id": "pwc-oneshot-literally",
-      "name": "Oneshot, literally",
+      "name": "Oneshot, literally (말 그대로 원샷)",
       "members": [
         "Noah",
         "Emilia",
@@ -4738,7 +4738,7 @@
     },
     {
       "id": "pwc-two-true-dmg-dps-tag-together",
-      "name": "Two True DMG DPS Tag Together",
+      "name": "Two True DMG DPS Tag Together (고정 데미지 딜러 둘의 태그)",
       "members": [
         "Emma: Tactical Upgrade",
         "Eunhwa: Tactical Upgrade",
@@ -4755,7 +4755,7 @@
     },
     {
       "id": "pwc-fire-for-fire",
-      "name": "Fire For Fire",
+      "name": "Fire For Fire (작열에는 작열을)",
       "members": [
         "Emma: Tactical Upgrade",
         "Eunhwa: Tactical Upgrade",
@@ -4772,7 +4772,7 @@
     },
     {
       "id": "pwc-ultra-destroyer-mk3",
-      "name": "Ultra Destroyer MK3",
+      "name": "Ultra Destroyer MK3 (울트라 파괴자 MK3)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -4789,7 +4789,7 @@
     },
     {
       "id": "pwc-ultra-destroyer-mk3-v2",
-      "name": "Ultra Destroyer MK3 V2",
+      "name": "Ultra Destroyer MK3 V2 (울트라 파괴자 MK3 V2)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -4807,7 +4807,7 @@
     },
     {
       "id": "pwc-old-iron-team-overhauled",
-      "name": "Old Iron Team Overhauled",
+      "name": "Old Iron Team Overhauled (구 철갑 조합 개편판)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -4825,7 +4825,7 @@
     },
     {
       "id": "pwc-general-eve-team-1",
-      "name": "General Eve Team 1",
+      "name": "General Eve Team 1 (이브 범용 조합 1)",
       "members": [
         "Mast: Romantic Maid",
         "EVE",
@@ -4840,7 +4840,7 @@
     },
     {
       "id": "pwc-general-eve-team-2",
-      "name": "General Eve Team 2",
+      "name": "General Eve Team 2 (이브 범용 조합 2)",
       "members": [
         "Crown",
         "EVE",
@@ -4855,7 +4855,7 @@
     },
     {
       "id": "pwc-miranda-shenanigans",
-      "name": "Miranda Shenanigans",
+      "name": "Miranda Shenanigans (미란다의 장난)",
       "members": [
         "Miranda",
         "Grave",
@@ -4870,7 +4870,7 @@
     },
     {
       "id": "pwc-the-true-damage-squad",
-      "name": "The True Damage Squad",
+      "name": "The True Damage Squad (고정 데미지 분대)",
       "members": [
         "Frima",
         "Ein",
@@ -4887,7 +4887,7 @@
     },
     {
       "id": "pwc-crinum-purpureum",
-      "name": "Crinum Purpureum",
+      "name": "Crinum Purpureum (크리눔 푸르푸레움)",
       "members": [
         "Moran",
         "Chisato Nishikigi",
@@ -4907,7 +4907,7 @@
     },
     {
       "id": "pwc-guernsey-lily",
-      "name": "Guernsey Lily",
+      "name": "Guernsey Lily (네리네)",
       "members": [
         "Moran",
         "Snow White: Heavy Arms",
@@ -4924,7 +4924,7 @@
     },
     {
       "id": "pwc-galanthus",
-      "name": "Galanthus",
+      "name": "Galanthus (스노드롭)",
       "members": [
         "Zwei",
         "Snow White",
@@ -4942,7 +4942,7 @@
     },
     {
       "id": "pwc-hellebore-ice-n-roses",
-      "name": "Hellebore Ice N’ Roses",
+      "name": "Hellebore Ice N’ Roses (크리스마스로즈, 얼음과 장미)",
       "members": [
         "Flora",
         "Maiden: Ice Rose",
@@ -4958,7 +4958,7 @@
     },
     {
       "id": "pwc-missilis-tower-buster-i",
-      "name": "Missilis Tower Buster I",
+      "name": "Missilis Tower Buster I (미실리스 타워 공략 I)",
       "members": [
         "Laplace: Ultimate Hero",
         "Flora",
@@ -4978,7 +4978,7 @@
     },
     {
       "id": "pwc-missilis-tower-buster-ii",
-      "name": "Missilis Tower Buster II",
+      "name": "Missilis Tower Buster II (미실리스 타워 공략 II)",
       "members": [
         "Ein",
         "Flora",
@@ -4995,7 +4995,7 @@
     },
     {
       "id": "pwc-missilis-tower-buster-iii",
-      "name": "Missilis Tower Buster III",
+      "name": "Missilis Tower Buster III (미실리스 타워 공략 III)",
       "members": [
         "Liter",
         "Trina",
@@ -5012,7 +5012,7 @@
     },
     {
       "id": "pwc-lycoris-squamigera",
-      "name": "Lycoris Squamigera",
+      "name": "Lycoris Squamigera (상사화)",
       "members": [
         "Anis: Star",
         "Flora",
@@ -5029,7 +5029,7 @@
     },
     {
       "id": "pwc-narcissus",
-      "name": "Narcissus",
+      "name": "Narcissus (수선화)",
       "members": [
         "Anis: Star",
         "Rapi: Red Hood",
@@ -5046,7 +5046,7 @@
     },
     {
       "id": "pwc-fritillaria-imperialis",
-      "name": "Fritillaria Imperialis",
+      "name": "Fritillaria Imperialis (왕관패모)",
       "members": [
         "Anis: Star",
         "Flora",
@@ -5063,7 +5063,7 @@
     },
     {
       "id": "pwc-dendrobium-orchid",
-      "name": "Dendrobium Orchid",
+      "name": "Dendrobium Orchid (덴드로비움)",
       "members": [
         "Neon: Vision Eye",
         "Flora",
@@ -5080,7 +5080,7 @@
     },
     {
       "id": "pwc-lycoris-sprengeri",
-      "name": "Lycoris Sprengeri",
+      "name": "Lycoris Sprengeri (리코리스 스프렌게리)",
       "members": [
         "Ein",
         "Flora",
@@ -5097,7 +5097,7 @@
     },
     {
       "id": "pwc-amaryllis",
-      "name": "Amaryllis",
+      "name": "Amaryllis (아마릴리스)",
       "members": [
         "Anis: Star",
         "Flora",
@@ -5114,7 +5114,7 @@
     },
     {
       "id": "pwc-carnation",
-      "name": "Carnation",
+      "name": "Carnation (카네이션)",
       "members": [
         "Moran",
         "Asuka: WILLE",
@@ -5131,7 +5131,7 @@
     },
     {
       "id": "pwc-gladiolus",
-      "name": "Gladiolus",
+      "name": "Gladiolus (글라디올러스)",
       "members": [
         "Crown",
         "Flora",
@@ -5148,7 +5148,7 @@
     },
     {
       "id": "pwc-grave-steals-mari-s-eva-friends",
-      "name": "Grave Steals Mari’s EVA friends",
+      "name": "Grave Steals Mari’s EVA friends (그레이브가 마리의 에바 동료들을 빼앗다)",
       "members": [
         "Liter",
         "Grave",
@@ -5165,7 +5165,7 @@
     },
     {
       "id": "pwc-campaign-shenanigans",
-      "name": "Campaign Shenanigans",
+      "name": "Campaign Shenanigans (캠페인의 장난)",
       "members": [
         "Liter",
         "Grave",
@@ -5182,7 +5182,7 @@
     },
     {
       "id": "pwc-keep-pressuring-the-frontline-3rl",
-      "name": "Keep Pressuring The Frontline @3RL",
+      "name": "Keep Pressuring The Frontline @3RL (3RL로 전선을 계속 압박)",
       "members": [
         "Moran",
         "Rumani",
@@ -5199,7 +5199,7 @@
     },
     {
       "id": "pwc-water-showdown",
-      "name": "Water Showdown",
+      "name": "Water Showdown (수냉의 결착)",
       "members": [
         "Crown",
         "Liter",
@@ -5216,7 +5216,7 @@
     },
     {
       "id": "pwc-a-tower-that-refuses-to-get-meta-dps",
-      "name": "A Tower that refuses to get Meta DPS",
+      "name": "A Tower that refuses to get Meta DPS (메타 딜러를 받아주지 않는 타워)",
       "members": [
         "D: Killer Wife",
         "Diesel",
@@ -5233,7 +5233,7 @@
     },
     {
       "id": "pwc-campaign-ease-of-use-general-comp",
-      "name": "Campaign Ease-of-Use General Comp",
+      "name": "Campaign Ease-of-Use General Comp (편의성 위주 캠페인 범용 조합)",
       "members": [
         "Crown",
         "Helm"
@@ -5250,7 +5250,7 @@
     },
     {
       "id": "pwc-anomaly-interception-general-comp",
-      "name": "Anomaly Interception General Comp",
+      "name": "Anomaly Interception General Comp (어나멀 인터셉션 범용 조합)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -5265,7 +5265,7 @@
     },
     {
       "id": "pwc-elysion-tower-ft-helmt-2",
-      "name": "Elysion Tower ft. HelmT #2",
+      "name": "Elysion Tower ft. HelmT #2 (애장품 헬름이 들어간 엘리시온 타워 #2)",
       "members": [
         "D: Killer Wife",
         "Marciana",
@@ -5285,7 +5285,7 @@
     },
     {
       "id": "pwc-can-you-get-past-it",
-      "name": "Can you get past it?",
+      "name": "Can you get past it? (이걸 돌파할 수 있겠어?)",
       "members": [
         "Noise",
         "Noah",
@@ -5302,7 +5302,7 @@
     },
     {
       "id": "pwc-the-ultimate-stall",
-      "name": "The ultimate stall",
+      "name": "The ultimate stall (궁극의 발 묶기)",
       "members": [
         "Moran",
         "Nero",
@@ -5319,7 +5319,7 @@
     },
     {
       "id": "pwc-true-damage-cope",
-      "name": "True damage cope",
+      "name": "True damage cope (고정 데미지로 타협)",
       "members": [
         "Frima",
         "Crown",
@@ -5335,7 +5335,7 @@
     },
     {
       "id": "pwc-jill-tia-naga",
-      "name": "Jill Tia Naga",
+      "name": "Jill Tia Naga (질 발렌타인 + 티아 + 나가)",
       "members": [
         "Tia",
         "Liter",
@@ -5352,7 +5352,7 @@
     },
     {
       "id": "pwc-sustained-jill",
-      "name": "Sustained Jill",
+      "name": "Sustained Jill (지속 데미지형 질 발렌타인)",
       "members": [
         "Liter",
         "Rosanna: Chic Ocean",
@@ -5372,7 +5372,7 @@
     },
     {
       "id": "pwc-general-bis-k-team",
-      "name": "General BIS K Team",
+      "name": "General BIS K Team (K의 범용 최적 조합)",
       "members": [
         "K",
         "Anis: Sparkling Summer",
@@ -5387,7 +5387,7 @@
     },
     {
       "id": "pwc-no-pilgrim-electric-team",
-      "name": "No Pilgrim Electric Team",
+      "name": "No Pilgrim Electric Team (필그림 없는 전격 조합)",
       "members": [
         "K",
         "Anis: Sparkling Summer",
@@ -5403,7 +5403,7 @@
     },
     {
       "id": "pwc-the-electric-filler-for-maids",
-      "name": "The Electric Filler for Maids",
+      "name": "The Electric Filler for Maids (메이드 조합의 전격 자리를 메우는 니케)",
       "members": [
         "Mast: Romantic Maid",
         "K",
@@ -5418,7 +5418,7 @@
     },
     {
       "id": "pwc-missilis-tribe-tower-team",
-      "name": "Missilis Tribe Tower Team",
+      "name": "Missilis Tribe Tower Team (미실리스 타워 조합)",
       "members": [
         "Tia",
         "Liter",
@@ -5435,7 +5435,7 @@
     },
     {
       "id": "pwc-kilo-ton",
-      "name": "Kilo-ton",
+      "name": "Kilo-ton (킬로톤)",
       "members": [
         "Noise",
         "Jackal",
@@ -5452,7 +5452,7 @@
     },
     {
       "id": "pwc-tactical-label",
-      "name": "Tactical Label",
+      "name": "Tactical Label (택티컬 레이블)",
       "members": [
         "Mast",
         "Emma: Tactical Upgrade",
@@ -5469,7 +5469,7 @@
     },
     {
       "id": "pwc-tower-of-fantasy",
-      "name": "Tower of Fantasy",
+      "name": "Tower of Fantasy (환상의 타워)",
       "members": [
         "Label",
         "Eunhwa: Tactical Upgrade",
@@ -5486,7 +5486,7 @@
     },
     {
       "id": "pwc-imagined-feasibility",
-      "name": "Imagined Feasibility",
+      "name": "Imagined Feasibility (상상 속의 실현 가능성)",
       "members": [
         "Label",
         "Ade: Agent Bunny",
@@ -5501,7 +5501,7 @@
     },
     {
       "id": "pwc-how-much-dr-is-desired",
-      "name": "How Much DR Is Desired?",
+      "name": "How Much DR Is Desired? (받는 피해 감소는 얼마나 필요한가)",
       "members": [
         "Moran",
         "Label"
@@ -5515,7 +5515,7 @@
     },
     {
       "id": "pwc-siren-hypercarry-no-crown",
-      "name": "Siren Hypercarry (No Crown)",
+      "name": "Siren Hypercarry (No Crown) (리틀 머메이드 하이퍼 캐리 · 크라운 없이)",
       "members": [
         "Label",
         "Velvet",
@@ -5532,7 +5532,7 @@
     },
     {
       "id": "pwc-idols-are-my-hero",
-      "name": "Idols Are My Hero!!",
+      "name": "Idols Are My Hero!! (아이돌이야말로 나의 영웅)",
       "members": [
         "Rouge",
         "Laplace: Ultimate Hero",
@@ -5548,7 +5548,7 @@
     },
     {
       "id": "pwc-forest-hero",
-      "name": "Forest Hero",
+      "name": "Forest Hero (숲의 영웅)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -5565,7 +5565,7 @@
     },
     {
       "id": "pwc-hero-s-mom",
-      "name": "Hero's Mom",
+      "name": "Hero's Mom (영웅의 어머니)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -5581,7 +5581,7 @@
     },
     {
       "id": "pwc-the-indomitable-hero",
-      "name": "The Indomitable Hero",
+      "name": "The Indomitable Hero (불굴의 영웅)",
       "members": [
         "Jackal",
         "Laplace: Ultimate Hero",
@@ -5602,7 +5602,7 @@
     },
     {
       "id": "pwc-the-immune-hero",
-      "name": "The Immune Hero",
+      "name": "The Immune Hero (무적의 영웅)",
       "members": [
         "Noah",
         "Biscuit",
@@ -5622,7 +5622,7 @@
     },
     {
       "id": "pwc-bonk-master",
-      "name": "Bonk Master",
+      "name": "Bonk Master (타격의 달인)",
       "members": [
         "Anis: Star",
         "Crown",
@@ -5638,7 +5638,7 @@
     },
     {
       "id": "pwc-windy-raid-ft-4-dps",
-      "name": "Windy Raid ft. 4 DPS",
+      "name": "Windy Raid ft. 4 DPS (딜러 4인의 풍압 레이드)",
       "members": [
         "Nayuta",
         "Scarlet: Black Shadow",
@@ -5658,7 +5658,7 @@
     },
     {
       "id": "pwc-it-s-quite-windy-today",
-      "name": "It's Quite Windy Today",
+      "name": "It's Quite Windy Today (오늘은 바람이 제법 세다)",
       "members": [
         "Volume",
         "Mast: Romantic Maid",
@@ -5675,7 +5675,7 @@
     },
     {
       "id": "pwc-campaign-hurricane",
-      "name": "Campaign Hurricane",
+      "name": "Campaign Hurricane (캠페인의 허리케인)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -5692,7 +5692,7 @@
     },
     {
       "id": "pwc-unleash-the-helm",
-      "name": "Unleash the Helm!",
+      "name": "Unleash the Helm! (헬름을 풀어놓아라)",
       "members": [
         "Rumani",
         "Cinderella",
@@ -5709,7 +5709,7 @@
     },
     {
       "id": "pwc-wind-blows-fire-burns",
-      "name": "Wind Blows Fire Burns",
+      "name": "Wind Blows Fire Burns (바람은 불고, 불은 탄다)",
       "members": [
         "Mihara: Bonding Chain",
         "Nayuta",
@@ -5726,7 +5726,7 @@
     },
     {
       "id": "pwc-grave",
-      "name": "Grave",
+      "name": "Grave (그레이브)",
       "members": [
         "Liter",
         "Grave"
@@ -5740,7 +5740,7 @@
     },
     {
       "id": "pwc-maid-duo",
-      "name": "Maid Duo",
+      "name": "Maid Duo (메이드 듀오)",
       "members": [
         "Liter",
         "Mast: Romantic Maid",
@@ -5755,7 +5755,7 @@
     },
     {
       "id": "pwc-mari",
-      "name": "Mari",
+      "name": "Mari (마키나미 마리 일러스트리어스)",
       "members": [
         "Liter",
         "Helm: Aquamarine"
@@ -5769,7 +5769,7 @@
     },
     {
       "id": "pwc-blanc-noir",
-      "name": "Blanc Noir",
+      "name": "Blanc Noir (블랑 + 누아르)",
       "members": [
         "Liter",
         "Blanc",
@@ -5784,7 +5784,7 @@
     },
     {
       "id": "pwc-the-best-electric-bossing-comp-aga",
-      "name": "The Best Electric Bossing Comp Aga-",
+      "name": "The Best Electric Bossing Comp Aga- (최강 전격 보스전 조합, 대…)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -5804,7 +5804,7 @@
     },
     {
       "id": "pwc-ein-and-exia-took-away-crown",
-      "name": "Ein and Exia took away Crown",
+      "name": "Ein and Exia took away Crown (아인과 엑시아가 크라운을 데려갔다)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -5821,7 +5821,7 @@
     },
     {
       "id": "pwc-mana-s-new-science-funnel",
-      "name": "Mana's new science funnel",
+      "name": "Mana's new science funnel (마나의 새로운 과학적 몰아주기)",
       "members": [
         "Grave",
         "Liter",
@@ -5837,7 +5837,7 @@
     },
     {
       "id": "pwc-alice-funnel",
-      "name": "Alice Funnel",
+      "name": "Alice Funnel (앨리스에게 몰아주기)",
       "members": [
         "Liter",
         "Crown",
@@ -5853,7 +5853,7 @@
     },
     {
       "id": "pwc-main-b3-mana",
-      "name": "Main B3 Mana",
+      "name": "Main B3 Mana (메인 B3로 쓰는 마나)",
       "members": [
         "Liter",
         "Grave",
@@ -5870,7 +5870,7 @@
     },
     {
       "id": "pwc-electric-team-wind-activator",
-      "name": "Electric Team Wind Activator",
+      "name": "Electric Team Wind Activator (전격 조합의 풍압 담당)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -5887,7 +5887,7 @@
     },
     {
       "id": "pwc-the-ultimate-stall-2",
-      "name": "The Ultimate Stall",
+      "name": "The Ultimate Stall (궁극의 발 묶기)",
       "members": [
         "Moran",
         "Nero",
@@ -5907,7 +5907,7 @@
     },
     {
       "id": "pwc-admire-captain-s-fweeeet",
-      "name": "Admire Captain's Fweeeet!",
+      "name": "Admire Captain's Fweeeet! (캡틴의 휘슬에 넋을 놓아라)",
       "members": [
         "Miranda",
         "Nayuta",
@@ -5928,7 +5928,7 @@
     },
     {
       "id": "pwc-red-wolf-s-fweeeet",
-      "name": "Red Wolf's Fweeeet!",
+      "name": "Red Wolf's Fweeeet! (붉은 늑대의 휘슬)",
       "members": [
         "Miranda",
         "Ade: Agent Bunny",
@@ -5946,7 +5946,7 @@
     },
     {
       "id": "pwc-snow-white-miranda-variation",
-      "name": "Snow White + Miranda Variation",
+      "name": "Snow White + Miranda Variation (스노우 화이트 + 미란다형)",
       "members": [
         "Miranda",
         "Mari Makinami Illustrious",
@@ -5963,7 +5963,7 @@
     },
     {
       "id": "pwc-the-normal-pierce-team",
-      "name": "The Normal Pierce Team",
+      "name": "The Normal Pierce Team (평범한 관통 조합)",
       "members": [
         "D: Killer Wife",
         "Mari Makinami Illustrious",
@@ -5980,7 +5980,7 @@
     },
     {
       "id": "pwc-3rl-nuke",
-      "name": "3RL Nuke",
+      "name": "3RL Nuke (3RL 폭격)",
       "members": [
         "Rei Ayanami",
         "Mari Makinami Illustrious",
@@ -5997,7 +5997,7 @@
     },
     {
       "id": "pwc-el-macho-venciendo-kraken",
-      "name": "El Macho Venciendo Kraken",
+      "name": "El Macho Venciendo Kraken (크라켄을 제압하는 사나이들)",
       "members": [
         "Mast: Romantic Maid",
         "Rapi: Red Hood",
@@ -6014,7 +6014,7 @@
     },
     {
       "id": "pwc-cingodrella",
-      "name": "Cingodrella",
+      "name": "Cingodrella (신데렐라 엘 마초)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -6031,7 +6031,7 @@
     },
     {
       "id": "pwc-rosy-s-revenge",
-      "name": "Rosy’s Revenge",
+      "name": "Rosy’s Revenge (로지의 복수)",
       "members": [
         "Scarlet",
         "Mast: Romantic Maid",
@@ -6048,7 +6048,7 @@
     },
     {
       "id": "pwc-triple-moms-no-quadruple",
-      "name": "Triple Moms? No, Quadruple.",
+      "name": "Triple Moms? No, Quadruple. (엄마 셋? 아니, 넷이다)",
       "members": [
         "Anis: Star",
         "Arcana",
@@ -6065,7 +6065,7 @@
     },
     {
       "id": "pwc-cheap-2rl-siren-lib-nuke",
-      "name": "Cheap 2RL Siren + Lib Nuke",
+      "name": "Cheap 2RL Siren + Lib Nuke (저렴한 2RL 리틀 머메이드 + 리버렐리오 폭격)",
       "members": [
         "Trina",
         "Little Mermaid",
@@ -6082,7 +6082,7 @@
     },
     {
       "id": "pwc-crown-fire-team-ft-rapipi-mihara",
-      "name": "Crown Fire Team ft. Rapipi & Mihara",
+      "name": "Crown Fire Team ft. Rapipi & Mihara (라피 + 미하라가 들어간 크라운 작열 조합)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -6099,7 +6099,7 @@
     },
     {
       "id": "pwc-mono-fire-ft-grave-no-core",
-      "name": "Mono Fire ft. Grave (No Core)",
+      "name": "Mono Fire ft. Grave (No Core) (그레이브가 들어간 작열 단일 속성 · 코어 없음)",
       "members": [
         "Little Mermaid",
         "Grave",
@@ -6116,7 +6116,7 @@
     },
     {
       "id": "pwc-mono-fire-ft-grave-modernia-no-core",
-      "name": "Mono Fire ft. Grave + Modernia (No Core)",
+      "name": "Mono Fire ft. Grave + Modernia (No Core) (그레이브 + 모더니아의 작열 단일 속성 · 코어 없음)",
       "members": [
         "Little Mermaid",
         "Grave",
@@ -6133,7 +6133,7 @@
     },
     {
       "id": "pwc-mono-fire-ft-rapipi-b1-no-core",
-      "name": "Mono Fire ft. Rapipi B1 (No Core)",
+      "name": "Mono Fire ft. Rapipi B1 (No Core) (라피 B1의 작열 단일 속성 · 코어 없음)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -6150,7 +6150,7 @@
     },
     {
       "id": "pwc-alternative-fire-core-i",
-      "name": "Alternative Fire (Core) I",
+      "name": "Alternative Fire (Core) I (작열 대안 · 코어 있음 I)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -6167,7 +6167,7 @@
     },
     {
       "id": "pwc-alternative-fire-core-ii",
-      "name": "Alternative Fire (Core) II",
+      "name": "Alternative Fire (Core) II (작열 대안 · 코어 있음 II)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -6184,7 +6184,7 @@
     },
     {
       "id": "pwc-alternative-fire-core-iii",
-      "name": "Alternative Fire (Core) III",
+      "name": "Alternative Fire (Core) III (작열 대안 · 코어 있음 III)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -6201,7 +6201,7 @@
     },
     {
       "id": "pwc-alternative-fire-core-iv",
-      "name": "Alternative Fire (Core) IV",
+      "name": "Alternative Fire (Core) IV (작열 대안 · 코어 있음 IV)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -6218,7 +6218,7 @@
     },
     {
       "id": "pwc-missilis-torturer",
-      "name": "Missilis Torturer",
+      "name": "Missilis Torturer (미실리스의 고문관)",
       "members": [
         "Tia",
         "Liter",
@@ -6235,7 +6235,7 @@
     },
     {
       "id": "pwc-pilgrim-tormenter",
-      "name": "Pilgrim Tormenter",
+      "name": "Pilgrim Tormenter (필그림의 형벌)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -6251,7 +6251,7 @@
     },
     {
       "id": "pwc-banish-the-sgs",
-      "name": "Banish the SGs",
+      "name": "Banish the SGs (SG를 쫓아내라)",
       "members": [
         "Drake",
         "Anne: Miracle Fairy",
@@ -6268,7 +6268,7 @@
     },
     {
       "id": "pwc-one-night-stand-makima",
-      "name": "One-Night-Stand Makima",
+      "name": "One-Night-Stand Makima (하룻밤뿐인 마키마)",
       "members": [
         "Drake",
         "Soda: Twinkling Bunny",
@@ -6285,7 +6285,7 @@
     },
     {
       "id": "pwc-frontal-point",
-      "name": "Frontal Point",
+      "name": "Frontal Point (최전열이라는 요점)",
       "members": [
         "Mihara: Bonding Chain",
         "Soda: Twinkling Bunny",
@@ -6303,7 +6303,7 @@
     },
     {
       "id": "pwc-anti-wiping-countermeasure",
-      "name": "Anti-Wiping Countermeasure",
+      "name": "Anti-Wiping Countermeasure (전멸기 대응책)",
       "members": [
         "Moran",
         "Biscuit",
@@ -6320,7 +6320,7 @@
     },
     {
       "id": "pwc-indoming-our-way-out-of-here",
-      "name": "Indoming Our Way Out of Here",
+      "name": "Indoming Our Way Out of Here (불굴로 빠져나가기)",
       "members": [
         "Scarlet",
         "Blanc",
@@ -6337,7 +6337,7 @@
     },
     {
       "id": "pwc-stall-the-hell-out-of-the-enemies",
-      "name": "Stall the Hell Out of the Enemies",
+      "name": "Stall the Hell Out of the Enemies (적을 끝까지 붙잡아 둬라)",
       "members": [
         "Nero",
         "Moran",
@@ -6357,7 +6357,7 @@
     },
     {
       "id": "pwc-rise-from-the-dead",
-      "name": "Rise from the Dead",
+      "name": "Rise from the Dead (죽은 자여 일어나라)",
       "members": [
         "Mihara: Bonding Chain",
         "Blanc",
@@ -6377,7 +6377,7 @@
     },
     {
       "id": "pwc-rise-from-the-dead-adaptive-speed",
-      "name": "Rise from the Dead (Adaptive Speed)",
+      "name": "Rise from the Dead (Adaptive Speed) (죽은 자여 일어나라 · 가변 속도형)",
       "members": [
         "Mihara: Bonding Chain",
         "Blanc",
@@ -6394,7 +6394,7 @@
     },
     {
       "id": "pwc-fire-team-with-water",
-      "name": "Fire Team With Water",
+      "name": "Fire Team With Water (수냉을 곁들인 작열 조합)",
       "members": [
         "Milk",
         "Helm: Aquamarine",
@@ -6411,7 +6411,7 @@
     },
     {
       "id": "pwc-sg-team-but-with-cdr",
-      "name": "SG Team But With CDR",
+      "name": "SG Team But With CDR (쿨타임 감소를 넣은 SG 조합)",
       "members": [
         "Tove",
         "Soda: Twinkling Bunny",
@@ -6426,7 +6426,7 @@
     },
     {
       "id": "pwc-heal-more-stall-longer",
-      "name": "Heal More, Stall Longer",
+      "name": "Heal More, Stall Longer (더 회복하고 더 버틴다)",
       "members": [
         "Nero",
         "Milk",
@@ -6443,7 +6443,7 @@
     },
     {
       "id": "pwc-simple-3rl-nuke",
-      "name": "Simple 3RL Nuke",
+      "name": "Simple 3RL Nuke (단순한 3RL 폭격)",
       "members": [
         "Noah",
         "Milk",
@@ -6460,7 +6460,7 @@
     },
     {
       "id": "pwc-iron-golems",
-      "name": "Iron Golems",
+      "name": "Iron Golems (아이언 골렘)",
       "members": [
         "Liter",
         "Crown",
@@ -6477,7 +6477,7 @@
     },
     {
       "id": "pwc-ammo-problem-what-ammo-problem",
-      "name": "Ammo Problem? What Ammo Problem?",
+      "name": "Ammo Problem? What Ammo Problem? (탄약 문제? 그런 건 없다)",
       "members": [
         "Little Mermaid",
         "Mast: Romantic Maid",
@@ -6494,7 +6494,7 @@
     },
     {
       "id": "pwc-pierce-is-in-business",
-      "name": "Pierce is in Business",
+      "name": "Pierce is in Business (관통, 장사 잘된다)",
       "members": [
         "Miranda",
         "Grave",
@@ -6511,7 +6511,7 @@
     },
     {
       "id": "pwc-tetra-tower",
-      "name": "Tetra Tower",
+      "name": "Tetra Tower (테트라 타워)",
       "members": [
         "Alice",
         "Rouge",
@@ -6528,7 +6528,7 @@
     },
     {
       "id": "pwc-bunny-bunnies",
-      "name": "Bunny? Bunnies!",
+      "name": "Bunny? Bunnies! (바니? 바니들이다)",
       "members": [
         "Milk: Blooming Bunny",
         "Rouge",
@@ -6545,7 +6545,7 @@
     },
     {
       "id": "pwc-union-raid-pierce-mayhem",
-      "name": "Union Raid Pierce Mayhem",
+      "name": "Union Raid Pierce Mayhem (유니온 레이드 관통 난무)",
       "members": [
         "Rapi: Red Hood",
         "Grave",
@@ -6563,7 +6563,7 @@
     },
     {
       "id": "pwc-intercontinental-ballistic-missile",
-      "name": "Intercontinental Ballistic Missile",
+      "name": "Intercontinental Ballistic Missile (대륙간 탄도 미사일)",
       "members": [
         "Zwei",
         "Mint",
@@ -6580,7 +6580,7 @@
     },
     {
       "id": "pwc-happy-bomb-friends",
-      "name": "Happy Bomb Friends",
+      "name": "Happy Bomb Friends (해피 폭탄 프렌즈)",
       "members": [
         "Anis: Star",
         "Prika",
@@ -6597,7 +6597,7 @@
     },
     {
       "id": "pwc-we-are-electric",
-      "name": "We are Electric",
+      "name": "We are Electric (우리는 전격)",
       "members": [
         "Anis: Star",
         "Prika",
@@ -6617,7 +6617,7 @@
     },
     {
       "id": "pwc-cry-mint-a-river",
-      "name": "Cry Mint a river",
+      "name": "Cry Mint a river (민트에게 눈물의 강을)",
       "members": [
         "Zwei",
         "Mint",
@@ -6633,7 +6633,7 @@
     },
     {
       "id": "pwc-my-mintshake-brings-all-the-boys-to-the-yard",
-      "name": "My mintshake brings all the boys to the yard",
+      "name": "My mintshake brings all the boys to the yard (이 민트 셰이크에 사내들이 몰려든다)",
       "members": [
         "Miranda",
         "Mint",
@@ -6649,7 +6649,7 @@
     },
     {
       "id": "pwc-beautiful-performance",
-      "name": "Beautiful Performance",
+      "name": "Beautiful Performance (아름다운 퍼포먼스)",
       "members": [
         "Zwei",
         "Mint",
@@ -6672,7 +6672,7 @@
     },
     {
       "id": "pwc-technical-ravenry",
-      "name": "Technical Ravenry",
+      "name": "Technical Ravenry (기교파 레이븐 운용)",
       "members": [
         "Zwei",
         "Mint",
@@ -6688,7 +6688,7 @@
     },
     {
       "id": "pwc-the-sw-team",
-      "name": "The SW Team",
+      "name": "The SW Team (스노우 화이트 조합)",
       "members": [
         "Miranda",
         "Snow White",
@@ -6704,7 +6704,7 @@
     },
     {
       "id": "pwc-fire-away",
-      "name": "Fire Away",
+      "name": "Fire Away (쏘아붙여라)",
       "members": [
         "Miranda",
         "Helm: Aquamarine",
@@ -6721,7 +6721,7 @@
     },
     {
       "id": "pwc-fire-team-again-with-off-burst-cdr",
-      "name": "Fire Team Again with Off-Burst CDR",
+      "name": "Fire Team Again with Off-Burst CDR (버스트 밖 쿨감을 넣은 작열 조합 · 재차)",
       "members": [
         "Miranda",
         "Grave",
@@ -6738,7 +6738,7 @@
     },
     {
       "id": "pwc-general-team-ft-mirandat",
-      "name": "General Team ft. MirandaT",
+      "name": "General Team ft. MirandaT (애장품 미란다가 들어간 범용 조합)",
       "members": [
         "Miranda",
         "Helm: Aquamarine"
@@ -6752,7 +6752,7 @@
     },
     {
       "id": "pwc-elysions-s-sole-proper-buffer",
-      "name": "Elysions's sole proper buffer",
+      "name": "Elysion's sole proper buffer (엘리시온 유일의 제대로 된 버퍼)",
       "members": [
         "Miranda",
         "Diesel",
@@ -6769,7 +6769,7 @@
     },
     {
       "id": "pwc-tos-time-to-one-shot",
-      "name": "TOS = Time to One Shot",
+      "name": "TOS = Time to One Shot (TOS = 일격필살의 시간)",
       "members": [
         "Noah",
         "Emilia",
@@ -6787,7 +6787,7 @@
     },
     {
       "id": "pwc-relatively-poor-tos",
-      "name": "Relatively Poor TOS",
+      "name": "Relatively Poor TOS (비교적 가난한 TOS)",
       "members": [
         "Blanc",
         "Emilia",
@@ -6804,7 +6804,7 @@
     },
     {
       "id": "pwc-modernia-s-new-friend",
-      "name": "Modernia's New Friend",
+      "name": "Modernia's New Friend (모더니아의 새 친구)",
       "members": [
         "Liter",
         "Blanc",
@@ -6821,7 +6821,7 @@
     },
     {
       "id": "pwc-modernia-rapture-queen",
-      "name": "Modernia - Rapture Queen",
+      "name": "Modernia - Rapture Queen (모더니아, 랩처의 여왕)",
       "members": [
         "Crown",
         "Modernia"
@@ -6835,7 +6835,7 @@
     },
     {
       "id": "pwc-anti-fart",
-      "name": "Anti-Fart",
+      "name": "Anti-Fart (대 방귀)",
       "members": [
         "Nayuta",
         "Moran",
@@ -6850,7 +6850,7 @@
     },
     {
       "id": "pwc-blacked-out-snake",
-      "name": "Blacked out Snake",
+      "name": "Blacked out Snake (암전된 뱀)",
       "members": [
         "Crown",
         "Helm",
@@ -6870,7 +6870,7 @@
     },
     {
       "id": "pwc-ziz-wipe-vs-a-moran",
-      "name": "Ziz wipe vs a Moran",
+      "name": "Ziz wipe vs a Moran (지즈의 전멸기 대 목단)",
       "members": [
         "Moran",
         "Crown",
@@ -6887,7 +6887,7 @@
     },
     {
       "id": "pwc-moran-electric",
-      "name": "Moran Electric",
+      "name": "Moran Electric (목단 전격 조합)",
       "members": [
         "Cinderella",
         "Moran",
@@ -6904,7 +6904,7 @@
     },
     {
       "id": "pwc-standard-school-girl",
-      "name": "Standard School Girl",
+      "name": "Standard School Girl (표준 여고생 조합)",
       "members": [
         "Tia",
         "Naga",
@@ -6922,7 +6922,7 @@
     },
     {
       "id": "pwc-heavenly-palm",
-      "name": "Heavenly Palm",
+      "name": "Heavenly Palm (하늘의 손바닥)",
       "members": [
         "Nayuta",
         "Crown"
@@ -6936,7 +6936,7 @@
     },
     {
       "id": "pwc-no-crown-is-okay",
-      "name": "No Crown is okay",
+      "name": "No Crown is okay (크라운이 없어도 괜찮다)",
       "members": [
         "Nayuta",
         "Mast: Romantic Maid"
@@ -6950,7 +6950,7 @@
     },
     {
       "id": "pwc-nayuta-cleaning",
-      "name": "Nayuta cleaning",
+      "name": "Nayuta cleaning (나유타의 청소)",
       "members": [
         "Little Mermaid",
         "Nayuta",
@@ -6967,7 +6967,7 @@
     },
     {
       "id": "pwc-burn-baby-burn",
-      "name": "Burn baby burn",
+      "name": "Burn baby burn (타올라라, 다 타버려라)",
       "members": [
         "Mihara: Bonding Chain",
         "Rumani",
@@ -6984,7 +6984,7 @@
     },
     {
       "id": "pwc-i-m-the-wind-that-s-coming",
-      "name": "I'm the wind that's coming",
+      "name": "I'm the wind that's coming (몰아치는 바람은 나다)",
       "members": [
         "Rei Ayanami",
         "Nayuta",
@@ -7001,7 +7001,7 @@
     },
     {
       "id": "pwc-counters-assemble",
-      "name": "Counters, Assemble!",
+      "name": "Counters, Assemble! (카운터즈, 집결하라)",
       "members": [
         "Anis: Star",
         "Rapi: Red Hood",
@@ -7021,7 +7021,7 @@
     },
     {
       "id": "pwc-neon-having-the-maids-for-herself",
-      "name": "Neon Having the Maids for Herself",
+      "name": "Neon Having the Maids for Herself (메이드를 독차지하는 네온)",
       "members": [
         "Mast: Romantic Maid",
         "Neon: Vision Eye",
@@ -7037,7 +7037,7 @@
     },
     {
       "id": "pwc-neon-for-campaign-bosses",
-      "name": "Neon for Campaign Bosses",
+      "name": "Neon for Campaign Bosses (캠페인 보스용 네온)",
       "members": [
         "Moran",
         "Crown",
@@ -7056,7 +7056,7 @@
     },
     {
       "id": "pwc-neon-explodes-mobs-in-missilis-tower",
-      "name": "Neon Explodes Mobs in Missilis Tower",
+      "name": "Neon Explodes Mobs in Missilis Tower (미실리스 타워에서 잡몹을 터뜨리는 네온)",
       "members": [
         "Tia",
         "Liter",
@@ -7073,7 +7073,7 @@
     },
     {
       "id": "pwc-neon-detonates-bosses-in-missilis-tower",
-      "name": "Neon Detonates Bosses in Missilis Tower",
+      "name": "Neon Detonates Bosses in Missilis Tower (미실리스 타워에서 보스를 폭파하는 네온)",
       "members": [
         "Tia",
         "Liter",
@@ -7090,7 +7090,7 @@
     },
     {
       "id": "pwc-capo-dei-capeye",
-      "name": "Capo Dei Capeye",
+      "name": "Capo Dei Capeye (보스 중의 보스)",
       "members": [
         "Rosanna",
         "Crown",
@@ -7107,7 +7107,7 @@
     },
     {
       "id": "pwc-schoolgirls-are-introduced-a-new-career-path-robbe",
-      "name": "Schoolgirls are introduced a new career path: Robbery",
+      "name": "Schoolgirls are introduced a new career path: Robbery (여고생에게 새 진로를: 강도)",
       "members": [
         "Tia",
         "Liter",
@@ -7123,7 +7123,7 @@
     },
     {
       "id": "pwc-wo-ah-water-woteh",
-      "name": "Wo'ah Water Woteh",
+      "name": "Wo'ah Water Woteh (우와, 물이다, 무울)",
       "members": [
         "Mary: Bay Goddess",
         "Dolla",
@@ -7140,7 +7140,7 @@
     },
     {
       "id": "pwc-the-nuke-team-for-nukers",
-      "name": "The Nuke Team for Nukers",
+      "name": "The Nuke Team for Nukers (폭격수를 위한 폭격 조합)",
       "members": [
         "Phantom",
         "Blanc",
@@ -7158,7 +7158,7 @@
     },
     {
       "id": "pwc-zombie-queen",
-      "name": "Zombie Queen",
+      "name": "Zombie Queen (좀비의 여왕)",
       "members": [
         "Phantom",
         "Blanc",
@@ -7175,7 +7175,7 @@
     },
     {
       "id": "pwc-maids-phantom",
-      "name": "Maids Phantom",
+      "name": "Maids Phantom (메이드와 팬텀)",
       "members": [
         "Mast: Romantic Maid",
         "Anis: Star",
@@ -7192,7 +7192,7 @@
     },
     {
       "id": "pwc-ludmilla-winter-owner-powercreep",
-      "name": "Ludmilla: Winter Owner powercreep",
+      "name": "Ludmilla: Winter Owner powercreep (루드밀라 : 윈터 오너발 인플레)",
       "members": [
         "Crown",
         "Liter",
@@ -7209,7 +7209,7 @@
     },
     {
       "id": "pwc-flexible-team-4-5",
-      "name": "Flexible Team 4/5",
+      "name": "Flexible Team 4/5 (융통성 있는 조합 4/5)",
       "members": [
         "Rapi: Red Hood",
         "Mint",
@@ -7226,7 +7226,7 @@
     },
     {
       "id": "pwc-send-in-the-black-hawk",
-      "name": "Send in the Black Hawk",
+      "name": "Send in the Black Hawk (블랙 호크를 투입하라)",
       "members": [
         "Moran",
         "Trina",
@@ -7243,7 +7243,7 @@
     },
     {
       "id": "pwc-privaty-the-best-flex",
-      "name": "Privaty, the Best Flex",
+      "name": "Privaty, the Best Flex (최고의 자유 자리, 프리바티)",
       "members": [
         "Privaty"
       ],
@@ -7256,7 +7256,7 @@
     },
     {
       "id": "pwc-water-among-us",
-      "name": "Water Among Us",
+      "name": "Water Among Us (우리 안의 수냉)",
       "members": [
         "Little Mermaid",
         "Nayuta",
@@ -7273,7 +7273,7 @@
     },
     {
       "id": "pwc-sanis-funneling-strategy",
-      "name": "SAnis Funneling Strategy",
+      "name": "SAnis Funneling Strategy (아니스 : 스파클링 서머에게 몰아주는 전략)",
       "members": [
         "Tove",
         "Anis: Sparkling Summer",
@@ -7288,7 +7288,7 @@
     },
     {
       "id": "pwc-deceptive-rosanna-team",
-      "name": "Deceptive Rosanna Team",
+      "name": "Deceptive Rosanna Team (속임수의 로산나 조합)",
       "members": [
         "Privaty: Unkind Maid",
         "Drake",
@@ -7305,7 +7305,7 @@
     },
     {
       "id": "pwc-quencyyy-beammmmmm",
-      "name": "Quencyyy BEAMMMMMM!!!",
+      "name": "Quencyyy BEAMMMMMM!!! (퀀시, 비이이임)",
       "members": [
         "Liter",
         "Blanc",
@@ -7322,7 +7322,7 @@
     },
     {
       "id": "pwc-squirt-queens",
-      "name": "Squirt Queens",
+      "name": "Squirt Queens (분사의 여왕들)",
       "members": [
         "Dorothy",
         "Crown",
@@ -7338,7 +7338,7 @@
     },
     {
       "id": "pwc-godspeed-lightspeed",
-      "name": "Godspeed, Lightspeed",
+      "name": "Godspeed, Lightspeed (신속, 광속)",
       "members": [
         "Quency: Escape Queen",
         "Centi",
@@ -7356,7 +7356,7 @@
     },
     {
       "id": "pwc-iron-man-team",
-      "name": "Iron Man Team",
+      "name": "Iron Man Team (아이언맨 조합)",
       "members": [
         "Crown",
         "Liter",
@@ -7374,7 +7374,7 @@
     },
     {
       "id": "pwc-fe-male-team",
-      "name": "Fe-Male Team",
+      "name": "Fe-Male Team (Fe = 철 조합)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -7391,7 +7391,7 @@
     },
     {
       "id": "pwc-firefighter",
-      "name": "Firefighter",
+      "name": "Firefighter (소방관)",
       "members": [
         "Grave",
         "D: Killer Wife",
@@ -7408,7 +7408,7 @@
     },
     {
       "id": "pwc-anti-nvidia",
-      "name": "Anti Nvidia",
+      "name": "Anti Nvidia (대 엔비디아)",
       "members": [
         "Crown",
         "Rapi: Red Hood",
@@ -7428,7 +7428,7 @@
     },
     {
       "id": "pwc-zombie-rapi",
-      "name": "Zombie Rapi",
+      "name": "Zombie Rapi (좀비 라피)",
       "members": [
         "Rapi: Red Hood",
         "Blanc",
@@ -7446,7 +7446,7 @@
     },
     {
       "id": "pwc-ultra-instinct",
-      "name": "Ultra Instinct",
+      "name": "Ultra Instinct (울트라 인스팅트)",
       "members": [
         "Rapi: Red Hood",
         "Crown",
@@ -7467,7 +7467,7 @@
     },
     {
       "id": "pwc-sisters-of-dot",
-      "name": "Sisters of DoT",
+      "name": "Sisters of DoT (지속 데미지의 자매들)",
       "members": [
         "Rosanna: Chic Ocean",
         "Raven",
@@ -7482,7 +7482,7 @@
     },
     {
       "id": "pwc-off-burst-raven",
-      "name": "Off-Burst Raven",
+      "name": "Off-Burst Raven (버스트 밖의 레이븐)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -7500,7 +7500,7 @@
     },
     {
       "id": "pwc-standard-red-dps",
-      "name": "Standard Red DPS",
+      "name": "Standard Red DPS (표준적인 붉은 딜러)",
       "members": [
         "Crown",
         "Naga",
@@ -7517,7 +7517,7 @@
     },
     {
       "id": "pwc-dream-modernia-team",
-      "name": "Dream Modernia Team",
+      "name": "Dream Modernia Team (꿈의 모더니아 조합)",
       "members": [
         "Liter",
         "Crown",
@@ -7534,7 +7534,7 @@
     },
     {
       "id": "pwc-rei-the-screen-clearing-menace",
-      "name": "Rei the Screen Clearing Menace",
+      "name": "Rei the Screen Clearing Menace (화면을 쓸어버리는 위협, 레이)",
       "members": [
         "Crown",
         "Rei Ayanami (Tentative Name)",
@@ -7551,7 +7551,7 @@
     },
     {
       "id": "pwc-maids-ahoy",
-      "name": "Maids Ahoy!",
+      "name": "Maids Ahoy! (메이드 발견)",
       "members": [
         "Mast: Romantic Maid",
         "Asuka: WILLE",
@@ -7567,7 +7567,7 @@
     },
     {
       "id": "pwc-2rl-snipe-with-ele",
-      "name": "2RL Snipe with Ele",
+      "name": "2RL Snipe with Ele (속성 데미지 저격형 2RL)",
       "members": [
         "Rei Ayanami (Tentative Name)",
         "Blanc",
@@ -7584,7 +7584,7 @@
     },
     {
       "id": "pwc-the-waterworks-squad",
-      "name": "The WaterWorks Squad",
+      "name": "The WaterWorks Squad (수도국 분대)",
       "members": [
         "Dorothy",
         "Rem",
@@ -7601,7 +7601,7 @@
     },
     {
       "id": "pwc-rosanna-only-team",
-      "name": "Rosanna-Only Team",
+      "name": "Rosanna-Only Team (로산나 전용 조합)",
       "members": [
         "Rosanna",
         "Anis: Sparkling Summer",
@@ -7616,7 +7616,7 @@
     },
     {
       "id": "pwc-summer-solstice",
-      "name": "Summer Solstice",
+      "name": "Summer Solstice (하지)",
       "members": [
         "Volume",
         "Rosanna: Chic Ocean",
@@ -7633,7 +7633,7 @@
     },
     {
       "id": "pwc-2-2-5-3rl-simple-nuke",
-      "name": "2~2.5~3RL Simple Nuke",
+      "name": "2~2.5~3RL Simple Nuke (2~2.5~3RL 단순 폭격)",
       "members": [
         "Sakura: Bloom in Summer",
         "Rosanna: Chic Ocean",
@@ -7650,7 +7650,7 @@
     },
     {
       "id": "pwc-typical-2-rl-nuke",
-      "name": "Typical 2 RL nuke",
+      "name": "Typical 2 RL nuke (전형적인 2RL 폭격)",
       "members": [
         "Scarlet",
         "Trina",
@@ -7667,7 +7667,7 @@
     },
     {
       "id": "pwc-electric-team-goes-zzzttt",
-      "name": "Electric team goes Zzzttt",
+      "name": "Electric team goes Zzzttt (전격 조합, 지지직)",
       "members": [
         "Moran",
         "Pepper",
@@ -7684,7 +7684,7 @@
     },
     {
       "id": "pwc-can-it-go-faster",
-      "name": "Can it go faster?",
+      "name": "Can it go faster? (더 빠르게 갈 수 있을까)",
       "members": [
         "Noah",
         "Scarlet",
@@ -7702,7 +7702,7 @@
     },
     {
       "id": "pwc-the-bunny-duo",
-      "name": "The Bunny Duo",
+      "name": "The Bunny Duo (바니 듀오)",
       "members": [
         "Liter",
         "Blanc",
@@ -7719,7 +7719,7 @@
     },
     {
       "id": "pwc-partners-in-wind",
-      "name": "Partners in Wind",
+      "name": "Partners in Wind (바람의 동반자)",
       "members": [
         "Liter",
         "Grave",
@@ -7737,7 +7737,7 @@
     },
     {
       "id": "pwc-making-use-of-dot-with-stall-3rl",
-      "name": "Making Use of DoT with Stall (3RL)",
+      "name": "Making Use of DoT with Stall (3RL) (발 묶기로 지속 데미지를 살린다 · 3RL)",
       "members": [
         "Blanc",
         "Sakura: Bloom in Summer",
@@ -7753,7 +7753,7 @@
     },
     {
       "id": "pwc-scarlet-s-screen-wipe-a-menace-for-campaign",
-      "name": "Scarlet's Screen Wipe - A menace for Campaign",
+      "name": "Scarlet's Screen Wipe - A menace for Campaign (홍련의 화면 청소 · 캠페인의 위협)",
       "members": [
         "Crown",
         "Scarlet",
@@ -7768,7 +7768,7 @@
     },
     {
       "id": "pwc-basic-siren-comp",
-      "name": "Basic Siren comp",
+      "name": "Basic Siren comp (기본 리틀 머메이드 조합)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -7783,7 +7783,7 @@
     },
     {
       "id": "pwc-pillaging-the-harvester",
-      "name": "Pillaging the Harvester",
+      "name": "Pillaging the Harvester (하베스터를 약탈하다)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -7800,7 +7800,7 @@
     },
     {
       "id": "pwc-release-the-kraken",
-      "name": "Release the Kraken",
+      "name": "Release the Kraken (크라켄을 풀어놓아라)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -7817,7 +7817,7 @@
     },
     {
       "id": "pwc-ultra-pro-max",
-      "name": "Ultra Pro Max",
+      "name": "Ultra Pro Max (울트라 프로 맥스)",
       "members": [
         "Crown",
         "Little Mermaid",
@@ -7835,7 +7835,7 @@
     },
     {
       "id": "pwc-siren-hypercarry",
-      "name": "Siren Hypercarry",
+      "name": "Siren Hypercarry (리틀 머메이드 하이퍼 캐리)",
       "members": [
         "Little Mermaid",
         "Velvet",
@@ -7852,7 +7852,7 @@
     },
     {
       "id": "pwc-snow-crane-pve-team",
-      "name": "Snow Crane PVE team",
+      "name": "Snow Crane PVE team (백학 PvE 조합)",
       "members": [
         "Crown",
         "Snow Crane"
@@ -7866,7 +7866,7 @@
     },
     {
       "id": "pwc-snow-crane-pvp-team",
-      "name": "Snow Crane PVP team",
+      "name": "Snow Crane PVP team (백학 PvP 조합)",
       "members": [
         "Snow Crane",
         "Biscuit",
@@ -7883,7 +7883,7 @@
     },
     {
       "id": "pwc-drizzle-white",
-      "name": "Drizzle White",
+      "name": "Drizzle White (가랑비 스노우 화이트)",
       "members": [
         "Miranda",
         "Ade: Agent Bunny",
@@ -7900,7 +7900,7 @@
     },
     {
       "id": "pwc-snow-water-goddess",
-      "name": "Snow Water Goddess",
+      "name": "Snow Water Goddess (눈과 물의 여신)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -7917,7 +7917,7 @@
     },
     {
       "id": "pwc-1-5-rl-pvp-gang",
-      "name": "1.5 RL PvP Gang",
+      "name": "1.5 RL PvP Gang (1.5 RL PvP 패거리)",
       "members": [
         "Snow White: Heavy Arms",
         "Blanc",
@@ -7934,7 +7934,7 @@
     },
     {
       "id": "pwc-off-burst-snow",
-      "name": "Off-Burst Snow",
+      "name": "Off-Burst Snow (버스트 밖의 스노우 화이트)",
       "members": [
         "Snow White: Heavy Arms"
       ],
@@ -7950,7 +7950,7 @@
     },
     {
       "id": "pwc-crit-white",
-      "name": "Crit White",
+      "name": "Crit White (크리티컬 스노우 화이트)",
       "members": [
         "Miranda",
         "Snow White: Heavy Arms",
@@ -7965,7 +7965,7 @@
     },
     {
       "id": "pwc-rainbow-six-siege",
-      "name": "Rainbow Six Siege",
+      "name": "Rainbow Six Siege (레인보우 식스 시즈)",
       "members": [
         "Snow White: Heavy Arms",
         "Rapi: Red Hood",
@@ -7982,7 +7982,7 @@
     },
     {
       "id": "pwc-rainbow-six-siege-2",
-      "name": "Rainbow Six Siege 2",
+      "name": "Rainbow Six Siege 2 (레인보우 식스 시즈 2)",
       "members": [
         "Cinderella",
         "Snow White: Heavy Arms",
@@ -7997,7 +7997,7 @@
     },
     {
       "id": "pwc-one-we-have-coveted-since-2023",
-      "name": "One We Have Coveted Since 2023",
+      "name": "One We Have Coveted Since 2023 (2023년부터 바라 온 조합)",
       "members": [
         "Tove",
         "Blanc",
@@ -8014,7 +8014,7 @@
     },
     {
       "id": "pwc-fus-so-dah",
-      "name": "Fus So Dah!",
+      "name": "Fus So Dah! (푸스 로 다)",
       "members": [
         "Soda: Twinkling Bunny",
         "Blanc",
@@ -8032,7 +8032,7 @@
     },
     {
       "id": "pwc-soline-makes-vesti-launch-torpedoes",
-      "name": "Soline Makes Vesti Launch Torpedoes",
+      "name": "Soline Makes Vesti Launch Torpedoes (솔린이 베스티에게 어뢰를 쏘게 한다)",
       "members": [
         "Emma: Tactical Upgrade",
         "Eunhwa: Tactical Upgrade",
@@ -8048,7 +8048,7 @@
     },
     {
       "id": "pwc-general-summer-anis-team",
-      "name": "General Summer Anis team",
+      "name": "General Summer Anis team (아니스 : 스파클링 서머 범용 조합)",
       "members": [
         "Noah",
         "Sora",
@@ -8065,7 +8065,7 @@
     },
     {
       "id": "pwc-true-damage-cope-again",
-      "name": "True Damage Cope (Again)",
+      "name": "True Damage Cope (Again) (고정 데미지로 타협 · 재차)",
       "members": [
         "Moran",
         "Takina Inoue",
@@ -8082,7 +8082,7 @@
     },
     {
       "id": "pwc-the-reason-takina-ss",
-      "name": "The Reason Takina SS",
+      "name": "The Reason Takina SS (이노우에 타키나가 SS인 이유)",
       "members": [
         "Moran",
         "Crown",
@@ -8099,7 +8099,7 @@
     },
     {
       "id": "pwc-scarlet-treasure",
-      "name": "Scarlet Treasure",
+      "name": "Scarlet Treasure (애장품 홍련)",
       "members": [
         "Scarlet",
         "Trina"
@@ -8116,7 +8116,7 @@
     },
     {
       "id": "pwc-electric-wombo-combo-73",
-      "name": "Electric Wombo Combo #73",
+      "name": "Electric Wombo Combo #73 (전격 필살 콤보 #73)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -8133,7 +8133,7 @@
     },
     {
       "id": "pwc-off-burst-menace",
-      "name": "Off-Burst Menace!",
+      "name": "Off-Burst Menace! (버스트 밖의 위협)",
       "members": [
         "Cinderella",
         "Rouge",
@@ -8150,7 +8150,7 @@
     },
     {
       "id": "pwc-campaign-shenanigans-ft-trina",
-      "name": "Campaign Shenanigans ft. Trina",
+      "name": "Campaign Shenanigans ft. Trina (트리나가 들어간 캠페인의 장난)",
       "members": [
         "Crown",
         "Scarlet",
@@ -8165,7 +8165,7 @@
     },
     {
       "id": "pwc-prepare-for-nukes-and-make-them-double",
-      "name": "Prepare for Nukes! And Make Them double!",
+      "name": "Prepare for Nukes! And Make Them double! (폭격 준비, 그것도 두 배로)",
       "members": [
         "Scarlet",
         "Trina",
@@ -8185,7 +8185,7 @@
     },
     {
       "id": "pwc-god-comp",
-      "name": "God Comp",
+      "name": "God Comp (갓 조합)",
       "members": [
         "Crown",
         "Liter",
@@ -8201,7 +8201,7 @@
     },
     {
       "id": "pwc-average-counter-strike-gameplay",
-      "name": "Average Counter-Strike Gameplay",
+      "name": "Average Counter-Strike Gameplay (흔한 카운터 스트라이크 한 판)",
       "members": [
         "Alice",
         "Rouge",
@@ -8218,7 +8218,7 @@
     },
     {
       "id": "pwc-best-wind-weak-bosser-singular-team",
-      "name": "Best Wind-Weak Bosser (Singular Team)",
+      "name": "Best Wind-Weak Bosser (Singular Team) (풍압 약점 최적 보스전 조합 · 단일 조합)",
       "members": [
         "Little Mermaid",
         "Nayuta",
@@ -8235,7 +8235,7 @@
     },
     {
       "id": "pwc-the-good-the-bad-and-the-demon",
-      "name": "The good, the bad and the Demon",
+      "name": "The good, the bad and the Demon (선한 자, 악한 자, 그리고 악마)",
       "members": [
         "Emma: Tactical Upgrade",
         "Eunhwa: Tactical Upgrade",
@@ -8250,7 +8250,7 @@
     },
     {
       "id": "pwc-i-m-inevitable",
-      "name": "I'm inevitable",
+      "name": "I'm inevitable (나는 필연이다)",
       "members": [
         "Noise",
         "Noah",
@@ -8267,7 +8267,7 @@
     },
     {
       "id": "pwc-what-if-sg-splash",
-      "name": "What if SG splash?",
+      "name": "What if SG splash? (SG가 범위 공격이라면)",
       "members": [
         "Blanc",
         "Vesti: Tactical Upgrade",
@@ -8284,7 +8284,7 @@
     },
     {
       "id": "pwc-absolute-vesti",
-      "name": "Absolute Vesti",
+      "name": "Absolute Vesti (앱솔루트 베스티)",
       "members": [
         "Noah",
         "Eunhwa: Tactical Upgrade",
@@ -8301,7 +8301,7 @@
     },
     {
       "id": "pwc-vesti-the-mobber",
-      "name": "Vesti the Mobber",
+      "name": "Vesti the Mobber (잡몹 처리 담당 베스티)",
       "members": [
         "Little Mermaid",
         "Crown",
@@ -8318,7 +8318,7 @@
     },
     {
       "id": "pwc-snow-white-goes-to-school",
-      "name": "Snow White goes to school",
+      "name": "Snow White goes to school (스노우 화이트, 등교하다)",
       "members": [
         "Zwei",
         "Helm: Aquamarine",
@@ -8335,7 +8335,7 @@
     },
     {
       "id": "pwc-snow-white-goes-to-school-again",
-      "name": "Snow White goes to school, again!",
+      "name": "Snow White goes to school, again! (스노우 화이트, 또 등교하다)",
       "members": [
         "Zwei",
         "Mast: Romantic Maid",
@@ -8352,7 +8352,7 @@
     },
     {
       "id": "pwc-double-the-non-cdr-b1s",
-      "name": "Double the Non-CDR B1s!",
+      "name": "Double the Non-CDR B1s! (쿨감 없는 B1을 둘로)",
       "members": [
         "Miranda",
         "Helm: Aquamarine",
@@ -8369,7 +8369,7 @@
     },
     {
       "id": "pwc-firey-core-rings",
-      "name": "Firey Core Rings",
+      "name": "Firey Core Rings (불타는 코어의 고리)",
       "members": [
         "Zwei",
         "Grave",
@@ -8386,7 +8386,7 @@
     },
     {
       "id": "pwc-liquid-holes",
-      "name": "Liquid Holes",
+      "name": "Liquid Holes (액체의 구멍)",
       "members": [
         "Zwei",
         "Blanc",
