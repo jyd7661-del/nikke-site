@@ -70,7 +70,8 @@ const EXPECTED = {
   'archetype.note(ko)': 0,     // 2026-08-25에 483건 전부 한국어로 옮겨 0이 됐다
   'skill.desc_kr': 6,          // 나무위키가 막은 캐릭터. idoll-flower는 "채우지 않기로" 결정된 건이다
   'skill.desc_ja': 9,          // game8이 아직 안 채운 페이지 (yukiko 등)
-  'squad(번역 없음)': 62,        // 부대 이름. 지어내면 B등급이라 1차 출처에서 옮겨와야 한다
+  'squad(한국어 없음)': 0,       // 2026-08-25 나무위키에서 62종 전부 옮겼다
+  'squad(일본어 없음)': 62,      // 일본어는 game8에서 따로 옮겨야 한다. 음차는 틀린다(Matis->메티스)
   'raidBoss(번역 없음)': 5,      // 솔로레이드 보스명. 위와 같은 이유
 };
 
@@ -145,8 +146,18 @@ db.forEach((c) => {
 // 4. 화면에 그대로 나가는데 번역이 아예 없는 값
 //    (지어내면 B등급이라 여기서는 **세기만** 한다 — 값은 1차 출처에서 옮겨와야 한다)
 // ---------------------------------------------------------------------------
+// 소속 부대 — 2026-08-25부터 data/squadNames.json에 한국어 표기가 있다.
+// ⚠️ 여기서 보는 것은 "그 부대에 대응 항목이 있는가"다. 없으면 화면이 영문으로
+//    폴백하는데 **에러가 안 난다** — 새 캐릭터가 새 부대를 달고 들어오면 조용히 영어가 뜬다.
+const squadNames = read('squadNames.json').squads || {};
 const squads = [...new Set(db.map((c) => c.squad).filter(nz))];
-squads.filter((s) => !HAS_KO(s)).forEach((s) => mark('squad(번역 없음)', s));
+//    ⚠️ 판정은 "한글이 들어 있는가"가 아니라 **"수집된 값이 있는가"**다.
+//       `777`·`NERV`·`A.C.P.U.`·`M.M.R.`처럼 한국어 표기 자체가 한글이 아닌 부대가 7종 있다.
+//       한글 유무로 재면 이 7종이 영원히 미해결로 남아 숫자가 0이 되지 못한다.
+squads.forEach((sq) => {
+  if (!nz(squadNames[sq]?.ko)) mark('squad(한국어 없음)', sq);
+  if (!nz(squadNames[sq]?.ja)) mark('squad(일본어 없음)', sq);
+});
 const bosses = [...new Set((read('soloRaidTeams.json').seasons || []).map((s) => s.boss).filter(nz))];
 bosses.filter((b) => !HAS_KO(b)).forEach((b) => mark('raidBoss(번역 없음)', b));
 

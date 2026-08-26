@@ -1,0 +1,258 @@
+{
+  "meta": {
+    "source": "namu.wiki 캐릭터 문서 인포박스의 스쿼드 칸",
+    "method": "캐릭터 전수에서 긁어 영문 부대별로 묶고, 같은 부대의 멤버들이 모두 같은 한국어 표기를 낼 때만 채택한다(교차검증).",
+    "capturedOn": "2026-08-26",
+    "note": "ko만 있다. 일본어(ja)는 game8에서 따로 옮겨야 한다 — 지어내지 말 것."
+  },
+  "squads": {
+    "777": {
+      "ko": "777",
+      "confirmedBy": 3
+    },
+    "Replace": {
+      "ko": "리플레이스",
+      "confirmedBy": 9
+    },
+    "Counters": {
+      "ko": "카운터스",
+      "confirmedBy": 8
+    },
+    "Maid For You": {
+      "ko": "메이드 포 유",
+      "confirmedBy": 7
+    },
+    "Infinity Rail": {
+      "ko": "인피니티 레일",
+      "confirmedBy": 6
+    },
+    "Absolute": {
+      "ko": "앱솔루트",
+      "confirmedBy": 6
+    },
+    "Unlimited": {
+      "ko": "언리미티드",
+      "confirmedBy": 6
+    },
+    "Aegis": {
+      "ko": "이지스",
+      "confirmedBy": 6
+    },
+    "Inherit": {
+      "ko": "인헤르트",
+      "confirmedBy": 5
+    },
+    "Matis": {
+      "ko": "메티스",
+      "confirmedBy": 5
+    },
+    "Underworld Queen": {
+      "ko": "언더월드 퀸",
+      "confirmedBy": 5
+    },
+    "Goddess": {
+      "ko": "갓데스",
+      "confirmedBy": 5
+    },
+    "NERV": {
+      "ko": "NERV",
+      "confirmedBy": 5
+    },
+    "Pioneer": {
+      "ko": "파이오니아",
+      "confirmedBy": 4
+    },
+    "Extrinsic": {
+      "ko": "익스터너",
+      "confirmedBy": 4
+    },
+    "Cafe Sweety": {
+      "ko": "카페 스위티",
+      "confirmedBy": 4
+    },
+    "Talentum": {
+      "ko": "달란트",
+      "confirmedBy": 4
+    },
+    "Exotic": {
+      "ko": "이그조틱",
+      "confirmedBy": 4
+    },
+    "Real Kindness": {
+      "ko": "리얼 카인드니스",
+      "confirmedBy": 4
+    },
+    "Old Tales": {
+      "ko": "올드 테일즈",
+      "confirmedBy": 4
+    },
+    "Best Seller": {
+      "ko": "베스트셀러",
+      "confirmedBy": 4
+    },
+    "The Scouts": {
+      "ko": "스카우팅",
+      "confirmedBy": 3
+    },
+    "The Carronades": {
+      "ko": "리틀 캐논",
+      "confirmedBy": 3
+    },
+    "A.C.P.U.": {
+      "ko": "A.C.P.U.",
+      "confirmedBy": 3
+    },
+    "Triangle": {
+      "ko": "트라이앵글",
+      "confirmedBy": 3
+    },
+    "Nepenthe": {
+      "ko": "라이프 토닉",
+      "confirmedBy": 3
+    },
+    "Seraphim": {
+      "ko": "세라핌",
+      "confirmedBy": 3
+    },
+    "Wardress": {
+      "ko": "워드리스",
+      "confirmedBy": 3
+    },
+    "Prima Donna": {
+      "ko": "프리마돈나",
+      "confirmedBy": 3
+    },
+    "Heretic": {
+      "ko": "헬레틱",
+      "confirmedBy": 3
+    },
+    "Devil Hunter": {
+      "ko": "데블 헌터",
+      "confirmedBy": 3
+    },
+    "Happy Zoo": {
+      "ko": "해피 주",
+      "confirmedBy": 3
+    },
+    "Perilous Siege": {
+      "ko": "시지 패러리스",
+      "confirmedBy": 3
+    },
+    "School Circle": {
+      "ko": "스쿨 서클",
+      "confirmedBy": 3
+    },
+    "Electric Shock": {
+      "ko": "일렉트릭 쇼크",
+      "confirmedBy": 3
+    },
+    "Emilia's Faction": {
+      "ko": "에밀리아 진영",
+      "confirmedBy": 3
+    },
+    "B.S.T.": {
+      "ko": "B.S.T.",
+      "confirmedBy": 3
+    },
+    "Café LycoReco": {
+      "ko": "찻집 리코리코",
+      "confirmedBy": 3
+    },
+    "Protocol": {
+      "ko": "프로토콜",
+      "confirmedBy": 2
+    },
+    "Recall & Release": {
+      "ko": "리콜 & 릴리즈",
+      "confirmedBy": 2
+    },
+    "M.M.R.": {
+      "ko": "M.M.R",
+      "confirmedBy": 2
+    },
+    "Mighty Tools": {
+      "ko": "마이티 툴즈",
+      "confirmedBy": 2
+    },
+    "White Knight": {
+      "ko": "바이스리터",
+      "confirmedBy": 2
+    },
+    "YoRHa": {
+      "ko": "요르하",
+      "confirmedBy": 2
+    },
+    "Academia": {
+      "ko": "아카데미아",
+      "confirmedBy": 2
+    },
+    "Dazzling Pearl": {
+      "ko": "다즐링 펄",
+      "confirmedBy": 2
+    },
+    "Botanic Garden": {
+      "ko": "보타닉 가든",
+      "confirmedBy": 2
+    },
+    "Rewind": {
+      "ko": "리와인드",
+      "confirmedBy": 2
+    },
+    "WILLE": {
+      "ko": "WILLE",
+      "confirmedBy": 2
+    },
+    "Cooking Oil": {
+      "ko": "쿠킹오일",
+      "confirmedBy": 2
+    },
+    "T.T. STAR": {
+      "ko": "T.T.STAR",
+      "confirmedBy": 2
+    },
+    "Master Hand": {
+      "ko": "마스터 핸드",
+      "confirmedBy": 1
+    },
+    "Machine Lifeform": {
+      "ko": "기계생명체",
+      "confirmedBy": 1
+    },
+    "Heavy Gram": {
+      "ko": "헤비그램",
+      "confirmedBy": 1
+    },
+    "Ark Rangers": {
+      "ko": "여신전대 아크레인저",
+      "confirmedBy": 1
+    },
+    "Overseer": {
+      "ko": "오버시어",
+      "confirmedBy": 1
+    },
+    "Incubator": {
+      "ko": "인큐베이터",
+      "confirmedBy": 1
+    },
+    "7th Airborne Squad": {
+      "ko": "7차 강하 부대",
+      "confirmedBy": 1
+    },
+    "2nd Airborne Squad": {
+      "ko": "2차 강하 부대",
+      "confirmedBy": 1
+    },
+    "5th Airborne Squad": {
+      "ko": "5차 강하 부대",
+      "confirmedBy": 1
+    },
+    "Over the Horizon": {
+      "ko": "오버 더 호라이즌",
+      "confirmedBy": 1
+    },
+    "Veiled Order": {
+      "ko": "베일드 오더",
+      "confirmedBy": 1
+    }
+  }
+}

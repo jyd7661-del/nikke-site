@@ -15,6 +15,7 @@
 //   세 언어가 한 줄에 있고 행마다 source가 붙어 있다. 여기서 따로 번역표를 만들면
 //   용어집과 조용히 어긋난다.
 import glossary from '@/data/glossary.json';
+import squadNames from '@/data/squadNames.json';
 
 const TERMS = new Map((glossary.terms || []).map((t) => [t.key, t]));
 
@@ -30,6 +31,18 @@ export const corpLabel = (v, lang) => termLabel(`corp_${v}`, lang, v);
 
 // 무기(AR/MG/RL/SR/SG/SMG)는 세 언어가 같은 약어라 용어집에 없다. 대문자로만 정규화한다.
 export const weaponLabel = (v) => String(v || '').toUpperCase();
+
+// 소속 부대. data/squadNames.json은 나무위키 캐릭터 문서에서 옮긴 값이고
+// **음차가 아니다** — Matis→메티스, Extrinsic→익스터너, Talentum→달란트,
+// The Carronades→리틀 캐논. 그래서 없는 언어를 지어내지 않고 영문으로 폴백한다.
+// (일본어는 아직 없다. game8에서 따로 옮겨야 한다)
+const SQUADS = squadNames.squads || {};
+export function squadLabel(en, lang) {
+  if (!en) return '';
+  const row = SQUADS[en];
+  if (!row) return en;
+  return row[lang] || en;
+}
 
 // prydwen 티어리스트 태그 -> i18n 키. 라벨 문구 자체는 lib/i18n.js에 있다.
 export const TAG_I18N_KEY = {

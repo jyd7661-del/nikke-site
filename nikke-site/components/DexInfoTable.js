@@ -1,7 +1,7 @@
 'use client';
 
 import { useLanguage } from '@/components/LanguageProvider';
-import { classLabel, elementLabel, corpLabel, weaponLabel } from '@/lib/dexLabels';
+import { classLabel, elementLabel, corpLabel, weaponLabel, squadLabel } from '@/lib/dexLabels';
 
 // 도감 상세의 기본 정보 표(등급·버스트·클래스·속성·무기·제조사·부대·출시일·오버스펙).
 //
@@ -9,8 +9,10 @@ import { classLabel, elementLabel, corpLabel, weaponLabel } from '@/lib/dexLabel
 // 값의 표기는 data/glossary.json 한 곳에서 온다 — lib/dex.js의 classLabel/elementLabel/
 // corpLabel이 그걸 읽는다. 여기서 새 번역표를 만들지 않는다.
 //
-// ⚠️ 소속 부대(squad)는 영문 표기 그대로 둔다. 데이터가 영어 하나뿐이고
-//    번역하면 추론(B등급)이 된다. 페르소나 콜라보 2명은 squad 자체가 비어 있다.
+// 소속 부대(squad)는 2026-08-25부터 한국어 표기가 붙는다 — data/squadNames.json.
+// 나무위키 캐릭터 문서에서 **옮겨 온** 값이고 음차가 아니다(Matis→메티스,
+// Talentum→달란트). 일본어는 아직 없어서 영문으로 폴백한다.
+// 페르소나 콜라보 2명은 squad 자체가 비어 있다.
 function InfoRow({ label, value }) {
   return (
     <div className="flex justify-between gap-4 py-2 border-b border-slate-800 text-sm">
@@ -32,7 +34,7 @@ export default function DexInfoTable({ character }) {
       <InfoRow label={t('dex_element')} value={elementLabel(c.element, lang)} />
       <InfoRow label={t('dex_weapon')} value={weaponLabel(c.weapon)} />
       <InfoRow label={t('dex_corp')} value={corpLabel(c.manufacturer, lang)} />
-      {c.squad && <InfoRow label={t('dex_squad')} value={c.squad} />}
+      {c.squad && <InfoRow label={t('dex_squad')} value={squadLabel(c.squad, lang)} />}
       {c.releaseDate && <InfoRow label={t('dex_release')} value={c.releaseDate} />}
       {c.overspec && <InfoRow label={t('dex_overspec')} value={t('dex_overspec_value')} />}
     </div>
