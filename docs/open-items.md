@@ -769,20 +769,34 @@ Search Console에 색인이 잡히기까지 1~2주가 정상이다. 그 사이�
 
 > claude.ai 프로젝트 문서 `컴퓨터-앞-할일.md`에서 이관. 이제 이 파일이 단일 출처다.
 
-### 즉시 처리 — 자체 방문 계측을 켜는 두 단계 (2026-08-26)
+### ✅ 자체 방문 계측 — **가동 중** (2026-08-27)
 
-코드는 배포됐지만 **아직 아무것도 안 쌓인다.** 화면은 멀쩡하고 숫자만 없다.
+마이그레이션까지 적용을 마쳤다. 유저가 컴퓨터를 쓸 수 없는 상황이라 클로드 코드가
+브라우저(로그인된 Chrome)로 Supabase SQL 편집기에서 직접 실행했다.
 
-| # | 할 일 | 왜 |
-|---|---|---|
-| 1 | Supabase SQL 편집기에서 `nikke-site/supabase/traffic_migration.sql` 실행 | 테이블이 없으면 라우트가 204를 돌려주고 Vercel 로그에만 에러가 남는다 |
-| 2 | `SUPABASE_ACCESS_TOKEN` 을 **Windows 사용자 환경변수**로 설정 후 세션 재시작 | 저장소 `.mcp.json`이 그 이름으로 읽는다. 그래야 클로드 코드가 직접 쿼리해 숫자를 뽑는다 |
+**운영 환경 실측으로 설계대로 도는 것을 확인했다:**
 
-⚠️ 2번은 **관리용 토큰**이라 앱이 쓰는 `SUPABASE_SERVICE_ROLE_KEY`와 다르다.
-Supabase 대시보드 → Account → Access Tokens 에서 발급한다. **값을 대화창에 붙여넣지 말 것** —
-환경변수로만 넣는다.
+| 보낸 것 | 결과 |
+|---|---|
+| `/nikke/crown` · `/nikke/rapi` · `/nikke` | 기록됨 (각 2회) |
+| `/wp-admin` (화이트리스트 밖) | **기록 안 됨** |
+| Googlebot UA로 `/nikke/crown` | **기록 안 됨** |
+| 위 6회 로딩 | 방문자 **1명**으로 묶임 (같은 IP·UA 해시) |
 
-확인: `node scripts/trafficReport.mjs` (키가 없으면 무엇이 없는지 알려준다)
+확인 뒤 테스트 행은 지웠다(`loads_left 0 / visitors_left 0`). 첫날 숫자는 실제 방문만 쌓인다.
+
+조회: `node scripts/trafficReport.mjs` — 단 로컬에 `.env.local`이 없어 지금은 안 돈다.
+Supabase SQL 편집기에서 직접 봐도 되고, 아래 토큰을 넣으면 클로드 코드가 뽑아준다.
+
+#### 🟡 남은 선택 사항 — `SUPABASE_ACCESS_TOKEN`
+
+없어도 막히는 것은 없다(SQL 편집기로 조회 가능). 넣으면 클로드 코드가 매번 브라우저를
+거치지 않고 바로 쿼리해 숫자를 뽑는다.
+
+- **Windows 사용자 환경변수**로 설정 후 세션 재시작. 저장소 `.mcp.json`이 그 이름으로 읽는다
+- ⚠️ **관리용 토큰**이라 앱이 쓰는 `SUPABASE_SERVICE_ROLE_KEY`와 다르다.
+  Supabase 대시보드 → Account → Access Tokens
+- ⚠️ **값을 대화창에 붙여넣지 말 것.** 환경변수로만 넣는다
 
 ### 즉시 처리
 
