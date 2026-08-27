@@ -769,6 +769,21 @@ Search Console에 색인이 잡히기까지 1~2주가 정상이다. 그 사이�
 
 > claude.ai 프로젝트 문서 `컴퓨터-앞-할일.md`에서 이관. 이제 이 파일이 단일 출처다.
 
+### 즉시 처리 — 자체 방문 계측을 켜는 두 단계 (2026-08-26)
+
+코드는 배포됐지만 **아직 아무것도 안 쌓인다.** 화면은 멀쩡하고 숫자만 없다.
+
+| # | 할 일 | 왜 |
+|---|---|---|
+| 1 | Supabase SQL 편집기에서 `nikke-site/supabase/traffic_migration.sql` 실행 | 테이블이 없으면 라우트가 204를 돌려주고 Vercel 로그에만 에러가 남는다 |
+| 2 | `SUPABASE_ACCESS_TOKEN` 을 **Windows 사용자 환경변수**로 설정 후 세션 재시작 | 저장소 `.mcp.json`이 그 이름으로 읽는다. 그래야 클로드 코드가 직접 쿼리해 숫자를 뽑는다 |
+
+⚠️ 2번은 **관리용 토큰**이라 앱이 쓰는 `SUPABASE_SERVICE_ROLE_KEY`와 다르다.
+Supabase 대시보드 → Account → Access Tokens 에서 발급한다. **값을 대화창에 붙여넣지 말 것** —
+환경변수로만 넣는다.
+
+확인: `node scripts/trafficReport.mjs` (키가 없으면 무엇이 없는지 알려준다)
+
 ### 즉시 처리
 
 | 항목 | 상태 |
