@@ -1,5 +1,5 @@
 ---
-description: 니케 사이트의 자동 검사 11종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 12종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
@@ -15,6 +15,7 @@ node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
 node scripts/testDexUsage.mjs
 node scripts/testDataI18n.mjs
+node scripts/testTraffic.mjs
 node scripts/findTotems.mjs
 node scripts/checkAdPlacement.mjs
 node scripts/checkWeeklyReport.mjs
@@ -31,6 +32,7 @@ node scripts/checkWeeklyReport.mjs
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
 | `testDexUsage.mjs` | **전부 통과 · 조합 214건 · 데이터가 붙는 캐릭터 98/198명** | 도감 "실사용 데이터" 절의 집계. 198명 **전원**을 원본 JSON에서 다시 세어 대조한다 — 이 절은 데이터가 없으면 안 그리는 설계라 집계가 통째로 실패해도 화면이 멀쩡해 보인다 |
 | `testDataI18n.mjs` | **퇴행 없음** (남은 backlog: squad 62 · desc_ja 9 · desc_kr 6 · 보스명 5. 아키타입 name·note는 483/483 완료) | 화면에 나가는 **데이터**가 사이트 언어와 맞는가. `testI18n`은 UI 라벨만 봐서 "한국어 화면인데 조합 이름·설명이 영어"를 24건 통과하는 동안 놓쳤다. **래칫이다 — EXPECTED보다 늘면 ERROR, 줄면 숫자를 낮추라고 알린다** |
+| `testTraffic.mjs` | **전부 통과 · 계측 대상 경로 207개** | 자체 방문 계측의 경로·봇 판정. 계측은 **조용히 안 쌓인다** — 경로 판정이 막으면 표가 비고, 봇을 못 거르면 크롤러가 203페이지를 훑어 "인원 대비 로딩" 비율이 무의미해진다. DB 없이 검사할 수 있게 `lib/traffic.js`로 순수 로직을 뗐다 |
 | `findTotems.mjs` | **1군 0명** | 토템 후보 누락 |
 | `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
 | `checkWeeklyReport.mjs` | **마지막 보고서 9일 이내 / 미처리 목록** | 주간 조사 예약 작업이 돌았는지, 그 결과를 사람이 처리했는지 |

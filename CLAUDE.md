@@ -23,7 +23,11 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 
 > 비용 판단 기준: AI 설명은 건당 약 4.9원이고 전역 상한 `AI_DAILY_GLOBAL_LIMIT`
 > **기본 1,000회/일**이 천장이다(최악 하루 약 4,900원). **유저 결정으로 상한은 유지 중**이며
-> 임의로 낮추지 않는다. 도감 같은 정적 페이지는 방문당 API 비용이 0이다.
+> 임의로 낮추지 않는다.
+>
+> ⚠️ **"도감 같은 정적 페이지는 방문당 비용 0"은 2026-08-26에 끝났다.** 자체 방문 계측을
+> 붙이면서 방문마다 `/api/track` 1회 + Supabase upsert 1회가 붙는다(유저 결정). AI 비용과는
+> 자릿수가 다르지만 0은 아니다. 왜 그 대가를 치렀는지는 `docs/ops.md`의 "자체 방문 계측" 절.
 
 ## 세션 시작 시 먼저 할 일
 
@@ -40,6 +44,7 @@ node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
 node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
+node scripts/testTraffic.mjs         # 자체 방문 계측의 경로·봇 판정
 node scripts/findTotems.mjs          # 기준선: 1군 0명
 node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지

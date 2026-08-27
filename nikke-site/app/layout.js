@@ -1,5 +1,6 @@
 import './globals.css';
 import { Analytics } from '@vercel/analytics/next';
+import TrafficBeacon from '@/components/TrafficBeacon';
 import { AuthProvider } from '@/components/AuthProvider';
 import { LanguageProvider } from '@/components/LanguageProvider';
 import Header from '@/components/Header';
@@ -57,6 +58,11 @@ export default function RootLayout({ children }) {
             쿠키를 쓰지 않아 동의 배너(CMP) 없이도 적법하게 동작한다.
             Vercel 대시보드에서 Web Analytics를 Enable해야 수집이 시작된다. */}
         <Analytics />
+        {/* 자체 방문 계측 (2026-08-26). Vercel Analytics와 목적이 다르다 —
+            저쪽은 대시보드라 사람이 봐야 하고, 이쪽은 **쿼리 가능한 숫자**를 우리 DB에
+            남겨 주간 리포트 자동화가 읽게 한다. 쿠키를 쓰지 않고 IP·UA도 저장하지 않는다
+            (날짜가 섞인 해시라 하루를 넘겨 추적되지 않는다). supabase/traffic_migration.sql 참고. */}
+        <TrafficBeacon />
       </body>
     </html>
   );
