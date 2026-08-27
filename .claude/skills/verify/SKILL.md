@@ -53,6 +53,10 @@ node scripts/checkWeeklyReport.mjs
 `checkCanonical`은 `.next/server/app/*.html`을 읽으므로 **`next build` 뒤에만** 의미가 있다.
 그래서 `npm run verify`에 넣지 않았다(빌드 없이 돌리면 늘 실패한다).
 
+⚠️ **빌드한 뒤에 `npm run dev`를 돌리면 `.next`가 개발 산출물로 덮여 정적 HTML이 사라진다.**
+그러면 `checkCanonical`이 "빌드 산출물 없음"으로 **203건 전부 ERROR**를 낸다. 회귀처럼 보이지만
+아니다 — 다시 `next build` 하면 ERROR 0으로 돌아온다. 2026-08-27에 실제로 놀랐다.
+
 ```bash
 npx next build && npm run check:canonical
 ```
