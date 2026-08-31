@@ -61,6 +61,9 @@ const KO = {
   usage_entry: ({ name, usage }) => `${name}(${usage}%)`,
   treasure_suffix: '(애장품)',
   archetype_full: ({ name, note }) => `'${name}' 조합으로 알려진 구성입니다. ${note}`,
+  archetype_core: ({ name, have, count, rest, note }) =>
+    `'${name}'에 등록된 ${count}명(${join(have)})이 이 구성에 모두 들어 있습니다. ` +
+    `다만 이 조합은 5인 전체를 정하지 않으므로, 나머지 ${rest}자리는 이 조합의 근거가 아닙니다. ${note}`,
   source_caveat: ({ text }) => `[조건 확인] ${text}`,
   archetype_partial: ({ name, have, missing }) =>
     `'${name}' 조합의 일부(${join(have)})가 포함되어 있습니다. ` +
@@ -195,6 +198,9 @@ const EN = {
   usage_entry: ({ name, usage }) => `${name} (${usage}%)`,
   treasure_suffix: ' (Treasure)',
   archetype_full: ({ name, note }) => `This is the composition known as '${name}'. ${note}`,
+  archetype_core: ({ name, have, count, rest, note }) =>
+    `All ${count} character(s) registered for '${name}' (${join(have)}) are present here. ` +
+    `That combo does not specify a full team of five, so the other ${rest} slot(s) are not backed by it. ${note}`,
   source_caveat: ({ text }) => `[Check the conditions] ${text}`,
   archetype_partial: ({ name, have, missing }) =>
     `Part of the '${name}' composition (${join(have)}) is present here. ` +
@@ -322,6 +328,9 @@ const JA = {
   usage_entry: ({ name, usage }) => `${name}（${usage}%）`,
   treasure_suffix: '（宝もの）',
   archetype_full: ({ name, note }) => `「${name}」として知られる構成です。${note}`,
+  archetype_core: ({ name, have, count, rest, note }) =>
+    `「${name}」に登録された${count}人（${join(have)}）がこの構成にすべて入っています。` +
+    `ただしこの編成は5人全員を定めていないため、残りの${rest}枠はこの編成の根拠ではありません。${note}`,
   source_caveat: ({ text }) => `［条件の確認］${text}`,
   archetype_partial: ({ name, have, missing }) =>
     `「${name}」編成の一部（${join(have)}）が含まれています。` +

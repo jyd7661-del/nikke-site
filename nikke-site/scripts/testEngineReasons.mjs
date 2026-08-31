@@ -122,6 +122,11 @@ const archetypes = Array.isArray(synergyNotes.archetypes)
 //   회귀는 조용하다. 문장이 한 줄 없어질 뿐 에러도 점수 이상도 안 난다. 그래서 검사한다.
 //   **부분일치에 밀린 경우만** 문제로 센다 — 완전일치가 캡(3)을 넘겨 서로 밀어내는 것은
 //   정상이고(자매 변형이 여럿 등록된 조합), 그건 아래 `crowdedByFull`로 따로 센다.
+// 아키타입 헤드라인은 두 종류다 — 5인이면 archetype_full, 그 미만이면 archetype_core.
+// 캡(3) 경합을 셀 때는 둘 다 세야 한다.
+const isArchetypeHeadline = (s) =>
+  s.startsWith('This is the composition known as') || /^All \d+ character\(s\) registered for '/.test(s);
+
 let archetypeChecked = 0;
 let ownNameKept = 0;
 let crowdedByFull = 0;
@@ -139,13 +144,86 @@ for (const a of archetypes) {
   const lines = r.reasons || [];
   const ownName = `This is the composition known as '${a.name_en || a.name}'.`;
   if (lines.some((s) => String(s).startsWith(ownName))) { ownNameKept += 1; continue; }
-  const nFull = lines.filter((s) => String(s).startsWith('This is the composition known as')).length;
-  if (nFull >= 3) crowdedByFull += 1;          // 캡이 완전일치끼리 겨룬 결과 — 정상
+  // 2026-09-01: 헤드라인이 두 종류가 됐다(5인=archetype_full, 그 미만=archetype_core).
+  // 한쪽만 세면 상대가 core로 바뀐 순간 "밀려났다"고 오탐한다 — 실제로 11건 났다.
+  const nFull = lines.filter((s) => isArchetypeHeadline(String(s))).length;
+  if (nFull >= 3) crowdedByFull += 1;          // 캡이 헤드라인끼리 겨룬 결과 — 정상
   else lostToPartial.push(a.id);
 }
 problems.push(...lostToPartial.map((id) =>
   `archetype/${id}: 5명이 정확히 일치하는데 자기 조합 이름이 근거에서 사라졌다 ` +
   `(부분일치가 완전일치를 밀어냄 — archetypePartialPoints와 정렬을 확인할 것)`));
+
+// --- 5인이 **아닌** 아키타입 전수 (2026-09-01) ---
+//
+// 위 순회는 `members.length !== 5`를 건너뛴다. 그런데 483건 중 123건이 5인이 아니고
+// (1인 11 · 2인 20 · 3인 41 · 4인 51), 그쪽은 `archetype_core`라는 **다른 문장**을 탄다.
+// 그 문장은 2026-09-01에 새로 생겼다 — "완전일치"의 정의가 findExactTeamMatch(5인만 인정)와
+// scoreTeam(크기 무관) 사이에서 갈려 있어서, 2인짜리 조합이 "이 구성은 X로 알려진 조합"으로
+// 나가고 있었다.
+//
+// 검사가 없으면 세 언어 중 하나가 비거나 note_en이 없어 한국어가 새도 아무도 모른다 —
+// 2026-08-25에 정확히 그 방식으로 놓친 적이 있다(표본에 안 걸려 그냥 통과).
+// 등록 멤버에 버스트를 메울 인원을 붙여 5인으로 만들고 세 언어로 채점한다.
+const buildFive = (base) => {
+  const team = [...base];
+  for (const b of ['1', '2', '3']) {
+    if (team.some((m) => String(m.burst) === b)) continue;
+    const cand = cdb.find((c) => String(c.burst) === b && !team.some((m) => m.title === c.title));
+    if (cand) team.push(cand);
+  }
+  if (team.length > 5) return null; // 등록 멤버만으로 버스트가 안 맞는 경우
+  for (const c of cdb) {
+    if (team.length >= 5) break;
+    if (!team.some((m) => m.title === c.title)) team.push(c);
+  }
+  return team.length === 5 ? team : null;
+};
+
+let coreChecked = 0;
+let coreKept = 0;
+let coreCrowded = 0;
+const coreLost = [];
+for (const a of archetypes) {
+  const need = a.members || [];
+  const specSize = need.length + (a.flexSlots || []).length;
+  if (need.length === 0 || specSize >= 5) continue;
+  // 위 5인 순회와 같은 제외 조건. 애장품 전제(requiresTreasure)는 실제로 장착했을 때만
+  // 인정되는데 여기서는 treasureIds를 안 넘기므로 엔진이 정당하게 건너뛴다 — 이걸 빼먹어서
+  // 처음에 9건이 오탐으로 떴다. 비권장 조합도 애초에 인정하지 않는다.
+  if (a.notRecommended || a.requiresTreasure) continue;
+  const members = need.map((t) => byTitle.get(t));
+  if (members.some((m) => !m)) continue; // 이름 불일치는 checkData가 잡는다
+  const team = buildFive(members);
+  if (!team) {
+    // 조용히 넘기지 않는다 — 검사하지 못했다는 사실 자체를 드러낸다.
+    problems.push(`archetype-core/${a.id}: 5인 구성을 만들 수 없어 문장을 검사하지 못했다`);
+    continue;
+  }
+  const mode = MODE_FOR_ARCHETYPE[a.mode] || 'campaign';
+  coreChecked += 1;
+
+  // ko/ja는 undefined·한국어 누출만 본다. 문장 유지 판정은 영어에서 한다(위 순회와 같은 방식).
+  for (const lang of LOCALES) {
+    const r = engine.scoreTeam(team, mode, { lang });
+    inspect(`archetype-core/${a.id}`, lang, r.reasons || []);
+  }
+  const lines = (engine.scoreTeam(team, mode, { lang: 'en' }).reasons || []).map(String);
+  const ownCore = `All ${need.length} character(s) registered for '${a.name_en || a.name}'`;
+  if (lines.some((s) => s.startsWith(ownCore))) { coreKept += 1; continue; }
+  // 아키타입 헤드라인(완전일치 + core)이 캡(3)을 채웠으면 밀린 것이라 정상이다.
+  const nHead = lines.filter(isArchetypeHeadline).length;
+  if (nHead >= 3) coreCrowded += 1;
+  else coreLost.push(a.id);
+}
+problems.push(...coreLost.map((id) =>
+  `archetype-core/${id}: 등록 멤버가 전부 있는데 archetype_core 문장이 안 나왔다 ` +
+  `(scoreTeam의 specSize 분기를 확인할 것)`));
+if (coreChecked > 0 && coreKept === 0) {
+  problems.push(
+    `5인이 아닌 아키타입 ${coreChecked}건을 태웠는데 archetype_core 문장이 한 번도 안 나왔다 ` +
+    `— 분기가 통째로 죽었다`);
+}
 
 // 점수 쪽 불변식 — 위의 문장 검사는 **정렬** 회귀만 잡는다. 점수식을 되돌려도 정렬이
 // 남아 있으면 문장은 멀쩡하고 점수만 뒤집히는데, 그 점수는 게시판 배지로 그대로 보인다
@@ -203,6 +281,8 @@ console.log(`\n엔진 근거 문장 실행 테스트 — 구성 ${TEAMS.length}�
   `+ 아키타입 ${archetypeChecked}건 + 탐색 경로`);
 console.log(`완전일치 자기 이름 유지 ${ownNameKept}건 · 완전일치끼리 캡 경합 ${crowdedByFull}건 ` +
   `· 부분일치에 밀림 ${lostToPartial.length}건(0이어야 함)`);
+console.log(`5인이 아닌 아키타입 ${coreChecked}건 — core 문장 유지 ${coreKept}건 · 캡 경합 ` +
+  `${coreCrowded}건 · 누락 ${coreLost.length}건(0이어야 함)`);
 if (problems.length) {
   console.log(`문제 ${problems.length}건\n`);
   problems.forEach((p, i) => console.log(`  ${i + 1}. ${p}`));

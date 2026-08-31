@@ -986,14 +986,39 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         // "[조건 확인]" 접두사는 AI 프롬프트가 "반드시 설명에 포함하라"고 지시하는 표식이라
         // (app/api/ai-recommend/route.js), 이 문장을 붙이면 화면 설명까지 자동으로 따라온다.
         // 설계 원칙 2 — 조건을 밝히고 판단은 사용자에게 넘긴다.
+        // 2026-09-01: "완전일치"의 정의가 엔진 안에서 두 개였다.
+        //
+        //   findExactTeamMatch  — members + flexSlots === 5 인 것만 후보로 인정 (360/483)
+        //   여기(scoreTeam)     — 등록 멤버가 다 있으면 크기와 무관하게 full 취급
+        //
+        // 그래서 멤버가 5명이 아닌 아키타입 123개(1인 11 · 2인 20 · 3인 41 · 4인 51)가
+        // "'X' 조합으로 알려진 구성입니다"를 달고 나갔다. 크라운 한 명만 있으면 티어 합으로
+        // 조립한 5명에 그 문장이 붙는 식이다 — 나머지 4명은 그 근거와 아무 상관이 없다.
+        // 실측: 무작위 로스터 40회 기준 10~30명 구간의 60~85%가 이 폴백 경로로 떨어지므로,
+        // 하필 니케가 적어 근거가 가장 필요한 사용자가 가장 부풀려진 문장을 받고 있었다.
+        //
+        // 점수(ARCHETYPE_FULL_MATCH)는 건드리지 않는다 — 게시판 "AI 점수" 배지와 추천 순위가
+        // 같이 움직이는 값이라 별도 실측이 필요하다(docs/open-items.md에 열어둠). 문장만
+        // 사실에 맞춘다.
+        const specSize = need.length + (a.flexSlots || []).length;
+        const headline =
+          specSize === 5
+            ? R.archetype_full({
+                name: localized(a, 'name', lang),
+                note: localized(a, 'note', lang),
+              })
+            : R.archetype_core({
+                name: localized(a, 'name', lang),
+                have,
+                count: need.length,
+                rest: 5 - need.length,
+                note: localized(a, 'note', lang),
+              });
         archetypeMatches.push({
           points: WEIGHTS.ARCHETYPE_FULL_MATCH,
           full: true,
           reasons: [
-            R.archetype_full({
-              name: localized(a, 'name', lang),
-              note: localized(a, 'note', lang),
-            }),
+            headline,
             ...(a.sourceCaveat
               ? [R.source_caveat({ text: localized(a, 'sourceCaveat', lang) })]
               : []),
