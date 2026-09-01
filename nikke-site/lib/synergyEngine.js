@@ -713,6 +713,17 @@ export function archetypePartialPoints(haveCount, needCount) {
 const FAST_BURST_CD = 20; // 이 이하면 혼자서 매 사이클 버스트를 안정적으로 커버 가능
 const ALTERNATE_BURST_CD = 45; // 이 이하 캐릭터 2명이면 번갈아 커버 가능
 
+// 유연 버스트 캐릭터가 실제로 채울 수 있는 단계.
+//
+// `burstFlex`는 "단계가 고정이 아니다"라는 뜻일 뿐이고, **어느 단계까지 되는지는 캐릭터마다
+// 다르다.** 레드 후드는 게임 표기가 Λ라 1·2·3 전부지만, 라피: 레드 후드는 본인 스킬 원문이
+// Stage I과 Stage 3만 말한다. 근거가 없는 단계를 열어 주면 없는 조합이 성립해 버리므로
+// `burstStages`에 적힌 것만 인정한다(없으면 보수적으로 셋 다 — 기존 동작).
+function flexStagesOf(character) {
+  const s = character?.burstStages;
+  return Array.isArray(s) && s.length ? s.map(String) : ['1', '2', '3'];
+}
+
 function burstCooldownSeconds(character) {
   const skills = character.skills || [];
   const skill = skills[skills.length - 1];
@@ -838,6 +849,12 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   //
   //    판정 방법: 고정 버스트 멤버만으로 단계를 세고, 비어 있는 단계 수를 유연 멤버 수가
   //    메울 수 있으면 성립. 유연 멤버 하나가 한 단계를 맡는다.
+  //    2026-09-01: **유연 멤버가 아무 단계나 채우는 것은 아니다.** 라피: 레드 후드는 본인
+  //    스킬 원문이 Stage I과 Stage 3만 말한다(II는 근거가 없다). 그래서 캐릭터마다
+  //    `burstStages`로 채울 수 있는 단계를 적고, 여기서는 "빈 단계마다 그 단계를 채울 수
+  //    있는 유연 멤버를 하나씩 배정할 수 있는가"를 실제로 풀어 본다. 예전처럼
+  //    `emptyStages.slice(flexMembers.length)`로 개수만 세면 II밖에 못 채우는 사람에게
+  //    II를 맡기고 성립시켜 버린다.
   const flexMembers = members.filter((m) => m.burstFlex);
   const burstCounts = { 1: 0, 2: 0, 3: 0 };
   members.forEach((m) => {
@@ -845,8 +862,22 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (burstCounts[m.burst] !== undefined) burstCounts[m.burst] += 1;
   });
   const emptyStages = ['1', '2', '3'].filter((b) => burstCounts[b] === 0);
-  // 유연 멤버가 메우고도 남는 단계만 '없는 단계'로 본다.
-  const missingBursts = emptyStages.slice(flexMembers.length);
+  // 빈 단계는 최대 3개, 유연 멤버도 실제로는 한둘이라 완전 탐색으로 충분하다.
+  // 못 채우는 단계가 남으면 **그 단계를 그대로** 돌려준다 — 개수만 빼면
+  // "II밖에 못 채우는 사람이 I을 메웠다"는 식으로 조용히 성립해 버린다.
+  const bestCover = (stages, pool) => {
+    if (!stages.length) return [];
+    let best = [];
+    for (let i = 0; i < pool.length; i += 1) {
+      if (!flexStagesOf(pool[i]).includes(stages[0])) continue;
+      const rest = bestCover(stages.slice(1), pool.filter((_, k) => k !== i));
+      if (rest.length + 1 > best.length) best = [stages[0], ...rest];
+    }
+    const skip = bestCover(stages.slice(1), pool); // 이 단계는 포기하고 나머지를 최대한 채운다
+    return skip.length > best.length ? skip : best;
+  };
+  const covered = new Set(bestCover(emptyStages, flexMembers));
+  const missingBursts = emptyStages.filter((b) => !covered.has(b));
   const validBurstChain = missingBursts.length === 0;
   if (!validBurstChain) {
     reasons.push(R.burst_incomplete({ stages: missingBursts }));

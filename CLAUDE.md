@@ -40,6 +40,7 @@ cd nikke-site-git/nikke-site
 node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
 node scripts/testI18n.mjs            # 25건
 node scripts/testEngineReasons.mjs   # 기준선: 문제 0건 (근거 문장 3개국어 실행 검사)
+node scripts/testRealTeams.mjs       # 기준선: 문제 0건 (등록된 실사용 조합 214건이 우리 규칙에서 성립하는가)
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조

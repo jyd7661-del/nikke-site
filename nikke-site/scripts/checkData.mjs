@@ -594,6 +594,23 @@ cdb.forEach((c) => {
       err('SHAPE_BURSTFLEX', who + ': burstFlex를 붙였으면 burstFlexNote에 근거(출처 표기)를 남길 것 — ' +
         '이 플래그는 버스트 하드 제약을 우회시키므로 근거 없이 붙으면 아무 조합이나 성립한다');
     }
+    // 2026-09-01: "유연하다"와 "아무 단계나 된다"는 다르다. 라피: 레드 후드는 본인 스킬
+    // 원문이 Stage I과 Stage 3만 말한다 — 근거 없이 II까지 열면 없는 조합이 성립한다.
+    // 그래서 어느 단계까지가 근거에 있는지 반드시 적게 한다.
+    const st = c.burstStages;
+    if (!Array.isArray(st) || st.length < 2) {
+      err('SHAPE_BURSTFLEX', who + ': burstFlex를 붙였으면 burstStages에 채울 수 있는 단계를 ' +
+        '2개 이상 적을 것 — "유연하다"와 "아무 단계나 된다"는 다르다');
+    } else {
+      if (st.some((b) => !['1', '2', '3'].includes(String(b)))) {
+        err('SHAPE_BURSTFLEX', who + ': burstStages는 "1"/"2"/"3"만 담는다 — ' + JSON.stringify(st));
+      }
+      if (new Set(st.map(String)).size !== st.length) {
+        err('SHAPE_BURSTFLEX', who + ': burstStages에 중복이 있다 — ' + JSON.stringify(st));
+      }
+    }
+  } else if (c.burstStages !== undefined) {
+    err('SHAPE_BURSTFLEX', who + ': burstFlex 없이 burstStages만 있다 — 엔진이 읽지 않는다');
   }
 
   const t = c.tiers || {};
