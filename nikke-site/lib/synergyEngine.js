@@ -790,8 +790,22 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     // 로스터 정렬만 다르면 점수가 달라지는 버그가 있었다(예: 크라운/맥스웰: 오디너리 미케닉
     // 둘 다 버스트2·쿨 20초일 때 29점 vs 30점). 쿨타임이 같으면 티어가 높은 쪽을 남기고
     // 낮은 쪽을 낭비로 판정해, 순서와 무관하게 항상 같은 결과가 나오도록 한다.
+    // 2026-09-01: **재진입 니케가 같은 단계에서 맨 앞이어야 한다.**
+    //
+    // 니케는 파티 왼쪽에서 오른쪽으로 버스트를 쓴다. 재진입은 "같은 단계의 니케를 바로 뒤에
+    // 편성해야" 발동하고, **앞쪽에 편성하면 발동하지 않는다**
+    // (출처: 인벤 "꼭 알아야 하는 니케 배치 방법" news=303197).
+    //
+    // 우리는 쿨타임 오름차순이라 `리타(20초) → 티아(40초/재진입)`로 뒤집어 놓고 있었다.
+    // 실측(2026-09-01): 재진입 멤버가 같은 단계 동료와 함께 있는 등록 조합 16건 중 11건에서
+    // 우리 순서가 재진입을 무력화했다 — 미실리스 타워 16.1%(전체 2위 조합) 포함.
+    // enikk 등록 조합 8건은 전부 티아가 앞이다(교차 확인).
+    //
+    // 이 순서는 화면 표시(orderMembersForDisplay)에만 쓰이고 점수에는 영향이 없다 —
+    // 재진입이 있으면 needed가 이미 +1이라 누가 앞이든 낭비 판정 결과가 같다.
     const sorted = [...withCd].sort(
-      (a, b) => (a.cd - b.cd) || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
+      (a, b) => (Number(!!b.m.burstReentry) - Number(!!a.m.burstReentry))
+        || (a.cd - b.cd) || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
     );
     let needed;
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
@@ -1320,6 +1334,21 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 유저가 "프리바티가 토템이면 잘못된 배치 아니냐"고 물은 것도 이 설명이 없었기 때문이다.
   // 이제는 실제로 버스트 순번에서 밀려 토템으로 인정된 경우(totemExempted)에도 문장을 낸다.
   const explainedTotems = new Set();
+  // 2026-09-01: 재진입 배치 안내. 화면 순서만 고쳐 놓으면 사용자는 왜 그 순서인지 모른다.
+  // 니케는 왼쪽에서 오른쪽으로 버스트를 쓰고, 재진입은 같은 단계 니케가 **바로 뒤에** 있어야
+  // 발동한다(앞에 두면 발동하지 않는다 — 인벤 news=303197). 그래서 순서를 근거로 밝힌다.
+  members.filter((m) => m.burstReentry).forEach((m) => {
+    const partners = members
+      .filter((o) => o.id !== m.id && String(o.burst) === String(m.burst) && !o.burstFlex)
+      .map((o) => rName(o, lang));
+    if (!partners.length) return;
+    reasons.push(R.burst_reentry_order({
+      title: rName(m, lang),
+      burst: m.burst,
+      partners,
+    }));
+  });
+
   burstAnalysis.totemExempted.forEach(({ member: m, note, needed }) => {
     explainedTotems.add(m.id);
     const others = members

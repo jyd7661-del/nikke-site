@@ -61,6 +61,10 @@ const KO = {
   usage_entry: ({ name, usage }) => `${name}(${usage}%)`,
   treasure_suffix: '(애장품)',
   archetype_full: ({ name, note }) => `'${name}' 조합으로 알려진 구성입니다. ${note}`,
+  burst_reentry_order: ({ title, burst, partners }) =>
+    `[배치 순서] ${title}는(은) 버스트${burst} 재진입을 가지고 있어, 같은 버스트${burst}인 ` +
+    `${join(partners)}보다 왼쪽에 두어야 합니다. 니케는 왼쪽에서 오른쪽으로 버스트를 쓰는데, ` +
+    `재진입은 같은 단계 니케가 바로 뒤에 있을 때만 발동합니다. 순서가 바뀌면 버스트가 한 번 덜 돕니다.`,
   archetype_core: ({ name, have, count, rest, note }) =>
     `'${name}'에 등록된 ${count}명(${join(have)})이 이 구성에 모두 들어 있습니다. ` +
     `다만 이 조합은 5인 전체를 정하지 않으므로, 나머지 ${rest}자리는 이 조합의 근거가 아닙니다. ${note}`,
@@ -198,6 +202,10 @@ const EN = {
   usage_entry: ({ name, usage }) => `${name} (${usage}%)`,
   treasure_suffix: ' (Treasure)',
   archetype_full: ({ name, note }) => `This is the composition known as '${name}'. ${note}`,
+  burst_reentry_order: ({ title, burst, partners }) =>
+    `[Placement] ${title} has Burst ${burst} re-entry, so place them to the LEFT of ` +
+    `${join(partners)}, who share Burst ${burst}. Nikkes burst left to right, and re-entry only ` +
+    `triggers when a same-stage ally sits right behind them. Reversed, you lose one burst per cycle.`,
   archetype_core: ({ name, have, count, rest, note }) =>
     `All ${count} character(s) registered for '${name}' (${join(have)}) are present here. ` +
     `That combo does not specify a full team of five, so the other ${rest} slot(s) are not backed by it. ${note}`,
@@ -328,6 +336,10 @@ const JA = {
   usage_entry: ({ name, usage }) => `${name}（${usage}%）`,
   treasure_suffix: '（宝もの）',
   archetype_full: ({ name, note }) => `「${name}」として知られる構成です。${note}`,
+  burst_reentry_order: ({ title, burst, partners }) =>
+    `［配置順］${title}はバースト${burst}の再進入を持つため、同じバースト${burst}の` +
+    `${join(partners)}より左に置いてください。ニケは左から右へバーストを使い、再進入は同じ段階の` +
+    `味方がすぐ後ろにいるときだけ発動します。順序が逆だとバーストが1回減ります。`,
   archetype_core: ({ name, have, count, rest, note }) =>
     `「${name}」に登録された${count}人（${join(have)}）がこの構成にすべて入っています。` +
     `ただしこの編成は5人全員を定めていないため、残りの${rest}枠はこの編成の根拠ではありません。${note}`,
