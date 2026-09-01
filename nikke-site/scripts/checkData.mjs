@@ -613,6 +613,18 @@ cdb.forEach((c) => {
     err('SHAPE_BURSTFLEX', who + ': burstFlex 없이 burstStages만 있다 — 엔진이 읽지 않는다');
   }
 
+  // 재진입(burstReentry)은 같은 버스트 단계의 인원 한 명을 낭비 판정에서 살린다.
+  // 근거 없이 붙으면 점수가 조용히 오르므로 스킬 원문 인용을 반드시 남기게 한다.
+  if (c.burstReentry !== undefined) {
+    if (c.burstReentry !== true) err('SHAPE_BURSTREENTRY', who + ': burstReentry는 true일 때만 적는다');
+    if (!String(c.burstReentryNote || '').trim()) {
+      err('SHAPE_BURSTREENTRY', who + ': burstReentry를 붙였으면 burstReentryNote에 스킬 원문 인용을 남길 것 — ' +
+        '이 플래그는 낭비 판정을 한 명 완화하므로 근거 없이 붙으면 점수가 조용히 오른다');
+    }
+  } else if (c.burstReentryNote !== undefined) {
+    err('SHAPE_BURSTREENTRY', who + ': burstReentry 없이 burstReentryNote만 있다');
+  }
+
   const t = c.tiers || {};
   DOMAIN.tierKeys.forEach((k) => {
     if (t[k] === undefined) {

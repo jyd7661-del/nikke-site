@@ -3030,6 +3030,8 @@
   {
     "id": "rupee-winter-shopper",
     "title": "Rupee: Winter Shopper",
+    "burstReentry": true,
+    "burstReentryNote": "버스트 스킬(skill3)에 \"Re-enter Burst Skill Stage 1.\" — 본인이 버스트를 쓰면 1단계가 다시 열린다.",
     "name_kr": "루피 : 윈터 쇼퍼",
     "name_ja": "ルピー：ウィンターショッパー",
     "class": "defender",
@@ -5305,6 +5307,8 @@
   {
     "id": "chime",
     "title": "Chime",
+    "burstReentry": true,
+    "burstReentryNote": "버스트 스킬(skill3)에 \"Affects all allies. Re-enters Burst Skill Stage 2.\" — 본인이 버스트를 쓰면 2단계가 다시 열린다.",
     "name_kr": "차임",
     "name_ja": "チャイム",
     "class": "supporter",
@@ -5849,6 +5853,8 @@
   {
     "id": "tia",
     "title": "Tia",
+    "burstReentry": true,
+    "burstReentryNote": "버스트 스킬(skill3)에 \"Affects all allies. Re-enter Burst Skill Stage 1.\" — 본인이 버스트를 쓰면 1단계가 다시 열린다.",
     "name_kr": "티아",
     "name_ja": "ティア",
     "class": "defender",
@@ -7129,6 +7135,8 @@
   {
     "id": "alice-wonderland-bunny",
     "title": "Alice: Wonderland Bunny",
+    "burstReentry": true,
+    "burstReentryNote": "버스트 스킬(skill3)에 \"Affects all allies. Re-enter Burst Skill Stage 1.\" — 본인이 버스트를 쓰면 1단계가 다시 열린다.",
     "name_kr": "앨리스 : 원더랜드 바니",
     "name_ja": "アリス：ワンダーランドバニー",
     "class": "supporter",
@@ -8158,6 +8166,8 @@
   {
     "id": "avistar",
     "title": "Avistar",
+    "burstReentry": true,
+    "burstReentryNote": "버스트 스킬(skill3)에 \"Re-enters Burst Stage 1.\" — 본인이 버스트를 쓰면 1단계가 다시 열린다.",
     "name_kr": "아비스타",
     "name_ja": "アビスタ",
     "class": "supporter",
@@ -10115,6 +10125,8 @@
   {
     "id": "anis-star",
     "title": "Anis: Star",
+    "burstReentry": true,
+    "burstReentryNote": "패시브(skill1)가 팀 구성에 따라 갈린다 — \"If there are no other Burst 1 allies: … My Own Star: ATK ▲ 40.01%\" / \"If there are any other Burst 1 allies: … Everyone's Star: Re-enters Burst and changes to Stage 1.\" 다른 버스트1이 있을 때만 본인이 재진입 담당으로 바뀐다. 유저 지적(2026-09-01)에서 출발해 원문으로 확인했다.",
     "name_kr": "아니스 : 스타",
     "name_ja": "アニス：スター",
     "class": "defender",

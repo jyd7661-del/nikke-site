@@ -84,6 +84,10 @@ function surplusMembers(members, mode) {
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
     else if (sorted.length >= 2 && sorted[1].cd <= ALTERNATE_BURST_CD) needed = 2;
     else needed = Math.min(sorted.length, 2);
+    // 재진입(burstReentry)이 있으면 그 단계는 한 명을 더 태운다 — 엔진과 같은 규칙.
+    // (2026-09-01: 엔진만 고치고 여기를 안 고쳐서 리틀 머메이드가 1군 후보로 잘못 올라왔다.
+    //  이 파일이 엔진 규칙의 사본을 들고 있다는 것을 잊지 말 것 — 위 주석 참고)
+    if (group.some((m) => m.burstReentry)) needed = Math.min(needed + 1, sorted.length);
     sorted.slice(needed).forEach(({ m }) => out.push({ member: m, coveredBy: sorted.slice(0, needed).map((x) => x.m.title) }));
   });
   return out;

@@ -46,7 +46,7 @@ node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
 node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
 node scripts/testTraffic.mjs         # 자체 방문 계측의 경로·봇 판정
-node scripts/findTotems.mjs          # 기준선: 1군 2명 (아르카나·리틀 머메이드 — 등록 여부 판단 대기)
+node scripts/findTotems.mjs          # 기준선: 1군 1명 (아르카나 — 등록 여부 판단 대기)
 node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
 ```

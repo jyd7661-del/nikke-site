@@ -797,6 +797,22 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
     else if (sorted.length >= 2 && sorted[1].cd <= ALTERNATE_BURST_CD) needed = 2;
     else needed = Math.min(sorted.length, 2);
+
+    // 2026-09-01 — **재진입(`burstReentry`)이 있으면 그 단계는 한 명을 더 태운다.**
+    //
+    // 유저 지적에서 출발했다: "아니스 스타의 경우에는 다른 1버스트가 있을 때 재진입으로
+    // 쓰여." 원문을 보니 그대로였다 — 패시브가 "If there are any other Burst 1 allies:
+    // … Everyone's Star: Re-enters Burst and changes to Stage 1."로 갈린다. 나머지 5명은
+    // 본인 버스트 스킬에 "Re-enter Burst Skill Stage N"이 붙어 있다.
+    //
+    // 즉 그 단계는 한 사이클에 **두 번 열린다**. 쿨타임 계산만으로 "뒤 순번은 낭비"라고
+    // 하면 정반대다. 실측(2026-09-01): 아니스: 스타가 다른 버스트1과 함께 나오는 등록
+    // 조합 6건 전부에서 우리가 0점을 매기고 있었다(타워 tetra 4.1%·2.7%·2.6%,
+    // tribe 2.1%, overspec 3.1%, 캠페인 0.86%).
+    //
+    // 근거는 스킬 원문(A등급)이고 `burstReentryNote`에 인용을 남긴다. 임의 가중치가
+    // 아니라 "자리가 하나 더 생긴다"는 사실을 그대로 옮긴 것이다.
+    if (group.some((m) => m.burstReentry)) needed = Math.min(needed + 1, sorted.length);
     sorted.forEach(({ m }, i) => burstOrder.set(m.id, i));
     sorted.slice(needed).forEach(({ m }) => {
       const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
