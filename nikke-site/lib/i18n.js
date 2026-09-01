@@ -126,6 +126,7 @@ const dict = {
     dex_skills_source: '스킬 설명은 게임 내 공식 문구입니다.',
     dex_skills_source_fallback: '일부 스킬은 한국어 문구를 아직 확보하지 못해 글로벌 서버 영문 원문으로 표시됩니다.',
     dex_open_hint: '— 도감에서 스킬 보기 (새 탭)',
+    burst_order_caption: '왼쪽부터 버스트를 쓰는 순서입니다. 파티 배치 자리(전열 1·3·5 / 후열 2·4)와는 다릅니다 — 자리 조건이 있는 니케는 아래 근거에 적힙니다.',
     dex_tier_base: '기본',
     dex_tier_treasure: '애장품 장착',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
@@ -383,6 +384,7 @@ const dict = {
     dex_skills_source: 'Skill descriptions are the official in-game text (global server).',
     dex_skills_source_fallback: 'Skill descriptions are the official in-game text (global server).',
     dex_open_hint: '— view skills in the database (new tab)',
+    burst_order_caption: 'Left to right is the order they use their bursts — not the party slot layout (front 1/3/5, back 2/4). Slot requirements, if any, are noted in the reasoning below.',
     dex_tier_base: 'Base',
     dex_tier_treasure: 'With Treasure',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
@@ -639,6 +641,7 @@ const dict = {
     dex_skills_source: 'スキル説明はゲーム内の公式テキストです。',
     dex_skills_source_fallback: '日本語のスキル説明は未収集のため、グローバルサーバーの英語原文を表示しています。',
     dex_open_hint: '— 図鑑でスキルを見る（新しいタブ）',
+    burst_order_caption: '左からバーストを使う順番です。パーティの配置枠（前列1・3・5／後列2・4）とは別物です。枠の条件があるニケは下の根拠に書かれます。',
     dex_tier_base: '通常',
     dex_tier_treasure: '愛用品装着',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──

@@ -86,6 +86,13 @@ const SOURCE_LABEL_KEY = {
 function TeamMemberCards({ members, treasureIds }) {
   const { lang, t } = useLanguage();
   return (
+    <>
+    {/* 2026-09-01: 이 줄이 무엇인지 밝힌다.
+        5명을 가로로 늘어놓으면 사용자는 **파티 배치도**로 읽는데, 실제로는 버스트 순번이다.
+        등록 조합의 실제 배치를 재보니 버스트 단계 오름차순인 것은 214건 중 37건(17%)뿐이었다.
+        배치 규칙(전열/후열·좌우)은 근거가 충분한 것이 루주 자리 조건뿐이라 모델링을 보류했고
+        (docs/engine.md 4-3-f), 그 사이 오해만이라도 없애기 위해 캡션을 붙인다. */}
+    <p className="text-[11px] text-slate-400 mb-1.5 leading-snug">{t('burst_order_caption')}</p>
     <div className="flex flex-wrap gap-2 mb-3">
       {members.map((m) => {
         const name = `${memberName(m, lang)}${treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}`;
@@ -116,6 +123,7 @@ function TeamMemberCards({ members, treasureIds }) {
         );
       })}
     </div>
+    </>
   );
 }
 
