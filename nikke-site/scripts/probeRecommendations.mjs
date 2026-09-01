@@ -18,14 +18,22 @@
  *
  * 결함(무조건 고쳐야 하는 것) — 여기가 100%가 목표다:
  *   D1 근거 건전성   근거가 1줄 이상이고 `undefined`가 없다
- *   D2 죽은 자리 없음 버스트 순번에서 밀려 0점으로 들어간 인원이 없다(토템 예외는 낭비 아님)
- *   D3 에러 정확성   추천을 못 냈다면, 그 로스터에 정말 그 버스트 단계가 없다
+ *   D3 에러 정확성   추천을 못 냈다면 그 말이 사실이다(단계가 비었거나 5명을 못 채운다)
+ *   D4 피할 수 있던 낭비 없음
+ *                    0점 인원이 있는데, **같은 로스터에 점수가 같거나 높으면서 낭비가 0인
+ *                    조합이 있었다면** 그건 우리 잘못이다. 없었다면 로스터 한계다
  *
  * 관측치(100%가 목표가 아닌 것) — 추세만 본다:
  *   O1 근거의 출처   실사용/아키타입 헤드라인이 하나라도 붙었는가
  *                    (로스터가 좁으면 등록 조합이 아예 없을 수 있다. 0%가 정상인 구간이 있다)
- *   O2 티어 최적성   폴백 경로에서 같은 로스터에 tierTotal이 더 높은 유효 조합이 있었는가
- *                    (비싸서 앞쪽 --deep 회분만 전수 탐색한다)
+ *   O2 티어 최적성   같은 로스터에 tierTotal이 더 높은 유효 조합이 있었는가
+ *   O3 죽은 자리 없음 0점 인원이 아예 없는가
+ *
+ * ⚠️ **O3(옛 D2)를 "결함, 100%가 목표"로 뒀던 것은 틀렸다**(2026-09-01 정정).
+ *    사람들이 실제로 클리어에 쓴 등록 조합에도 0점 인원이 있다 — 솔로레이드 26% ·
+ *    prydwen 아키타입 37%. **0점 인원이 곧 오류가 아니다.** 우리 낭비 판정이 거친 것이고,
+ *    100%를 목표로 삼으면 근거 없는 완화(부분 점수 같은 것)로 끌려간다.
+ *    그래서 "그 로스터로 피할 수 있었는가"만 결함으로 센다(D4). O2와 같은 구조다.
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -91,18 +99,35 @@ const sample = (arr, n) => {
 
 const flexStages = (c) => (Array.isArray(c.burstStages) && c.burstStages.length ? c.burstStages.map(String) : ['1', '2', '3']);
 // 엔진의 하드 제약과 같은 판정 — 에러 문구가 사실인지 검증할 때만 쓴다.
+//
+// ⚠️ 2026-09-01 수정: 처음엔 유연 멤버의 단계를 전부 더해서 "덮인다"고 봤는데 **틀렸다.**
+//    한 사람은 한 자리만 채운다. 실제로 오탐이 났다 — 엘리시온 타워 로스터가 B2 다섯 +
+//    라피: 레드 후드(유연 1·3) 하나였는데, 1단계와 3단계를 라피 혼자 동시에 메울 수 없으니
+//    엔진의 "조합 불가"가 정답이었다. 엔진의 bestCover와 같은 방식으로 실제 배정을 풀어야 한다.
 const coverableStages = (roster) => {
-  const fixed = new Set(roster.filter((c) => !c.burstFlex).map((c) => String(c.burst)));
+  const out = new Set(roster.filter((c) => !c.burstFlex).map((c) => String(c.burst)));
+  const empty = ['1', '2', '3'].filter((b) => !out.has(b));
   const flex = roster.filter((c) => c.burstFlex);
-  const out = new Set(fixed);
-  flex.forEach((c) => flexStages(c).forEach((b) => out.add(b)));
+  const cover = (stages, pool) => {
+    if (!stages.length) return [];
+    let best = [];
+    for (let i = 0; i < pool.length; i += 1) {
+      if (!flexStages(pool[i]).includes(stages[0])) continue;
+      const rest = cover(stages.slice(1), pool.filter((_, k) => k !== i));
+      if (rest.length + 1 > best.length) best = [stages[0], ...rest];
+    }
+    const skip = cover(stages.slice(1), pool);
+    return skip.length > best.length ? skip : best;
+  };
+  cover(empty, flex).forEach((b) => out.add(b));
   return out;
 };
 
 const HEADLINE = /^\[실전 기록\]|조합으로 알려진 구성입니다|에 등록된 \d+명\(/;
 
-const N = { d1: 0, d2: 0, d3: 0, o1: 0 };
-const fail = { d1: [], d2: [], d3: [] };
+const N = { d1: 0, d3: 0, o1: 0, o3: 0, d4: 0 };
+let d4Checked = 0;
+const fail = { d1: [], d3: [], d4: [] };
 const paths = { real: 0, arch: 0, fallback: 0, error: 0 };
 let deepChecked = 0; const deepWorse = [];
 const nm = (m) => m.name_kr || m.title;
@@ -149,32 +174,46 @@ for (let t = 0; t < TRIALS; t++) {
   if (reasons.length > 0 && bad.length === 0) N.d1 += 1;
   else fail.d1.push(`[${p}] 근거 ${reasons.length}줄${bad.length ? ` · undefined ${bad.length}건: ${bad[0].slice(0, 90)}` : ' (비어 있음)'}`);
 
-  // --- D2: 죽은 자리 ---
-  if ((scored.wastedCount || 0) === 0) N.d2 += 1;
-  else fail.d2.push(`[${p}] 0점 인원 ${scored.wastedCount}명 — ${members.map((m) => `${nm(m)}(B${m.burst})`).join(', ')}`);
+  // --- O3: 죽은 자리 (관측치) ---
+  if ((scored.wastedCount || 0) === 0) N.o3 += 1;
 
   // --- O1: 근거의 출처 ---
   if (reasons.some((r) => HEADLINE.test(r))) N.o1 += 1;
 
   // --- O2: 폴백의 티어 최적성 (표본만) ---
-  if (p === 'fallback' && deepChecked < DEEP) {
+  if (deepChecked < DEEP) {
     deepChecked += 1;
     let best = { tt: -1, m: null };
+    let bestClean = { tt: -1, m: null };   // 낭비가 0인 조합 중 최고
     const scanRoster = NEEDS_TOWER ? E.filterRosterByTower(roster, o.tower) : roster;
     const idx = [];
     const rec = (start, depth) => {
       if (depth === 5) {
         const mm = idx.map((i) => scanRoster[i]);
         const s = E.scoreTeam(mm, MODE, o);
-        if (s.valid && s.tierTotal > best.tt) best = { tt: s.tierTotal, m: mm };
+        if (!s.valid) return;
+        if (s.tierTotal > best.tt) best = { tt: s.tierTotal, m: mm };
+        if ((s.wastedCount || 0) === 0 && s.tierTotal > bestClean.tt) bestClean = { tt: s.tierTotal, m: mm };
         return;
       }
       for (let i = start; i <= scanRoster.length - (5 - depth); i++) { idx[depth] = i; rec(i + 1, depth + 1); }
     };
     rec(0, 0);
-    if (best.tt > (scored.tierTotal || 0)) {
+    if (p === 'fallback' && best.tt > (scored.tierTotal || 0)) {
       deepWorse.push({ mine: scored.tierTotal, best: best.tt,
         m: members.map(nm).join(', '), b: best.m.map(nm).join(', ') });
+    }
+    // --- D4: 피할 수 있던 낭비인가 (폴백만) ---
+    // 아키타입·실사용 경로는 **티어를 포기하고 '검증된 조합'이라는 근거를 사는** 경로라,
+    // 거기서 티어가 낮거나 낭비가 있는 것은 설계된 맞바꿈이지 결함이 아니다.
+    // 우리가 조립한 폴백에서만 "피할 수 있었는가"를 묻는다. O2와 같은 범위다.
+    if (p === 'fallback') {
+      d4Checked += 1;
+      if ((scored.wastedCount || 0) === 0) N.d4 += 1;
+      else if (bestClean.tt < (scored.tierTotal || 0)) N.d4 += 1; // 낭비 없이 같은 점수를 못 낸다 = 로스터 한계
+      else fail.d4.push(`[${p}] 0점 ${scored.wastedCount}명 · ${scored.tierTotal}점 — ${members.map(nm).join(', ')}
+`
+        + `        낭비 0으로 ${bestClean.tt}점 가능: ${bestClean.m.map(nm).join(', ')}`);
     }
   }
 }
@@ -188,16 +227,17 @@ console.log(`추천 탐침 — 보유 ${SIZE}명 무작위 × ${TRIALS}회 · �
 console.log(`경로: 실사용 ${paths.real} · 아키타입 ${paths.arch} · 폴백 ${paths.fallback} · 추천 실패 ${paths.error}`);
 console.log(line);
 console.log('결함 — 여기가 100%가 목표다');
-console.log(`  D1 근거 건전성    ${pct(N.d1, done)}   (${N.d1}/${done})   실패 ${fail.d1.length}건`);
-console.log(`  D2 죽은 자리 없음  ${pct(N.d2, done)}   (${N.d2}/${done})   실패 ${fail.d2.length}건`);
-console.log(`  D3 에러 정확성    ${pct(N.d3, TRIALS)}   (${N.d3}/${TRIALS})   실패 ${fail.d3.length}건`);
+console.log(`  D1 근거 건전성        ${pct(N.d1, done)}   (${N.d1}/${done})   실패 ${fail.d1.length}건`);
+console.log(`  D3 에러 정확성        ${pct(N.d3, TRIALS)}   (${N.d3}/${TRIALS})   실패 ${fail.d3.length}건`);
+console.log(`  D4 피할 수 있던 낭비 없음 ${pct(N.d4, d4Checked)}   (${N.d4}/${d4Checked} 표본)   실패 ${fail.d4.length}건`);
 console.log(line);
 console.log('관측치 — 100%가 목표가 아니다');
 console.log(`  O1 근거의 출처가 있음   ${pct(N.o1, done)}   (${N.o1}/${done})`);
+console.log(`  O3 죽은 자리가 없음     ${pct(N.o3, done)}   (${N.o3}/${done})  ← 100%가 목표가 아니다`);
 console.log(`  O2 폴백이 티어 최적    ${pct(deepChecked - deepWorse.length, deepChecked)}   ` +
   `(${deepChecked - deepWorse.length}/${deepChecked} 표본)`);
 console.log(line);
-for (const [k, label] of [['d1', 'D1 근거 건전성'], ['d2', 'D2 죽은 자리'], ['d3', 'D3 에러 정확성']]) {
+for (const [k, label] of [['d1', 'D1 근거 건전성'], ['d3', 'D3 에러 정확성'], ['d4', 'D4 피할 수 있던 낭비']]) {
   if (!fail[k].length) continue;
   console.log(`${label} 실패 ${fail[k].length}건 — 앞 5건`);
   fail[k].slice(0, 5).forEach((f, i) => console.log(`  ${i + 1}. ${f}`));

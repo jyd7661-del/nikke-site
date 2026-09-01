@@ -1566,9 +1566,16 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   //   동점이면 → 스킬 원문으로 확인된 데미지 타입 시너지가 많은 쪽
   //   그래도 동점이면 → 전 아군 버프를 주는 버퍼가 많은 쪽
   // 가산점이 아니라 동점 처리라, 순위가 뒤집히지 않으면서 방향만 잡아준다.
+  // 2026-09-01 추가: **동점이면 낭비 인원이 적은 쪽.**
+  //
+  // tierTotal은 낭비 인원을 이미 0점으로 처리하므로, "낭비 1명 24점"과 "낭비 0명 24점"이
+  // 같은 점수로 나온다. 그동안은 그중 무엇이 뽑히는지가 아래 동점 규칙에 맡겨져 있었고,
+  // 실제로 낭비가 있는 쪽이 뽑히는 경우가 있었다(탐침 D4가 잡았다). 같은 점수라면 자리가
+  // 죽지 않는 쪽이 사용자에게 낫다 — 가산점이 아니라 동점 처리라 순위를 뒤집지 않는다.
   candidateTeams.sort(
     (a, z) =>
       (z.totalScore - a.totalScore) ||
+      ((a.wastedCount || 0) - (z.wastedCount || 0)) ||
       (z.skillSynergyCount - a.skillSynergyCount) ||
       (z.allyBufferCount - a.allyBufferCount)
   );
