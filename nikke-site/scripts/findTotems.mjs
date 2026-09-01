@@ -42,6 +42,8 @@ const cdbRaw = read('characterDatabase.json');
 const cdb = Array.isArray(cdbRaw) ? cdbRaw : cdbRaw.characters;
 const notes = read('characterInvestmentNotes.json');
 const metaStats = read('metaStats.json');
+const soloRaidTeams = read('soloRaidTeams.json');
+const towerCompositions = read('towerCompositions.json');
 const synergyNotes = read('synergyNotes.json');
 
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
@@ -143,6 +145,46 @@ const samples = [];
   });
 });
 
+// 2026-09-01 추가 — **솔로레이드 125건 · 타워 50건이 통째로 빠져 있었다.**
+//
+// 이 스크립트는 enikk 실사용 조합이 캠페인·PvP뿐이던 시절에 만들어졌다. 2026-08-19에
+// soloRaidTeams.json(125건)과 towerCompositions.json(50건)이 들어왔는데 여기는 안 고쳤다.
+// 그래서 실사용 214건 중 **175건(82%)을 못 보고 있었고**, 1군이 계속 0명으로 나왔다.
+// (아래 "보스전 전용 토템은 여기 잡히지 않는다"는 안내문도 그때부터 사실이 아니었다.)
+//
+// 발견 경로: 등록 조합에 낭비 판정을 대보니 벨벳 17회 · 헬름: 아쿠아마린 16회 · 목단 13회가
+// 0점 처리되는데 전부 totemRole이 없었다. 그 출처가 솔로레이드·타워였다.
+//
+// ⚠️ **출처끼리 가중치를 그냥 합치면 안 된다**(docs/data.md). 솔로레이드 `parses`는
+//    서버별 표본의 절대 횟수이고 타워 `pctOfClears`는 그 풀 안의 비율이라 단위가 다르다.
+//    그래서 솔로레이드는 **그 시즌 안에서의 점유율(%)**로 환산해 캠페인·PvP와 같은
+//    "그 판에서 몇 %가 이 조합을 썼는가" 축으로 맞춘다.
+(soloRaidTeams.seasons || []).forEach((s) => {
+  const total = (s.teams || []).reduce((sum, t) => sum + (t.parses || 0), 0);
+  if (!total) return;
+  (s.teams || []).forEach((t) => {
+    samples.push({
+      src: `enikk 솔로레이드 시즌${s.raid}`,
+      mode: 'raid',
+      members: t.members,
+      weight: (t.parses || 0) / total * 100, // 그 시즌 기록 중 이 조합의 점유율(%)
+      label: `시즌${s.raid} ${s.boss} · ${t.parses || 0} parses (시즌 내 ${((t.parses || 0) / total * 100).toFixed(1)}%)`,
+    });
+  });
+});
+
+(towerCompositions.pools || []).forEach((p) => {
+  (p.teams || []).forEach((t) => {
+    samples.push({
+      src: `enikk 타워 ${p.pool}${p.tower ? '/' + p.tower : ''}`,
+      mode: 'campaign', // 타워는 티어 척도가 story 계열이다(MODE_TO_TIER_KEY)
+      members: t.members,
+      weight: t.pctOfClears || 0,   // 그 풀 안에서의 비율(%) — 풀끼리 합산하지 않는다
+      label: `${p.pool}${p.tower ? '/' + p.tower : ''} · ${(t.pctOfClears || 0).toFixed(1)}% of clears`,
+    });
+  });
+});
+
 // 큐레이션된 조합(prydwen/enikk 공략)은 실사용 통계는 아니지만, 5인이 확정된 조합은
 // "이 구성으로 굴리라"는 권장이므로 약한 가중치로 함께 본다.
 (synergyNotes.archetypes || []).forEach((a) => {
@@ -241,7 +283,7 @@ const neverSurplus = [...registered].filter((t) => !agg.has(t));
 if (neverSurplus.length) {
   console.log(`\n[참고] 등록돼 있으나 실사용 조합에서 잉여로 잡힌 적이 없는 토템:`);
   console.log(`   ${neverSurplus.join(', ')}`);
-  console.log(`   (실사용 데이터가 캠페인/PvP에 치우쳐 있어 보스전 전용 토템은 여기 잡히지 않는다.`);
+  console.log(`   (2026-09-01부터 솔로레이드·타워 실사용도 함께 본다. 그래도 안 잡혔다면`);
   console.log(`    근거가 없다는 뜻이 아니라, 이 방법으로는 확인되지 않았다는 뜻이다.)`);
 }
 console.log(`${bar}\n`);

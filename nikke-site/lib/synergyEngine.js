@@ -1348,6 +1348,10 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     skillSynergyCount: skillSynergies.length,
     // 1/2스킬로 전 아군에게 의미 있는 공격계열 버프를 주는 멤버 수(버퍼 수).
     allyBufferCount: members.filter((m) => allyBuffStrength(m) >= MEANINGFUL_ALLY_BUFF).length,
+    // 버스트 순번에서 밀려 tierTotal에 0점으로 들어간 인원 수(토템 예외는 제외).
+    // 2026-09-01 추가 — 계산은 원래 하고 있었고 밖으로 내보내지 않았을 뿐이다.
+    // scripts/probeRecommendations.mjs가 "추천에 죽은 자리가 있는가"를 세는 데 쓴다.
+    wastedCount: burstAnalysis.wasted.length,
     reasons,
     dataFreshness: getDataFreshnessMeta(),
   };
