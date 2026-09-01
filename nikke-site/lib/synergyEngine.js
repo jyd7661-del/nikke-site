@@ -1479,9 +1479,23 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   const tower = opts.tower || null;
   ownedCharacters = filterRosterByTower(ownedCharacters, tower);
 
+  // 2026-09-01: **유연 버스트를 여기서도 인정한다.**
+  //
+  // 예전에는 버킷을 `c.burst` 하나로만 나눠서, 레드 후드(1·2·3)나 라피: 레드 후드(1·3)가
+  // 빈 단계를 메우는 팀을 **아예 만들지 못했다.** `scoreTeam`은 그런 팀을 유효로 인정하는데
+  // 탐색기만 못 만드는 상태라, 폴백이 더 높은 점수의 유효 조합을 두고 낮은 걸 골랐다.
+  //
+  // 실측(2026-09-01, 무작위 20명 × 1000회): 폴백이 티어 최적이 아닌 경우가 campaign 2.5% ·
+  // bossing 5.0%였고, 확인한 사례 3건 전부 "고정 버스트1이 0명이고 레드 후드가 1단계를
+  // 메우는 팀"이었다. 예: 아크레인저블랙(B3)·델타:닌자시프(B2)·레드후드(유연)·앵커(B2)·
+  // 앨리스(B3) = 32점인데 우리는 31점짜리를 골랐다.
+  //
+  // ⚠️ 유연 멤버는 여러 버킷에 들어가므로 **한 팀에 같은 사람이 두 번 뽑힐 수 있다.**
+  //    조합을 만든 뒤 중복을 반드시 걸러낸다.
   const buckets = { 1: [], 2: [], 3: [] };
   ownedCharacters.forEach((c) => {
-    if (buckets[c.burst]) buckets[c.burst].push(c);
+    if (c.burstFlex) flexStagesOf(c).forEach((b) => { if (buckets[b]) buckets[b].push(c); });
+    else if (buckets[c.burst]) buckets[c.burst].push(c);
   });
 
   const missing = ['1', '2', '3'].filter((b) => buckets[b].length === 0);
@@ -1528,6 +1542,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       combos2.forEach((c2) => {
         combos3.forEach((c3) => {
           const members = [...c1, ...c2, ...c3];
+          // 유연 멤버가 두 버킷에서 동시에 뽑히면 같은 사람이 두 번 들어간다. 걸러낸다.
+          if (new Set(members.map((m) => m.id)).size !== members.length) return;
           const result = scoreTeam(members, mode, { treasureIds, bossElement, lang });
           candidateTeams.push({
             members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
