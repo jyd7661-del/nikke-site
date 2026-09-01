@@ -320,6 +320,38 @@ notes.characters.filter((n) => n.totemRole).forEach((n) => {
       `외부 공략 출처를 적거나, 스킬 원문에서 끌어낸 판단이면 '[스킬 원문 근거]'라고 밝힐 것`);
   }
 
+  // 2026-09-01: 토템의 근거가 **대상이 한정된 버프뿐**이면 totemCondition이 있어야 한다.
+  //
+  // 토템은 "버스트를 안 써도 상시 효과로 기여한다"는 이유로 낭비 판정에서 면제된다.
+  // 그런데 그 상시 효과가 "전기 코드 아군에게만" 같은 조건부면, 조건이 안 맞는 팀에서는
+  // 아무에게도 안 들어간다 — 그냥 낭비다. totemCondition이 그걸 검사하는 장치인데,
+  // **새 토템을 등록할 때 그 필드를 빠뜨리는 것을 막는 장치가 없었다.**
+  //
+  // ⚠️ 판정 단위 주의: **비버스트 스킬(마지막 스킬 제외)의 절만 본다.**
+  //    처음에 스킬 전체로 재서 누아르를 오탐으로 잡았다 — 그의 `same squad` 조건은
+  //    버스트 스킬에 있고, 토템은 버스트를 안 쓰므로 무관하다. 토템 근거는 skill1의
+  //    무조건 버프였다. 조건은 "면제를 정당화하는 그 효과"에 걸려 있을 때만 의미가 있다.
+  const chr = cdb.find((c) => c.title === n.name);
+  if (chr && !n.totemCondition) {
+    const OFFENSIVE = /(ATK|Attack Damage|Attack damage|Reloading Speed|Reload Speed|Critical Rate|Critical Damage|Cooldown of Burst Skill|Hit Rate|Core Damage|Pierce Damage|Charge Damage)\s*▲/;
+    const SCOPED = /^all (Fire|Water|Wind|Iron|Electric) Code all(y|ies)|^all (Attacker|Defender|Supporter) all(y|ies)|^all allies with/i;
+    let uncond = 0; let scoped = 0;
+    (chr.skills || []).slice(0, -1).forEach((s) => {
+      let scope = null;
+      (s.desc || '').split(/(?<=\.)\s+/).map((x) => x.trim()).forEach((cl) => {
+        const b = cl.match(/^Affects\s+(.+?)\.?$/i);
+        if (b) { scope = b[1]; return; }
+        if (!scope || !OFFENSIVE.test(cl)) return;
+        if (/^all allies$/i.test(scope.trim())) uncond += 1;
+        else if (SCOPED.test(scope.trim())) scoped += 1;
+      });
+    });
+    if (uncond === 0 && scoped > 0) {
+      err('TOTEM_COND_MISSING',
+        `${n.name}: 비버스트 전 아군 버프가 **대상 한정**뿐인데(속성/클래스) totemCondition이 없다 — ` +
+        `조건이 안 맞는 팀에서도 낭비 면제를 받는다. 조건을 적거나, 무조건 버프 근거를 totemNote에 밝힐 것`);
+    }
+  }
 });
 
 // ---------------------------------------------------------------------------
