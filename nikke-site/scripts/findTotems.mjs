@@ -48,6 +48,11 @@ const synergyNotes = read('synergyNotes.json');
 
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 const registered = new Set(notes.characters.filter((n) => n.totemRole).map((n) => n.name));
+// 사람이 검토해 **기각한** 후보. 기각하지 않으면 매번 같은 이름이 1군에 다시 올라와
+// 주의를 갉아먹고, 언젠가 근거 없이 등록될 위험이 있다. 기각 이유는 데이터에 남긴다.
+const rejected = new Map(
+  notes.characters.filter((n) => n.totemRejected).map((n) => [n.name, n.totemRejectedNote || '(사유 미기재)'])
+);
 
 // ---------------------------------------------------------------------------
 // 버스트 순번 계산 — lib/synergyEngine.js의 findWastedBurstMembers와 같은 규칙이다.
@@ -250,10 +255,14 @@ console.log(`현재 등록된 토템 ${registered.size}명`);
 //   그래서 PvP만의 신호는 토템 근거로 보지 않고 참고로만 분리해 보여준다.
 // - 스킬 원문에 '비버스트 전 아군 공격 버프'가 없으면, 버스트를 안 써도 되는 이유가
 //   버프가 아니라 다른 데 있다는 뜻이므로 1군에서 뺀다.
-const tierA = rows.filter((r) => !r.registered && r.pve > 0 && r.buffs.length)
+// - 사람이 이미 검토해 기각한 후보는 1·2군에서 빼고 아래에 따로 보여준다.
+//   (2026-09-01: 아르카나. 조건 없는 전 아군 버프가 있어 자동 검출에는 걸리지만,
+//    실제 값은 전부 본인 버스트로 얻는 'Wheel of Fortune' 상태가 전제다 — 토템의 정의와 정반대.)
+const tierA = rows.filter((r) => !r.registered && !rejected.has(r.title) && r.pve > 0 && r.buffs.length)
   .sort((a, z) => z.pve - a.pve);
-const tierB = rows.filter((r) => !r.registered && r.pve === 0 && r.curated >= 3 && r.buffs.length)
+const tierB = rows.filter((r) => !r.registered && !rejected.has(r.title) && r.pve === 0 && r.curated >= 3 && r.buffs.length)
   .sort((a, z) => z.curated - a.curated);
+const rejectedSeen = rows.filter((r) => rejected.has(r.title));
 const pvpOnly = rows.filter((r) => !r.registered && r.pve === 0 && r.pvp > 0)
   .sort((a, z) => z.pvp - a.pvp);
 
@@ -263,6 +272,16 @@ const show = (r, metric) => {
   r.buffs.slice(0, 3).forEach((b) => console.log(`      → 비버스트 아군 버프: ${b}`));
   console.log('');
 };
+
+if (rejectedSeen.length) {
+  console.log(`\n【검토 후 기각】 자동 검출에는 걸리지만 사람이 아니라고 판단한 후보 — ${rejectedSeen.length}명`);
+  console.log('  (기각 사유를 안 남기면 매번 같은 이름이 1군에 다시 올라온다)\n');
+  rejectedSeen.forEach((r) => {
+    console.log(`■ ${r.title} (${r.kr})  PvE 가중치 ${r.pve.toFixed(2)}`);
+    console.log(`      ${rejected.get(r.title)}`);
+    console.log('');
+  });
+}
 
 console.log(`\n【1군】 PvE 실사용 조합에서 잉여로 기용 + 비버스트 아군 버프 보유 — ${tierA.length}명`);
 console.log('  (실제 유저가 높은 픽률로 굴리는데 우리 엔진은 자리를 낭비한다고 판정 중. 등록 유력)\n');

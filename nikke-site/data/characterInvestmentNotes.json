@@ -1710,6 +1710,12 @@
       },
       "totemNote_en": "Burst 3, 40s cooldown. [Based on the skill text] Skill 2 \"Attack Support\" grants all Fire code allies ATK ▲ 16.97% (scaling off the caster's ATK) for 10 sec **on entering burst stage 3**. The trigger is \"entering burst stage 3\", not \"Rei uses her Burst\", so the buff still lands when another Burst 3 such as Rapi: Red Hood takes the rotation. ⚠️ She is **a different character from Rei Ayanami (Tentative Name)**, despite both being NERV — the Tentative Name version is Wind/AR and her buff targets all allies with no condition, which is why she is already registered as an unconditional totem. This one is Fire/MG and Fire-only, so a totemCondition applies. (Basis: scripts/findTotems.mjs tier-2 detection — repeatedly fielded while losing the burst rotation in 3 or more guide-recommended teams. Approved in user review on 2026-08-09.)",
       "totemNote_ja": "バースト3、クールタイム40秒。［スキル原文が根拠］スキル2「Attack Support」が**バースト3段階に突入したとき**、灼熱コードの味方全体へ攻撃力 ▲ 16.97%（術者の攻撃力基準）を10秒かける。発動条件は「バースト3段階への突入」であって「レイがバーストを使用」ではないため、ラピ：レッドフードのような他のバースト3が順番を取ってもバフはそのまま入る。⚠️ 同じNERV所属の**アヤナミレイ(仮称)とは別のキャラだ** — 仮称のほうは風圧／ARでバフが味方全体対象（条件なし）のため、すでに条件なしのトーテムとして登録されている。こちらは灼熱／MGで灼熱限定なのでtotemConditionが付く。（根拠：scripts/findTotems.mjs の2軍検出 — 攻略推奨編成3件以上でバースト順に押し出されたまま繰り返し起用される。2026-08-09にユーザー検討で承認）"
+    },
+    {
+      "name": "Arcana",
+      "name_kr": "아르카나",
+      "totemRejected": true,
+      "totemRejectedNote": "토템 후보로 올라왔으나 **기각**(2026-09-01). findTotems가 1군으로 올린 근거는 조건 없는 전 아군 버프 2건(ATK ▲ 5% / 공격 데미지 ▲ 7.5%)이었지만, 아르카나의 실제 값은 전부 `if self is in Wheel of Fortune status` 조건이 붙은 계수 180% 경로이고 그 상태는 **본인 버스트 스킬(skill3)로만** 얻는다. 즉 버스트를 포기하면 핵심이 전부 죽는다. 외부 공략도 같은 결론 — 운명의 수레바퀴 지속 10초와 풀버스트 10초가 겹쳐 이사벨(풀버스트 시간을 줄이는 유일한 전격 3버스트)이 없으면 버프 조건 자체가 성립하지 않는다고 본다(gameple 213007 · gametoc 92367 · gamemeca 1761506). 토템은 '버스트를 안 쓰는 자리에 놓는 니케'인데 아르카나는 정반대다."
     }
   ]
 }
