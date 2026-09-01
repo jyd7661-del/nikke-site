@@ -645,6 +645,20 @@ cdb.forEach((c) => {
     err('SHAPE_BURSTFLEX', who + ': burstFlex 없이 burstStages만 있다 — 엔진이 읽지 않는다');
   }
 
+  // 자리 조건(preferredSlots)은 근거 문장으로 사용자에게 "몇 번 자리에 두라"고 지시한다.
+  // 틀리면 사용자가 실제로 잘못 배치하므로 원문 인용을 반드시 남기게 한다.
+  if (c.preferredSlots !== undefined) {
+    const ps = c.preferredSlots;
+    if (!Array.isArray(ps) || !ps.length || ps.some((x) => ![1, 2, 3, 4, 5].includes(x))) {
+      err('SHAPE_SLOTS', who + ': preferredSlots는 1~5 중 하나 이상을 담은 배열이어야 한다 — ' + JSON.stringify(ps));
+    }
+    if (!String(c.preferredSlotsNote || '').trim()) {
+      err('SHAPE_SLOTS', who + ': preferredSlots를 붙였으면 preferredSlotsNote에 스킬 원문 인용을 남길 것');
+    }
+  } else if (c.preferredSlotsNote !== undefined) {
+    err('SHAPE_SLOTS', who + ': preferredSlots 없이 preferredSlotsNote만 있다');
+  }
+
   // 재진입(burstReentry)은 같은 버스트 단계의 인원 한 명을 낭비 판정에서 살린다.
   // 근거 없이 붙으면 점수가 조용히 오르므로 스킬 원문 인용을 반드시 남기게 한다.
   if (c.burstReentry !== undefined) {

@@ -5148,6 +5148,8 @@
   {
     "id": "rouge",
     "title": "Rouge",
+    "preferredSlots": [2, 4],
+    "preferredSlotsNote": "후열(2·4번) 배치가 2스킬 전체의 전제다. 원문: \"Activates when assigned to the back row in battle. Affects self and 2 allies on both sides. Sword Coin…\" — 소드 코인이 안 켜지면 실드 코인·더블 소드 코인과 3스킬의 코인 상태 배율까지 전부 죽는다. 양옆 2명에게 들어가는 효과라 전열(1·3·5)에서는 성립하지 않는다. 교차 확인: enikk 등록 조합 26건 전부 루주가 2번 또는 4번이다. 공략은 4번을 권한다(게임메카 1753691 \"4번 자리 배치 추천\").",
     "name_kr": "루주",
     "name_ja": "ルージュ",
     "class": "supporter",

@@ -61,6 +61,10 @@ const KO = {
   usage_entry: ({ name, usage }) => `${name}(${usage}%)`,
   treasure_suffix: '(애장품)',
   archetype_full: ({ name, note }) => `'${name}' 조합으로 알려진 구성입니다. ${note}`,
+  placement_slot: ({ title, slots }) =>
+    `[배치 자리] ${title}는(은) 파티 ${join(slots)}번 자리(후열)에 두어야 합니다. ` +
+    `이 캐릭터의 패시브가 후열 배치를 전제로 하고 효과가 양옆 아군에게 들어가기 때문에, ` +
+    `전열(1·3·5번)에 두면 발동하지 않습니다.`,
   burst_reentry_order: ({ title, burst, partners }) =>
     `[배치 순서] ${title}는(은) 버스트${burst} 재진입을 가지고 있어, 같은 버스트${burst}인 ` +
     `${join(partners)}보다 왼쪽에 두어야 합니다. 니케는 왼쪽에서 오른쪽으로 버스트를 쓰는데, ` +
@@ -202,6 +206,9 @@ const EN = {
   usage_entry: ({ name, usage }) => `${name} (${usage}%)`,
   treasure_suffix: ' (Treasure)',
   archetype_full: ({ name, note }) => `This is the composition known as '${name}'. ${note}`,
+  placement_slot: ({ title, slots }) =>
+    `[Slot] Place ${title} in slot ${join(slots)} (the back row). Their passive requires a back-row ` +
+    `slot and buffs the allies on either side, so it does not trigger in the front row (1/3/5).`,
   burst_reentry_order: ({ title, burst, partners }) =>
     `[Placement] ${title} has Burst ${burst} re-entry, so place them to the LEFT of ` +
     `${join(partners)}, who share Burst ${burst}. Nikkes burst left to right, and re-entry only ` +
@@ -336,6 +343,9 @@ const JA = {
   usage_entry: ({ name, usage }) => `${name}（${usage}%）`,
   treasure_suffix: '（宝もの）',
   archetype_full: ({ name, note }) => `「${name}」として知られる構成です。${note}`,
+  placement_slot: ({ title, slots }) =>
+    `［配置枠］${title}はパーティの${join(slots)}番（後列）に置いてください。` +
+    `このキャラのパッシブは後列配置が前提で、効果が両隣の味方に入るため、前列（1・3・5番）では発動しません。`,
   burst_reentry_order: ({ title, burst, partners }) =>
     `［配置順］${title}はバースト${burst}の再進入を持つため、同じバースト${burst}の` +
     `${join(partners)}より左に置いてください。ニケは左から右へバーストを使い、再進入は同じ段階の` +

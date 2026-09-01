@@ -1334,6 +1334,20 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 유저가 "프리바티가 토템이면 잘못된 배치 아니냐"고 물은 것도 이 설명이 없었기 때문이다.
   // 이제는 실제로 버스트 순번에서 밀려 토템으로 인정된 경우(totemExempted)에도 문장을 낸다.
   const explainedTotems = new Set();
+  // 2026-09-01: 자리 조건 안내.
+  //
+  // 유저 지적 — "루주는 배치 후열에 있을 때 더 좋은 효과를 받는다." 원문 그대로였다:
+  // "Activates when assigned to the back row in battle. Affects self and 2 allies on both sides.
+  //  Sword Coin…" — 소드 코인이 안 켜지면 실드/더블 소드 코인과 3스킬의 코인 배율까지 죽는다.
+  //
+  // ⚠️ **우리 화면 순서는 '버스트 순번'이지 '배치 자리'가 아니다.** 등록 조합의 실제 배치를
+  //    보면 버스트 단계 순이 전혀 아니다(예: 미란다B1 / 맥스웰B3 / 나유타B2 / 루주B1 / 디젤B3).
+  //    그래서 자리 조건은 순서로 표현할 수 없고 **문장으로** 준다. 실측: 루주가 든 등록 조합
+  //    26건 전부 2번 또는 4번인데, 우리 순서는 26건 전부 그를 1번(전열)에 놓고 있었다.
+  members.filter((m) => Array.isArray(m.preferredSlots) && m.preferredSlots.length).forEach((m) => {
+    reasons.push(R.placement_slot({ title: rName(m, lang), slots: m.preferredSlots }));
+  });
+
   // 2026-09-01: 재진입 배치 안내. 화면 순서만 고쳐 놓으면 사용자는 왜 그 순서인지 모른다.
   // 니케는 왼쪽에서 오른쪽으로 버스트를 쓰고, 재진입은 같은 단계 니케가 **바로 뒤에** 있어야
   // 발동한다(앞에 두면 발동하지 않는다 — 인벤 news=303197). 그래서 순서를 근거로 밝힌다.
