@@ -1573,6 +1573,24 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       (z.allyBufferCount - a.allyBufferCount)
   );
 
+  // 2026-09-01: **팀도 에러도 없이 빈 결과를 내던 구멍을 막는다.**
+  //
+  // 위의 `missing` 검사는 "각 버스트 단계에 1명 이상 있는가"만 본다. 그런데 5인을 채우려면
+  // 인원 분배(1~3명씩)를 만족해야 해서, 단계는 다 있는데 **머릿수가 모자라** 어떤 분배도
+  // 성립하지 않는 경우가 있다. 기업 타워처럼 로스터가 제조사로 잘리면 실제로 일어난다.
+  // 그때 예전에는 `{ teams: [] }`만 돌려줘서 화면이 아무 설명 없이 비었다.
+  // (탐침 scripts/probeRecommendations.mjs 의 타워 모드가 이걸 잡았다)
+  if (candidateTeams.length === 0) {
+    return {
+      teams: [],
+      error: R.roster_too_small({
+        tower: tower ? (R[`tower_${tower}`] || tower) : null,
+        count: ownedCharacters.length,
+      }),
+      dataFreshness: getDataFreshnessMeta(),
+    };
+  }
+
   return {
     teams: candidateTeams.slice(0, topN),
     searched: candidateTeams.length,

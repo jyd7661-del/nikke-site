@@ -57,6 +57,21 @@ const SIZE = Number(arg('size', 20));
 const TRIALS = Number(arg('trials', 1000));
 const DEEP = Number(arg('deep', 40));
 const SEED = Number(arg('seed', 1));
+// 2026-09-01: **모드가 요구하는 입력을 안 넘기면 그 경로가 조용히 꺼진다.**
+//   보스전/레이드 실사용 매칭은 `bossElement`가 있어야 후보가 생기고(속성이 같은 시즌만 본다),
+//   기업 타워는 `tower`로 로스터가 제조사별로 잘린다.
+//   1000회 첫 측정에서 bossing의 "근거의 출처가 있음"이 23%로 나왔는데, 엔진 결함이 아니라
+//   탐침이 bossElement를 안 넘겨서였다. 숫자를 믿을 수 없는 측정이었다.
+// 지정하지 않으면 회차마다 돌려 가며 고르게 덮는다(seed 고정이라 재현된다).
+const BOSS = arg('boss', null);      // Iron|Wind|Water|Electronic|Fire
+const TOWER = arg('tower', null);    // elysion|missilis|tetra|pilgrim|tribe
+const NEEDS_BOSS = ['bossing', 'raid'].includes(MODE);
+const NEEDS_TOWER = MODE === 'tribe_tower';
+const towerOf = (i) => {
+  if (TOWER) return TOWER === 'tribe' ? null : TOWER;
+  return [null, ...E.TOWER_CORPS][i % (E.TOWER_CORPS.length + 1)];
+};
+const bossOf = (i) => (BOSS || E.BOSS_ELEMENTS[i % E.BOSS_ELEMENTS.length]);
 
 // 재현 가능한 난수 — 같은 seed면 같은 로스터가 나온다. 어제와 오늘을 비교할 수 있어야 한다.
 function mulberry32(a) {
@@ -95,32 +110,38 @@ const nm = (m) => m.name_kr || m.title;
 const t0 = Date.now();
 for (let t = 0; t < TRIALS; t++) {
   const roster = sample(cdb, SIZE);
+  const o = {};
+  if (NEEDS_BOSS) o.bossElement = bossOf(t);
+  if (NEEDS_TOWER) o.tower = towerOf(t);
   let real = null, exact = null;
-  try { real = E.findRealUsageTeamMatch(roster, MODE, {}); } catch { /* 무시 */ }
-  try { exact = E.findExactTeamMatch(roster, MODE, {}); } catch { /* 무시 */ }
+  try { real = E.findRealUsageTeamMatch(roster, MODE, o); } catch { /* 무시 */ }
+  try { exact = E.findExactTeamMatch(roster, MODE, o); } catch { /* 무시 */ }
 
   let chosen = null, p = null, err = null;
   if (real || exact) {
     const rs = real?.totalScore ?? -1, es = exact?.totalScore ?? -1;
     if (real && rs >= es) { chosen = real; p = 'real'; } else { chosen = exact; p = 'arch'; }
   } else {
-    const r = E.recommendTeams(roster, MODE, { topN: 1 });
-    if (r.error) { err = r.error; p = 'error'; } else { chosen = r.teams[0]; p = 'fallback'; }
+    const r = E.recommendTeams(roster, MODE, { ...o, topN: 1 });
+    if (r.error || !r.teams?.length) { err = r.error || '(에러도 팀도 없음)'; p = 'error'; } else { chosen = r.teams[0]; p = 'fallback'; }
   }
   paths[p] += 1;
 
   // --- D3: 추천을 못 냈다면 그 말이 사실인가 ---
   if (p === 'error') {
-    const have = coverableStages(roster);
+    // 기업 타워는 제조사로 로스터가 잘리므로, 잘린 뒤의 로스터로 판정해야 에러 문구가 맞는지 안다.
+    const eligible = NEEDS_TOWER ? E.filterRosterByTower(roster, o.tower) : roster;
+    const have = coverableStages(eligible);
     const reallyMissing = ['1', '2', '3'].filter((b) => !have.has(b));
-    if (reallyMissing.length) N.d3 += 1;
-    else fail.d3.push(`로스터에 1·2·3이 다 있는데 "버스트 부족"이라고 했다 — ${roster.map(nm).join(', ')}`);
+    // 정당한 실패는 둘이다 — 단계가 비었거나, 단계는 다 있어도 5명을 못 채우거나.
+    if (reallyMissing.length || eligible.length < 5) N.d3 += 1;
+    else fail.d3.push(`5명 이상이고 1·2·3이 다 있는데 추천을 못 냈다 — ${eligible.map(nm).join(', ')}`);
     continue;
   }
   N.d3 += 1; // 추천이 나온 경우는 D3 대상이 아니다(통과로 센다)
 
   const members = chosen.members.map((m) => cdb.find((c) => c.id === m.id)).filter(Boolean);
-  const scored = E.scoreTeam(members, MODE, {});
+  const scored = E.scoreTeam(members, MODE, o);
   const reasons = (chosen.reasons || []).map(String);
 
   // --- D1: 근거 건전성 ---
@@ -139,15 +160,16 @@ for (let t = 0; t < TRIALS; t++) {
   if (p === 'fallback' && deepChecked < DEEP) {
     deepChecked += 1;
     let best = { tt: -1, m: null };
+    const scanRoster = NEEDS_TOWER ? E.filterRosterByTower(roster, o.tower) : roster;
     const idx = [];
     const rec = (start, depth) => {
       if (depth === 5) {
-        const mm = idx.map((i) => roster[i]);
-        const s = E.scoreTeam(mm, MODE, {});
+        const mm = idx.map((i) => scanRoster[i]);
+        const s = E.scoreTeam(mm, MODE, o);
         if (s.valid && s.tierTotal > best.tt) best = { tt: s.tierTotal, m: mm };
         return;
       }
-      for (let i = start; i <= roster.length - (5 - depth); i++) { idx[depth] = i; rec(i + 1, depth + 1); }
+      for (let i = start; i <= scanRoster.length - (5 - depth); i++) { idx[depth] = i; rec(i + 1, depth + 1); }
     };
     rec(0, 0);
     if (best.tt > (scored.tierTotal || 0)) {
@@ -161,7 +183,8 @@ const done = TRIALS - paths.error;
 const pct = (a, b) => (b ? `${(a / b * 100).toFixed(1)}%` : '—');
 const line = '─'.repeat(92);
 console.log(line);
-console.log(`추천 탐침 — 보유 ${SIZE}명 무작위 × ${TRIALS}회 · 모드 ${MODE} · seed ${SEED} · ${((Date.now() - t0) / 1000).toFixed(1)}초`);
+const inputNote = NEEDS_BOSS ? ` · 보스속성 ${BOSS || '5종 순환'}` : (NEEDS_TOWER ? ` · 타워 ${TOWER || '부족+기업4종 순환'}` : '');
+console.log(`추천 탐침 — 보유 ${SIZE}명 무작위 × ${TRIALS}회 · 모드 ${MODE}${inputNote} · seed ${SEED} · ${((Date.now() - t0) / 1000).toFixed(1)}초`);
 console.log(`경로: 실사용 ${paths.real} · 아키타입 ${paths.arch} · 폴백 ${paths.fallback} · 추천 실패 ${paths.error}`);
 console.log(line);
 console.log('결함 — 여기가 100%가 목표다');

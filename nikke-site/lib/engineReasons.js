@@ -61,6 +61,11 @@ const KO = {
   usage_entry: ({ name, usage }) => `${name}(${usage}%)`,
   treasure_suffix: '(애장품)',
   archetype_full: ({ name, note }) => `'${name}' 조합으로 알려진 구성입니다. ${note}`,
+  roster_too_small: ({ tower, count }) =>
+    (tower
+      ? `${tower} 타워에 출전할 수 있는 니케가 ${count}명뿐이라 5인 조합을 만들 수 없습니다. `
+        + `기업 타워는 해당 제조사 니케만 출전할 수 있습니다.`
+      : `버스트 I·II·III는 모두 갖췄지만 보유 니케가 ${count}명이라 5인 조합을 채울 수 없습니다.`),
   placement_slot: ({ title, slots }) =>
     `[배치 자리] ${title}는(은) 파티 ${join(slots)}번 자리(후열)에 두어야 합니다. ` +
     `이 캐릭터의 패시브가 후열 배치를 전제로 하고 효과가 양옆 아군에게 들어가기 때문에, ` +
@@ -206,6 +211,11 @@ const EN = {
   usage_entry: ({ name, usage }) => `${name} (${usage}%)`,
   treasure_suffix: ' (Treasure)',
   archetype_full: ({ name, note }) => `This is the composition known as '${name}'. ${note}`,
+  roster_too_small: ({ tower, count }) =>
+    (tower
+      ? `Only ${count} Nikke(s) can enter the ${tower} tower, so a team of five cannot be formed. `
+        + `Corporation towers only admit Nikkes from that manufacturer.`
+      : `You have Burst I/II/III covered, but only ${count} Nikke(s), so a team of five cannot be filled.`),
   placement_slot: ({ title, slots }) =>
     `[Slot] Place ${title} in slot ${join(slots)} (the back row). Their passive requires a back-row ` +
     `slot and buffs the allies on either side, so it does not trigger in the front row (1/3/5).`,
@@ -343,6 +353,11 @@ const JA = {
   usage_entry: ({ name, usage }) => `${name}（${usage}%）`,
   treasure_suffix: '（宝もの）',
   archetype_full: ({ name, note }) => `「${name}」として知られる構成です。${note}`,
+  roster_too_small: ({ tower, count }) =>
+    (tower
+      ? `${tower}タワーに出撃できるニケが${count}人しかいないため、5人編成を作れません。`
+        + `企業タワーはその製造社のニケのみ出撃できます。`
+      : `バーストI・II・IIIは揃っていますが、所持ニケが${count}人のため5人編成を埋められません。`),
   placement_slot: ({ title, slots }) =>
     `［配置枠］${title}はパーティの${join(slots)}番（後列）に置いてください。` +
     `このキャラのパッシブは後列配置が前提で、効果が両隣の味方に入るため、前列（1・3・5番）では発動しません。`,
