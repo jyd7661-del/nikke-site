@@ -48,6 +48,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const J = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
 const cdb = J('characterDatabase.json');
+const baseStats = J('baseStats.json');
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 
 // ---------------------------------------------------------------------------
@@ -56,6 +57,7 @@ const byTitle = new Map(cdb.map((c) => [c.title, c]));
 export const ASSUMPTIONS = {
   // 자체 딜 계수가 하나도 없는 캐릭터(방어형·힐러 등)의 평타 기여.
   // 0으로 두면 "딜 계수 없는 캐릭터 = 기여 0"이 되어 버퍼가 과소평가된다.
+  // ⚠️ 이 값 자체가 근거 없는 수치다. 계수 방식의 한계이지 이 상수의 문제가 아니다(아래 참고).
   BASE_ATTACK: 100,
   // 버스트 스킬 버프의 가동률 = 지속시간 / 쿨타임. 패시브는 1.0으로 본다.
   // 실제로는 풀버스트 진입 타이밍·재진입에 따라 달라지지만 그건 데이터에 없다.
@@ -84,6 +86,19 @@ const BUCKET_KEYS = Object.keys(BUFF_BUCKETS);
 const DMG_TAKEN = /Damage Taken\s*▲\s*(\d[\d.]*)%/ig;
 const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage)/ig;
 const DURATION = /for (\d[\d.]*) sec/i;
+
+// 기본 공격력 배수 — data/baseStats.json (game8 「最大ステータス」, A등급).
+//
+// 유저 지적에서 나왔다: "니케마다 기본 공격력이 다 다를 거 아니냐."
+// 재보니 **캐릭터별로는 같고 클래스 × 등급으로 갈린다**(21명 표본, 조합 안 편차 0).
+// SSR 기준 공격형 25,554 : 지원형 21,307 : 방어형 17,059 = 1.00 : 0.83 : 0.67.
+// 그전에는 전원 동일로 뒀으니 **방어형을 1.5배 과대평가**하고 있었다.
+const ATK_REF = baseStats.byClassRarity.attacker.SSR.atk;
+function atkFactor(c) {
+  const row = baseStats.byClassRarity?.[c.class]?.[c.rarity];
+  if (!row) return 1; // 표에 없는 조합(defender/R 등)은 보정하지 않는다 — 없는 값을 만들지 않는다
+  return row.atk / ATK_REF;
+}
 
 const burstCd = (c) => {
   const s = (c.skills || [])[(c.skills || []).length - 1];
@@ -145,7 +160,8 @@ export function scoreComposition(members, opts = {}) {
 
   let total = 0;
   const parts = members.map((m) => {
-    const self = (m.skills || []).reduce((a, s) => a + sumRe(s.desc || '', SELF_COEF), 0) || A.BASE_ATTACK;
+    const raw = (m.skills || []).reduce((a, s) => a + sumRe(s.desc || '', SELF_COEF), 0) || A.BASE_ATTACK;
+    const self = raw * atkFactor(m);   // 기본 공격력 보정(클래스·등급)
     const b = buffOn.get(m.id);
     // 통 안에서는 더하고, 통끼리는 곱한다.
     const mult = BUCKET_KEYS.reduce((a, k) => a * (1 + b[k] / 100), 1);
