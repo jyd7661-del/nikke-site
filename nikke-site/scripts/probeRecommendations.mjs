@@ -306,12 +306,26 @@ if (SEED_REAL && seedChecked) {
     const byWaste = lost.filter((x) => x.theirWaste > 0).length;
     const invalid = lost.filter((x) => !x.valid).length;
     const lowerTier = lost.filter((x) => x.valid && x.theirs < x.mine).length;
-    const tieOrBetter = lost.filter((x) => x.valid && x.theirs >= x.mine).length;
+    // ⚠️ "티어합이 같거나 높은데 안 골랐다"를 곧바로 우리 잘못으로 세면 안 된다(2026-09-02 정정).
+    //    우리가 고른 것도 **등록 조합**이면(경로 real) 그건 더 많이 쓰인 쪽을 고른 것이라 정상이다.
+    //    내가 심은 조합만 정답으로 보는 셈이었다. 진짜 문제는 "등록 조합을 두고 등록 아닌
+    //    조합을 같은/낮은 점수에 골랐다"뿐이다.
+    const alsoReal = lost.filter((x) => x.valid && x.theirs >= x.mine && x.p === 'real').length;
+    const tieOrBetter = lost.filter((x) => x.valid && x.theirs >= x.mine && x.p !== 'real').length;
     console.log(`  밀린 ${lost.length}건의 사유 분해:`);
     console.log(`    · 우리 규칙에서 무효          ${invalid}건`);
     console.log(`    · 유효하지만 티어합이 낮음     ${lowerTier}건`);
-    console.log(`    · 유효하고 티어합이 같거나 높음 ${tieOrBetter}건  ← 여기가 있으면 우리 잘못이다`);
+    console.log(`    · 티어합 동등/우위인데 **다른 등록 조합**을 고름 ${alsoReal}건  (더 많이 쓰인 쪽 = 정상)`);
+    console.log(`    · 티어합 동등/우위인데 **등록 아닌 조합**을 고름 ${tieOrBetter}건  ← 여기가 우리 잘못이다`);
     console.log(`    (참고) 그 조합에 0점 인원이 있던 경우 ${byWaste}건`);
+    const ours = lost.filter((x) => x.valid && x.theirs >= x.mine && x.p !== 'real');
+    if (ours.length) {
+      console.log('  ▼ "우리 잘못" 앞 5건:');
+      ours.slice(0, 5).forEach((x, i) => {
+        console.log(`    ${i + 1}. 등록조합 ${x.theirs}점(0점 ${x.theirWaste}명): ${x.s}`);
+        console.log(`       우리 선택 ${x.mine}점(0점 ${x.myWaste}명, 경로 ${x.p}): ${x.m}`);
+      });
+    }
     console.log('  앞 4건:');
     lost.slice(0, 4).forEach((x, i) => {
       console.log(`    ${i + 1}. 등록조합 ${x.theirs}점(0점 ${x.theirWaste}명, ${x.valid ? '유효' : '무효'}): ${x.s}`);
