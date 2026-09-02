@@ -88,17 +88,26 @@ const bossOf = (i) => (BOSS || E.BOSS_ELEMENTS[i % E.BOSS_ELEMENTS.length]);
 // 로스터에 아예 없기 때문이다. 조합을 통째로 심어 놓고 우리가 그걸 고르는지 본다.
 // 고르지 않았다면 그때의 점수·낭비를 함께 남겨서 **왜 밀렸는지**를 데이터로 본다.
 const SEED_REAL = arg('seed-team', null) === 'real';
+// ⚠️ 조합을 심을 때는 **그 조합이 나온 맥락도 함께** 넘겨야 한다.
+//    처음엔 조합만 심고 보스 속성은 따로 순환시켰는데, 속성이 어긋나면 그 조합은 실사용
+//    후보에서 아예 빠진다(솔로레이드는 보스 약점이 같은 시즌만 본다). 그래서 bossing
+//    채택률이 11.8%로 나왔다 — 엔진이 아니라 측정이 틀린 것이었다(2026-09-02 수정).
+//    타워도 같다: 조합이 속한 풀을 그대로 넘겨야 로스터가 같은 방식으로 잘린다.
+const WEAKNESS_TO_ELEMENT = { iron: 'Iron', wind: 'Wind', water: 'Water', electric: 'Electronic', fire: 'Fire' };
 const SEED_SRC = {
-  campaign: () => (dataOf('metaStats.json').campaignCompositions?.list || []).map((t) => t.members),
-  bossing: () => dataOf('soloRaidTeams.json').seasons.flatMap((x) => (x.teams || []).map((t) => t.members)),
-  raid: () => dataOf('soloRaidTeams.json').seasons.flatMap((x) => (x.teams || []).map((t) => t.members)),
-  tribe_tower: () => dataOf('towerCompositions.json').pools.flatMap((p) => (p.teams || []).map((t) => t.members)),
-  pvp: () => (dataOf('metaStats.json').pvp?.topTeams || []).map((t) => t.members),
+  campaign: () => (dataOf('metaStats.json').campaignCompositions?.list || []).map((t) => ({ members: t.members })),
+  bossing: () => dataOf('soloRaidTeams.json').seasons.flatMap((x) =>
+    (x.teams || []).map((t) => ({ members: t.members, boss: WEAKNESS_TO_ELEMENT[x.weakness] || null }))),
+  raid: () => dataOf('soloRaidTeams.json').seasons.flatMap((x) =>
+    (x.teams || []).map((t) => ({ members: t.members, boss: WEAKNESS_TO_ELEMENT[x.weakness] || null }))),
+  tribe_tower: () => dataOf('towerCompositions.json').pools.flatMap((p) =>
+    (p.teams || []).map((t) => ({ members: t.members, tower: p.tower || null }))),
+  pvp: () => (dataOf('metaStats.json').pvp?.topTeams || []).map((t) => ({ members: t.members })),
 };
 function dataOf(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); }
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 const seedTeams = SEED_REAL
-  ? (SEED_SRC[MODE] ? SEED_SRC[MODE]().filter((m) => m.every((t) => byTitle.has(t))) : [])
+  ? (SEED_SRC[MODE] ? SEED_SRC[MODE]().filter((x) => x.members.every((t) => byTitle.has(t))) : [])
   : [];
 if (SEED_REAL && !seedTeams.length) {
   console.error(`--seed-team=real: 모드 ${MODE}에 쓸 등록 조합이 없다.`);
@@ -161,8 +170,10 @@ const t0 = Date.now();
 for (let t = 0; t < TRIALS; t++) {
   let roster;
   let seeded = null;
+  let seedCtx = null;
   if (SEED_REAL) {
-    seeded = seedTeams[t % seedTeams.length];
+    seedCtx = seedTeams[t % seedTeams.length];
+    seeded = seedCtx.members;
     const core = seeded.map((x) => byTitle.get(x));
     const rest = sample(cdb.filter((c) => !seeded.includes(c.title)), Math.max(0, SIZE - core.length));
     roster = [...core, ...rest];
@@ -170,8 +181,9 @@ for (let t = 0; t < TRIALS; t++) {
     roster = sample(cdb, SIZE);
   }
   const o = {};
-  if (NEEDS_BOSS) o.bossElement = bossOf(t);
-  if (NEEDS_TOWER) o.tower = towerOf(t);
+  // 시드 모드에서는 그 조합이 나온 맥락을 그대로 쓴다(위 주석 참고).
+  if (NEEDS_BOSS) o.bossElement = (seedCtx && seedCtx.boss) || bossOf(t);
+  if (NEEDS_TOWER) o.tower = seedCtx ? (seedCtx.tower || null) : towerOf(t);
   let real = null, exact = null;
   try { real = E.findRealUsageTeamMatch(roster, MODE, o); } catch { /* 무시 */ }
   try { exact = E.findExactTeamMatch(roster, MODE, o); } catch { /* 무시 */ }

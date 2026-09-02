@@ -115,6 +115,14 @@ const CAMPAIGN_COMBO_MODES = new Set(['campaign', 'story']);
 // 솔로 레이드 보스 약점 속성 선택지. metaStats.soloRaidByElement의 키와 반드시 일치해야 함.
 export const BOSS_ELEMENTS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 
+// 솔로레이드 시즌의 `weakness`(캐릭터 element와 같은 어휘)를 BOSS_ELEMENTS로 옮긴다.
+// 두 어휘를 그대로 비교했다가 실사용 경로가 통째로 죽어 있었다(2026-09-02). electric→Electronic이
+// 핵심 — 대소문자만 맞춰서는 안 된다. 새 시즌을 넣을 때 weakness가 여기 없으면
+// checkData의 RAID_WEAKNESS가 ERROR를 낸다.
+export const WEAKNESS_TO_BOSS_ELEMENT = {
+  iron: 'Iron', wind: 'Wind', water: 'Water', electric: 'Electronic', fire: 'Fire',
+};
+
 // ---------------------------------------------------------------------------
 // 자유 슬롯(빈칸) 차감 — 후보 비교용 (2026-08-09 추가)
 //
@@ -1657,8 +1665,16 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   //    (예: 작열 시즌의 모더니아 조합을 철갑 보스에 추천하면 안 된다)
   //    속성을 안 고른 경우에만 전 시즌을 본다 — 그때는 "어느 보스에서 쓰였는지"를 함께 밝힌다.
   const soloRaidEntries = () => {
+    // 2026-09-02 수정: **어휘가 두 개인데 그대로 비교하고 있었다.**
+    //   soloRaidTeams.json의 `weakness`는 캐릭터 element와 같은 어휘(iron/wind/water/electric/fire)
+    //   화면과 metaStats.soloRaidByElement 키는 BOSS_ELEMENTS(Iron/Wind/Water/**Electronic**/Fire)
+    // `s.weakness === bossElement`는 대소문자만 봐도 절대 참이 될 수 없었고, electric↔Electronic은
+    // 소문자로 맞춰도 다르다. 그래서 **보스 속성을 고르는 순간 시즌이 전부 걸러져** 솔로레이드
+    // 실사용 경로가 통째로 죽었다. 화면에서는 속성을 고르는 것이 정상 사용이므로, 2026-08-19에
+    // 넣은 솔로레이드 조합 125건이 그 이후로 한 번도 매칭되지 않았다.
+    // 탐침의 --seed-team=real이 "조합을 심어놨는데 채택 11.8%"로 드러냈다.
     const seasons = (soloRaidTeams.seasons || []).filter(
-      (s) => !bossElement || s.weakness === bossElement,
+      (s) => !bossElement || WEAKNESS_TO_BOSS_ELEMENT[normalizeElement(s.weakness)] === bossElement,
     );
     return seasons.flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0 })));
   };

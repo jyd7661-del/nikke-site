@@ -54,9 +54,12 @@ const byTitle = new Map(cdb.map((c) => [c.title, c]));
 // --- 등록된 실사용 조합 모으기 (수집 규칙은 docs/data.md) ---
 const teams = [];
 j('soloRaidTeams.json').seasons.forEach((s) => (s.teams || []).forEach((t) =>
-  teams.push({ src: '솔로레이드', mode: 'bossing', members: t.members, w: t.parses, label: `시즌${s.raid} ${s.boss} · ${t.parses} parses` })));
+  teams.push({ src: '솔로레이드', mode: 'bossing', members: t.members, w: t.parses,
+    ctx: { bossElement: engine.WEAKNESS_TO_BOSS_ELEMENT[String(s.weakness || '').toLowerCase()] },
+    label: `시즌${s.raid} ${s.boss} · ${t.parses} parses` })));
 j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t) =>
-  teams.push({ src: '타워', mode: 'tribe_tower', members: t.members, w: t.uses, label: `${p.pool}${p.tower ? '/' + p.tower : ''} · ${t.pctOfClears}% of clears` })));
+  teams.push({ src: '타워', mode: 'tribe_tower', members: t.members, w: t.uses, ctx: { tower: p.tower || null },
+    label: `${p.pool}${p.tower ? '/' + p.tower : ''} · ${t.pctOfClears}% of clears` })));
 const ms = j('metaStats.json');
 (ms.campaignCompositions?.list || []).forEach((t) =>
   teams.push({ src: '캠페인', mode: 'campaign', members: t.members, w: t.totalUses, label: `${t.pctOfClears}% of clears` }));
@@ -103,7 +106,7 @@ for (const t of teams) {
     problems.push(`[${t.src}] ${t.label}: 이름을 characterDatabase에서 못 찾음 — ${missing.join(', ')}`);
     continue;
   }
-  const s = stats.get(t.src) || { n: 0, invalid: 0, cyc: { ok: 0, slow: 0 } };
+  const s = stats.get(t.src) || { n: 0, invalid: 0, unreachable: 0, cyc: { ok: 0, slow: 0 } };
   s.n += 1;
   const scored = engine.scoreTeam(members, t.mode, {});
   if (!scored.valid) {
@@ -112,6 +115,29 @@ for (const t of teams) {
       `[${t.src}] ${t.label}: 실제로 쓰인 조합인데 우리 규칙에서 버스트 체인 불성립 — ` +
       `${members.map((m) => `${m.name_kr || m.title}(B${m.burst}${m.burstFlex ? '/유연' : ''})`).join(', ')}`);
   }
+  // 2026-09-02 추가: **그 조합이 실사용 경로로 실제로 도달되는가.**
+  //
+  // 규칙상 유효한 것과 엔진이 실제로 찾아내는 것은 다르다. 실제로 솔로레이드 조합 125건이
+  // `s.weakness === bossElement` 한 줄 때문에 **보스 속성을 고르는 순간 전부 걸러져** 2026-08-19
+  // 이후 한 번도 매칭되지 않았다(데이터 어휘 iron vs 화면 어휘 Iron, electric vs Electronic).
+  // 위의 valid 검사는 그걸 못 잡는다 — 조합 자체는 멀쩡했기 때문이다.
+  // 그 조합 5명만 담은 로스터에 그 조합의 맥락(보스 속성·타워 풀)을 그대로 넘겨서,
+  // findRealUsageTeamMatch가 그 조합을 돌려주는지 본다.
+  const found = engine.findRealUsageTeamMatch(members, t.mode, t.ctx || {});
+  if (!found) {
+    s.unreachable += 1;
+    problems.push(
+      `[${t.src}] ${t.label}: 실사용 경로가 이 조합을 못 찾는다 ` +
+      `(맥락 ${JSON.stringify(t.ctx || {})}) — ${t.members.join(', ')}`);
+  } else {
+    const got = new Set(found.members.map((m) => m.title));
+    if (!t.members.every((x) => got.has(x))) {
+      s.unreachable += 1;
+      problems.push(`[${t.src}] ${t.label}: 실사용 경로가 **다른** 조합을 돌려줬다 — ` +
+        `기대 ${t.members.join(', ')} / 실제 ${[...got].join(', ')}`);
+    }
+  }
+
   const cyc = cycleSeconds(members);
   if (cyc <= 20.001) s.cyc.ok += 1; else s.cyc.slow += 1;
   stats.set(t.src, s);
@@ -121,9 +147,10 @@ const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);
 console.log(line);
-console.log('출처          조합수   버스트 체인 불성립   (참고) 20초 순환 아님');
+console.log('출처          조합수   체인 불성립   실사용 경로 미도달   (참고) 20초 순환 아님');
 for (const [src, s] of stats) {
-  console.log(`${src.padEnd(12)} ${String(s.n).padStart(5)}   ${String(s.invalid).padStart(10)}건        ` +
+  console.log(`${src.padEnd(12)} ${String(s.n).padStart(5)}   ${String(s.invalid).padStart(7)}건   ` +
+    `${String(s.unreachable).padStart(13)}건        ` +
     `${String(s.cyc.slow).padStart(4)}건 (${Math.round(s.cyc.slow / s.n * 100)}%)`);
 }
 console.log(line);
