@@ -1,5 +1,5 @@
 ---
-description: 니케 사이트의 자동 검사 14종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 15종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
@@ -13,6 +13,7 @@ node scripts/testI18n.mjs
 node scripts/testEngineReasons.mjs
 node scripts/testRealTeams.mjs
 node scripts/simulateTeams.mjs --selftest
+node scripts/analyzeSkillTriggers.mjs
 node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
 node scripts/testDexUsage.mjs
@@ -32,6 +33,7 @@ node scripts/checkWeeklyReport.mjs
 | `testEngineReasons.mjs` | **문제 0건** | 근거 문장을 세 언어로 **실제로 만들어본다**. 인자 누락(`undefined`)과 데이터 번역 누락(영어·일본어에 한국어 누출)을 잡는다. 아키타입 345건 전수 포함 |
 | `testRealTeams.mjs` | **문제 0건 · 214건(솔로레이드 125 · 타워 50 · 캠페인 19 · PvP 20)** | 등록된 **실제 조합**을 우리 규칙에 넣어 본다. 사람들이 실제로 클리어에 쓴 조합이 우리 규칙에서 불성립이면 데이터나 규칙이 틀린 것이다. 2026-09-01에 20건이 걸렸고 원인은 라피: 레드 후드의 유연 버스트 누락이었다(타워 elysion 클리어의 20.8%가 후보에서 빠져 있었다). ⚠️ 버스트 **순환 속도**는 판정하지 않고 참고로만 찍는다 — PvP 등록 조합의 95%가 20초 주기로 안 돌아서, 그걸 판정에 넣으면 검증된 조합을 무효로 만든다 |
 | `simulateTeams.mjs --selftest` | **문제 0건 · 5건 검사** | 조합 상대 비교기의 **단조성**. 더 나쁜 멤버로 바꾸면 점수가 오르면 안 되고, 버퍼를 넣으면 내려가면 안 되고, 속성 한정 버프는 대상이 없으면 안 붙어야 한다. ⚠️ **"맞다"의 증명이 아니다** — 이 비교기는 실측으로 검증된 적이 없다(솔로레이드 avgDamage와 상관 0.16, 티어 합은 0.10). 앞뒤가 맞는지만 본다 |
+| `analyzeSkillTriggers.mjs` | **분류 안 됨 179절** (래칫) | 스킬 절을 **발동 빈도 계열**로 분류한다 — 전투 시작 1회 / 풀버스트 사이클마다 / 평타 N발마다 / 탄창마다 / 풀차지마다 등. 계수를 그냥 더하면 "평타마다 3%"와 "버스트마다 2808%"가 같은 자리에 들어가 **모더니아가 3점**이 된다. 새 캐릭터가 새 표현을 들고 오면 분류 안 된 절이 늘어 ERROR |
 | `testCharacterNames.mjs` | **26건 통과** | 언어별 표기, 폴백, 3개국어 검색, 로스터 전수(현재 170명) |
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
 | `testDexUsage.mjs` | **전부 통과 · 조합 214건 · 데이터가 붙는 캐릭터 98/198명** | 도감 "실사용 데이터" 절의 집계. 198명 **전원**을 원본 JSON에서 다시 세어 대조한다 — 이 절은 데이터가 없으면 안 그리는 설계라 집계가 통째로 실패해도 화면이 멀쩡해 보인다 |
