@@ -81,6 +81,30 @@ const towerOf = (i) => {
 };
 const bossOf = (i) => (BOSS || E.BOSS_ELEMENTS[i % E.BOSS_ELEMENTS.length]);
 
+// --seed=real : 로스터를 "등록된 실사용 조합 5명 + 무작위 나머지"로 만든다. (2026-09-02)
+//
+// 왜: 낭비(0점) 판정을 고칠지 말지의 **판단을 가르는 측정**이다(docs/open-items.md).
+// 무작위 로스터로는 "우리 규칙이 검증된 조합을 밀어내는가"를 알 수 없다 — 그 조합이
+// 로스터에 아예 없기 때문이다. 조합을 통째로 심어 놓고 우리가 그걸 고르는지 본다.
+// 고르지 않았다면 그때의 점수·낭비를 함께 남겨서 **왜 밀렸는지**를 데이터로 본다.
+const SEED_REAL = arg('seed-team', null) === 'real';
+const SEED_SRC = {
+  campaign: () => (dataOf('metaStats.json').campaignCompositions?.list || []).map((t) => t.members),
+  bossing: () => dataOf('soloRaidTeams.json').seasons.flatMap((x) => (x.teams || []).map((t) => t.members)),
+  raid: () => dataOf('soloRaidTeams.json').seasons.flatMap((x) => (x.teams || []).map((t) => t.members)),
+  tribe_tower: () => dataOf('towerCompositions.json').pools.flatMap((p) => (p.teams || []).map((t) => t.members)),
+  pvp: () => (dataOf('metaStats.json').pvp?.topTeams || []).map((t) => t.members),
+};
+function dataOf(f) { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8')); }
+const byTitle = new Map(cdb.map((c) => [c.title, c]));
+const seedTeams = SEED_REAL
+  ? (SEED_SRC[MODE] ? SEED_SRC[MODE]().filter((m) => m.every((t) => byTitle.has(t))) : [])
+  : [];
+if (SEED_REAL && !seedTeams.length) {
+  console.error(`--seed-team=real: 모드 ${MODE}에 쓸 등록 조합이 없다.`);
+  process.exit(1);
+}
+
 // 재현 가능한 난수 — 같은 seed면 같은 로스터가 나온다. 어제와 오늘을 비교할 수 있어야 한다.
 function mulberry32(a) {
   return function () {
@@ -125,7 +149,8 @@ const coverableStages = (roster) => {
 
 const HEADLINE = /^\[실전 기록\]|조합으로 알려진 구성입니다|에 등록된 \d+명\(/;
 
-const N = { d1: 0, d3: 0, o1: 0, o3: 0, d4: 0 };
+const N = { d1: 0, d3: 0, o1: 0, o3: 0, d4: 0, seedPicked: 0 };
+let seedChecked = 0; const seedLost = [];
 let d4Checked = 0;
 const fail = { d1: [], d3: [], d4: [] };
 const paths = { real: 0, arch: 0, fallback: 0, error: 0 };
@@ -134,7 +159,16 @@ const nm = (m) => m.name_kr || m.title;
 
 const t0 = Date.now();
 for (let t = 0; t < TRIALS; t++) {
-  const roster = sample(cdb, SIZE);
+  let roster;
+  let seeded = null;
+  if (SEED_REAL) {
+    seeded = seedTeams[t % seedTeams.length];
+    const core = seeded.map((x) => byTitle.get(x));
+    const rest = sample(cdb.filter((c) => !seeded.includes(c.title)), Math.max(0, SIZE - core.length));
+    roster = [...core, ...rest];
+  } else {
+    roster = sample(cdb, SIZE);
+  }
   const o = {};
   if (NEEDS_BOSS) o.bossElement = bossOf(t);
   if (NEEDS_TOWER) o.tower = towerOf(t);
@@ -176,6 +210,21 @@ for (let t = 0; t < TRIALS; t++) {
 
   // --- O3: 죽은 자리 (관측치) ---
   if ((scored.wastedCount || 0) === 0) N.o3 += 1;
+
+  // --- 시드 조합을 골랐는가 (--seed-team=real 전용) ---
+  if (SEED_REAL && seeded) {
+    seedChecked += 1;
+    const picked = new Set(members.map((m) => m.title));
+    if (seeded.every((x) => picked.has(x)) && picked.size === seeded.length) N.seedPicked += 1;
+    else {
+      const sc = E.scoreTeam(seeded.map((x) => byTitle.get(x)), MODE, o);
+      seedLost.push({
+        mine: scored.tierTotal, myWaste: scored.wastedCount || 0,
+        theirs: sc.tierTotal, theirWaste: sc.wastedCount || 0, valid: sc.valid,
+        p, m: members.map(nm).join(', '), s: seeded.map((x) => nm(byTitle.get(x))).join(', '),
+      });
+    }
+  }
 
   // --- O1: 근거의 출처 ---
   if (reasons.some((r) => HEADLINE.test(r))) N.o1 += 1;
@@ -236,6 +285,29 @@ console.log(`  O1 근거의 출처가 있음   ${pct(N.o1, done)}   (${N.o1}/${d
 console.log(`  O3 죽은 자리가 없음     ${pct(N.o3, done)}   (${N.o3}/${done})  ← 100%가 목표가 아니다`);
 console.log(`  O2 폴백이 티어 최적    ${pct(deepChecked - deepWorse.length, deepChecked)}   ` +
   `(${deepChecked - deepWorse.length}/${deepChecked} 표본)`);
+if (SEED_REAL && seedChecked) {
+  console.log(line);
+  console.log(`등록 조합을 로스터에 심었을 때 — 우리가 그걸 골랐는가`);
+  console.log(`  그대로 채택   ${pct(N.seedPicked, seedChecked)}   (${N.seedPicked}/${seedChecked})`);
+  const lost = seedLost;
+  if (lost.length) {
+    const byWaste = lost.filter((x) => x.theirWaste > 0).length;
+    const invalid = lost.filter((x) => !x.valid).length;
+    const lowerTier = lost.filter((x) => x.valid && x.theirs < x.mine).length;
+    const tieOrBetter = lost.filter((x) => x.valid && x.theirs >= x.mine).length;
+    console.log(`  밀린 ${lost.length}건의 사유 분해:`);
+    console.log(`    · 우리 규칙에서 무효          ${invalid}건`);
+    console.log(`    · 유효하지만 티어합이 낮음     ${lowerTier}건`);
+    console.log(`    · 유효하고 티어합이 같거나 높음 ${tieOrBetter}건  ← 여기가 있으면 우리 잘못이다`);
+    console.log(`    (참고) 그 조합에 0점 인원이 있던 경우 ${byWaste}건`);
+    console.log('  앞 4건:');
+    lost.slice(0, 4).forEach((x, i) => {
+      console.log(`    ${i + 1}. 등록조합 ${x.theirs}점(0점 ${x.theirWaste}명, ${x.valid ? '유효' : '무효'}): ${x.s}`);
+      console.log(`       우리 선택 ${x.mine}점(0점 ${x.myWaste}명, ${x.p}): ${x.m}`);
+    });
+  }
+}
+
 console.log(line);
 for (const [k, label] of [['d1', 'D1 근거 건전성'], ['d3', 'D3 에러 정확성'], ['d4', 'D4 피할 수 있던 낭비']]) {
   if (!fail[k].length) continue;
