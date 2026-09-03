@@ -310,6 +310,44 @@ syn.archetypes.forEach((a) => {
   if (m.length !== new Set(m).size) err('ARCH_SELF_DUP', `아키타입 '${a.name}'에 같은 캐릭터가 중복 포함됨`);
 });
 
+// ---------------------------------------------------------------------------
+// 무기 데이터 — 장탄수 ÷ 연사속도 = 6.0초 상수 (2026-09-03)
+//
+// 유저 지적("발수가 많으면 한 발당 데미지가 작을 것")을 계산해보다 나온 설계 상수다.
+// AR 60÷10 · SMG 120÷20 · MG 300÷50 · SG 9÷1.5 — 넷 다 정확히 6.0초다.
+//
+// **이게 중요한 이유**: 장탄수는 Fandom(현재 값), 연사속도는 2023년 아카라이브 글에서 왔다.
+// 서로 다른 출처·다른 시점인데 같은 상수로 맞으므로 **두 값이 서로를 검증한다.**
+// 덕분에 "AR이 10발이냐 12발이냐" 논쟁이 10으로 정리됐고(12면 5.0초라 혼자 튄다),
+// 3년 전 글이라는 우려도 줄었다.
+//
+// 그래서 이 상수가 깨지면 둘 중 하나다 — 우리 데이터가 틀렸거나, 게임이 바뀌었거나.
+// 어느 쪽이든 사람이 봐야 한다.
+try {
+  const weapons = read('weapons.json');
+  const rate = weapons?.fireRate?.perSecond || {};
+  const MAG_SEC = weapons?.derived?.magazineSeconds;
+  if (MAG_SEC) {
+    Object.entries(rate).forEach(([type, rps]) => {
+      const caps = [...new Set((weapons.byType?.[type] || []).map((r) => r.capacity).filter(Boolean))];
+      // 그 타입의 **대표 장탄수**(가장 많은 무기가 쓰는 값)로만 본다 — 특수 장탄 무기가 섞여 있다.
+      const counts = {};
+      (weapons.byType?.[type] || []).forEach((r) => { if (r.capacity) counts[r.capacity] = (counts[r.capacity] || 0) + 1; });
+      const main = Number(Object.entries(counts).sort((a, b) => b[1] - a[1])[0]?.[0]);
+      if (!main) return;
+      const sec = main / rps;
+      if (Math.abs(sec - MAG_SEC) > 0.05) {
+        err('WEAPON_MAG_CONST',
+          `${type}: 대표 장탄수 ${main} ÷ 연사속도 ${rps} = ${sec.toFixed(2)}초 — ` +
+          `설계 상수 ${MAG_SEC}초와 어긋난다(장탄 후보 ${caps.join('/')}). ` +
+          `데이터가 틀렸거나 게임이 바뀌었다. data/weapons.json의 fireRate._selfCheck 참고`);
+      }
+    });
+  }
+} catch (e) {
+  warn('WEAPON_DATA', `weapons.json을 읽지 못했다 — ${String(e.message).slice(0, 60)}`);
+}
+
 // 토템 주장에 출처가 있는가 (레드 후드 재발 방지)
 notes.characters.filter((n) => n.totemRole).forEach((n) => {
   // '스킬 원문 근거'는 외부 공략 출처는 없지만 characterDatabase의 스킬 원문에서 직접 끌어낸
