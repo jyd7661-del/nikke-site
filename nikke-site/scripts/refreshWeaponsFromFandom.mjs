@@ -80,11 +80,17 @@ function parseWeapons(html) {
       const c = (r.match(/<t[hd][\s\S]*?<\/t[hd]>/g) || []).map(strip);
       if (c.length <= Math.max(iName, iCap, iRel, iDesc)) return;
       const name = c[iName]; if (!name) return;
+      // 첫 칸(아이콘)에 **캐릭터 문서 링크**가 들어 있다 — 이게 무기↔캐릭터 매핑이다.
+      // 무기 표에 캐릭터 이름 열은 없지만 링크는 있고, 그 제목이 우리 `title`과 형식이 같다
+      // (예: /wiki/Asuka:_WILLE → "Asuka: WILLE").
+      const links = [...r.matchAll(/href="\/wiki\/([^"#]+)"/g)].map((x) => decodeURIComponent(x[1]).replace(/_/g, ' '));
+      const owner = links.find((l) => !/^Category:/.test(l) && !/^(Machine Gun|Assault Rifle|Submachine Gun|Shotgun|Sniper Rifle|Rocket Launcher)$/.test(l)) || null;
       const desc = iDesc >= 0 ? c[iDesc] : '';
       const shot = desc.match(/Deals ([\d.]+)% of ATK as damage/i);
       const core = desc.match(/Deals ([\d.]+)% damage when attacking core/i);
       out.push({
         name,
+        owner,
         capacity: Number(c[iCap]) || null,
         reloadSec: Number(c[iRel]) || null,
         shotCoefPct: shot ? Number(shot[1]) : null,
@@ -118,8 +124,14 @@ for (const [code, title] of Object.entries(PAGES)) {
 console.log(`\n합계 ${totalRows}종`);
 
 if (WRITE) {
-  fs.writeFileSync(OUT, JSON.stringify(result, null, 2) + '\n');
-  console.log(`→ ${path.relative(ROOT, OUT)} 갱신`);
+  // ⚠️ **덮어쓰지 말고 병합한다.** 이 스크립트가 만드는 것은 Fandom에서 온 부분(meta·byType)뿐이다.
+  //    fireRate(아카라이브 출처)와 derived(우리가 계산한 값)는 여기서 안 만드므로 그대로
+  //    덮어쓰면 조용히 사라진다 — 2026-09-03에 실제로 한 번 날렸다.
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(OUT, 'utf8')); } catch { /* 첫 실행 */ }
+  const merged = { ...prev, meta: result.meta, byType: result.byType };
+  fs.writeFileSync(OUT, JSON.stringify(merged, null, 2) + '\n');
+  console.log(`→ ${path.relative(ROOT, OUT)} 갱신 (fireRate·derived는 보존)`);
 } else {
   console.log('\n(--write 를 붙이면 data/weapons.json 에 씁니다)');
 }

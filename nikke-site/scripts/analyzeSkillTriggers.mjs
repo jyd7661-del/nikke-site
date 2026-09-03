@@ -24,7 +24,7 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
@@ -86,6 +86,11 @@ export function analyze(c) {
 }
 
 // ---------------------------------------------------------------------------
+// 아래는 **직접 실행할 때만** 돈다. simulateTeams.mjs가 TRIGGER_CLASSES를 import하는데,
+// 가드가 없으면 import만 해도 이 요약이 출력되고 래칫 실패 시 process.exit까지 한다.
+const RUN_CLI = process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url;
+if (!RUN_CLI) { /* import 용도 — 아래 CLI를 건너뛴다 */ } else {
+
 const arg = (n, d) => { const m = process.argv.find((a) => a.startsWith(`--${n}=`)); return m ? m.split('=')[1] : d; };
 const line = '─'.repeat(80);
 
@@ -170,3 +175,5 @@ if (un < EXPECTED_UNMATCHED) {
 } else {
   console.log('\n✅ 기준선 유지.\n');
 }
+
+} // RUN_CLI

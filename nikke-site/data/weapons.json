@@ -4,13 +4,14 @@
     "source": "Fandom — NIKKE Goddess of Victory International Wiki, 무기 타입별 문서 6개 (CC BY-SA)",
     "grade": "B",
     "gradeNote": "위키가 인게임 값을 옮긴 것이라 우리에게는 2차 출처다. 인게임과 대조하지 않았다.",
-    "missing": "연사속도는 fireRate에 채웠으나 **B등급이고 2023년 글 단일 출처**다. 인게임 대조가 남았다.",
+    "missing": "연사속도(초당 발사 수)가 없다. 장탄수 ÷ 연사속도 + 재장전 = 탄창 주기인데 가운데 항이 비어 평타 DPS를 못 낸다.",
     "collectedBy": "scripts/refreshWeaponsFromFandom.mjs"
   },
   "byType": {
     "ar": [
       {
         "name": "Virtuous Rifle",
+        "owner": "2B",
         "capacity": 90,
         "reloadSec": 1,
         "shotCoefPct": 5.99,
@@ -18,6 +19,7 @@
       },
       {
         "name": "The Classic",
+        "owner": "Ade",
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
@@ -25,6 +27,7 @@
       },
       {
         "name": "Crying Black",
+        "owner": "Ark Ranger Black",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -32,6 +35,7 @@
       },
       {
         "name": "Lightweight Assault Rifle",
+        "owner": "Asuka Shikinami Langley",
         "capacity": 20,
         "reloadSec": 1,
         "shotCoefPct": 18.76,
@@ -39,6 +43,7 @@
       },
       {
         "name": "White Pollux",
+        "owner": "Blanc",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -46,6 +51,7 @@
       },
       {
         "name": "Perfect Line",
+        "owner": "Brid",
         "capacity": 60,
         "reloadSec": 1.3,
         "shotCoefPct": 14.29,
@@ -53,6 +59,7 @@
       },
       {
         "name": "Ungrateful OZ",
+        "owner": "Dorothy",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -60,6 +67,7 @@
       },
       {
         "name": "Drone 2.0",
+        "owner": "EVE",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -67,6 +75,7 @@
       },
       {
         "name": "Incandescence",
+        "owner": "Folkwang",
         "capacity": 60,
         "reloadSec": 1.3,
         "shotCoefPct": 14.29,
@@ -74,6 +83,7 @@
       },
       {
         "name": "Writer's Eraser",
+        "owner": "Grave",
         "capacity": 60,
         "reloadSec": 2,
         "shotCoefPct": 17.91,
@@ -81,6 +91,7 @@
       },
       {
         "name": "Brave Sword",
+        "owner": "Guillotine: Winter Slayer",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -88,6 +99,7 @@
       },
       {
         "name": "Battleship",
+        "owner": "Helm: Aquamarine",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -95,6 +107,7 @@
       },
       {
         "name": "Shining Sun",
+        "owner": "IDoll Sun",
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
@@ -102,6 +115,7 @@
       },
       {
         "name": "Lightning Eagle",
+        "owner": "Jill Valentine",
         "capacity": 9,
         "reloadSec": 1,
         "shotCoefPct": 71.09,
@@ -109,6 +123,7 @@
       },
       {
         "name": "Classical Adagio",
+        "owner": "Julia",
         "capacity": 60,
         "reloadSec": 1.2,
         "shotCoefPct": 14.07,
@@ -116,6 +131,7 @@
       },
       {
         "name": "Remote Hacking Drone",
+        "owner": "Kurumi",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -123,6 +139,7 @@
       },
       {
         "name": "Gloomy Mood",
+        "owner": "Label",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -130,6 +147,7 @@
       },
       {
         "name": "Somnus",
+        "owner": "Mana",
         "capacity": 60,
         "reloadSec": 1.67,
         "shotCoefPct": 15.07,
@@ -137,6 +155,7 @@
       },
       {
         "name": "Rescue the Penguin",
+        "owner": "Marciana: Marine Study",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -144,6 +163,7 @@
       },
       {
         "name": "Painful World",
+        "owner": "Mihara",
         "capacity": 60,
         "reloadSec": 1.67,
         "shotCoefPct": 15.07,
@@ -151,6 +171,7 @@
       },
       {
         "name": "Dragon Head",
+        "owner": "Moran",
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
@@ -158,6 +179,7 @@
       },
       {
         "name": "Mole's Forest",
+        "owner": "Mori",
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 13.65,
@@ -165,6 +187,7 @@
       },
       {
         "name": "Midnight Thief",
+        "owner": "Phantom",
         "capacity": 60,
         "reloadSec": 2,
         "shotCoefPct": 15.78,
@@ -172,6 +195,7 @@
       },
       {
         "name": "Team Chemistry",
+        "owner": "Privaty",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -179,6 +203,7 @@
       },
       {
         "name": "Militaria",
+        "owner": "Rapi",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -186,6 +211,7 @@
       },
       {
         "name": "Suppressive Assault Rifle",
+        "owner": "Rei Ayanami (Tentative Name)",
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
@@ -193,6 +219,7 @@
       },
       {
         "name": "Golden Thompson",
+        "owner": "Rosanna: Chic Ocean",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -200,6 +227,7 @@
       },
       {
         "name": "Shopaholic",
+        "owner": "Rupee",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -207,6 +235,7 @@
       },
       {
         "name": "Shopaholic",
+        "owner": "Rupee: Winter Shopper",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -214,6 +243,7 @@
       },
       {
         "name": "Ichigenkin",
+        "owner": "Sakura: Bloom in Summer",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -221,6 +251,7 @@
       },
       {
         "name": "Fleetly Fading",
+        "owner": "Scarlet",
         "capacity": 20,
         "reloadSec": 2.3,
         "shotCoefPct": 27.08,
@@ -228,6 +259,7 @@
       },
       {
         "name": "Heavy Talker",
+        "owner": "Sin",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -235,6 +267,7 @@
       },
       {
         "name": "Seven Dwarves",
+        "owner": "Snow White",
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
@@ -242,6 +275,7 @@
       },
       {
         "name": "Seven Dwarves II",
+        "owner": "Snow White: Innocent Days",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
@@ -249,6 +283,7 @@
       },
       {
         "name": "Hunting Eagle",
+        "owner": "Soldier EG",
         "capacity": 60,
         "reloadSec": 1.17,
         "shotCoefPct": 14.01,
@@ -256,6 +291,7 @@
       },
       {
         "name": "Energetic Survivor",
+        "owner": "Tove",
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 14.2,
@@ -265,6 +301,7 @@
     "smg": [
       {
         "name": "Built-in Firearms",
+        "owner": "Aigis",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 5.06,
@@ -272,6 +309,7 @@
       },
       {
         "name": "My Little Carrot",
+        "owner": "Alice: Wonderland Bunny",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
@@ -279,6 +317,7 @@
       },
       {
         "name": "Chime Bell",
+        "owner": "Chime",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
@@ -286,6 +325,7 @@
       },
       {
         "name": "Suppressive Submachine Gun",
+        "owner": "Chisato Nishikigi",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
@@ -293,6 +333,7 @@
       },
       {
         "name": "You Can Do It",
+        "owner": "Clay",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
@@ -300,6 +341,7 @@
       },
       {
         "name": "Genocide",
+        "owner": "Crow",
         "capacity": 120,
         "reloadSec": 1.67,
         "shotCoefPct": 4.47,
@@ -307,6 +349,7 @@
       },
       {
         "name": "Storm Eye",
+        "owner": "D",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -314,6 +357,7 @@
       },
       {
         "name": "Heavenward",
+        "owner": "E.H.",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
@@ -321,6 +365,7 @@
       },
       {
         "name": "The Trickster",
+        "owner": "Epinel",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 5.06,
@@ -328,6 +373,7 @@
       },
       {
         "name": "Swaying Ocean",
+        "owner": "IDoll Ocean",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -335,6 +381,7 @@
       },
       {
         "name": "Double Hazard",
+        "owner": "K",
         "capacity": 120,
         "reloadSec": 1.8,
         "shotCoefPct": 4.55,
@@ -342,6 +389,7 @@
       },
       {
         "name": "Artemis Cannon",
+        "owner": "Lily",
         "capacity": 120,
         "reloadSec": 1.8,
         "shotCoefPct": 8.1,
@@ -349,6 +397,7 @@
       },
       {
         "name": "Drill Punch",
+        "owner": "Liter",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -356,6 +405,7 @@
       },
       {
         "name": "Spindrift",
+        "owner": "Little Mermaid",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
@@ -363,6 +413,7 @@
       },
       {
         "name": "Snow Phantom",
+        "owner": "Ludmilla",
         "capacity": 120,
         "reloadSec": 2.76,
         "shotCoefPct": 10.32,
@@ -370,6 +421,7 @@
       },
       {
         "name": "Unknown Weapon",
+        "owner": "Makima",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -377,6 +429,7 @@
       },
       {
         "name": "Ferocity",
+        "owner": "Mast",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -384,6 +437,7 @@
       },
       {
         "name": "Winter Salute",
+        "owner": "Mica: Snow Buddy",
         "capacity": 120,
         "reloadSec": 2,
         "shotCoefPct": 11.7,
@@ -391,6 +445,7 @@
       },
       {
         "name": "Inflexible",
+        "owner": "Miranda",
         "capacity": 120,
         "reloadSec": 1.43,
         "shotCoefPct": 8.64,
@@ -398,6 +453,7 @@
       },
       {
         "name": "Self-defense Automatic Pistol",
+        "owner": "Misato Katsuragi",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
@@ -405,6 +461,7 @@
       },
       {
         "name": "Nirvana",
+        "owner": "Nayuta",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -412,6 +469,7 @@
       },
       {
         "name": "Meow Meow",
+        "owner": "Nero",
         "capacity": 120,
         "reloadSec": 1.3,
         "shotCoefPct": 8.39,
@@ -419,6 +477,7 @@
       },
       {
         "name": "Sixth Sense",
+        "owner": "Novel",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
@@ -426,6 +485,7 @@
       },
       {
         "name": "Most Wanted",
+        "owner": "Quency",
         "capacity": 120,
         "reloadSec": 1.2,
         "shotCoefPct": 4.47,
@@ -433,6 +493,7 @@
       },
       {
         "name": "Secret Exit",
+        "owner": "Quency: Escape Queen",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 4.47,
@@ -440,6 +501,7 @@
       },
       {
         "name": "Steel Baby",
+        "owner": "Rei",
         "capacity": 120,
         "reloadSec": 1.83,
         "shotCoefPct": 9.15,
@@ -447,6 +509,7 @@
       },
       {
         "name": "Defensive Pistol",
+        "owner": "Sakura Suzuhara",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
@@ -454,6 +517,7 @@
       },
       {
         "name": "Soap Opera",
+        "owner": "Signal",
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
@@ -461,6 +525,7 @@
       },
       {
         "name": "Searching Owl",
+        "owner": "Soldier OW",
         "capacity": 120,
         "reloadSec": 2,
         "shotCoefPct": 9.36,
@@ -468,6 +533,7 @@
       },
       {
         "name": "Crimson Crusader",
+        "owner": "Soline",
         "capacity": 120,
         "reloadSec": 2,
         "shotCoefPct": 4.68,
@@ -475,6 +541,7 @@
       },
       {
         "name": "Volume Max",
+        "owner": "Volume",
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
@@ -484,6 +551,7 @@
     "sg": [
       {
         "name": "Libertine Aqua",
+        "owner": "Anis: Sparkling Summer",
         "capacity": 5,
         "reloadSec": 2,
         "shotCoefPct": 259.2,
@@ -491,6 +559,7 @@
       },
       {
         "name": "Bittersweet",
+        "owner": "Arcana: Fortune Mate",
         "capacity": 9,
         "reloadSec": 2.33,
         "shotCoefPct": 222.8,
@@ -498,6 +567,7 @@
       },
       {
         "name": "Silent Steam",
+        "owner": "Brid: Silent Track",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -505,6 +575,7 @@
       },
       {
         "name": "Ungrateful OZ",
+        "owner": "Dorothy: Serendipity",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -512,6 +583,7 @@
       },
       {
         "name": "Sadistic Carnival",
+        "owner": "Drake",
         "capacity": 9,
         "reloadSec": 1.52,
         "shotCoefPct": 214.3,
@@ -519,6 +591,7 @@
       },
       {
         "name": "Villain Night Carnival",
+        "owner": "Unknown",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -526,6 +599,7 @@
       },
       {
         "name": "Sacrificial Bacchanal",
+        "owner": "Ether",
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 214.3,
@@ -533,6 +607,7 @@
       },
       {
         "name": "Soft Belt",
+        "owner": "Guilty",
         "capacity": 9,
         "reloadSec": 2.67,
         "shotCoefPct": 231.4,
@@ -540,6 +615,7 @@
       },
       {
         "name": "Extreme Obsessor",
+        "owner": "Isabel",
         "capacity": 9,
         "reloadSec": 1.86,
         "shotCoefPct": 210.7,
@@ -547,6 +623,7 @@
       },
       {
         "name": "Lion's Roar",
+        "owner": "Leona",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -554,6 +631,7 @@
       },
       {
         "name": "Misconception",
+        "owner": "Maiden",
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
@@ -561,6 +639,7 @@
       },
       {
         "name": "Rational Eyes",
+        "owner": "Marciana",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -568,6 +647,7 @@
       },
       {
         "name": "Kindness",
+        "owner": "Mary",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -575,6 +655,7 @@
       },
       {
         "name": "Elegant Nocturne",
+        "owner": "Naga",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 204.8,
@@ -582,6 +663,7 @@
       },
       {
         "name": "Annihilation",
+        "owner": "Neon",
         "capacity": 9,
         "reloadSec": 1.82,
         "shotCoefPct": 224.5,
@@ -589,6 +671,7 @@
       },
       {
         "name": "Hibernation",
+        "owner": "Neve",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -596,6 +679,7 @@
       },
       {
         "name": "Black Castor",
+        "owner": "Noir",
         "capacity": 9,
         "reloadSec": 0.7,
         "shotCoefPct": 204.6,
@@ -603,6 +687,7 @@
       },
       {
         "name": "VitaMax",
+        "owner": "Pepper",
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
@@ -610,6 +695,7 @@
       },
       {
         "name": "Wild Hound",
+        "owner": "Poli",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -617,6 +703,7 @@
       },
       {
         "name": "Demanding Lover",
+        "owner": "Privaty: Unkind Maid",
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 182.1,
@@ -624,6 +711,7 @@
       },
       {
         "name": "MISG-09",
+        "owner": "Product 23",
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
@@ -631,6 +719,7 @@
       },
       {
         "name": "Iron Verdict",
+        "owner": "Queen (Makoto Niijima)",
         "capacity": 9,
         "reloadSec": 1.52,
         "shotCoefPct": 201.5,
@@ -638,6 +727,7 @@
       },
       {
         "name": "Undiminished",
+        "owner": "Soda: Twinkling Bunny",
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
@@ -645,6 +735,7 @@
       },
       {
         "name": "Clutch Falcon",
+        "owner": "Soldier FA",
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 214.3,
@@ -652,6 +743,7 @@
       },
       {
         "name": "Cozy Passage",
+        "owner": "Soline: Frost Ticket",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
@@ -659,6 +751,7 @@
       },
       {
         "name": "Cold Zeal",
+        "owner": "Sugar",
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
@@ -666,6 +759,7 @@
       },
       {
         "name": "Rust Chaser",
+        "owner": "Viper",
         "capacity": 9,
         "reloadSec": 1.7,
         "shotCoefPct": 220.4,
@@ -673,6 +767,7 @@
       },
       {
         "name": "President Junior",
+        "owner": "Zwei",
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 100.75,
@@ -682,6 +777,7 @@
     "sr": [
       {
         "name": "The Agent",
+        "owner": "Ade: Agent Bunny",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -689,6 +785,7 @@
       },
       {
         "name": "Affection's End",
+        "owner": "Admi",
         "capacity": 6,
         "reloadSec": 1.73,
         "shotCoefPct": 67.37,
@@ -696,6 +793,7 @@
       },
       {
         "name": "Amazing Wonderland",
+        "owner": "Alice",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -703,6 +801,7 @@
       },
       {
         "name": "Chewing Tasty",
+        "owner": "Bready",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -710,6 +809,7 @@
       },
       {
         "name": "Cocorella",
+        "owner": "Cocoa",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -717,6 +817,7 @@
       },
       {
         "name": "Hidden Edge",
+        "owner": "D: Killer Wife",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -724,6 +825,7 @@
       },
       {
         "name": "Remember",
+        "owner": "Delta",
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.95,
@@ -731,6 +833,7 @@
       },
       {
         "name": "Risk Taker",
+        "owner": "Dolla",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -738,6 +841,7 @@
       },
       {
         "name": "Young Punk",
+        "owner": "Ein",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -745,6 +849,7 @@
       },
       {
         "name": "Perfectionist",
+        "owner": "Eunhwa",
         "capacity": 6,
         "reloadSec": 2.33,
         "shotCoefPct": 71.07,
@@ -752,6 +857,7 @@
       },
       {
         "name": "Perfectionist T",
+        "owner": "Eunhwa: Tactical Upgrade",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -759,6 +865,7 @@
       },
       {
         "name": "Utopia Unsealed",
+        "owner": "Exia",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -766,6 +873,7 @@
       },
       {
         "name": "Sloth",
+        "owner": "Frima",
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.95,
@@ -773,6 +881,7 @@
       },
       {
         "name": "Death Sentence",
+        "owner": "Harran",
         "capacity": 6,
         "reloadSec": 2.3,
         "shotCoefPct": 70.89,
@@ -780,6 +889,7 @@
       },
       {
         "name": "Honorable",
+        "owner": "Helm",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -787,6 +897,7 @@
       },
       {
         "name": "Ghost Sight",
+        "owner": "Himeno",
         "capacity": 6,
         "reloadSec": 2.3,
         "shotCoefPct": 70.89,
@@ -794,6 +905,7 @@
       },
       {
         "name": "Calm Horizon",
+        "owner": "Liberalio",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -801,6 +913,7 @@
       },
       {
         "name": "Long-Range Precision Rifle",
+        "owner": "Mari Makinami Illustrious",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -808,6 +921,7 @@
       },
       {
         "name": "Summer Shot",
+        "owner": "Mary: Bay Goddess",
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.95,
@@ -815,6 +929,7 @@
       },
       {
         "name": "My Cutey",
+        "owner": "Maxwell",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -822,6 +937,7 @@
       },
       {
         "name": "My Heavenly Cutey",
+        "owner": "Maxwell: Ordinary Mechanic",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -829,6 +945,7 @@
       },
       {
         "name": "Flawless Victory",
+        "owner": "Milk",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -836,6 +953,7 @@
       },
       {
         "name": "Shy Rabbit",
+        "owner": "Milk: Blooming Bunny",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -843,6 +961,7 @@
       },
       {
         "name": "End of the Old World",
+        "owner": "Nihilister",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -850,6 +969,7 @@
       },
       {
         "name": "Chasing Star",
+        "owner": "Prika",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -857,6 +977,7 @@
       },
       {
         "name": "MISR-03",
+        "owner": "Product 08",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -864,6 +985,7 @@
       },
       {
         "name": "Demon's Gaze",
+        "owner": "Ram",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -871,6 +993,7 @@
       },
       {
         "name": "Holy Grace",
+        "owner": "Rapunzel: Pure Grace",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -878,6 +1001,7 @@
       },
       {
         "name": "Wolfsbane",
+        "owner": "Red Hood",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -885,6 +1009,7 @@
       },
       {
         "name": "Jackpot",
+        "owner": "Rouge",
         "capacity": 8,
         "reloadSec": 2.33,
         "shotCoefPct": 71.07,
@@ -892,6 +1017,7 @@
       },
       {
         "name": "Ichigenkin",
+        "owner": "Sakura",
         "capacity": 6,
         "reloadSec": 1.67,
         "shotCoefPct": 67,
@@ -899,6 +1025,7 @@
       },
       {
         "name": "Oath of Goodwill",
+        "owner": "Snow Crane",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -906,6 +1033,7 @@
       },
       {
         "name": "Seven Dwarves I + II",
+        "owner": "Snow White: Heavy Arms",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -913,6 +1041,7 @@
       },
       {
         "name": "Tactical Sniper Rifle",
+        "owner": "Takina Inoue",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -920,6 +1049,7 @@
       },
       {
         "name": "Transistor",
+        "owner": "Trony",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -927,6 +1057,7 @@
       },
       {
         "name": "Femme Fatal",
+        "owner": "Velvet",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
@@ -934,6 +1065,7 @@
       },
       {
         "name": "Extreme Altruism",
+        "owner": "Yulha",
         "capacity": 6,
         "reloadSec": 1.87,
         "shotCoefPct": 68.23,
@@ -943,6 +1075,7 @@
     "rl": [
       {
         "name": "Type-40 Blade",
+        "owner": "A2",
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.75,
@@ -950,6 +1083,7 @@
       },
       {
         "name": "Burst Crossbow",
+        "owner": "Ada Wong",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -957,6 +1091,7 @@
       },
       {
         "name": "Inquisitor",
+        "owner": "Anchor",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -964,6 +1099,7 @@
       },
       {
         "name": "Innocent Question",
+        "owner": "Anchor: Innocent Maid",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -971,6 +1107,7 @@
       },
       {
         "name": "Liberty's Tail",
+        "owner": "Anis",
         "capacity": 6,
         "reloadSec": 2.03,
         "shotCoefPct": 65.02,
@@ -978,6 +1115,7 @@
       },
       {
         "name": "Twinkle Star",
+        "owner": "Anis: Star",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -985,6 +1123,7 @@
       },
       {
         "name": "Mayfly",
+        "owner": "Anne: Miracle Fairy",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -992,6 +1131,7 @@
       },
       {
         "name": "Fortune Teller",
+        "owner": "Arcana",
         "capacity": 6,
         "reloadSec": 2.5,
         "shotCoefPct": 64.04,
@@ -999,6 +1139,7 @@
       },
       {
         "name": "Victory Fanfare",
+        "owner": "Bay",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1006,6 +1147,7 @@
       },
       {
         "name": "Delicious Blast",
+        "owner": "Belorta",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1013,6 +1155,7 @@
       },
       {
         "name": "Happy Puppy",
+        "owner": "Biscuit",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1020,6 +1163,7 @@
       },
       {
         "name": "Mighty Bomber",
+        "owner": "Centi",
         "capacity": 6,
         "reloadSec": 1.52,
         "shotCoefPct": 61.3,
@@ -1027,6 +1171,7 @@
       },
       {
         "name": "Glass Slippers",
+        "owner": "Cinderella",
         "capacity": 24,
         "reloadSec": 2,
         "shotCoefPct": 32.11,
@@ -1034,6 +1179,7 @@
       },
       {
         "name": "H1 Grenade",
+        "owner": "Claire Redfield",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1041,6 +1187,7 @@
       },
       {
         "name": "Whip, Pop, Ding!",
+        "owner": "Crust",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1048,6 +1195,7 @@
       },
       {
         "name": "Candy Line",
+        "owner": "Diesel: Winter Sweets",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1055,6 +1203,7 @@
       },
       {
         "name": "Freezing Breath",
+        "owner": "Emilia",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 63.1,
@@ -1062,6 +1211,7 @@
       },
       {
         "name": "Dancing Flower",
+        "owner": "IDoll Flower",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1069,6 +1219,7 @@
       },
       {
         "name": "T.O.P.",
+        "owner": "Jackal",
         "capacity": 6,
         "reloadSec": 2.03,
         "shotCoefPct": 65.02,
@@ -1076,6 +1227,7 @@
       },
       {
         "name": "Hero Syndrome",
+        "owner": "Laplace",
         "capacity": 6,
         "reloadSec": 2.33,
         "shotCoefPct": 63.11,
@@ -1083,6 +1235,7 @@
       },
       {
         "name": "Ultimate Hero Syndrome",
+        "owner": "Laplace: Ultimate Hero",
         "capacity": 120,
         "reloadSec": 2.5,
         "shotCoefPct": 2.5,
@@ -1090,6 +1243,7 @@
       },
       {
         "name": "Diamond Dust",
+        "owner": "Maiden: Ice Rose",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1097,6 +1251,7 @@
       },
       {
         "name": "Buddy Buddy Explosion",
+        "owner": "Mica",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1104,6 +1259,7 @@
       },
       {
         "name": "Coyly Star",
+        "owner": "Mint",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1111,6 +1267,7 @@
       },
       {
         "name": "Mayfly",
+        "owner": "N102",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1118,6 +1275,7 @@
       },
       {
         "name": "All Breaker",
+        "owner": "Neon: Vision Eye",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1125,6 +1283,7 @@
       },
       {
         "name": "Metal Cocoon",
+        "owner": "Noah",
         "capacity": 6,
         "reloadSec": 2.5,
         "shotCoefPct": 32.02,
@@ -1132,6 +1291,7 @@
       },
       {
         "name": "Make Some Noise",
+        "owner": "Noise",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1139,6 +1299,7 @@
       },
       {
         "name": "Modified Gun",
+        "owner": "Pascal",
         "capacity": 6,
         "reloadSec": 2.5,
         "shotCoefPct": 75,
@@ -1146,6 +1307,7 @@
       },
       {
         "name": "Powerful Power",
+        "owner": "Power",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1153,6 +1315,7 @@
       },
       {
         "name": "Cloud Eye",
+        "owner": "Quiry",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1160,6 +1323,7 @@
       },
       {
         "name": "Holy Grace",
+        "owner": "Rapunzel",
         "capacity": 6,
         "reloadSec": 2.3,
         "shotCoefPct": 62.95,
@@ -1167,6 +1331,7 @@
       },
       {
         "name": "Cryo Blade",
+        "owner": "Raven",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1174,6 +1339,7 @@
       },
       {
         "name": "Look At Me",
+        "owner": "Rumani",
         "capacity": 6,
         "reloadSec": 1.82,
         "shotCoefPct": 56.38,
@@ -1181,6 +1347,7 @@
       },
       {
         "name": "Fleetly Fading",
+        "owner": "Scarlet: Black Shadow",
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 57.29,
@@ -1188,6 +1355,7 @@
       },
       {
         "name": "Turbulence",
+        "owner": "Sora",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1195,6 +1363,7 @@
       },
       {
         "name": "Chase Nail",
+        "owner": "Tia",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1202,6 +1371,7 @@
       },
       {
         "name": "Mother Nature",
+        "owner": "Trina",
         "capacity": 6,
         "reloadSec": 2.52,
         "shotCoefPct": 68.69,
@@ -1209,6 +1379,7 @@
       },
       {
         "name": "Pure Monster",
+        "owner": "Vesti",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1216,6 +1387,7 @@
       },
       {
         "name": "Pure Monster T",
+        "owner": "Vesti: Tactical Upgrade",
         "capacity": 8,
         "reloadSec": 2,
         "shotCoefPct": 22.44,
@@ -1223,6 +1395,7 @@
       },
       {
         "name": "Monopoly",
+        "owner": "Yan",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1230,6 +1403,7 @@
       },
       {
         "name": "Forbidden Gift",
+        "owner": "Yuni",
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
@@ -1239,6 +1413,7 @@
     "mg": [
       {
         "name": "Heavenward Aria",
+        "owner": "Aria",
         "capacity": 300,
         "reloadSec": 2.33,
         "shotCoefPct": 5.47,
@@ -1246,6 +1421,7 @@
       },
       {
         "name": "Mass Annihilation Machine Gun",
+        "owner": "Asuka: WILLE",
         "capacity": 300,
         "reloadSec": 2.33,
         "shotCoefPct": 5.47,
@@ -1253,6 +1429,7 @@
       },
       {
         "name": "Lonely Pride",
+        "owner": "Avistar",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1260,6 +1437,7 @@
       },
       {
         "name": "Glass Slippers",
+        "owner": "Cinderella: Crystal Wave",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1267,6 +1445,7 @@
       },
       {
         "name": "Your Majesty",
+        "owner": "Crown",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1274,6 +1453,7 @@
       },
       {
         "name": "Ninja Force",
+        "owner": "Delta: Ninja Thief",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1281,6 +1461,7 @@
       },
       {
         "name": "Wanderlust",
+        "owner": "Diesel",
         "capacity": 300,
         "reloadSec": 2.16,
         "shotCoefPct": 5.38,
@@ -1288,6 +1469,7 @@
       },
       {
         "name": "Boomstick",
+        "owner": "Elegg",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1295,6 +1477,7 @@
       },
       {
         "name": "BFG",
+        "owner": "Elegg: Boom and Shock",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1302,6 +1485,7 @@
       },
       {
         "name": "Special Therapy",
+        "owner": "Emma",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1309,6 +1493,7 @@
       },
       {
         "name": "Special Therapy T",
+        "owner": "Emma: Tactical Upgrade",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1316,6 +1501,7 @@
       },
       {
         "name": "Natural Garden",
+        "owner": "Flora",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1323,6 +1509,7 @@
       },
       {
         "name": "Unbridled Solitude",
+        "owner": "Guillotine",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1330,6 +1517,7 @@
       },
       {
         "name": "Anchoret",
+        "owner": "Kilo",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1337,6 +1525,7 @@
       },
       {
         "name": "Savior in the Snow",
+        "owner": "Ludmilla: Winter Owner",
         "capacity": 300,
         "reloadSec": 3,
         "shotCoefPct": 5.86,
@@ -1344,6 +1533,7 @@
       },
       {
         "name": "Romantic Burst",
+        "owner": "Mast: Romantic Maid",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1351,6 +1541,7 @@
       },
       {
         "name": "Bonding Heart",
+        "owner": "Mihara: Bonding Chain",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1358,6 +1549,7 @@
       },
       {
         "name": "New Dawn",
+        "owner": "Modernia",
         "capacity": 300,
         "reloadSec": 2.3,
         "shotCoefPct": 7.71,
@@ -1365,6 +1557,7 @@
       },
       {
         "name": "Big Big Wave",
+        "owner": "Neon: Blue Ocean",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1372,6 +1565,7 @@
       },
       {
         "name": "MIMG-07",
+        "owner": "Product 12",
         "capacity": 300,
         "reloadSec": 2.67,
         "shotCoefPct": 5.67,
@@ -1379,6 +1573,7 @@
       },
       {
         "name": "Seven Dwarves Zero",
+        "owner": "Rapi: Red Hood",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1386,6 +1581,7 @@
       },
       {
         "name": "Heavy Gatling Gun for Subdual",
+        "owner": "Rei Ayanami",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1393,6 +1589,7 @@
       },
       {
         "name": "Demon's Mighty Grip",
+        "owner": "Rem",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1400,6 +1597,7 @@
       },
       {
         "name": "Golden Thompson",
+        "owner": "Rosanna",
         "capacity": 300,
         "reloadSec": 1.67,
         "shotCoefPct": 5.1,
@@ -1407,6 +1605,7 @@
       },
       {
         "name": "Bright Cleaner",
+        "owner": "Soda",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1414,6 +1613,7 @@
       },
       {
         "name": "Crimson Bloom",
+        "owner": "Yukiko Amagi",
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
@@ -1470,11 +1670,11 @@
   },
   "derived": {
     "_note": "위 값들로 계산한 것. **원시 평타 DPS일 뿐이고 명중률·코어히트는 빠져 있다.**",
-    "magazineSeconds": 6.0,
+    "magazineSeconds": 6,
     "normalAttackDpsPct": {
       "_formula": "1발당 계수(중앙값) × 연사속도. 재장전 포함은 (계수 × 장탄) ÷ (장탄÷연사 + 재장전).",
       "raw": {
-        "sg": 316.0,
+        "sg": 316,
         "mg": 278.5,
         "smg": 174.6,
         "ar": 136.5
@@ -1482,8 +1682,8 @@
       "withReload": {
         "sg": 246.3,
         "mg": 196.6,
-        "smg": 141.0,
-        "ar": 117.0,
+        "smg": 141,
+        "ar": 117,
         "sr": 43.6,
         "rl": 38.7
       }

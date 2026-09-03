@@ -42,13 +42,24 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
+import { TRIGGER_CLASSES } from './analyzeSkillTriggers.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const J = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
 const cdb = J('characterDatabase.json');
 const baseStats = J('baseStats.json');
+const weapons = J('weapons.json');
+// 캐릭터 → 그의 무기. Fandom 표의 첫 칸 링크에서 왔다(197/198 매칭).
+const WEAPON_BY_OWNER = new Map();
+Object.entries(weapons.byType || {}).forEach(([type, rows]) =>
+  rows.forEach((r) => { if (r.owner) WEAPON_BY_OWNER.set(r.owner, { ...r, type }); }));
+// 매칭이 안 된 캐릭터(아마기 유키코 등 최신 캐릭)는 그 타입의 중앙값으로 대신한다.
+const medianOf = (type, key) => {
+  const v = (weapons.byType?.[type] || []).map((r) => r[key]).filter((x) => x != null).sort((a, b) => a - b);
+  return v.length ? v[Math.floor(v.length / 2)] : null;
+};
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 
 // ---------------------------------------------------------------------------
@@ -62,6 +73,12 @@ export const ASSUMPTIONS = {
   // 버스트 스킬 버프의 가동률 = 지속시간 / 쿨타임. 패시브는 1.0으로 본다.
   // 실제로는 풀버스트 진입 타이밍·재진입에 따라 달라지지만 그건 데이터에 없다.
   PASSIVE_UPTIME: 1.0,
+  // 풀버스트 한 사이클(초). "사이클마다" 계열 스킬의 초당 발동 횟수를 여기서 나눈다.
+  // ⚠️ 게임의 표준 주기이지만 우리가 정한 값이다 — 실제로는 팀 구성·재진입에 따라 달라진다.
+  BURST_CYCLE_SEC: 20,
+  // 전투 길이(초). "전투 시작 1회" 계열을 초당으로 환산할 때만 쓴다.
+  // ⚠️ 솔로레이드는 180초, 캠페인은 훨씬 짧다. 우리가 정한 값이다.
+  BATTLE_SEC: 180,
   // 속성 한정 버프는 대상이 맞는 아군에게만 적용한다(계수는 그대로).
   // 대상이 없으면 그 버프는 0이다 — 이건 가정이 아니라 원문 그대로다.
 };
@@ -98,6 +115,69 @@ function atkFactor(c) {
   const row = baseStats.byClassRarity?.[c.class]?.[c.rarity];
   if (!row) return 1; // 표에 없는 조합(defender/R 등)은 보정하지 않는다 — 없는 값을 만들지 않는다
   return row.atk / ATK_REF;
+}
+
+// 그 캐릭터의 초당 발사 수. 차지형(SR·RL)은 연사가 아니라 차지 시간의 역수다.
+function shotsPerSec(c) {
+  const t = c.weapon;
+  const rate = weapons.fireRate?.perSecond?.[t];
+  if (rate) return rate;
+  const ch = weapons.fireRate?.chargeWeapons?.shortChargeSec;
+  return ch ? 1 / ch : null;   // sr·rl
+}
+
+// 평타 기여(초당). 기본 공격력 × 1발당 계수 × 초당 발사 수.
+// **이것이 없어서 모더니아가 3점이었다** — 그의 딜은 평타에서 나온다(MG 7.71% × 50발/초).
+function normalAttackDps(c) {
+  const w = WEAPON_BY_OWNER.get(c.title);
+  const coef = w?.shotCoefPct ?? medianOf(c.weapon, 'shotCoefPct');
+  const rate = shotsPerSec(c);
+  if (!coef || !rate) return 0;
+  return atkFactor(c) * coef * rate;
+}
+
+// 그 절이 초당 몇 번 터지는가. **분류 못 한 계열은 0으로 둔다 — 없는 빈도를 만들지 않는다.**
+function freqPerSec(cls, nShots, c, A) {
+  const rate = shotsPerSec(c) || 0;
+  const w = WEAPON_BY_OWNER.get(c.title);
+  const cap = w?.capacity ?? medianOf(c.weapon, 'capacity');
+  const rel = w?.reloadSec ?? medianOf(c.weapon, 'reloadSec');
+  const ch = weapons.fireRate?.chargeWeapons?.shortChargeSec || 1.25;
+  switch (cls) {
+    case 'perCycle':    return 1 / A.BURST_CYCLE_SEC;
+    case 'perShots':    return nShots > 0 ? rate / nShots : rate;
+    case 'perCharge':   return 1 / ch;
+    case 'perReload':   return (cap && rate) ? 1 / (cap / rate + (rel || 0)) : 0;
+    case 'once':
+    case 'battleStart': return 1 / A.BATTLE_SEC;
+    default:            return 0;   // onHp·onKill·onHit·미분류 — 빈도를 알 수 없다
+  }
+}
+
+// 스킬 딜(초당). 계수를 **그 절의 발동 빈도로 곱해서** 더한다.
+// 예전에는 그냥 더해서 "평타마다 3.05%"와 "버스트마다 2808%"가 같은 자리에 들어갔다.
+function skillDps(c, A) {
+  const skills = c.skills || [];
+  let total = 0;
+  skills.forEach((sk, si) => {
+    const isBurst = si === skills.length - 1;
+    let cls = isBurst ? 'perCycle' : null;   // 버스트 스킬의 절은 기본이 사이클마다
+    let nShots = 1;
+    (sk.desc || '').split(/(?<=\.)\s+/).map((x) => x.trim()).forEach((cl) => {
+      const m = cl.match(/^Activates\s+(.+?)\.?$/i);
+      if (m) {
+        const hit = TRIGGER_CLASSES.find(([, re]) => re.test(m[1]));
+        cls = hit ? hit[0] : (isBurst ? 'perCycle' : null);
+        const n = m[1].match(/(\d+)\s*time\(s\)|(\d+)\s*normal attacks?/i);
+        nShots = n ? Number(n[1] || n[2]) : 1;
+        return;
+      }
+      const coef = sumRe(cl, SELF_COEF);
+      if (!coef) return;
+      total += coef * freqPerSec(cls, nShots, c, A);
+    });
+  });
+  return atkFactor(c) * total;
 }
 
 const burstCd = (c) => {
@@ -160,14 +240,16 @@ export function scoreComposition(members, opts = {}) {
 
   let total = 0;
   const parts = members.map((m) => {
-    const raw = (m.skills || []).reduce((a, s) => a + sumRe(s.desc || '', SELF_COEF), 0) || A.BASE_ATTACK;
-    const self = raw * atkFactor(m);   // 기본 공격력 보정(클래스·등급)
+    // 초당 기여 = 평타 + 스킬(빈도 반영). 둘 다 기본 공격력 보정이 들어가 있다.
+    const na = normalAttackDps(m);
+    const sd = skillDps(m, A);
+    const self = na + sd;
     const b = buffOn.get(m.id);
     // 통 안에서는 더하고, 통끼리는 곱한다.
     const mult = BUCKET_KEYS.reduce((a, k) => a * (1 + b[k] / 100), 1);
     const v = self * mult;
     total += v;
-    return { title: m.title, kr: m.name_kr || m.title, self, buckets: b, mult, value: v };
+    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, mult, value: v };
   });
   total *= (1 + dmgTaken / 100);
 
@@ -266,6 +348,35 @@ function selfTest() {
     }
   }
 
+  // (4) 평타 딜러가 무딜 캐릭터보다 높아야 한다. **이게 뒤집혀 있던 것이 이번 작업의 출발점이다.**
+  //     모더니아는 자체 딜 계수 합이 3%뿐이라 예전 모델에서 무딜 필러(일괄 100)보다 낮았다.
+  //     그의 딜은 평타(MG 7.71% × 50발/초)에서 나온다.
+  {
+    const carrier = byTitle.get('Modernia');
+    const inert = cdb.find((c) => c !== carrier
+      && (c.skills || []).every((s) => !sumRe(s.desc || '', SELF_COEF))
+      && (c.class === 'defender' || c.class === 'supporter'));
+    if (carrier && inert) {
+      checked += 1;
+      const a = scoreComposition([carrier], { detail: true }).parts[0];
+      const b = scoreComposition([inert], { detail: true }).parts[0];
+      if (!(a.self > b.self)) {
+        problems.push(`평타 딜러 ${carrier.name_kr}(${a.self.toFixed(0)})가 무딜 ` +
+          `${inert.name_kr || inert.title}(${b.self.toFixed(0)})보다 높지 않다 — 평타 계산이 죽었을 수 있다`);
+      }
+      if (!(a.normal > 0)) problems.push(`${carrier.name_kr}의 평타 기여가 0이다 — 무기 매칭을 확인할 것`);
+    }
+  }
+
+  // (5) 무기 매칭이 대부분 살아 있어야 한다. 끊기면 평타가 조용히 중앙값으로 대체된다.
+  {
+    checked += 1;
+    const mapped = cdb.filter((c) => WEAPON_BY_OWNER.has(c.title)).length;
+    if (mapped < cdb.length - 5) {
+      problems.push(`무기 매칭이 ${mapped}/${cdb.length}명뿐이다 — Fandom 표의 캐릭터 링크 파싱을 확인할 것`);
+    }
+  }
+
   const line = '─'.repeat(84);
   console.log(line);
   console.log(`단조성 검사 — ${checked}건`);
@@ -298,7 +409,8 @@ if (process.argv.includes('--selftest')) {
   console.log(`적 받는 데미지 ▲ 합: ${r.dmgTaken.toFixed(1)}%`);
   r.parts.forEach((p) => {
     const nz = Object.entries(p.buckets).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v.toFixed(0)}%`).join(' · ');
-    console.log(`  ${p.kr.padEnd(22)} 자체딜 ${String(p.self.toFixed(0)).padStart(6)}  배수 ${p.mult.toFixed(2)}  → ${String(p.value.toFixed(0)).padStart(6)}   ${nz || '(버프 없음)'}`);
+    console.log(`  ${p.kr.padEnd(22)} 평타 ${String(p.normal.toFixed(0)).padStart(7)}  스킬 ${String(p.skill.toFixed(0)).padStart(6)}  배수 ${p.mult.toFixed(2)}  → ${String(p.value.toFixed(0)).padStart(7)}`);
+    if (nz) console.log(`  ${' '.repeat(22)} ${nz}`);
   });
   if (r.notes.length) { console.log('\n해석 못 해 버린 대상절:'); [...new Set(r.notes)].slice(0, 8).forEach((n) => console.log('  ·', n)); }
 } else {
