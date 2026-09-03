@@ -88,6 +88,11 @@ function parseWeapons(html) {
       const desc = iDesc >= 0 ? c[iDesc] : '';
       const shot = desc.match(/Deals ([\d.]+)% of ATK as damage/i);
       const core = desc.match(/Deals ([\d.]+)% damage when attacking core/i);
+      // 차지형(SR·RL)은 설명에 "Charge Time: N sec. Full Charge Damage: N% of damage."가 있다.
+      // 2026-09-03: 이 두 값을 안 읽어서 SR 전체가 2.5배 과소평가되고 있었다 —
+      // 스노우 화이트: 헤비암즈(보스 SSS)가 모더니아(A)보다 낮게 나왔다(유저 지적).
+      const chg = desc.match(/Charge Time:\s*([\d.]+)\s*sec/i);
+      const fchg = desc.match(/Full Charge Damage:\s*([\d.]+)%/i);
       out.push({
         name,
         owner,
@@ -95,6 +100,8 @@ function parseWeapons(html) {
         reloadSec: Number(c[iRel]) || null,
         shotCoefPct: shot ? Number(shot[1]) : null,
         coreMultPct: core ? Number(core[1]) : null,
+        chargeTimeSec: chg ? Number(chg[1]) : null,
+        fullChargeMultPct: fchg ? Number(fchg[1]) : null,
       });
     });
     if (out.length) return out;

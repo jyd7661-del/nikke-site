@@ -79,6 +79,8 @@ export const ASSUMPTIONS = {
   // 전투 길이(초). "전투 시작 1회" 계열을 초당으로 환산할 때만 쓴다.
   // ⚠️ 솔로레이드는 180초, 캠페인은 훨씬 짧다. 우리가 정한 값이다.
   BATTLE_SEC: 180,
+  // 차지 사격의 조준 모션 시간(초). 출처 글이 "모션시간 0.25 포함"이라고 적었다.
+  CHARGE_MOTION_SEC: 0.25,
   // 속성 한정 버프는 대상이 맞는 아군에게만 적용한다(계수는 그대로).
   // 대상이 없으면 그 버프는 0이다 — 이건 가정이 아니라 원문 그대로다.
 };
@@ -119,11 +121,23 @@ function atkFactor(c) {
 
 // 그 캐릭터의 초당 발사 수. 차지형(SR·RL)은 연사가 아니라 차지 시간의 역수다.
 function shotsPerSec(c) {
-  const t = c.weapon;
-  const rate = weapons.fireRate?.perSecond?.[t];
+  const rate = weapons.fireRate?.perSecond?.[c.weapon];
   if (rate) return rate;
-  const ch = weapons.fireRate?.chargeWeapons?.shortChargeSec;
-  return ch ? 1 / ch : null;   // sr·rl
+  // 차지형(SR·RL): 무기마다 차지 시간이 다르다(1/1.2/1.5/2초). 여기에 조준 모션이 붙는다.
+  const w = WEAPON_BY_OWNER.get(c.title);
+  const ct = w?.chargeTimeSec ?? medianOf(c.weapon, 'chargeTimeSec');
+  if (!ct) return null;
+  return 1 / (ct + (ASSUMPTIONS.CHARGE_MOTION_SEC || 0));
+}
+
+// 풀차지 배율. **2026-09-03에 이걸 빼먹어서 SR 전체가 2.5배 과소평가됐다** —
+// 스노우 화이트: 헤비암즈(보스 SSS)가 모더니아(A)보다 낮게 나왔다(유저 지적).
+// Fandom 설명에 "Full Charge Damage: 250% of damage"로 적혀 있었는데 파싱을 안 했다.
+// 아카라이브 수치로 역산해도 정확히 2.50배가 나온다(69.04 × 2.5 × 0.8 = 138.08).
+function chargeMult(c) {
+  const w = WEAPON_BY_OWNER.get(c.title);
+  const m = w?.fullChargeMultPct ?? medianOf(c.weapon, 'fullChargeMultPct');
+  return m ? m / 100 : 1;
 }
 
 // 평타 기여(초당). 기본 공격력 × 1발당 계수 × 초당 발사 수.
@@ -133,7 +147,7 @@ function normalAttackDps(c) {
   const coef = w?.shotCoefPct ?? medianOf(c.weapon, 'shotCoefPct');
   const rate = shotsPerSec(c);
   if (!coef || !rate) return 0;
-  return atkFactor(c) * coef * rate;
+  return atkFactor(c) * coef * chargeMult(c) * rate;
 }
 
 // 그 절이 초당 몇 번 터지는가. **분류 못 한 계열은 0으로 둔다 — 없는 빈도를 만들지 않는다.**
@@ -142,7 +156,8 @@ function freqPerSec(cls, nShots, c, A) {
   const w = WEAPON_BY_OWNER.get(c.title);
   const cap = w?.capacity ?? medianOf(c.weapon, 'capacity');
   const rel = w?.reloadSec ?? medianOf(c.weapon, 'reloadSec');
-  const ch = weapons.fireRate?.chargeWeapons?.shortChargeSec || 1.25;
+  const ct = w?.chargeTimeSec ?? medianOf(c.weapon, 'chargeTimeSec');
+  const ch = ct ? ct + (A.CHARGE_MOTION_SEC || 0) : (weapons.fireRate?.chargeWeapons?.shortChargeSec || 1.25);
   switch (cls) {
     case 'perCycle':    return 1 / A.BURST_CYCLE_SEC;
     case 'perShots':    return nShots > 0 ? rate / nShots : rate;

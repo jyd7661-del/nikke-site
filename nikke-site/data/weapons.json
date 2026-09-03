@@ -15,7 +15,9 @@
         "capacity": 90,
         "reloadSec": 1,
         "shotCoefPct": 5.99,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "The Classic",
@@ -23,7 +25,9 @@
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Crying Black",
@@ -31,7 +35,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Lightweight Assault Rifle",
@@ -39,7 +45,9 @@
         "capacity": 20,
         "reloadSec": 1,
         "shotCoefPct": 18.76,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "White Pollux",
@@ -47,7 +55,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Perfect Line",
@@ -55,7 +65,9 @@
         "capacity": 60,
         "reloadSec": 1.3,
         "shotCoefPct": 14.29,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Ungrateful OZ",
@@ -63,7 +75,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Drone 2.0",
@@ -71,7 +85,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Incandescence",
@@ -79,7 +95,9 @@
         "capacity": 60,
         "reloadSec": 1.3,
         "shotCoefPct": 14.29,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Writer's Eraser",
@@ -87,7 +105,9 @@
         "capacity": 60,
         "reloadSec": 2,
         "shotCoefPct": 17.91,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Brave Sword",
@@ -95,7 +115,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Battleship",
@@ -103,7 +125,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Shining Sun",
@@ -111,7 +135,9 @@
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Lightning Eagle",
@@ -119,7 +145,9 @@
         "capacity": 9,
         "reloadSec": 1,
         "shotCoefPct": 71.09,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Classical Adagio",
@@ -127,7 +155,9 @@
         "capacity": 60,
         "reloadSec": 1.2,
         "shotCoefPct": 14.07,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Remote Hacking Drone",
@@ -135,7 +165,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Gloomy Mood",
@@ -143,7 +175,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Somnus",
@@ -151,7 +185,9 @@
         "capacity": 60,
         "reloadSec": 1.67,
         "shotCoefPct": 15.07,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Rescue the Penguin",
@@ -159,7 +195,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Painful World",
@@ -167,7 +205,9 @@
         "capacity": 60,
         "reloadSec": 1.67,
         "shotCoefPct": 15.07,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Dragon Head",
@@ -175,7 +215,9 @@
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Mole's Forest",
@@ -183,7 +225,9 @@
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Midnight Thief",
@@ -191,7 +235,9 @@
         "capacity": 60,
         "reloadSec": 2,
         "shotCoefPct": 15.78,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Team Chemistry",
@@ -199,7 +245,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Militaria",
@@ -207,7 +255,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Suppressive Assault Rifle",
@@ -215,7 +265,9 @@
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Golden Thompson",
@@ -223,7 +275,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Shopaholic",
@@ -231,7 +285,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Shopaholic",
@@ -239,7 +295,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Ichigenkin",
@@ -247,7 +305,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Fleetly Fading",
@@ -255,7 +315,9 @@
         "capacity": 20,
         "reloadSec": 2.3,
         "shotCoefPct": 27.08,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Heavy Talker",
@@ -263,7 +325,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Seven Dwarves",
@@ -271,7 +335,9 @@
         "capacity": 60,
         "reloadSec": 1.5,
         "shotCoefPct": 14.71,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Seven Dwarves II",
@@ -279,7 +345,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 13.65,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Hunting Eagle",
@@ -287,7 +355,9 @@
         "capacity": 60,
         "reloadSec": 1.17,
         "shotCoefPct": 14.01,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Energetic Survivor",
@@ -295,7 +365,9 @@
         "capacity": 60,
         "reloadSec": 1,
         "shotCoefPct": 14.2,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       }
     ],
     "smg": [
@@ -305,7 +377,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 5.06,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "My Little Carrot",
@@ -313,7 +387,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Chime Bell",
@@ -321,7 +397,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Suppressive Submachine Gun",
@@ -329,7 +407,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "You Can Do It",
@@ -337,7 +417,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Genocide",
@@ -345,7 +427,9 @@
         "capacity": 120,
         "reloadSec": 1.67,
         "shotCoefPct": 4.47,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Storm Eye",
@@ -353,7 +437,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Heavenward",
@@ -361,7 +447,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "The Trickster",
@@ -369,7 +457,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 5.06,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Swaying Ocean",
@@ -377,7 +467,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Double Hazard",
@@ -385,7 +477,9 @@
         "capacity": 120,
         "reloadSec": 1.8,
         "shotCoefPct": 4.55,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Artemis Cannon",
@@ -393,7 +487,9 @@
         "capacity": 120,
         "reloadSec": 1.8,
         "shotCoefPct": 8.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Drill Punch",
@@ -401,7 +497,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Spindrift",
@@ -409,7 +507,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 10.12,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Snow Phantom",
@@ -417,7 +517,9 @@
         "capacity": 120,
         "reloadSec": 2.76,
         "shotCoefPct": 10.32,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Unknown Weapon",
@@ -425,7 +527,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Ferocity",
@@ -433,7 +537,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Winter Salute",
@@ -441,7 +547,9 @@
         "capacity": 120,
         "reloadSec": 2,
         "shotCoefPct": 11.7,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Inflexible",
@@ -449,7 +557,9 @@
         "capacity": 120,
         "reloadSec": 1.43,
         "shotCoefPct": 8.64,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Self-defense Automatic Pistol",
@@ -457,7 +567,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Nirvana",
@@ -465,7 +577,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Meow Meow",
@@ -473,7 +587,9 @@
         "capacity": 120,
         "reloadSec": 1.3,
         "shotCoefPct": 8.39,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Sixth Sense",
@@ -481,7 +597,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Most Wanted",
@@ -489,7 +607,9 @@
         "capacity": 120,
         "reloadSec": 1.2,
         "shotCoefPct": 4.47,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Secret Exit",
@@ -497,7 +617,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 4.47,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Steel Baby",
@@ -505,7 +627,9 @@
         "capacity": 120,
         "reloadSec": 1.83,
         "shotCoefPct": 9.15,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Defensive Pistol",
@@ -513,7 +637,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Soap Opera",
@@ -521,7 +647,9 @@
         "capacity": 120,
         "reloadSec": 1,
         "shotCoefPct": 8.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Searching Owl",
@@ -529,7 +657,9 @@
         "capacity": 120,
         "reloadSec": 2,
         "shotCoefPct": 9.36,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Crimson Crusader",
@@ -537,7 +667,9 @@
         "capacity": 120,
         "reloadSec": 2,
         "shotCoefPct": 4.68,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Volume Max",
@@ -545,7 +677,9 @@
         "capacity": 120,
         "reloadSec": 1.5,
         "shotCoefPct": 8.73,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       }
     ],
     "sg": [
@@ -555,7 +689,9 @@
         "capacity": 5,
         "reloadSec": 2,
         "shotCoefPct": 259.2,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Bittersweet",
@@ -563,7 +699,9 @@
         "capacity": 9,
         "reloadSec": 2.33,
         "shotCoefPct": 222.8,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Silent Steam",
@@ -571,7 +709,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Ungrateful OZ",
@@ -579,7 +719,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Sadistic Carnival",
@@ -587,7 +729,9 @@
         "capacity": 9,
         "reloadSec": 1.52,
         "shotCoefPct": 214.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Villain Night Carnival",
@@ -595,7 +739,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Sacrificial Bacchanal",
@@ -603,7 +749,9 @@
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 214.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Soft Belt",
@@ -611,7 +759,9 @@
         "capacity": 9,
         "reloadSec": 2.67,
         "shotCoefPct": 231.4,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Extreme Obsessor",
@@ -619,7 +769,9 @@
         "capacity": 9,
         "reloadSec": 1.86,
         "shotCoefPct": 210.7,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Lion's Roar",
@@ -627,7 +779,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Misconception",
@@ -635,7 +789,9 @@
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Rational Eyes",
@@ -643,7 +799,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Kindness",
@@ -651,7 +809,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Elegant Nocturne",
@@ -659,7 +819,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 204.8,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Annihilation",
@@ -667,7 +829,9 @@
         "capacity": 9,
         "reloadSec": 1.82,
         "shotCoefPct": 224.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Hibernation",
@@ -675,7 +839,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Black Castor",
@@ -683,7 +849,9 @@
         "capacity": 9,
         "reloadSec": 0.7,
         "shotCoefPct": 204.6,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "VitaMax",
@@ -691,7 +859,9 @@
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Wild Hound",
@@ -699,7 +869,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Demanding Lover",
@@ -707,7 +879,9 @@
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 182.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "MISG-09",
@@ -715,7 +889,9 @@
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Iron Verdict",
@@ -723,7 +899,9 @@
         "capacity": 9,
         "reloadSec": 1.52,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Undiminished",
@@ -731,7 +909,9 @@
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Clutch Falcon",
@@ -739,7 +919,9 @@
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 214.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Cozy Passage",
@@ -747,7 +929,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 201.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Cold Zeal",
@@ -755,7 +939,9 @@
         "capacity": 9,
         "reloadSec": 2.03,
         "shotCoefPct": 231.6,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Rust Chaser",
@@ -763,7 +949,9 @@
         "capacity": 9,
         "reloadSec": 1.7,
         "shotCoefPct": 220.4,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "President Junior",
@@ -771,7 +959,9 @@
         "capacity": 9,
         "reloadSec": 1.5,
         "shotCoefPct": 100.75,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       }
     ],
     "sr": [
@@ -781,7 +971,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Affection's End",
@@ -789,7 +981,9 @@
         "capacity": 6,
         "reloadSec": 1.73,
         "shotCoefPct": 67.37,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Amazing Wonderland",
@@ -797,7 +991,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.5,
+        "fullChargeMultPct": 350
       },
       {
         "name": "Chewing Tasty",
@@ -805,7 +1001,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Cocorella",
@@ -813,7 +1011,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Hidden Edge",
@@ -821,7 +1021,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Remember",
@@ -829,7 +1031,9 @@
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.95,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Risk Taker",
@@ -837,7 +1041,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Young Punk",
@@ -845,7 +1051,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Perfectionist",
@@ -853,7 +1061,9 @@
         "capacity": 6,
         "reloadSec": 2.33,
         "shotCoefPct": 71.07,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Perfectionist T",
@@ -861,7 +1071,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Utopia Unsealed",
@@ -869,7 +1081,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Sloth",
@@ -877,7 +1091,9 @@
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.95,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Death Sentence",
@@ -885,7 +1101,9 @@
         "capacity": 6,
         "reloadSec": 2.3,
         "shotCoefPct": 70.89,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Honorable",
@@ -893,7 +1111,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Ghost Sight",
@@ -901,7 +1121,9 @@
         "capacity": 6,
         "reloadSec": 2.3,
         "shotCoefPct": 70.89,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Calm Horizon",
@@ -909,7 +1131,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.5,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Long-Range Precision Rifle",
@@ -917,7 +1141,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Summer Shot",
@@ -925,7 +1151,9 @@
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.95,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "My Cutey",
@@ -933,7 +1161,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "My Heavenly Cutey",
@@ -941,7 +1171,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Flawless Victory",
@@ -949,7 +1181,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Shy Rabbit",
@@ -957,7 +1191,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "End of the Old World",
@@ -965,7 +1201,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Chasing Star",
@@ -973,7 +1211,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "MISR-03",
@@ -981,7 +1221,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Demon's Gaze",
@@ -989,7 +1231,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Holy Grace",
@@ -997,7 +1241,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Wolfsbane",
@@ -1005,7 +1251,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Jackpot",
@@ -1013,7 +1261,9 @@
         "capacity": 8,
         "reloadSec": 2.33,
         "shotCoefPct": 71.07,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Ichigenkin",
@@ -1021,7 +1271,9 @@
         "capacity": 6,
         "reloadSec": 1.67,
         "shotCoefPct": 67,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Oath of Goodwill",
@@ -1029,7 +1281,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Seven Dwarves I + II",
@@ -1037,7 +1291,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.2,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Tactical Sniper Rifle",
@@ -1045,7 +1301,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.2,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Transistor",
@@ -1053,7 +1311,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Femme Fatal",
@@ -1061,7 +1321,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 69.04,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1.2,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Extreme Altruism",
@@ -1069,7 +1331,9 @@
         "capacity": 6,
         "reloadSec": 1.87,
         "shotCoefPct": 68.23,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       }
     ],
     "rl": [
@@ -1079,7 +1343,9 @@
         "capacity": 6,
         "reloadSec": 1.5,
         "shotCoefPct": 65.75,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Burst Crossbow",
@@ -1087,7 +1353,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": null
       },
       {
         "name": "Inquisitor",
@@ -1095,7 +1363,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Innocent Question",
@@ -1103,7 +1373,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Liberty's Tail",
@@ -1111,7 +1383,9 @@
         "capacity": 6,
         "reloadSec": 2.03,
         "shotCoefPct": 65.02,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Twinkle Star",
@@ -1119,7 +1393,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": null
       },
       {
         "name": "Mayfly",
@@ -1127,7 +1403,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Fortune Teller",
@@ -1135,7 +1413,9 @@
         "capacity": 6,
         "reloadSec": 2.5,
         "shotCoefPct": 64.04,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Victory Fanfare",
@@ -1143,7 +1423,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Delicious Blast",
@@ -1151,7 +1433,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.5,
+        "fullChargeMultPct": 350
       },
       {
         "name": "Happy Puppy",
@@ -1159,7 +1443,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Mighty Bomber",
@@ -1167,7 +1453,9 @@
         "capacity": 6,
         "reloadSec": 1.52,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Glass Slippers",
@@ -1175,7 +1463,9 @@
         "capacity": 24,
         "reloadSec": 2,
         "shotCoefPct": 32.11,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 0.3,
+        "fullChargeMultPct": 200
       },
       {
         "name": "H1 Grenade",
@@ -1183,7 +1473,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Whip, Pop, Ding!",
@@ -1191,7 +1483,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Candy Line",
@@ -1199,7 +1493,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": null
       },
       {
         "name": "Freezing Breath",
@@ -1207,7 +1503,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 63.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Dancing Flower",
@@ -1215,7 +1513,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "T.O.P.",
@@ -1223,7 +1523,9 @@
         "capacity": 6,
         "reloadSec": 2.03,
         "shotCoefPct": 65.02,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Hero Syndrome",
@@ -1231,7 +1533,9 @@
         "capacity": 6,
         "reloadSec": 2.33,
         "shotCoefPct": 63.11,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Ultimate Hero Syndrome",
@@ -1239,7 +1543,9 @@
         "capacity": 120,
         "reloadSec": 2.5,
         "shotCoefPct": 2.5,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Diamond Dust",
@@ -1247,7 +1553,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Buddy Buddy Explosion",
@@ -1255,7 +1563,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Coyly Star",
@@ -1263,7 +1573,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Mayfly",
@@ -1271,7 +1583,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.5,
+        "fullChargeMultPct": 350
       },
       {
         "name": "All Breaker",
@@ -1279,7 +1593,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": null
       },
       {
         "name": "Metal Cocoon",
@@ -1287,7 +1603,9 @@
         "capacity": 6,
         "reloadSec": 2.5,
         "shotCoefPct": 32.02,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Make Some Noise",
@@ -1295,7 +1613,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Modified Gun",
@@ -1303,7 +1623,9 @@
         "capacity": 6,
         "reloadSec": 2.5,
         "shotCoefPct": 75,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Powerful Power",
@@ -1311,7 +1633,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Cloud Eye",
@@ -1319,7 +1643,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Holy Grace",
@@ -1327,7 +1653,9 @@
         "capacity": 6,
         "reloadSec": 2.3,
         "shotCoefPct": 62.95,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Cryo Blade",
@@ -1335,7 +1663,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Look At Me",
@@ -1343,7 +1673,9 @@
         "capacity": 6,
         "reloadSec": 1.82,
         "shotCoefPct": 56.38,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Fleetly Fading",
@@ -1351,7 +1683,9 @@
         "capacity": 9,
         "reloadSec": 2,
         "shotCoefPct": 57.29,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 0.3,
+        "fullChargeMultPct": 150
       },
       {
         "name": "Turbulence",
@@ -1359,7 +1693,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 250
+        "coreMultPct": 250,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Chase Nail",
@@ -1367,7 +1703,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Mother Nature",
@@ -1375,7 +1713,9 @@
         "capacity": 6,
         "reloadSec": 2.52,
         "shotCoefPct": 68.69,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Pure Monster",
@@ -1383,7 +1723,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1,
+        "fullChargeMultPct": 250
       },
       {
         "name": "Pure Monster T",
@@ -1391,7 +1733,9 @@
         "capacity": 8,
         "reloadSec": 2,
         "shotCoefPct": 22.44,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 2,
+        "fullChargeMultPct": 200
       },
       {
         "name": "Monopoly",
@@ -1399,7 +1743,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.5,
+        "fullChargeMultPct": 350
       },
       {
         "name": "Forbidden Gift",
@@ -1407,7 +1753,9 @@
         "capacity": 6,
         "reloadSec": 2,
         "shotCoefPct": 61.3,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": 1.5,
+        "fullChargeMultPct": 350
       }
     ],
     "mg": [
@@ -1417,7 +1765,9 @@
         "capacity": 300,
         "reloadSec": 2.33,
         "shotCoefPct": 5.47,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Mass Annihilation Machine Gun",
@@ -1425,7 +1775,9 @@
         "capacity": 300,
         "reloadSec": 2.33,
         "shotCoefPct": 5.47,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Lonely Pride",
@@ -1433,7 +1785,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Glass Slippers",
@@ -1441,7 +1795,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Your Majesty",
@@ -1449,7 +1805,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Ninja Force",
@@ -1457,7 +1815,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Wanderlust",
@@ -1465,7 +1825,9 @@
         "capacity": 300,
         "reloadSec": 2.16,
         "shotCoefPct": 5.38,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Boomstick",
@@ -1473,7 +1835,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "BFG",
@@ -1481,7 +1845,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Special Therapy",
@@ -1489,7 +1855,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Special Therapy T",
@@ -1497,7 +1865,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Natural Garden",
@@ -1505,7 +1875,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Unbridled Solitude",
@@ -1513,7 +1885,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Anchoret",
@@ -1521,7 +1895,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Savior in the Snow",
@@ -1529,7 +1905,9 @@
         "capacity": 300,
         "reloadSec": 3,
         "shotCoefPct": 5.86,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Romantic Burst",
@@ -1537,7 +1915,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Bonding Heart",
@@ -1545,7 +1925,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "New Dawn",
@@ -1553,7 +1935,9 @@
         "capacity": 300,
         "reloadSec": 2.3,
         "shotCoefPct": 7.71,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Big Big Wave",
@@ -1561,7 +1945,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "MIMG-07",
@@ -1569,7 +1955,9 @@
         "capacity": 300,
         "reloadSec": 2.67,
         "shotCoefPct": 5.67,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Seven Dwarves Zero",
@@ -1577,7 +1965,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Heavy Gatling Gun for Subdual",
@@ -1585,7 +1975,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Demon's Mighty Grip",
@@ -1593,7 +1985,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Golden Thompson",
@@ -1601,7 +1995,9 @@
         "capacity": 300,
         "reloadSec": 1.67,
         "shotCoefPct": 5.1,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Bright Cleaner",
@@ -1609,7 +2005,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       },
       {
         "name": "Crimson Bloom",
@@ -1617,7 +2015,9 @@
         "capacity": 300,
         "reloadSec": 2.5,
         "shotCoefPct": 5.57,
-        "coreMultPct": 200
+        "coreMultPct": 200,
+        "chargeTimeSec": null,
+        "fullChargeMultPct": null
       }
     ]
   },
