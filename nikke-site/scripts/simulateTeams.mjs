@@ -273,6 +273,9 @@ export function scoreComposition(members, opts = {}) {
 
 // ---------------------------------------------------------------------------
 // 단조성 검사 — 실측이 없으니 "앞뒤가 맞는가"만 확인한다.
+// 보스 티어 순위상관의 기준선. 올라가면 이 값을 함께 올린다(검사가 알려준다).
+const TIER_RHO_BASELINE = 0.40;
+
 function selfTest() {
   const TIER = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
   const pick = (t) => byTitle.get(t);
@@ -390,6 +393,44 @@ function selfTest() {
     if (mapped < cdb.length - 5) {
       problems.push(`무기 매칭이 ${mapped}/${cdb.length}명뿐이다 — Fandom 표의 캐릭터 링크 파싱을 확인할 것`);
     }
+  }
+
+  // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03)
+  //     이 비교기에는 오랫동안 정답지가 없었다 — 솔로레이드 실측 avgDamage는 투자 상태가
+  //     지배해 상관이 0.01이라 못 쓴다. 그런데 보스 티어와는 0.400이 나온다. 완벽한 정답은
+  //     아니지만(사람의 종합 판단이다) **0에서 멀다는 것 자체가 신호**라 래칫으로 고정한다.
+  //     이 값이 떨어지면 비교기를 나쁘게 바꾼 것이다.
+  {
+    checked += 1;
+    const rows = cdb.filter((c) => TIER[c.tiers?.bossing])
+      .map((c) => ({ s: scoreComposition([c], { detail: true }).parts[0].self, t: TIER[c.tiers.bossing] }));
+    const rank = (v) => {
+      const idx = v.map((x, i) => [x, i]).sort((a, b) => a[0] - b[0]);
+      const out = Array(v.length);
+      idx.forEach(([, i], k) => { out[i] = k + 1; });
+      return out;
+    };
+    const rx = rank(rows.map((r) => r.s)); const ry = rank(rows.map((r) => r.t)); const n = rows.length;
+    const rho = 1 - (6 * rx.reduce((a, _, i) => a + (rx[i] - ry[i]) ** 2, 0)) / (n * (n * n - 1));
+    console.log(`  보스 티어 순위상관 ρ = ${rho.toFixed(3)} (${n}명, 기준선 ${TIER_RHO_BASELINE})`);
+    if (rho < TIER_RHO_BASELINE - 0.03) {
+      problems.push(`보스 티어 순위상관이 ${TIER_RHO_BASELINE} → ${rho.toFixed(3)}로 떨어졌다 — 비교기를 나쁘게 바꾼 것이다`);
+    }
+    if (rho > TIER_RHO_BASELINE + 0.03) {
+      console.log(`  ✅ ρ가 올랐다. TIER_RHO_BASELINE을 ${rho.toFixed(2)}로 높일 것.`);
+    }
+  }
+
+  // (7) 무기 타입 편향을 **매번 눈에 보이게** 찍는다. 실패시키지는 않는다 —
+  //     이건 고칠 방법이 없는 알려진 결함이라(코어히트 적중률·락온 대상 수가 우리에게 없다)
+  //     래칫으로 잠그면 오탐만 난다. 대신 숨기지 않는다. `docs/open-items.md` 참고.
+  {
+    const med = (a) => (a.length ? a.sort((x, y) => x - y)[Math.floor(a.length / 2)] : 0);
+    const byW = ['sg', 'mg', 'smg', 'ar', 'sr', 'rl'].map((w) => {
+      const g = cdb.filter((c) => c.weapon === w).map((c) => scoreComposition([c], { detail: true }).parts[0].self);
+      return `${w.toUpperCase()} ${Math.round(med(g))}`;
+    });
+    console.log(`  무기 타입별 중앙값: ${byW.join(' · ')}  ⚠️ 타입이 다르면 비교 금지`);
   }
 
   const line = '─'.repeat(84);
