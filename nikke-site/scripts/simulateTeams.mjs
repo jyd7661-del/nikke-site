@@ -121,11 +121,24 @@ function atkFactor(c) {
 
 // 그 캐릭터의 초당 발사 수. 차지형(SR·RL)은 연사가 아니라 차지 시간의 역수다.
 function shotsPerSec(c) {
-  const rate = weapons.fireRate?.perSecond?.[c.weapon];
-  if (rate) return rate;
+  const w0 = WEAPON_BY_OWNER.get(c.title);
+  const typeRate = weapons.fireRate?.perSecond?.[c.weapon];
+  if (typeRate) {
+    // **무기별 연사속도 = 장탄수 ÷ 6초.** (2026-09-03)
+    // weapons.json의 _selfCheck가 "장탄수 ÷ 연사속도 = 정확히 6.0초"를 네 타입에서
+    // 서로 다른 두 출처로 확인했다. 타입 상수만 쓰면 장탄이 다른 5종이 틀어진다 —
+    // 질 발렌타인(AR 9발)에 AR 상수 10발/초를 먹여 **평타를 6.7배 과대평가**하고 있었다.
+    //
+    // 6초 상수를 이 5종까지 늘려도 되는 근거는 **재장전 가동률**이다.
+    //   타입 상수 가정 → 질 발렌타인·스칼렛이 가동률 47%. 기준 장탄 116종은 67~90%다.
+    //   장탄÷6초 가정 → 다섯 종 전부 72~86%로 그 띠 안에 들어온다.
+    // 기준 장탄 무기에서는 타입 상수와 값이 정확히 같으므로(60÷6=10 …) 일반화일 뿐이다.
+    const cap = w0?.capacity;
+    const magSec = weapons.derived?.magazineSeconds;
+    return cap && magSec ? cap / magSec : typeRate;
+  }
   // 차지형(SR·RL): 무기마다 차지 시간이 다르다(1/1.2/1.5/2초). 여기에 조준 모션이 붙는다.
-  const w = WEAPON_BY_OWNER.get(c.title);
-  const ct = w?.chargeTimeSec ?? medianOf(c.weapon, 'chargeTimeSec');
+  const ct = w0?.chargeTimeSec ?? medianOf(c.weapon, 'chargeTimeSec');
   if (!ct) return null;
   return 1 / (ct + (ASSUMPTIONS.CHARGE_MOTION_SEC || 0));
 }
@@ -183,8 +196,14 @@ function skillDps(c, A) {
       if (m) {
         const hit = TRIGGER_CLASSES.find(([, re]) => re.test(m[1]));
         cls = hit ? hit[0] : (isBurst ? 'perCycle' : null);
-        const n = m[1].match(/(\d+)\s*time\(s\)|(\d+)\s*normal attacks?/i);
-        nShots = n ? Number(n[1] || n[2]) : 1;
+        // ⚠️ 어순이 두 가지다 — "after landing 30 normal attacks"와
+        //    "when normal attacks hits 30 times". 옛 정규식은 `time\(s\)`라는
+        //    **리터럴 괄호**를 요구해서 "30 times"를 놓쳤고, 두 번째 어순도 못 잡았다.
+        //    그 결과 스노우 화이트의 "30발마다 82.8%"가 **매 발마다**로 계산돼
+        //    30배 부풀었고 **그가 198명 중 1위로 올라와 있었다**(2026-09-03).
+        //    숫자를 못 읽으면 nShots=1(매 발)이 되는 조용한 과대평가라 아래 검사로 막는다.
+        const n = m[1].match(/(\d+)\s*(?:normal attacks?|time\(s\)|times?)/i);
+        nShots = n ? Number(n[1]) : 1;
         return;
       }
       const coef = sumRe(cl, SELF_COEF);
@@ -392,6 +411,27 @@ function selfTest() {
     const mapped = cdb.filter((c) => WEAPON_BY_OWNER.has(c.title)).length;
     if (mapped < cdb.length - 5) {
       problems.push(`무기 매칭이 ${mapped}/${cdb.length}명뿐이다 — Fandom 표의 캐릭터 링크 파싱을 확인할 것`);
+    }
+  }
+
+  // (8) **"평타 N발마다"의 N을 실제로 읽었는가.** (2026-09-03)
+  //     못 읽으면 nShots=1로 떨어져 조용히 N배 부풀린다. 에러가 안 나고 순위만 틀어진다 —
+  //     실제로 스노우 화이트가 이 버그로 1위였다. 판정 단위를 **조건절**로 잡는다:
+  //     발동 조건에 숫자가 있는데 N을 못 뽑았으면 실패.
+  {
+    checked += 1;
+    const PER_SHOTS = TRIGGER_CLASSES.find(([k]) => k === 'perShots')[1];
+    const missed = [];
+    cdb.forEach((c) => (c.skills || []).forEach((sk) => (sk.desc || '').split(/(?<=\.)\s+/).forEach((cl) => {
+      const m = cl.trim().match(/^Activates\s+(.+?)\.?$/i);
+      if (!m || !PER_SHOTS.test(m[1])) return;
+      if (!/\d/.test(m[1])) return;                        // 숫자가 없으면 "매 발마다"가 맞다
+      if (!/(\d+)\s*(?:normal attacks?|time\(s\)|times?)/i.test(m[1])) {
+        missed.push(`${c.name_kr || c.title}: "${m[1].slice(0, 60)}"`);
+      }
+    })));
+    if (missed.length) {
+      problems.push(`"평타 N발마다"의 N을 못 읽은 조건절 ${missed.length}건 — N배 과대평가된다: ${missed.slice(0, 3).join(' / ')}`);
     }
   }
 
