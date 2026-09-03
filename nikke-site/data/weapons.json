@@ -1,0 +1,1452 @@
+{
+  "meta": {
+    "asOf": "2026-09-03",
+    "source": "Fandom — NIKKE Goddess of Victory International Wiki, 무기 타입별 문서 6개 (CC BY-SA)",
+    "grade": "B",
+    "gradeNote": "위키가 인게임 값을 옮긴 것이라 우리에게는 2차 출처다. 인게임과 대조하지 않았다.",
+    "missing": "연사속도는 fireRate에 채웠으나 **B등급이고 2023년 글 단일 출처**다. 인게임 대조가 남았다.",
+    "collectedBy": "scripts/refreshWeaponsFromFandom.mjs"
+  },
+  "byType": {
+    "ar": [
+      {
+        "name": "Virtuous Rifle",
+        "capacity": 90,
+        "reloadSec": 1,
+        "shotCoefPct": 5.99,
+        "coreMultPct": 200
+      },
+      {
+        "name": "The Classic",
+        "capacity": 60,
+        "reloadSec": 1.5,
+        "shotCoefPct": 14.71,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Crying Black",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Lightweight Assault Rifle",
+        "capacity": 20,
+        "reloadSec": 1,
+        "shotCoefPct": 18.76,
+        "coreMultPct": 200
+      },
+      {
+        "name": "White Pollux",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Perfect Line",
+        "capacity": 60,
+        "reloadSec": 1.3,
+        "shotCoefPct": 14.29,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ungrateful OZ",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Drone 2.0",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Incandescence",
+        "capacity": 60,
+        "reloadSec": 1.3,
+        "shotCoefPct": 14.29,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Writer's Eraser",
+        "capacity": 60,
+        "reloadSec": 2,
+        "shotCoefPct": 17.91,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Brave Sword",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Battleship",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Shining Sun",
+        "capacity": 60,
+        "reloadSec": 1.5,
+        "shotCoefPct": 14.71,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Lightning Eagle",
+        "capacity": 9,
+        "reloadSec": 1,
+        "shotCoefPct": 71.09,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Classical Adagio",
+        "capacity": 60,
+        "reloadSec": 1.2,
+        "shotCoefPct": 14.07,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Remote Hacking Drone",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Gloomy Mood",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Somnus",
+        "capacity": 60,
+        "reloadSec": 1.67,
+        "shotCoefPct": 15.07,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Rescue the Penguin",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Painful World",
+        "capacity": 60,
+        "reloadSec": 1.67,
+        "shotCoefPct": 15.07,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Dragon Head",
+        "capacity": 60,
+        "reloadSec": 1.5,
+        "shotCoefPct": 14.71,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Mole's Forest",
+        "capacity": 60,
+        "reloadSec": 1.5,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Midnight Thief",
+        "capacity": 60,
+        "reloadSec": 2,
+        "shotCoefPct": 15.78,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Team Chemistry",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Militaria",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Suppressive Assault Rifle",
+        "capacity": 60,
+        "reloadSec": 1.5,
+        "shotCoefPct": 14.71,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Golden Thompson",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Shopaholic",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Shopaholic",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ichigenkin",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Fleetly Fading",
+        "capacity": 20,
+        "reloadSec": 2.3,
+        "shotCoefPct": 27.08,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Heavy Talker",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Seven Dwarves",
+        "capacity": 60,
+        "reloadSec": 1.5,
+        "shotCoefPct": 14.71,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Seven Dwarves II",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 13.65,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Hunting Eagle",
+        "capacity": 60,
+        "reloadSec": 1.17,
+        "shotCoefPct": 14.01,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Energetic Survivor",
+        "capacity": 60,
+        "reloadSec": 1,
+        "shotCoefPct": 14.2,
+        "coreMultPct": 200
+      }
+    ],
+    "smg": [
+      {
+        "name": "Built-in Firearms",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 5.06,
+        "coreMultPct": 250
+      },
+      {
+        "name": "My Little Carrot",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 10.12,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Chime Bell",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 8.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Suppressive Submachine Gun",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 10.12,
+        "coreMultPct": 250
+      },
+      {
+        "name": "You Can Do It",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 10.12,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Genocide",
+        "capacity": 120,
+        "reloadSec": 1.67,
+        "shotCoefPct": 4.47,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Storm Eye",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Heavenward",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 10.12,
+        "coreMultPct": 250
+      },
+      {
+        "name": "The Trickster",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 5.06,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Swaying Ocean",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Double Hazard",
+        "capacity": 120,
+        "reloadSec": 1.8,
+        "shotCoefPct": 4.55,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Artemis Cannon",
+        "capacity": 120,
+        "reloadSec": 1.8,
+        "shotCoefPct": 8.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Drill Punch",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Spindrift",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 10.12,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Snow Phantom",
+        "capacity": 120,
+        "reloadSec": 2.76,
+        "shotCoefPct": 10.32,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Unknown Weapon",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ferocity",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Winter Salute",
+        "capacity": 120,
+        "reloadSec": 2,
+        "shotCoefPct": 11.7,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Inflexible",
+        "capacity": 120,
+        "reloadSec": 1.43,
+        "shotCoefPct": 8.64,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Self-defense Automatic Pistol",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 8.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Nirvana",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Meow Meow",
+        "capacity": 120,
+        "reloadSec": 1.3,
+        "shotCoefPct": 8.39,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Sixth Sense",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 8.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Most Wanted",
+        "capacity": 120,
+        "reloadSec": 1.2,
+        "shotCoefPct": 4.47,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Secret Exit",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 4.47,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Steel Baby",
+        "capacity": 120,
+        "reloadSec": 1.83,
+        "shotCoefPct": 9.15,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Defensive Pistol",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 8.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Soap Opera",
+        "capacity": 120,
+        "reloadSec": 1,
+        "shotCoefPct": 8.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Searching Owl",
+        "capacity": 120,
+        "reloadSec": 2,
+        "shotCoefPct": 9.36,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Crimson Crusader",
+        "capacity": 120,
+        "reloadSec": 2,
+        "shotCoefPct": 4.68,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Volume Max",
+        "capacity": 120,
+        "reloadSec": 1.5,
+        "shotCoefPct": 8.73,
+        "coreMultPct": 200
+      }
+    ],
+    "sg": [
+      {
+        "name": "Libertine Aqua",
+        "capacity": 5,
+        "reloadSec": 2,
+        "shotCoefPct": 259.2,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Bittersweet",
+        "capacity": 9,
+        "reloadSec": 2.33,
+        "shotCoefPct": 222.8,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Silent Steam",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ungrateful OZ",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Sadistic Carnival",
+        "capacity": 9,
+        "reloadSec": 1.52,
+        "shotCoefPct": 214.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Villain Night Carnival",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Sacrificial Bacchanal",
+        "capacity": 9,
+        "reloadSec": 2,
+        "shotCoefPct": 214.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Soft Belt",
+        "capacity": 9,
+        "reloadSec": 2.67,
+        "shotCoefPct": 231.4,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Extreme Obsessor",
+        "capacity": 9,
+        "reloadSec": 1.86,
+        "shotCoefPct": 210.7,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Lion's Roar",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Misconception",
+        "capacity": 9,
+        "reloadSec": 2.03,
+        "shotCoefPct": 231.6,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Rational Eyes",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Kindness",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Elegant Nocturne",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 204.8,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Annihilation",
+        "capacity": 9,
+        "reloadSec": 1.82,
+        "shotCoefPct": 224.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Hibernation",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Black Castor",
+        "capacity": 9,
+        "reloadSec": 0.7,
+        "shotCoefPct": 204.6,
+        "coreMultPct": 200
+      },
+      {
+        "name": "VitaMax",
+        "capacity": 9,
+        "reloadSec": 2.03,
+        "shotCoefPct": 231.6,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Wild Hound",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Demanding Lover",
+        "capacity": 9,
+        "reloadSec": 2,
+        "shotCoefPct": 182.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "MISG-09",
+        "capacity": 9,
+        "reloadSec": 2.03,
+        "shotCoefPct": 231.6,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Iron Verdict",
+        "capacity": 9,
+        "reloadSec": 1.52,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Undiminished",
+        "capacity": 9,
+        "reloadSec": 2.03,
+        "shotCoefPct": 231.6,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Clutch Falcon",
+        "capacity": 9,
+        "reloadSec": 2,
+        "shotCoefPct": 214.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Cozy Passage",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 201.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Cold Zeal",
+        "capacity": 9,
+        "reloadSec": 2.03,
+        "shotCoefPct": 231.6,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Rust Chaser",
+        "capacity": 9,
+        "reloadSec": 1.7,
+        "shotCoefPct": 220.4,
+        "coreMultPct": 200
+      },
+      {
+        "name": "President Junior",
+        "capacity": 9,
+        "reloadSec": 1.5,
+        "shotCoefPct": 100.75,
+        "coreMultPct": 200
+      }
+    ],
+    "sr": [
+      {
+        "name": "The Agent",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Affection's End",
+        "capacity": 6,
+        "reloadSec": 1.73,
+        "shotCoefPct": 67.37,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Amazing Wonderland",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Chewing Tasty",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Cocorella",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Hidden Edge",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Remember",
+        "capacity": 6,
+        "reloadSec": 1.5,
+        "shotCoefPct": 65.95,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Risk Taker",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Young Punk",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Perfectionist",
+        "capacity": 6,
+        "reloadSec": 2.33,
+        "shotCoefPct": 71.07,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Perfectionist T",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Utopia Unsealed",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Sloth",
+        "capacity": 6,
+        "reloadSec": 1.5,
+        "shotCoefPct": 65.95,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Death Sentence",
+        "capacity": 6,
+        "reloadSec": 2.3,
+        "shotCoefPct": 70.89,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Honorable",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ghost Sight",
+        "capacity": 6,
+        "reloadSec": 2.3,
+        "shotCoefPct": 70.89,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Calm Horizon",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Long-Range Precision Rifle",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Summer Shot",
+        "capacity": 6,
+        "reloadSec": 1.5,
+        "shotCoefPct": 65.95,
+        "coreMultPct": 200
+      },
+      {
+        "name": "My Cutey",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "My Heavenly Cutey",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Flawless Victory",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Shy Rabbit",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 250
+      },
+      {
+        "name": "End of the Old World",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Chasing Star",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "MISR-03",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Demon's Gaze",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Holy Grace",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Wolfsbane",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Jackpot",
+        "capacity": 8,
+        "reloadSec": 2.33,
+        "shotCoefPct": 71.07,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ichigenkin",
+        "capacity": 6,
+        "reloadSec": 1.67,
+        "shotCoefPct": 67,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Oath of Goodwill",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Seven Dwarves I + II",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Tactical Sniper Rifle",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Transistor",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Femme Fatal",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 69.04,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Extreme Altruism",
+        "capacity": 6,
+        "reloadSec": 1.87,
+        "shotCoefPct": 68.23,
+        "coreMultPct": 200
+      }
+    ],
+    "rl": [
+      {
+        "name": "Type-40 Blade",
+        "capacity": 6,
+        "reloadSec": 1.5,
+        "shotCoefPct": 65.75,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Burst Crossbow",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Inquisitor",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Innocent Question",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Liberty's Tail",
+        "capacity": 6,
+        "reloadSec": 2.03,
+        "shotCoefPct": 65.02,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Twinkle Star",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Mayfly",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Fortune Teller",
+        "capacity": 6,
+        "reloadSec": 2.5,
+        "shotCoefPct": 64.04,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Victory Fanfare",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Delicious Blast",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Happy Puppy",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Mighty Bomber",
+        "capacity": 6,
+        "reloadSec": 1.52,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Glass Slippers",
+        "capacity": 24,
+        "reloadSec": 2,
+        "shotCoefPct": 32.11,
+        "coreMultPct": 200
+      },
+      {
+        "name": "H1 Grenade",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Whip, Pop, Ding!",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Candy Line",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Freezing Breath",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 63.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Dancing Flower",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "T.O.P.",
+        "capacity": 6,
+        "reloadSec": 2.03,
+        "shotCoefPct": 65.02,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Hero Syndrome",
+        "capacity": 6,
+        "reloadSec": 2.33,
+        "shotCoefPct": 63.11,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ultimate Hero Syndrome",
+        "capacity": 120,
+        "reloadSec": 2.5,
+        "shotCoefPct": 2.5,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Diamond Dust",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Buddy Buddy Explosion",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Coyly Star",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Mayfly",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "All Breaker",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Metal Cocoon",
+        "capacity": 6,
+        "reloadSec": 2.5,
+        "shotCoefPct": 32.02,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Make Some Noise",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Modified Gun",
+        "capacity": 6,
+        "reloadSec": 2.5,
+        "shotCoefPct": 75,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Powerful Power",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Cloud Eye",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Holy Grace",
+        "capacity": 6,
+        "reloadSec": 2.3,
+        "shotCoefPct": 62.95,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Cryo Blade",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Look At Me",
+        "capacity": 6,
+        "reloadSec": 1.82,
+        "shotCoefPct": 56.38,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Fleetly Fading",
+        "capacity": 9,
+        "reloadSec": 2,
+        "shotCoefPct": 57.29,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Turbulence",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 250
+      },
+      {
+        "name": "Chase Nail",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Mother Nature",
+        "capacity": 6,
+        "reloadSec": 2.52,
+        "shotCoefPct": 68.69,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Pure Monster",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Pure Monster T",
+        "capacity": 8,
+        "reloadSec": 2,
+        "shotCoefPct": 22.44,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Monopoly",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Forbidden Gift",
+        "capacity": 6,
+        "reloadSec": 2,
+        "shotCoefPct": 61.3,
+        "coreMultPct": 200
+      }
+    ],
+    "mg": [
+      {
+        "name": "Heavenward Aria",
+        "capacity": 300,
+        "reloadSec": 2.33,
+        "shotCoefPct": 5.47,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Mass Annihilation Machine Gun",
+        "capacity": 300,
+        "reloadSec": 2.33,
+        "shotCoefPct": 5.47,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Lonely Pride",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Glass Slippers",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Your Majesty",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Ninja Force",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Wanderlust",
+        "capacity": 300,
+        "reloadSec": 2.16,
+        "shotCoefPct": 5.38,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Boomstick",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "BFG",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Special Therapy",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Special Therapy T",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Natural Garden",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Unbridled Solitude",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Anchoret",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Savior in the Snow",
+        "capacity": 300,
+        "reloadSec": 3,
+        "shotCoefPct": 5.86,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Romantic Burst",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Bonding Heart",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "New Dawn",
+        "capacity": 300,
+        "reloadSec": 2.3,
+        "shotCoefPct": 7.71,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Big Big Wave",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "MIMG-07",
+        "capacity": 300,
+        "reloadSec": 2.67,
+        "shotCoefPct": 5.67,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Seven Dwarves Zero",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Heavy Gatling Gun for Subdual",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Demon's Mighty Grip",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Golden Thompson",
+        "capacity": 300,
+        "reloadSec": 1.67,
+        "shotCoefPct": 5.1,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Bright Cleaner",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      },
+      {
+        "name": "Crimson Bloom",
+        "capacity": 300,
+        "reloadSec": 2.5,
+        "shotCoefPct": 5.57,
+        "coreMultPct": 200
+      }
+    ]
+  },
+  "fireRate": {
+    "_grade": "B",
+    "_source": "arca.live 승리의 여신 니케 채널 「재미로 보는 무기별 dps」 (글번호 78001371, 작성 2023-06-05). 본문에 '초당 N발'이 직접 적혀 있다.",
+    "_crossCheck": "같은 글의 무기별 계수가 data/weapons.json의 Fandom 값과 일치한다(모더니아 MG 7.71%, 로산나 5.1%, 엠마·소다·길로틴 5.57% 등). 두 출처가 독립적으로 맞아 계수 쪽 신뢰도는 높다. 연사속도는 그 글에만 있다.",
+    "_warnings": [
+      "⚠️ 글이 2023-06-05로 **3년 전**이다. 그 사이 밸런스 변경이 있었을 수 있다.",
+      "⚠️ AR 10발/초는 **글 댓글에서 이견이 있다**('12발 아니었노'). 작성자는 10발이라고 답했다.",
+      "⚠️ 글 안에서도 숫자가 완전히 맞아떨어지지 않는다 — SG는 '초당 1.5발'이라 적혔는데 본문 DPS(347.4%)를 계수(204.6%)로 나누면 1.70이 된다. SR도 '숏차지 1.25초'(=0.8발/초)인데 138.08/69.04 = 2.0이다. 차지 배율이 섞였을 가능성이 있으나 확인하지 못했다.",
+      "⚠️ **인게임과 대조하지 않았다.** 쓰기 전에 반드시 이 경고를 함께 읽을 것."
+    ],
+    "perSecond": {
+      "ar": 10,
+      "smg": 20,
+      "mg": 50,
+      "sg": 1.5
+    },
+    "dualWield": {
+      "smg": 40,
+      "_note": "쌍SMG(퀀시·크로우·솔린 등). 어느 캐릭터가 쌍인지는 이 표에 없다."
+    },
+    "chargeWeapons": {
+      "_note": "SR·RL은 연사가 아니라 차지다. 모션시간 0.25초 포함.",
+      "shortChargeSec": 1.25,
+      "longChargeSec": 1.75,
+      "tapFirePerSecond": 4,
+      "_tapNote": "차지 없이 톡톡 쏠 때 초당 4발(글의 '톡톡이')."
+    }
+  }
+}
