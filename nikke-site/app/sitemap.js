@@ -1,5 +1,6 @@
 import { SITE_URL } from '@/lib/site';
 import { CHARACTERS } from '@/lib/dex';
+import { GUIDES } from '@/lib/guides';
 
 // /sitemap.xml 을 만들어 준다 (Next.js App Router의 메타데이터 파일 규약).
 //
@@ -22,6 +23,15 @@ export default function sitemap() {
     { url: `${SITE_URL}/combos`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${SITE_URL}/board`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${SITE_URL}/nikke`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    // 가이드(2026-09-04). 글마다 lastModified가 실제 갱신일이라 now를 쓰지 않는다 —
+    // 안 고친 글에 오늘 날짜를 찍으면 크롤러에게 거짓말이 된다.
+    { url: `${SITE_URL}/guide`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    ...GUIDES.map((g) => ({
+      url: `${SITE_URL}/guide/${g.slug}`,
+      lastModified: new Date(g.updated),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    })),
     ...CHARACTERS.map((c) => ({
       url: `${SITE_URL}/nikke/${c.id}`,
       lastModified: now,

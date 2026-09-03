@@ -2072,23 +2072,89 @@
     "_note": "위 값들로 계산한 것. **원시 평타 DPS일 뿐이고 명중률·코어히트는 빠져 있다.**",
     "magazineSeconds": 6,
     "normalAttackDpsPct": {
-      "_formula": "1발당 계수(중앙값) × 연사속도. 재장전 포함은 (계수 × 장탄) ÷ (장탄÷연사 + 재장전).",
+      "_formula": "1발당 계수(중앙값) × 풀차지 배율 × 연사속도. 재장전 포함은 (그 값 × 장탄) ÷ (장탄÷연사 + 재장전).",
+      "_chargeNote": "⚠️ 2026-09-03까지 SR·RL 값에 **풀차지 배율(250%)이 빠져 있었다**(sr 43.6 · rl 38.7). 차지 무기는 한 발이 곧 풀차지 사격이라 배율을 빼면 2.5배 과소평가된다. 그 버그가 조합 비교기에서 스노우 화이트: 헤비암즈를 모더니아보다 낮게 만들었고 유저가 지적해 잡았다.",
+      "_chargeRate": "차지형 연사속도 = 1 ÷ (차지시간 + 조준모션 0.25초). 출처 글이 모션시간 0.25초 포함이라고 적었다.",
       "raw": {
-        "sg": 316,
-        "mg": 278.5,
+        "ar": 136.5,
         "smg": 174.6,
-        "ar": 136.5
+        "sg": 316,
+        "sr": 138.1,
+        "rl": 122.6,
+        "mg": 278.5
       },
       "withReload": {
-        "sg": 246.3,
-        "mg": 196.6,
-        "smg": 141,
         "ar": 117,
-        "sr": 43.6,
-        "rl": 38.7
+        "smg": 141,
+        "sg": 246.3,
+        "sr": 109,
+        "rl": 96.8,
+        "mg": 196.6
+      },
+      "byType": {
+        "ar": {
+          "shotCoefPct": 13.65,
+          "capacity": 60,
+          "reloadSec": 1,
+          "shotsPerSec": 10,
+          "chargeTimeSec": null,
+          "fullChargeMultPct": null,
+          "fireSec": 6,
+          "cycleSec": 7
+        },
+        "smg": {
+          "shotCoefPct": 8.73,
+          "capacity": 120,
+          "reloadSec": 1.43,
+          "shotsPerSec": 20,
+          "chargeTimeSec": null,
+          "fullChargeMultPct": null,
+          "fireSec": 6,
+          "cycleSec": 7.4
+        },
+        "sg": {
+          "shotCoefPct": 210.7,
+          "capacity": 9,
+          "reloadSec": 1.7,
+          "shotsPerSec": 1.5,
+          "chargeTimeSec": null,
+          "fullChargeMultPct": null,
+          "fireSec": 6,
+          "cycleSec": 7.7
+        },
+        "sr": {
+          "shotCoefPct": 69.04,
+          "capacity": 6,
+          "reloadSec": 2,
+          "shotsPerSec": 0.8,
+          "chargeTimeSec": 1,
+          "fullChargeMultPct": 250,
+          "fireSec": 7.5,
+          "cycleSec": 9.5
+        },
+        "rl": {
+          "shotCoefPct": 61.3,
+          "capacity": 6,
+          "reloadSec": 2,
+          "shotsPerSec": 0.8,
+          "chargeTimeSec": 1,
+          "fullChargeMultPct": 250,
+          "fireSec": 7.5,
+          "cycleSec": 9.5
+        },
+        "mg": {
+          "shotCoefPct": 5.57,
+          "capacity": 300,
+          "reloadSec": 2.5,
+          "shotsPerSec": 50,
+          "chargeTimeSec": null,
+          "fullChargeMultPct": null,
+          "fireSec": 6,
+          "cycleSec": 8.5
+        }
       }
     },
-    "_balancing": "원시 DPS는 SG > MG > SMG > AR로 6.4배까지 갈리지만 **그게 실전 세기 순서가 아니다.** 상쇄는 명중률과 코어히트에서 일어난다 — 코어 배율이 SR·RL만 250%이고, SG는 평타를 여러 발로 쪼개 쏘아 코어 적중률이 낮다(출처 글의 설명과 일치). 명중률·코어 적중률은 적 크기·거리에 좌우돼 애초에 상수가 아니므로 우리 데이터에 없다.",
+    "_balancing": "원시 DPS는 SG 246% ~ RL 97%로 **2.5배** 안에 들어온다(차지 배율 반영 후). 배율을 빼고 보면 6.4배로 벌어져 SR·RL이 쓰레기처럼 보이는데 그게 옛 표의 오류였다. 남은 2.5배는 명중률과 코어히트에서 상쇄된다 — 코어 배율은 전 무기 200%이고, SG는 평타를 여러 발로 쪼개 쏘아 코어 적중률이 낮다. 명중률·코어 적중률은 적 크기·거리에 좌우돼 애초에 상수가 아니므로 우리 데이터에 없다.",
     "_whyItMattersForTeams": "조합 비교에서 진짜 차이를 만드는 것은 원시 DPS가 아니라 **무기 × 발수 기반 스킬의 궁합**이다. 6초에 MG는 300발, SG는 9발을 쏜다 — '평타 N발마다' 계열 스킬(analyzeSkillTriggers 기준 88절)의 발동 횟수가 30배 넘게 갈린다."
   }
 }

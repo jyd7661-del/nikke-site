@@ -17,6 +17,7 @@ node scripts/analyzeSkillTriggers.mjs
 node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
 node scripts/testDexUsage.mjs
+node scripts/testGuides.mjs
 node scripts/testDataI18n.mjs
 node scripts/testTraffic.mjs
 node scripts/findTotems.mjs
@@ -37,6 +38,7 @@ node scripts/checkWeeklyReport.mjs
 | `testCharacterNames.mjs` | **26건 통과** | 언어별 표기, 폴백, 3개국어 검색, 로스터 전수(현재 170명) |
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
 | `testDexUsage.mjs` | **전부 통과 · 조합 214건 · 데이터가 붙는 캐릭터 98/198명** | 도감 "실사용 데이터" 절의 집계. 198명 **전원**을 원본 JSON에서 다시 세어 대조한다 — 이 절은 데이터가 없으면 안 그리는 설계라 집계가 통째로 실패해도 화면이 멀쩡해 보인다 |
+| `testGuides.mjs` | **문제 0건 · 5종 · 글 3편** | 가이드(`/guide`)의 안전망. 목록(`lib/guides.js`)과 본문(`app/guide/[slug]/page.js`)이 어긋나면 404가 나고, 글의 수치는 원본 JSON에서 **다시 세어** 대조한다. 손으로 적은 수치는 파일별 래칫으로 막는다 |
 | `testDataI18n.mjs` | **퇴행 없음** (남은 backlog: squad 62 · desc_ja 9 · desc_kr 6 · 보스명 5. 아키타입 name·note는 483/483 완료) | 화면에 나가는 **데이터**가 사이트 언어와 맞는가. `testI18n`은 UI 라벨만 봐서 "한국어 화면인데 조합 이름·설명이 영어"를 24건 통과하는 동안 놓쳤다. **래칫이다 — EXPECTED보다 늘면 ERROR, 줄면 숫자를 낮추라고 알린다** |
 | `testTraffic.mjs` | **전부 통과 · 계측 대상 경로 207개** | 자체 방문 계측의 경로·봇 판정. 계측은 **조용히 안 쌓인다** — 경로 판정이 막으면 표가 비고, 봇을 못 거르면 크롤러가 203페이지를 훑어 "인원 대비 로딩" 비율이 무의미해진다. DB 없이 검사할 수 있게 `lib/traffic.js`로 순수 로직을 뗐다 |
 | `findTotems.mjs` | **1군 0명 · 검토 후 기각 1명**(아르카나) | 토템 후보 누락. 2026-09-01에 솔로레이드 125건 + 타워 50건을 붙였다 — 그전까지 실사용 214건 중 **175건(82%)을 안 보고 있어** 1군이 계속 0명이었다. `totemRole` 등록은 언제나 B등급이라 사람이 판단한다 |
