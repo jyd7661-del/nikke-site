@@ -492,7 +492,13 @@ const arg = (n, d) => {
   const m = process.argv.find((a) => a.startsWith(`--${n}=`));
   return m ? m.split('=')[1] : d;
 };
-if (process.argv.includes('--selftest')) {
+
+// 아래 CLI는 **직접 실행할 때만** 돈다. 가드가 없으면 scoreComposition을 import하는 것만으로
+// selfTest가 통째로 돌고, 실패하면 process.exit(1)까지 한다 — 부르는 쪽이 죽는다.
+// analyzeSkillTriggers.mjs에서 이미 한 번 밟은 함정이다(2026-09-02). 탐침이 이 모듈을
+// 관측용으로 import하면서 다시 드러났다(2026-09-04).
+const RUN_CLI = process.argv[1] && pathToFileURL(process.argv[1]).href === import.meta.url;
+if (!RUN_CLI) { /* import 용도 — 아래 CLI를 건너뛴다 */ } else if (process.argv.includes('--selftest')) {
   selfTest();
 } else if (arg('team', null)) {
   const members = arg('team', '').split(',').map((t) => byTitle.get(t.trim()));

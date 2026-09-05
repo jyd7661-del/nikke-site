@@ -40,6 +40,12 @@ import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
+// ⚠️ 시뮬레이터는 **관측자로만** 쓴다. 점수를 기록할 뿐 추천을 바꾸지 않는다.
+//    조합 선택은 여전히 엔진이 100% 결정한다 — 시뮬레이터에는 알려진 무기 타입 편향이
+//    3배 있어서(docs/open-items.md) 이걸 추천에 반영하면 그 편향이 그대로 결과에 실린다.
+//    그래서 "관측용으로 잇는 것"과 "추천에 반영하는 것"을 분리해 둔다.
+import { scoreComposition } from './simulateTeams.mjs';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, '..');
 const LIB = path.join(ROOT, 'lib');
@@ -64,6 +70,9 @@ const MODE = arg('mode', 'campaign');
 const SIZE = Number(arg('size', 20));
 const TRIALS = Number(arg('trials', 1000));
 const DEEP = Number(arg('deep', 40));
+// 실행 결과를 JSONL로 남길 경로. 유저 지시(2026-09-04): "궁극적으로는 우리가 여러 조합을
+// 테스트 하면서 데이터를 쌓아나가기 위함이 더 크다." 지금까지 탐침은 요약만 찍고 버렸다.
+const RECORD = arg('record', null);
 const SEED = Number(arg('seed', 1));
 // 2026-09-01: **모드가 요구하는 입력을 안 넘기면 그 경로가 조용히 꺼진다.**
 //   보스전/레이드 실사용 매칭은 `bossElement`가 있어야 후보가 생기고(속성이 같은 시즌만 본다),
@@ -164,6 +173,9 @@ let d4Checked = 0;
 const fail = { d1: [], d3: [], d4: [] };
 const paths = { real: 0, arch: 0, fallback: 0, error: 0 };
 let deepChecked = 0; const deepWorse = [];
+let simWorse = 0;                       // O4: 시뮬레이터 기준으로 더 나은 조합이 있었던 횟수
+const simGaps = [];                     // 그때의 격차(%)
+const rows = [];                        // --record 로 남길 행
 const nm = (m) => m.name_kr || m.title;
 
 const t0 = Date.now();
@@ -213,6 +225,9 @@ for (let t = 0; t < TRIALS; t++) {
 
   const members = chosen.members.map((m) => cdb.find((c) => c.id === m.id)).filter(Boolean);
   const scored = E.scoreTeam(members, MODE, o);
+  // 관측만 한다 — 이 값은 아래 어떤 판정에도 쓰이지 않는다.
+  let simScore = null;
+  try { simScore = scoreComposition(members).total; } catch { /* 무시 */ }
   const reasons = (chosen.reasons || []).map(String);
 
   // --- D1: 근거 건전성 ---
@@ -246,6 +261,7 @@ for (let t = 0; t < TRIALS; t++) {
     deepChecked += 1;
     let best = { tt: -1, m: null };
     let bestClean = { tt: -1, m: null };   // 낭비가 0인 조합 중 최고
+    let bestSim = { v: -1, m: null };      // **시뮬레이터 출력** 기준 최고 (관측용)
     const scanRoster = NEEDS_TOWER ? E.filterRosterByTower(roster, o.tower) : roster;
     const idx = [];
     const rec = (start, depth) => {
@@ -255,11 +271,19 @@ for (let t = 0; t < TRIALS; t++) {
         if (!s.valid) return;
         if (s.tierTotal > best.tt) best = { tt: s.tierTotal, m: mm };
         if ((s.wastedCount || 0) === 0 && s.tierTotal > bestClean.tt) bestClean = { tt: s.tierTotal, m: mm };
+        try { const v = scoreComposition(mm).total; if (v > bestSim.v) bestSim = { v, m: mm }; } catch { /* 무시 */ }
         return;
       }
       for (let i = start; i <= scanRoster.length - (5 - depth); i++) { idx[depth] = i; rec(i + 1, depth + 1); }
     };
     rec(0, 0);
+    // --- O4: 시뮬레이터 기준 최적성 (관측치) ---
+    // ⚠️ 100%가 목표가 **아니다.** 시뮬레이터에는 무기 타입 편향 3배가 있고, 엔진은
+    //    티어·검증된 조합을 우선한다. 둘이 다른 것을 재고 있으므로 격차 자체가 정보다.
+    if (simScore != null && bestSim.v > 0) {
+      const gap = (bestSim.v - simScore) / bestSim.v * 100;
+      if (gap > 1) { simWorse += 1; simGaps.push(gap); }
+    }
     if (p === 'fallback' && best.tt > (scored.tierTotal || 0)) {
       deepWorse.push({ mine: scored.tierTotal, best: best.tt,
         m: members.map(nm).join(', '), b: best.m.map(nm).join(', ') });
@@ -276,6 +300,19 @@ for (let t = 0; t < TRIALS; t++) {
 `
         + `        낭비 0으로 ${bestClean.tt}점 가능: ${bestClean.m.map(nm).join(', ')}`);
     }
+  }
+
+  if (RECORD) {
+    rows.push({
+      seed: SEED, mode: MODE, size: SIZE, trial: t, path: p,
+      boss: o.bossElement ?? null, tower: o.tower ?? null,
+      roster: roster.map((c) => c.id),
+      team: members.map((c) => c.id),
+      tierTotal: scored.tierTotal ?? null,
+      totalScore: scored.totalScore ?? null,
+      wasted: scored.wastedCount ?? null,
+      sim: simScore == null ? null : Math.round(simScore),
+    });
   }
 }
 
@@ -297,6 +334,16 @@ console.log(`  O1 근거의 출처가 있음   ${pct(N.o1, done)}   (${N.o1}/${d
 console.log(`  O3 죽은 자리가 없음     ${pct(N.o3, done)}   (${N.o3}/${done})  ← 100%가 목표가 아니다`);
 console.log(`  O2 폴백이 티어 최적    ${pct(deepChecked - deepWorse.length, deepChecked)}   ` +
   `(${deepChecked - deepWorse.length}/${deepChecked} 표본)`);
+{
+  // O4 — 시뮬레이터(추정 출력) 기준 최적성. **100%가 목표가 아니다.**
+  // 엔진은 티어와 검증된 조합을 우선하고 시뮬레이터는 추정 화력을 잰다. 둘은 다른 것을
+  // 재고 있으므로 격차 자체가 관측 대상이다. 게다가 시뮬레이터에는 무기 타입 편향이
+  // 3배 남아 있다(코어히트 적중률·락온 대상 수가 데이터에 없다).
+  const avg = simGaps.length ? simGaps.reduce((a, b) => a + b, 0) / simGaps.length : 0;
+  console.log(`  O4 시뮬레이터 기준 최적 ${pct(deepChecked - simWorse, deepChecked)}   ` +
+    `(${deepChecked - simWorse}/${deepChecked} 표본)  ← 100%가 목표가 아니다` +
+    (simGaps.length ? `  · 뒤질 때 평균 ${avg.toFixed(1)}% 낮음` : ''));
+}
 if (SEED_REAL && seedChecked) {
   console.log(line);
   console.log(`등록 조합을 로스터에 심었을 때 — 우리가 그걸 골랐는가`);
@@ -351,3 +398,17 @@ if (deepWorse.length) {
 console.log(line);
 
 fs.rmSync(tmp, { recursive: true, force: true });
+
+// ---------------------------------------------------------------------------
+// 결과 적재. 유저 목적은 "여러 조합을 테스트하면서 데이터를 쌓는 것"이라, 요약만 찍고
+// 버리면 실행할수록 쌓이는 게 없다. 한 줄에 한 시행씩 **덧붙인다**(JSONL).
+//
+// ⚠️ 이 파일은 git에 넣지 않는다(.gitignore). 1,000회당 수백 KB이고 실행할 때마다 늘어난다.
+//    쌓인 데이터에서 나온 **결론**만 docs에 적는다.
+if (RECORD) {
+  const out = path.isAbsolute(RECORD) ? RECORD : path.join(ROOT, RECORD);
+  fs.mkdirSync(path.dirname(out), { recursive: true });
+  fs.appendFileSync(out, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  const kept = fs.readFileSync(out, 'utf8').trimEnd().split('\n').length;
+  console.log(`\n→ ${rows.length}행 적재: ${path.relative(ROOT, out)}  (누적 ${kept}행)`);
+}
