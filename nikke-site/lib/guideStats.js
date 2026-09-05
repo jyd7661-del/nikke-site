@@ -52,7 +52,13 @@ const countBy = (entries) => {
 };
 const APPEAR = countBy(ENTRIES);
 
-const named = (title, n) => ({ title, kr: krName(title), id: ID.get(title) || null, n });
+// 클래스 라벨은 lib/dex.js의 CLASS_KR과 같은 값(용어집 확정 표기). dex.js를 import하면
+// testGuides의 별칭 치환이 두 단계로 깊어져서 값만 복제하고, 어긋나면 testGuides가 잡는다.
+export const CLASS_KR = { attacker: '화력형', defender: '방어형', supporter: '지원형' };
+const named = (title, n) => {
+  const c = BY_TITLE.get(title);
+  return { title, kr: krName(title), id: ID.get(title) || null, n, cls: c?.class || null };
+};
 
 export const USAGE = {
   total: ENTRIES.length,
@@ -64,9 +70,17 @@ export const USAGE = {
   },
   charactersSeen: APPEAR.size,
   charactersTotal: CHARS.length,
+  // 상위 N명 중 화력형이 아닌 사람 — "1위와 3위는 방어형이다" 같은 문장을 손으로 적지 않기 위해
+  // 계산한다. 시즌 데이터가 바뀌어 순위가 밀리면 손으로 적은 문장은 조용히 거짓이 된다.
+  topN: 4,
   // 등장 횟수 상위. "몇 건의 조합에 이름이 있는가"이지 사용 횟수의 합이 아니다.
   top: [...APPEAR.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .slice(0, 12).map(([t, n]) => named(t, n)),
+  get topNonDealers() {
+    return this.top.slice(0, this.topN)
+      .map((c, i) => ({ ...c, rank: i + 1 }))
+      .filter((c) => c.cls && c.cls !== 'attacker');
+  },
   // 모드별 1위 — 같은 캐릭터가 모드마다 다른 얼굴을 가진다는 걸 보여준다.
   topByKind: Object.fromEntries(['raid', 'tower', 'campaign', 'pvp'].map((k) => {
     const c = countBy(ENTRIES.filter((e) => e.kind === k));
@@ -107,9 +121,26 @@ export const BURST = {
     });
     return [...m.entries()].sort((a, b) => b[1] - a[1]).map(([cd, n]) => ({ cd, n }));
   })(),
-  // 풀버스트 1사이클은 20초다(엔진 상수). 쿨 40초짜리는 두 사이클에 한 번만 쓴다 —
-  // 이것이 "쿨타임이 안 도는 조합"의 정체다.
-  cycleSec: 20,
+  // ⚠️ 이건 "풀버스트 사이클이 20초"라는 뜻이 **아니다.** 엔진(lib/synergyEngine.js)의
+  //    FAST_BURST_CD = 20 — "쿨타임이 이 이하면 혼자서 매 사이클 버스트를 안정적으로 커버
+  //    가능"이라는 **문턱값**이다. 실제 풀버스트 주기는 팀의 게이지 충전 속도에 좌우돼 상수가
+  //    아니고, 이 사이트는 그 값을 갖고 있지 않다. 2026-09-04 초판 글이 이걸 "사이클은
+  //    20초다"로 적었다가 2026-09-05 검토에서 근거 없음으로 잡혀 고쳤다.
+  //    testGuides가 이 값이 엔진 상수와 같은지 대조한다.
+  fastCd: 20,
+  // 단계별 쿨타임 분포 — "버스트 3에는 20초짜리가 한 명도 없다"를 계산으로 말하기 위한 것.
+  byStageCd: ['1', '2', '3'].map((b) => {
+    const g = CHARS.filter((c) => String(c.burst) === b);
+    const m = new Map();
+    g.forEach((c) => { const s = lastSkill(c); const v = s && s.cd ? Number(s.cd) : null; if (v) m.set(v, (m.get(v) || 0) + 1); });
+    return { stage: b, n: g.length, cds: [...m.entries()].sort((x, y) => x[0] - y[0]).map(([cd, n]) => ({ cd, n })) };
+  }),
+  // 단계별 클래스 구성 — "1단계는 지원·방어가 대부분"을 계산으로 말하기 위한 것.
+  byStageClass: ['1', '2', '3'].map((b) => {
+    const g = CHARS.filter((c) => String(c.burst) === b);
+    const cnt = (cls) => g.filter((c) => c.class === cls).length;
+    return { stage: b, n: g.length, attacker: cnt('attacker'), defender: cnt('defender'), supporter: cnt('supporter') };
+  }),
 };
 
 // ---------------------------------------------------------------------------

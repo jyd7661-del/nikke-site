@@ -81,8 +81,8 @@ export default function GuidePage({ params }) {
 
       <footer className="mt-12 pt-6 border-t border-slate-800 text-sm text-slate-500 space-y-3">
         <p>
-          이 글의 수치는 배포할 때 원본 데이터에서 다시 계산됩니다. 데이터가 갱신되면 본문 숫자도 함께
-          바뀝니다.
+          이 글의 통계 수치는 배포할 때 원본 데이터에서 다시 계산됩니다. 데이터가 갱신되면 본문 숫자도 함께
+          바뀝니다. 과거에 잰 실측치와 인용문만 예외이고, 본문에 그렇게 밝혀 둡니다.
         </p>
         <p>
           <Link href="/" className="text-sky-400 hover:underline">보유 니케로 조합 추천받기</Link>

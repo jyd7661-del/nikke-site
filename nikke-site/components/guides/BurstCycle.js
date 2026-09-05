@@ -8,8 +8,16 @@ import { Section, Table, Note, CharLink, Lead } from './GuideBits';
 
 export default function BurstCycle() {
   const cd40 = BURST.cooldowns.find((c) => c.cd === 40);
-  const cd20 = BURST.cooldowns.find((c) => c.cd === 20);
+  const cd20 = BURST.cooldowns.find((c) => c.cd === BURST.fastCd);
   const total = BURST.total;
+  const b3 = BURST.byStageCd.find((s) => s.stage === '3');
+  const b3Fast = b3?.cds.filter((x) => x.cd <= BURST.fastCd).reduce((a, x) => a + x.n, 0) ?? 0;
+  const b3Slow = b3 ? b3.n - b3Fast : 0;
+  const s1 = BURST.byStageClass.find((s) => s.stage === '1');
+  const s3 = BURST.byStageClass.find((s) => s.stage === '3');
+  const pctOf = (a, b) => (b ? Math.round((a / b) * 100) : 0);
+  // 쿨타임이 기준(fastCd)의 몇 배인가 — 사이클 길이를 가정하지 않고 데이터에서 그대로 나오는 비율
+  const ratio = (cd) => (cd <= BURST.fastCd ? '기준(가장 잦음)' : `기준의 1/${Math.round(cd / BURST.fastCd)}`);
 
   return (
     <>
@@ -20,33 +28,36 @@ export default function BurstCycle() {
         어떻게 메우는지를 정리한다.
       </Lead>
 
-      <Section id="mismatch" title={`사이클은 ${BURST.cycleSec}초, 쿨타임은 ${cd40?.cd}초`}>
+      <Section id="mismatch" title={`버스트 쿨타임은 사실상 두 종류다 — ${cd20?.cd}초와 ${cd40?.cd}초`}>
         <p>
-          풀버스트 한 사이클은 <strong className="text-slate-100">{BURST.cycleSec}초</strong>다. 그런데
           캐릭터 {total}명의 버스트 스킬 쿨타임을 세어 보면 이렇게 갈린다.
         </p>
         <Table
-          head={['버스트 쿨타임', '인원', '한 사이클에']}
+          head={['버스트 쿨타임', '인원', '쓸 수 있는 빈도']}
           align={['', 'r', '']}
-          rows={BURST.cooldowns.map((c) => [
-            `${c.cd}초`,
-            `${c.n}명`,
-            c.cd <= BURST.cycleSec ? '매번 쓸 수 있다' : `${Math.ceil(c.cd / BURST.cycleSec)}사이클에 한 번`,
-          ])}
+          rows={BURST.cooldowns.map((c) => [`${c.cd}초`, `${c.n}명`, ratio(c.cd)])}
         />
         <p>
-          {total}명 중 <strong className="text-slate-100">{cd40?.n}명이 쿨타임 {cd40?.cd}초</strong>다. 사이클이
-          {' '}{BURST.cycleSec}초니까 이 사람들은 <strong className="text-slate-100">한 사이클 걸러 한 번</strong>만
-          버스트를 쓸 수 있다. 쿨 {cd20?.cd}초인 {cd20?.n}명만 매 사이클 자기 자리를 혼자 채운다.
+          이 사이트의 추천 엔진은 <strong className="text-slate-100">쿨타임 {BURST.fastCd}초를 &ldquo;풀버스트가 열릴 때마다
+          쓸 수 있는 빠른 버스트&rdquo;의 기준</strong>으로 삼는다. 실제 풀버스트가 몇 초마다 돌아오는지는 팀의
+          게이지 충전 속도에 따라 달라서 여기서 초 단위로 못 박지 않는다. 다만 표에서 그대로 따라 나오는
+          사실이 있다 — <strong className="text-slate-100">쿨 {cd40?.cd}초는 쿨 {cd20?.cd}초의 절반 빈도</strong>다.
+          {total}명 중 {cd40?.n}명이 그렇다.
         </p>
         <p>
-          여기서 흔한 실수가 나온다. 버스트 1·2·3을 한 명씩 넣고 남은 두 자리를 딜러로 채우면, 첫 사이클은
-          완벽하게 돌고 <strong className="text-slate-100">두 번째 사이클에서 {cd40?.cd}초짜리 자리가 빈다.</strong>{' '}
+          그리고 이게 이 글에서 제일 중요한 숫자다. <strong className="text-slate-100">3단계 {b3?.n}명 중
+          {cd20?.cd}초 이하는 {b3Fast}명</strong>이다.{b3Fast === 0 ? ' 한 명도 없다.' : ''} 딜러가 서는 3단계는
+          예외 없이 {cd40?.cd}초 이상이라, <strong className="text-slate-100">딜러 한 명으로는 풀버스트를 한 번
+          걸러 한 번만 연다.</strong> 매번 열고 싶으면 3단계가 둘이어야 한다.
+        </p>
+        <p>
+          여기서 흔한 실수가 나온다. 버스트 1·2·3을 한 명씩 넣고 남은 두 자리를 딜러로 채우면, 첫 풀버스트는
+          완벽하게 돌고 <strong className="text-slate-100">두 번째에서 {cd40?.cd}초짜리 자리가 빈다.</strong>{' '}
           화면상으로는 아무 경고도 안 뜨고, 그냥 버스트가 늦게 터진다.
         </p>
         <Note>
           그래서 실전 조합은 같은 버스트 단계를 <strong className="text-slate-300">두 명</strong> 넣는 경우가
-          많다. {cd40?.cd}초짜리 둘을 번갈아 쓰면 {BURST.cycleSec}초마다 그 단계가 열린다. 조합에서 &ldquo;왜 같은 버스트가
+          많다. {cd40?.cd}초짜리 둘을 번갈아 쓰면 그 단계가 매번 열린다. 조합에서 &ldquo;왜 같은 버스트가
           둘이지?&rdquo; 싶은 자리는 대개 이 계산이다.
         </Note>
       </Section>
@@ -60,9 +71,11 @@ export default function BurstCycle() {
           ])}
         />
         <p>
-          {BURST.byStage[0].stage}단계가 {BURST.byStage[0].n}명으로 가장 적다. 조합이 안 짜일 때 대개
-          모자란 쪽이 여기다 — 딜러는 3단계에 몰려 있고, 1단계는 보통 지원·방어 역할이라 수집 우선순위에서
-          밀리기 때문이다.
+          {BURST.byStage[0].stage}단계가 {BURST.byStage[0].n}명으로 가장 적다. 조합이 안 짜일 때 모자란 쪽은
+          대개 여기다. 클래스를 세어 보면 이유가 보인다 — 1단계는{' '}
+          <strong className="text-slate-100">{pctOf((s1?.supporter ?? 0) + (s1?.defender ?? 0), s1?.n)}%가 지원·방어형</strong>이고,
+          화력형은 3단계에 {pctOf(s3?.attacker ?? 0, s3?.n)}% 몰려 있다. 딜러를 모으는 데 집중하면 1단계가 비는
+          구조다.
         </p>
       </Section>
 
@@ -120,7 +133,7 @@ export default function BurstCycle() {
 
       <Section id="summary" title="정리">
         <ul className="list-disc pl-5 space-y-2">
-          <li>풀버스트 사이클은 {BURST.cycleSec}초인데 버스트 쿨타임은 {cd40?.n}명이 {cd40?.cd}초다 — 한 사이클 걸러 한 번이다.</li>
+          <li>버스트 쿨타임은 {cd20?.cd}초와 {cd40?.cd}초로 갈리고, {cd40?.cd}초는 절반 빈도다. <strong className="text-slate-100">3단계는 {b3Slow}/{b3?.n}명이 {cd40?.cd}초 이상</strong> — 딜러 한 명으로는 한 번 걸러 한 번이다.</li>
           <li>그래서 같은 단계를 두 명 넣는 조합이 흔하다. 낭비가 아니라 사이클을 메우는 것이다.</li>
           <li>{BURST.byStage[0].stage}단계가 {BURST.byStage[0].n}명으로 가장 적어 병목이 되기 쉽다.</li>
           <li>재진입 {BURST.reentry.length}명은 <strong className="text-slate-100">같은 단계 동료보다 왼쪽</strong>에 둔다. 순서가 곧 발동 조건이다.</li>

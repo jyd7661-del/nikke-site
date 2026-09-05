@@ -163,6 +163,28 @@ const SLUGS = [...guidesSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1]);
   });
 }
 
+// ── ③-b 글이 인용하는 상수·핵심 주장이 원본과 같은가 ────────────────────
+// fastCd는 엔진의 FAST_BURST_CD를, CLASS_KR은 lib/dex.js의 라벨을 복제한 값이다.
+// 복제는 어긋날 수 있으므로 원본을 읽어 대조한다. (2026-09-05 — 초판 글이 "사이클은 20초"라는
+// 엔진도 하지 않는 주장을 했던 것을 계기로 추가)
+{
+  checked += 1;
+  const eng = read('lib', 'synergyEngine.js');
+  const m = eng.match(/const FAST_BURST_CD = (\d+);/);
+  if (!m) problems.push('synergyEngine.js에서 FAST_BURST_CD를 못 찾았다 — 글의 fastCd가 무엇과 같아야 하는지 알 수 없다');
+  else if (Number(m[1]) !== S.BURST.fastCd) problems.push(`글의 fastCd ${S.BURST.fastCd} ≠ 엔진 FAST_BURST_CD ${m[1]}`);
+  const dex = read('lib', 'dex.js');
+  Object.entries(S.CLASS_KR).forEach(([k, v]) => {
+    if (!new RegExp(`${k}:\\s*'${v}'`).test(dex)) problems.push(`CLASS_KR.${k}='${v}'가 lib/dex.js와 다르다`);
+  });
+  // "버스트 3에 빠른 쿨이 없다"는 문장이 데이터와 같은가 — 이 글의 핵심 주장이다.
+  const CH2 = (() => { const r = J('data', 'characterDatabase.json'); return Array.isArray(r) ? r : r.characters; })();
+  const b3fast = CH2.filter((c) => String(c.burst) === '3').filter((c) => { const sk = (c.skills || []).slice(-1)[0]; return sk && Number(sk.cd) <= S.BURST.fastCd; }).length;
+  const st = S.BURST.byStageCd.find((x) => x.stage === '3');
+  const got = st ? st.cds.filter((x) => x.cd <= S.BURST.fastCd).reduce((a, x) => a + x.n, 0) : -1;
+  if (got !== b3fast) problems.push(`버스트3의 빠른 쿨 인원: 글은 ${got}, 원본은 ${b3fast}`);
+}
+
 // ── ④ 본문의 손으로 적은 수치 (래칫) ──────────────────────────────────────
 // 숫자 + 한국어 단위가 **JSX 텍스트로** 박혀 있는 것을 센다. `{...}` 안의 표현식은 계산된
 // 값이므로 세지 않는다. 기준선보다 늘면 사람이 "그 수치가 데이터인가 상수인가"를 판단한다.

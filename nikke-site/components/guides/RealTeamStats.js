@@ -1,4 +1,4 @@
-import { USAGE, PAIRS } from '@/lib/guideStats';
+import { USAGE, PAIRS, CLASS_KR } from '@/lib/guideStats';
 import { Section, Table, Note, CharLink, Lead } from './GuideBits';
 
 // 가이드 ①: 실사용 조합 214건을 캐릭터 기준으로 뒤집은 통계.
@@ -60,11 +60,17 @@ export default function RealTeamStats() {
           2위 <CharLink c={second} />({pct(second.n)}%), 3위 <CharLink c={third} />({pct(third.n)}%),
           4위 <CharLink c={fourth} />({pct(fourth.n)}%)까지가 한 덩어리다.
         </p>
-        <p>
-          눈여겨볼 것은 <strong className="text-slate-100">상위 네 명 중 둘이 딜러가 아니라는 점</strong>이다.
-          1위와 3위는 방어형이다. 조합을 짤 때 &ldquo;누가 제일 세게 때리는가&rdquo;부터 고르기 쉬운데, 실제로
-          자리를 가장 확실하게 차지하는 것은 팀 전체를 굴러가게 만드는 쪽이다.
-        </p>
+        {USAGE.topNonDealers.length > 0 ? (
+          <p>
+            눈여겨볼 것은 <strong className="text-slate-100">상위 {USAGE.topN}명 중 {USAGE.topNonDealers.length}명이
+            화력형이 아니라는 점</strong>이다 — {USAGE.topNonDealers.map((c, i) => (
+              <span key={c.title}>{i > 0 && ', '}{c.rank}위 <CharLink c={c} />({CLASS_KR[c.cls] || c.cls})</span>
+            ))}. 조합을 짤 때 &ldquo;누가 제일 세게 때리는가&rdquo;부터 고르기 쉬운데, 실제로 자리를 가장
+            확실하게 차지하는 것은 팀 전체를 굴러가게 만드는 쪽이다.
+          </p>
+        ) : (
+          <p>상위 {USAGE.topN}명이 전부 화력형이다 — 이 시즌 데이터에서는 딜러가 자리를 독점하고 있다.</p>
+        )}
       </Section>
 
       <Section id="pairs" title="늘 붙어 다니는 조합">
