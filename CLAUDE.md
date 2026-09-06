@@ -49,6 +49,7 @@ node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
 node scripts/testGuides.mjs          # 가이드 글 — 목록↔본문, 글의 수치를 원본에서 재계수
+node scripts/testSkillSources.mjs    # 스킬 원문 3개 국어 교차 검증 (래칫: 숫자 불일치 11건)
 node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
 node scripts/testTraffic.mjs         # 자체 방문 계측의 경로·봇 판정
 node scripts/findTotems.mjs          # 기준선: 1군 0명 / 검토 후 기각 1명(아르카나)
