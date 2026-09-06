@@ -308,7 +308,7 @@
         "name": "Strawberry Shock",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects 5 enemy unit(s) with the highest ATK. Deals 299.98% final ATK as damage. Taunt for 5.06 sec.",
+        "desc": "Affects 5 enemy unit(s) with the highest ATK. Deals 299.66% final ATK as damage. Taunt for 5.06 sec.",
         "name_kr": "스트로베리 쇼크",
         "desc_kr": "공격력이 가장 높은 적 5기에게 [최종 공격력 299.66% 대미지] [도발] [5.06초 유지]",
         "name_ja": "ストロベリーショック",
@@ -925,7 +925,7 @@
         "name": "Cruisin' for a Bruisin'",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when attacking with Full Charge. Affects the target(s). Taunt for 2 sec. ATK ▼ 13.25% for 5 sec.",
+        "desc": "Activates when attacking with Full Charge. Affects the target(s). Taunt for 2 sec. ATK ▼ 13.25% for 2 sec.",
         "name_kr": "때려볼래?",
         "desc_kr": "풀 차지 공격 시 대상에게 [도발] [2초 유지] [공격력 13.25% ▼] [2초 유지]",
         "name_ja": "殴ってみれば？",
@@ -1137,7 +1137,7 @@
         "name": "Noire Sensor",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Affects self. Cast when entering Full Burst. Critical Rate ▲ 13.02% for 10 sec. Affects all allies with a Shotgun. Cast when entering Full Burst. Max Ammunition Capacity ▲ 83.08% for 10 sec.",
+        "desc": "Affects self. Cast when entering Full Burst. Critical Rate ▲ 13.02% for 10 sec. Affects all allies with a Shotgun. Cast when entering Full Burst. Max Ammunition Capacity ▲ 83.8% for 10 sec.",
         "name_kr": "느와르 센서",
         "desc_kr": "풀 버스트 타임 시작 시 자신에게 [크리티컬 확률 13.02% ▲] [10초 유지] 풀 버스트 타임 시작 시 샷건 소지 아군 전체에게 [최대 장탄 수 83.8% ▲] [10초 유지]",
         "name_ja": "ノワールセンサー",
@@ -1189,7 +1189,7 @@
         "name": "... Ah",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when attacking with Full Charge. Affects all allies. Max HP ▲ 6.09% for 5 sec.",
+        "desc": "Activates when attacking with Full Charge. Affects all allies. Max HP ▲ 6.09% for 4 sec.",
         "name_kr": "...아",
         "desc_kr": "풀 차지 공격 시 아군 전체에게 [최대 체력 6.09% ▲] [4초 유지]",
         "name_ja": "…あ",
@@ -4012,7 +4012,7 @@
         "name": "Spring Cleaning",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects 2 enemy units randomly. Deals 321.8% of final ATK as damage. Stun for 1 sec. Affects all allies with Fire element. Stack count of buffs ▲ 1.",
+        "desc": "Affects 2 enemy units randomly. Deals 321.28% of final ATK as damage. Stun for 1 sec. Affects all allies with Fire element. Stack count of buffs ▲ 1.",
         "name_kr": "대청소 메이드",
         "desc_kr": "무작위 적 2기에게 [최종 공격력 321.28% 대미지] [기절] [1초 유지] 작열 코드 아군 전체에게 [중첩 가능 이로운 효과 중첩량 1개 ▲]",
         "name_ja": "大掃除メイド",
@@ -4980,7 +4980,11 @@
       }
     ],
     "burstFlex": true,
-    "burstStages": ["1", "2", "3"],
+    "burstStages": [
+      "1",
+      "2",
+      "3"
+    ],
     "burstFlexNote": "게임 내 버스트 단계가 Λ(단계 유연)라 1·2·3 어느 자리든 채운다. 근거: game8 상단 표 「バーストΛ」(196명 중 이 표기는 레드 후드뿐), enikk 화면 표기 B1–3(솔로레이드는 Bp). burst 필드의 \"3\"은 표시·정렬용 기본값으로 남겨둔다."
   },
   {
@@ -5148,7 +5152,10 @@
   {
     "id": "rouge",
     "title": "Rouge",
-    "preferredSlots": [2, 4],
+    "preferredSlots": [
+      2,
+      4
+    ],
     "preferredSlotsNote": "후열(2·4번) 배치가 2스킬 전체의 전제다. 원문: \"Activates when assigned to the back row in battle. Affects self and 2 allies on both sides. Sword Coin…\" — 소드 코인이 안 켜지면 실드 코인·더블 소드 코인과 3스킬의 코인 상태 배율까지 전부 죽는다. 양옆 2명에게 들어가는 효과라 전열(1·3·5)에서는 성립하지 않는다. 교차 확인: enikk 등록 조합 26건 전부 루주가 2번 또는 4번이다. 공략은 4번을 권한다(게임메카 1753691 \"4번 자리 배치 추천\").",
     "name_kr": "루주",
     "name_ja": "ルージュ",
@@ -5464,7 +5471,7 @@
         "name": "Aegis Cannon Overload",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects all enemies. Deals 164.73% of final ATK as damage. Affects the same target(s) when they belong to Electric Code. Deals 164.73% of final ATK as additional damage.",
+        "desc": "Affects all enemies. Deals 164.83% of final ATK as damage. Affects the same target(s) when they belong to Electric Code. Deals 164.83% of final ATK as additional damage.",
         "name_kr": "이지스 캐논 오버로드",
         "desc_kr": "적 전체에게 [최종 공격력 164.83% 대미지] 대상이 전격 코드라면 동일 적 대상에게 [최종 공격력 164.83% 추가 대미지]",
         "name_ja": "イージスキャノンオーバーロード",
@@ -6333,7 +6340,7 @@
         "name": "Snowfield Festival",
         "type": "Active",
         "cd": "20",
-        "desc": "Affects all allies. Dispels 1 debuff. ATK ▲ 39.3% of caster's ATK for 5 seconds.",
+        "desc": "Affects all allies. Dispels 1 debuff. ATK ▲ 39.93% of caster's ATK for 5 seconds.",
         "name_kr": "설온제",
         "desc_kr": "아군 전체에게 [해로운 효과 1개 해제] [시전자 기준 공격력 39.93% ▲] [5초 유지]",
         "name_ja": "雪見温泉",
@@ -7893,7 +7900,10 @@
     "overspec": true,
     "overspecNote": "최초의 오버스펙(2025-01-01). 소속 엘리시온 유지. 출처: gamechosun 2025-01 \"기존 3대 기업 캐릭터의 파워업 버전, 기존 기업을 유지\" + 필그림 타워가 필그림/오버스펙 타워로 변경",
     "burstFlex": true,
-    "burstStages": ["1", "3"],
+    "burstStages": [
+      "1",
+      "3"
+    ],
     "burstFlexNote": "게임 내 버스트 단계가 유연하다. 근거: 본인 스킬 원문 — 스킬1 \"…if there are no Burst Stage I allies. Combat Assist: Changes to Burst Stage I\", 스킬3 \"When used in Stage I: Squad Support Action Style … When used in Stage 3: High-Mobility Close-Range Combat Weapon\". 원문이 말하는 단계는 I과 III 뿐이라 burstStages도 그 둘만 적는다(II는 근거가 없다). 2026-09-01에 등록 실사용 조합 214건 중 버스트 체인 불성립 20건이 전부 이 캐릭터 때문임을 확인하고 반영했다 — 타워 elysion 5건(합계 20.8% of clears)과 솔로레이드 15건이 후보에서 빠져 있었다. burst 필드의 \"3\"은 표시·정렬용 기본값이다."
   },
   {
@@ -9498,7 +9508,7 @@
         "name": "Green Herb",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates when landing 3 Full Charge attack(s). Affects 2 ally unit(s) with the highest final ATK. Green Herb: Recovers 2.88% of caster's final max HP as HP.",
+        "desc": "Activates when landing 3 Full Charge attack(s). Affects 2 ally unit(s) with the highest final ATK. Green Herb: Recovers 2.86% of caster's final max HP as HP.",
         "name_kr": "녹색 약초",
         "desc_kr": "풀차지 공격 3회 명중 시 최종 공격력이 넢은 아군 2기에게 [녹색 허브 : 시전자의 최종 최대 체력 비례 2.86% 회복]",
         "name_ja": "グリーンハーブ",
@@ -9833,7 +9843,7 @@
         "name": "Sweetness of Love (Imagined)",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates at the start of battle. Affects all allies (except self). Damage taken from Electric Code enemies ▼ 70.4% for 5 sec. Activates 1 time(s) per battle. Activates only while in Delusion status. Affects self. Burst Gauge filling speed ▲70.4% continuously. ATK ▲93.38% continuously. Damage taken from Electric Code enemies ▼70.4% continuously. Activates only while in Shared Delusion status. Affects all allies (except self). ATK ▲80.36% of the caster's ATK continuously.",
+        "desc": "Activates at the start of battle. Affects all allies (except self). Damage taken from Electric Code enemies ▼ 70.4% for 5 sec. Activates 1 time(s) per battle. Activates only while in Delusion status. Affects self. Burst Gauge filling speed ▲70.4% continuously. ATK ▲93.39% continuously. Damage taken from Electric Code enemies ▼70.4% continuously. Activates only while in Shared Delusion status. Affects all allies (except self). ATK ▲80.36% of the caster's ATK continuously.",
         "name_kr": "연애의 달콤함(상상)",
         "desc_kr": "전투 시작 시 자신을 제외한 아군 전체에게 [ 전격 코드 적으로부터 받는 대미지 70.4% ▼] [5초 유지] [전투 중 1회 발동] 자신이 망상 상태일 때 한하여 자신에게 [ 버스트 게이지 충전 속도 70.4% ▲] [지속] [공격력 93.39% ▲] [지속] [ 전격 코드 적으로부터 받는 대미지 70.4% ▼] [지속] 자신이 망상 공유 상태일 때 한하여 자신을 제외한 아군 전체에게 [시전자 기준 공격력 80.36% ▲] [지속]",
         "name_ja": "甘い恋愛（想像）",
@@ -9875,7 +9885,7 @@
         "name": "Extrasensory",
         "type": "Passive",
         "cd": "N/A",
-        "desc": "Activates at the start of battle. Affects self. Charges Extrasensory to 100% continuously, up to 100%. This effect cannot be dispelled. Activates while in Extrasensory status. Affects self. Effect changes according to the charge level of Extrasensory. Previous effects trigger repeatedly. Only when at 100%: Dodging Bullets: Invulnerable for 2 sec. Only when above 70%: ATK ▲ 53.59% continuously. This effect cannot be dispelled. Only when above 55%: True Damage ▲ 48.62% continuously. This effect cannot be dispelled. Only when above 25%: Hit Rate ▲ 22.37% continuously. This effect cannot be dispelled. Affects self every 2 sec. Extrasensory ▼ 1%.",
+        "desc": "Activates at the start of battle. Affects self. Charges Extrasensory to 100% continuously, up to 100%. This effect cannot be dispelled. Activates while in Extrasensory status. Affects self. Effect changes according to the charge level of Extrasensory. Previous effects trigger repeatedly. Only when at 100%: Dodging Bullets: Invulnerable for 2 sec. Only when above 70%: ATK ▲ 53.69% continuously. This effect cannot be dispelled. Only when above 55%: True Damage ▲ 48.62% continuously. This effect cannot be dispelled. Only when above 25%: Hit Rate ▲ 22.37% continuously. This effect cannot be dispelled. Affects self every 2 sec. Extrasensory ▼ 1%.",
         "name_kr": "초감각",
         "desc_kr": "전투 시작 시 자신에게 [초감각 100% 충전][최대 100%][지속][해체불가] 자신이 초감각 상태라면 자신에게 [초감각 상태 별 효과][하위 효과 중복 적용] 100% 상태일 때 : [사격 간파 : 무적][2초 유지] 70% 이상일 때 한하여 : [공격력 53.69% ▲][지속][해제불가] 55% 이상일 때 한하여 : [방어력 무시 대미지 48.62% ▲][지속][해제불가] 25% 이상일 때 한하여 : [명중률 22.37% ▲][지속][해제불가] 2초 마다 자신에게 [초감각 1% ▼]",
         "name_ja": "超感覚",

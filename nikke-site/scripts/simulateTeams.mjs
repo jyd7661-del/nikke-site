@@ -73,6 +73,10 @@ export const ASSUMPTIONS = {
   // 버스트 스킬 버프의 가동률 = 지속시간 / 쿨타임. 패시브는 1.0으로 본다.
   // 실제로는 풀버스트 진입 타이밍·재진입에 따라 달라지지만 그건 데이터에 없다.
   PASSIVE_UPTIME: 1.0,
+  // 쿨타임이 있는 비버스트 스킬의 가동률을 `지속 ÷ 쿨`로 깎을 것인가. (2026-09-07)
+  // 기본은 true다. false로 두면 2026-09-07 이전처럼 전부 상시(1.0)로 계산한다 —
+  // **검사가 이 스위치로 두 계산을 대보고 실제로 갈리는지 확인한다**(selfTest 11번).
+  SKILL_CD_UPTIME: true,
   // 풀버스트 한 사이클(초). "사이클마다" 계열 스킬의 초당 발동 횟수를 여기서 나눈다.
   // ⚠️ 게임의 표준 주기이지만 우리가 정한 값이다 — 실제로는 팀 구성·재진입에 따라 달라진다.
   BURST_CYCLE_SEC: 20,
@@ -307,15 +311,34 @@ export function scoreComposition(members, opts = {}) {
     (caster.skills || []).forEach((sk, idx) => {
       const isBurst = idx === (caster.skills || []).length - 1;
       const dur = (sk.desc || '').match(DURATION);
-      // 가동률: 버스트 스킬이면 지속/쿨, 패시브면 1.0
-      const uptime = isBurst
-        ? Math.min(1, (dur ? parseFloat(dur[1]) : 10) / burstCd(caster))
-        : A.PASSIVE_UPTIME;
+      // 비버스트 스킬도 **쿨타임이 있으면** 그 사이에는 효과가 꺼져 있다. (2026-09-07)
+      //
+      // 그전에는 버스트가 아닌 스킬을 전부 PASSIVE_UPTIME=1.0, 즉 **상시**로 계산했다.
+      // 그래서 히메노의 skill2(Active 쿨 20초 / 지속 10초, ATK ▲10.98%)가 실제의 2배로
+      // 들어갔다. 대상절 검증에서 탈락한 규칙 11건의 공통 원인도 이것이다 — 대상이 자명해도
+      // 조건부 효과가 상시로 붙어버려 열 수가 없었다.
+      //
+      // ⚠️ **새 상수를 만들지 않았다.** 버스트 스킬에 이미 쓰던 `지속 ÷ 쿨타임`을 쿨타임이
+      //    있는 비버스트 스킬에도 그대로 적용할 뿐이다. 쿨타임이 없는 진짜 패시브(350개)는
+      //    1.0 그대로다. 비버스트 396개 중 쿨타임이 있는 것은 46개(12%)다.
+      const skillCd = Number(sk.cd);
+      const hasCd = Number.isFinite(skillCd) && skillCd > 0;
+      // 절마다 지속시간이 다를 수 있어 그 절의 값을 먼저 본다(없으면 스킬 전체의 첫 값).
+      const uptimeFor = (cl) => {
+        if (isBurst) return Math.min(1, (dur ? parseFloat(dur[1]) : 10) / burstCd(caster));
+        if (!hasCd || A.SKILL_CD_UPTIME === false) return A.PASSIVE_UPTIME;
+        // `continuously`는 원문이 "안 꺼진다"고 말하는 것이다 — 쿨타임과 무관하다.
+        if (/continuously/i.test(cl)) return A.PASSIVE_UPTIME;
+        const d = cl.match(DURATION) || dur;
+        // 지속시간을 못 읽으면 예전과 같게 둔다(임의로 깎지 않는다).
+        return d ? Math.min(1, parseFloat(d[1]) / skillCd) : A.PASSIVE_UPTIME;
+      };
       let scope = null;
       clauses(sk.desc).forEach((cl) => {
         const aff = scopeOf(cl) === null ? null : [null, scopeOf(cl)];
         if (aff) { scope = aff[1]; return; }
         if (!scope) return;
+        const uptime = uptimeFor(cl);
         let anyBuff = false;
         BUCKET_KEYS.forEach((k) => {
           const v = sumRe(cl, BUFF_BUCKETS[k]);
@@ -357,6 +380,9 @@ const TIER_RHO_BASELINE = 0.40;
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
 const SCOPE_CLAUSE_BASELINE = 22;
+
+// 쿨타임 가동률을 켰을 때 팀 점수가 실제로 낮아지는 캐릭터 수. 줄면 계산이 되돌려진 것이다.
+const UPTIME_LOWERED_BASELINE = 6;
 
 function selfTest() {
   const TIER = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
@@ -527,7 +553,58 @@ function selfTest() {
     console.log(`  대상절 규칙 ${SCOPE_RULE_KEYS.length}종이 ${total}절을 해석한다`);
   }
 
+  // (11) **쿨타임 있는 비버스트 스킬의 가동률이 실제로 깎이는가.** (2026-09-07)
+  //      그전에는 버스트가 아닌 스킬을 전부 상시(1.0)로 계산했다. 히메노 skill2는
+  //      Active 쿨 20초 / 지속 10초인데 ATK ▲10.98%가 통째로 들어가 실제의 2배였다.
+  //
+  //      ⚠️ 처음에는 "지속 < 쿨인 절의 개수"를 셌는데 **그건 데이터를 재는 것이라
+  //         코드를 되돌려도 같은 값이 나왔다.** 판정 단위가 고장의 단위와 달랐다(원칙 4).
+  //         지금은 `SKILL_CD_UPTIME` 스위치로 **두 계산을 실제로 돌려 비교한다.**
+  //
+  //      실측: 실사용 조합 175팀 중 11팀이 갈렸고 **전부 하락**했다(-0.8% ~ -8.1%,
+  //      평균 -4.9%). 부풀림만 걷어내고 없던 값을 더하지 않았다는 뜻이다.
+  {
+    checked += 1;
+    // 쿨타임 있는 비버스트 스킬로 버프를 주는 캐릭터를 찾아 그 사람이 낀 팀을 만든다.
+    const gated = cdb.filter((c) => {
+      const n = (c.skills || []).length;
+      return (c.skills || []).some((sk, i) => {
+        if (i === n - 1) return false;
+        const cd = Number(sk.cd);
+        if (!Number.isFinite(cd) || cd <= 0) return false;
+        return (sk.desc || '').split(/(?<=\.)\s+/).some((cl) => !/continuously/i.test(cl)
+          && BUCKET_KEYS.some((k) => sumRe(cl, BUFF_BUCKETS[k]) > 0)
+          && (cl.match(DURATION) ? parseFloat(cl.match(DURATION)[1]) < cd : false));
+      });
+    });
+    const filler = cdb.filter((c) => !gated.includes(c)).slice(0, 4);
+    let lower = 0; let higher = 0;
+    gated.forEach((c) => {
+      const team = [c, ...filler];
+      if (team.length !== 5) return;
+      const on = scoreComposition(team).total;
+      const off = scoreComposition(team, { assumptions: { SKILL_CD_UPTIME: false } }).total;
+      if (on < off - 1e-9) lower += 1;
+      else if (on > off + 1e-9) higher += 1;
+    });
+    if (higher > 0) {
+      problems.push(`가동률을 깎았는데 점수가 **오른** 팀이 ${higher}건 있다 — 계산 방향이 뒤집혔다`);
+    }
+    if (lower < UPTIME_LOWERED_BASELINE) {
+      problems.push(`쿨타임 가동률이 점수를 낮추는 캐릭터가 ${UPTIME_LOWERED_BASELINE} → ${lower}명으로 줄었다`
+        + ' — 가동률 계산이 되돌려졌을 수 있다. 되돌아가면 조건부 효과가 상시로 계산된다');
+    } else if (lower > UPTIME_LOWERED_BASELINE) {
+      console.log(`  ℹ️ 가동률이 점수를 낮추는 캐릭터가 ${UPTIME_LOWERED_BASELINE} → ${lower}명으로 늘었다. 기준선을 올릴 것.`);
+    }
+    console.log(`  쿨타임 가동률이 실제로 점수를 낮추는 캐릭터 ${lower}명 (오르는 경우 ${higher}명)`);
+  }
+
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03)
+  //     ⚠️ **이 값은 버프를 보지 않는다.** 캐릭터 1명으로 점수를 내므로 팀 버프가 안 걸리고,
+  //        게다가 재는 것은 `parts[].self`(평타+스킬)라 자기 버프 배수조차 빠진다.
+  //        2026-09-07에 대상절 규칙 18종과 가동률 계산을 넣었는데 ρ가 0.382로 미동도 안 했다 —
+  //        검사가 통과해서가 아니라 **애초에 그 축을 안 재기 때문**이다.
+  //        버프를 건드리는 변경은 ρ가 아니라 **실사용 조합의 팀 점수 변화**로 확인할 것.
   //     이 비교기에는 오랫동안 정답지가 없었다 — 솔로레이드 실측 avgDamage는 투자 상태가
   //     지배해 상관이 0.01이라 못 쓴다. 그런데 보스 티어와는 0.400이 나온다. 완벽한 정답은
   //     아니지만(사람의 종합 판단이다) **0에서 멀다는 것 자체가 신호**라 래칫으로 고정한다.
