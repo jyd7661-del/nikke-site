@@ -220,7 +220,63 @@ const burstCd = (c) => {
   return Number.isFinite(n) && n > 0 ? n : 40;
 };
 
-// 그 절의 대상이 누구인가 → 팀에서 실제로 받는 멤버 목록
+// 절 앞에 붙는 표기 접두어를 벗긴다. (2026-09-07)
+//
+// 원문이 "Effect 1: Affects all allies." 처럼 번호를 달고 나오면 `^Affects` 앵커에 안 걸려
+// **그 절이 통째로 안 보인다.** 실측: 이렇게 가려진 대상절이 67절이고, 접두어만 벗기면
+// 그중 29절이 기존 규칙으로 바로 해석된다(self 18 · all allies 11).
+//
+// 유저 지적에서 드러났다 — "엠마 택티컬업은 동일 스쿼드 아군에게만 적용된다". 확인해 보니
+// 엠마 : 택티컬 업의 스킬2는 **15개 절 전부가** 이 앵커에 막혀 안 보이고 있었다.
+const CLAUSE_PREFIX = /^(?:Effect \d+:|Stage \d+:)\s*/i;
+export const scopeOf = (clause) => {
+  const m = String(clause || '').replace(CLAUSE_PREFIX, '').match(/^Affects\s+(.+?)\.?$/i);
+  return m ? m[1] : null;
+};
+
+// 대상절 → 그 버프를 실제로 받는 팀원. (2026-09-07 확장)
+//
+// ⚠️ **정확 문자열 표를 쓴다. 접두 정규식을 쓰지 않는다.**
+//    검증에서 실측된 사고 두 가지 때문이다:
+//      - /^all shotgun-wielding allies/ (끝 앵커 없음)는 "(except self)" 변형까지 삼켜
+//        아르카나 본인에게 자기 버프 55%를 얹는다.
+//      - /^self if there (is|are)/ 는 라피: 레드 후드의 "self if there are Burst Stage 1
+//        allies"까지 삼킨다.
+//    표는 과매칭이 원리적으로 불가능하고, selfTest가 표의 각 항목이 몇 개 절에 걸리는지 센다.
+//
+// 무기 명칭 → 코드는 **한국어 원문으로 대조해 확정**했다. 트리나의 EN "rifles"와
+// 아크레인저 블랙의 EN "assault rifles"가 KR에서 둘 다 "소총"이라, 더 구체적인 쪽을 따라
+// 소총 = 돌격소총 = ar 로 읽는다. 이 해석이 틀렸다면 대상이 좁아질 뿐이라(지금은 0명)
+// 부풀려지는 방향은 아니다.
+const lc = (v) => String(v || '').toLowerCase();
+const SCOPE_RULES = new Map([
+  // 같은 스쿼드 — squad는 196/198명에 있다. 없으면 null로 버린다(추측하지 않는다).
+  ['all allies from the same squad', (c, ms) => (c.squad ? ms.filter((m) => m.squad === c.squad) : null)],
+  // 속성 — 원문에 "code"와 "type" 두 표기가 섞여 있다
+  ['all wind type allies', (c, ms) => ms.filter((m) => lc(m.element) === 'wind')],
+  ['all iron type allies', (c, ms) => ms.filter((m) => lc(m.element) === 'iron')],
+  ['all allies with fire element', (c, ms) => ms.filter((m) => lc(m.element) === 'fire')],
+  ['all electric code allies except for self', (c, ms) => ms.filter((m) => lc(m.element) === 'electric' && m.id !== c.id)],
+  // 무기
+  ['all allies with sniper rifles', (c, ms) => ms.filter((m) => lc(m.weapon) === 'sr')],
+  ['all allies with a sniper rifle', (c, ms) => ms.filter((m) => lc(m.weapon) === 'sr')],
+  ['all allies with a rocket launcher', (c, ms) => ms.filter((m) => lc(m.weapon) === 'rl')],
+  ['all allies with a submachine gun', (c, ms) => ms.filter((m) => lc(m.weapon) === 'smg')],
+  ['all shotgun-wielding allies (except self)', (c, ms) => ms.filter((m) => lc(m.weapon) === 'sg' && m.id !== c.id)],
+  // 속성 × 무기
+  ['all electric code allies with rifles', (c, ms) => ms.filter((m) => lc(m.element) === 'electric' && lc(m.weapon) === 'ar')],
+  ['all wind code allies with assault rifles', (c, ms) => ms.filter((m) => lc(m.element) === 'wind' && lc(m.weapon) === 'ar')],
+  // 클래스 인원 지정 — 키리(2기). 방어형이 지정 인원을 넘으면 누구인지 못 정하므로 버린다.
+  ['2 defender ally unit(s)', (c, ms) => { const d = ms.filter((m) => lc(m.class) === 'defender'); return d.length <= 2 ? d : null; }],
+  // 시전자 — 뒤에 붙은 말은 시점 수식이지 대상 필터가 아니다
+  ['self after the stacks are removed', (c) => [c]],
+  ['self every 3 sec', (c) => [c]],
+  ['self every 2 sec', (c) => [c]],
+  // 델타 : 닌자 시프의 배타 분기. 원문이 "해당되는 효과만 적용"이라 둘 중 하나만 성립한다.
+  ['self if there are no other defender allies in the squad', (c, ms) => (ms.some((m) => m.id !== c.id && lc(m.class) === 'defender') ? [] : [c])],
+  ['self if there is another defender ally in the squad', (c, ms) => (ms.some((m) => m.id !== c.id && lc(m.class) === 'defender') ? [c] : [])],
+]);
+
 function targetsOf(scope, caster, members) {
   const s = (scope || '').toLowerCase().trim();
   if (/^all allies$/.test(s)) return members;
@@ -229,8 +285,12 @@ function targetsOf(scope, caster, members) {
   if (el) return members.filter((m) => (m.element || '').toLowerCase() === el[1]);
   const cl = s.match(/^all (attacker|defender|supporter) all(?:y|ies)$/);
   if (cl) return members.filter((m) => (m.class || '').toLowerCase() === cl[1]);
+  const rule = SCOPE_RULES.get(s);
+  if (rule) return rule(caster, members);
   return null; // 해석 못 한 대상절은 **버린다** — 없는 근거를 만들지 않는다
 }
+
+export const SCOPE_RULE_KEYS = [...SCOPE_RULES.keys()];
 
 /**
  * 조합 점수. 절대값에 의미 없음 — 같은 모드끼리의 비교에만 쓴다.
@@ -253,7 +313,7 @@ export function scoreComposition(members, opts = {}) {
         : A.PASSIVE_UPTIME;
       let scope = null;
       clauses(sk.desc).forEach((cl) => {
-        const aff = cl.match(/^Affects\s+(.+?)\.?$/i);
+        const aff = scopeOf(cl) === null ? null : [null, scopeOf(cl)];
         if (aff) { scope = aff[1]; return; }
         if (!scope) return;
         let anyBuff = false;
@@ -295,6 +355,9 @@ export function scoreComposition(members, opts = {}) {
 // 보스 티어 순위상관의 기준선. 올라가면 이 값을 함께 올린다(검사가 알려준다).
 const TIER_RHO_BASELINE = 0.40;
 
+// SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
+const SCOPE_CLAUSE_BASELINE = 22;
+
 function selfTest() {
   const TIER = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
   const pick = (t) => byTitle.get(t);
@@ -328,7 +391,7 @@ function selfTest() {
   const buffers = cdb.filter((c) => {
     let scope = null; let has = false;
     (c.skills || []).slice(0, -1).forEach((s) => clauses(s.desc).forEach((cl) => {
-      const aff = cl.match(/^Affects\s+(.+?)\.?$/i); if (aff) { scope = aff[1]; return; }
+      const sc = scopeOf(cl); if (sc !== null) { scope = sc; return; }
       if (scope && /^all allies$/i.test(scope.trim()) && BUCKET_KEYS.some((k) => sumRe(cl, BUFF_BUCKETS[k]) > 0)) has = true;
     }));
     return has;
@@ -357,7 +420,7 @@ function selfTest() {
   const givesAnyBuff = (c) => {
     let scope = null; let has = false;
     (c.skills || []).forEach((s) => clauses(s.desc).forEach((cl) => {
-      const aff = cl.match(/^Affects\s+(.+?)\.?$/i); if (aff) { scope = aff[1]; return; }
+      const sc = scopeOf(cl); if (sc !== null) { scope = sc; return; }
       if (scope && BUCKET_KEYS.some((k) => sumRe(cl, BUFF_BUCKETS[k]) > 0)) has = true;
     }));
     return has;
@@ -433,6 +496,35 @@ function selfTest() {
     if (missed.length) {
       problems.push(`"평타 N발마다"의 N을 못 읽은 조건절 ${missed.length}건 — N배 과대평가된다: ${missed.slice(0, 3).join(' / ')}`);
     }
+  }
+
+  // (10) **대상절 규칙표가 실제 원문에 걸리는가.** (2026-09-07)
+  //      SCOPE_RULES는 원문 문자열과 **글자 그대로** 맞아야 동작한다. 위키가 표기를 조금
+  //      고치거나 우리가 오타를 내면 그 규칙은 조용히 0절이 되고, 버프가 다시 사라진다 —
+  //      에러도 안 나고 점수만 틀린다(원칙 3). 그래서 규칙마다 몇 절에 걸리는지 센다.
+  //      반대로 총합이 늘면 새 캐릭터가 같은 표기를 쓴 것이니 그건 알리기만 한다.
+  {
+    checked += 1;
+    const seen = new Map(SCOPE_RULE_KEYS.map((k) => [k, 0]));
+    cdb.forEach((c) => (c.skills || []).forEach((sk) => {
+      (sk.desc || '').split(/(?<=\.)\s+/).forEach((cl) => {
+        const sc = scopeOf(cl.trim());
+        if (sc === null) return;
+        const k = sc.toLowerCase().trim();
+        if (seen.has(k)) seen.set(k, seen.get(k) + 1);
+      });
+    }));
+    const dead = [...seen.entries()].filter(([, n]) => n === 0).map(([k]) => k);
+    if (dead.length) {
+      problems.push(`대상절 규칙 ${dead.length}종이 아무 절에도 안 걸린다 — 원문 표기가 바뀌었거나 오타다: ${dead.slice(0, 3).join(' / ')}`);
+    }
+    const total = [...seen.values()].reduce((a, b) => a + b, 0);
+    if (total < SCOPE_CLAUSE_BASELINE) {
+      problems.push(`대상절 규칙이 걸리는 절이 ${SCOPE_CLAUSE_BASELINE} → ${total}로 줄었다 — 원문이 바뀌었을 수 있다`);
+    } else if (total > SCOPE_CLAUSE_BASELINE) {
+      console.log(`  ℹ️ 대상절 규칙이 걸리는 절이 ${SCOPE_CLAUSE_BASELINE} → ${total}로 늘었다(새 캐릭터로 보인다). 기준선을 올릴 것.`);
+    }
+    console.log(`  대상절 규칙 ${SCOPE_RULE_KEYS.length}종이 ${total}절을 해석한다`);
   }
 
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03)
