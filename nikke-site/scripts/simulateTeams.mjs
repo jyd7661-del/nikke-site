@@ -77,6 +77,14 @@ export const ASSUMPTIONS = {
   // 기본은 true다. false로 두면 2026-09-07 이전처럼 전부 상시(1.0)로 계산한다 —
   // **검사가 이 스위치로 두 계산을 대보고 실제로 갈리는지 확인한다**(selfTest 11번).
   SKILL_CD_UPTIME: true,
+  // 평타를 **재장전 시간까지 포함한 지속 발사율**로 계산할 것인가. (2026-09-07)
+  // 그전에는 탄창이 무한한 것처럼 계산했다 — 장탄을 다 쏘면 재장전하는 동안은 못 쏘는데
+  // 그 시간이 빠져 있었다. weapons.json에 캐릭터별 `capacity`·`reloadSec`가 이미 있어
+  // 새 값을 만들지 않는다. 가동률 = (장탄÷연사) ÷ (장탄÷연사 + 재장전).
+  // 실측 중앙값: MG 0.706 · SG 0.779 · SR/RL 0.789 · SMG 0.808 · AR 0.857 —
+  // **무기마다 21%까지 갈린다.** 전부 1.0으로 두면 MG·SG가 그만큼 부풀어 있었다.
+  // false로 두면 이전 계산(재장전 없음)으로 돌아간다 — selfTest 12번이 두 계산을 대본다.
+  RELOAD_UPTIME: true,
   // 풀버스트 한 사이클(초). "사이클마다" 계열 스킬의 초당 발동 횟수를 여기서 나눈다.
   // ⚠️ 게임의 표준 주기이지만 우리가 정한 값이다 — 실제로는 팀 구성·재진입에 따라 달라진다.
   BURST_CYCLE_SEC: 20,
@@ -157,14 +165,36 @@ function chargeMult(c) {
   return m ? m / 100 : 1;
 }
 
-// 평타 기여(초당). 기본 공격력 × 1발당 계수 × 초당 발사 수.
+// 재장전을 포함한 지속 가동률. (2026-09-07)
+//
+// 장탄을 다 쏘면 재장전하는 동안은 못 쏜다. 그 시간이 계산에 없어서 **탄창이 무한한 것처럼**
+// 평타를 재고 있었다. 값은 전부 weapons.json에 이미 있다(캐릭터별 `capacity`·`reloadSec`) —
+// 새 상수를 만들지 않는다.
+//
+// ⚠️ 무기마다 21%까지 갈린다: MG 0.706 · SG 0.779 · SR/RL 0.789 · SMG 0.808 · AR 0.857.
+//    전부 1.0으로 두는 것은 중립이 아니라 **MG·SG 편향**이다. 시뮬레이터가 무작위 로스터에서
+//    SG를 2.0배 · MG를 1.8배로 고르던 것(2026-09-04 O4)의 원인 중 하나가 여기다.
+//
+// 값을 읽지 못하면 1.0을 돌려준다 — 없는 값을 지어내지 않는다(그때는 이전과 같다).
+function reloadUptime(c, A) {
+  if (A && A.RELOAD_UPTIME === false) return 1;
+  const w = WEAPON_BY_OWNER.get(c.title);
+  const cap = w?.capacity ?? medianOf(c.weapon, 'capacity');
+  const rel = w?.reloadSec ?? medianOf(c.weapon, 'reloadSec');
+  const rate = shotsPerSec(c);
+  if (!cap || !rel || !rate) return 1;
+  const fire = cap / rate;
+  return fire / (fire + rel);
+}
+
+// 평타 기여(초당). 기본 공격력 × 1발당 계수 × 초당 발사 수 × 재장전 가동률.
 // **이것이 없어서 모더니아가 3점이었다** — 그의 딜은 평타에서 나온다(MG 7.71% × 50발/초).
-function normalAttackDps(c) {
+function normalAttackDps(c, A) {
   const w = WEAPON_BY_OWNER.get(c.title);
   const coef = w?.shotCoefPct ?? medianOf(c.weapon, 'shotCoefPct');
   const rate = shotsPerSec(c);
   if (!coef || !rate) return 0;
-  return atkFactor(c) * coef * chargeMult(c) * rate;
+  return atkFactor(c) * coef * chargeMult(c) * rate * reloadUptime(c, A);
 }
 
 // 그 절이 초당 몇 번 터지는가. **분류 못 한 계열은 0으로 둔다 — 없는 빈도를 만들지 않는다.**
@@ -175,10 +205,13 @@ function freqPerSec(cls, nShots, c, A) {
   const rel = w?.reloadSec ?? medianOf(c.weapon, 'reloadSec');
   const ct = w?.chargeTimeSec ?? medianOf(c.weapon, 'chargeTimeSec');
   const ch = ct ? ct + (A.CHARGE_MOTION_SEC || 0) : (weapons.fireRate?.chargeWeapons?.shortChargeSec || 1.25);
+  // 평타에 얹히는 계열(`평타 N발마다`·`풀차지`)은 **평타와 같은 가동률**을 받아야 한다.
+  // 재장전 중에는 평타를 못 쏘므로 그 계열도 안 터진다. (2026-09-07)
+  const up = reloadUptime(c, A);
   switch (cls) {
     case 'perCycle':    return 1 / A.BURST_CYCLE_SEC;
-    case 'perShots':    return nShots > 0 ? rate / nShots : rate;
-    case 'perCharge':   return 1 / ch;
+    case 'perShots':    return (nShots > 0 ? rate / nShots : rate) * up;
+    case 'perCharge':   return up / ch;
     case 'perReload':   return (cap && rate) ? 1 / (cap / rate + (rel || 0)) : 0;
     case 'once':
     case 'battleStart': return 1 / A.BATTLE_SEC;
@@ -358,7 +391,7 @@ export function scoreComposition(members, opts = {}) {
   let total = 0;
   const parts = members.map((m) => {
     // 초당 기여 = 평타 + 스킬(빈도 반영). 둘 다 기본 공격력 보정이 들어가 있다.
-    const na = normalAttackDps(m);
+    const na = normalAttackDps(m, A);
     const sd = skillDps(m, A);
     const self = na + sd;
     const b = buffOn.get(m.id);
@@ -380,6 +413,9 @@ const TIER_RHO_BASELINE = 0.40;
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
 const SCOPE_CLAUSE_BASELINE = 22;
+
+// 재장전을 반영했을 때 평타가 실제로 낮아지는 캐릭터 수. 줄면 재장전 반영이 되돌려진 것이다.
+const RELOAD_LOWERED_BASELINE = 198;
 
 // 쿨타임 가동률을 켰을 때 팀 점수가 실제로 낮아지는 캐릭터 수. 줄면 계산이 되돌려진 것이다.
 const UPTIME_LOWERED_BASELINE = 6;
@@ -597,6 +633,57 @@ function selfTest() {
       console.log(`  ℹ️ 가동률이 점수를 낮추는 캐릭터가 ${UPTIME_LOWERED_BASELINE} → ${lower}명으로 늘었다. 기준선을 올릴 것.`);
     }
     console.log(`  쿨타임 가동률이 실제로 점수를 낮추는 캐릭터 ${lower}명 (오르는 경우 ${higher}명)`);
+  }
+
+  // (12) **평타에서 재장전 시간이 빠져 있던 것.** (2026-09-07)
+  //      `shotsPerSec`는 **발사 중 연사속도**(장탄 ÷ 6초)라 재장전이 안 들어 있다. 그대로
+  //      쓰면 탄창이 무한한 것처럼 계산된다. 무기마다 가동률이 21% 갈리므로 전부 1.0으로
+  //      두는 것은 중립이 아니라 **MG·SG 편향**이다.
+  //
+  //      ⚠️ 판정 단위를 데이터가 아니라 **계산**에 뒀다(원칙 4). "재장전 시간이 있는 무기 수"를
+  //         세면 코드를 되돌려도 같은 값이 나온다. 그래서 `RELOAD_UPTIME` 스위치로 두 계산을
+  //         실제로 돌리고, 그 비율을 **다른 출처와 대조**한다.
+  //
+  //      대조 상대: `weapons.json`의 `derived.normalAttackDpsPct`에 `raw`와 `withReload`가
+  //      **이미 따로 계산돼 있었다.** 그 둘의 비가 우리가 계산한 가동률과 6개 타입 전부
+  //      소수 셋째 자리까지 같다(ar .857 · smg .808 · sg .779 · sr/rl .789 · mg .706).
+  //      즉 데이터 파일은 재장전을 반영한 값을 갖고 있었는데 시뮬레이터가 `raw` 쪽을
+  //      쓰고 있었던 것이다.
+  {
+    checked += 1;
+    const ref = weapons.derived?.normalAttackDpsPct;
+    const med = (a) => { const v = [...a].sort((x, y) => x - y); return v[Math.floor(v.length / 2)]; };
+    const byType = {};
+    let lowered = 0; let raised = 0;
+    cdb.filter((c) => (c.skills || []).length).forEach((c) => {
+      const on = scoreComposition([c], { detail: true }).parts[0].normal;
+      const off = scoreComposition([c], { detail: true, assumptions: { RELOAD_UPTIME: false } }).parts[0].normal;
+      if (!off) return;
+      if (on < off - 1e-9) lowered += 1; else if (on > off + 1e-9) raised += 1;
+      (byType[c.weapon] = byType[c.weapon] || []).push(on / off);
+    });
+    if (raised > 0) {
+      problems.push(`재장전을 반영했는데 평타가 **오른** 캐릭터가 ${raised}명 있다 — 계산 방향이 뒤집혔다`);
+    }
+    if (lowered < RELOAD_LOWERED_BASELINE) {
+      problems.push(`재장전 가동률이 평타를 낮추는 캐릭터가 ${RELOAD_LOWERED_BASELINE} → ${lowered}명으로 줄었다`
+        + ' — 재장전 반영이 되돌려졌을 수 있다. 되돌아가면 MG·SG가 20~30% 부풀어 오른다');
+    } else if (lowered > RELOAD_LOWERED_BASELINE) {
+      console.log(`  ℹ️ 재장전 가동률이 평타를 낮추는 캐릭터가 ${RELOAD_LOWERED_BASELINE} → ${lowered}명으로 늘었다. 기준선을 올릴 것.`);
+    }
+    // 타입별 가동률이 weapons.json이 따로 계산해 둔 값과 맞는가 — **다른 출처와의 대조**다.
+    const off6 = [];
+    Object.entries(byType).forEach(([w, arr]) => {
+      const want = ref?.raw?.[w] && ref?.withReload?.[w] ? ref.withReload[w] / ref.raw[w] : null;
+      if (want == null) return;
+      const got = med(arr);
+      if (Math.abs(got - want) > 0.01) off6.push(`${w} ${got.toFixed(3)} ≠ ${want.toFixed(3)}`);
+    });
+    if (off6.length) {
+      problems.push(`재장전 가동률이 weapons.json의 withReload÷raw와 어긋난다: ${off6.join(' / ')}`);
+    }
+    console.log(`  재장전 가동률이 평타를 낮추는 캐릭터 ${lowered}명 (오르는 경우 ${raised}명) · `
+      + `타입별 가동률이 weapons.json과 일치 ${Object.keys(byType).length - off6.length}/${Object.keys(byType).length}`);
   }
 
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03)
