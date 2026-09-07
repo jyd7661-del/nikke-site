@@ -85,6 +85,18 @@ export const ASSUMPTIONS = {
   // **무기마다 21%까지 갈린다.** 전부 1.0으로 두면 MG·SG가 그만큼 부풀어 있었다.
   // false로 두면 이전 계산(재장전 없음)으로 돌아간다 — selfTest 12번이 두 계산을 대본다.
   RELOAD_UPTIME: true,
+  // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
+  //
+  // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
+  // 지속시간을 못 읽는 것으로 처리됐고, 그 경우 가동률이 `PASSIVE_UPTIME = 1.0`, 즉
+  // **상시**가 된다. 스노우 화이트 : 헤비암즈의 `Charge damage ▲ 528% for 1 round(s)`가
+  // 통째로 상시 버프로 들어가 자기버프 배수를 **38.75배**로 만들고 있었다.
+  //
+  // 몇 발 중 1발인지는 **원문에 없다** — 스노우 화이트 쪽은 "Seven Dwarves Fully Active
+  // 상태에서만"이고 그 상태의 사용 횟수는 버스트에 달려 있다. 그래서 횟수를 지어내지 않고
+  // **버린다**(원칙 2 · 분류 못 한 발동 빈도를 0으로 두는 `freqPerSec`와 같은 방식).
+  // 실측 9절 / 8명. false로 두면 이전처럼 상시로 계산한다 — selfTest 13번이 두 계산을 대본다.
+  ROUND_BUFF_DROP: true,
   // 풀버스트 한 사이클(초). "사이클마다" 계열 스킬의 초당 발동 횟수를 여기서 나눈다.
   // ⚠️ 게임의 표준 주기이지만 우리가 정한 값이다 — 실제로는 팀 구성·재진입에 따라 달라진다.
   BURST_CYCLE_SEC: 20,
@@ -117,6 +129,10 @@ const BUCKET_KEYS = Object.keys(BUFF_BUCKETS);
 const DMG_TAKEN = /Damage Taken\s*▲\s*(\d[\d.]*)%/ig;
 const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage)/ig;
 const DURATION = /for (\d[\d.]*) sec/i;
+// `for 1 round(s)` · `for 2 shot(s)` — **발수다. 지속시간이 아니다.** 위 DURATION이 이걸 못 읽어서
+// 지속을 모르는 절로 취급됐고, 그러면 가동률이 1.0(상시)이 된다. 실측 9절인데 그중 하나가
+// 528%라 스노우 화이트 : 헤비암즈의 자기버프 배수를 38.75배로 만들고 있었다.
+const ROUND_DURATION = /for \d+ (?:round|shot)\(s\)/i;
 
 // 기본 공격력 배수 — data/baseStats.json (game8 「最大ステータス」, A등급).
 //
@@ -358,6 +374,9 @@ export function scoreComposition(members, opts = {}) {
       const hasCd = Number.isFinite(skillCd) && skillCd > 0;
       // 절마다 지속시간이 다를 수 있어 그 절의 값을 먼저 본다(없으면 스킬 전체의 첫 값).
       const uptimeFor = (cl) => {
+        // `for N round(s)`·`for N shot(s)`는 **발수지 지속시간이 아니다.** 몇 발 중 몇 발인지는
+        // 원문에 없으므로 횟수를 만들지 않고 버린다. (2026-09-07)
+        if (A.ROUND_BUFF_DROP !== false && ROUND_DURATION.test(cl) && !DURATION.test(cl)) return 0;
         if (isBurst) return Math.min(1, (dur ? parseFloat(dur[1]) : 10) / burstCd(caster));
         if (!hasCd || A.SKILL_CD_UPTIME === false) return A.PASSIVE_UPTIME;
         // `continuously`는 원문이 "안 꺼진다"고 말하는 것이다 — 쿨타임과 무관하다.
@@ -409,10 +428,16 @@ export function scoreComposition(members, opts = {}) {
 // ---------------------------------------------------------------------------
 // 단조성 검사 — 실측이 없으니 "앞뒤가 맞는가"만 확인한다.
 // 보스 티어 순위상관의 기준선. 올라가면 이 값을 함께 올린다(검사가 알려준다).
-const TIER_RHO_BASELINE = 0.40;
+// 🔴 2026-09-07에 **재는 값을 바꿨다.** 옛 0.40은 `parts[].self`(자기 버프가 빠진 값) 기준이다.
+// 같은 코드에서 `parts[].value`(자기 버프 포함)로 재면 0.579가 나온다 — 계산이 좋아진 게 아니라
+// 계측기가 그동안 버프 축을 안 재고 있었던 것이다. 경위는 아래 (6)번 주석.
+const TIER_RHO_BASELINE = 0.55;
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
 const SCOPE_CLAUSE_BASELINE = 22;
+
+// `for N round(s)` 버프를 버렸을 때 자기버프 배수가 실제로 내려가는 캐릭터 수.
+const ROUND_BUFF_BASELINE = 8;
 
 // 재장전을 반영했을 때 평타가 실제로 낮아지는 캐릭터 수. 줄면 재장전 반영이 되돌려진 것이다.
 const RELOAD_LOWERED_BASELINE = 198;
@@ -686,12 +711,49 @@ function selfTest() {
       + `타입별 가동률이 weapons.json과 일치 ${Object.keys(byType).length - off6.length}/${Object.keys(byType).length}`);
   }
 
-  // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03)
-  //     ⚠️ **이 값은 버프를 보지 않는다.** 캐릭터 1명으로 점수를 내므로 팀 버프가 안 걸리고,
-  //        게다가 재는 것은 `parts[].self`(평타+스킬)라 자기 버프 배수조차 빠진다.
-  //        2026-09-07에 대상절 규칙 18종과 가동률 계산을 넣었는데 ρ가 0.382로 미동도 안 했다 —
-  //        검사가 통과해서가 아니라 **애초에 그 축을 안 재기 때문**이다.
-  //        버프를 건드리는 변경은 ρ가 아니라 **실사용 조합의 팀 점수 변화**로 확인할 것.
+  // (13) **`for N round(s)` 버프가 상시로 들어가던 것.** (2026-09-07)
+  //      이건 발수지 지속시간이 아닌데 `DURATION`이 `for N sec`만 읽어서 "지속을 모르는 절"이
+  //      됐고, 그러면 가동률이 1.0(상시)이 된다. 스노우 화이트 : 헤비암즈의
+  //      `Charge damage ▲ 528% for 1 round(s)`가 통째로 들어가 자기버프 배수가 **38.75배**였다.
+  //      2026-09-07 오전에 `parts[].value`로 ρ를 재기 시작하면서 드러났다 — 그전에는
+  //      자기 버프를 아예 안 재고 있었으니 이 고장이 어떤 지표에도 안 나타났다.
+  //
+  //      실측 9절 / 8명. 등록 조합 214팀 중 81팀이 갈렸고 **전부 하락**(최대 -86%).
+  {
+    checked += 1;
+    let lowered = 0; let raised = 0; const carriers = [];
+    cdb.filter((c) => (c.skills || []).length).forEach((c) => {
+      const on = scoreComposition([c], { detail: true }).parts[0];
+      const off = scoreComposition([c], { detail: true, assumptions: { ROUND_BUFF_DROP: false } }).parts[0];
+      if (on.mult < off.mult - 1e-9) { lowered += 1; carriers.push(`${c.name_kr || c.title} x${off.mult.toFixed(2)}→x${on.mult.toFixed(2)}`); }
+      else if (on.mult > off.mult + 1e-9) raised += 1;
+    });
+    if (raised > 0) {
+      problems.push(`발수 버프를 버렸는데 자기버프 배수가 **오른** 캐릭터가 ${raised}명 있다 — 방향이 뒤집혔다`);
+    }
+    if (lowered < ROUND_BUFF_BASELINE) {
+      problems.push(`발수(\`for N round(s)\`) 버프가 걸리는 캐릭터가 ${ROUND_BUFF_BASELINE} → ${lowered}명으로 줄었다`
+        + ' — 되돌려졌거나 원문 표기가 바뀌었다. 되돌아가면 528% 버프가 상시로 계산된다');
+    } else if (lowered > ROUND_BUFF_BASELINE) {
+      console.log(`  ℹ️ 발수 버프가 걸리는 캐릭터가 ${ROUND_BUFF_BASELINE} → ${lowered}명으로 늘었다. 기준선을 올릴 것.`);
+    }
+    // 값이 아니라 **계산**을 재는 부분: 되돌렸을 때 실제로 얼마나 부풀었는지.
+    const worst = carriers.length ? carriers.sort((a, b) => parseFloat(b.split('x')[1]) - parseFloat(a.split('x')[1]))[0] : '없음';
+    console.log(`  발수 버프를 버려서 자기버프 배수가 내려간 캐릭터 ${lowered}명 (오르는 경우 ${raised}명) · 최대 ${worst}`);
+  }
+
+  // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
+  //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).
+  //        **자기 버프는 이제 본다.**
+  //
+  //     🔴 2026-09-07까지 이 값은 `parts[].self`(평타+스킬)를 재고 있었다 — **자기 버프 배수가
+  //        통째로 빠진 값이다.** 그래서 대상절 규칙 18종과 쿨타임 가동률을 넣었는데도 ρ가
+  //        0.382에서 미동도 안 했다. 검사가 통과해서가 아니라 그 축을 안 재기 때문이었다.
+  //        재는 값을 `parts[].value`(= self × 자기버프 배수)로 바꾸자 **ρ 0.382 → 0.579**로
+  //        올랐다. 계산을 바꾼 게 아니라 **계측기를 고친 것**이다 — 같은 코드, 다른 측정.
+  //
+  //     그 덕에 버프를 건드리는 변경도 이제 ρ로 확인할 수 있다. 다만 **남이 걸어주는 버프는
+  //     여전히 안 잡히므로** 순수 버퍼(자기 버프가 없는 서포터)는 이 지표에서 낮게 나온다.
   //     이 비교기에는 오랫동안 정답지가 없었다 — 솔로레이드 실측 avgDamage는 투자 상태가
   //     지배해 상관이 0.01이라 못 쓴다. 그런데 보스 티어와는 0.400이 나온다. 완벽한 정답은
   //     아니지만(사람의 종합 판단이다) **0에서 멀다는 것 자체가 신호**라 래칫으로 고정한다.
@@ -699,16 +761,26 @@ function selfTest() {
   {
     checked += 1;
     const rows = cdb.filter((c) => TIER[c.tiers?.bossing])
-      .map((c) => ({ s: scoreComposition([c], { detail: true }).parts[0].self, t: TIER[c.tiers.bossing] }));
+      .map((c) => {
+        const p = scoreComposition([c], { detail: true }).parts[0];
+        return { s: p.value, self: p.self, t: TIER[c.tiers.bossing] };
+      });
     const rank = (v) => {
       const idx = v.map((x, i) => [x, i]).sort((a, b) => a[0] - b[0]);
       const out = Array(v.length);
       idx.forEach(([, i], k) => { out[i] = k + 1; });
       return out;
     };
-    const rx = rank(rows.map((r) => r.s)); const ry = rank(rows.map((r) => r.t)); const n = rows.length;
-    const rho = 1 - (6 * rx.reduce((a, _, i) => a + (rx[i] - ry[i]) ** 2, 0)) / (n * (n * n - 1));
-    console.log(`  보스 티어 순위상관 ρ = ${rho.toFixed(3)} (${n}명, 기준선 ${TIER_RHO_BASELINE})`);
+    const n = rows.length;
+    const ry = rank(rows.map((r) => r.t));
+    const spearman = (xs) => {
+      const rx = rank(xs);
+      return 1 - (6 * rx.reduce((a, _, i) => a + (rx[i] - ry[i]) ** 2, 0)) / (n * (n * n - 1));
+    };
+    const rho = spearman(rows.map((r) => r.s));
+    const rhoSelf = spearman(rows.map((r) => r.self));
+    console.log(`  보스 티어 순위상관 ρ = ${rho.toFixed(3)} (${n}명, 기준선 ${TIER_RHO_BASELINE})`
+      + ` · 자기버프를 뺀 옛 지표는 ${rhoSelf.toFixed(3)}`);
     if (rho < TIER_RHO_BASELINE - 0.03) {
       problems.push(`보스 티어 순위상관이 ${TIER_RHO_BASELINE} → ${rho.toFixed(3)}로 떨어졌다 — 비교기를 나쁘게 바꾼 것이다`);
     }
