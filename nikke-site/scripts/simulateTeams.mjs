@@ -579,7 +579,7 @@ export function scoreComposition(members, opts = {}) {
 // 🔴 2026-09-07에 **재는 값을 바꿨다.** 옛 0.40은 `parts[].self`(자기 버프가 빠진 값) 기준이다.
 // 같은 코드에서 `parts[].value`(자기 버프 포함)로 재면 0.579가 나온다 — 계산이 좋아진 게 아니라
 // 계측기가 그동안 버프 축을 안 재고 있었던 것이다. 경위는 아래 (6)번 주석.
-const TIER_RHO_BASELINE = 0.55;
+const TIER_RHO_BASELINE = 0.59;  // 2026-09-08 `for N shots` 누락을 고쳐 0.579 → 0.588
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
 const SCOPE_CLAUSE_BASELINE = 35;

@@ -110,11 +110,27 @@ const EXPECTED_DUR_TYPO = 0;
 const DUR_PREP = /\b([A-Za-z]+)\s+\d+(?:\.\d+)?\s*sec\b/g;
 const DUR_PREP_OK = new Set(['for', 'every', 'within', 'of', 'in', 'at', 'after', 'over', 'than',
   'and', 'to', 'or', 'lasts', 'last', 'remaining', 'sec']);
+// 세 번째 규칙 — **숫자 1을 글자로 적은 것.** (2026-09-08)
+//
+// 적 대상절을 훑다가 나왔다: `Affects l enemy unit(s)` · `Affects I ally unit(s)` ·
+// `Max Ammunition Capacity: I round(s)` · `Burst Stage I allies`. 전부 1을 I·l로 적은 것이고
+// KR·JA가 2:1로 확정해 준다(`1기` · `1발` · `Step 1` / `1機` · `1発` · `1の味方`).
+//
+// 🔴 **이건 오타 이상이다 — 대상절을 통째로 못 읽게 만든다.** `l enemy unit(s) nearest to`는
+//    `targetsOf`의 어느 규칙에도 안 걸려 그 절이 버려진다. 숫자 대조(`nums()`)는 I·l을
+//    숫자로 안 보므로 원리적으로 못 잡는다.
+// 실측 7절 8곳(그중 1곳은 burstFlexNote가 그 원문을 근거로 인용한 것이라 함께 고쳤다).
+const DIGIT_TYPO = /(?<![A-Za-z])[IilLoO]\s+(?:enemy|enemies|ally|allies|round|sec|time|shot)\b/g;
+const EXPECTED_DIGIT_TYPO = 0;
 
 const durTypos = [];
 CHARS.forEach((c) => (c.skills || []).forEach((sk, i) => {
   const d = sk.desc || '';
   let m; DUR_TYPO.lastIndex = 0;
+  let p3; DIGIT_TYPO.lastIndex = 0;
+  while ((p3 = DIGIT_TYPO.exec(d))) {
+    durTypos.push({ who: `${c.name_kr || c.title} s${i + 1}`, seg: d.slice(Math.max(0, p3.index - 30), p3.index + 22).trim() });
+  }
   let p2; DUR_PREP.lastIndex = 0;
   while ((p2 = DUR_PREP.exec(d))) {
     if (DUR_PREP_OK.has(p2[1].toLowerCase())) continue;
@@ -126,15 +142,15 @@ CHARS.forEach((c) => (c.skills || []).forEach((sk, i) => {
   }
 }));
 if (durTypos.length > EXPECTED_DUR_TYPO) {
-  problems.push(`지속시간 표기 오타가 기준선 ${EXPECTED_DUR_TYPO} → ${durTypos.length}건으로 늘었다`
-    + ' — `for N sec`로 안 읽히면 그 절의 가동률이 조용히 1.0이 된다');
+  problems.push(`원문 표기 오타가 기준선 ${EXPECTED_DUR_TYPO} → ${durTypos.length}건으로 늘었다`
+    + ' — 숫자·전치사가 글자로 잘못 적히면 지속시간은 조용히 1.0(상시)이 되고 대상절은 통째로 버려진다');
   durTypos.forEach((t) => problems.push(`   ${t.who}: "${t.seg}"`));
 }
 
 const line = '─'.repeat(84);
 console.log(line);
 console.log(`스킬 원문 3개 국어 교차 검증 — 세 언어 보유 ${trilingual}개 · 숫자 불일치 ${mismatches.length}건 (기준선 ${EXPECTED_MISMATCH})`);
-console.log(`   지속시간 표기 오타 ${durTypos.length}건 (기준선 ${EXPECTED_DUR_TYPO})`);
+console.log(`   원문 표기 오타 ${durTypos.length}건 (기준선 ${EXPECTED_DUR_TYPO}) — 지속시간 표기 2종 + 숫자 1을 글자로 적은 것`);
 console.log(line);
 
 const consumed = mismatches.filter((m) => m.consumed);
