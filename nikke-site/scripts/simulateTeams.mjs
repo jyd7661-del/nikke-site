@@ -90,6 +90,9 @@ export const ASSUMPTIONS = {
   // 계열은 덜 터진다. 두 방향을 같은 값으로 일관되게 쓴다.
   // false로 두면 이전처럼 장탄수 버프를 통째로 무시한다 — selfTest 14번이 두 계산을 대본다.
   AMMO_BUFF: true,
+  // 여집합 대상절(두 절이 아군을 남김없이 가르는 경우)의 공통분모를 열 것인가. (2026-09-08)
+  // false로 두면 이전처럼 양쪽 다 버린다 — selfTest 15번이 두 계산을 대본다.
+  COMPLEMENT_SCOPE: true,
   // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
   //
   // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
@@ -401,6 +404,40 @@ function targetsOf(scope, caster, members) {
 
 export const SCOPE_RULE_KEYS = [...SCOPE_RULES.keys()];
 
+// ---------------------------------------------------------------------------
+// **여집합 대상절.** (2026-09-08)
+//
+// 크라운의 스킬1은 아군을 둘로 가른다:
+//   Affects all allies who previously cast their Burst Skills.        Reloading Speed ▲ 44.35%
+//   Affects all allies who did not previously cast their Burst Skills. Reloading Speed ▲ 44.35%
+// 둘 다 표에 없어 `targetsOf`가 null을 돌려주고 **통째로 버려졌다.** 재장전 속도를 계산에
+// 넣은 뒤에도 크라운의 팀 기여가 0이었던 이유다 — 실사용 최상위 서포터인데.
+//
+// 🔴 **그런데 버스트 순서를 몰라도 되는 값이 있다.** 두 절이 아군을 남김없이 둘로 가르고
+//    같은 스탯이 양쪽에 실려 있으면, 누가 어느 쪽이든 **양쪽의 작은 값만큼은 전원이 받는다.**
+//    이건 추측이 아니라 원문에서 그대로 따라 나오는 하한이다.
+//
+// ⚠️ **최솟값을 쓴다. 평균이나 큰 쪽이 아니다.** 값이 다르면(A 60% · B 44%) 확정인 것은 44%뿐이고,
+//    나머지는 누가 어느 분기인지 알아야 정해진다. 부풀리지 않는 쪽으로만 연다.
+// ⚠️ 값이 한쪽에만 있으면 최솟값이 0이라 **아무것도 안 열린다.** 리버렐리오 s2가 그 경우다
+//    (한쪽은 Attack Damage ▲231%, 다른 쪽은 Charge Time 고정 — 공통분모가 없다). 의도한 결과다.
+//
+// 실측: 여집합 쌍이 성립하는 스킬은 **2개**(크라운 s1 · 리버렐리오 s2)이고 값이 실제로 열리는
+// 것은 크라운뿐이다. 표를 정확 문자열로 두는 이유는 SCOPE_RULES와 같다 — 과매칭이 원리적으로 불가능하다.
+const COMPLEMENT_PAIRS = [
+  {
+    a: 'all allies who previously cast their burst skills',
+    b: 'all allies who did not previously cast their burst skills',
+    union: (c, ms) => ms,
+  },
+  {
+    a: 'self if the enemy hit is the stage target',
+    b: 'self if the enemy hit is a rapture that is not the stage target',
+    union: (c) => [c],
+  },
+];
+export const COMPLEMENT_SCOPES = new Set(COMPLEMENT_PAIRS.flatMap((p) => [p.a, p.b]));
+
 /**
  * 조합 점수. 절대값에 의미 없음 — 같은 모드끼리의 비교에만 쓴다.
  * detail:true 면 어떤 항이 얼마나 기여했는지 함께 돌려준다.
@@ -444,6 +481,17 @@ export function scoreComposition(members, opts = {}) {
         return d ? Math.min(1, parseFloat(d[1]) / skillCd) : A.PASSIVE_UPTIME;
       };
       let scope = null;
+      // 여집합 대상절의 두 분기에 실린 값을 분기별로 모아 둔다. 스킬을 다 읽은 뒤에
+      // **양쪽에 다 있는 값의 최솟값**만 전원에게 연다. (2026-09-08)
+      const branch = new Map();
+      const noteBranch = (sc0, key, v) => {
+        // ⚠️ `scopeOf`는 원문 그대로(대문자 포함)를 돌려준다. 표는 소문자다 —
+        //    `targetsOf`가 내부에서 소문자로 바꾸는 것과 같이 여기서도 맞춰야 한다.
+        const sc = String(sc0 || '').toLowerCase().trim();
+        if (!COMPLEMENT_SCOPES.has(sc)) return;
+        if (!branch.has(sc)) branch.set(sc, {});
+        branch.get(sc)[key] = (branch.get(sc)[key] || 0) + v;
+      };
       clauses(sk.desc).forEach((cl) => {
         const aff = scopeOf(cl) === null ? null : [null, scopeOf(cl)];
         if (aff) { scope = aff[1]; return; }
@@ -456,7 +504,7 @@ export function scoreComposition(members, opts = {}) {
           anyBuff = true;
           const tg = targetsOf(scope, caster, members);
           if (tg) tg.forEach((m) => { buffOn.get(m.id)[k] += v * uptime; });
-          else notes.push(`대상절 해석 못 함(버림): "${scope}"`);
+          else { noteBranch(scope, `buf:${k}`, v * uptime); notes.push(`대상절 해석 못 함(버림): "${scope}"`); }
         });
         void anyBuff;
         // 최대 장탄수 — 정수 표기와 백분율 표기가 섞여 있다. ▼도 읽는다(자기 페널티).
@@ -469,11 +517,36 @@ export function scoreComposition(members, opts = {}) {
             const a = ammoOn.get(m.id);
             a.pct += aPct * uptime; a.flat += aFlat * uptime; a.reloadPct += aRel * uptime;
           });
-          else notes.push(`대상절 해석 못 함(버림): "${scope}"`);
+          else {
+            noteBranch(scope, 'ammo:pct', aPct * uptime);
+            noteBranch(scope, 'ammo:flat', aFlat * uptime);
+            noteBranch(scope, 'ammo:reloadPct', aRel * uptime);
+            notes.push(`대상절 해석 못 함(버림): "${scope}"`);
+          }
         }
         const dt = sumRe(cl, DMG_TAKEN);
         if (dt) dmgTaken += dt * uptime;
       });
+
+      // --- 여집합 대상절 정산 (2026-09-08) ---
+      // 두 분기가 아군을 남김없이 가르므로, **양쪽에 다 실린 값의 최솟값**은 누가 어느 쪽이든
+      // 전원이 받는다. 최솟값만 연다 — 나머지는 분기를 알아야 정해지므로 버린 채로 둔다.
+      if (A.COMPLEMENT_SCOPE !== false && branch.size) {
+        COMPLEMENT_PAIRS.forEach((pair) => {
+          const A2 = branch.get(pair.a); const B2 = branch.get(pair.b);
+          if (!A2 || !B2) return;
+          const tg = pair.union(caster, members);
+          if (!tg || !tg.length) return;
+          Object.keys(A2).forEach((key) => {
+            if (!(key in B2)) return;            // 한쪽에만 있으면 확정인 몫이 없다
+            const v = Math.min(A2[key], B2[key]);
+            if (!v) return;
+            const [kind, name] = key.split(':');
+            if (kind === 'buf') tg.forEach((m) => { buffOn.get(m.id)[name] += v; });
+            else tg.forEach((m) => { ammoOn.get(m.id)[name] += v; });
+          });
+        });
+      }
     });
   });
 
@@ -507,8 +580,11 @@ const TIER_RHO_BASELINE = 0.55;
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
 const SCOPE_CLAUSE_BASELINE = 35;
 
+// 여집합 규칙으로 크라운이 낀 팀이 오르는 최소 폭(%). 실측 6.6%라 여유를 두고 5%로 잡는다.
+const COMPLEMENT_CROWN_MIN = 5;
+
 // 장탄·재장전 버프가 혼자 있을 때 점수를 바꾸는 캐릭터 수 / 그중 ▼로 내려가는 수.
-const AMMO_MOVED_BASELINE = 33;
+const AMMO_MOVED_BASELINE = 34;  // 2026-09-08 여집합 규칙으로 크라운이 합류해 33 → 34
 // ▼로 내려가는 것은 2명이다(K · 모더니아). 아니스 : 스파클링 서머는 장탄 ▼73.92%를 갖고 있지만
 // 같은 스킬의 재장전 속도 ▲77%가 그걸 넘어서 순증이 된다 — 두 스탯을 함께 읽은 결과다.
 const AMMO_PENALTY_BASELINE = 2;
@@ -854,6 +930,71 @@ function selfTest() {
         + ' — ▼를 안 읽고 버프만 읽으면 페널티를 공짜로 넘기게 된다');
     }
     console.log(`  장탄·재장전 버프가 점수를 바꾸는 캐릭터 ${moved}명 (그중 ▼로 내려가는 ${pen}명)`);
+  }
+
+  // (15) **여집합 대상절 규칙 자체를 시험한다 — 데이터가 아니라 규칙을.** (2026-09-08)
+  //      크라운의 재장전 속도 ▲44.35%는 대상절이 "previously cast" / "did not previously cast"로
+  //      갈려 둘 다 표에 없어 통째로 버려지고 있었다. 두 절은 여집합이고 값이 같으므로
+  //      버스트 순서를 몰라도 아군 전원이 받는 것이 확정이다(실측: 등록 조합 214건 중
+  //      크라운이 든 61건이 정확히 그만큼만 올랐다).
+  //
+  //      🔴 **처음에 실제 캐릭터로만 쟀다가 두 가지 고장을 놓쳤다.**
+  //         ① 최솟값 대신 두 분기를 더하기 ② "양쪽에 다 있어야 한다"는 조건 없애기.
+  //         ①은 크라운이 6.6% → 10.6%로 오를 뿐 리버렐리오는 그대로 0이라 안 걸렸고,
+  //         ②는 `Math.min(x, undefined) = NaN`이 falsy라 조용히 아무것도 안 열려서 안 걸렸다.
+  //         **두 안전장치가 서로를 가리고 있었다.**
+  //      그래서 지금은 **합성 스킬 원문으로 규칙을 직접 시험한다.** 실제 데이터에 그 조합이
+  //      없어도 규칙이 틀리면 잡힌다(원칙 4 — 판정 단위를 고장의 단위에 맞춘다).
+  {
+    checked += 1;
+    const base = cdb.find((c) => c.title === 'Crown') || cdb[0];
+    const mk = (descA, descB) => ({
+      ...base, id: 'zz-fixture', title: 'ZZ Fixture',
+      // ⚠️ **마지막 스킬은 버스트로 취급된다.** 스킬을 하나만 두면 가동률이 10/40 = 0.25로
+      //    깎여 40%가 10%로 나온다(실제로 여기서 한 번 틀렸다). 더미 버스트를 뒤에 붙인다.
+      skills: [{ name: 'f', type: 'Passive', cd: 'N/A',
+        desc: `Affects all allies who previously cast their Burst Skills. ${descA} `
+            + `Affects all allies who did not previously cast their Burst Skills. ${descB}` },
+      { name: 'dummy', type: 'Active', cd: '40', desc: 'Affects self.' }],
+    });
+    const filler = cdb.filter((c) => c.title !== base.title && (c.skills || []).length).slice(0, 4);
+    const reloadOf = (c) => scoreComposition([c, ...filler], { detail: true })
+      .parts.find((x) => x.title === 'ZZ Fixture').ammo.reloadPct;
+
+    // ① 값이 다르면 **작은 쪽만** 열려야 한다. 더하거나(100) 큰 쪽(60)이면 틀린 것이다.
+    const both = reloadOf(mk('Reloading Speed ▲ 40% continuously.', 'Reloading Speed ▲ 60% continuously.'));
+    if (Math.abs(both - 40) > 1e-6) {
+      problems.push(`여집합 규칙이 최솟값을 안 쓴다 — 40%와 60%가 실린 두 분기에서 ${both.toFixed(2)}%가 나왔다(40이어야 한다)`);
+    }
+    // ② 한쪽에만 있으면 **아무것도** 열려선 안 된다.
+    const oneSide = reloadOf(mk('Reloading Speed ▲ 40% continuously.', 'ATK ▲ 10% continuously.'));
+    if (Math.abs(oneSide) > 1e-6) {
+      problems.push(`여집합 규칙이 한쪽 분기에만 있는 값을 열었다(${oneSide.toFixed(2)}%) — 어느 분기인지 모르므로 확정인 몫이 없다`);
+    }
+    // ③ 두 분기가 다 있어야 한다. 한쪽 대상절만 나오면 여집합이 성립하지 않는다.
+    const solo = { ...base, id: 'zz-fixture', title: 'ZZ Fixture',
+      skills: [{ name: 'f', type: 'Passive', cd: 'N/A',
+        desc: 'Affects all allies who previously cast their Burst Skills. Reloading Speed ▲ 40% continuously.' },
+      { name: 'dummy', type: 'Active', cd: '40', desc: 'Affects self.' }] };
+    const one = scoreComposition([solo, ...filler], { detail: true }).parts.find((x) => x.title === 'ZZ Fixture').ammo.reloadPct;
+    if (Math.abs(one) > 1e-6) {
+      problems.push(`여집합 짝이 하나뿐인데 규칙이 열렸다(${one.toFixed(2)}%) — 여집합이 성립하지 않으면 버려야 한다`);
+    }
+
+    // 실제 데이터에서의 크기 — 판정이 아니라 관측이다(위 ①②③가 판정).
+    const gain = (t) => {
+      const c = byTitle.get(t); if (!c) return null;
+      const f = cdb.filter((x) => x.title !== t && (x.skills || []).length).slice(0, 4);
+      const on = scoreComposition([c, ...f]).total;
+      const off = scoreComposition([c, ...f], { assumptions: { COMPLEMENT_SCOPE: false } }).total;
+      return (on / off - 1) * 100;
+    };
+    const gc = gain('Crown'); const gl = gain('Liberalio');
+    if (gc == null || gc < COMPLEMENT_CROWN_MIN) {
+      problems.push(`여집합 규칙으로 크라운 팀이 오르는 폭이 ${COMPLEMENT_CROWN_MIN}% → ${gc == null ? '측정 불가' : gc.toFixed(1) + '%'}로 줄었다`);
+    }
+    console.log(`  여집합 대상절 — 합성 시험 3종 통과 · 크라운 팀 +${gc == null ? '?' : gc.toFixed(1)}%`
+      + ` · 리버렐리오(공통분모 없음) ${gl == null ? '?' : gl.toFixed(1)}%`);
   }
 
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
