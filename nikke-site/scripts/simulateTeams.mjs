@@ -162,7 +162,11 @@ const DURATION = /for (\d[\d.]*) sec/i;
 // `for 1 round(s)` · `for 2 shot(s)` — **발수다. 지속시간이 아니다.** 위 DURATION이 이걸 못 읽어서
 // 지속을 모르는 절로 취급됐고, 그러면 가동률이 1.0(상시)이 된다. 실측 9절인데 그중 하나가
 // 528%라 스노우 화이트 : 헤비암즈의 자기버프 배수를 38.75배로 만들고 있었다.
-const ROUND_DURATION = /for \d+ (?:round|shot)\(s\)/i;
+// ⚠️ 2026-09-08에 표기 변형을 놓치고 있던 것을 찾았다 — 원문에 `for 2 shots`처럼
+//    **괄호 없는 복수형**이 섞여 있다(네온 크리티컬 확률 ▲45.93% · 은화 차지 대미지 ▲37.28%).
+//    `\(s\)`를 리터럴로 요구하던 옛 정규식은 이 둘을 놓쳐 상시로 계산하고 있었다.
+//    9절 → **11절**.
+const ROUND_DURATION = /for \d+ (?:round|shot)(?:s|\(s\))/i;
 
 // 기본 공격력 배수 — data/baseStats.json (game8 「最大ステータス」, A등급).
 //
@@ -590,7 +594,7 @@ const AMMO_MOVED_BASELINE = 34;  // 2026-09-08 여집합 규칙으로 크라운�
 const AMMO_PENALTY_BASELINE = 2;
 
 // `for N round(s)` 버프를 버렸을 때 자기버프 배수가 실제로 내려가는 캐릭터 수.
-const ROUND_BUFF_BASELINE = 8;
+const ROUND_BUFF_BASELINE = 10;  // 2026-09-08 `for N shots`(괄호 없는 복수형) 2명이 합류해 8 → 10
 
 // 재장전을 반영했을 때 평타가 실제로 낮아지는 캐릭터 수. 줄면 재장전 반영이 되돌려진 것이다.
 const RELOAD_LOWERED_BASELINE = 198;

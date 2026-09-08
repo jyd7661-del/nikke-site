@@ -84,9 +84,57 @@ if (mismatches.length > EXPECTED_MISMATCH) {
   problems.push(`영문 숫자 불일치가 기준선 ${EXPECTED_MISMATCH} → ${mismatches.length}로 늘었다 — 새로 수집한 원문에 오타가 들어왔을 수 있다`);
 }
 
+// ---------------------------------------------------------------------------
+// **지속시간 표기 오타 검사.** (2026-09-08)
+//
+// 위 숫자 대조는 `nums()`가 **숫자만** 뽑기 때문에 `for IO sec`(10을 대문자 I·O로 적은 것)이나
+// `far 10 sec`(for 오타)를 못 잡는다. 숫자가 아예 숫자로 안 적혔거나 전치사가 틀린 경우다.
+// 조합 비교기가 지속시간을 `for N sec`로만 읽으므로 이런 오타는 **그 절의 가동률을 조용히
+// 1.0(상시)으로 만든다** — 이 프로젝트가 가장 경계하는 형태다(원칙 3).
+//
+// 실측으로 6건이 나왔고 전부 KR·JA 2:1로 확정해 고쳤다(2026-09-08):
+//   K       `for IO sec` · `far 10 sec`  → KR `[10초 유지]` ×2 · JA `「10秒間維持」` ×2
+//   그레이브(2) · 라푼젤 : 퓨어 그레이스 · 브래디  `every I sec` → KR `[1초 간격]`
+//
+// ⚠️ `every sec`(카츠라기 미사토 · 길로틴 : 윈터 슬레이어)는 **고치지 않았다.** KR은
+//    `[1초 간격]`이지만 영어로 "every sec"는 그 자체로 말이 되므로 오타로 단정할 수 없다.
+//    허용어로 두고 넘어간다 — 오탐이 나는 검사는 아무도 믿지 않는다(원칙 4).
+const DUR_TYPO = /(?<![\d.])\b([A-Za-z]+)\s+sec\b/g;
+const DUR_TYPO_OK = new Set(['every']);
+const EXPECTED_DUR_TYPO = 0;
+
+// 두 번째 규칙 — `far 10 sec`처럼 **숫자는 멀쩡한데 앞의 낱말이 틀린** 경우.
+// 위 규칙은 sec 바로 앞이 낱말일 때만 걸리므로 이건 못 잡는다(역테스트에서 실제로 놓쳤다).
+// 원문 전체에서 `<낱말> N sec` 꼴을 훑어 **실제로 쓰이는 낱말 목록**에 없는 것을 잡는다.
+// 목록은 실측으로 만들었다 — 새 캐릭터가 새 낱말을 들고 오면 검사가 알려주고 사람이 추가한다.
+const DUR_PREP = /\b([A-Za-z]+)\s+\d+(?:\.\d+)?\s*sec\b/g;
+const DUR_PREP_OK = new Set(['for', 'every', 'within', 'of', 'in', 'at', 'after', 'over', 'than',
+  'and', 'to', 'or', 'lasts', 'last', 'remaining', 'sec']);
+
+const durTypos = [];
+CHARS.forEach((c) => (c.skills || []).forEach((sk, i) => {
+  const d = sk.desc || '';
+  let m; DUR_TYPO.lastIndex = 0;
+  let p2; DUR_PREP.lastIndex = 0;
+  while ((p2 = DUR_PREP.exec(d))) {
+    if (DUR_PREP_OK.has(p2[1].toLowerCase())) continue;
+    durTypos.push({ who: `${c.name_kr || c.title} s${i + 1}`, seg: d.slice(Math.max(0, p2.index - 30), p2.index + 18).trim() });
+  }
+  while ((m = DUR_TYPO.exec(d))) {
+    if (DUR_TYPO_OK.has(m[1].toLowerCase())) continue;
+    durTypos.push({ who: `${c.name_kr || c.title} s${i + 1}`, seg: d.slice(Math.max(0, m.index - 35), m.index + 12).trim() });
+  }
+}));
+if (durTypos.length > EXPECTED_DUR_TYPO) {
+  problems.push(`지속시간 표기 오타가 기준선 ${EXPECTED_DUR_TYPO} → ${durTypos.length}건으로 늘었다`
+    + ' — `for N sec`로 안 읽히면 그 절의 가동률이 조용히 1.0이 된다');
+  durTypos.forEach((t) => problems.push(`   ${t.who}: "${t.seg}"`));
+}
+
 const line = '─'.repeat(84);
 console.log(line);
 console.log(`스킬 원문 3개 국어 교차 검증 — 세 언어 보유 ${trilingual}개 · 숫자 불일치 ${mismatches.length}건 (기준선 ${EXPECTED_MISMATCH})`);
+console.log(`   지속시간 표기 오타 ${durTypos.length}건 (기준선 ${EXPECTED_DUR_TYPO})`);
 console.log(line);
 
 const consumed = mismatches.filter((m) => m.consumed);
