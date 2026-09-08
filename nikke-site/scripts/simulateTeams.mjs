@@ -85,6 +85,11 @@ export const ASSUMPTIONS = {
   // **무기마다 21%까지 갈린다.** 전부 1.0으로 두면 MG·SG가 그만큼 부풀어 있었다.
   // false로 두면 이전 계산(재장전 없음)으로 돌아간다 — selfTest 12번이 두 계산을 대본다.
   RELOAD_UPTIME: true,
+  // 최대 장탄수 버프를 유효 장탄에 반영할 것인가. (2026-09-08)
+  // 반영하면 재장전 가동률이 오르고(장탄이 늘면 재장전 사이가 길어진다) `탄창 소모마다`
+  // 계열은 덜 터진다. 두 방향을 같은 값으로 일관되게 쓴다.
+  // false로 두면 이전처럼 장탄수 버프를 통째로 무시한다 — selfTest 14번이 두 계산을 대본다.
+  AMMO_BUFF: true,
   // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
   //
   // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
@@ -127,6 +132,28 @@ const BUFF_BUCKETS = {
 };
 const BUCKET_KEYS = Object.keys(BUFF_BUCKETS);
 const DMG_TAKEN = /Damage Taken\s*▲\s*(\d[\d.]*)%/ig;
+
+// **최대 장탄수 버프는 통(BUFF_BUCKETS)에 넣지 않는다 — 곱셈 배수가 아니기 때문이다.** (2026-09-08)
+//
+// 이 스탯은 딜을 몇 % 올리는 게 아니라 **장탄을 늘려 재장전 가동률을 올린다.** 그리고 그
+// 가동률은 2026-09-07에 이미 계산에 넣은 값이라(`reloadUptime`) **새 기전을 만들 필요가 없다.**
+// 원문의 숫자가 우리가 이미 쓰는 `capacity`에 그대로 들어간다.
+//
+// 표기가 두 가지다 — 정수(`▲ 3 round(s)` · `▲ 2`)와 백분율(`▲ 40%` · `▲ 787.5%`). 실측 29절/29명.
+// ▼도 실제로 있다(프리바티 ▼50.66% · 아니스 : 스파클링 서머 ▼73.92% · K ▼51.13% · 모더니아 ▼5.04%) —
+// **자기 페널티를 지금까지 공짜로 넘기고 있었다.** 양방향으로 읽는다.
+// 재장전 속도 — `reloadSec`에 그대로 들어간다. 실측 15절 / 13명, 전부 ▲.
+// **재장전 시간 = 기본 ÷ (1 + 속도/100).** "속도 ▲ 100%면 시간이 절반"이라는 속도 스탯의
+// 일반적인 뜻이고, 값이 100%를 넘어도 음수가 되지 않는다(`기본 × (1 - x)`는 100%에서 0이 된다).
+// ⚠️ 이것도 새 상수가 아니다 — 2026-09-07에 넣은 재장전 가동률이 쓰는 `reloadSec`를 바꿀 뿐이다.
+const RELOAD_SPD = /Reload(?:ing)? Speed\s*([▲▼])\s*(\d[\d.]*)%/ig;
+const AMMO_PCT  = /Max(?:imum)? [Aa]mmunition [Cc]apacity\s*([▲▼])\s*(\d[\d.]*)%/ig;
+const AMMO_FLAT = /Max(?:imum)? [Aa]mmunition [Cc]apacity\s*([▲▼])\s*(\d+)(?!\s*[.\d]*%)/ig;
+const sumSigned = (str, re) => {
+  let m; let t = 0; re.lastIndex = 0;
+  while ((m = re.exec(str))) t += (m[1] === '▼' ? -1 : 1) * parseFloat(m[2]);
+  return t;
+};
 const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage)/ig;
 const DURATION = /for (\d[\d.]*) sec/i;
 // `for 1 round(s)` · `for 2 shot(s)` — **발수다. 지속시간이 아니다.** 위 DURATION이 이걸 못 읽어서
@@ -192,11 +219,32 @@ function chargeMult(c) {
 //    SG를 2.0배 · MG를 1.8배로 고르던 것(2026-09-04 O4)의 원인 중 하나가 여기다.
 //
 // 값을 읽지 못하면 1.0을 돌려준다 — 없는 값을 지어내지 않는다(그때는 이전과 같다).
-function reloadUptime(c, A) {
-  if (A && A.RELOAD_UPTIME === false) return 1;
+// 최대 장탄수 버프를 반영한 유효 장탄. (2026-09-08)
+//
+// ⚠️ **가동률로 깎은 값을 그대로 더한다** — `{ pct: 40, flat: 3 }`이 이미 `× 가동률`을 거친
+//    기댓값이라는 뜻이다. 이 모델의 다른 모든 버프가 쓰는 것과 **같은 관례**이고
+//    (`buffOn`도 `v * uptime`을 더한다), 새 상수를 만들지 않는다.
+function effCapacity(c, ammo) {
   const w = WEAPON_BY_OWNER.get(c.title);
   const cap = w?.capacity ?? medianOf(c.weapon, 'capacity');
+  if (!cap || !ammo) return cap;
+  // 장탄이 0 이하가 되는 일은 없다 — 1발 밑으로는 안 내려간다.
+  return Math.max(1, cap * (1 + (ammo.pct || 0) / 100) + (ammo.flat || 0));
+}
+
+// 재장전 속도 버프를 반영한 유효 재장전 시간.
+function effReload(c, ammo) {
+  const w = WEAPON_BY_OWNER.get(c.title);
   const rel = w?.reloadSec ?? medianOf(c.weapon, 'reloadSec');
+  if (!rel || !ammo?.reloadPct) return rel;
+  return rel / (1 + ammo.reloadPct / 100);
+}
+
+function reloadUptime(c, A, ammo) {
+  if (A && A.RELOAD_UPTIME === false) return 1;
+  const w = WEAPON_BY_OWNER.get(c.title);
+  const cap = (A && A.AMMO_BUFF === false) ? (w?.capacity ?? medianOf(c.weapon, 'capacity')) : effCapacity(c, ammo);
+  const rel = (A && A.AMMO_BUFF === false) ? (w?.reloadSec ?? medianOf(c.weapon, 'reloadSec')) : effReload(c, ammo);
   const rate = shotsPerSec(c);
   if (!cap || !rel || !rate) return 1;
   const fire = cap / rate;
@@ -205,25 +253,26 @@ function reloadUptime(c, A) {
 
 // 평타 기여(초당). 기본 공격력 × 1발당 계수 × 초당 발사 수 × 재장전 가동률.
 // **이것이 없어서 모더니아가 3점이었다** — 그의 딜은 평타에서 나온다(MG 7.71% × 50발/초).
-function normalAttackDps(c, A) {
+function normalAttackDps(c, A, ammo) {
   const w = WEAPON_BY_OWNER.get(c.title);
   const coef = w?.shotCoefPct ?? medianOf(c.weapon, 'shotCoefPct');
   const rate = shotsPerSec(c);
   if (!coef || !rate) return 0;
-  return atkFactor(c) * coef * chargeMult(c) * rate * reloadUptime(c, A);
+  return atkFactor(c) * coef * chargeMult(c) * rate * reloadUptime(c, A, ammo);
 }
 
 // 그 절이 초당 몇 번 터지는가. **분류 못 한 계열은 0으로 둔다 — 없는 빈도를 만들지 않는다.**
-function freqPerSec(cls, nShots, c, A) {
+function freqPerSec(cls, nShots, c, A, ammo) {
   const rate = shotsPerSec(c) || 0;
   const w = WEAPON_BY_OWNER.get(c.title);
-  const cap = w?.capacity ?? medianOf(c.weapon, 'capacity');
-  const rel = w?.reloadSec ?? medianOf(c.weapon, 'reloadSec');
+  // 장탄이 늘면 `탄창 소모마다` 계열은 **덜** 터진다. 같은 값을 양쪽에 일관되게 쓴다.
+  const cap = (A && A.AMMO_BUFF === false) ? (w?.capacity ?? medianOf(c.weapon, 'capacity')) : effCapacity(c, ammo);
+  const rel = (A && A.AMMO_BUFF === false) ? (w?.reloadSec ?? medianOf(c.weapon, 'reloadSec')) : effReload(c, ammo);
   const ct = w?.chargeTimeSec ?? medianOf(c.weapon, 'chargeTimeSec');
   const ch = ct ? ct + (A.CHARGE_MOTION_SEC || 0) : (weapons.fireRate?.chargeWeapons?.shortChargeSec || 1.25);
   // 평타에 얹히는 계열(`평타 N발마다`·`풀차지`)은 **평타와 같은 가동률**을 받아야 한다.
   // 재장전 중에는 평타를 못 쏘므로 그 계열도 안 터진다. (2026-09-07)
-  const up = reloadUptime(c, A);
+  const up = reloadUptime(c, A, ammo);
   switch (cls) {
     case 'perCycle':    return 1 / A.BURST_CYCLE_SEC;
     case 'perShots':    return (nShots > 0 ? rate / nShots : rate) * up;
@@ -237,7 +286,7 @@ function freqPerSec(cls, nShots, c, A) {
 
 // 스킬 딜(초당). 계수를 **그 절의 발동 빈도로 곱해서** 더한다.
 // 예전에는 그냥 더해서 "평타마다 3.05%"와 "버스트마다 2808%"가 같은 자리에 들어갔다.
-function skillDps(c, A) {
+function skillDps(c, A, ammo) {
   const skills = c.skills || [];
   let total = 0;
   skills.forEach((sk, si) => {
@@ -261,7 +310,7 @@ function skillDps(c, A) {
       }
       const coef = sumRe(cl, SELF_COEF);
       if (!coef) return;
-      total += coef * freqPerSec(cls, nShots, c, A);
+      total += coef * freqPerSec(cls, nShots, c, A, ammo);
     });
   });
   return atkFactor(c) * total;
@@ -316,6 +365,13 @@ const SCOPE_RULES = new Map([
   ['all allies with a rocket launcher', (c, ms) => ms.filter((m) => lc(m.weapon) === 'rl')],
   ['all allies with a submachine gun', (c, ms) => ms.filter((m) => lc(m.weapon) === 'smg')],
   ['all shotgun-wielding allies (except self)', (c, ms) => ms.filter((m) => lc(m.weapon) === 'sg' && m.id !== c.id)],
+  // (2026-09-08) 재장전·장탄 버프를 넣으면서 버려지던 대상절을 다시 훑다가 나왔다.
+  // 표에 `all allies with a submachine gun`·`all shotgun-wielding allies (except self)`가
+  // 이미 있는데 **가장 흔한 산탄총 표기(7절)가 빠져 있었다.**
+  ['all shotgun-wielding allies', (c, ms) => ms.filter((m) => lc(m.weapon) === 'sg')],
+  ['all allies with a shotgun', (c, ms) => ms.filter((m) => lc(m.weapon) === 'sg')],
+  // 시전자 제외 — 해석에 애매함이 없다(5절).
+  ['all allies (except self)', (c, ms) => ms.filter((m) => m.id !== c.id)],
   // 속성 × 무기
   ['all electric code allies with rifles', (c, ms) => ms.filter((m) => lc(m.element) === 'electric' && lc(m.weapon) === 'ar')],
   ['all wind code allies with assault rifles', (c, ms) => ms.filter((m) => lc(m.element) === 'wind' && lc(m.weapon) === 'ar')],
@@ -353,6 +409,8 @@ export function scoreComposition(members, opts = {}) {
   const A = { ...ASSUMPTIONS, ...(opts.assumptions || {}) };
   // 멤버별 · 통별 버프 합(%)
   const buffOn = new Map(members.map((m) => [m.id, Object.fromEntries(BUCKET_KEYS.map((k) => [k, 0]))]));
+  // 최대 장탄수는 배수가 아니라 **장탄 자체**를 바꾸므로 통과 따로 모은다. (2026-09-08)
+  const ammoOn = new Map(members.map((m) => [m.id, { pct: 0, flat: 0, reloadPct: 0 }]));
   let dmgTaken = 0;
   const notes = [];
 
@@ -401,6 +459,18 @@ export function scoreComposition(members, opts = {}) {
           else notes.push(`대상절 해석 못 함(버림): "${scope}"`);
         });
         void anyBuff;
+        // 최대 장탄수 — 정수 표기와 백분율 표기가 섞여 있다. ▼도 읽는다(자기 페널티).
+        const aPct = sumSigned(cl, AMMO_PCT);
+        const aFlat = sumSigned(cl, AMMO_FLAT);
+        const aRel = sumSigned(cl, RELOAD_SPD);
+        if (aPct || aFlat || aRel) {
+          const tg = targetsOf(scope, caster, members);
+          if (tg) tg.forEach((m) => {
+            const a = ammoOn.get(m.id);
+            a.pct += aPct * uptime; a.flat += aFlat * uptime; a.reloadPct += aRel * uptime;
+          });
+          else notes.push(`대상절 해석 못 함(버림): "${scope}"`);
+        }
         const dt = sumRe(cl, DMG_TAKEN);
         if (dt) dmgTaken += dt * uptime;
       });
@@ -410,15 +480,16 @@ export function scoreComposition(members, opts = {}) {
   let total = 0;
   const parts = members.map((m) => {
     // 초당 기여 = 평타 + 스킬(빈도 반영). 둘 다 기본 공격력 보정이 들어가 있다.
-    const na = normalAttackDps(m, A);
-    const sd = skillDps(m, A);
+    const ammo = ammoOn.get(m.id);
+    const na = normalAttackDps(m, A, ammo);
+    const sd = skillDps(m, A, ammo);
     const self = na + sd;
     const b = buffOn.get(m.id);
     // 통 안에서는 더하고, 통끼리는 곱한다.
     const mult = BUCKET_KEYS.reduce((a, k) => a * (1 + b[k] / 100), 1);
     const v = self * mult;
     total += v;
-    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, mult, value: v };
+    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, ammo, mult, value: v };
   });
   total *= (1 + dmgTaken / 100);
 
@@ -434,7 +505,13 @@ export function scoreComposition(members, opts = {}) {
 const TIER_RHO_BASELINE = 0.55;
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
-const SCOPE_CLAUSE_BASELINE = 22;
+const SCOPE_CLAUSE_BASELINE = 35;
+
+// 장탄·재장전 버프가 혼자 있을 때 점수를 바꾸는 캐릭터 수 / 그중 ▼로 내려가는 수.
+const AMMO_MOVED_BASELINE = 33;
+// ▼로 내려가는 것은 2명이다(K · 모더니아). 아니스 : 스파클링 서머는 장탄 ▼73.92%를 갖고 있지만
+// 같은 스킬의 재장전 속도 ▲77%가 그걸 넘어서 순증이 된다 — 두 스탯을 함께 읽은 결과다.
+const AMMO_PENALTY_BASELINE = 2;
 
 // `for N round(s)` 버프를 버렸을 때 자기버프 배수가 실제로 내려가는 캐릭터 수.
 const ROUND_BUFF_BASELINE = 8;
@@ -681,8 +758,11 @@ function selfTest() {
     const byType = {};
     let lowered = 0; let raised = 0;
     cdb.filter((c) => (c.skills || []).length).forEach((c) => {
-      const on = scoreComposition([c], { detail: true }).parts[0].normal;
-      const off = scoreComposition([c], { detail: true, assumptions: { RELOAD_UPTIME: false } }).parts[0].normal;
+      // ⚠️ **장탄수 버프를 양쪽에서 끈다.** 이 검사가 재는 것은 재장전 공식이지 장탄 버프가
+      //    아니고, 대조 상대인 weapons.json의 표도 **기본 장탄** 기준이다. 안 끄면 자기
+      //    장탄 버프를 가진 캐릭터가 섞여 SMG 중앙값이 0.808 → 0.833으로 밀린다(실제로 겪었다).
+      const on = scoreComposition([c], { detail: true, assumptions: { AMMO_BUFF: false } }).parts[0].normal;
+      const off = scoreComposition([c], { detail: true, assumptions: { AMMO_BUFF: false, RELOAD_UPTIME: false } }).parts[0].normal;
       if (!off) return;
       if (on < off - 1e-9) lowered += 1; else if (on > off + 1e-9) raised += 1;
       (byType[c.weapon] = byType[c.weapon] || []).push(on / off);
@@ -740,6 +820,40 @@ function selfTest() {
     // 값이 아니라 **계산**을 재는 부분: 되돌렸을 때 실제로 얼마나 부풀었는지.
     const worst = carriers.length ? carriers.sort((a, b) => parseFloat(b.split('x')[1]) - parseFloat(a.split('x')[1]))[0] : '없음';
     console.log(`  발수 버프를 버려서 자기버프 배수가 내려간 캐릭터 ${lowered}명 (오르는 경우 ${raised}명) · 최대 ${worst}`);
+  }
+
+  // (14) **최대 장탄수·재장전 속도 버프가 통째로 버려지던 것.** (2026-09-08)
+  //      둘 다 딜 배수가 아니라 **재장전 가동률**을 바꾸는 스탯이라 BUFF_BUCKETS에 자리가
+  //      없었고, 그래서 0으로 사라지고 있었다. 새 기전은 만들지 않았다 — 2026-09-07에 넣은
+  //      `reloadUptime`이 쓰는 `capacity`·`reloadSec`를 원문의 숫자로 바꿀 뿐이다.
+  //
+  //      🔴 **양방향이라는 것이 중요하다.** 프리바티는 아군 전체의 최대 장탄을 ▼50.66%로
+  //      깎고(대신 재장전 속도 ▲51.16%) 자기 skill2가 `마지막 탄환 명중 시` 터진다 —
+  //      장탄을 줄여 재장전을 자주 하는 것이 그의 기전이다. 이걸 반영하니 혼자 있을 때
+  //      점수가 +37% 올랐다. 모더니아·아니스 : 스파클링 서머·K의 자기 페널티는 반대로 내려간다.
+  //      **지금까지 페널티를 공짜로 넘기고 있었다.**
+  {
+    checked += 1;
+    let moved = 0; let pen = 0;
+    cdb.filter((c) => (c.skills || []).length).forEach((c) => {
+      const on = scoreComposition([c], { detail: true }).parts[0].self;
+      const off = scoreComposition([c], { detail: true, assumptions: { AMMO_BUFF: false } }).parts[0].self;
+      if (!off) return;
+      if (Math.abs(on - off) > 1e-9) moved += 1;
+      if (on < off - 1e-9) pen += 1;
+    });
+    if (moved < AMMO_MOVED_BASELINE) {
+      problems.push(`장탄·재장전 버프가 점수를 바꾸는 캐릭터가 ${AMMO_MOVED_BASELINE} → ${moved}명으로 줄었다`
+        + ' — 되돌려졌거나 원문 표기가 바뀌었다');
+    } else if (moved > AMMO_MOVED_BASELINE) {
+      console.log(`  ℹ️ 장탄·재장전 버프가 점수를 바꾸는 캐릭터가 ${AMMO_MOVED_BASELINE} → ${moved}명으로 늘었다. 기준선을 올릴 것.`);
+    }
+    // **내려가는 쪽이 있어야 한다.** 전부 오르기만 하면 ▼를 안 읽고 있다는 뜻이다.
+    if (pen < AMMO_PENALTY_BASELINE) {
+      problems.push(`장탄 ▼(자기 페널티)로 점수가 내려가는 캐릭터가 ${AMMO_PENALTY_BASELINE} → ${pen}명으로 줄었다`
+        + ' — ▼를 안 읽고 버프만 읽으면 페널티를 공짜로 넘기게 된다');
+    }
+    console.log(`  장탄·재장전 버프가 점수를 바꾸는 캐릭터 ${moved}명 (그중 ▼로 내려가는 ${pen}명)`);
   }
 
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
