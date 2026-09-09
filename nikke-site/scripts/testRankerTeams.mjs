@@ -35,9 +35,9 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
 const { scoreComposition } = await import(pathToFileURL(path.join(ROOT, 'scripts', 'simulateTeams.mjs')).href);
 
-// 기준선 — 메타 풀 백분위의 중앙값(%). 기본 표본 400에서 실측 69.5 (표본 1200이면 71.3 —
+// 기준선 — 메타 풀 백분위의 중앙값(%). 기본 표본 400에서 실측 70.5 (2026-09-09 버스트 쿨 감소 반영으로 69.5 → 70.5) (표본 1200이면 71.3 —
 // 표본 수를 바꾸면 값이 조금 움직이므로 기준선은 기본값 기준이다). 떨어지면 시뮬레이터를 나쁘게 바꾼 것이다.
-const EXPECTED_MEDIAN = 69;
+const EXPECTED_MEDIAN = 70;
 // 씨앗이 고정이라 코드가 그대로면 값도 그대로다 — 여유를 크게 둘 이유가 없다.
 // 2로 뒀더니 **버프를 통째로 무시하는 역테스트(69.5 → 67.5)가 빠져나갔다.** 1로 조인다.
 const TOLERANCE = 1;

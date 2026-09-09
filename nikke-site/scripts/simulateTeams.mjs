@@ -103,6 +103,9 @@ export const ASSUMPTIONS = {
   // 이걸 넣기 전에는 `Affects all enemies. Deals 457% …`가 단일 대상 457%와 **같은 값**으로
   // 들어갔다. 광역 딜이 존재하지 않는 것과 같았다(값을 실은 적 대상절 173절 / 77종).
   ENEMY_COUNT: 1,
+  // 버스트 쿨 감소를 버스트 스킬 가동률에 반영할 것인가. (2026-09-09)
+  // false로 두면 이전처럼 통째로 무시한다 — selfTest 17번이 두 계산을 대본다.
+  BURST_CDR: true,
   // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
   //
   // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
@@ -160,6 +163,19 @@ const DMG_TAKEN = /Damage Taken\s*▲\s*(\d[\d.]*)%/ig;
 // 일반적인 뜻이고, 값이 100%를 넘어도 음수가 되지 않는다(`기본 × (1 - x)`는 100%에서 0이 된다).
 // ⚠️ 이것도 새 상수가 아니다 — 2026-09-07에 넣은 재장전 가동률이 쓰는 `reloadSec`를 바꿀 뿐이다.
 const RELOAD_SPD = /Reload(?:ing)? Speed\s*([▲▼])\s*(\d[\d.]*)%/ig;
+// **버스트 스킬 쿨타임 감소.** (2026-09-09)
+//
+// 랭커 조합 검증(testRankerTeams)에서 타워 하위권에 리타가 걸려 나왔다. 리타는 게임에서
+// 가장 많이 쓰이는 1단계 서포터인데 핵심이 `Cooldown of Burst Skill ▼ 2.34 sec`이고
+// **우리는 이 축을 아예 안 보고 있었다.**
+//
+// ⚠️ 표기가 두 가지다 — `Cooldown of Burst Skill ▼` 와 `Burst Skill cooldown ▼`.
+//    앞의 것만 읽으면 볼륨·헬름 : 아쿠아마린 등 7절을 놓친다. 실측 29절 / 19명.
+const BURST_CDR = /(?:Cooldown of Burst Skill|Burst Skill cooldown)\s*([▲▼])\s*(\d[\d.]*)\s*sec/ig;
+// `Once:` / `Twice:` / `Three times:` 로 갈리는 단계형. **첫 단계만 센다.**
+// 리타는 2.34 / 2.7 / 3.17로 커지는데 셋을 더하면 8.21초가 된다 — 전투 내내 최대 단계였다는
+// 가정이다. 확정인 것은 첫 단계뿐이므로 그것만 연다(여집합 규칙의 최솟값과 같은 취지).
+const CDR_LATER_PHASE = /^(?:Twice|Three times|Four times|Five times):/i;
 const AMMO_PCT  = /Max(?:imum)? [Aa]mmunition [Cc]apacity\s*([▲▼])\s*(\d[\d.]*)%/ig;
 const AMMO_FLAT = /Max(?:imum)? [Aa]mmunition [Cc]apacity\s*([▲▼])\s*(\d+)(?!\s*[.\d]*%)/ig;
 const sumSigned = (str, re) => {
@@ -504,6 +520,46 @@ export function scoreComposition(members, opts = {}) {
   let dmgTaken = 0;
   const notes = [];
 
+  // --- 0단계: 버스트 쿨 감소를 먼저 모은다. (2026-09-09) ---
+  //
+  // **버프보다 먼저 돌아야 한다.** 리타의 쿨 감소는 팀 전원의 버스트 가동률을 바꾸는데,
+  // 한 번에 처리하면 리타보다 먼저 계산된 멤버가 그 효과를 못 받는다.
+  //
+  // 세는 조건 — 발동 조건이 **주기적으로 도는 계열**일 때만 센다
+  // (perCycle · perReload · perCharge · battleStart). 이유:
+  //   · 마키마 `1 time(s) per battle` · 레드 후드 `once per battle` 은 전투당 1회라
+  //     상시 쿨 감소가 아니다. 40초를 상시로 넣으면 레드 후드의 버스트가 쿨 0이 된다
+  //   · 티아 `when recovering Cover's HP` 처럼 분류 못 하는 것은 빈도를 모른다
+  // 실측: 29절 중 이 조건을 통과하는 것은 아래 검사가 센다.
+  const cdrOn = new Map(members.map((m) => [m.id, 0]));
+  if (A.BURST_CDR !== false) {
+    const CYCLIC = new Set(['perCycle', 'perReload', 'perCharge', 'battleStart']);
+    members.forEach((caster) => {
+      (caster.skills || []).forEach((sk, idx) => {
+        const isBurst = idx === (caster.skills || []).length - 1;
+        let scope = null;
+        let cls = isBurst ? 'perCycle' : null;
+        clauses(sk.desc).forEach((cl) => {
+          const a = cl.match(/^Activates\s+(.+?)\.?$/i);
+          if (a) {
+            const hit = TRIGGER_CLASSES.find(([, re]) => re.test(a[1]));
+            cls = hit ? hit[0] : null;
+            return;
+          }
+          const sc = scopeOf(cl);
+          if (sc !== null) { scope = sc; return; }
+          if (!scope || !CYCLIC.has(cls)) return;
+          if (CDR_LATER_PHASE.test(cl.replace(CLAUSE_PREFIX, ''))) return;  // 단계형은 첫 단계만
+          const v = sumSigned(cl, BURST_CDR);
+          if (!v) return;
+          const tg = targetsOf(scope, caster, members);
+          // ▼가 감소다. sumSigned는 ▼를 음수로 주므로 부호를 뒤집어 "줄어드는 초"로 만든다.
+          if (tg) tg.forEach((m) => { cdrOn.set(m.id, cdrOn.get(m.id) + (-v)); });
+        });
+      });
+    });
+  }
+
   members.forEach((caster) => {
     (caster.skills || []).forEach((sk, idx) => {
       const isBurst = idx === (caster.skills || []).length - 1;
@@ -525,7 +581,16 @@ export function scoreComposition(members, opts = {}) {
         // `for N round(s)`·`for N shot(s)`는 **발수지 지속시간이 아니다.** 몇 발 중 몇 발인지는
         // 원문에 없으므로 횟수를 만들지 않고 버린다. (2026-09-07)
         if (A.ROUND_BUFF_DROP !== false && ROUND_DURATION.test(cl) && !DURATION.test(cl)) return 0;
-        if (isBurst) return Math.min(1, (dur ? parseFloat(dur[1]) : 10) / burstCd(caster));
+        // 버스트 쿨 감소를 반영한 유효 쿨타임. (2026-09-09)
+        // ⚠️ **바닥은 풀버스트 한 사이클이다.** 쿨이 아무리 짧아져도 팀이 풀버스트에
+        //    들어가는 주기보다 자주 버스트를 쓸 수는 없다. 블랑의 `▼40.76초`(자신)는
+        //    40초 쿨을 사실상 0으로 만드는데, 바닥이 없으면 가동률이 1.0이 되어
+        //    10초짜리 버프가 상시가 된다. 바닥을 두면 20초 → 가동률 0.5다.
+        if (isBurst) {
+          const raw = burstCd(caster);
+          const cd = Math.max(A.BURST_CYCLE_SEC, raw - (cdrOn.get(caster.id) || 0));
+          return Math.min(1, (dur ? parseFloat(dur[1]) : 10) / cd);
+        }
         if (!hasCd || A.SKILL_CD_UPTIME === false) return A.PASSIVE_UPTIME;
         // `continuously`는 원문이 "안 꺼진다"고 말하는 것이다 — 쿨타임과 무관하다.
         if (/continuously/i.test(cl)) return A.PASSIVE_UPTIME;
@@ -634,6 +699,9 @@ export function scoreComposition(members, opts = {}) {
 // 🔴 2026-09-07에 **재는 값을 바꿨다.** 옛 0.40은 `parts[].self`(자기 버프가 빠진 값) 기준이다.
 // 같은 코드에서 `parts[].value`(자기 버프 포함)로 재면 0.579가 나온다 — 계산이 좋아진 게 아니라
 // 계측기가 그동안 버프 축을 안 재고 있었던 것이다. 경위는 아래 (6)번 주석.
+// 버스트 쿨 감소가 실제로 팀 점수를 바꾸는 캐릭터 수.
+const CDR_MOVERS_BASELINE = 12;
+
 const TIER_RHO_BASELINE = 0.59;  // 2026-09-08 `for N shots` 누락을 고쳐 0.579 → 0.588
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
@@ -1111,6 +1179,61 @@ function selfTest() {
     }
     console.log(`  적 대상절 — all enemies ${(a5 / a1).toFixed(1)}배(적5) · the target ${(t5 / t1).toFixed(1)}배 · `
       + `3기 지정 min(3,적수) · 해석 불가 1기 · 기본값에서 바뀌는 캐릭터 ${moved}명`);
+  }
+  // (17) **버스트 쿨 감소가 버스트 가동률에 실제로 반영되는가.** (2026-09-09)
+  //      랭커 조합 검증에서 타워 하위권에 리타가 걸려 나와 찾았다 — 게임에서 가장 많이 쓰이는
+  //      1단계 서포터인데 핵심(`Cooldown of Burst Skill ▼ 2.34 sec`)을 아예 안 보고 있었다.
+  //      실측: 등록 조합 214팀 중 141팀이 올랐고 내려간 팀 0. 랭커 백분위 69.5 → 70.5%.
+  //
+  //      합성 픽스처로 규칙을 직접 시험한다. 버스트(쿨 40초)에 `ATK ▲ 100% for 10 sec`을
+  //      달아 두면 가동률이 그대로 버프값이 된다 — 25%(=100×10/40)가 기준이다.
+  {
+    checked += 1;
+    const base = cdb.find((c) => c.title === 'Liter') || cdb[0];
+    const mk = (cdrDesc) => ({
+      ...base, id: 'zz-cdr', title: 'ZZ Cdr',
+      skills: [{ name: 'p', type: 'Passive', cd: 'N/A', desc: cdrDesc },
+        { name: 'b', type: 'Active', cd: '40', desc: 'Affects self. ATK ▲ 100% for 10 sec.' }],
+    });
+    const filler = cdb.filter((c) => c.title !== base.title && (c.skills || []).length).slice(0, 4);
+    const atk = (d) => scoreComposition([mk(d), ...filler], { detail: true })
+      .parts.find((x) => x.title === 'ZZ Cdr').buckets.atk;
+    const CYC = 'Activates when entering Full Burst. Affects all allies. ';
+    const near = (a, b) => Math.abs(a - b) < 0.05;
+
+    // ① 쿨 감소가 없으면 100 × 10/40 = 25.
+    const plain = atk('Affects self.');
+    if (!near(plain, 25)) problems.push('버스트 가동률 기준값이 25가 아니다 (' + plain.toFixed(2) + ') — 픽스처나 가동률 계산이 바뀌었다');
+    // ② ▼20초면 쿨 20초 → 100 × 10/20 = 50.
+    const cut = atk(CYC + 'Cooldown of Burst Skill ▼ 20 sec.');
+    if (!near(cut, 50)) problems.push('버스트 쿨 ▼20초가 가동률에 안 들어간다 (' + cut.toFixed(2) + ', 50이어야 한다)');
+    // ③ **바닥.** ▼40초여도 풀버스트 한 사이클(20초)보다 짧아질 수 없다 → 여전히 50.
+    const floor = atk(CYC + 'Cooldown of Burst Skill ▼ 40 sec.');
+    if (!near(floor, 50)) problems.push('버스트 쿨의 바닥이 없다 (' + floor.toFixed(2) + ', 50이어야 한다) — 쿨이 0에 가까워지면 10초 버프가 상시가 된다');
+    // ④ 전투당 1회는 상시 쿨 감소가 아니다 → 25 그대로.
+    const once = atk('Activates once per battle. Affects all allies. Cooldown of Burst Skill ▼ 20 sec.');
+    if (!near(once, 25)) problems.push('전투당 1회짜리 쿨 감소를 상시로 세고 있다 (' + once.toFixed(2) + ', 25여야 한다)');
+    // ⑤ 단계형은 **첫 단계만.** Once ▼10 → 쿨 30 → 100×10/30 = 33.33. 둘 다 세면 50이 된다.
+    const phase = atk(CYC + 'Once: Cooldown of Burst Skill ▼ 10 sec. Twice: Cooldown of Burst Skill ▼ 10 sec.');
+    if (!near(phase, 100 / 3)) problems.push('단계형 쿨 감소를 첫 단계만 세지 않는다 (' + phase.toFixed(2) + ', 33.33이어야 한다)');
+    // ⑥ 두 번째 표기(`Burst Skill cooldown ▼`)도 읽어야 한다.
+    const alt = atk(CYC + 'Burst Skill cooldown ▼ 20 sec.');
+    if (!near(alt, 50)) problems.push('`Burst Skill cooldown ▼` 표기를 못 읽는다 (' + alt.toFixed(2) + ', 50이어야 한다) — 이 표기가 7절 있다');
+
+    // 실제 데이터에서 몇 명에게 걸리는지 (관측)
+    let movers = 0;
+    cdb.filter((c) => (c.skills || []).length).forEach((c) => {
+      const team = [c, ...filler];
+      const on = scoreComposition(team).total;
+      const off = scoreComposition(team, { assumptions: { BURST_CDR: false } }).total;
+      if (Math.abs(on - off) > 1e-9) movers += 1;
+    });
+    if (movers < CDR_MOVERS_BASELINE) {
+      problems.push('버스트 쿨 감소가 걸리는 캐릭터가 ' + CDR_MOVERS_BASELINE + ' → ' + movers + '명으로 줄었다 — 되돌려졌거나 원문 표기가 바뀌었다');
+    } else if (movers > CDR_MOVERS_BASELINE) {
+      console.log('  ℹ️ 버스트 쿨 감소가 걸리는 캐릭터가 ' + CDR_MOVERS_BASELINE + ' → ' + movers + '명으로 늘었다. 기준선을 올릴 것.');
+    }
+    console.log('  버스트 쿨 감소 — 합성 시험 6종 통과 · 실제로 걸리는 캐릭터 ' + movers + '명');
   }
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
   //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).
