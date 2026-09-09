@@ -93,6 +93,16 @@ export const ASSUMPTIONS = {
   // 여집합 대상절(두 절이 아군을 남김없이 가르는 경우)의 공통분모를 열 것인가. (2026-09-08)
   // false로 두면 이전처럼 양쪽 다 버린다 — selfTest 15번이 두 계산을 대본다.
   COMPLEMENT_SCOPE: true,
+  // 전투에 적이 몇 기 있는가. (2026-09-08)
+  //
+  // ⚠️ **이 값은 데이터에 없다. 그래서 기본을 1로 둔다 — 지금까지와 값이 완전히 같다.**
+  //    보스전·솔로레이드는 실제로 1기(스테이지 타깃)이므로 1이 맞다. 2 이상이 의미를 갖는
+  //    것은 **캠페인**뿐이고, 스테이지마다 다르므로 상수로 정할 근거가 없다.
+  //    `--enemies=N`으로 바꿔 가며 보라고 열어 둔 것이지 우리가 정한 값이 아니다.
+  //
+  // 이걸 넣기 전에는 `Affects all enemies. Deals 457% …`가 단일 대상 457%와 **같은 값**으로
+  // 들어갔다. 광역 딜이 존재하지 않는 것과 같았다(값을 실은 적 대상절 173절 / 77종).
+  ENEMY_COUNT: 1,
   // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
   //
   // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
@@ -300,6 +310,11 @@ function skillDps(c, A, ammo) {
     const isBurst = si === skills.length - 1;
     let cls = isBurst ? 'perCycle' : null;   // 버스트 스킬의 절은 기본이 사이클마다
     let nShots = 1;
+    // 적 대상절 — 광역 딜은 대상 수만큼 곱해야 한다. (2026-09-08)
+    // ⚠️ 대상절과 계수가 **같은 절에 붙어 있는 경우가 있다**(프리바티:
+    //    `Affects all enemies Deals 457.87% of final ATK as damage.` — 마침표가 빠졌다).
+    //    그래서 대상절을 읽고 나서 `return`하지 않고 같은 절에서 계수도 이어서 읽는다.
+    let eTargets = 1;
     (sk.desc || '').split(/(?<=\.)\s+/).map((x) => x.trim()).forEach((cl) => {
       const m = cl.match(/^Activates\s+(.+?)\.?$/i);
       if (m) {
@@ -315,9 +330,11 @@ function skillDps(c, A, ammo) {
         nShots = n ? Number(n[1]) : 1;
         return;
       }
+      const es = scopeOf(cl);
+      if (es !== null) eTargets = enemyTargetsOf(es, A);
       const coef = sumRe(cl, SELF_COEF);
       if (!coef) return;
-      total += coef * freqPerSec(cls, nShots, c, A, ammo);
+      total += coef * eTargets * freqPerSec(cls, nShots, c, A, ammo);
     });
   });
   return atkFactor(c) * total;
@@ -392,6 +409,38 @@ const SCOPE_RULES = new Map([
   ['self if there are no other defender allies in the squad', (c, ms) => (ms.some((m) => m.id !== c.id && lc(m.class) === 'defender') ? [] : [c])],
   ['self if there is another defender ally in the squad', (c, ms) => (ms.some((m) => m.id !== c.id && lc(m.class) === 'defender') ? [c] : [])],
 ]);
+
+// ---------------------------------------------------------------------------
+// **적 대상절 → 그 절이 몇 기를 때리는가.** (2026-09-08)
+//
+// 아군 대상절과 같은 방식이다 — 정확 문자열 표 + 해석 못 하면 **가장 보수적인 값(1)**.
+// 1로 떨어뜨리는 것은 "없는 근거를 만들지 않는다"와 같고, 기본 ENEMY_COUNT=1에서는
+// 어떤 절이든 결과가 1이라 **전체가 지금까지와 완전히 같은 값**이 된다.
+//
+// ⚠️ 아래 셋만 "전체"로 연다. 나머지 `all …` 변형은 **부분집합이라 몇 기인지 모른다** —
+//    `all enemies within attack range`(사거리 안) · `all enemies in lock-on status`(락온 수는
+//    스노우 화이트 : 헤비암즈의 스킬에 달려 있다) · `all wind code enemies`(속성) ·
+//    `all enemies hit`(맞은 수) · 조건부 1종. 전부 1로 둔다.
+const ENEMY_ALL_SCOPES = new Set([
+  'all enemies',                    // 44절 — 압도적 다수
+  'all enemies (including parts)',  // 2절 — 파츠 수는 모르므로 더하지 않는다
+]);
+
+// `3 enemy unit(s) with the highest def` 처럼 **선두에 숫자가 붙은 것**은 그 숫자가 곧 대상 수다.
+// 23종 32절. 정규식이지만 '선두 정수 + enem'이라 과매칭이 원리적으로 어렵다.
+const ENEMY_LEAD_NUM = /^(\d+)\s+(?:enem|random enem)/i;
+
+export function enemyTargetsOf(scope, A) {
+  // 검사 16-⑤ 전용 스위치 — 적 대상절 해석을 통째로 끈다(도입 전 계산).
+  if (A && A.ENEMY_SCOPE_OFF) return 1;
+  const cap = Math.max(1, Number(A?.ENEMY_COUNT) || 1);
+  const s = String(scope || '').toLowerCase().trim();
+  if (!s) return 1;
+  if (ENEMY_ALL_SCOPES.has(s)) return cap;
+  const n = s.match(ENEMY_LEAD_NUM);
+  if (n) return Math.min(Number(n[1]), cap);
+  return 1; // 해석 못 한 적 대상절 — 단일 대상으로 본다(부풀리지 않는 쪽)
+}
 
 function targetsOf(scope, caster, members) {
   const s = (scope || '').toLowerCase().trim();
@@ -528,8 +577,14 @@ export function scoreComposition(members, opts = {}) {
             notes.push(`대상절 해석 못 함(버림): "${scope}"`);
           }
         }
+        // 적에게 거는 `Damage Taken ▲`도 **몇 기에 걸리는지**에 따라 값이 다르다. (2026-09-08)
+        // 적이 5기인데 1기에만 걸었다면 팀 딜의 1/5에만 얹힌다. 걸린 비율로 깎는다.
+        // ENEMY_COUNT=1(기본)에서는 비율이 항상 1이라 지금까지와 값이 같다.
         const dt = sumRe(cl, DMG_TAKEN);
-        if (dt) dmgTaken += dt * uptime;
+        if (dt) {
+          const cap = Math.max(1, Number(A.ENEMY_COUNT) || 1);
+          dmgTaken += dt * uptime * (enemyTargetsOf(scope, A) / cap);
+        }
       });
 
       // --- 여집합 대상절 정산 (2026-09-08) ---
@@ -582,7 +637,7 @@ export function scoreComposition(members, opts = {}) {
 const TIER_RHO_BASELINE = 0.59;  // 2026-09-08 `for N shots` 누락을 고쳐 0.579 → 0.588
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
-const SCOPE_CLAUSE_BASELINE = 35;
+const SCOPE_CLAUSE_BASELINE = 36;  // 2026-09-08 마침표 누락을 고쳐 팬텀의 대상절이 열려 35 → 36
 
 // 여집합 규칙으로 크라운이 낀 팀이 오르는 최소 폭(%). 실측 6.6%라 여유를 두고 5%로 잡는다.
 const COMPLEMENT_CROWN_MIN = 5;
@@ -1001,6 +1056,62 @@ function selfTest() {
       + ` · 리버렐리오(공통분모 없음) ${gl == null ? '?' : gl.toFixed(1)}%`);
   }
 
+  // (16) **적 대상절 — 광역 딜이 대상 수만큼 커지는가, 그리고 아무 데서나 커지지 않는가.** (2026-09-08)
+  //      그전에는 `Affects all enemies. Deals 457% …`가 단일 대상 457%와 **같은 값**으로 들어갔다.
+  //      값을 실은 적 대상절이 173절 / 77종인데 대상 수를 아무도 안 보고 있었다.
+  //
+  //      🔴 **기본 ENEMY_COUNT=1에서는 어떤 절이든 결과가 1이라 값이 하나도 안 바뀐다.**
+  //         그래서 "기본값에서 달라지지 않는가"도 함께 잰다 — 이게 이 변경의 안전 조건이다.
+  //
+  //      합성 픽스처로 규칙을 직접 시험한다. 실제 데이터에 그 조합이 없어도 규칙이 틀리면 잡힌다
+  //      (2026-09-08에 여집합 규칙을 실제 캐릭터로만 재다가 역테스트 둘을 놓친 뒤로 이 방식이다).
+  {
+    checked += 1;
+    const base = cdb.find((c) => c.title === 'Privaty') || cdb[0];
+    const mk = (scope) => ({
+      ...base, id: 'zz-enemy', title: 'ZZ Enemy',
+      skills: [{ name: 'f', type: 'Passive', cd: 'N/A', desc: 'Affects self.' },
+        { name: 'b', type: 'Active', cd: '40',
+          desc: `Affects ${scope}. Deals 100% of final ATK as damage.` }],
+    });
+    const filler = cdb.filter((c) => c.title !== base.title && (c.skills || []).length).slice(0, 4);
+    const dmg = (scope, n) => scoreComposition([mk(scope), ...filler],
+      { detail: true, assumptions: { ENEMY_COUNT: n } }).parts.find((x) => x.title === 'ZZ Enemy').skill;
+
+    // ① `all enemies`는 적 수만큼 커진다.
+    const a1 = dmg('all enemies', 1); const a5 = dmg('all enemies', 5);
+    if (!(a1 > 0) || Math.abs(a5 / a1 - 5) > 1e-6) {
+      problems.push(`적 대상절 'all enemies'가 적 5기에서 5배가 안 된다 (${a1.toFixed(2)} → ${a5.toFixed(2)})`);
+    }
+    // ② 단일 대상은 적이 늘어도 그대로여야 한다.
+    const t1 = dmg('the target', 1); const t5 = dmg('the target', 5);
+    if (Math.abs(t5 - t1) > 1e-6) {
+      problems.push(`단일 대상절 'the target'이 적 수를 따라 커졌다 (${t1.toFixed(2)} → ${t5.toFixed(2)}) — 광역이 아닌데 곱하고 있다`);
+    }
+    // ③ 선두 숫자형은 적 수와 그 숫자 중 **작은 쪽**이다.
+    const n3of5 = dmg('3 enemy unit(s) with the highest ATK', 5);
+    const n3of2 = dmg('3 enemy unit(s) with the highest ATK', 2);
+    if (Math.abs(n3of5 / t1 - 3) > 1e-6 || Math.abs(n3of2 / t1 - 2) > 1e-6) {
+      problems.push(`'3 enemy unit(s)'가 min(3, 적 수)로 안 나온다 (적5→${(n3of5 / t1).toFixed(2)}배 · 적2→${(n3of2 / t1).toFixed(2)}배)`);
+    }
+    // ④ 해석 못 하는 적 대상절은 1로 떨어져야 한다(부풀리지 않는 쪽).
+    const u5 = dmg('all enemies in Lock-On status', 5);
+    if (Math.abs(u5 - t1) > 1e-6) {
+      problems.push(`해석 못 하는 적 대상절이 1로 안 떨어졌다 (${(u5 / t1).toFixed(2)}배) — 모르는 것을 전체로 열고 있다`);
+    }
+    // ⑤ **기본값에서 실사용 조합 214팀의 점수가 하나도 안 바뀌어야 한다.**
+    let moved = 0;
+    cdb.filter((c) => (c.skills || []).length).forEach((c) => {
+      const on = scoreComposition([c, ...filler], { assumptions: { ENEMY_COUNT: 1 } }).total;
+      const off = scoreComposition([c, ...filler], { assumptions: { ENEMY_COUNT: 1, ENEMY_SCOPE_OFF: true } }).total;
+      if (Math.abs(on - off) > 1e-9) moved += 1;
+    });
+    if (moved > 0) {
+      problems.push(`ENEMY_COUNT=1인데 점수가 달라진 캐릭터가 ${moved}명 있다 — 기본값은 도입 전과 완전히 같아야 한다`);
+    }
+    console.log(`  적 대상절 — all enemies ${(a5 / a1).toFixed(1)}배(적5) · the target ${(t5 / t1).toFixed(1)}배 · `
+      + `3기 지정 min(3,적수) · 해석 불가 1기 · 기본값에서 바뀌는 캐릭터 ${moved}명`);
+  }
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
   //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).
   //        **자기 버프는 이제 본다.**
@@ -1093,8 +1204,12 @@ if (!RUN_CLI) { /* import 용도 — 아래 CLI를 건너뛴다 */ } else if (pr
     console.error('이름을 못 찾음:', arg('team', '').split(',').filter((t) => !byTitle.get(t.trim())).join(', '));
     process.exit(1);
   }
-  const r = scoreComposition(members, { detail: true });
-  console.log(`상대 점수 ${r.total.toFixed(0)}  (절대값에 의미 없음 — 조합끼리 비교용)`);
+  // `--enemies=N` — 적 수를 바꿔 가며 본다. 기본 1(보스전·솔로레이드와 같다).
+  // 이 값은 데이터에 없다. 캠페인에서 광역이 얼마나 달라지는지 **보기 위한 손잡이**이지
+  // 우리가 정한 상수가 아니다.
+  const enemies = Number(arg('enemies', 1)) || 1;
+  const r = scoreComposition(members, { detail: true, assumptions: { ENEMY_COUNT: enemies } });
+  console.log(`상대 점수 ${r.total.toFixed(0)}  (절대값에 의미 없음 — 조합끼리 비교용)  적 ${enemies}기`);
   console.log(`적 받는 데미지 ▲ 합: ${r.dmgTaken.toFixed(1)}%`);
   r.parts.forEach((p) => {
     const nz = Object.entries(p.buckets).filter(([, v]) => v > 0).map(([k, v]) => `${k} ${v.toFixed(0)}%`).join(' · ');
