@@ -43,8 +43,9 @@ node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
 node scripts/testI18n.mjs            # 25건
 node scripts/testEngineReasons.mjs   # 기준선: 문제 0건 (근거 문장 3개국어 실행 검사)
 node scripts/testRealTeams.mjs       # 기준선: 문제 0건 (등록된 실사용 조합 214건이 우리 규칙에서 성립하는가)
+node scripts/testBossProfile.mjs     # 기준선: 문제 0건 (보스별 방어 구성 — 랭커 조합에서 센 값·문장·점수 불변)
 node scripts/simulateTeams.mjs --selftest  # 기준선: 문제 0건 (조합 상대 비교기의 단조성)
-node scripts/testRankerTeams.mjs     # 기준선: 메타 풀 백분위 중앙값 69% (실제 랭커 조합이 우리 계산에서도 높은가)
+node scripts/testRankerTeams.mjs     # 기준선: 메타 풀 백분위 중앙값 70% (실제 랭커 조합이 우리 계산에서도 높은가)
 node scripts/analyzeSkillTriggers.mjs # 기준선: 분류 안 됨 179절 (래칫 — 늘면 ERROR)
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건

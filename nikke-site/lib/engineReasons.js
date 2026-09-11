@@ -58,6 +58,12 @@ const KO = {
   element_usage_low: ({ entries, element }) =>
     `[실전 기록] ${join(entries)}는(은) ${element} ` +
     `속성이지만 실제로는 이 약점 보스전에 잘 채용되지 않는 편입니다. (출처: enikk.app)`,
+  boss_defense_common: ({ boss, season, teams, withDefender }) =>
+    `[랭커 기록] 이 보스(시즌${season} '${boss}')를 클리어한 랭커 조합 ${teams}건 중 ` +
+    `${withDefender}건이 방어형을 1명 이상 넣었습니다. 이 조합에는 방어형이 없습니다. (출처: enikk.app)`,
+  boss_defense_rare: ({ boss, season, teams, withDefender }) =>
+    `[랭커 기록] 이 보스(시즌${season} '${boss}')를 클리어한 랭커 조합 ${teams}건 중 ` +
+    `방어형을 넣은 것은 ${withDefender}건뿐입니다. 방어형 없이 클리어한 조합이 더 많습니다. (출처: enikk.app)`,
   usage_entry: ({ name, usage }) => `${name}(${usage}%)`,
   treasure_suffix: '(애장품)',
   archetype_full: ({ name, note }) => `'${name}' 조합으로 알려진 구성입니다. ${note}`,
@@ -208,6 +214,12 @@ const EN = {
   element_usage_low: ({ entries, element }) =>
     `[Field record] ${join(entries)} are ${element} element, but in practice they are rarely fielded ` +
     `against this weakness boss. (Source: enikk.app)`,
+  boss_defense_common: ({ boss, season, teams, withDefender }) =>
+    `[Ranker record] Of ${teams} ranker teams that cleared this boss (season ${season}, '${boss}'), ` +
+    `${withDefender} fielded at least one Defender. This team has no Defender. (Source: enikk.app)`,
+  boss_defense_rare: ({ boss, season, teams, withDefender }) =>
+    `[Ranker record] Of ${teams} ranker teams that cleared this boss (season ${season}, '${boss}'), ` +
+    `only ${withDefender} fielded a Defender. More teams cleared it without one. (Source: enikk.app)`,
   usage_entry: ({ name, usage }) => `${name} (${usage}%)`,
   treasure_suffix: ' (Treasure)',
   archetype_full: ({ name, note }) => `This is the composition known as '${name}'. ${note}`,
@@ -350,6 +362,12 @@ const JA = {
   element_usage_low: ({ entries, element }) =>
     `［実戦記録］${join(entries)}は${element}属性ですが、実際にはこの弱点ボス戦であまり採用されていません。` +
     `（出典：enikk.app）`,
+  boss_defense_common: ({ boss, season, teams, withDefender }) =>
+    `［ランカー記録］このボス（シーズン${season}「${boss}」）をクリアしたランカー編成${teams}件のうち、` +
+    `${withDefender}件が防御型を1人以上入れています。この編成には防御型がいません。（出典：enikk.app）`,
+  boss_defense_rare: ({ boss, season, teams, withDefender }) =>
+    `［ランカー記録］このボス（シーズン${season}「${boss}」）をクリアしたランカー編成${teams}件のうち、` +
+    `防御型を入れたのは${withDefender}件だけです。防御型なしでクリアした編成の方が多いです。（出典：enikk.app）`,
   usage_entry: ({ name, usage }) => `${name}（${usage}%）`,
   treasure_suffix: '（宝もの）',
   archetype_full: ({ name, note }) => `「${name}」として知られる構成です。${note}`,

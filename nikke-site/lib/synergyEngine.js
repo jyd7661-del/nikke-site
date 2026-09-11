@@ -124,6 +124,39 @@ export const WEAKNESS_TO_BOSS_ELEMENT = {
 };
 
 // ---------------------------------------------------------------------------
+// 보스별 방어 구성 — 랭커 조합에서 **센다.** (2026-09-11)
+//
+// 유저 질문에서 출발했다: "공격데이터는 어떻게 하는게 좋을까? 보스마다 공격방식이 다를텐데."
+// 적의 공격력·패턴 수치는 **어디에도 없다**(enikk 보스 스킬 표에도 피해량이 없고, 5보스를
+// 옮겨 대봤지만 랭커의 방어 구성을 설명하지 못했다 — docs/open-items.md). 대신 **랭커가 그
+// 보스에 무엇을 들고 갔는지**는 soloRaidTeams에 이미 있다. 보스의 공격 방식이 그 선택에 찍혀 있다.
+//
+// 실측: 방어형을 1명 이상 넣은 팀의 비율이 보스마다 28%(Island Eater) ~ 64%(Annihilio)로 갈린다.
+//
+// ⚠️ **점수에 넣지 않는다 — 정보로만 쓴다.** 랭커는 필요한 만큼만 방어 자원을 들고 간다.
+//    생존을 점수 항으로 넣으면 탱커를 쌓은 조합이 높게 나오는데, 그건 랭커 조합과 반대 방향이다.
+//    솔로레이드에서 생존은 통과/실패(제약)이지 점수가 아니다.
+//
+// ⚠️ **`class === 'defender'`만 센다.** 보호막/회복 계열 구분도 해봤지만(보호막 비중 17%~49%,
+//    z=2.94) 그건 스킬 원문을 정규식으로 읽은 **B등급 판정**이다. 처음에 헐겁게 짰을 때는 자힐까지
+//    잡혀 전 보스가 같게 나왔을 정도로 분류에 따라 결론이 흔들린다. 사용자에게는 A등급만 내보낸다.
+const BOSS_DEFENSE = (() => {
+  const byTitle = new Map(characterDatabase.map((c) => [c.title, c]));
+  const out = {};
+  (soloRaidTeams.seasons || []).forEach((se) => {
+    const key = WEAKNESS_TO_BOSS_ELEMENT[String(se.weakness || '').toLowerCase()];
+    if (!key) return;
+    const teams = se.teams || [];
+    // 이름을 못 찾는 멤버가 있는 팀은 **세지 않는다** — 방어형이 누락된 채 "없음"으로 셀 수 있다.
+    const usable = teams.filter((t) => (t.members || []).every((n) => byTitle.has(n)));
+    const withDefender = usable.filter((t) => t.members.some((n) => byTitle.get(n).class === 'defender')).length;
+    out[key] = { season: se.raid, boss: se.boss, teams: usable.length, withDefender };
+  });
+  return out;
+})();
+export const bossDefenseProfile = (bossElement) => BOSS_DEFENSE[bossElement] || null;
+
+// ---------------------------------------------------------------------------
 // 자유 슬롯(빈칸) 차감 — 후보 비교용 (2026-08-09 추가)
 //
 // 빈칸은 "보유 로스터에서 조건에 맞는 최고 티어"로 채워진다. 즉 빈칸이 있는 조합은 고정 5인
@@ -977,6 +1010,20 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         entries: lowUsage.map((x) => R.usage_entry({ name: rName(x.m, lang), usage: x.usage })),
         element: bossElement,
       }));
+    }
+
+    // --- 보스별 방어 구성 (2026-09-11) — **점수는 안 건드린다. 정보만 붙인다.** ---
+    // 이 조합이 그 보스의 랭커 다수와 반대로 갔을 때만 한 줄을 붙인다.
+    //   · 랭커 **과반**이 방어형을 넣었는데 이 조합엔 없다 → boss_defense_common
+    //   · 랭커 **과반**이 방어형 없이 클리어했는데 이 조합엔 있다 → boss_defense_rare
+    // 문턱 "과반"은 튜닝한 값이 아니다 — 문장("~건이 넣었다 / 없이 클리어한 쪽이 더 많다")이
+    // 참이 되는 조건 그 자체다. 정확히 반반이면 어느 문장도 참이 아니므로 붙이지 않는다.
+    const prof = bossDefenseProfile(bossElement);
+    if (prof && prof.teams > 0) {
+      const hasDefender = members.some((m) => m.class === 'defender');
+      const args = { boss: prof.boss, season: prof.season, teams: prof.teams, withDefender: prof.withDefender };
+      if (!hasDefender && prof.withDefender * 2 > prof.teams) reasons.push(R.boss_defense_common(args));
+      else if (hasDefender && prof.withDefender * 2 < prof.teams) reasons.push(R.boss_defense_rare(args));
     }
   }
 
