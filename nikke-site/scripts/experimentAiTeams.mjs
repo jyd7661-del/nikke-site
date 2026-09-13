@@ -6,6 +6,8 @@
  *   node scripts/experimentAiTeams.mjs --live --model=sonnet --limit=10   # 시험 삼아 10건만 직접 호출
  *   node scripts/experimentAiTeams.mjs --batch --model=opus               # 214건 배치 제출(50% 할인)
  *   node scripts/experimentAiTeams.mjs --resume=<batch_id> --model=opus   # 배치 결과 회수·채점
+ *   node scripts/experimentAiTeams.mjs --export --limit=10                # 프롬프트만 내보내기(구독 서브에이전트용)
+ *   node scripts/experimentAiTeams.mjs --import=<answers.jsonl> --label=haiku-sub   # 서브에이전트 답 채점
  *
  * 유저 방향(2026-09-04): "조합은 고도화된 AI가 추천을 해주는 방식이 맞아." 그 전환의 근거를
  * 숫자로 만드는 실험이다. 판단 기준은 규모(2026-09-14): 지금 하루 2건이 아니라 **하루 수백~천 건일 때**
@@ -38,7 +40,10 @@ const arg = (n, d) => { const m = process.argv.find((a) => a.startsWith('--' + n
 const has = (n) => process.argv.includes('--' + n);
 const MODEL_KEY = arg('model', 'sonnet');
 const LIMIT = Number(arg('limit', 0)) || 0;
-const MODE = has('live') ? 'live' : has('batch') ? 'batch' : arg('resume', null) ? 'resume' : 'dry';
+const MODE = has('live') ? 'live' : has('batch') ? 'batch' : arg('resume', null) ? 'resume' : has('export') ? 'export' : arg('import', null) ? 'import' : 'dry';
+// --export : 프롬프트를 probe-data/ai-teams-prompts.jsonl 로 내보낸다(API 호출 없음). 클로드 코드 서브에이전트(구독)에게 돌릴 때 쓴다.
+// --import=<file> --label=<이름> : 서브에이전트가 답한 {id, members[5], reasoning} JSONL을 같은 잣대로 채점한다.
+//   ⚠️ 서브에이전트 답은 usage가 없어 비용은 못 잰다 — 품질(겹침·백분위)만 API 결과와 같은 표에 놓인다.
 
 // 단가(USD / 1M 토큰, 2026-06 요금표) · 캐시 읽기 0.1배 · 1h 캐시 쓰기 2배 · 배치 0.5배
 const MODELS = {
@@ -70,15 +75,26 @@ teams.forEach((t, i) => { t.id = `${t.src}-${String(i).padStart(3, '0')}`; });
 const pool = {};
 for (const t of teams) for (const n of t.m) if (byTitle.has(n)) (pool[t.src] = pool[t.src] || new Set()).add(n);
 
+// --- 질문 단위 = 프롬프트가 다른 경우 (2026-09-14 재설계) ---
+// 처음엔 등록 조합 214건마다 1번씩 물었다. 그런데 솔로레이드는 "한 보스당 인기 조합 상위 25개 표"라서 같은 보스의
+// 25건이 **글자 그대로 같은 프롬프트**였다 — 같은 질문 25번에 같은 답이 나오고, 1등 조합 하나만 맞출 수 있는 구조.
+// 그래서 질문은 프롬프트별 1번(12개), 채점은 그 질문에 등록된 조합 **전체**와 견준다(가장 많이 겹치는 것, 완전일치면 그 순위).
+
 // --- 프롬프트: 출처마다 바이트 단위로 동일해야 캐시가 걸린다(정렬 고정, 날짜·ID 금지) ---
 const rosterBlock = (src) => [...pool[src]].sort().map((n) => {
   const c = byTitle.get(n);
   return JSON.stringify({
-    title: c.title, class: c.class, burst: c.burst, element: c.element, weapon: c.weapon, squad: c.squad || null,
+    // manufacturer는 타워 질문의 입장 조건 — 처음엔 빠져 있어서 하이쿠가 pilgrim 타워를 "로스터에 그런 제조사가 없다"고 거부했고(옳은 판단),
+    // 다른 타워 답에는 남의 제조사가 섞였다(2026-09-14 서브에이전트 시험).
+    title: c.title, class: c.class, burst: c.burst, element: c.element, weapon: c.weapon, manufacturer: c.manufacturer, overspec: !!c.overspec, squad: c.squad || null,
     skills: c.skills.map((s) => ({ name: s.name, type: s.type, cd: s.cd, desc: s.desc })),
   });
 }).join('\n');
-const MODE_LABEL = { bossing: 'Solo Raid boss fight (single boss, 3-minute sustained damage race)', tribe_tower: 'Tribe Tower (manufacturer-restricted stage clear)', campaign: 'Campaign stage clear (multiple enemies)', pvp: 'Champion Arena PvP (5v5, first to wipe the other side)' };
+const MODE_LABEL = { bossing: 'Solo Raid boss fight (single boss, 3-minute sustained damage race)', tribe_tower: 'Tribe Tower (stage clear; entry may be restricted by manufacturer)', campaign: 'Campaign stage clear (multiple enemies)', pvp: 'Champion Arena PvP (5v5, first to wipe the other side)' };
+// 타워 입장 조건 — enikk 풀 칩과 같다(towerCompositions.meta.poolNote): Tribe = 제한 없음, 제조사 3종 = 그 제조사만, pilgrim = 필그림 또는 overspec.
+const TOWER_RULE = (tw) => tw == null ? ' Tower: Tribe Tower (no manufacturer restriction).'
+  : tw === 'pilgrim' ? ' Tower: Pilgrim/Over-Spec tower (only characters with manufacturer "pilgrim" or overspec=true may enter).'
+  : ` Tower: ${tw} (only characters with manufacturer "${tw}" may enter).`;
 const systemFor = (src) => [
   'You are an expert team builder for the mobile game GODDESS OF VICTORY: NIKKE.',
   'You will be given a roster (JSON, one character per line) and a content mode. Pick exactly 5 distinct characters from the roster that form the strongest team for that mode.',
@@ -91,7 +107,22 @@ const systemFor = (src) => [
   'ROSTER:',
   rosterBlock(src),
 ].join('\n');
-const userFor = (t) => `Mode: ${MODE_LABEL[t.mode]}.` + (t.boss ? ` Boss weakness element: ${t.boss}.` : '') + (t.tower ? ` Tower: ${t.tower} (only that manufacturer may enter).` : '') + ' Choose the 5 members.';
+// "Boss weakness element: Iron"은 모호했다 — 소넷이 문항마다 "보스가 철 속성"(→바람으로 친다)과 "철에 약하다"(→철로 친다)로 갈렸다.
+// soloRaidTeams.weakness는 후자다(상위 10팀의 속성 분포가 그 속성으로 쏠린다). 2026-09-14
+const userFor = (t) => `Mode: ${MODE_LABEL[t.mode]}.` + (t.boss ? ` The boss is weak to ${t.boss}: ${t.boss}-element characters deal bonus damage to it.` : '') + (t.mode === 'tribe_tower' ? TOWER_RULE(t.tower) : '') + ' Choose the 5 members.';
+
+const cases = [];
+{
+  const byKey = new Map();
+  for (const t of teams) {
+    const key = t.src + '|' + userFor(t);
+    if (!byKey.has(key)) byKey.set(key, { src: t.src, mode: t.mode, boss: t.boss || null, tower: t.tower || null, bossNames: new Set(), regs: [] });
+    const c = byKey.get(key); if (t.bossName) c.bossNames.add(t.bossName);
+    c.regs.push({ rank: c.regs.length + 1, m: t.m });   // 등록 순서 = 출처 표의 순서(솔로레이드는 parses 내림차순)
+  }
+  let i = 0; for (const c of byKey.values()) { c.id = `Q${String(i++).padStart(2, '0')}-${c.src}${c.boss ? '-' + c.boss : ''}${c.tower ? '-' + c.tower : ''}`; c.bossNames = [...c.bossNames]; cases.push(c); }
+}
+const SAMPLES = Number(arg('samples', 1)) || 1;   // 같은 질문을 몇 번 묻는가(모델 답의 흔들림을 보려면 3)
 
 const OUTPUT_SCHEMA = {
   type: 'object',
@@ -127,22 +158,29 @@ function percentile(team, src, score) {
   while (n < 200 && guard < 4000) { guard++; const q = [...p]; const pick = []; for (let i = 0; i < 5; i++) pick.push(...q.splice(Math.floor(rnd() * q.length), 1)); if (!burstValid(pick)) continue; n++; const v = scoreComposition(pick).total; if (v < score - 1e-9) below++; else if (Math.abs(v - score) <= 1e-9) below += 0.5; }
   return n ? below / n * 100 : null;
 }
-function grade(t, out) {
+function grade(c, out) {
   const members = Array.isArray(out?.members) ? out.members : [];
   const resolved = members.map((n) => byTitle.get(n)).filter(Boolean);
   const unknown = members.filter((n) => !byTitle.has(n));
-  const inPool = resolved.filter((c) => pool[t.src].has(c.title)).length;
-  const real = t.m.map((n) => byTitle.get(n)).filter(Boolean);
-  const overlap = resolved.filter((c) => t.m.includes(c.title)).length;
-  const ok5 = resolved.length === 5 && new Set(resolved.map((c) => c.id)).size === 5;
+  const inPool = resolved.filter((x) => pool[c.src].has(x.title)).length;
+  const ok5 = resolved.length === 5 && new Set(resolved.map((x) => x.id)).size === 5;
+  const titles = new Set(resolved.map((x) => x.title));
+  // 등록 조합 전체와 견줘 가장 많이 겹치는 것. 완전일치면 그 조합의 등록 순위(1 = 표의 맨 위).
+  let best = { overlap: -1, rank: null };
+  for (const r of c.regs) { const o = r.m.filter((n) => titles.has(n)).length; if (o > best.overlap) best = { overlap: o, rank: r.rank }; }
+  const exact = ok5 && best.overlap === 5;
+  // 타워 입장 위반 인원 — 규칙은 TOWER_RULE과 같다(제조사 3종 = 그 제조사만, pilgrim = 필그림 또는 overspec, Tribe = 없음)
+  const towerBad = c.mode !== 'tribe_tower' || c.tower == null ? 0
+    : resolved.filter((x) => c.tower === 'pilgrim' ? !(x.manufacturer === 'pilgrim' || x.overspec) : x.manufacturer !== c.tower).length;
   const aiScore = ok5 ? scoreComposition(resolved).total : null;
-  const realScore = scoreComposition(real).total;
+  const top = c.regs[0].m.map((n) => byTitle.get(n)).filter(Boolean);
+  const topScore = scoreComposition(top).total;
   return {
-    exact: ok5 && overlap === 5, overlap, unknown, outOfPool: resolved.length - inPool, valid5: ok5,
+    exact, matchedRank: exact ? best.rank : null, overlap: Math.max(best.overlap, 0), unknown, outOfPool: resolved.length - inPool, towerBad, valid5: ok5,
     burstValid: ok5 ? burstValid(resolved) : false,
-    simRatio: aiScore != null ? aiScore / realScore : null,
-    aiPct: ok5 ? percentile(resolved, t.src, aiScore) : null,
-    realPct: percentile(real, t.src, realScore),
+    simRatio: aiScore != null ? aiScore / topScore : null,          // AI 조합 ÷ 등록 1위 조합 (시뮬 점수)
+    aiPct: ok5 ? percentile(resolved, c.src, aiScore) : null,
+    topPct: percentile(top, c.src, topScore),
   };
 }
 
@@ -162,14 +200,15 @@ function costTable(rows, P = M) {
   return { nocacheKRW: Math.round(usd.nocache * KRW), cacheKRW: Math.round(usd.cache * KRW), batchKRW: Math.round(usd.cache * KRW / 2) };
 }
 
-const target = LIMIT ? teams.slice(0, LIMIT) : teams;
+const target = LIMIT ? cases.slice(0, LIMIT) : cases;
 const line = '─'.repeat(84);
 console.log(line);
-console.log(`AI 조합 실험 — 모델 ${M.id} · 방식 ${MODE} · 대상 ${target.length}/${teams.length}건`);
+console.log(`AI 조합 실험 — 모델 ${M.id} · 방식 ${MODE} · 질문 ${target.length}/${cases.length}개 × ${SAMPLES}회 (등록 조합 ${teams.length}건이 정답지)`);
 console.log(line);
 
 if (MODE === 'dry') {
-  const rows = Object.keys(pool).map((src) => ({ src, n: target.filter((t) => t.src === src).length, sysTok: est(systemFor(src).length), userTok: 60 }));
+  target.forEach((c) => console.log(`  ${c.id.padEnd(28)} 등록 ${String(c.regs.length).padStart(2)}건${c.bossNames.length ? ' · ' + c.bossNames.join(', ') : ''}`));
+  const rows = Object.keys(pool).map((src) => ({ src, n: target.filter((c) => c.src === src).length * SAMPLES, sysTok: est(systemFor(src).length), userTok: 60 })).filter((r) => r.n);
   rows.forEach((r) => console.log(`  ${r.src.padEnd(6)} ${String(r.n).padStart(3)}건 · 풀 ${pool[r.src].size}명 · 시스템 프롬프트 ≈ ${r.sysTok.toLocaleString()} 토큰(글자÷3.6 추정)`));
   for (const k of Object.keys(MODELS)) {
     const c = costTable(rows, MODELS[k]);
@@ -180,22 +219,23 @@ if (MODE === 'dry') {
   console.log(line); process.exit(0);
 }
 
-const client = new Anthropic();
-const OUT = path.join(ROOT, 'probe-data', `ai-teams-${MODEL_KEY}.jsonl`);
+const LABEL = arg('label', MODEL_KEY);
+const OUT = path.join(ROOT, 'probe-data', `ai-teams-${LABEL}.jsonl`);
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 const parseOut = (msg) => { const tb = msg.content.find((b) => b.type === 'text'); try { return JSON.parse(tb?.text || ''); } catch { return null; } };
-const record = (t, msg, out) => {
-  const g = grade(t, out);
-  const rec = { id: t.id, src: t.src, mode: t.mode, boss: t.boss || null, real: t.m, ai: out?.members || null, reasoning: out?.reasoning || null, model: M.id, stop: msg?.stop_reason, usage: msg?.usage, ...g, at: new Date().toISOString() };
+const record = (c, msg, out) => {
+  const g = grade(c, out);
+  const rec = { id: c.id, src: c.src, mode: c.mode, boss: c.boss, tower: c.tower, top: c.regs[0].m, ai: out?.members || null, reasoning: out?.reasoning || null, model: MODE === 'import' ? LABEL : M.id, stop: msg?.stop_reason, usage: msg?.usage, ...g, at: new Date().toISOString() };
   fs.appendFileSync(OUT, JSON.stringify(rec) + '\n');
   return rec;
 };
+const show = (rec) => console.log(`  ${rec.id.padEnd(28)} 겹침 ${rec.overlap}/5${rec.exact ? ` ✅ 등록 ${rec.matchedRank}위와 일치` : ''}${rec.burstValid ? '' : ' ⚠️ 버스트 불성립'}${rec.outOfPool || rec.unknown.length ? ' ⚠️ 풀 밖/미지 이름' : ''}${rec.towerBad ? ` ⚠️ 타워 입장 불가 ${rec.towerBad}명` : ''}${rec.usage ? ` · 캐시읽기 ${rec.usage.cache_read_input_tokens || 0}` : ''}`);
 const summarize = (recs) => {
   const n = recs.length; const num = (f) => recs.filter(f).length;
   const avg = (k) => { const v = recs.map((r) => r[k]).filter((x) => typeof x === 'number'); return v.length ? (v.reduce((a, b) => a + b, 0) / v.length) : null; };
-  console.log(`\n  ${n}건 · 완전일치 ${num((r) => r.exact)} · 5명 유효 ${num((r) => r.valid5)} · 버스트 성립 ${num((r) => r.burstValid)} · 풀 밖 이름 ${num((r) => r.outOfPool > 0 || r.unknown.length > 0)}`);
-  console.log(`  겹치는 인원 평균 ${avg('overlap')?.toFixed(2)} / 5 · 시뮬 점수비(AI÷등록) 평균 ${avg('simRatio')?.toFixed(3)}`);
-  console.log(`  메타 풀 백분위 — AI 조합 평균 ${avg('aiPct')?.toFixed(1)}% · 등록 조합 평균 ${avg('realPct')?.toFixed(1)}%  (50% = 무작위)`);
+  console.log(`\n  답 ${n}개 · 등록 조합과 완전일치 ${num((r) => r.exact)} · 5명 유효 ${num((r) => r.valid5)} · 버스트 성립 ${num((r) => r.burstValid)} · 풀 밖 이름 ${num((r) => r.outOfPool > 0 || r.unknown.length > 0)} · 타워 입장 위반 ${num((r) => r.towerBad > 0)}`);
+  console.log(`  등록 조합 중 최대 겹침 평균 ${avg('overlap')?.toFixed(2)} / 5 · 시뮬 점수비(AI÷등록 1위) 평균 ${avg('simRatio')?.toFixed(3)}`);
+  console.log(`  메타 풀 백분위 — AI 조합 평균 ${avg('aiPct')?.toFixed(1)}% · 등록 1위 조합 평균 ${avg('topPct')?.toFixed(1)}%  (50% = 무작위)`);
   const u = recs.map((r) => r.usage).filter(Boolean);
   if (u.length) {
     const s = (k) => u.reduce((a, x) => a + (x[k] || 0), 0);
@@ -204,31 +244,48 @@ const summarize = (recs) => {
   }
 };
 
+if (MODE === 'export') {
+  const P = path.join(ROOT, 'probe-data', 'ai-teams-prompts.jsonl');
+  fs.writeFileSync(P, target.map((c) => JSON.stringify({ id: c.id, src: c.src, system: systemFor(c.src), user: userFor(c) })).join('\n') + '\n');
+  console.log(`  ${target.length}개 질문 → ${path.relative(ROOT, P)} (시스템 프롬프트는 출처별로 동일 — 서브에이전트에는 파일로 건넨다)`);
+  console.log(line); process.exit(0);
+}
+const byId = new Map(cases.map((c) => [c.id, c]));
+if (MODE === 'import') {
+  const recs = []; let bad = 0;
+  for (const ln of fs.readFileSync(arg('import'), 'utf8').split('\n').filter((s) => s.trim())) {
+    let a; try { a = JSON.parse(ln); } catch { bad++; continue; }
+    const c = byId.get(a.id); if (!c) { bad++; continue; }
+    const rec = record(c, null, a); show(rec); recs.push(rec);
+  }
+  if (bad) console.log(`  ⚠️ 읽지 못한 줄 ${bad}`);
+  summarize(recs);
+  console.log(line); process.exit(0);
+}
+const client = new Anthropic();
+const reqs = target.flatMap((c) => Array.from({ length: SAMPLES }, (_, k) => ({ c, custom_id: `${c.id}#${k}` })));
 if (MODE === 'live') {
   const recs = [];
-  for (const t of target) {
+  for (const { c } of reqs) {
     let msg;
-    try { msg = await client.messages.create(paramsFor(t)); }
-    catch (e) { console.error(`  ${t.id} 실패: ${e instanceof Anthropic.APIError ? e.status + ' ' + e.message : e.message}`); continue; }
-    const rec = record(t, msg, parseOut(msg));
-    console.log(`  ${t.id.padEnd(12)} 겹침 ${rec.overlap}/5${rec.exact ? ' ✅ 완전일치' : ''}${rec.burstValid ? '' : ' ⚠️ 버스트 불성립'}${rec.outOfPool || rec.unknown.length ? ' ⚠️ 풀 밖/미지 이름' : ''} · 캐시읽기 ${msg.usage.cache_read_input_tokens || 0}`);
-    recs.push(rec);
+    try { msg = await client.messages.create(paramsFor(c)); }
+    catch (e) { console.error(`  ${c.id} 실패: ${e instanceof Anthropic.APIError ? e.status + ' ' + e.message : e.message}`); continue; }
+    const rec = record(c, msg, parseOut(msg)); show(rec); recs.push(rec);
   }
   summarize(recs);
 } else if (MODE === 'batch') {
-  const batch = await client.messages.batches.create({ requests: target.map((t) => ({ custom_id: t.id, params: paramsFor(t) })) });
+  const batch = await client.messages.batches.create({ requests: reqs.map(({ c, custom_id }) => ({ custom_id, params: paramsFor(c) })) });
   console.log(`  배치 제출: ${batch.id} · 상태 ${batch.processing_status}`);
   console.log(`  결과 회수: node scripts/experimentAiTeams.mjs --resume=${batch.id} --model=${MODEL_KEY}`);
 } else if (MODE === 'resume') {
   const id = arg('resume');
   const b = await client.messages.batches.retrieve(id);
   if (b.processing_status !== 'ended') { console.log(`  아직 처리 중: ${b.processing_status} · 남은 ${b.request_counts.processing}`); process.exit(0); }
-  const byId = new Map(teams.map((t) => [t.id, t]));
   const recs = [];
   for await (const r of await client.messages.batches.results(id)) {
-    const t = byId.get(r.custom_id); if (!t) continue;
+    const c = byId.get(r.custom_id.split('#')[0]); if (!c) continue;
     if (r.result.type !== 'succeeded') { console.error(`  ${r.custom_id}: ${r.result.type}`); continue; }
-    recs.push(record(t, r.result.message, parseOut(r.result.message)));
+    const rec = record(c, r.result.message, parseOut(r.result.message)); show(rec); recs.push(rec);
   }
   summarize(recs);
 }
