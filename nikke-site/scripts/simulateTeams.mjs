@@ -720,7 +720,7 @@ const AMMO_PENALTY_BASELINE = 2;
 const ROUND_BUFF_BASELINE = 10;  // 2026-09-08 `for N shots`(괄호 없는 복수형) 2명이 합류해 8 → 10
 
 // 재장전을 반영했을 때 평타가 실제로 낮아지는 캐릭터 수. 줄면 재장전 반영이 되돌려진 것이다.
-const RELOAD_LOWERED_BASELINE = 198;
+const RELOAD_LOWERED_BASELINE = 200;  // 2026-09-13 신캐 2명(아이기스·드레이크 : 그레이트 빌런) 추가로 198 → 200
 
 // 쿨타임 가동률을 켰을 때 팀 점수가 실제로 낮아지는 캐릭터 수. 줄면 계산이 되돌려진 것이다.
 const UPTIME_LOWERED_BASELINE = 6;

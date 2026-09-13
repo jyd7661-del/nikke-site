@@ -135,7 +135,7 @@ export const CHARACTERS = [
   { id: 'ludmilla-winter-owner', name: '루드밀라: 윈터 오너', burst: 3, tier: 'T1', role: ['딜러'], img: 'a/a3/Ludmilla_Winter_Owner_MI.png' },
   { id: 'ark-ranger-black', name: '아크레인저 블랙', burst: 3, tier: 'T1', role: ['딜러'], img: '2/27/Ark_Ranger_Black_MI.png' },
   { id: 'elegg-boom-and-shock', name: '일레그: 붐 앤 쇼크', burst: 3, tier: 'T1', role: ['딜러'], img: '4/45/Elegg_Boom_and_Shock_MI.png' },
-  { id: 'yukiko', name: '아마기 유키코', burst: 3, tier: 'T1', role: ['딜러', '힐러'] },
+  { id: 'yukiko', name: '아마기 유키코', burst: 3, tier: 'T1', role: ['딜러', '힐러'], img: 'a/a6/Yukiko_Amagi_MI.png' },
   { id: 'alice', name: '앨리스', burst: 3, tier: 'T2', role: ['딜러'], img: 'c/ce/Alice_MI.png' },
   { id: 'modernia', name: '모더니아', burst: 3, tier: 'T2', role: ['딜러'], img: '8/80/Modernia_MI.png' },
   { id: 'guillotine-winter', cdbId: 'guillotine-winter-slayer', name: '길로틴: 윈터 슬레이어', burst: 3, tier: 'T2', role: ['딜러'], img: '8/8c/Guillotine_Winter_Slayer_MI.png' },
@@ -161,7 +161,7 @@ export const CHARACTERS = [
   { id: 'jill-valentine', name: '질 발렌타인', burst: 3, tier: 'T2', role: ['딜러'], img: '9/91/Jill_Valentine_MI.png' },
   { id: 'chisato-nishikigi', name: '니시키기 치사토', burst: 3, tier: 'T2', role: ['딜러'], img: 'c/c9/Chisato_Nishikigi_MI.png' },
   { id: 'marciana-marine-study', name: '마르차나: 마린 스터디', burst: 3, tier: 'T2', role: ['딜러'], img: 'c/cd/Marciana_Marine_Study_MI.png' },
-  { id: 'queen-makoto', name: '퀸(니지마 마코토)', burst: 3, tier: 'T2', role: ['딜러', '버퍼'] },
+  { id: 'queen-makoto', name: '퀸(니지마 마코토)', burst: 3, tier: 'T2', role: ['딜러', '버퍼'], img: 'd/d3/Queen_%28Makoto_Niijima%29_MI.png' },
   { id: '2b', name: '2B', burst: 3, tier: 'T3', role: ['딜러'], img: '1/16/2B_MI.png' },
   { id: 'laplace', hasTreasure: true, name: '라플라스', burst: 3, tier: 'T3', role: ['딜러'], img: '6/68/Laplace_MI.png' },
   { id: 'julia', hasTreasure: true, name: '율리아', burst: 3, tier: 'T3', role: ['딜러'], img: '4/45/Julia_MI.png' },
@@ -180,6 +180,7 @@ export const CHARACTERS = [
   { id: 'trony', name: '트로니', burst: 3, tier: 'T3', role: ['딜러'], img: '1/10/Trony_MI.png' },
   { id: 'asuka-wille', name: '시키나미 아스카 랑그레이: WILLE', burst: 3, tier: 'T3', role: ['딜러'], img: '3/3f/Asuka_WILLE_MI.png' },
   { id: 'laplace-ultimate-hero', name: '라플라스: 얼티밋 히어로', burst: 3, tier: 'T3', role: ['딜러'], img: '2/25/Laplace_Ultimate_Hero_MI.png' },
+  { id: 'drake-great-villain', name: '드레이크 : 그레이트 빌런', burst: 3, tier: 'T1', role: ['딜러', '버퍼'], img: 'b/bb/Drake_Great_Villain_MI.png' },
 ];
 
 // BURST_LABEL은 2026-08-10에 제거했습니다. 한국어 한 가지로 고정돼 있어서 언어를 바꿔도

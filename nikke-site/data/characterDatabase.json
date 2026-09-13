@@ -10513,6 +10513,10 @@
         "name_kr": "마하프레이다인",
         "desc_kr": "적 전체에게 [ 최종 공격력 1421.69% 분배 대미지 ] 풍압 코드 적이 있다면 자신에게 [1more : 공격력 30.27% ▲] [10초 유지]"
       }
+    ],
+    "prydwenTags": [
+      "limited",
+      "partner"
     ]
   },
   {
@@ -10557,6 +10561,101 @@
         "desc": "Affects all enemies. Deals 1258.79% of final ATK as distributed damage. Activates if a Wind Code enemy is present. Affects self. 1 More: ATK ▲ 45.33% for 10 sec.",
         "name_kr": "마하라기다인",
         "desc_kr": "적 전체에게 [ 최종 공격력 1258.79% 분배 대미지 ] 풍압 코드 적이 있다면 자신에게 [1more : 공격력 45.33% ▲] [10초 유지]"
+      }
+    ]
+  },
+  {
+    "id": "aigis",
+    "title": "Aigis",
+    "name_kr": "아이기스",
+    "name_ja": "アイギス",
+    "class": "supporter",
+    "burst": "2",
+    "element": "iron",
+    "weapon": "smg",
+    "manufacturer": "abnormal",
+    "rarity": "SR",
+    "releaseDate": "2026-08-13",
+    "img": "4/4c/Aigis_MI.png",
+    "tiers": {
+      "story": "D",
+      "bossing": "D",
+      "pvp": "E"
+    },
+    "skills": [
+      {
+        "name": "Persona: Palladion",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. Persona - Palladion: This effect is continuous and cannot be removed. Function: Aigis strengthens herself using her Persona. Effect 1: Tarukaja: ATK ▲ 21.12% continuously. This effect cannot be removed. Effect 2: Rakukaja: DEF ▲ 21.12% continuously. This effect cannot be removed.",
+        "name_kr": "페르소나 : 팔라디온",
+        "desc_kr": "전투 시작 시 자신에게 [페르소나 - 팔라디온] [지속] [해제 불가] : 기능 : 페르소나를 통해 자신을 강화합니다. 효과 1 : [타루카쟈 : 공격력 21.12% ▲] [지속] [해제 불가] 효과 2 : [라쿠카쟈 : 방어력 21.12% ▲] [지속] [해제 불가]"
+      },
+      {
+        "name": "Papillon Heart",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates when using Burst Skill as long as this unit is still alive. Papillon Heart: This effect is continuous and cannot be removed. Function: Aigis strengthens her allies. Effect 1: Affects all allies. Matarukaja: ATK ▲ 21.12% of the skill user's ATK continuously. This effect cannot be removed. Effect 2: Affects all allies. Marakukaja: DEF ▲ 21.12% of the skill user's DEF continuously. This effect cannot be removed. Deactivation condition: When Full Burst ends.",
+        "name_kr": "파피용 하트",
+        "desc_kr": "버스트 스킬 사용 시 자신이 생존해 있을 때 한하여 [파피용 하트] [지속] [해제 불가] : 기능 : 아군을 강화합니다. 효과 1 : 아군 전체에게 [마하타루카쟈 : 시전자 기준 공격력 21.12% ▲] [지속] [해제 불가] 효과 2 : 아군 전체에게 [마하라쿠카쟈 : 시전자 기준 방어력 21.12% ▲] [지속] [해제 불가] 제거 시점 : 풀 버스트 타임 종료 시"
+      },
+      {
+        "name": "Heat Wave",
+        "type": "Active",
+        "cd": "20",
+        "desc": "Affects all enemies. Deals 396% of final ATK as distributed damage.",
+        "name_kr": "히트 웨이브",
+        "desc_kr": "적 전체에게 [ 최종 공격력 396% 분배 대미지 ]"
+      }
+    ],
+    "prydwenTags": [
+      "limited",
+      "partner"
+    ]
+  },
+  {
+    "id": "drake-great-villain",
+    "title": "Drake: Great Villain",
+    "name_kr": "드레이크 : 그레이트 빌런",
+    "name_ja": "ドレイク：グレイトヴィラン",
+    "class": "defender",
+    "burst": "3",
+    "element": "wind",
+    "weapon": "sg",
+    "manufacturer": "missilis",
+    "rarity": "SSR",
+    "squad": "Matis",
+    "releaseDate": "2026-09-03",
+    "img": "b/bb/Drake_Great_Villain_MI.png",
+    "tiers": {
+      "story": "B",
+      "bossing": "S",
+      "pvp": "A"
+    },
+    "skills": [
+      {
+        "name": "Super Duper Overdrive",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates when entering Full Burst. Affects self. Changes the weapon in use: Super Duper Overdrive Charge Time: Fixed at 1.5 sec Damage: 243.75% of final ATK Pellet Count: 15 Full Charge Damage: 300% Max Ammunition Capacity: 6 Activates when Super Duper Overdrive ends. Affects self. Removes 100% of ammo.",
+        "name_ja": "オーバーオーバードライブ",
+        "desc_ja": "フルバーストタイムが発動した時、自分に「使用武器変更：オーバーオーバードライブ」：チャージ時間：1.5秒に固定 ダメージ：最終攻撃力の243.75%のダメージ ペレット数：15個 フルチャージダメージ：300% 最大装弾数：6発 オーバーオーバードライブ状態が終了した時、自分に「残弾数100%低下」"
+      },
+      {
+        "name": "Fashionably Late Villain",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates when Full Burst ends. Affects all allies. Max HP ▲ 10.5% of the skill user's max HP (without restoring HP) continuously. Stacks up to 4 times. Activates at the start of battle. Affects self. Fashionably Late: ATK ▲ 6.23% of the skill user's final max HP continuously.",
+        "name_ja": "ヴィランは遅れてやってくる",
+        "desc_ja": "フルバーストタイムが終了した時、味方全体に「スキル発動者基準で最大HPのみ10.5%▲」「4スタック」「持続」 戦闘開始時、自分に「遅刻：スキル発動者の最終最大HPの6.23%分の攻撃力▲」「持続」"
+      },
+      {
+        "name": "Special Villainous Web",
+        "type": "Active",
+        "cd": "40",
+        "desc": "Affects self. Attack Damage ▲ 27.5% for 25 sec. Affects all enemies. Deals 1350% of final ATK as Burst Skill damage.",
+        "name_ja": "ヴィランウェップスペシャル",
+        "desc_ja": "自分に「攻撃ダメージ27.5%▲」「25秒間維持」 敵全体に「最終攻撃力の1350%のバーストスキルダメージ」"
       }
     ]
   }

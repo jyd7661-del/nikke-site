@@ -352,19 +352,26 @@ if (WRITE) {
   }
   fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2) + '\n');
 
-  const fresh = JSON.parse(fs.readFileSync(FRESH_PATH, 'utf8'));
-  const today = new Date().toISOString().slice(0, 10);
-  fresh.characterSkills = {
-    asOf: today,
-    source: 'prydwen.gg 캐릭터 페이지에 포함된 skills JSON (name/slot/type/cooldown/description)',
-    skillLevelBasis:
-      '레벨 10 기준. 2026-08-13 이전 데이터는 레벨 1 기준이어서 표시 수치가 실제와 달랐다 ' +
-      '(노이즈 Chorus 5.86% → 10.66%). 다음에 갱신할 때도 prydwen 표시 레벨이 바뀌지 않았는지 확인할 것',
-    refreshMethod: 'node scripts/refreshSkillsFromPrydwen.mjs --write',
-    staleAfterDays: 60,
-  };
-  fs.writeFileSync(FRESH_PATH, JSON.stringify(fresh, null, 2) + '\n');
-  console.log(`\n✅ ${DB_PATH} 반영 완료 · dataFreshness.characterSkills.asOf = ${today}`);
+  // ⚠️ `--only`로 일부만 받았으면 **신선도를 건드리지 않는다.** (2026-09-13)
+  //    예전에는 2명만 받아도 전체 스킬 데이터의 asOf를 오늘로 찍었다 — 나머지 196명은 20일 전 값인데
+  //    "오늘 갱신됨"으로 보여서 주간 점검의 신선도 경고가 조용히 사라진다. 신캐 추가 때마다 타는 경로다.
+  if (onlyArg) {
+    console.log(`\n✅ ${DB_PATH} 반영 완료 — --only라서 dataFreshness.characterSkills는 그대로 둔다(전체를 받은 게 아니므로)`);
+  } else {
+    const fresh = JSON.parse(fs.readFileSync(FRESH_PATH, 'utf8'));
+    const today = new Date().toISOString().slice(0, 10);
+    fresh.characterSkills = {
+      asOf: today,
+      source: 'prydwen.gg 캐릭터 페이지에 포함된 skills JSON (name/slot/type/cooldown/description)',
+      skillLevelBasis:
+        '레벨 10 기준. 2026-08-13 이전 데이터는 레벨 1 기준이어서 표시 수치가 실제와 달랐다 ' +
+        '(노이즈 Chorus 5.86% → 10.66%). 다음에 갱신할 때도 prydwen 표시 레벨이 바뀌지 않았는지 확인할 것',
+      refreshMethod: 'node scripts/refreshSkillsFromPrydwen.mjs --write',
+      staleAfterDays: 60,
+    };
+    fs.writeFileSync(FRESH_PATH, JSON.stringify(fresh, null, 2) + '\n');
+    console.log(`\n✅ ${DB_PATH} 반영 완료 · dataFreshness.characterSkills.asOf = ${today}`);
+  }
   console.log('   이제 `npm run verify` 를 돌릴 것.');
 } else {
   console.log('\n미리보기였습니다. 반영하려면 --write 를 붙이세요.');

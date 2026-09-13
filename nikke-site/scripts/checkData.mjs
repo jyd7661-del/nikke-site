@@ -487,11 +487,19 @@ const todayISO = new Date().toISOString().slice(0, 10);
         'dataFreshness.characterSkills.skillLevelBasis 가 비어 있다 — 스킬 수치가 몇 레벨 기준인지 ' +
         '명시해야 한다(현재 데이터는 레벨 10 기준)');
     }
-    const newer = cdb.filter((c) => /^\d{4}-\d{2}-\d{2}$/.test(c.releaseDate || '') && c.releaseDate > cs.asOf);
+    // ⚠️ 판정을 **날짜가 아니라 실제 상태**로 한다. (2026-09-13)
+    //    예전에는 "asOf 이후 출시 = 스킬이 없을 수 있음"으로 봤다. 그땐 refreshSkillsFromPrydwen이
+    //    `--only`로 신캐 1~2명만 받아도 asOf를 오늘로 찍었기 때문에 경고가 바로 사라졌다. 그런데 그건
+    //    **나머지 196명을 안 받았는데 전체가 갱신된 것처럼 보이게 하는 결함**이라 고쳤고(수집기 주석 참고),
+    //    그러자 스킬을 이미 받은 신캐에도 이 경고가 계속 떴다. 잡으려는 고장은 "신캐의 스킬이 비어 있다"이므로
+    //    그걸 직접 본다 — 스킬 3개의 영어 설명이 다 있으면 받은 것이다.
+    const hasSkills = (c) => (c.skills || []).length === 3 && c.skills.every((s) => (s.desc || '').trim());
+    const newer = cdb.filter((c) => /^\d{4}-\d{2}-\d{2}$/.test(c.releaseDate || '') && c.releaseDate > cs.asOf && !hasSkills(c));
     if (newer.length) {
       warn('SKILLS_MAYBE_STALE',
-        `characterSkills.asOf(${cs.asOf}) 이후에 출시된 캐릭터가 ${newer.length}명 있음 — ` +
-        `스킬 수치가 아직 수집되지 않았을 수 있다: ` + newer.map((c) => `${c.title}(${c.releaseDate})`).join(', '));
+        `characterSkills.asOf(${cs.asOf}) 이후에 출시됐는데 스킬 설명이 비어 있는 캐릭터가 ${newer.length}명 있음: ` +
+        newer.map((c) => `${c.title}(${c.releaseDate})`).join(', ') +
+        ' — `node scripts/refreshSkillsFromPrydwen.mjs --only <id> --write`');
     }
   }
 }
@@ -839,6 +847,21 @@ if (uiCharacters) {
         if (expected !== u.img) {
           err('UI_BAD_IMG', `${who}: img 경로가 파일명과 맞지 않음 — '${u.img}' (계산값 '${expected}')`);
         }
+      }
+    }
+
+    // **두 파일의 img가 같은가.** (2026-09-13)
+    //
+    // 위 형식 검사는 img가 **있을 때만** 본다. 그래서 characterDatabase에는 사진을 넣고 characters.js는
+    // 비워둔 상태가 그대로 통과했다 — 도감에는 사진이 나오는데 **홈 선택 화면에는 자리표시자**가 나온다.
+    // 2026-09-13에 마코토·유키코 사진을 characterDatabase에만 넣고 배포까지 했다가 알았다.
+    // 2026-08-08 네온 사고("한쪽만 고치고 한쪽만 막아둔 탓")와 같은 모양이 또 났다.
+    {
+      const d = cdb.find((c) => c.id === (u.cdbId || u.id));
+      if (d?.img && u.img !== d.img) {
+        err('UI_CDB_IMG_DRIFT',
+          `${who}: characterDatabase '${d.id}'의 img는 '${d.img}'인데 characters.js는 ${u.img ? `'${u.img}'` : '비어 있음'} — ` +
+          `도감과 홈 선택 화면의 사진이 달라진다. 두 파일을 같게 맞출 것`);
       }
     }
 
