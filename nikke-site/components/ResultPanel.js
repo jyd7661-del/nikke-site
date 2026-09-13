@@ -268,6 +268,14 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
         </div>
       </div>
       <TeamMemberCards members={team.members} treasureIds={roster.treasureIds} />
+      {/* 보스별 방어 구성 — 랭커 과반과 반대로 간 조합에만 온다(2026-09-13).
+          문장은 엔진이 요청 언어(lang)로 이미 조립해 보낸 **데이터**라 i18n 키를 거치지 않는다.
+          reasons 배열은 이 화면에 그리지 않으므로(AI 프롬프트 재료) 따로 받은 필드를 쓴다. */}
+      {team.bossDefenseNote && (
+        <p className="text-xs text-slate-300 bg-slate-800/60 border border-slate-600 rounded-lg px-3 py-2 mb-3">
+          {team.bossDefenseNote}
+        </p>
+      )}
       {reasoning && (
         <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
           <p className="text-xs text-nikke-accent font-semibold mb-1.5">

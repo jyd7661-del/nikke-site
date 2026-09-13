@@ -620,6 +620,9 @@ export async function POST(req) {
         members: chosen.members,
         totalScore: chosen.totalScore,
         reasons: chosen.reasons,
+        // 보스별 방어 구성 한 줄(없으면 null). reasons는 화면에 안 그리므로 따로 넘긴다(2026-09-13).
+        // 캐시는 AI 설명문만 저장하므로 캐시 적중 때도 이 값은 매번 새로 계산돼 나간다.
+        bossDefenseNote: chosen.bossDefenseNote || null,
       },
       aiReasoning,
       model: matchSource,

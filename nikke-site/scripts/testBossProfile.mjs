@@ -16,6 +16,8 @@
  *   ④ 세 언어로 실제로 만들어 undefined·한국어 누출이 없는가
  *   ⑤ **점수를 안 건드리는가** — 이 기능은 정보만 붙인다. 엔진 소스의 그 블록에 점수 대입이
  *      있는지 직접 본다(세 언어 점수 비교로는 못 잡는다 — 아래 ⑤-b 주석)
+ *   ⑥ **화면으로 가는 `bossDefenseNote` 필드가 세 경로 모두에서 살아 나오는가**(2026-09-13) —
+ *      findRealUsageTeamMatch·findExactTeamMatch는 필드를 골라 옮겨서 새 필드가 조용히 빠진다
  *
  * ⚠️ testEngineReasons는 `bossElement`를 한 번도 넘기지 않는다. 그래서 이 문장뿐 아니라
  *    기존 속성별 실사용률 문장(element_usage_high/low)도 **그 검사로는 실제로 만들어진 적이
@@ -138,6 +140,55 @@ for (const [el, e] of Object.entries(expect)) {
       problems.push(`[${el}/${label}] 언어마다 점수가 다르다: ${JSON.stringify(scores)}`);
     }
   }
+}
+
+// ⑥ **화면으로 가는 필드가 세 경로 모두에서 살아 나오는가.** (2026-09-13)
+//    추천 화면은 reasons를 그리지 않으므로 이 문장은 `bossDefenseNote` 필드로 따로 나간다.
+//    그런데 findRealUsageTeamMatch·findExactTeamMatch는 scoreTeam 결과를 **필드를 골라** 옮긴다 —
+//    새 필드를 거기 안 적으면 조용히 빠진다(실제로 빠질 뻔했다). 그리고 그 둘이 우선 경로라
+//    빠지면 **대부분의 추천에서** 문장이 사라진다. 판정: reasons에 방어 문장이 있으면 필드도 그 문장이어야
+//    하고, 없으면 필드가 null이어야 한다.
+{
+  const isDef = (s) => /^(\[랭커 기록\]|\[Ranker record\]|［ランカー記録］)/.test(String(s || ''));
+  const cases = [
+    // 실사용 등록 조합 그대로 → findRealUsageTeamMatch가 잡는다
+    { label: 'Wind 실사용 팀(방어형 없음)', el: 'Wind', ts: ['Cinderella: Crystal Wave', 'Nayuta', 'Little Mermaid', 'Velvet', 'Privaty'] },
+    { label: 'Iron 실사용 팀(크라운 있음)', el: 'Iron', ts: ['Crown', 'Naga', 'Anis: Star', 'Rapi: Red Hood', 'Privaty'] },
+    // prydwen 보스전 아키타입 그대로 → findExactTeamMatch가 잡는다.
+    // ⚠️ 처음엔 위 두 조합만 넣었는데 **findExactTeamMatch는 둘 다 매칭되지 않아** 그 경로가 한 번도
+    //    검사되지 않았다. 역테스트로 그 경로의 필드를 지워도 통과해서 알았다.
+    // (레드 후드가 든 아키타입은 `ambiguousBurst`라 완전일치 후보에서 걸러진다 — 처음 고른 조합이 그래서 안 맞았다)
+    { label: 'Iron 아키타입(크라운 있음)', el: 'Iron', ts: ['Crown', 'Zwei', 'Snow White', 'Maxwell', 'Helm: Aquamarine'], needExact: true },
+  ];
+  let checkedPaths = 0;
+  for (const cs of cases) {
+    const owned = pick(cs.ts);
+    if (owned.some((c) => !c)) { problems.push(`⑥ 검사용 조합 캐릭터를 못 찾음: ${cs.label}`); continue; }
+    for (const lang of ['ko', 'en', 'ja']) {
+      const opts = { bossElement: cs.el, lang };
+      const paths = [
+        ['scoreTeam', engine.scoreTeam(owned, 'bossing', opts)],
+        ['findRealUsageTeamMatch', engine.findRealUsageTeamMatch(owned, 'bossing', opts)],
+        ['findExactTeamMatch', engine.findExactTeamMatch(owned, 'bossing', opts)],
+        ['recommendTeams[0]', (engine.recommendTeams(owned, 'bossing', opts).teams || [])[0]],
+      ];
+      if (cs.needExact && !paths.find(([nm]) => nm === 'findExactTeamMatch')[1]) {
+        problems.push(`⑥ [${cs.label}/${lang}] findExactTeamMatch가 매칭되지 않는다 — 이 경로를 검사할 조합이 없어졌다(아키타입이 바뀌었으면 조합을 갈아 끼울 것)`);
+      }
+      for (const [name, r] of paths) {
+        if (!r) continue; // 그 경로가 이 로스터에 매칭되지 않음 — 넘어간다
+        checkedPaths += 1;
+        const line = (r.reasons || []).find(isDef) || null;
+        if (!('bossDefenseNote' in r)) {
+          problems.push(`⑥ [${cs.label}/${lang}] ${name} 결과에 bossDefenseNote 필드가 없다 — 필드를 골라 옮기면서 빠뜨렸다`);
+        } else if ((r.bossDefenseNote || null) !== line) {
+          problems.push(`⑥ [${cs.label}/${lang}] ${name}: reasons의 방어 문장과 bossDefenseNote가 다르다`);
+        }
+      }
+    }
+  }
+  if (checkedPaths === 0) problems.push('⑥ 어떤 경로도 검사되지 않았다 — 검사용 조합이 매칭되지 않는다');
+  console.log(`  화면 필드(bossDefenseNote) 전달 — ${checkedPaths}경로 확인`);
 }
 
 // ⑤-b **점수를 안 건드리는가 — 소스에서 직접 본다.**

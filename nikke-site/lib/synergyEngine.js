@@ -908,6 +908,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
 
   const titles = members.map((m) => m.title);
   const reasons = [];
+  let bossDefenseNote = null; // 보스별 방어 구성 문장 — 화면에 따로 띄우려고 구조로도 돌려준다
   let score = 0;
 
   // --- 하드 제약: 버스트 I/II/III 각 1명 이상 (mechanics.burstPhase) ---
@@ -1022,8 +1023,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (prof && prof.teams > 0) {
       const hasDefender = members.some((m) => m.class === 'defender');
       const args = { boss: prof.boss, season: prof.season, teams: prof.teams, withDefender: prof.withDefender };
-      if (!hasDefender && prof.withDefender * 2 > prof.teams) reasons.push(R.boss_defense_common(args));
-      else if (hasDefender && prof.withDefender * 2 < prof.teams) reasons.push(R.boss_defense_rare(args));
+      if (!hasDefender && prof.withDefender * 2 > prof.teams) bossDefenseNote = R.boss_defense_common(args);
+      else if (hasDefender && prof.withDefender * 2 < prof.teams) bossDefenseNote = R.boss_defense_rare(args);
+      if (bossDefenseNote) reasons.push(bossDefenseNote);
     }
   }
 
@@ -1467,6 +1469,11 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     // scripts/probeRecommendations.mjs가 "추천에 죽은 자리가 있는가"를 세는 데 쓴다.
     wastedCount: burstAnalysis.wasted.length,
     reasons,
+    // 보스별 방어 구성 문장 — reasons에도 들어 있지만 **따로도** 내보낸다. (2026-09-13)
+    // 추천 화면(ResultPanel)은 reasons를 렌더하지 않는다(AI 프롬프트 재료로만 쓰인다). 이 문장은
+    // "이 보스는 방어형 없이도 된다"처럼 사용자가 **직접 보고 판단할 사실**이라 화면에 한 줄로 띄운다.
+    // reasons 배열에서 머리말로 골라내면 3개 국어라 깨지기 쉬워 구조로 넘긴다.
+    bossDefenseNote,
     dataFreshness: getDataFreshnessMeta(),
   };
 }
@@ -1816,6 +1823,8 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
     totalScore: best.scored.tierTotal,
     reasons: [headline, ...best.scored.reasons, ...treasureReasons],
+    // ⚠️ scoreTeam 결과를 필드를 골라 옮기는 함수다 — 새 필드는 여기 따로 적어야 한다(2026-09-13).
+    bossDefenseNote: best.scored.bossDefenseNote || null,
     realUsage: source === 'campaign'
       ? { kind: 'campaign', totalUses: e.totalUses, pctOfClears: e.pctOfClears }
       : source === 'soloraid'
@@ -2095,6 +2104,9 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     // 반영하는 값이라 이해하기 쉽고, 아키타입 개수가 늘어나도 값이 흔들리지 않는다.
     totalScore: best.tierSum,
     reasons: [...slotReasons, ...best.scored.reasons],
+    // ⚠️ 이 함수는 scoreTeam 결과를 **필드를 골라** 옮긴다. 새 필드를 여기 안 적으면 조용히 빠진다
+    //    (2026-09-13 방어 구성 문장을 넣을 때 실제로 빠질 뻔했다 — recommendTeams만 `...result`로 통째로 옮긴다).
+    bossDefenseNote: best.scored.bossDefenseNote || null,
     // 원문(영어) 그대로 사용하지 말 것 — 호출부에서 이 두 필드를 참고 자료로만 삼아
     // AI에게 한국어(또는 선택 언어)로 재구성하도록 넘긴다.
     archetypeName: best.archetype.name,
