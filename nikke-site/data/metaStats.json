@@ -2,81 +2,85 @@
   "meta": {
     "source": "enikk.app",
     "sourceUrl": "https://enikk.app/meta",
-    "asOf": "2026-08-22",
-    "rollupBuilt": "2026-08-22",
+    "asOf": "2026-09-13",
+    "rollupBuilt": "2026-09-13",
     "window": "Recent",
     "server": "ALL",
     "championArenaSeason": "Season 36",
-    "note": "usageTier는 enikk /meta 페이지의 슬라이스별 랭킹을 그대로 옮긴 값이다. **등급(S~F)도 enikk이 직접 매긴다** — 2026-08-08판까지는 '등급은 enikk에 없어 채용률에서 우리가 산출한 값'이었으나, /meta 페이지가 등급을 게시하므로 이제 A등급(그대로 옮김)이다. 화면 고지: 'these rankings are generated from tracked usage data, not editorial ratings'. 표본: 캠페인 249K팀 / 솔로레이드 28,818팀 / 챔피언 아레나 1,057 라인업 / 종합 1.3M팀(솔로레이드 35%·아레나 15%·타워 15%·캠페인 35% 가중).",
+    "note": "usageTier는 enikk /meta 페이지의 슬라이스별 랭킹을 그대로 옮긴 값이다. **등급(S~F)도 enikk이 직접 매긴다** — 2026-08-08판까지는 '등급은 enikk에 없어 채용률에서 우리가 산출한 값'이었으나, /meta 페이지가 등급을 게시하므로 이제 A등급(그대로 옮김)이다. 화면 고지: 'these rankings are generated from tracked usage data, not editorial ratings'. 표본(2026-09-13): 캠페인 285.2K팀 / 솔로레이드 29,370팀 / 챔피언 아레나 1,435 라인업 / 종합 1.6M팀(솔로레이드 35%·아레나 15%·타워 15%·캠페인 35% 가중 — 2026-08-22와 같다).",
     "omitted": "D·F 등급은 싣지 않는다 — 엔진의 REAL_TIER_SCORE에서 둘 다 0점이라 점수에 영향이 없고, 파일만 두 배로 불어난다. 필요해지면 같은 페이지에서 다시 옮기면 된다.",
     "staleAfterDays": 21,
-    "notInOurDatabase": "솔로레이드 슬라이스 A등급에 있던 Yukiko(79.3%)·Queen (Makoto)(78.4%)는 우리 characterDatabase에 아직 없어 뺐다. 페르소나 콜라보 3명은 prydwen 티어가 붙어야 추가할 수 있다(docs/open-items.md). 이미 A등급 사용률이라 추가 근거가 하나 더 생긴 셈이다."
+    "notInOurDatabase": "2026-08-22에 뺐던 Yukiko·Queen (Makoto)는 2026-08-24에 DB에 들어와 이번(2026-09-13) 갱신에서 솔로레이드 A(83.7%·83.0%)·종합 B(29.3%·29.1%)로 실었다. enikk 표기 Queen (Makoto)는 우리 title Queen (Makoto Niijima)와 다르므로 enikkAlias에 추가했다(enikk 링크 slug가 우리 id queen-makoto와 같고 무기 SG로 확인). 지금 우리 DB에 없어서 빠진 캐릭터는 없다(S~C 기준)."
   },
   "usageTier": {
     "campaign": {
       "Anis: Star": {
         "tier": "S",
-        "usage": 96.6
+        "usage": 97.4
       },
       "Crown": {
         "tier": "S",
-        "usage": 96.1
+        "usage": 95.8
       },
       "Mast: Romantic Maid": {
         "tier": "A",
-        "usage": 57.5
+        "usage": 54
       },
       "Rapi: Red Hood": {
         "tier": "A",
-        "usage": 50.6
+        "usage": 48.6
       },
       "Snow White: Heavy Arms": {
         "tier": "A",
-        "usage": 40.2
+        "usage": 36.6
       },
       "Neon: Vision Eye": {
-        "tier": "B",
-        "usage": 25.3
+        "tier": "A",
+        "usage": 26.4
       },
       "Cinderella: Crystal Wave": {
-        "tier": "B",
-        "usage": 20.9
+        "tier": "A",
+        "usage": 23.3
       },
       "Helm": {
         "tier": "B",
-        "usage": 17.8
+        "usage": 15.9
+      },
+      "Flora": {
+        "tier": "B",
+        "usage": 15.6
       },
       "Privaty": {
         "tier": "B",
-        "usage": 13.6
+        "usage": 13.7
       },
       "Ada Wong": {
-        "tier": "C",
-        "usage": 11.9
+        "tier": "B",
+        "usage": 13.2
       },
       "Scarlet: Black Shadow": {
-        "tier": "C",
-        "usage": 10.6
+        "tier": "B",
+        "usage": 10.4
       },
       "Liberalio": {
-        "tier": "C",
-        "usage": 9.3
+        "tier": "B",
+        "usage": 9.1
       },
       "Vesti: Tactical Upgrade": {
-        "tier": "C",
-        "usage": 7.9
-      },
-      "Flora": {
-        "tier": "C",
-        "usage": 7.5
+        "tier": "B",
+        "usage": 8.7
       },
       "Cinderella": {
         "tier": "C",
-        "usage": 5.8
+        "usage": 5.2
       },
       "Nayuta": {
         "tier": "C",
-        "usage": 5.5
+        "usage": 5
+      },
+      "Ein": {
+        "tier": "C",
+        "usage": 4.3
       }
     },
     "soloraid": {
@@ -86,163 +90,171 @@
       },
       "Crown": {
         "tier": "S",
-        "usage": 99.9
+        "usage": 100
       },
       "Little Mermaid": {
         "tier": "S",
-        "usage": 99.7
+        "usage": 99.8
       },
       "Mast: Romantic Maid": {
         "tier": "S",
-        "usage": 99.1
+        "usage": 99.4
       },
       "Rapi: Red Hood": {
         "tier": "S",
         "usage": 98.9
       },
-      "Privaty": {
-        "tier": "A",
-        "usage": 89.9
-      },
       "Snow White: Heavy Arms": {
         "tier": "A",
-        "usage": 88.7
+        "usage": 91
       },
-      "Nayuta": {
+      "Privaty": {
         "tier": "A",
-        "usage": 85.4
+        "usage": 90.1
+      },
+      "Yukiko": {
+        "tier": "A",
+        "usage": 83.7
+      },
+      "Queen (Makoto Niijima)": {
+        "tier": "A",
+        "usage": 83
       },
       "Moran": {
         "tier": "A",
         "usage": 81.3
       },
-      "Cinderella: Crystal Wave": {
+      "Nayuta": {
         "tier": "A",
-        "usage": 75.9
+        "usage": 81.2
       },
       "Mint": {
         "tier": "A",
-        "usage": 74.9
+        "usage": 81.1
       },
-      "Anchor: Innocent Maid": {
+      "Cinderella: Crystal Wave": {
         "tier": "A",
-        "usage": 72.3
-      },
-      "Liter": {
-        "tier": "A",
-        "usage": 70.2
-      },
-      "Helm": {
-        "tier": "A",
-        "usage": 69.8
+        "usage": 76.9
       },
       "Prika": {
         "tier": "A",
-        "usage": 68.2
+        "usage": 75.2
+      },
+      "Liter": {
+        "tier": "A",
+        "usage": 73.4
       },
       "Tove": {
         "tier": "A",
-        "usage": 66.5
+        "usage": 67
+      },
+      "Anchor: Innocent Maid": {
+        "tier": "A",
+        "usage": 66
+      },
+      "Helm": {
+        "tier": "A",
+        "usage": 64.5
       },
       "Drake": {
         "tier": "A",
-        "usage": 64.1
+        "usage": 64.5
       },
       "Dorothy: Serendipity": {
         "tier": "A",
-        "usage": 62.5
+        "usage": 63.9
       },
       "Mihara: Bonding Chain": {
         "tier": "A",
-        "usage": 61.8
+        "usage": 61.9
       },
       "Soline: Frost Ticket": {
         "tier": "A",
-        "usage": 53.9
-      },
-      "Miranda": {
-        "tier": "A",
-        "usage": 53.1
+        "usage": 55
       },
       "Arcana: Fortune Mate": {
         "tier": "A",
-        "usage": 52.9
+        "usage": 53.9
       },
       "Diesel: Winter Sweets": {
         "tier": "A",
-        "usage": 49.4
+        "usage": 50.2
+      },
+      "Miranda": {
+        "tier": "A",
+        "usage": 49.3
       },
       "Grave": {
         "tier": "A",
-        "usage": 39.5
+        "usage": 43.8
       },
       "Liberalio": {
-        "tier": "A",
-        "usage": 38
+        "tier": "B",
+        "usage": 37.1
       },
       "Brid: Silent Track": {
         "tier": "B",
-        "usage": 35.2
-      },
-      "Ada Wong": {
-        "tier": "B",
-        "usage": 34.8
-      },
-      "Red Hood": {
-        "tier": "B",
-        "usage": 33
+        "usage": 36.4
       },
       "Alice": {
         "tier": "B",
-        "usage": 31
+        "usage": 34
       },
-      "Marciana: Marine Study": {
+      "Red Hood": {
         "tier": "B",
-        "usage": 29.7
+        "usage": 32.9
+      },
+      "Ada Wong": {
+        "tier": "B",
+        "usage": 32.7
       },
       "Modernia": {
         "tier": "B",
-        "usage": 29.2
+        "usage": 32.2
       },
-      "Rouge": {
+      "Marciana: Marine Study": {
         "tier": "B",
-        "usage": 28.7
+        "usage": 29.6
       },
       "Ade: Agent Bunny": {
         "tier": "B",
-        "usage": 27.9
-      },
-      "Neon: Vision Eye": {
-        "tier": "B",
-        "usage": 26.7
+        "usage": 27.6
       },
       "Cinderella": {
         "tier": "B",
         "usage": 26.4
       },
+      "Rouge": {
+        "tier": "B",
+        "usage": 25.9
+      },
       "Raven": {
         "tier": "B",
         "usage": 25.8
+      },
+      "Neon: Vision Eye": {
+        "tier": "B",
+        "usage": 25.7
       },
       "EVE": {
         "tier": "B",
         "usage": 23.4
       },
-      "Scarlet: Black Shadow": {
-        "tier": "B",
-        "usage": 23
-      },
       "Helm: Aquamarine": {
         "tier": "B",
         "usage": 22.2
       },
-      "Naga": {
+      "Scarlet: Black Shadow": {
         "tier": "B",
-        "usage": 21.6
+        "usage": 22.2
       },
       "Rei Ayanami": {
         "tier": "B",
-        "usage": 21
+        "usage": 22
+      },
+      "Naga": {
+        "tier": "B",
+        "usage": 21.2
       },
       "Takina Inoue": {
         "tier": "B",
@@ -250,7 +262,7 @@
       },
       "Ludmilla: Winter Owner": {
         "tier": "B",
-        "usage": 18.7
+        "usage": 18.6
       },
       "Ark Ranger Black": {
         "tier": "B",
@@ -264,21 +276,17 @@
         "tier": "B",
         "usage": 16.5
       },
-      "Soda: Twinkling Bunny": {
-        "tier": "C",
-        "usage": 14
-      },
       "Chisato Nishikigi": {
         "tier": "C",
-        "usage": 13.9
+        "usage": 13.8
       },
       "Rei Ayanami (Tentative Name)": {
         "tier": "C",
         "usage": 13.7
       },
-      "Flora": {
+      "Soda: Twinkling Bunny": {
         "tier": "C",
-        "usage": 13.4
+        "usage": 13.5
       },
       "Elegg: Boom and Shock": {
         "tier": "C",
@@ -288,6 +296,10 @@
         "tier": "C",
         "usage": 11.2
       },
+      "Flora": {
+        "tier": "C",
+        "usage": 10
+      },
       "Anis: Sparkling Summer": {
         "tier": "C",
         "usage": 10
@@ -296,25 +308,21 @@
         "tier": "C",
         "usage": 9.5
       },
-      "D: Killer Wife": {
-        "tier": "C",
-        "usage": 9.1
-      },
       "Maiden: Ice Rose": {
         "tier": "C",
         "usage": 8.9
       },
-      "Maxwell": {
+      "Volume": {
         "tier": "C",
-        "usage": 8.8
+        "usage": 8.7
       },
       "Zwei": {
         "tier": "C",
         "usage": 8.4
       },
-      "Volume": {
+      "Maxwell": {
         "tier": "C",
-        "usage": 8.2
+        "usage": 8.1
       },
       "Ein": {
         "tier": "C",
@@ -328,6 +336,10 @@
         "tier": "C",
         "usage": 7.8
       },
+      "D: Killer Wife": {
+        "tier": "C",
+        "usage": 7.8
+      },
       "Isabel": {
         "tier": "C",
         "usage": 7.7
@@ -338,7 +350,7 @@
       },
       "Blanc": {
         "tier": "C",
-        "usage": 7.3
+        "usage": 7
       },
       "Snow White": {
         "tier": "C",
@@ -356,31 +368,31 @@
       },
       "Jackal": {
         "tier": "S",
-        "usage": 98.5
-      },
-      "Biscuit": {
-        "tier": "S",
-        "usage": 97.5
+        "usage": 98.3
       },
       "Blanc": {
         "tier": "S",
-        "usage": 97
+        "usage": 97.4
+      },
+      "Biscuit": {
+        "tier": "S",
+        "usage": 96.9
       },
       "Snow White: Heavy Arms": {
         "tier": "S",
-        "usage": 96.8
+        "usage": 96.9
       },
       "Moran": {
+        "tier": "S",
+        "usage": 95.9
+      },
+      "Anis: Star": {
         "tier": "S",
         "usage": 95.8
       },
       "Noah": {
         "tier": "S",
-        "usage": 95.6
-      },
-      "Anis: Star": {
-        "tier": "S",
-        "usage": 95.5
+        "usage": 95.8
       },
       "Nayuta": {
         "tier": "S",
@@ -388,161 +400,165 @@
       },
       "Trina": {
         "tier": "S",
-        "usage": 92.6
+        "usage": 92.8
       },
       "Centi": {
         "tier": "A",
-        "usage": 88
+        "usage": 89.1
       },
       "Vesti: Tactical Upgrade": {
         "tier": "A",
-        "usage": 84.7
+        "usage": 85.2
       },
       "Rosanna": {
         "tier": "A",
-        "usage": 77.6
+        "usage": 78.1
       },
       "Rumani": {
         "tier": "A",
-        "usage": 75.5
+        "usage": 75.1
       },
       "Scarlet": {
         "tier": "A",
-        "usage": 74.5
+        "usage": 71.4
       },
       "Noise": {
         "tier": "A",
-        "usage": 68.8
-      },
-      "Emilia": {
-        "tier": "A",
-        "usage": 67.6
+        "usage": 68.1
       },
       "Red Hood": {
         "tier": "A",
-        "usage": 67
+        "usage": 67.2
+      },
+      "Emilia": {
+        "tier": "A",
+        "usage": 67.2
       },
       "Laplace": {
         "tier": "A",
-        "usage": 65.3
+        "usage": 67.1
       },
       "Neon: Vision Eye": {
         "tier": "A",
-        "usage": 63.7
+        "usage": 65.2
       },
       "Cinderella": {
         "tier": "A",
-        "usage": 60.2
+        "usage": 58.5
       },
       "Maiden: Ice Rose": {
         "tier": "A",
-        "usage": 45.7
-      },
-      "Rapunzel": {
-        "tier": "A",
-        "usage": 43.1
+        "usage": 45.4
       },
       "Liberalio": {
         "tier": "A",
-        "usage": 43
+        "usage": 42.8
+      },
+      "Rapunzel": {
+        "tier": "A",
+        "usage": 40.8
       },
       "Drake": {
         "tier": "A",
-        "usage": 40.9
-      },
-      "Bay": {
-        "tier": "A",
-        "usage": 36.8
+        "usage": 39.5
       },
       "Privaty": {
         "tier": "A",
-        "usage": 35.7
+        "usage": 37.6
       },
-      "Eunhwa: Tactical Upgrade": {
+      "Bay": {
         "tier": "B",
-        "usage": 31.9
-      },
-      "Emma: Tactical Upgrade": {
-        "tier": "B",
-        "usage": 31.2
-      },
-      "Soda: Twinkling Bunny": {
-        "tier": "B",
-        "usage": 30.6
+        "usage": 35
       },
       "Anis": {
         "tier": "B",
-        "usage": 30.5
+        "usage": 33.2
+      },
+      "Eunhwa: Tactical Upgrade": {
+        "tier": "B",
+        "usage": 32
+      },
+      "Emma: Tactical Upgrade": {
+        "tier": "B",
+        "usage": 31.3
+      },
+      "Soda: Twinkling Bunny": {
+        "tier": "B",
+        "usage": 29.8
       },
       "Noir": {
         "tier": "B",
-        "usage": 28.7
+        "usage": 27.7
       },
       "Soda": {
         "tier": "B",
-        "usage": 24.7
-      },
-      "Little Mermaid": {
-        "tier": "B",
-        "usage": 24.6
-      },
-      "Anis: Sparkling Summer": {
-        "tier": "B",
-        "usage": 23.2
-      },
-      "Ada Wong": {
-        "tier": "B",
-        "usage": 23
-      },
-      "Mast": {
-        "tier": "B",
-        "usage": 22.5
+        "usage": 27.5
       },
       "Laplace: Ultimate Hero": {
         "tier": "B",
-        "usage": 19.2
+        "usage": 25.2
+      },
+      "Little Mermaid": {
+        "tier": "B",
+        "usage": 24.3
+      },
+      "Mast": {
+        "tier": "B",
+        "usage": 22.9
+      },
+      "Anis: Sparkling Summer": {
+        "tier": "B",
+        "usage": 22.3
+      },
+      "Ada Wong": {
+        "tier": "B",
+        "usage": 21.7
       },
       "Mihara: Bonding Chain": {
         "tier": "B",
-        "usage": 17.6
-      },
-      "Label": {
-        "tier": "C",
-        "usage": 14.2
-      },
-      "Nero": {
-        "tier": "C",
-        "usage": 12.7
-      },
-      "Arcana: Fortune Mate": {
-        "tier": "C",
-        "usage": 11.5
-      },
-      "Crown": {
-        "tier": "C",
-        "usage": 11.2
-      },
-      "Mana": {
-        "tier": "C",
-        "usage": 10.5
+        "usage": 17.1
       },
       "Flora": {
         "tier": "C",
-        "usage": 10.5
+        "usage": 13.1
+      },
+      "Label": {
+        "tier": "C",
+        "usage": 13
+      },
+      "Arcana: Fortune Mate": {
+        "tier": "C",
+        "usage": 11.8
+      },
+      "Nero": {
+        "tier": "C",
+        "usage": 11.6
+      },
+      "Crown": {
+        "tier": "C",
+        "usage": 10.7
+      },
+      "Mana": {
+        "tier": "C",
+        "usage": 10.1
       },
       "Scarlet: Black Shadow": {
         "tier": "C",
-        "usage": 9.7
+        "usage": 8.7
       },
       "Soline: Frost Ticket": {
         "tier": "C",
-        "usage": 9
+        "usage": 8.6
       },
       "Rapi: Red Hood": {
         "tier": "C",
-        "usage": 8.8
+        "usage": 8.3
       },
       "Anne: Miracle Fairy": {
+        "tier": "C",
+        "usage": 6.7
+      },
+      "Sugar": {
         "tier": "C",
         "usage": 6.7
       },
@@ -552,145 +568,145 @@
       },
       "Anchor: Innocent Maid": {
         "tier": "C",
-        "usage": 6.3
-      },
-      "Sugar": {
-        "tier": "C",
-        "usage": 6.3
-      },
-      "Dorothy: Serendipity": {
-        "tier": "C",
-        "usage": 5.9
+        "usage": 6.4
       }
     },
     "overall": {
       "Anis: Star": {
         "tier": "S",
-        "usage": 99.3
+        "usage": 99.4
       },
       "Crown": {
         "tier": "A",
-        "usage": 80.4
+        "usage": 79.8
       },
       "Snow White: Heavy Arms": {
         "tier": "A",
-        "usage": 65.2
+        "usage": 64.4
       },
       "Rapi: Red Hood": {
         "tier": "A",
-        "usage": 64.1
+        "usage": 63.3
       },
       "Mast: Romantic Maid": {
         "tier": "A",
-        "usage": 61.7
+        "usage": 60.5
       },
       "Helm": {
         "tier": "A",
-        "usage": 50.6
+        "usage": 48.1
       },
       "Nayuta": {
         "tier": "A",
-        "usage": 48.2
+        "usage": 46.5
       },
       "Moran": {
         "tier": "A",
-        "usage": 46.1
+        "usage": 45.8
       },
       "Privaty": {
         "tier": "A",
-        "usage": 44.1
+        "usage": 44.5
       },
       "Little Mermaid": {
         "tier": "A",
-        "usage": 40.8
+        "usage": 40.7
       },
       "Cinderella: Crystal Wave": {
         "tier": "A",
-        "usage": 36.8
+        "usage": 38.1
       },
       "Neon: Vision Eye": {
         "tier": "B",
-        "usage": 32.6
+        "usage": 32.9
       },
       "Mint": {
         "tier": "B",
-        "usage": 29.8
-      },
-      "Anchor: Innocent Maid": {
-        "tier": "B",
-        "usage": 29.8
+        "usage": 32.2
       },
       "Liter": {
         "tier": "B",
-        "usage": 29.3
-      },
-      "Drake": {
-        "tier": "B",
-        "usage": 28.9
+        "usage": 30.7
       },
       "Prika": {
         "tier": "B",
-        "usage": 27.1
+        "usage": 29.7
+      },
+      "Yukiko": {
+        "tier": "B",
+        "usage": 29.3
+      },
+      "Queen (Makoto Niijima)": {
+        "tier": "B",
+        "usage": 29.1
+      },
+      "Drake": {
+        "tier": "B",
+        "usage": 28.8
+      },
+      "Anchor: Innocent Maid": {
+        "tier": "B",
+        "usage": 27.9
       },
       "Mihara: Bonding Chain": {
         "tier": "B",
-        "usage": 25.8
+        "usage": 25.9
       },
       "Liberalio": {
         "tier": "B",
-        "usage": 24.7
+        "usage": 24.2
       },
       "Dorothy: Serendipity": {
         "tier": "B",
-        "usage": 23.6
+        "usage": 23.9
       },
       "Tove": {
         "tier": "B",
-        "usage": 23.6
+        "usage": 23.7
       },
       "Red Hood": {
         "tier": "B",
-        "usage": 23.3
+        "usage": 23
       },
       "Cinderella": {
         "tier": "B",
-        "usage": 21.4
+        "usage": 20.9
       },
       "Arcana: Fortune Mate": {
         "tier": "B",
-        "usage": 20.3
+        "usage": 20.7
       },
       "Soline: Frost Ticket": {
         "tier": "B",
-        "usage": 20.2
+        "usage": 20.6
       },
       "Ada Wong": {
         "tier": "B",
-        "usage": 20.2
+        "usage": 19.7
       },
-      "Miranda": {
+      "Diesel: Winter Sweets": {
         "tier": "B",
-        "usage": 18.7
+        "usage": 17.9
       },
       "Blanc": {
         "tier": "B",
         "usage": 17.9
       },
-      "Diesel: Winter Sweets": {
+      "Alice": {
         "tier": "B",
         "usage": 17.6
       },
+      "Miranda": {
+        "tier": "B",
+        "usage": 17.4
+      },
       "Vesti: Tactical Upgrade": {
         "tier": "B",
-        "usage": 17
+        "usage": 17.2
       },
-      "Alice": {
-        "tier": "B",
-        "usage": 16.5
-      },
-      "Scarlet: Black Shadow": {
+      "Grave": {
         "tier": "C",
-        "usage": 15.2
+        "usage": 15.5
       },
       "Trina": {
         "tier": "C",
@@ -700,59 +716,63 @@
         "tier": "C",
         "usage": 14.8
       },
-      "Biscuit": {
+      "Scarlet: Black Shadow": {
         "tier": "C",
         "usage": 14.7
+      },
+      "Biscuit": {
+        "tier": "C",
+        "usage": 14.6
       },
       "Noah": {
         "tier": "C",
         "usage": 14.4
       },
-      "Grave": {
-        "tier": "C",
-        "usage": 14
-      },
       "Centi": {
         "tier": "C",
-        "usage": 13.6
-      },
-      "Scarlet": {
-        "tier": "C",
-        "usage": 12.8
+        "usage": 13.9
       },
       "Brid: Silent Track": {
         "tier": "C",
-        "usage": 12.8
-      },
-      "Ade: Agent Bunny": {
-        "tier": "C",
-        "usage": 12.2
+        "usage": 13.2
       },
       "Laplace": {
         "tier": "C",
-        "usage": 12.2
+        "usage": 12.5
       },
-      "Naga": {
+      "Scarlet": {
+        "tier": "C",
+        "usage": 12.4
+      },
+      "Flora": {
         "tier": "C",
         "usage": 12
       },
+      "Ade: Agent Bunny": {
+        "tier": "C",
+        "usage": 12
+      },
+      "Naga": {
+        "tier": "C",
+        "usage": 11.9
+      },
       "Rosanna": {
         "tier": "C",
-        "usage": 11.6
+        "usage": 11.7
+      },
+      "Modernia": {
+        "tier": "C",
+        "usage": 11.7
       },
       "Rumani": {
         "tier": "C",
         "usage": 11.3
       },
-      "Anis: Sparkling Summer": {
+      "Marciana: Marine Study": {
         "tier": "C",
         "usage": 10.7
       },
-      "Modernia": {
-        "tier": "C",
-        "usage": 10.6
-      },
-      "Marciana: Marine Study": {
+      "Anis: Sparkling Summer": {
         "tier": "C",
         "usage": 10.6
       },
@@ -762,57 +782,49 @@
       },
       "Noise": {
         "tier": "C",
-        "usage": 10.3
-      },
-      "Rouge": {
-        "tier": "C",
-        "usage": 10.3
+        "usage": 10.2
       },
       "Emilia": {
         "tier": "C",
-        "usage": 10.2
+        "usage": 10.1
       },
       "Soda: Twinkling Bunny": {
         "tier": "C",
-        "usage": 9.7
-      },
-      "Flora": {
-        "tier": "C",
         "usage": 9.4
       },
-      "Ludmilla: Winter Owner": {
+      "Rouge": {
         "tier": "C",
-        "usage": 9.2
+        "usage": 9.3
       },
       "Raven": {
         "tier": "C",
         "usage": 9.2
       },
+      "Ludmilla: Winter Owner": {
+        "tier": "C",
+        "usage": 9.2
+      },
       "EVE": {
         "tier": "C",
-        "usage": 8.3
+        "usage": 8.2
       },
       "Helm: Aquamarine": {
         "tier": "C",
-        "usage": 7.9
-      },
-      "Takina Inoue": {
-        "tier": "C",
-        "usage": 7.6
+        "usage": 8
       },
       "Rei Ayanami": {
         "tier": "C",
-        "usage": 7.3
+        "usage": 7.7
       },
-      "Noir": {
+      "Takina Inoue": {
         "tier": "C",
-        "usage": 6.9
+        "usage": 7.5
       },
       "Ark Ranger Black": {
         "tier": "C",
         "usage": 6.9
       },
-      "Rapunzel": {
+      "Noir": {
         "tier": "C",
         "usage": 6.7
       },
@@ -822,7 +834,11 @@
       },
       "Ein": {
         "tier": "C",
-        "usage": 6.5
+        "usage": 6.4
+      },
+      "Rapunzel": {
+        "tier": "C",
+        "usage": 6.3
       }
     }
   },

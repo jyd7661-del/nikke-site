@@ -44,7 +44,7 @@
     "staleAfterDays": 21
   },
   "usageTier": {
-    "asOf": "2026-08-22",
+    "asOf": "2026-09-13",
     "source": "enikk.app /meta 슬라이스 4종(캠페인·솔로레이드·챔피언아레나·종합). 등급도 enikk이 직접 매긴 값이다",
     "refreshMethod": "docs/data.md \"enikk 실사용 조합\" 절 참고 — /meta?slice=campaign|soloraid|arena|overall",
     "staleAfterDays": 21
