@@ -98,7 +98,7 @@ response 403` / `WebFetch: EGRESS_BLOCKED`다. 게임 사이트만이 아니라 
 > 대조하니 **8건 중 7건에서 prydwen이 아웃라이어**였다. 라피 : 레드후드 PvP를 prydwen만
 > E(최하위)로 주는데 nikke.gg는 A, game8은 그 캐릭터를 전체 1위로 둔다.
 > 단일 출처를 정답으로 전제하면 멀쩡한 데이터를 망가뜨린다.
-> 자세한 기록은 `docs/open-items.md`.
+> 자세한 기록은 `docs/log/2026-08.md` "prydwen 티어 불일치" 절.
 
 ### 절대 자동 변경 금지 — 조용히 망가지는 필드
 

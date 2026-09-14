@@ -213,4 +213,4 @@ npx next build && npm run check:canonical
 - `docs/data.md` — 데이터 파일 구조, prydwenTags, enikk 수집 규칙
 - `docs/i18n.md` — 3개국어 표기, 용어집, 이름 보호
 - `.claude/rules/data-files.md` · `.claude/rules/ui-i18n.md` — 파일을 건드릴 때 자동으로 들어오는 규칙
-- `docs/open-items.md` — 페르소나 콜라보 절에 이번 작업의 경위가 있다
+- `docs/log/2026-08.md`·`2026-09.md` — 페르소나 콜라보·신캐 추가 절에 경위가 있다
