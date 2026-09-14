@@ -33,6 +33,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import Anthropic from 'anthropic-sdk-next';
+import { systemPrompt, userPrompt, MODE_SLICE, burstValid } from './aiTeamPrompt.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 try { process.loadEnvFile(path.join(ROOT, '.env.local')); } catch { /* 키는 환경변수로도 받는다 */ }
@@ -85,42 +86,11 @@ for (const t of teams) for (const n of t.m) if (byTitle.has(n)) (pool[t.src] = p
 // 25건이 **글자 그대로 같은 프롬프트**였다 — 같은 질문 25번에 같은 답이 나오고, 1등 조합 하나만 맞출 수 있는 구조.
 // 그래서 질문은 프롬프트별 1번(12개), 채점은 그 질문에 등록된 조합 **전체**와 견준다(가장 많이 겹치는 것, 완전일치면 그 순위).
 
-// --- 프롬프트: 출처마다 바이트 단위로 동일해야 캐시가 걸린다(정렬 고정, 날짜·ID 금지) ---
+// --- 프롬프트: 출처마다 바이트 단위로 동일해야 캐시가 걸린다(정렬 고정, 날짜·ID 금지). 빌더는 aiTeamPrompt.mjs(얇은 로스터 실험과 공유).
 // 2차 변형(tier): enikk /meta 슬라이스의 등급·채용률을 그대로 붙인다(A등급 값). 출처→슬라이스는 엔진 MODE_TO_META_SLICE와 같다(타워는 campaign).
-// 목록에 없는 캐릭터는 D·F(파일에 안 실음)이므로 null — 프롬프트 규칙에 그 뜻을 적는다.
-const SLICE = { 솔로레이드: 'soloraid', 타워: 'campaign', 캠페인: 'campaign', PvP: 'arena' };
-const usageOf = (src, title) => { const e = metaStats.usageTier?.[SLICE[src]]?.[title]; return e ? { tier: e.tier, pct: e.usage } : null; };
-const rosterBlock = (src) => [...pool[src]].sort().map((n) => {
-  const c = byTitle.get(n);
-  return JSON.stringify({
-    ...(VARIANT === 'tier' ? { usage: usageOf(src, c.title) } : {}),
-    // manufacturer는 타워 질문의 입장 조건 — 처음엔 빠져 있어서 하이쿠가 pilgrim 타워를 "로스터에 그런 제조사가 없다"고 거부했고(옳은 판단),
-    // 다른 타워 답에는 남의 제조사가 섞였다(2026-09-14 서브에이전트 시험).
-    title: c.title, class: c.class, burst: c.burst, element: c.element, weapon: c.weapon, manufacturer: c.manufacturer, overspec: !!c.overspec, squad: c.squad || null,
-    skills: c.skills.map((s) => ({ name: s.name, type: s.type, cd: s.cd, desc: s.desc })),
-  });
-}).join('\n');
-const MODE_LABEL = { bossing: 'Solo Raid boss fight (single boss, 3-minute sustained damage race)', tribe_tower: 'Tribe Tower (stage clear; entry may be restricted by manufacturer)', campaign: 'Campaign stage clear (multiple enemies)', pvp: 'Champion Arena PvP (5v5, first to wipe the other side)' };
-// 타워 입장 조건 — enikk 풀 칩과 같다(towerCompositions.meta.poolNote): Tribe = 제한 없음, 제조사 3종 = 그 제조사만, pilgrim = 필그림 또는 overspec.
-const TOWER_RULE = (tw) => tw == null ? ' Tower: Tribe Tower (no manufacturer restriction).'
-  : tw === 'pilgrim' ? ' Tower: Pilgrim/Over-Spec tower (only characters with manufacturer "pilgrim" or overspec=true may enter).'
-  : ` Tower: ${tw} (only characters with manufacturer "${tw}" may enter).`;
-const systemFor = (src) => [
-  'You are an expert team builder for the mobile game GODDESS OF VICTORY: NIKKE.',
-  'You will be given a roster (JSON, one character per line) and a content mode. Pick exactly 5 distinct characters from the roster that form the strongest team for that mode.',
-  'Hard rules of the game:',
-  '- A team needs Burst I, Burst II and Burst III stages covered by different members so Full Burst can trigger (some characters list burstStages that cover several stages).',
-  '- Skills quoted are level-10 values. "Affects all allies" buffs reach every member; buffs that name a weapon/element/squad reach only matching members.',
-  '- Do not invent characters; use the exact title strings from the roster.',
-  ...(VARIANT === 'tier' ? ['- "usage" is real adoption data from enikk.app for this content mode among top players: tier S > A > B > C, pct = share of tracked top teams that include the character. usage=null means the character is rarely used in this mode (tier D/F). Treat it as strong evidence of real strength, but the team must still satisfy the burst rule and fit the mode/boss.'] : []),
-  'Return only the structured output.',
-  '',
-  'ROSTER:',
-  rosterBlock(src),
-].join('\n');
-// "Boss weakness element: Iron"은 모호했다 — 소넷이 문항마다 "보스가 철 속성"(→바람으로 친다)과 "철에 약하다"(→철로 친다)로 갈렸다.
-// soloRaidTeams.weakness는 후자다(상위 10팀의 속성 분포가 그 속성으로 쏠린다). 2026-09-14
-const userFor = (t) => `Mode: ${MODE_LABEL[t.mode]}.` + (t.boss ? ` The boss is weak to ${t.boss}: ${t.boss}-element characters deal bonus damage to it.` : '') + (t.mode === 'tribe_tower' ? TOWER_RULE(t.tower) : '') + ' Choose the 5 members.';
+const SRC_MODE = { 솔로레이드: 'bossing', 타워: 'tribe_tower', 캠페인: 'campaign', PvP: 'pvp' };
+const systemFor = (src) => systemPrompt([...pool[src]].sort().map((n) => byTitle.get(n)), { variant: VARIANT, metaStats, slice: MODE_SLICE[SRC_MODE[src]] });
+const userFor = userPrompt;
 
 const cases = [];
 {
@@ -154,12 +124,6 @@ const paramsFor = (t) => ({
 });
 
 // --- 채점 ---
-const stagesOf = (c) => (Array.isArray(c.burstStages) && c.burstStages.length ? c.burstStages.map(String) : [String(c.burst)]);
-function burstValid(team) {
-  const used = Array(team.length).fill(false);
-  const go = (i) => { if (i === 3) return true; for (let k = 0; k < team.length; k++) { if (used[k] || !stagesOf(team[k]).includes(String(i + 1))) continue; used[k] = true; if (go(i + 1)) return true; used[k] = false; } return false; };
-  return go(0);
-}
 let seed = 0; const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
 function percentile(team, src, score) {
   // 씨앗을 출처마다 고정 — 같은 팀의 AI 조합과 등록 조합이 **같은 무작위 표본**과 겨루어야 비교가 공정하다.
