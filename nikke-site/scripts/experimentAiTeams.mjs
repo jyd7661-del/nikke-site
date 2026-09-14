@@ -8,6 +8,7 @@
  *   node scripts/experimentAiTeams.mjs --resume=<batch_id> --model=opus   # 배치 결과 회수·채점
  *   node scripts/experimentAiTeams.mjs --export --limit=10                # 프롬프트만 내보내기(구독 서브에이전트용)
  *   node scripts/experimentAiTeams.mjs --import=<answers.jsonl> --label=haiku-sub   # 서브에이전트 답 채점
+ *   node scripts/experimentAiTeams.mjs --variant=tier --export                    # 2차: 로스터에 enikk 채용률 등급을 붙인 변형
  *
  * 유저 방향(2026-09-04): "조합은 고도화된 AI가 추천을 해주는 방식이 맞아." 그 전환의 근거를
  * 숫자로 만드는 실험이다. 판단 기준은 규모(2026-09-14): 지금 하루 2건이 아니라 **하루 수백~천 건일 때**
@@ -40,6 +41,9 @@ const arg = (n, d) => { const m = process.argv.find((a) => a.startsWith('--' + n
 const has = (n) => process.argv.includes('--' + n);
 const MODEL_KEY = arg('model', 'sonnet');
 const LIMIT = Number(arg('limit', 0)) || 0;
+// --variant=plain|tier : tier = 로스터 각 줄에 enikk 채용률 등급·%를 붙인다(2차 실험, 2026-09-14). 슬라이스 매핑은 엔진 MODE_TO_META_SLICE와 같다.
+const VARIANT = arg('variant', 'plain');
+if (!['plain', 'tier'].includes(VARIANT)) { console.error('--variant=plain|tier'); process.exit(1); }
 const MODE = has('live') ? 'live' : has('batch') ? 'batch' : arg('resume', null) ? 'resume' : has('export') ? 'export' : arg('import', null) ? 'import' : 'dry';
 // --export : 프롬프트를 probe-data/ai-teams-prompts.jsonl 로 내보낸다(API 호출 없음). 클로드 코드 서브에이전트(구독)에게 돌릴 때 쓴다.
 // --import=<file> --label=<이름> : 서브에이전트가 답한 {id, members[5], reasoning} JSONL을 같은 잣대로 채점한다.
@@ -56,6 +60,7 @@ const M = MODELS[MODEL_KEY];
 if (!M) { console.error('--model=opus|sonnet|haiku'); process.exit(1); }
 
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
+const metaStats = j('metaStats.json');
 const cdb = j('characterDatabase.json').filter((c) => (c.skills || []).length);
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 const { scoreComposition } = await import(pathToFileURL(path.join(ROOT, 'scripts', 'simulateTeams.mjs')).href);
@@ -81,9 +86,14 @@ for (const t of teams) for (const n of t.m) if (byTitle.has(n)) (pool[t.src] = p
 // 그래서 질문은 프롬프트별 1번(12개), 채점은 그 질문에 등록된 조합 **전체**와 견준다(가장 많이 겹치는 것, 완전일치면 그 순위).
 
 // --- 프롬프트: 출처마다 바이트 단위로 동일해야 캐시가 걸린다(정렬 고정, 날짜·ID 금지) ---
+// 2차 변형(tier): enikk /meta 슬라이스의 등급·채용률을 그대로 붙인다(A등급 값). 출처→슬라이스는 엔진 MODE_TO_META_SLICE와 같다(타워는 campaign).
+// 목록에 없는 캐릭터는 D·F(파일에 안 실음)이므로 null — 프롬프트 규칙에 그 뜻을 적는다.
+const SLICE = { 솔로레이드: 'soloraid', 타워: 'campaign', 캠페인: 'campaign', PvP: 'arena' };
+const usageOf = (src, title) => { const e = metaStats.usageTier?.[SLICE[src]]?.[title]; return e ? { tier: e.tier, pct: e.usage } : null; };
 const rosterBlock = (src) => [...pool[src]].sort().map((n) => {
   const c = byTitle.get(n);
   return JSON.stringify({
+    ...(VARIANT === 'tier' ? { usage: usageOf(src, c.title) } : {}),
     // manufacturer는 타워 질문의 입장 조건 — 처음엔 빠져 있어서 하이쿠가 pilgrim 타워를 "로스터에 그런 제조사가 없다"고 거부했고(옳은 판단),
     // 다른 타워 답에는 남의 제조사가 섞였다(2026-09-14 서브에이전트 시험).
     title: c.title, class: c.class, burst: c.burst, element: c.element, weapon: c.weapon, manufacturer: c.manufacturer, overspec: !!c.overspec, squad: c.squad || null,
@@ -102,6 +112,7 @@ const systemFor = (src) => [
   '- A team needs Burst I, Burst II and Burst III stages covered by different members so Full Burst can trigger (some characters list burstStages that cover several stages).',
   '- Skills quoted are level-10 values. "Affects all allies" buffs reach every member; buffs that name a weapon/element/squad reach only matching members.',
   '- Do not invent characters; use the exact title strings from the roster.',
+  ...(VARIANT === 'tier' ? ['- "usage" is real adoption data from enikk.app for this content mode among top players: tier S > A > B > C, pct = share of tracked top teams that include the character. usage=null means the character is rarely used in this mode (tier D/F). Treat it as strong evidence of real strength, but the team must still satisfy the burst rule and fit the mode/boss.'] : []),
   'Return only the structured output.',
   '',
   'ROSTER:',
@@ -203,7 +214,7 @@ function costTable(rows, P = M) {
 const target = LIMIT ? cases.slice(0, LIMIT) : cases;
 const line = '─'.repeat(84);
 console.log(line);
-console.log(`AI 조합 실험 — 모델 ${M.id} · 방식 ${MODE} · 질문 ${target.length}/${cases.length}개 × ${SAMPLES}회 (등록 조합 ${teams.length}건이 정답지)`);
+console.log(`AI 조합 실험 — 모델 ${M.id} · 변형 ${VARIANT} · 방식 ${MODE} · 질문 ${target.length}/${cases.length}개 × ${SAMPLES}회 (등록 조합 ${teams.length}건이 정답지)`);
 console.log(line);
 
 if (MODE === 'dry') {
@@ -219,13 +230,13 @@ if (MODE === 'dry') {
   console.log(line); process.exit(0);
 }
 
-const LABEL = arg('label', MODEL_KEY);
+const LABEL = arg('label', MODEL_KEY + (VARIANT === 'plain' ? '' : '-' + VARIANT));
 const OUT = path.join(ROOT, 'probe-data', `ai-teams-${LABEL}.jsonl`);
 fs.mkdirSync(path.dirname(OUT), { recursive: true });
 const parseOut = (msg) => { const tb = msg.content.find((b) => b.type === 'text'); try { return JSON.parse(tb?.text || ''); } catch { return null; } };
 const record = (c, msg, out) => {
   const g = grade(c, out);
-  const rec = { id: c.id, src: c.src, mode: c.mode, boss: c.boss, tower: c.tower, top: c.regs[0].m, ai: out?.members || null, reasoning: out?.reasoning || null, model: MODE === 'import' ? LABEL : M.id, stop: msg?.stop_reason, usage: msg?.usage, ...g, at: new Date().toISOString() };
+  const rec = { id: c.id, src: c.src, mode: c.mode, boss: c.boss, tower: c.tower, top: c.regs[0].m, ai: out?.members || null, reasoning: out?.reasoning || null, model: MODE === 'import' ? LABEL : M.id, variant: VARIANT, stop: msg?.stop_reason, usage: msg?.usage, ...g, at: new Date().toISOString() };
   fs.appendFileSync(OUT, JSON.stringify(rec) + '\n');
   return rec;
 };
@@ -245,7 +256,7 @@ const summarize = (recs) => {
 };
 
 if (MODE === 'export') {
-  const P = path.join(ROOT, 'probe-data', 'ai-teams-prompts.jsonl');
+  const P = path.join(ROOT, 'probe-data', `ai-teams-prompts${VARIANT === 'plain' ? '' : '-' + VARIANT}.jsonl`);
   fs.writeFileSync(P, target.map((c) => JSON.stringify({ id: c.id, src: c.src, system: systemFor(c.src), user: userFor(c) })).join('\n') + '\n');
   console.log(`  ${target.length}개 질문 → ${path.relative(ROOT, P)} (시스템 프롬프트는 출처별로 동일 — 서브에이전트에는 파일로 건넨다)`);
   console.log(line); process.exit(0);
