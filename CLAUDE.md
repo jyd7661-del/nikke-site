@@ -157,6 +157,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 | `docs/pitfalls.md` | 개발 환경의 함정 |
 | `docs/new-character.md` | **새 캐릭터 추가 실행 순서** — 밟은 함정 5개 포함 |
 | `docs/weekly-research.md` | 주간 데이터 조사 예약 작업 |
+| `docs/ai-teams-plan.md` | **AI 조합 추천 운영 전환 설계**(2026-09-15 초안) — 혼합 구조·프롬프트 v3·원 단위 상한·shadow 롤아웃 |
 | `docs/open-items.md` | **지금 열린 항목 · 현재 기준선 · 성장 계획 3축(단일 출처)** — 짧게 유지 |
 | `docs/log/YYYY-MM.md` | 작업 경위·실측·함정 기록(새것이 위). 옛 `open-items.md` 본문이 여기 있다 |
 | `docs/claude-code.md` | 클로드 코드 이관·설정 방법 |
