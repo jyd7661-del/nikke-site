@@ -5,6 +5,8 @@
 
 ## 0. 실측이 말해 준 것 (설계의 전제)
 
+> 2026-09-15 추가: 홈 목록에 SR이 들어와 **초보 로스터(SSR 4~8 + SR)**가 실제 입력이 된다. 이 구간은 폴백이 100% 열리므로 AI 전환의 효과가 가장 큰 자리다. 얇은 로스터 eval에 씨앗 3(초보 유형)을 추가할 것.
+
 | 사실 | 출처 | 설계에 미치는 것 |
 |---|---|---|
 | 스킬 원문만 주면 AI는 메타를 못 만든다(소넷 59%). **채용률 등급을 붙이면 80%**로 엔진(70%)을 넘는다 | 실험 1·2차 | 프롬프트에 enikk `usageTier`는 필수 |
@@ -42,7 +44,7 @@
 | 블록 | 내용 | 등급 |
 |---|---|---|
 | 규칙 | 지금 그대로(버스트 커버, 버프 범위, 타워 입장, 보스 약점 문구) | — |
-| 로스터 | **보유 캐릭터만** 한 줄씩: title·class·burst·element·weapon·manufacturer·overspec·squad·skills[3] 원문 + `usage{tier,pct}` | A |
+| 로스터 | **보유 캐릭터만**(SSR+SR — 2026-09-15부터 홈 목록에 SR 20명, R 제외) 한 줄씩: title·class·burst·element·weapon·manufacturer·overspec·squad·skills[3] 원문 + `usage{tier,pct}` | A |
 | **시너지 짝(신규)** | `synergyNotes.synergyPairs`(13) + `archetypes`(483) 중 **멤버가 전부 로스터 안에 있는 것만** — 이름·멤버·이유(lang) | A (prydwen/enikk 원문) |
 | **속성 순환(신규)** | `mechanics.elementCycle` 한 줄 | A |
 | 출력 | JSON: `members[5]`, `roles{title: 'B1'|'B2'|'B3'}`, `reasoning`(lang, 2~3문장), `warnings[]`(예: "약점 속성 딜러 없음") | — |

@@ -885,36 +885,41 @@ if (uiCharacters) {
 
   // 엔진 DB에는 있는데 화면에서 선택할 수 없는 캐릭터.
   //
-  // [SSR만 검사하는 이유] 화면 캐릭터 목록은 의도적으로 SSR 전용이다. enikk 실사용 데이터에
-  // SR/R 캐릭터가 등장한 조합이 단 하나도 없고(2026-08-07 확인), prydwen 조합에서도 초반
-  // 육성 가이드 외에는 쓰이지 않는다. 따라서 SR/R이 목록에 없는 것은 정상이며, 이걸 경고로
-  // 띄우면 매번 네온·아니스·파스칼 같은 SR이 잡혀서 진짜 누락(SSR 신캐 추가 후 UI 반영 누락)이
-  // 소음에 묻힌다. 방침이 바뀌어 SR을 넣기로 하면 아래 rarity 조건만 풀면 된다.
+  // [SSR·SR만 검사하는 이유] 화면 목록은 2026-08-07~09-14엔 SSR 전용이었다(enikk 실사용 조합에
+  // SR/R이 한 번도 안 나와서). 2026-09-15 유저 결정으로 SR 20명을 넣었다 — 초보 계정은 SSR 5~8명에
+  // SR을 섞어 쓰고, 아니스(SR)는 PvP S 티어다. R은 여전히 뺀다: 9명 전원 prydwen F이고
+  // "뽑기를 조금만 해도 SR은 거의 다 모은다"(유저)라 R이 필요한 구간이 사실상 없다.
+  // 그래서 누락 검사는 SSR·SR을 보고, 반대 검사는 R만 잡는다(아래).
   const GOOD = new Set(['SSS', 'SS', 'S', 'A', 'B']);
   const missingGood = cdb.filter((c) => {
     if (usedCdbIds.has(c.id)) return false;
-    if (c.rarity !== 'SSR') return false;
+    if (!['SSR', 'SR'].includes(c.rarity)) return false;
     const t = c.tiers || {};
     return [t.story, t.bossing, t.pvp].some((g) => GOOD.has(g));
   });
   if (missingGood.length) {
     warn('UI_MISSING_CHAR',
-      `엔진 DB에는 있으나 화면에서 선택할 수 없는 SSR 캐릭터 중 B티어 이상이 ${missingGood.length}명 있음 ` +
+      `엔진 DB에는 있으나 화면에서 선택할 수 없는 SSR·SR 캐릭터 중 B티어 이상이 ${missingGood.length}명 있음 ` +
       `(사용자가 보유해도 조합에 넣을 수 없다). data/characters.js에 항목을 추가할 것: ` +
       missingGood.map((c) => `${c.name_kr}(${[c.tiers.story, c.tiers.bossing, c.tiers.pvp].join('/')})`).join(', '));
   }
 
-  // 반대 방향: 목록은 SSR 전용이어야 한다. SR/R이 섞여 들어오면 위 검사가 조용히 무의미해지고,
-  // 데이터 수집 범위(SSR만 스크랩)와도 어긋나 스킬·티어가 비어 있는 항목이 화면에 노출된다.
-  const nonSsrInUi = uiCharacters
+  // 반대 방향(2026-09-15): R은 목록에 넣지 않는다(위 주석). 그리고 SR 항목은 characters.js에
+  // rarity: 'SR'을 명시해야 화면 토글('SR 포함')이 접을 수 있다 — 빠지면 SSR 목록에 SR이 조용히 섞인다.
+  // 역테스트(2026-09-15): 쿠루미의 rarity 삭제 → UI_SR_UNMARKED / 프로덕트 08 추가 → UI_R_IN_LIST /
+  // 크라운에 rarity 'SR' → UI_SSR_MARKED. 셋 다 ERROR로 잡힘.
+  uiCharacters
     .map((u) => ({ u, c: cdb.find((x) => x.id === (u.cdbId || u.id)) }))
-    .filter(({ c }) => c && c.rarity !== 'SSR');
-  if (nonSsrInUi.length) {
-    warn('UI_NON_SSR',
-      `화면 캐릭터 목록은 SSR 전용인데 SSR이 아닌 항목이 ${nonSsrInUi.length}개 있음 ` +
-      `(의도한 추가라면 위 UI_MISSING_CHAR의 rarity 조건도 같이 풀 것): ` +
-      nonSsrInUi.map(({ u, c }) => `${u.name}[${c.rarity}]`).join(', '));
-  }
+    .forEach(({ u, c }) => {
+      if (!c) return;
+      if (c.rarity === 'R') {
+        err('UI_R_IN_LIST', `${u.name}은(는) R 등급인데 화면 목록에 있음 — R은 넣지 않기로 했다(2026-09-15 유저 결정)`);
+      } else if (c.rarity === 'SR' && u.rarity !== 'SR') {
+        err('UI_SR_UNMARKED', `${u.name}은(는) SR인데 characters.js 항목에 rarity: 'SR'이 없음 — 'SR 포함' 토글이 접지 못한다`);
+      } else if (c.rarity === 'SSR' && u.rarity) {
+        err('UI_SSR_MARKED', `${u.name}은(는) SSR인데 characters.js 항목에 rarity '${u.rarity}'가 적혀 있음`);
+      }
+    });
 }
 
 // 이름에 위키 템플릿 잔재나 제어문자가 들어간 항목 — "{{hover" 유형 재발 방지.

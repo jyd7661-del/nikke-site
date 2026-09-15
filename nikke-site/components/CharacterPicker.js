@@ -141,15 +141,29 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
   });
   const [query, setQuery] = useState('');
   const [burstFilter, setBurstFilter] = useState('all');
+  // SR 표시 토글(2026-09-15). 기본은 접힘 — 대부분의 유저에겐 SSR 목록이 본체다.
+  // 다만 이미 SR을 보유로 골라 둔 유저는 펼친 채로 시작해야 자기 선택이 보인다.
+  const [showSR, setShowSR] = useState(false);
+  useEffect(() => {
+    let stored = null;
+    try { stored = window.localStorage.getItem('nikke:showSR'); } catch { /* 사생활 모드 등 */ }
+    const ownsSR = CHARACTERS.some((c) => c.rarity === 'SR' && ownedIds.has(c.id));
+    setShowSR(stored === '1' || ownsSR);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  const toggleSR = () => {
+    setShowSR((v) => { try { window.localStorage.setItem('nikke:showSR', v ? '0' : '1'); } catch { /* 무시 */ } return !v; });
+  };
 
   const filtered = useMemo(() => {
     return CHARACTERS.filter((c) => {
       if (burstFilter !== 'all' && c.burst !== Number(burstFilter)) return false;
+      if (!showSR && c.rarity === 'SR') return false;
       // 검색은 한/영/일 어느 표기로 쳐도 걸린다(lib/characterNames.js).
       if (query && !characterSearchText(c).includes(query.trim().toLowerCase())) return false;
       return true;
     });
-  }, [query, burstFilter]);
+  }, [query, burstFilter, showSR]);
 
   // 카드 정렬은 **화면에서 계산한다.** data/characters.js의 배열 순서에 의존하지 않는다.
   //
@@ -187,6 +201,17 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
               {b === 'all' ? t('filter_all') : `${t('burst_short')} ${b}`}
             </button>
           ))}
+          <button
+            onClick={toggleSR}
+            title={t('sr_hint')}
+            className={`px-3 py-1.5 rounded-full text-sm border transition ${
+              showSR
+                ? 'bg-slate-200 text-slate-900 border-slate-200 font-semibold'
+                : 'border-slate-700 text-slate-400 hover:border-slate-500 hover:bg-white/5'
+            }`}
+          >
+            {t('show_sr')}
+          </button>
         </div>
         <div className="flex gap-2">
           <input
@@ -267,6 +292,11 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
                           }`}
                         >
                           {tier}
+                        </span>
+                      )}
+                      {c.rarity === 'SR' && !active && (
+                        <span className="absolute top-1 left-1 text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-700/90 text-slate-200">
+                          SR
                         </span>
                       )}
                       {active && (

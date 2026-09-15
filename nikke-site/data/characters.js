@@ -1,4 +1,4 @@
-// 니케 캐릭터 데이터 (2026년 7월 메타 기준, SSR 등급만 수록)
+// 니케 캐릭터 데이터 (2026년 7월 메타 기준. SSR 전원 + 2026-09-15부터 SR 20명 — rarity: 'SR' 표시)
 // tier: T0(최상) ~ T4(하위) / burst: 1=서포터·힐러, 2=탱커·버퍼, 3=메인딜러
 // role: 화면 표시 및 추천 로직에 사용되는 태그
 // SR/R 등급 캐릭터와 중복으로 들어가 있던 코스튬 항목은 실제 엔드콘텐츠 조합에서 거의 쓰이지 않아 정리했습니다.
@@ -181,6 +181,32 @@ export const CHARACTERS = [
   { id: 'asuka-wille', name: '시키나미 아스카 랑그레이: WILLE', burst: 3, tier: 'T3', role: ['딜러'], img: '3/3f/Asuka_WILLE_MI.png' },
   { id: 'laplace-ultimate-hero', name: '라플라스: 얼티밋 히어로', burst: 3, tier: 'T3', role: ['딜러'], img: '2/25/Laplace_Ultimate_Hero_MI.png' },
   { id: 'drake-great-villain', name: '드레이크 : 그레이트 빌런', burst: 3, tier: 'T1', role: ['딜러', '버퍼'], img: 'b/bb/Drake_Great_Villain_MI.png' },
+  // ── SR (2026-09-15 추가, 유저 결정) ─────────────────────────────
+  // 초보 계정은 SSR 5~8명에 SR을 섞어 쓰는 구간이 있고, 아니스(SR)는 PvP S 티어다.
+  // "뽑기를 조금만 해도 SR은 거의 다 모은다"(유저) — 그래서 R은 넣지 않는다(9명 전원 prydwen F).
+  // 아이기스는 특별 배포라 보유 여부를 따로 고르게 둔다(다른 SR과 같이 개별 선택).
+  // 화면에선 CharacterPicker의 'SR 포함' 토글로 접혀 있다. tier 'T4'·role은 옛 필드라 화면에 안 쓴다.
+  // UI id가 SSR 코스튬과 겹치는 둘(mihara·anchor)은 -sr 접미사 + cdbId로 잇는다.
+{ id: 'rapi', rarity: 'SR', name: '라피', burst: 3, tier: 'T4', role: ['딜러'], img: '8/82/Rapi_MI.png' },
+  { id: 'neon', rarity: 'SR', name: '네온', burst: 1, tier: 'T4', role: ['서포터'], img: '1/14/Neon_MI.png' },
+  { id: 'delta', rarity: 'SR', name: '델타', burst: 2, tier: 'T4', role: ['탱커'], img: '6/6f/Delta_MI.png' },
+  { id: 'mica', rarity: 'SR', name: '미카', burst: 1, tier: 'T4', role: ['서포터'], img: 'b/b7/Mica_MI.png' },
+  { id: 'belorta', rarity: 'SR', name: '벨로타', burst: 2, tier: 'T4', role: ['딜러'], img: '0/07/Belorta_MI.png' },
+  { id: 'anis', rarity: 'SR', name: '아니스', burst: 2, tier: 'T4', role: ['탱커'], img: 'b/bc/Anis_MI.png' },
+  { id: 'mihara-sr', cdbId: 'mihara', rarity: 'SR', name: '미하라', burst: 3, tier: 'T4', role: ['딜러'], img: 'b/b9/Mihara_MI.png' },
+  { id: 'n102', rarity: 'SR', name: 'N102', burst: 1, tier: 'T4', role: ['서포터'], img: 'b/b8/N102_MI.png' },
+  { id: 'ether', rarity: 'SR', name: '에테르', burst: 1, tier: 'T4', role: ['탱커'], img: '3/33/Ether_MI.png' },
+  { id: 'neve', rarity: 'SR', name: '네베', burst: 3, tier: 'T4', role: ['딜러'], img: '1/1f/Neve_MI.png' },
+  { id: 'himeno', rarity: 'SR', name: '히메노', burst: 2, tier: 'T4', role: ['서포터'], img: '2/21/Himeno_MI.png' },
+  { id: 'anchor-sr', cdbId: 'anchor', rarity: 'SR', name: '앵커', burst: 1, tier: 'T4', role: ['탱커'], img: 'd/d1/Anchor_MI.png' },
+  { id: 'pascal', rarity: 'SR', name: '파스칼', burst: 1, tier: 'T4', role: ['서포터'], img: 'e/eb/Pascal_MI.png' },
+  { id: 'ram', rarity: 'SR', name: '람', burst: 1, tier: 'T4', role: ['탱커'], img: '0/0e/Ram_MI.png' },
+  { id: 'misato-katsuragi', rarity: 'SR', name: '카츠라기 미사토', burst: 1, tier: 'T4', role: ['서포터'], img: '3/38/Misato_Katsuragi_MI.png' },
+  { id: 'sakura-suzuhara', rarity: 'SR', name: '스즈하라 사쿠라', burst: 1, tier: 'T4', role: ['서포터'], img: '5/51/Sakura_Suzuhara_MI.png' },
+  { id: 'lily', rarity: 'SR', name: '릴리', burst: 2, tier: 'T4', role: ['서포터'], img: '8/89/Lily_MI.png' },
+  { id: 'claire-redfield', rarity: 'SR', name: '클레어 레드필드', burst: 1, tier: 'T4', role: ['서포터'], img: 'b/b3/Claire_Redfield_MI.png' },
+  { id: 'kurumi', rarity: 'SR', name: '쿠루미', burst: 1, tier: 'T4', role: ['서포터'], img: '3/33/Kurumi_MI.png' },
+  { id: 'aigis', rarity: 'SR', name: '아이기스', burst: 2, tier: 'T4', role: ['서포터'], img: '4/4c/Aigis_MI.png' },
 ];
 
 // BURST_LABEL은 2026-08-10에 제거했습니다. 한국어 한 가지로 고정돼 있어서 언어를 바꿔도
