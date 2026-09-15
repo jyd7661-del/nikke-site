@@ -24,7 +24,9 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { systemPrompt, userPrompt, MODE_SLICE, burstValid, towerEligible } from './aiTeamPrompt.mjs';
+import { systemPrompt, userPrompt, MODE_SLICE } from './aiTeamPrompt.mjs';
+// 검산은 운영 라우트와 같은 함수를 쓴다(2026-09-15). 여기서 "규칙 위반 0"이면 운영에서도 같은 뜻이다.
+import { verifyAiTeam } from '../lib/aiTeamVerify.js';
 import { scoreComposition } from './simulateTeams.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -125,17 +127,10 @@ if (arg('import', null)) {
   let same = 0;
   for (const c of cases) {
     const a = answers.get(c.id);
-    const aiT = (a?.members || []).map((t) => byTitle.get(t)).filter(Boolean);
-    const rosterSet = new Set(c.roster);
-    const flaws = [];
-    if (!a) flaws.push('답 없음');
-    else {
-      if (aiT.length !== 5 || new Set(aiT.map((x) => x.id)).size !== 5) flaws.push('5명 아님');
-      (a.members || []).filter((t) => !byTitle.has(t)).forEach((t) => flaws.push(`미지 이름 ${t}`));
-      aiT.filter((x) => !rosterSet.has(x.title)).forEach((x) => flaws.push(`로스터 밖 ${x.title}`));
-      if (aiT.length === 5 && !burstValid(aiT)) flaws.push('버스트 불성립');
-      if (c.mode === 'tribe_tower') aiT.filter((x) => !towerEligible(x, c.tower)).forEach((x) => flaws.push(`입장 불가 ${x.title}`));
-    }
+    // 검산은 로스터(보유 캐릭터) 기준이라 로스터 밖 이름은 '미지'로 잡힌다 — 운영과 같은 판정.
+    const v = a ? verifyAiTeam(a.members, c.roster.map((t) => byTitle.get(t)), { tower: c.mode === 'tribe_tower' ? c.tower : null }) : { flaws: ['답 없음'], resolved: [] };
+    const aiT = v.resolved;
+    const flaws = v.flaws;
     const engT = c.engine.members.map((t) => byTitle.get(t));
     const identical = aiT.length === 5 && engT.every((x) => aiT.some((y) => y.id === x.id));
     if (identical) same++;

@@ -32,7 +32,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import Anthropic from 'anthropic-sdk-next';
+import Anthropic from '@anthropic-ai/sdk';
 import { systemPrompt, userPrompt, MODE_SLICE, burstValid } from './aiTeamPrompt.mjs';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');

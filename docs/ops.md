@@ -24,8 +24,13 @@ ANTHROPIC_API_KEY
 NEXT_PUBLIC_ADSENSE_CLIENT_ID        = ca-pub-1541956672617594
 NEXT_PUBLIC_ADSENSE_SLOT_BANNER      = 7234519961
 NEXT_PUBLIC_ADSENSE_SLOT_RECTANGLE   = 5842768434
-(AI_EXPLAIN_MODEL — 선택. 넣으면 모델 교체)
+(AI_EXPLAIN_MODEL — 선택. 넣으면 설명 모델 교체)
+AI_TEAMS_MODE          = off | shadow | on   (2026-09-15. 기본 off. AI 조합 구성 — docs/ai-teams-plan.md)
+AI_DAILY_BUDGET_KRW    = 10000               (하루 원 단위 천장. 유저 결정 2026-09-15. 지출이 아니라 차단선)
+(AI_TEAM_MODEL — 선택. 기본 claude-sonnet-5)
 ```
+
+> AI 조합 구성을 켜기 전에 `supabase/ai_teams_migration.sql`을 먼저 적용할 것. 안 하면 라우트가 예산 조회 실패를 보고 AI 조합 구성을 건너뛴다(조용히 켜지지 않는다).
 
 ### ✅ 구글 로그인 — 완료 (2026-08-09)
 

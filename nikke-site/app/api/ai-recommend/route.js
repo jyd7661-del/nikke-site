@@ -1,8 +1,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch } from '@/lib/synergyEngine';
+import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch, scoreTeam, orderMembersForDisplay } from '@/lib/synergyEngine';
 import characterInvestmentNotes from '@/data/characterInvestmentNotes.json';
+import metaStats from '@/data/metaStats.json';
+import synergyNotes from '@/data/synergyNotes.json';
+import { PROMPT_VERSION, systemPrompt, userPrompt, MODE_SLICE, OUTPUT_SCHEMA, selectSynergyForRoster } from '@/lib/aiTeamPrompt';
+import { verifyAiTeam } from '@/lib/aiTeamVerify';
 
 // 보유 로스터에서 5인 조합을 추천하는 API.
 //
@@ -60,6 +64,36 @@ const DAILY_GLOBAL_LIMIT = Number(process.env.AI_DAILY_GLOBAL_LIMIT || 1000);
 // 되돌리기 쉽게 환경변수로 뺐다. 설명 품질이 떨어진다고 판단되면 Vercel 환경변수에
 // AI_EXPLAIN_MODEL=claude-sonnet-5 를 넣으면 코드 수정 없이 원복된다.
 const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-4-5';
+
+// ---------------------------------------------------------------------------
+// AI 조합 구성 (2026-09-15, docs/ai-teams-plan.md). 유저 결정: 예산 10,000원/일 · 소넷 · 폴백 구간만.
+//
+// **폴백 구간에서만** AI가 5명을 고른다. 실사용 완전일치·아키타입 경로가 열리면 지금처럼 엔진 답이다 —
+// 얇은 로스터 40건 A/B에서 AI가 이긴 곳이 전부 폴백이었고, 실사용 조합은 AI가 이길 이유도 판정할
+// 방법도 없다(§1). 엔진은 검산기(lib/aiTeamVerify.js)로 남는다.
+//
+//   AI_TEAMS_MODE   off(기본) | shadow(호출하고 기록만, 화면은 엔진 답) | on(폴백을 AI 답으로)
+//   AI_TEAM_MODEL   기본 claude-sonnet-5. 하이쿠는 규칙을 놓친다(버스트 불성립 2/12, 속성 무시) — 후보 아님
+//   AI_DAILY_BUDGET_KRW  하루 원 단위 천장(기본 10,000원). 지출이 아니라 차단선 — 실제로 쓴 만큼만 나간다.
+//       조합 구성 1건 ≈ 19원(보유 15명) ~ 52원(50명). 설명 1건 ≈ 4.9원. 둘 다 여기 합산한다.
+//       닿으면 그날은 엔진 폴백 답 + budgetExhausted 표시. 되돌리기 = 환경변수 하나.
+const AI_TEAMS_MODE = ['off', 'shadow', 'on'].includes(process.env.AI_TEAMS_MODE) ? process.env.AI_TEAMS_MODE : 'off';
+const AI_TEAM_MODEL = process.env.AI_TEAM_MODEL || 'claude-sonnet-5';
+const AI_DAILY_BUDGET_KRW = Number(process.env.AI_DAILY_BUDGET_KRW || 10000);
+// 단가(USD / 1M 토큰, 2026-06 요금표) — scripts/experimentAiTeams.mjs와 같은 표. $1 = 1,400원.
+const USD_KRW = 1400;
+const PRICE_USD_PER_M = {
+  'claude-opus-5': { in: 5, out: 25 },
+  'claude-sonnet-5': { in: 2, out: 10 },
+  'claude-haiku-4-5': { in: 1, out: 5 },
+};
+// 응답 usage → 원. 모르는 모델이면 소넷 단가로 잡는다(싸게 잡아서 천장이 조용히 높아지는 쪽보다 낫다).
+function costKrw(model, usage) {
+  const p = PRICE_USD_PER_M[model] || PRICE_USD_PER_M['claude-sonnet-5'];
+  const inTok = (usage?.input_tokens || 0) + (usage?.cache_creation_input_tokens || 0) * 1.25 + (usage?.cache_read_input_tokens || 0) * 0.1;
+  const usd = (inTok * p.in + (usage?.output_tokens || 0) * p.out) / 1e6;
+  return Math.round(usd * USD_KRW * 100) / 100;
+}
 
 const MODE_LABEL = { campaign: '캠페인', bossing: '보스전', pvp: 'PvP', tribe_tower: '타워' };
 
@@ -158,6 +192,25 @@ async function incrementGlobalDailyUsage(supabase) {
   if (error) console.error('[AI_BUDGET] 일일 총 사용량 증가 실패 — 카운터가 실제보다 낮습니다', error);
 }
 
+// 원 단위 예산 (supabase/ai_teams_migration.sql — ai_daily_budget.krw + add_ai_daily_cost()).
+// 횟수 상한(위)은 그대로 두고 원 단위를 **추가**한다. 조합 구성은 건당 단가가 설명의 4~10배라
+// 횟수로는 청구를 못 막는다(1,000회 = 1.9만~5.2만 원). 마이그레이션 전이면 krw 열이 없어 조회가
+// 실패하는데, 그때는 **AI 조합 구성을 켜지 않는다**(보호 없이 도는 것보다 안 도는 게 낫다).
+async function readDailyKrw(supabase) {
+  const today = new Date().toISOString().slice(0, 10);
+  const { data, error } = await supabase.from('ai_daily_budget').select('krw').eq('usage_date', today).maybeSingle();
+  if (error) {
+    console.error('[AI_BUDGET] 원 단위 예산 조회 실패(마이그레이션 전?) — AI 조합 구성을 건너뜁니다', error);
+    return null;
+  }
+  return Number(data?.krw || 0);
+}
+async function addDailyCost(supabase, krw) {
+  if (!supabase || !krw) return;
+  const { error } = await supabase.rpc('add_ai_daily_cost', { p_krw: krw });
+  if (error) console.error('[AI_BUDGET] 원 단위 누적 실패 — 지출이 실제보다 낮게 기록됩니다', error);
+}
+
 // ---------------------------------------------------------------------------
 // AI 설명문 캐시 (supabase/ai_explain_cache_migration.sql 참고)
 //
@@ -211,6 +264,134 @@ async function writeCache(supabase, cacheKey, reasoning, langKey, mode) {
     .from('ai_explain_cache')
     .upsert({ cache_key: cacheKey, reasoning, lang: langKey, mode }, { onConflict: 'cache_key' });
   if (error) console.error('cache write error', error);
+}
+
+// ---------------------------------------------------------------------------
+// AI 조합 구성 — 캐시·예산·검산·기록 (docs/ai-teams-plan.md §1·§4·§6)
+
+// 응답 캐시 키. 로스터가 글자 그대로 같을 때만 적중한다 — 부분집합 공유는 안 한다(한 명이 늘면 답이
+// 바뀌는 게 정상). lang은 뺀다(조합은 언어와 무관, 설명은 ai_explain_cache가 언어별로 따로 캐시).
+// temperature 0만으로는 같은 답이 보장되지 않는다(소넷이 같은 문항에 8/20만 같은 답) — 이 캐시가 결정성을 만든다.
+function buildAiTeamCacheKey({ ids, mode, boss, tower }) {
+  const payload = JSON.stringify({ v: PROMPT_VERSION, model: AI_TEAM_MODEL, ids: [...ids].sort(), mode, boss: boss || null, tower: tower || null });
+  return crypto.createHash('sha256').update(payload).digest('hex');
+}
+
+function extractJsonLoose(text) {
+  try { return JSON.parse(text); } catch { /* 아래로 */ }
+  return extractJson(text);
+}
+
+// 소넷에게 5명을 고르게 한다. 프롬프트는 실험과 같은 lib/aiTeamPrompt.js(v3). 검산에 걸리면 위반 사유를 붙여
+// **한 번만** 다시 묻고, 그래도 걸리면 null(호출부가 엔진 폴백을 쓴다). 반환에 usage·latency를 실어 예산과 shadow 기록에 쓴다.
+async function composeTeamWithAi(client, characters, { mode, boss, tower }) {
+  const roster = [...characters].sort((a, b) => a.title.localeCompare(b.title));
+  const system = systemPrompt(roster, {
+    variant: 'tier',
+    metaStats,
+    slice: MODE_SLICE[mode] || 'campaign',
+    synergy: selectSynergyForRoster(synergyNotes, roster.map((c) => c.title), mode),
+    elementCycle: synergyNotes.mechanics?.elementCycle || null,
+  });
+  const user = userPrompt({ mode, boss: boss || null, tower: tower || null });
+  const messages = [{ role: 'user', content: user }];
+  const usage = { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
+  const t0 = Date.now();
+  let last = null;
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const msg = await client.messages.create({
+      model: AI_TEAM_MODEL,
+      max_tokens: 1500,
+      temperature: 0,
+      system,
+      messages,
+      output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
+    });
+    for (const k of Object.keys(usage)) usage[k] += msg.usage?.[k] || 0;
+    const text = msg.content?.find((c) => c.type === 'text')?.text || '';
+    const out = extractJsonLoose(text);
+    const v = verifyAiTeam(out?.members, characters, { tower });
+    last = { members: out?.members || null, reasoning: out?.reasoning || '', flaws: v.flaws, resolved: v.resolved, retried: attempt > 0 };
+    if (v.ok) break;
+    // 재요청: 위반 사유를 그대로 붙인다(영문 한 줄들 — verifyAiTeam이 그 용도로 만든다).
+    messages.push({ role: 'assistant', content: text || '{}' });
+    messages.push({ role: 'user', content: `Your team violates the rules:\n- ${v.flaws.join('\n- ')}\nReturn a corrected team of exactly 5 members from the roster.` });
+  }
+  return { ...last, usage, latencyMs: Date.now() - t0 };
+}
+
+// 폴백 구간에서 AI 조합을 시도한다. 캐시 → 예산 → 호출 → 검산 → 기록 순서.
+// 반환: { team(엔진 응답과 같은 모양), reasoning, cached } 또는 null(예산 초과·검산 실패·오류 → 엔진 답 사용).
+async function tryAiTeam({ client, supabase, characters, mode, boss, tower, treasureIdSet, langKey, engineTeam }) {
+  const ids = characters.map((c) => c.id);
+  const cacheKey = buildAiTeamCacheKey({ ids, mode, boss, tower });
+  const byTitle = new Map(characters.map((c) => [c.title, c]));
+  const toTeam = (resolvedChars, reasoning) => {
+    const scored = scoreTeam(resolvedChars, mode, { treasureIds: treasureIdSet, bossElement: boss || null, lang: langKey });
+    return {
+      members: orderMembersForDisplay(resolvedChars, mode, treasureIdSet).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
+      totalScore: scored.tierTotal,
+      reasons: scored.reasons,
+      bossDefenseNote: scored.bossDefenseNote || null,
+      aiReasoning: reasoning,
+    };
+  };
+
+  // 1) 캐시
+  const { data: hit, error: cacheErr } = await supabase.from('ai_team_cache').select('members, reasoning, hits').eq('cache_key', cacheKey).maybeSingle();
+  if (cacheErr) { console.error('[AI_TEAM] 캐시 조회 실패 — AI 조합 구성을 건너뜁니다(마이그레이션 전?)', cacheErr); return null; }
+  if (hit && Array.isArray(hit.members)) {
+    const resolved = hit.members.map((t) => byTitle.get(t)).filter(Boolean);
+    if (resolved.length === 5) {
+      supabase.from('ai_team_cache').update({ hits: (hit.hits || 0) + 1, last_hit_at: new Date().toISOString() }).eq('cache_key', cacheKey).then(null, (e) => console.error('[AI_TEAM] cache hit update error', e));
+      return { team: toTeam(resolved, hit.reasoning || ''), reasoning: hit.reasoning || '', cached: true };
+    }
+  }
+
+  // 2) 예산(원)
+  const spent = await readDailyKrw(supabase);
+  if (spent == null) return null;
+  if (spent >= AI_DAILY_BUDGET_KRW) {
+    console.warn(`[AI_BUDGET] 일일 예산 ${AI_DAILY_BUDGET_KRW}원 도달(${spent}원) — AI 조합 구성을 건너뛰고 엔진 폴백 답을 냅니다`);
+    return { budgetExhausted: true };
+  }
+
+  // 3) 호출 + 검산
+  let res;
+  try {
+    res = await composeTeamWithAi(client, characters, { mode, boss, tower });
+  } catch (err) {
+    console.error('[AI_TEAM] compose error', err);
+    return null;
+  }
+  const krw = costKrw(AI_TEAM_MODEL, res.usage);
+  await addDailyCost(supabase, krw);
+  const ok = res.flaws.length === 0 && res.resolved.length === 5;
+  const engineTitles = new Set((engineTeam?.members || []).map((m) => m.title));
+  const identical = ok && res.resolved.every((c) => engineTitles.has(c.title));
+
+  // 4) 기록 — shadow든 on이든 실제 호출은 전부 남긴다. 여기서 규칙 위반률·엔진과의 차이·비용·지연을 잰다(§6).
+  supabase.from('ai_team_shadow').insert({
+    mode, boss: boss || null, tower: tower || null,
+    roster_hash: cacheKey, roster_size: characters.length,
+    engine_members: (engineTeam?.members || []).map((m) => m.title),
+    ai_members: res.members, flaws: res.flaws, identical,
+    cost_krw: krw, latency_ms: res.latencyMs, model: AI_TEAM_MODEL, prompt_version: PROMPT_VERSION,
+    retried: res.retried, served_ai: AI_TEAMS_MODE === 'on' && ok,
+    usage: res.usage,
+  }).then(({ error }) => { if (error) console.error('[AI_TEAM] shadow insert error', error); });
+
+  if (!ok) {
+    console.warn('[AI_TEAM] 검산 실패 — 엔진 폴백 답을 냅니다', res.flaws);
+    return null;
+  }
+  // 검산을 통과한 답만 캐시한다. 위반 답이 박히면 그 로스터는 영영 잘못된 조합을 받는다.
+  supabase.from('ai_team_cache').upsert({
+    cache_key: cacheKey, members: res.resolved.map((c) => c.title), reasoning: res.reasoning,
+    model: AI_TEAM_MODEL, prompt_version: PROMPT_VERSION, mode,
+  }, { onConflict: 'cache_key' }).then(({ error }) => { if (error) console.error('[AI_TEAM] cache write error', error); });
+
+  return { team: toTeam(res.resolved, res.reasoning), reasoning: res.reasoning, cached: false };
 }
 
 // 캐릭터의 실제 버스트 스킬 쿨타임(초). characterDatabase.json의 skills 배열은 항상
@@ -281,7 +462,10 @@ function clipForPrompt(text, maxLen) {
 const MAX_REASON_CHARS = 250;
 const MAX_NOTE_CHARS = 400;
 
-async function explainChosenTeam(client, fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName) {
+// composeNote(2026-09-15): AI가 조합을 직접 구성한 경우 그때의 영문 이유. 설명 프롬프트에 참고로 실어
+// 구성 의도(예: "Crust's distributed-damage buff feeds Yukiko")가 설명 문장에 이어지게 한다.
+// 반환은 { reasoning, usage } — usage로 원 단위 예산에 합산한다(옛 반환은 문자열이었다).
+async function explainChosenTeam(client, fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote = null) {
   const rosterText = fullMembers.map((c) => charSummaryLine(c, mode, treasureIdSet)).join('\n');
 
   // 아키타입 노트는 근거 문장 안에도 통째로 박혀 있고(synergyEngine이 "'X' 조합으로 알려진
@@ -293,9 +477,11 @@ async function explainChosenTeam(client, fullMembers, reasons, archetypeNote, mo
 
   const reasonsText =
     deduped.map((r) => `- ${clipForPrompt(r, MAX_REASON_CHARS)}`).join('\n') || '(추가 근거 없음)';
-  const noteBlock = archetypeNote
+  const noteBlock = (archetypeNote
     ? `\n\n[참고: 이 조합은 커뮤니티에서 검증된 조합과도 일치합니다 — 아래는 그 조합에 대한 영어 참고 자료이니 그대로 인용하지 말고 내용만 참고하세요]\n${clipForPrompt(archetypeNote, MAX_NOTE_CHARS)}`
-    : '';
+    : '') + (composeNote
+    ? `\n\n[참고: 이 조합을 구성할 때의 의도(영어). 그대로 인용하지 말고 내용만 참고하세요]\n${clipForPrompt(composeNote, MAX_NOTE_CHARS)}`
+    : '');
 
   const system = `당신은 모바일 게임 '승리의 여신: 니케'의 조합 전문가입니다. 아래에 이미 확정된 5인 조합과 멤버들의 실제 데이터, 그 조합이 채점된 근거 문장이 주어집니다.
 이 조합은 캐릭터 개별 모드 티어 점수의 합만으로 이미 확정되었으므로, 당신의 역할은 새 조합을 만들거나 다른 조합을 제안하는 것이 아니라 이미 정해진 이 조합이 왜 좋은지 설명하는 것입니다 — members 구성을 바꾸지 마세요.
@@ -348,7 +534,7 @@ ${reasonsText}${noteBlock}
     const rawText = msg.content?.find((c) => c.type === 'text')?.text || '';
     const text = msg.stop_reason === 'stop_sequence' ? `${rawText}}` : rawText;
     const parsed = extractJson(text);
-    if (parsed?.reasoning) return parsed.reasoning;
+    if (parsed?.reasoning) return { reasoning: parsed.reasoning, usage: msg.usage || null };
     console.error('explainChosenTeam: failed to parse response', { stopReason: msg.stop_reason, textPreview: text.slice(0, 500) });
   } catch (err) {
     console.error('explainChosenTeam error', err);
@@ -486,6 +672,9 @@ export async function POST(req) {
     let archetypeNote = null;
     let matchSource;
     let alternative = null;
+    let composeNote = null;        // AI가 조합을 구성했을 때의 영문 이유(설명 프롬프트 참고용)
+    let aiTeamCached = false;
+    let aiBudgetExhausted = false; // 원 단위 예산에 닿아 AI 조합 구성을 건너뛴 경우
 
     const matchOpts = {
       treasureIds: treasureIdSet,
@@ -555,6 +744,33 @@ export async function POST(req) {
       const pool = rec.teams.filter((t) => !t.members.some((m) => excludeSet.has(m.title)));
       chosen = (pool.length > 0 ? pool : rec.teams)[0];
       matchSource = 'skill-synergy-fallback';
+
+      // 2026-09-15: 폴백 구간에서만 AI 조합 구성(docs/ai-teams-plan.md §1). "다른 조합 보기"(excludeTitles)는
+      // 엔진 후보 순환이라 AI를 건너뛴다. Supabase가 없으면 캐시도 예산도 없으니 켜지 않는다.
+      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0) {
+        const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+        const ai = await tryAiTeam({
+          client, supabase, characters, mode, boss: bossElement || null, tower: towerKey,
+          treasureIdSet, langKey, engineTeam: chosen,
+        });
+        if (ai?.budgetExhausted) {
+          aiBudgetExhausted = true;
+        } else if (ai?.team && AI_TEAMS_MODE === 'on') {
+          // 엔진 폴백 답은 대안으로 함께 내려보낸다 — 어느 쪽을 택할지는 사용자가 본다(§6-3).
+          alternative = {
+            source: 'skill-synergy-fallback',
+            members: chosen.members,
+            totalScore: chosen.totalScore,
+            archetypeName: null,
+            headline: (chosen.reasons || [])[0] || null,
+          };
+          chosen = ai.team;
+          composeNote = ai.reasoning || null;
+          aiTeamCached = ai.cached;
+          matchSource = 'ai-composed';
+        }
+        // shadow: 호출·기록만 하고 화면은 엔진 답 그대로.
+      }
     }
 
     const byTitle = new Map(characters.map((c) => [c.title, c]));
@@ -568,7 +784,8 @@ export async function POST(req) {
       langKey,
       members: fullMembers,
       reasons: chosen.reasons,
-      archetypeNote,
+      // AI 구성 이유도 설명 입력이므로 키에 넣는다(같은 5명이라도 구성 의도가 다르면 설명이 달라진다).
+      archetypeNote: [archetypeNote, composeNote].filter(Boolean).join('\n') || null,
       treasureIdSet,
     });
 
@@ -582,7 +799,8 @@ export async function POST(req) {
     // 설명만 담백해지는 쪽이 낫다. (이 폴백 문장은 캐시에 저장하지 않는다 — 아래 참고)
     let budgetExhausted = false;
     if (!aiReasoning && supabase) {
-      budgetExhausted = await isOverGlobalDailyLimit(supabase);
+      // 횟수 상한(옛) 또는 원 단위 예산(2026-09-15) — 둘 중 하나라도 닿으면 설명도 만들지 않는다.
+      budgetExhausted = aiBudgetExhausted || (await isOverGlobalDailyLimit(supabase));
       if (budgetExhausted) {
         console.warn(`[AI_BUDGET] 일일 총 상한(${DAILY_GLOBAL_LIMIT}회) 도달 — AI 설명 생성을 중단하고 근거 문장으로 대체합니다`);
         aiReasoning = fallbackReasoning(chosen.reasons, langKey);
@@ -599,15 +817,17 @@ export async function POST(req) {
         mode,
         modeLabel,
         treasureIdSet,
-        langName
+        langName,
+        composeNote
       );
-      if (generated) {
-        aiReasoning = generated;
+      if (generated?.reasoning) {
+        aiReasoning = generated.reasoning;
         // 실제로 돈을 쓴 요청만 사용자의 하루 할당량에서 차감한다.
         if (supabase && ipHash) await incrementDailyUsage(supabase, ipHash);
-        // 전역 카운터도 같은 기준(실제 API 호출)으로 올린다.
+        // 전역 카운터도 같은 기준(실제 API 호출)으로 올린다. 원 단위 예산에도 합산한다(2026-09-15).
         if (supabase) await incrementGlobalDailyUsage(supabase);
-        await writeCache(supabase, cacheKey, generated, langKey, mode);
+        if (supabase && generated.usage) await addDailyCost(supabase, costKrw(MODEL, generated.usage));
+        await writeCache(supabase, cacheKey, generated.reasoning, langKey, mode);
       } else {
         // AI 호출 실패. 근거 문장으로 대체하되 캐시에는 남기지 않는다 —
         // 열화된 문장이 캐시에 박히면 그 조합은 영영 제대로 된 설명을 못 받는다.
@@ -625,8 +845,11 @@ export async function POST(req) {
         bossDefenseNote: chosen.bossDefenseNote || null,
       },
       aiReasoning,
+      // 'enikk-real-usage' | 'prydwen-exact-match' | 'skill-synergy-fallback' | 'ai-composed'(2026-09-15, AI_TEAMS_MODE=on)
       model: matchSource,
       cached,
+      // AI 조합 구성 경로가 응답 캐시에서 나왔는지(비용 0). 화면엔 안 그리고 관측용.
+      aiTeamCached,
       // 2026-08-08: 점수 비교에서 진 쪽(실사용 vs prydwen)을 함께 내려준다.
       // 둘은 서로 다른 질문에 대한 답이라("검증된 조합이 뭐냐" vs "내 캐릭터로 제일 센 게 뭐냐")
       // 하나만 보여주면 나머지가 있었다는 사실 자체가 사용자에게 보이지 않는다.

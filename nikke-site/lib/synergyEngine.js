@@ -885,7 +885,8 @@ function findWastedBurstMembers(members, mode, treasureIds) {
 // 화면 표시용 정렬: 버스트 1 → 2 → 3, 같은 단계 안에서는 엔진이 가정한 버스트 순번대로.
 // 이렇게 하면 표시 순서가 곧 "누가 실제로 버스트를 쓰는가"를 나타내고, 토템처럼 버스트를
 // 쓰지 않는 멤버가 자연스럽게 뒤로 간다.
-function orderMembersForDisplay(members, mode, treasureIds) {
+// 2026-09-15부터 export — AI가 구성한 조합(app/api/ai-recommend)도 같은 표시 순서를 쓴다.
+export function orderMembersForDisplay(members, mode, treasureIds) {
   const { burstOrder } = findWastedBurstMembers(members, mode, treasureIds);
   return [...members].sort(
     (a, b) =>

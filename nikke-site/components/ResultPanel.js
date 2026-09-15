@@ -64,6 +64,8 @@ const SOURCE_LABEL_KEY = {
   'enikk-real-usage': 'source_enikk',
   'prydwen-exact-match': 'source_prydwen',
   'skill-synergy-fallback': 'source_fallback',
+  // 2026-09-15: 폴백 구간을 AI가 직접 구성한 경우(AI_TEAMS_MODE=on). 엔진 폴백 답은 alternative로 같이 온다.
+  'ai-composed': 'source_ai',
 };
 
 // 조합 구성원을 세로 카드로 그린다. **주력 조합과 대안 조합이 같은 것을 쓴다.**
