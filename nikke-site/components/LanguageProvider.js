@@ -21,10 +21,24 @@ export function LanguageProvider({ children }) {
       setLangState(saved);
       return;
     }
+    // 저장된 선택이 없으면 **브라우저 언어**를 따라간다.
+    //
+    // 2026-09-16 수정: 예전에는 navigator.language(대표 언어) 하나만 봤다. 그래서 1순위가
+    // 우리가 지원하지 않는 언어인 사람(예: zh-CN → en-US 순)이 전부 한국어를 받았다.
+    // navigator.languages는 **선호 순서대로 늘어선 전체 목록**이라, 지원하는 언어가
+    // 나올 때까지 훑으면 그 사람이 실제로 원하는 언어에 가장 가깝게 맞출 수 있다.
+    //
+    // ⚠️ 국가(IP)가 아니라 언어로 판단하는 게 맞다. 일본에 사는 한국인은 한국어 브라우저를
+    //    쓰고 한국어 화면을 원한다 — 국가로 정하면 그 사람에게 일본어가 나간다.
+    //    브라우저 언어는 사용자가 직접 정한 값이라 더 정확한 신호다.
     if (typeof navigator !== 'undefined') {
-      const nav = navigator.language || '';
-      if (nav.startsWith('ja')) setLangState('ja');
-      else if (nav.startsWith('en')) setLangState('en');
+      const prefs = Array.isArray(navigator.languages) && navigator.languages.length
+        ? navigator.languages
+        : [navigator.language || ''];
+      for (const p of prefs) {
+        const code = String(p).toLowerCase().split('-')[0];
+        if (LOCALES.includes(code)) { setLangState(code); return; }
+      }
     }
   }, []);
 
