@@ -210,9 +210,36 @@ for (const r of d1Only) {
   const who = r.d1Engine.map((x) => `${nm(x.title)}(${x.scopes[0]})`).join(', ');
   console.log(`     s${r.seed} ${r.id}: ${who}`);
 }
-const rest = rows.filter((r) => !d1Only.includes(r));
-if (rest.length) {
-  console.log(`  [D?] 아직 분류 안 된 불일치: ${rest.length}건 — ${rest.map((r) => 's' + r.seed + ' ' + r.id).join(', ')}`);
+// D2~D6 — 판정 근거에서 사람(클로드)이 분류한 원인. 계산으로는 못 가린다(판단이 들어간다).
+// probe-data/mismatch-causes.json 에 **분류 당시 엔진 팀**과 함께 적혀 있다. 엔진 답이 바뀌면
+// 그 분류는 그 답에 대한 것이 아니므로 무효로 보고 다시 "미분류"로 돌린다(재판정과 같은 원리).
+const CAUSE_LABEL = {
+  D2: 'PvP 버스트 경쟁 — 게이지 속도·풀버스트 한 방(게이지 속도는 출처 있는 데이터가 없다)',
+  D3: '버퍼 자리에 딜러를 못 키우는 캐릭터 — 자기 강화형·역할 중복 탱커',
+  D4: '딜러 수 부족 — 버퍼는 많고 실제로 때리는 사람이 적다',
+  D5: '유연 버스트 멤버가 약한 단계로 밀림 — 라피:레드 후드가 1단계로 내려가 3단계 버스트를 잃는다',
+  D6: '모드 적합 — 타워 무리 처리엔 광역, 캠페인 연속 스테이지엔 회복',
+};
+const causesPath = path.join(ROOT, 'probe-data', 'mismatch-causes.json');
+const causes = fs.existsSync(causesPath) ? JSON.parse(fs.readFileSync(causesPath, 'utf8')) : {};
+const byCause = {};
+const unclassified = [];
+for (const r of rows.filter((x) => !d1Only.includes(x))) {
+  const k = `s${r.seed}-${r.id}`;
+  const c = causes[k];
+  if (c && c.engine === [...r.engine].sort().join('|')) (byCause[c.cause] ||= []).push({ r, note: c.note });
+  else unclassified.push(r);
+}
+for (const code of Object.keys(CAUSE_LABEL)) {
+  const list = byCause[code];
+  if (!list) continue;
+  console.log(`  [${code}] ${CAUSE_LABEL[code]}: ${list.length}/${mismatch}`);
+  if (VERBOSE) list.forEach(({ r, note }) => console.log(`     s${r.seed} ${r.id}: ${note}`));
+  else console.log(`     ${list.map(({ r }) => 's' + r.seed + ' ' + r.id).join(', ')}`);
+}
+if (unclassified.length) {
+  console.log(`  [D?] 아직 분류 안 된 불일치: ${unclassified.length}건 — ${unclassified.map((r) => 's' + r.seed + ' ' + r.id).join(', ')}`);
+  console.log('     (분류는 probe-data/mismatch-causes.json — 엔진 답이 바뀐 건은 여기로 돌아온다)');
 }
 
 if (VERBOSE) {
