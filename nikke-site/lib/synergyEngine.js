@@ -32,6 +32,7 @@ import soloRaidTeams from '../data/soloRaidTeams.json';
 import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 import { engineText } from './engineReasons';
+import { deadBuffCount } from './buffTargets';
 
 // --- 근거 문장의 언어 처리 (2026-08-25) ---
 //
@@ -1624,6 +1625,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
             members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
             ...result,
             totalScore: result.tierTotal,
+            // 조건부 아군 버프가 자기 말고 아무에게도 안 닿는 멤버 수(lib/buffTargets.js). 정렬의 동점 처리에만 쓴다.
+            deadBuffCount: deadBuffCount(members),
           });
         });
       });
@@ -1667,6 +1670,12 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
     (a, z) =>
       (z.totalScore - a.totalScore) ||
       ((a.wastedCount || 0) - (z.wastedCount || 0)) ||
+      // 2026-09-18: 동점이면 **버프 대상이 없는 멤버가 적은 쪽**(D1).
+      // 아니스:스파클링 서머를 전격 동료 없는 팀에, 누아르를 샷건 동료 없는 팀에 넣으면 티어 점수엔
+      // 멀쩡해 보이지만 스킬 원문상 그 칸의 버프는 빈다. 내 판정과 엔진이 갈린 20건 중 8건의 이유였다
+      // (scripts/testJudgmentMatch.mjs). 낭비 인원과 같은 성격이라 바로 뒤에 둔다 — 가산점이 아니라
+      // 동점 처리라 순위를 뒤집지 않는다(원칙 2).
+      ((a.deadBuffCount || 0) - (z.deadBuffCount || 0)) ||
       (z.skillSynergyCount - a.skillSynergyCount) ||
       (z.allyBufferCount - a.allyBufferCount) ||
       tieKey(a).localeCompare(tieKey(z))

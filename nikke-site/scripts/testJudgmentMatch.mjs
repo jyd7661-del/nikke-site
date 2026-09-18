@@ -27,12 +27,20 @@
  *
  * ⚠️ 판정자는 클로드다. 유저가 다르게 느낀 건이 생기면 **판정 파일을 고치고** 경위를 log에 적는다.
  *    정답지가 사람 손으로 바뀌는 검사이므로, 바뀌면 이 숫자도 같이 움직이는 게 정상이다.
+ *
+ * 🔴 **이 수치만 보고 엔진 변경을 채택하지 말 것 — 이전 엔진 대비 판정을 함께 한다.** (2026-09-18)
+ *    이 지표는 "엔진 vs AI"만 비교한다. 그래서 엔진이 **스스로 나빠져도** AI보다만 나으면 안 보인다.
+ *    실제로 D1 동점 처리 1판은 바뀐 10건 중 좋아진 4 · 나빠진 4로 순효과 0이었는데, 그중 3건은
+ *    여전히 AI보다 나아서 이 수치로는 퇴행이 안 잡혔다. 한 건은 오히려 AI와 같아져 "일치"로 셌다.
+ *    그래서 엔진을 고쳐 답이 바뀐 건은 **(1) 새 엔진 vs AI** 와 **(2) 새 엔진 vs 이전 엔진**을 둘 다
+ *    판정해 probe-data/rejudge-*.json 에 남기고, (2)에서 나아짐 > 나빠짐일 때만 채택한다.
+ *    D1 2판은 나아짐 3 · 나빠짐 1 · 같음 2로 채택했다(docs/log/2026-09.md).
  */
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { scopeOf } from './simulateTeams.mjs';
+import { buffWithNoTarget } from '../lib/buffTargets.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const VERBOSE = process.argv.includes('--verbose');
@@ -42,54 +50,12 @@ const LABEL = 'sonnet-tier';
 const cdb = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'characterDatabase.json'), 'utf8'));
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 const nm = (t) => byTitle.get(t)?.name_kr || t;
-const lc = (v) => String(v || '').toLowerCase();
 
 // --- 원인 분류 D1: 버프 대상이 팀에 없는 멤버 ---
 //
-// 씨앗 1·2의 불일치 21건에서 가장 많이 나온 이유다. 엔진이 티어 합만 보고 고르다 보니
-// **조건부 버프가 자기 말고 아무에게도 안 닿는 캐릭터**를 넣는다:
-//   · 아니스 : 스파클링 서머 — "Affects all Electric Code allies" 인데 팀에 전격이 자기뿐
-//   · 아크레인저 블랙 — "all Wind Code allies with assault rifles" 인데 해당자가 자기뿐
-// 티어 점수에는 그 자리가 멀쩡해 보이지만 스킬 원문상 그 칸은 빈다.
-//
-// 판정이 아니라 **사실 확인**이다: 대상절을 읽고 팀에서 해당자를 센다. 새 가중치를 만들지 않는다.
-const ELEMENTS = ['fire', 'water', 'wind', 'iron', 'electric'];
-const WEAPON_WORDS = [
-  ['sniper rifle', 'sr'], ['rocket launcher', 'rl'], ['submachine gun', 'smg'],
-  ['assault rifle', 'ar'], ['machine gun', 'mg'], ['shotgun', 'sg'], ['shotgun-wielding', 'sg'],
-];
-// 대상절 문자열 → 팀에서 그 버프를 받는 멤버(시전자 포함). 해석 못 하면 null(모르는 건 세지 않는다).
-function resolveAllyScope(scope, caster, team) {
-  const s = lc(scope);
-  if (!/all\b/.test(s) || /enem/.test(s)) return null;      // 아군 전체 계열만 본다
-  const el = ELEMENTS.find((e) => new RegExp(`all ${e} (code|type) all(y|ies)`).test(s) || new RegExp(`allies with ${e} element`).test(s));
-  const wp = WEAPON_WORDS.find(([w]) => s.includes(w));
-  const squad = /from the same squad/.test(s);
-  if (!el && !wp && !squad) return null;                     // 조건 없는 "all allies"는 대상이 항상 있다
-  let out = team;
-  if (el) out = out.filter((m) => lc(m.element) === el);
-  if (wp) out = out.filter((m) => lc(m.weapon) === wp[1]);
-  if (squad) { if (!caster.squad) return null; out = out.filter((m) => m.squad === caster.squad); }
-  return out;
-}
-// 팀에서 "조건부 아군 버프가 자기 말고 아무에게도 안 닿는" 멤버를 찾는다.
-function buffWithNoTarget(team) {
-  const out = [];
-  for (const c of team) {
-    const dead = [];
-    for (const sk of c.skills || []) {
-      for (const clause of String(sk.desc || '').split(/(?<=\.)\s+/)) {
-        const scope = scopeOf(clause.trim());
-        if (scope === null) continue;
-        const targets = resolveAllyScope(scope, c, team);
-        if (targets === null) continue;
-        if (targets.filter((m) => m.id !== c.id).length === 0) dead.push(scope.trim());
-      }
-    }
-    if (dead.length) out.push({ title: c.title, scopes: [...new Set(dead)] });
-  }
-  return out;
-}
+// 불일치에서 가장 많이 나온 이유다. 엔진이 티어 합만 보고 고르다 보니 **조건부 버프가 자기 말고
+// 아무에게도 안 닿는 캐릭터**를 넣는다(아니스:SS를 전격 동료 없는 팀에, 누아르를 샷건 동료 없는 팀에).
+// 판정기는 lib/buffTargets.js 하나뿐이다 — 엔진이 고치는 대상과 여기서 세는 대상이 같은 정의여야 한다.
 
 // --- 역테스트 — 검사를 만들면 반드시 고장을 심어 잡히는지 본다(CLAUDE.md 원칙 3) ---
 if (process.argv.includes('--selftest')) {
@@ -105,8 +71,15 @@ if (process.argv.includes('--selftest')) {
       team: ['Anis: Sparkling Summer', 'Anis: Star', 'Ada Wong', 'Jackal', 'Liberalio'], expect: false },
     { why: '조건 없는 전 아군 버퍼만 — 잡히면 안 된다',
       team: ['Crown', 'Liter', 'Naga', 'Red Hood', 'Modernia'], expect: false },
-    { why: '샷건 버퍼(누아르)를 샷건 동료 0명인 팀에 — 잡혀야 한다',
-      team: ['Noir', 'Crown', 'Liter', 'Modernia', 'Rapunzel'], expect: true },
+    // ↓ 2판(2026-09-18)에서 정의를 좁힌 두 규칙을 그대로 시험한다. 1판이 엔진에서 일으킨 퇴행 패턴이다.
+    { why: '[2판②] 샷건 버퍼(토브)의 샷건 동료가 지원형(나가)뿐 — 공격형이 아니라 잡혀야 한다',
+      team: ['Tove', 'Naga', 'Crown', 'Liter', 'Modernia'], expect: true },
+    { why: '[2판②] 트리나의 전격 소총 버프 대상이 방어형(목단)뿐 — 잡혀야 한다(1판은 여기서 목단을 끼워 넣었다)',
+      team: ['Trina', 'Moran', 'Crown', 'Liter', 'Modernia'], expect: true },
+    { why: '[2판①] 공격형(아크레인저 블랙)은 조건부 버프가 비어도 세지 않는다 — 잡히면 안 된다',
+      team: ['Ark Ranger Black', 'Crown', 'Liter', 'Rapunzel', 'Modernia'], expect: false },
+    { why: '[2판①] 공격형(누아르)도 마찬가지 — 잡히면 안 된다(1판에서는 잡혔다)',
+      team: ['Noir', 'Crown', 'Liter', 'Modernia', 'Rapunzel'], expect: false },
   ];
   let bad = 0;
   console.log('─'.repeat(84));
@@ -141,7 +114,7 @@ async function loadEngine() {
   const fix = (src) => src
     .replace(/from '\.\.\/data\/([\w.]+)\.json';/g, (_, n) => `from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'data', `${n}.json`)).href)} with { type: 'json' };`)
     .replace(/from '\.\/(\w+)(?:\.js)?';/g, (_, n) => `from ${JSON.stringify(pathToFileURL(path.join(tmp, `${n}.mjs`)).href)};`);
-  for (const f of ['synergyEngine', 'engineReasons', 'i18n']) fs.writeFileSync(path.join(tmp, `${f}.mjs`), fix(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
+  for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets']) fs.writeFileSync(path.join(tmp, `${f}.mjs`), fix(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
   return import(pathToFileURL(path.join(tmp, 'synergyEngine.mjs')).href);
 }
 const E = await loadEngine();

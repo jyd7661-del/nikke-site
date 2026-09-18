@@ -42,7 +42,7 @@ const fixImports = (src) =>
     .replace(/from '\.\/(\w+)(?:\.js)?';/g, (_, name) =>
       `from ${JSON.stringify(pathToFileURL(path.join(tmp, `${name}.mjs`)).href)};`);
 
-for (const f of ['synergyEngine', 'engineReasons', 'i18n']) {
+for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets']) {
   fs.writeFileSync(path.join(tmp, `${f}.mjs`), fixImports(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
 }
 

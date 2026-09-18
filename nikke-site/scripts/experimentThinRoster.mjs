@@ -57,7 +57,7 @@ async function loadEngine() {
   const fix = (src) => src
     .replace(/from '\.\.\/data\/([\w.]+)\.json';/g, (_, name) => `from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'data', `${name}.json`)).href)} with { type: 'json' };`)
     .replace(/from '\.\/(\w+)(?:\.js)?';/g, (_, name) => `from ${JSON.stringify(pathToFileURL(path.join(tmp, `${name}.mjs`)).href)};`);
-  for (const f of ['synergyEngine', 'engineReasons', 'i18n']) fs.writeFileSync(path.join(tmp, `${f}.mjs`), fix(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
+  for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets']) fs.writeFileSync(path.join(tmp, `${f}.mjs`), fix(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
   return import(pathToFileURL(path.join(tmp, 'synergyEngine.mjs')).href);
 }
 // 사이트와 같은 선정 경로 — 실사용 완전일치 → 아키타입 → 폴백. probeRecommendations.mjs와 동일.
