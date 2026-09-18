@@ -31,6 +31,19 @@ export function LanguageProvider({ children }) {
     // ⚠️ 국가(IP)가 아니라 언어로 판단하는 게 맞다. 일본에 사는 한국인은 한국어 브라우저를
     //    쓰고 한국어 화면을 원한다 — 국가로 정하면 그 사람에게 일본어가 나간다.
     //    브라우저 언어는 사용자가 직접 정한 값이라 더 정확한 신호다.
+    // 🔴 **검색봇에는 자동 선택을 하지 않는다** (2026-09-19).
+    //
+    // 구글봇은 자바스크립트를 실행한 뒤의 화면을 색인하는데, 그 브라우저의 언어가 영어(en-US)다.
+    // 그래서 아래 자동 선택이 구글봇에게 **사이트 전체를 영어로 바꿔 보여주고 있었다.**
+    // 구글 리치 결과 테스트로 확인(2026-09-19, /nikke/crown): 서버 HTML은 lang="ko"·한국어인데
+    // 구글이 렌더링한 결과는 `<html lang="en">` + 제목(h1) "Crown". 구글 눈에 이 사이트가
+    // 영어 사이트로 보이니 한국어 검색에서 밀린다. 유저가 "갑자기 검색이 안 된다"고 해서 찾았다.
+    // 구글도 로케일 기반 자동 전환을 크롤러에 하지 말라고 권한다(구글봇은 언어 선호 없이 크롤링한다).
+    //
+    // 봇에게는 기본값(한국어) 그대로 둔다. 사람에게 보이는 기본 화면과 같은 내용이라 클로킹이 아니다.
+    // 국내 검색도 챙긴다 — 네이버는 Yeti, 다음은 Daum.
+    const BOT_UA = /bot|crawl|spider|slurp|yeti|daum|lighthouse|headlesschrome|google-inspectiontool|googleother|mediapartners|adsbot/i;
+    if (typeof navigator !== 'undefined' && BOT_UA.test(navigator.userAgent || '')) return;
     if (typeof navigator !== 'undefined') {
       const prefs = Array.isArray(navigator.languages) && navigator.languages.length
         ? navigator.languages

@@ -42,28 +42,13 @@ export function generateMetadata({ params }) {
   if (!c) return {};
   const t = c.tiers || {};
   const teams = teamsFor(c.title);
-  // 제목·설명에 **세 언어 이름과 주제어**를 함께 싣는다 (2026-09-16).
-  //
-  // 왜: 검색이 사실상 한국어만 잡히고 있었다. 본문에는 name_ja·title이 이미 있었지만
-  // (DexHeader 부제) 제목·설명이 한국어뿐이라 "Crown nikke tier"나 "クラウン ニケ 編成"처럼
-  // **이름 + 주제어**로 치는 검색에서 주제어가 하나도 안 걸렸다. 8월 노출 1,040건의 상위
-  // 검색어가 전부 한국어인 것이 그 결과다(docs/log/2026-08.md "검색").
-  //
-  // ⚠️ 이건 **임시 처방**이다. 근본 해결은 언어별 URL(/en, /ja) + hreflang인데, 지금은 URL을
-  //    나누지 않고 localStorage로 화면 문구만 바꾸는 구조라(components/LanguageProvider.js)
-  //    구글에 보여줄 영어판·일본어판 주소 자체가 없다. 그 전환은 별도 작업이다.
-  // ⚠️ 이름이 긴 캐릭터(맥스웰: 오디너리 미케닉 등 42명)는 제목이 60자를 넘어 검색 결과에서
-  //    꼬리가 잘린다. 잘리는 쪽이 '| 니케 조합 추천'이 되도록 **이름을 앞에** 두었다.
-  //    (제목 길이는 순위에 불리하지 않고 표시만 잘린다.)
   return {
-    title: `${c.name_kr} (${c.title} · ${c.name_ja}) 티어·스킬·조합 | 니케 조합 추천`,
+    title: `${c.name_kr} (${c.title}) 티어·스킬·조합 | 니케 조합 추천`,
     description:
       `승리의 여신: 니케 ${c.name_kr} — ${CORP_KR[c.manufacturer] || c.manufacturer} ` +
       `${ELEMENT_KR[c.element] || c.element} ${CLASS_KR[c.class] || c.class}, 버스트 ${c.burst}. ` +
       `캠페인 ${t.story || '—'} · 보스전 ${t.bossing || '—'} · PvP ${t.pvp || '—'} 티어, ` +
-      `스킬 3종과 등장 조합 ${teams.length}개 정리. ` +
-      `${c.title} (NIKKE: Goddess of Victory) tier, skills and team comps. ` +
-      `${c.name_ja}（勝利の女神：NIKKE）のティア・スキル・編成。`,
+      `스킬 3종과 등장 조합 ${teams.length}개 정리.`,
     // 정본 주소 — 캐릭터마다 자기 주소를 가리킨다.
     alternates: { canonical: `/nikke/${c.id}` },
     openGraph: {

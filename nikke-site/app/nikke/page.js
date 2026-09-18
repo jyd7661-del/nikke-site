@@ -11,14 +11,10 @@ import { CHARACTERS } from '@/lib/dex';
 import DexGrid from '@/components/DexGrid';
 
 export const metadata = {
-  // 상세 페이지와 같은 이유로 영어·일본어 주제어를 함께 싣는다(2026-09-16).
-  // 경위와 한계(근본 해결은 언어별 URL + hreflang)는 app/nikke/[id]/page.js의 generateMetadata 주석.
-  title: `니케 캐릭터 도감 (NIKKE character list · ニケ キャラ一覧) — 전체 ${CHARACTERS.length}명 티어·스킬·조합`,
+  title: `니케 캐릭터 도감 — 전체 ${CHARACTERS.length}명 티어·스킬·조합 | 니케 조합 추천`,
   description:
     `승리의 여신: 니케 캐릭터 ${CHARACTERS.length}명의 모드별 티어, 스킬, 등장 조합을 정리한 도감. ` +
-    '캐릭터를 고르면 상세 정보와 추천 조합을 볼 수 있습니다. ' +
-    `NIKKE: Goddess of Victory character list — tier, skills and team comps for all ${CHARACTERS.length} Nikkes. ` +
-    `勝利の女神：NIKKE キャラクター${CHARACTERS.length}人のティア・スキル・編成まとめ。`,
+    '캐릭터를 고르면 상세 정보와 추천 조합을 볼 수 있습니다.',
   // 정본 주소. ?utm_source= 같은 쿼리가 붙은 주소가 별개 URL로 색인되는 것을 막는다.
   // metadataBase(app/layout.js)가 있어 상대 경로가 절대 주소로 풀린다.
   alternates: { canonical: '/nikke' },
