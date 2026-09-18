@@ -824,7 +824,9 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     }
     const withCd = group.map((m) => ({ m, cd: burstCooldownSeconds(m) }));
     if (withCd.some((x) => x.cd === null)) {
-      group.forEach((m, i) => burstOrder.set(m.id, i));
+      // 쿨타임을 모르면 낭비 판정을 하지 않는다(점수는 순서와 무관하다). 다만 표시 순번은
+      // 입력 순서가 아니라 id로 고정한다 — 같은 팀이 화면마다 다른 순서로 나오지 않게.
+      [...group].sort((x, y) => String(x.id).localeCompare(String(y.id))).forEach((m, i) => burstOrder.set(m.id, i));
       return;
     }
     // 2026-08-07 수정: 쿨타임이 같을 때 배열 순서대로 낭비 대상을 골라서, 똑같은 5명인데
@@ -844,9 +846,19 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     //
     // 이 순서는 화면 표시(orderMembersForDisplay)에만 쓰이고 점수에는 영향이 없다 —
     // 재진입이 있으면 needed가 이미 +1이라 누가 앞이든 낭비 판정 결과가 같다.
+    // 2026-09-18 — **마지막 `id` 비교를 더했다. 2026-08-07 수정이 한 단계 덜 갔었다.**
+    //
+    // 그때 "쿨타임이 같으면 티어가 높은 쪽을 남긴다"를 넣어 순서 의존을 없앴다고 봤는데,
+    // **티어까지 같으면** 다시 배열 순서가 정했다. 그 배열은 사용자가 니케를 고른 순서다.
+    // 실측(2026-09-18): 같은 5명(에이드:AB·아니스:SS·크라운·미하라:BC·소다)을 순서만 바꿔
+    // 넣었더니 tierTotal이 **25점과 30점**으로, 낭비 인원이 **1명과 0명**으로 갈렸다.
+    // 즉 같은 조합의 점수가 입력 순서에 따라 달라지고 있었다 — 화면 점수·게시판 배지·
+    // 추천 선택이 전부 그 위에 있었다. 에러가 없어 안 보였다(원칙 3의 "조용한 누락").
+    // `scripts/testEngineDeterminism.mjs`가 이걸 지킨다.
     const sorted = [...withCd].sort(
       (a, b) => (Number(!!b.m.burstReentry) - Number(!!a.m.burstReentry))
         || (a.cd - b.cd) || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
+        || String(a.m.id).localeCompare(String(b.m.id))
     );
     let needed;
     if (sorted[0].cd <= FAST_BURST_CD) needed = 1;
@@ -1635,12 +1647,29 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   // 같은 점수로 나온다. 그동안은 그중 무엇이 뽑히는지가 아래 동점 규칙에 맡겨져 있었고,
   // 실제로 낭비가 있는 쪽이 뽑히는 경우가 있었다(탐침 D4가 잡았다). 같은 점수라면 자리가
   // 죽지 않는 쪽이 사용자에게 낫다 — 가산점이 아니라 동점 처리라 순위를 뒤집지 않는다.
+  // 2026-09-18 추가: **마지막 동점 처리 — 입력 순서에 기대지 않는다.**
+  //
+  // 위 네 기준이 전부 같은 후보가 아주 많이 남는다. 그동안 그중 무엇이 뽑히는지는 사실상
+  // `ownedCharacters` 배열의 순서였다(안정 정렬이라 원래 순서가 유지된다). 그런데 그 순서는
+  // **사용자가 니케를 고른 순서**다(app/(home)/page.js → resolveRosterIdsToCdb). 즉:
+  //
+  //   같은 니케를 보유한 두 사람이, 고른 순서만 달라서 **다른 조합을 추천받고 있었다.**
+  //
+  // 실측(2026-09-18, 얇은 로스터 표본 20건 × 순서 6가지): **8건에서 답이 갈렸고** 한 건은
+  // 4가지 답이 나왔다. 에러가 없어 아무도 몰랐다 — 원칙 3이 말하는 "조용한 누락"이다.
+  // CLAUDE.md 원칙 1의 "엔진이 완전히 결정적"도 이 구간에선 사실이 아니었다.
+  //
+  // 고치는 방법은 **점수가 아니라 정렬 키**다. 순위를 뒤집지 않는다 — 위 네 기준이 전부
+  // 같을 때만 쓰이고, 그때는 어차피 우열을 가릴 근거가 없어서 "아무거나"였던 자리다.
+  // 근거 없는 가중치를 만들지 않으면서(원칙 2) 같은 입력에 같은 답을 보장한다.
+  const tieKey = (t) => t.members.map((m) => m.id).sort().join('|');
   candidateTeams.sort(
     (a, z) =>
       (z.totalScore - a.totalScore) ||
       ((a.wastedCount || 0) - (z.wastedCount || 0)) ||
       (z.skillSynergyCount - a.skillSynergyCount) ||
-      (z.allyBufferCount - a.allyBufferCount)
+      (z.allyBufferCount - a.allyBufferCount) ||
+      tieKey(a).localeCompare(tieKey(z))
   );
 
   // 2026-09-01: **팀도 에러도 없이 빈 결과를 내던 구멍을 막는다.**
@@ -1961,7 +1990,11 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
       slotCandidates(s, used0)
         .map((c) => ({ c, t: tierScore(c, mode, treasureIds), v: teamTierTotal([...base, c]) }))
         // 슬롯 조건을 이미 통과한 후보들이므로, 그 안에서는 티어가 높은 순이 우선이다.
-        .sort((a, z) => (z.t - a.t) || (z.v - a.v))
+        // 마지막 `id` 비교는 2026-09-18 추가 — 티어·기여도가 같은 후보들 사이의 순서가
+        // **보유 목록에 고른 순서**로 정해져, 같은 로스터인데 다른 조합이 나오고 있었다.
+        // 아래 search()가 이 풀을 앞에서부터 훑으며 동점이면 먼저 만난 쪽을 잡기 때문에,
+        // 여기서 순서를 고정하면 탐색 결과도 입력 순서와 무관해진다(scripts/testEngineDeterminism.mjs).
+        .sort((a, z) => (z.t - a.t) || (z.v - a.v) || String(a.c.id).localeCompare(String(z.c.id)))
         .map((x) => x.c)
     );
 
