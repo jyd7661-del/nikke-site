@@ -30,7 +30,13 @@ const nextConfig = {
 
   async redirects() {
     const host = newHost();
-    if (!host) return [];
+    // 언어별 주소(2026-09-19): 한국어는 접두어 없는 주소가 정본이다. /ko/…로 들어오면 되돌린다 —
+    // 안 그러면 같은 한국어 페이지가 /nikke와 /ko/nikke 두 주소로 색인돼 중복 콘텐츠가 된다.
+    const localeRedirects = [
+      { source: '/ko', destination: '/', permanent: true },
+      { source: '/ko/:path*', destination: '/:path*', permanent: true },
+    ];
+    if (!host) return localeRedirects;
     return [
       {
         source: '/:path*',
@@ -38,6 +44,24 @@ const nextConfig = {
         destination: `https://${host}/:path*`,
         permanent: true, // 308(=301 계열). 검색엔진이 주소 이전으로 인식한다
       },
+      ...localeRedirects,
+    ];
+  },
+
+  // 언어별 주소(2026-09-19) — 페이지는 전부 app/[lang]/… 아래에 있다(한국어 = ko).
+  // 한국어는 기존 주소(/nikke/crown)를 그대로 쓰도록, 접두어 없는 주소를 **안에서만** /ko/…로 넘긴다.
+  // 주소창은 그대로다. /en/…·/ja/…는 그대로 [lang]에 걸린다.
+  //
+  // ■ 왜 미들웨어가 아니라 rewrites인가 — 비용.
+  //   미들웨어는 요청마다 함수가 돈다(규모가 커지면 과금 대상). rewrites는 Vercel 라우팅 계층이
+  //   처리해 방문당 비용이 0이다(유저 지시 2026-09-14 "규모 기준으로 설계").
+  // ■ afterFiles(배열로 반환 = afterFiles)라 /api/…·/robots.txt·/sitemap.xml·public 파일·/_next는
+  //   먼저 파일 시스템에서 걸려 여기까지 오지 않는다. 동적 경로([lang])보다는 먼저 검사된다 —
+  //   그래서 /nikke가 [lang]=nikke로 잘못 잡히지 않고 /ko/nikke로 간다.
+  async rewrites() {
+    return [
+      { source: '/', destination: '/ko' },
+      { source: '/:path((?!en(?:/|$)|ja(?:/|$)|ko(?:/|$)|api/|_next/).*)', destination: '/ko/:path' },
     ];
   },
 };

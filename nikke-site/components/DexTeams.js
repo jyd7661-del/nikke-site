@@ -1,5 +1,7 @@
 'use client';
 
+import { localePath } from '@/lib/locale';
+
 import Link from 'next/link';
 import { useLanguage } from '@/components/LanguageProvider';
 import { MODE_I18N_KEY } from '@/lib/dexLabels';
@@ -19,7 +21,7 @@ import { memberName } from '@/lib/memberName';
 function MemberChip({ member, lang }) {
   if (!member?.id) return <span className="text-slate-400">{member?.title}</span>;
   return (
-    <Link href={`/nikke/${member.id}`} className="text-sky-400 hover:underline">
+    <Link href={localePath(lang, `/nikke/${member.id}`)} className="text-sky-400 hover:underline">
       {memberName(member, lang)}
     </Link>
   );

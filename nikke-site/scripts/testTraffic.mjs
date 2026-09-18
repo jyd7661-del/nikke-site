@@ -62,6 +62,14 @@ check('루트 유지', normalizePath('/') === '/' && normalizePath('') === null)
 // ⚠️ 쿼리에 개인정보가 실려 와도 저장되면 안 된다.
 check('쿼리의 값이 경로에 남지 않는다', normalizePath('/board?email=a@b.c') === '/board');
 
+// 언어별 주소(2026-09-19) — 영어·일본어는 접두어를 남기고, 한국어는 접두어가 없다.
+check('영어 도감은 접두어를 남긴다', normalizePath('/en/nikke/crown') === '/en/nikke/crown');
+check('일본어 홈', normalizePath('/ja') === '/ja' && normalizePath('/ja/') === '/ja');
+check('내부 경로 /ko/…는 한국어로 접는다', normalizePath('/ko/nikke') === '/nikke' && normalizePath('/ko') === '/');
+check('영어판 게시글도 접는다', normalizePath('/en/board/abc') === '/en/board/[id]');
+check('없는 언어는 거부', normalizePath('/fr/nikke') === null);
+check('언어 접두어 뒤의 없는 캐릭터도 거부', normalizePath('/en/nikke/does-not-exist') === null);
+
 // 6. 봇 판정 — 양쪽 방향 모두 본다.
 const BOTS = [
   'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
@@ -86,7 +94,7 @@ check('사람을 거르지 않는다', humanHit.length === 0, humanHit.join(' / 
 const line = '─'.repeat(72);
 console.log(line);
 console.log('자체 방문 계측 판정 검사');
-console.log(`계측 대상 경로 ${allTrackablePaths().length}개 (도감 ${db.length} + 고정 ${allTrackablePaths().length - db.length})`);
+console.log(`계측 대상 경로 ${allTrackablePaths().length}개 (언어 3개 × ${allTrackablePaths().length / 3} — 한국어는 접두어 없음, 영어·일본어는 /en·/ja)`);
 console.log(line);
 if (fails.length) {
   console.log(`❌ 실패 ${fails.length}건`);

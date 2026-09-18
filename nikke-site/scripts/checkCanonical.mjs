@@ -34,35 +34,58 @@ if (!fs.existsSync(OUT)) {
 const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/characterDatabase.json'), 'utf8'));
 const cdb = Array.isArray(raw) ? raw : raw.characters;
 
-// 사이트맵과 같은 목록 (app/sitemap.js). 여기가 어긋나면 검사 자체가 무의미해진다.
-const routes = [
-  ['/', 'index.html'],
-  ['/combos', 'combos.html'],
-  ['/board', 'board.html'],
-  ['/nikke', 'nikke.html'],
-  ['/privacy', 'privacy.html'],
-  ...cdb.map((c) => [`/nikke/${c.id}`, path.join('nikke', `${c.id}.html`)]),
-];
+// 사이트맵과 같은 규칙 (app/sitemap.js · lib/locale.js). 여기가 어긋나면 검사 자체가 무의미해진다.
+//
+// 언어별 주소(2026-09-19): 페이지가 app/[lang]/ 아래로 옮겨 가 산출물도 언어 폴더에 생긴다
+// (.next/server/app/ko/nikke/crown.html, 홈은 ko.html). 한국어 주소는 접두어가 없다(rewrite).
+//   · 번역된 페이지(홈·도감)  → 세 언어 모두 **자기 주소**가 canonical + hreflang 4개(ko·en·ja·x-default)
+//   · 번역 안 된 페이지       → 영어·일본어판은 canonical이 **한국어 주소** + noindex
+// 후자가 틀리면 번역 안 된 한국어 글이 /en 주소로 세 번 색인돼 서로 순위를 깎는다.
+const LOCALES = ['ko', 'en', 'ja'];
+const urlOf = (l, p) => (l === 'ko' ? p : p === '/' ? `/${l}` : `/${l}${p}`);
+const fileOf = (l, p) => (p === '/' ? `${l}.html` : path.join(l, `${p.slice(1)}.html`));
+const LOCALIZED = ['/', '/nikke', ...cdb.map((c) => `/nikke/${c.id}`)];
+const KO_ONLY = ['/combos', '/board', '/privacy', '/guide'];
 
 let errors = 0;
+let checked = 0;
 const err = (m) => { console.error('  ERROR ' + m); errors++; };
+const norm = (u) => u.replace(/\/$/, '');
 
-for (const [route, file] of routes) {
+function inspect(lang, bare, { wantCanonical, wantNoindex, wantAlternates }) {
+  const route = urlOf(lang, bare);
+  const file = fileOf(lang, bare);
   const fp = path.join(OUT, file);
-  if (!fs.existsSync(fp)) { err(`${route} — 빌드 산출물 없음 (${file})`); continue; }
+  checked++;
+  if (!fs.existsSync(fp)) { err(`${route} — 빌드 산출물 없음 (${file})`); return; }
   const html = fs.readFileSync(fp, 'utf8');
   const found = [...html.matchAll(/<link[^>]+rel="canonical"[^>]*>/g)]
     .map((m) => (m[0].match(/href="([^"]+)"/) || [, ''])[1]);
-  if (found.length === 0) { err(`${route} — canonical 없음`); continue; }
-  if (found.length > 1) { err(`${route} — canonical이 ${found.length}개`); continue; }
-  const want = SITE_URL + (route === '/' ? '/' : route);
-  const got = found[0].replace(/\/$/, '') || found[0];
-  if (got.replace(/\/$/, '') !== want.replace(/\/$/, '')) {
-    err(`${route} — canonical이 자기 주소가 아님: ${found[0]}`);
+  if (found.length === 0) { err(`${route} — canonical 없음`); return; }
+  if (found.length > 1) { err(`${route} — canonical이 ${found.length}개`); return; }
+  const want = SITE_URL + wantCanonical;
+  if (norm(found[0]) !== norm(want)) err(`${route} — canonical이 ${want}가 아님: ${found[0]}`);
+  const noindex = /<meta[^>]+name="robots"[^>]+content="[^"]*noindex/.test(html);
+  if (noindex !== wantNoindex) err(`${route} — noindex ${noindex ? '있음' : '없음'}(기대: ${wantNoindex ? '있음' : '없음'})`);
+  if (wantAlternates) {
+    const alts = Object.fromEntries([...html.matchAll(/<link[^>]+rel="alternate"[^>]*>/g)]
+      .map((m) => [(m[0].match(/hrefLang="([^"]+)"/i) || [, ''])[1], (m[0].match(/href="([^"]+)"/) || [, ''])[1]]));
+    for (const l of LOCALES) {
+      if (norm(alts[l] || '') !== norm(SITE_URL + urlOf(l, bare))) err(`${route} — hreflang ${l}가 틀림: ${alts[l] || '없음'}`);
+    }
+    if (norm(alts['x-default'] || '') !== norm(SITE_URL + urlOf('ko', bare))) err(`${route} — x-default가 틀림: ${alts['x-default'] || '없음'}`);
   }
 }
 
+for (const bare of LOCALIZED) {
+  for (const l of LOCALES) inspect(l, bare, { wantCanonical: urlOf(l, bare), wantNoindex: false, wantAlternates: true });
+}
+for (const bare of KO_ONLY) {
+  inspect('ko', bare, { wantCanonical: bare, wantNoindex: false, wantAlternates: false });
+  for (const l of ['en', 'ja']) inspect(l, bare, { wantCanonical: bare, wantNoindex: true, wantAlternates: false });
+}
+
 console.log(errors === 0
-  ? `ERROR 0 — 사이트맵 ${routes.length}개 주소 전부 자기 canonical 보유`
+  ? `ERROR 0 — ${checked}개 주소(번역 ${LOCALIZED.length}×3 · 한국어 전용 ${KO_ONLY.length}×3) canonical·noindex·hreflang 정상`
   : `ERROR ${errors} — canonical 문제`);
 process.exit(errors ? 1 : 0);

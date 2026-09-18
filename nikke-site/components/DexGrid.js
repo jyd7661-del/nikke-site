@@ -15,7 +15,7 @@ import { nikkeImageUrl } from '@/lib/nikkeImage';
 // 길고 정보량이 적다는 지적이 있었다. 모바일에서 8열은 카드가 40px대라 못 쓴다 —
 // 화면 폭에 따라 3→4→6→8로 올린다.
 export default function DexGrid({ characters }) {
-  const { lang, t } = useLanguage();
+  const { lang, t, lp } = useLanguage();
 
   return (
     <>
@@ -27,7 +27,7 @@ export default function DexGrid({ characters }) {
           return (
             <Link
               key={c.id}
-              href={`/nikke/${c.id}`}
+              href={lp(`/nikke/${c.id}`)}
               className="rounded-lg bg-slate-800/40 hover:bg-slate-800 p-1.5 transition-colors"
             >
               {/* 신규 캐릭터는 위키에 상반신 초상화(_MI.png)가 올라오기까지 며칠~몇 주 걸린다.
