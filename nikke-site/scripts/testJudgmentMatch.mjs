@@ -165,6 +165,31 @@ if (process.argv.includes('--selftest')) {
     console.log(`       → 이 5인에서 버퍼로 세어진 인원 ${counted}명 (채우기만 넣으면 ${baseCount}명)`);
   }
 
+  // --- 후보 순위가 실사용 픽률을 보는가 (2026-09-21) ---
+  //
+  // `scoreTeam`은 enikk 실사용 등급 합(realTierTotal)을 계산해 놓고도 폴백 탐색의 순위에는
+  // 안 쓰고 있었다 — A등급 출처 하나가 조합 선택에 아무 영향을 못 줬다. 고친 뒤에도 누가
+  // 되돌리거나 `totalScore`를 다시 `tierTotal`로 바꾸면 **에러 없이** 옛 동작으로 돌아간다.
+  // 그래서 실제 표본으로 못을 박는다: prydwen 티어는 네로(E)와 민트(SS)로 이미 갈리지만,
+  // 진짜 근거는 실사용이다 — 민트 솔로레이드 채용 A 81.1% · 등록 18건 / 네로 0건.
+  console.log('');
+  console.log('─'.repeat(84));
+  console.log('후보 순위가 실사용 픽률을 보는가');
+  console.log('─'.repeat(84));
+  const roster = ['Ark Ranger Black', 'Brid', 'Cinderella: Crystal Wave', 'Jill Valentine', 'Mint',
+    'Moran', 'Nero', 'Phantom', 'Rei Ayanami', 'Scarlet', 'Snow White', 'Soda: Twinkling Bunny']
+    .map(by).filter(Boolean);
+  if (roster.length !== 12) { console.log(`  ⚠️ 로스터 이름을 못 찾음(${roster.length}/12)`); bad++; }
+  else {
+    const picked = E2.recommendTeams(roster, 'bossing', { bossElement: 'Electronic', topN: 1 })
+      .teams?.[0]?.members?.map((m) => m.title) || [];
+    const okMint = picked.includes('Mint');
+    const okNero = !picked.includes('Nero');
+    if (!okMint || !okNero) bad++;
+    console.log(`  ${okMint && okNero ? '✅' : '❌'} 채용률 A 81.1%인 민트가 뽑히고, 등록 0건인 네로가 빠져야 한다`);
+    console.log(`       → ${picked.map(nm).join(' · ')}`);
+  }
+
   console.log(`\n문제 ${bad}건`);
   console.log('─'.repeat(84));
   process.exit(bad ? 1 : 0);

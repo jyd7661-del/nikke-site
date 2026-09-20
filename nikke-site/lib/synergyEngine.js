@@ -1514,6 +1514,8 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     totalScore: Math.round(score * 10) / 10,
     valid: validBurstChain,
     tierTotal,
+    // enikk.app 실사용 픽률 등급의 합(REAL_TIER_SCORE). 폴백 탐색의 순위에 쓰려고 밖으로 낸다.
+    realTierTotal,
     // 스킬 원문에서 "A가 주는 [데미지 타입] 버프를 B가 실제로 받는다"가 확인된 쌍의 개수.
     // 폴백 탐색(recommendTeams)의 동점 처리에 쓰기 위해 밖으로 노출한다.
     skillSynergyCount: skillSynergies.length,
@@ -1665,7 +1667,20 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           candidateTeams.push({
             members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
             ...result,
-            totalScore: result.tierTotal,
+            // 2026-09-21: **후보 순위에 실사용 픽률(enikk)을 같이 본다.**
+            //
+            // 그동안 이 순위는 `tierTotal`(prydwen 티어 합) 하나였다. 그런데 `scoreTeam`은
+            // 실사용 픽률 등급 합(realTierTotal)을 **이미 계산해 놓고** `score`에만 넣고 있었고,
+            // 폴백 탐색은 그 값을 버린 채 티어 합만으로 골랐다. 즉 A등급 출처 하나가 조합 선택에
+            // 아무 영향도 못 주고 있었다(원칙 3의 "조용한 누락").
+            //
+            // 실측(2026-09-21): 내 판정과 갈린 11건 중 **9건에서 내 쪽 팀의 등록 실사용 수가 더 많았다.**
+            // 켜 보니 답이 7건 바뀌었고 **전부 이전 엔진보다 나아졌다**(나빠짐 0). 그중 3건은 내 판정 팀과
+            // 완전히 같아졌다. 예: 네로(티어E·등록 0건) → 민트(티어SS·채용 A 81.1%·등록 18건).
+            //
+            // 가중치는 새로 만들지 않았다 — `WEIGHTS.REAL_USAGE_TIER_SUM`(0.5)은 `score`가 쓰던 값 그대로다.
+            // 티어 척도가 둘이라는 문제(prydwen 9단계 vs enikk 6단계)는 `REAL_TIER_SCORE` 별도 표가 이미 막고 있다.
+            totalScore: result.tierTotal + (result.realTierTotal || 0) * WEIGHTS.REAL_USAGE_TIER_SUM,
             // 조건부 아군 버프가 자기 말고 아무에게도 안 닿는 멤버 수(lib/buffTargets.js). 정렬의 동점 처리에만 쓴다.
             deadBuffCount: deadBuffCount(members),
           });
