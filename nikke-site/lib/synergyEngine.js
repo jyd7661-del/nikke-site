@@ -1042,6 +1042,18 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     reasons.push(R.real_s_tier({ names: sTierRealMembers.map((m) => rName(m, lang)) }));
   }
 
+  // --- 전 아군 버퍼가 한 명도 없다 (2026-09-21) ---
+  //
+  // 실측: 등록된 실사용 조합에서 버퍼 0명은 캠페인 19건 중 0건 · 타워 50건 중 0건 ·
+  // 솔로레이드 124건 중 6건(5%)뿐인데, 무작위 5인은 27%다. 드문 구성이라는 뜻이다.
+  // PvP만 반대다(20건 중 9건 = 45%가 버퍼 0명) — 먼저 터뜨리는 판이라 성격이 다르므로 말하지 않는다.
+  // ⚠️ 점수는 깎지 않는다. 순위에서 미는 실험을 해 봤더니 버퍼를 채우려고 등록 0건 캐릭터를
+  //    끌어들여 **이전 엔진보다 나빠졌다**(나빠짐 3·나아짐 1, 2026-09-21). 사실만 밝힌다.
+  const allyBufferMembers = members.filter((m) => allyBuffStrength(m) >= MEANINGFUL_ALLY_BUFF);
+  if (mode !== 'pvp' && allyBufferMembers.length === 0) {
+    reasons.push(R.no_ally_buffer);
+  }
+
   // --- 솔로 레이드 보스 약점 속성별 실사용률 (bossing/raid + bossElement 지정 시) ---
   if ((mode === 'bossing' || mode === 'raid') && bossElement) {
     const elementUsageMembers = members
@@ -1722,6 +1734,13 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   // 같을 때만 쓰이고, 그때는 어차피 우열을 가릴 근거가 없어서 "아무거나"였던 자리다.
   // 근거 없는 가중치를 만들지 않으면서(원칙 2) 같은 입력에 같은 답을 보장한다.
   const tieKey = (t) => t.members.map((m) => m.id).sort().join('|');
+  // ⛔ 2026-09-21 기각: **"버퍼 0명인 조합을 순위에서 뒤로 미는" 관문.**
+  //    근거는 있었다 — 등록 실사용 조합에서 버퍼 0명은 캠페인 0% · 타워 0% · 솔로 5%인데
+  //    무작위 5인은 27%다(PvP만 45%로 반대라 제외했다). 일치율도 71.8% → 74.3%로 올랐다.
+  //    그런데 **이전 엔진 대비로 보니 나빠짐 3 · 나아짐 1이었다.** 버퍼를 채우려고
+  //    클레이(등록 0건)·얀(등록 0건)·레오나(티어 E)를 끌어들이고, 직전에 넣은 아스카 : WILLE
+  //    (등록 6건)와 모더니아를 밀어냈다. 지표만 보고 채택했으면 퇴행이었다.
+  //    → 대신 **사실을 문장으로 밝힌다**(아래 no_ally_buffer). 판단은 사용자 몫이다(원칙 2).
   candidateTeams.sort(
     (a, z) =>
       (z.totalScore - a.totalScore) ||

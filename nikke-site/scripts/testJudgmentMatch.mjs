@@ -312,7 +312,8 @@ const CAUSE_LABEL = {
   D3: '버퍼 자리에 딜러를 못 키우는 캐릭터 — 자기 강화형·역할 중복 탱커',
   D4: '딜러 수 부족 — 버퍼는 많고 실제로 때리는 사람이 적다',
   D5: '유연 버스트 멤버가 약한 단계로 밀림 — 라피:레드 후드가 1단계로 내려가 3단계 버스트를 잃는다',
-  D6: '모드 적합 — 타워 무리 처리엔 광역, 캠페인 연속 스테이지엔 회복',
+  D6: '모드 적합 — 타워 무리 처리엔 광역, 캠페인 연속 스테이지엔 회복 (2026-09-21 둘 다 근거 없음으로 확인)',
+  D7: 'prydwen 티어와 enikk 실사용이 엇갈린다 — 내가 실사용 쪽을 더 크게 보는 구간',
 };
 const causesPath = path.join(ROOT, 'probe-data', 'mismatch-causes.json');
 const causes = fs.existsSync(causesPath) ? JSON.parse(fs.readFileSync(causesPath, 'utf8')) : {};

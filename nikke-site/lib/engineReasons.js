@@ -48,6 +48,13 @@ const KO = {
   flex_stage: ({ name, stage, home }) =>
     `[버스트 자리] 이 조합에는 ${stage}단계 캐릭터가 따로 없어 ${name}이(가) ${stage}단계를 맡습니다` +
     `(기본 표기는 ${home}단계). 버스트 스킬이 단계별로 갈리는 캐릭터라면 이 자리에서 쓰는 효과도 달라집니다.`,
+  // 버퍼 0명. 점수는 깎지 않는다 — 그렇게 했더니 등록 0건 캐릭터를 끌어들여 오히려 나빠졌다(2026-09-21).
+  // 대신 실측을 그대로 알린다. PvP는 반대 경향(45%가 버퍼 0명)이라 이 문장을 쓰지 않는다.
+  no_ally_buffer:
+    '[참고] 이 조합에는 1·2스킬로 **전 아군에게 공격 버프**를 주는 인원이 없습니다. ' +
+    'enikk.app에 등록된 실사용 조합에서는 드뭅니다 — 캠페인 19건 중 0건, 타워 50건 중 0건, ' +
+    '솔로레이드 124건 중 6건(5%)만 그렇습니다(무작위 5인은 27%). 보유 인원이 얇으면 어쩔 수 없지만, ' +
+    '버퍼를 한 명 넣을 수 있는지 확인해 보세요.',
   skill_mechanic: ({ caster, label, receivers }) =>
     `[스킬 근거] ${caster}의 스킬에 '${label} ▲' 버프 효과가 있고, ${join(receivers)}의 ` +
     `공격은 스킬 문구상 ${label}로 분류되어 있어 이 버프를 그대로 받습니다.`,
@@ -208,6 +215,11 @@ const EN = {
     `[Burst slot] This team has no dedicated stage ${stage} character, so ${name} covers stage ${stage} ` +
     `(listed as stage ${home} by default). For characters whose Burst skill differs by stage, the effect ` +
     `used in this slot changes with it.`,
+  no_ally_buffer:
+    '[Note] No member of this team gives the **whole party an attack buff** through skills 1-2. ' +
+    'That is rare among the real teams recorded on enikk.app — 0 of 19 campaign teams, 0 of 50 tower teams, ' +
+    'and 6 of 124 solo raid teams (5%), against 27% for a random five. With a thin roster it may be ' +
+    'unavoidable, but check whether you can fit one buffer in.',
   skill_mechanic: ({ caster, label, receivers }) =>
     `[Skill evidence] ${caster}'s skill carries a '${label} up' buff, and the attacks of ${join(receivers)} ` +
     `are classified as ${label} in their own skill text, so they receive that buff directly.`,
@@ -359,6 +371,11 @@ const JA = {
   flex_stage: ({ name, stage, home }) =>
     `［バースト枠］この編成には${stage}段階のキャラクターが別にいないため、${name}が${stage}段階を担当します` +
     `（既定の表記は${home}段階）。バーストスキルが段階ごとに分かれるキャラクターなら、この枠で使う効果も変わります。`,
+  no_ally_buffer:
+    '［参考］この編成には、スキル1・2で**味方全体に攻撃バフ**を与えるメンバーがいません。' +
+    'enikk.appに登録された実使用の編成では珍しく、キャンペーンは19件中0件、タワーは50件中0件、' +
+    'ソロレイドは124件中6件（5%）だけです（ランダムな5人なら27%）。手持ちが薄ければ仕方ありませんが、' +
+    'バッファーを一人入れられないか確認してみてください。',
   skill_mechanic: ({ caster, label, receivers }) =>
     `［スキル根拠］${caster}のスキルに「${label}▲」のバフ効果があり、${join(receivers)}の` +
     `攻撃はスキル文面上${label}に分類されているため、このバフをそのまま受けられます。`,
