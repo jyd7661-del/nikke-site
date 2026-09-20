@@ -32,7 +32,7 @@ import soloRaidTeams from '../data/soloRaidTeams.json';
 import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 import { engineText } from './engineReasons';
-import { deadBuffCount } from './buffTargets';
+import { deadBuffCount, emptyBuffMembers } from './buffTargets';
 
 // --- 근거 문장의 언어 처리 (2026-08-25) ---
 //
@@ -984,8 +984,23 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   const burstAnalysis = findWastedBurstMembers(members, mode, treasureIds);
   const wastedMembers = burstAnalysis.wasted;
   const wastedIds = new Set(wastedMembers.map((m) => m.id));
+  // 2026-09-20 추가: **아군 버프가 이 팀에서 하나도 안 닿는 멤버도 낭비 칸과 같이 0점**(D3).
+  //
+  // 왜 동점 처리가 아니라 점수인가: 실측해 보니 D3 불일치는 동점 구간이 아니었다. 엔진이 고른 팀의
+  // 티어 합이 오히려 **더 높았다**(30 대 24 · 32 대 23 · 34 대 25). 동점 처리로는 닿지 않는다.
+  //
+  // 근거 없는 가중치가 아니다(원칙 2). 낭비 인원과 **같은 처리**이고, 판정은 스킬 원문 하나로 끝난다 —
+  // "이 사람의 아군 대상절이 이 팀에서 전부 빈다". 예: 아니스 : 스파클링 서머의 아군 절은
+  // "all Electric Code allies" 하나뿐이라 전격 공격형이 없으면 그 칸은 버프를 한 톨도 안 준다.
+  //
+  // ⚠️ D1(동점 처리)보다 **좁다.** 절 하나가 빈다고 그 사람 몫을 지우면 틀린다 — 트리나·소다는
+  //    조건부 절이 비어도 "전 아군" 절을 따로 갖고 있다(2026-09-20 실측). lib/buffTargets.js 참고.
+  //
+  // 실측(얇은 로스터 40건): 답이 바뀐 4건 전부 **이전 엔진보다 나아졌다**(나빠짐 0).
+  // 일치율 53.8% → 57.9%. 가드는 그대로 — 랭커 백분위 중앙 70.5%, 실사용 조합 0건.
+  const emptyTitles = new Set(emptyBuffMembers(members).map((x) => x.title));
   const tierTotal = members.reduce(
-    (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode, treasureIds)),
+    (sum, m) => sum + ((wastedIds.has(m.id) || emptyTitles.has(m.title)) ? 0 : tierScore(m, mode, treasureIds)),
     0
   );
   score += tierTotal * WEIGHTS.TIER_SUM;

@@ -88,3 +88,58 @@ export function buffWithNoTarget(team) {
 }
 
 export const deadBuffCount = (team) => buffWithNoTarget(team).length;
+
+// ---------------------------------------------------------------------------
+// **이 팀에서 아군에게 버프가 하나도 안 닿는 멤버** — D3 판정기 (2026-09-20).
+//
+// D1(위)과 무엇이 다른가: D1은 "조건부 버프 절 하나가 빈다"를 센다. 그건 동점 처리용으로는 맞지만
+// **점수를 깎는 근거로는 너무 거칠다.** 실측(2026-09-20): 트리나는 "전격 소총 아군" 절이 비어도
+// S1·버스트에 "전 아군" 버프를 따로 들고 있고, 소다도 마찬가지다. 한 절이 비었다고 그 사람 몫을
+// 통째로 지우면 틀린다.
+//
+// 그래서 여기서는 **아군 대상절 전부가 비는 사람만** 센다. 실제로 걸리는 예:
+//   · 아니스 : 스파클링 서머 — 아군 절이 "all Electric Code allies" 하나뿐(나머지는 적·자기)
+//   · 메이든 : 아이스 로즈   — "all Electric Code allies except for self" 하나뿐
+// 걸리지 않는 예: 트리나·소다·미란다·레이블(전부 "all allies" 절을 따로 갖고 있다).
+// ⚠️ 아군 절이 **아예 없는** 사람(순수 자기 강화 방어형)은 세지 않는다. 그건 빈 버프가 아니라
+//    원래 그런 역할이고, 세면 탱커가 통째로 밀려난다(근거 없는 판정이 된다 — 원칙 2).
+const SELF_ONLY = /^self\b/i;
+
+// 캐릭터마다 "아군 대상절"을 한 번만 뽑아 둔다(엔진이 후보 수천 팀에 부른다).
+//   uncond: 조건 없는 아군 절이 하나라도 있으면 이 사람은 **어떤 팀에서도** 안 빈다 — 거기서 끝낸다.
+//   cond:   조건부 절만 팀마다 풀어 본다.
+const allyScopeCache = new Map();
+function allyScopes(c) {
+  if (allyScopeCache.has(c.id)) return allyScopeCache.get(c.id);
+  let uncond = false;
+  const cond = [];
+  for (const sk of c.skills || []) {
+    for (const clause of String(sk.desc || '').split(/(?<=\.)\s+/)) {
+      const sc = scopeOf(clause.trim());
+      if (sc === null) continue;
+      const s = lc(sc);
+      if (SELF_ONLY.test(s) || /enem/.test(s)) continue;   // 적·자기 대상절은 아군 버프가 아니다
+      if (!/all(y|ies)\b/.test(s)) continue;                // 아군을 가리키지 않는 절
+      if (resolveAllyScope(sc, c, []) === null) uncond = true;
+      else cond.push(sc.trim());
+    }
+  }
+  const v = { uncond, cond: [...new Set(cond)] };
+  allyScopeCache.set(c.id, v);
+  return v;
+}
+
+export function emptyBuffMembers(team) {
+  const out = [];
+  for (const c of team) {
+    if (lc(c.class) === 'attacker') continue;   // D1 ①과 같은 이유 — 공격형의 몫은 본인 딜이다
+    const { uncond, cond } = allyScopes(c);
+    if (uncond || cond.length === 0) continue;  // 조건 없는 아군 절이 있거나, 아군 절 자체가 없으면 세지 않는다
+    const lands = cond.some((sc) => {
+      const t = resolveAllyScope(sc, c, team);
+      return t !== null && t.some((m) => m.id !== c.id && lc(m.class) === 'attacker');
+    });
+    if (!lands) out.push({ title: c.title, id: c.id, scopes: cond });
+  }
+  return out;
+}

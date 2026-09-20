@@ -40,7 +40,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { buffWithNoTarget } from '../lib/buffTargets.js';
+import { buffWithNoTarget, emptyBuffMembers } from '../lib/buffTargets.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const VERBOSE = process.argv.includes('--verbose');
@@ -90,6 +90,42 @@ if (process.argv.includes('--selftest')) {
     if (team.length !== c.team.length) { console.log(`  ⚠️ 이름을 못 찾음: ${c.team.filter((t) => !by(t)).join(', ')}`); bad++; continue; }
     const hit = buffWithNoTarget(team);
     // 첫 멤버(고장을 심은 캐릭터)가 잡혔는가로 판정한다 — 팀의 다른 멤버가 우연히 걸리는 것과 구분한다.
+    const got = hit.some((h) => h.title === c.team[0]);
+    const ok = got === c.expect;
+    if (!ok) bad++;
+    console.log(`  ${ok ? '✅' : '❌'} ${c.why}`);
+    console.log(`       → ${names(hit)}`);
+  }
+  // --- D3(아군 버프가 이 팀에서 전부 빈다) 판정기 역테스트 ---
+  //
+  // D1과 **다른 판정기**이므로 따로 고장을 심는다. D3은 점수를 깎으므로(낭비 칸과 같은 처리)
+  // 범위를 넓게 잡으면 멀쩡한 버퍼가 통째로 0점이 된다 — 그 오작동을 여기서 잡는다.
+  // 실제로 넓은 1판(= D1 정의 그대로)을 넣어 보니 트리나·소다가 걸렸고, 둘 다 "전 아군" 절을
+  // 따로 들고 있어 잘못된 판정이었다(2026-09-20).
+  const d3cases = [
+    { why: '[D3] 아니스:스파클링 서머 — 아군 절이 "all Electric Code allies" 하나뿐, 전격 공격형 0명이면 잡혀야 한다',
+      team: ['Anis: Sparkling Summer', 'Jackal', 'Liberalio', 'Diesel: Winter Sweets', 'Modernia'], expect: true },
+    { why: '[D3] 같은 캐릭터 + 전격 공격형(아다 웡) — 잡히면 안 된다',
+      team: ['Anis: Sparkling Summer', 'Ada Wong', 'Jackal', 'Liberalio', 'Modernia'], expect: false },
+    { why: '[D3] 메이든:아이스 로즈 — 아군 절이 전격 하나뿐, 전격 공격형 0명이면 잡혀야 한다',
+      team: ['Maiden: Ice Rose', 'Dorothy', 'Crown', 'Marciana: Marine Study', 'Emilia'], expect: true },
+    { why: '[D3] 트리나 — 조건부 절(전격 소총)이 비어도 "전 아군" 절이 따로 있다. 잡히면 안 된다',
+      team: ['Trina', 'Moran', 'Crown', 'Liter', 'Modernia'], expect: false },
+    { why: '[D3] 소다 — 같은 이유로 잡히면 안 된다(화염 절은 비어도 S2가 전 아군)',
+      team: ['Soda', 'Mint', 'Prika', 'Drake: Great Villain', 'Yukiko'], expect: false },
+    { why: '[D3] 레이블 — "all allies (except self)" 절이 있다. 자기 강화형으로 오해하면 안 된다',
+      team: ['Label', 'Anis: Star', 'Anchor: Innocent Maid', 'Neon: Vision Eye', 'Drake'], expect: false },
+    { why: '[D3] 공격형(누아르)은 세지 않는다 — 본인 딜이 몫이다',
+      team: ['Noir', 'Crown', 'Liter', 'Modernia', 'Rapunzel'], expect: false },
+  ];
+  console.log('');
+  console.log('─'.repeat(84));
+  console.log('D3(아군 버프가 이 팀에서 전부 빔) 판정기 역테스트');
+  console.log('─'.repeat(84));
+  for (const c of d3cases) {
+    const team = c.team.map(by).filter(Boolean);
+    if (team.length !== c.team.length) { console.log(`  ⚠️ 이름을 못 찾음: ${c.team.filter((t) => !by(t)).join(', ')}`); bad++; continue; }
+    const hit = emptyBuffMembers(team);
     const got = hit.some((h) => h.title === c.team[0]);
     const ok = got === c.expect;
     if (!ok) bad++;
