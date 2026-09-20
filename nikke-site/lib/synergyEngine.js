@@ -405,7 +405,13 @@ function grantAppliesToAlly(caster, grant, allyMember) {
 // 로직에서 따로 다루고, 여기서 보고 싶은 것은 "이 캐릭터가 팀 전체를 올려주는 버퍼인가"다.
 //
 // 2026-08-07 추가. 폴백 탐색의 동점 처리에만 쓰인다(순위를 뒤집는 가산점이 아니다).
-const ALLY_BUFF_STATS = /^(ATK|Attack Damage|Critical Rate|Critical Damage|Charge Damage|Pierce Damage|Attack Speed|Reload Speed|Reloading Speed|Hit Rate|Max Ammunition Capacity)$/i;
+// 2026-09-21: **같은 스탯의 다른 표기를 놓치고 있었다.** 원문 전수 조사에서 "전 아군" 범위에
+// ▲10% 이상인데 이 목록에 없어 버퍼로 안 세어지는 표기가 20종 나왔고, 그중 둘은 여기 이미 있는
+// 스탯의 다른 이름이었다 — `ATK damage`(= Attack Damage) · `Critical Rate of normal attack`
+// (= Critical Rate). 실제로 헬름은 두 버프를 다 가졌는데 버퍼 0명으로 세어지고 있었다.
+// 나머지 18종(True Damage·Damage to Parts·DEF·Max HP…)은 **다른 스탯**이라 손대지 않는다 —
+// 공격 버프의 범위를 넓히는 것은 판단이 들어가는 변경이고, 여기서 할 일이 아니다(원칙 2).
+const ALLY_BUFF_STATS = /^(ATK(?: damage)?|Attack Damage|Critical Rate(?: of normal attack)?|Critical Damage|Charge Damage|Pierce Damage|Attack Speed|Reload Speed|Reloading Speed|Hit Rate|Max Ammunition Capacity)$/i;
 
 function allyBuffStrength(character) {
   let best = 0;

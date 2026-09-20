@@ -132,6 +132,39 @@ if (process.argv.includes('--selftest')) {
     console.log(`  ${ok ? '✅' : '❌'} ${c.why}`);
     console.log(`       → ${names(hit)}`);
   }
+  // --- 전 아군 버프 스탯 이름 인식 역테스트 (2026-09-21) ---
+  //
+  // `allyBufferCount`(동점 처리에 쓰인다)는 스킬 원문의 스탯 **이름**으로 버프를 가린다.
+  // 이름 표기가 하나 다르면 멀쩡한 버퍼가 0명으로 세어지는데 화면에는 아무 증상이 없다 —
+  // 실제로 헬름의 `Critical Rate of normal attack ▲14.64%` · `ATK damage ▲11.85%`가
+  // 둘 다 안 세어져, 같은 티어의 누아르(ATK ▲14.08%)에게 동점 처리에서 밀리고 있었다.
+  // 반대 방향(공격 버프가 아닌 것을 세는 것)도 같이 막는다 — DEF·Max HP는 버퍼가 아니다.
+  const E2 = await loadEngine();
+  const filler = ['Jackal', 'Liberalio', 'Modernia', 'Rapunzel'];   // 전 아군 공격 버프가 없는 4명
+  const bufferCases = [
+    { why: '[스탯 이름] 헬름 — "Critical Rate of normal attack"·"ATK damage" 표기도 버퍼로 세어야 한다', who: 'Helm', expect: true },
+    { why: '[스탯 이름] 누아르 — "ATK" 표기(기존에도 되던 것)', who: 'Noir', expect: true },
+    { why: '[반대 방향] 루피 : 윈터 쇼퍼 — DEF ▲19%는 공격 버프가 아니다. 세면 안 된다', who: 'Rupee: Winter Shopper', expect: false },
+    { why: '[반대 방향] 에이드 — Max HP ▲15.6%도 공격 버프가 아니다', who: 'Ade', expect: false },
+  ];
+  console.log('');
+  console.log('─'.repeat(84));
+  console.log('전 아군 버프 스탯 이름 인식 역테스트');
+  console.log('─'.repeat(84));
+  // 채울 4명은 전 아군 공격 버프가 없어야 한다. 그래야 "이 사람 때문에 1명이 되었다"가 성립한다.
+  const baseTeam = filler.map(by).filter(Boolean);
+  const baseCount = E2.scoreTeam(baseTeam.concat(by('Poli')), 'campaign', {}).allyBufferCount;
+  if (baseCount !== 0) { console.log(`  ⚠️ 채우기 5인이 이미 버퍼 ${baseCount}명이다 — 시험 데이터를 고칠 것`); bad++; }
+  for (const c of bufferCases) {
+    const who = by(c.who);
+    if (!who || baseTeam.length !== filler.length) { console.log(`  ⚠️ 이름을 못 찾음: ${c.who}`); bad++; continue; }
+    const counted = E2.scoreTeam(baseTeam.concat(who), 'campaign', {}).allyBufferCount;
+    const ok = (counted > baseCount) === c.expect;
+    if (!ok) bad++;
+    console.log(`  ${ok ? '✅' : '❌'} ${c.why}`);
+    console.log(`       → 이 5인에서 버퍼로 세어진 인원 ${counted}명 (채우기만 넣으면 ${baseCount}명)`);
+  }
+
   console.log(`\n문제 ${bad}건`);
   console.log('─'.repeat(84));
   process.exit(bad ? 1 : 0);
