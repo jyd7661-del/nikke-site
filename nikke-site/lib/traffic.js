@@ -33,6 +33,19 @@ export function normalizePath(raw) {
   if (typeof raw !== 'string' || !raw.startsWith('/') || raw.length > 120) return null;
   // 쿼리스트링·해시는 버린다. 개인정보가 실려 올 수 있고 집계 단위도 아니다.
   const path = raw.split('?')[0].split('#')[0].replace(/\/+$/, '') || '/';
+  // 언어별 주소(2026-09-19): 영어·일본어판은 **접두어를 남긴 채** 센다(/en/nikke/crown). 해외 수요가
+  // 실제로 있는지가 언어별 주소를 연 이유라, 합쳐 버리면 그걸 못 본다. 한국어는 접두어가 없다.
+  // rewrite된 내부 경로(/ko/…)가 들어와도 한국어로 접어 한 페이지가 둘로 갈리지 않게 한다.
+  const m = path.match(/^\/(ko|en|ja)(?=\/|$)(.*)$/);
+  if (!m) return normalizeBare(path);
+  const bare = normalizeBare(m[2] || '/');
+  if (bare === null) return null;
+  if (m[1] === 'ko') return bare;
+  return bare === '/' ? `/${m[1]}` : `/${m[1]}${bare}`;
+}
+
+// 언어 접두어 없는 경로 하나를 판정한다(normalizePath의 본체).
+function normalizeBare(path) {
   if (STATIC_PATHS.has(path)) return path;
   const dex = path.match(/^\/nikke\/([a-z0-9-]{1,40})$/);
   if (dex) return CHAR_IDS.has(dex[1]) ? path : null;
@@ -41,7 +54,13 @@ export function normalizePath(raw) {
   return null;
 }
 
+const TRACKED_PREFIXES = ['en', 'ja'];
+
 // 계측 대상 경로 전체 — 검사기가 "전부 거부되지 않는가"를 확인할 때 쓴다.
 export function allTrackablePaths() {
-  return [...STATIC_PATHS, '/board/[id]', '/u/[id]', ...[...CHAR_IDS].map((id) => `/nikke/${id}`)];
+  const bare = [...STATIC_PATHS, '/board/[id]', '/u/[id]', ...[...CHAR_IDS].map((id) => `/nikke/${id}`)];
+  return [
+    ...bare,
+    ...TRACKED_PREFIXES.flatMap((l) => bare.map((p) => (p === '/' ? `/${l}` : `/${l}${p}`))),
+  ];
 }

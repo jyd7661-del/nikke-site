@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { splitLocale, swapLocale } from '@/lib/locale';
 import { useState } from 'react';
 import { useAuth } from './AuthProvider';
 import { useLanguage } from './LanguageProvider';
@@ -11,7 +12,9 @@ import { LOCALES, LOCALE_LABELS } from '@/lib/i18n';
 export default function Header() {
   const { user, profile, loading } = useAuth();
   const pathname = usePathname();
-  const { lang, setLang, t } = useLanguage();
+  const { lang, setLang, t, lp } = useLanguage();
+  // 언어 접두어를 뗀 경로 — '/en/nikke'에서도 '도감' 메뉴가 켜지게(2026-09-19 언어별 주소)
+  const barePath = splitLocale(pathname || '/').path;
   const [open, setOpen] = useState(false);
 
   const NAV_LINKS = [
@@ -63,7 +66,7 @@ export default function Header() {
           flex-wrap 으로 좁은 화면에서는 두 줄로 나눈다 —
           1줄 로고 + 언어 + 로그인 / 2줄 메뉴 링크. sm 이상은 기존처럼 한 줄. */}
       <div className="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-        <Link href="/" className="flex items-center gap-2 font-extrabold text-lg shrink-0 group mr-auto">
+        <Link href={lp('/')} className="flex items-center gap-2 font-extrabold text-lg shrink-0 group mr-auto">
           <svg
             width="22"
             height="22"
@@ -83,11 +86,11 @@ export default function Header() {
         {/* 메뉴 링크: 좁은 화면에서는 w-full + order-last 로 둘째 줄을 통째로 차지한다 */}
         <nav className="order-last w-full flex items-center gap-1 text-sm text-slate-300 sm:order-none sm:w-auto sm:gap-2">
           {NAV_LINKS.map((link) => {
-            const active = pathname === link.href;
+            const active = barePath === link.href;
             return (
               <Link
                 key={link.href}
-                href={link.href}
+                href={lp(link.href)}
                 className={`px-2.5 py-1.5 rounded-md transition-colors ${
                   active ? 'text-nikke-accent bg-nikke-accent/10' : 'hover:text-white hover:bg-white/5'
                 }`}
@@ -102,16 +105,20 @@ export default function Header() {
         <div className="flex items-center gap-1 text-sm text-slate-300">
           <div className="flex items-center gap-0.5 pl-0 sm:ml-1 sm:pl-2 sm:border-l border-slate-800 text-xs">
             {LOCALES.map((l) => (
-              <button
+              // 언어 전환은 **진짜 링크**다(2026-09-19) — 같은 페이지의 그 언어 주소를 href로 가진다.
+              // 검색봇이 이 링크로 언어별 주소를 찾아가고, 클릭은 setLang이 선택을 저장한 뒤 이동한다.
+              <Link
                 key={l}
-                onClick={() => setLang(l)}
+                href={swapLocale(pathname || '/', l)}
+                hrefLang={l}
+                onClick={(e) => { e.preventDefault(); setLang(l); }}
                 title={LOCALE_LABELS[l]}
                 className={`px-1.5 py-1 rounded transition-colors ${
                   lang === l ? 'text-nikke-accent bg-nikke-accent/10 font-semibold' : 'text-slate-500 hover:text-slate-200'
                 }`}
               >
                 {l.toUpperCase()}
-              </button>
+              </Link>
             ))}
           </div>
 

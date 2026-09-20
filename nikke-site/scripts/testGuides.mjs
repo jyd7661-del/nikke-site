@@ -3,7 +3,7 @@
  *
  * ■ 이 검사가 막으려는 고장 (전부 에러 없이 조용히 잘못되는 것들)
  *
- *   ① 목록과 본문이 어긋난다. `lib/guides.js`의 GUIDES와 `app/guide/[slug]/page.js`의 BODY를
+ *   ① 목록과 본문이 어긋난다. `lib/guides.js`의 GUIDES와 `app/[lang]/guide/[slug]/page.js`의 BODY를
  *      **양쪽 다** 고쳐야 하는데 한쪽만 고치면, 목록에 뜨는데 404가 나거나 페이지는 있는데
  *      아무도 못 찾는다. 빌드는 통과한다.
  *
@@ -49,7 +49,7 @@ fs.writeFileSync(path.join(tmp, 'guideStats.mjs'), patched);
 const S = await import(pathToFileURL(path.join(tmp, 'guideStats.mjs')).href);
 
 const guidesSrc = read('lib', 'guides.js');
-const pageSrc = read('app', 'guide', '[slug]', 'page.js');
+const pageSrc = read('app', '[lang]', 'guide', '[slug]', 'page.js');
 const SLUGS = [...guidesSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1]);
 
 // ── ① 목록 ↔ 본문 ─────────────────────────────────────────────────────────

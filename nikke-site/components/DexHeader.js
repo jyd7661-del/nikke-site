@@ -16,7 +16,7 @@ import { memberName } from '@/lib/memberName';
 //   ⚠️ 이름 선택은 lib/characterNames.js의 memberName을 그대로 쓴다. 여기서 따로
 //      { ko: name_kr, en: title, ja: name_ja } 를 만들면 규칙이 두 곳으로 갈라진다.
 export default function DexHeader({ character }) {
-  const { lang, t } = useLanguage();
+  const { lang, t, lp } = useLanguage();
   const c = character;
 
   const primary = memberName(c, lang);
@@ -25,7 +25,7 @@ export default function DexHeader({ character }) {
   return (
     <>
       <p className="text-sm text-slate-500 mb-1">
-        <Link href="/nikke" className="hover:underline">{t('dex_breadcrumb')}</Link> /
+        <Link href={lp('/nikke')} className="hover:underline">{t('dex_breadcrumb')}</Link> /
       </p>
       <h1 className="text-3xl font-extrabold text-white">{primary}</h1>
       <p className="text-slate-400 mt-1 mb-6">{others.join(' · ')}</p>

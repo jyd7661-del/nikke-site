@@ -1,5 +1,7 @@
 'use client';
 
+import { localePath } from '@/lib/locale';
+
 import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -106,7 +108,7 @@ function TeamMemberCards({ members, treasureIds }) {
           // m.id는 characterDatabase의 id라 도감 라우트 /nikke/[id]와 그대로 맞는다(예: helm → /nikke/helm).
           <a
             key={m.id}
-            href={`/nikke/${m.id}`}
+            href={localePath(lang, `/nikke/${m.id}`)}
             target="_blank"
             rel="noopener noreferrer"
             title={`${memberName(m, lang)} ${t('dex_open_hint')}`}
