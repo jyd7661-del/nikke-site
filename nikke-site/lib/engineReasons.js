@@ -41,6 +41,13 @@ const KO = {
   burst_incomplete: ({ stages }) =>
     `버스트 ${join(stages)} 단계 캐릭터가 없어 풀버스트(전체 버스트)에 도달할 수 없습니다. ` +
     `이 조합은 자동전투 효율이 크게 떨어집니다.`,
+  // 유연 버스트 멤버가 기본 단계가 아닌 자리를 메울 때. 버스트 스킬 자체가 단계별로 갈리는
+  // 캐릭터가 있어(라피: 레드 후드는 1단계면 지원형, 3단계면 2808% 추가 피해) 어느 자리를
+  // 맡는지가 그 사람의 역할을 바꾼다. 점수를 깎지 않는다 — 실사용 조합 63건 중 25건이
+  // 고정 1버스트 없이 이 캐릭터를 쓴다(2026-09-21 실측). 사실만 밝히고 판단은 사용자에게.
+  flex_stage: ({ name, stage, home }) =>
+    `[버스트 자리] 이 조합에는 ${stage}단계 캐릭터가 따로 없어 ${name}이(가) ${stage}단계를 맡습니다` +
+    `(기본 표기는 ${home}단계). 버스트 스킬이 단계별로 갈리는 캐릭터라면 이 자리에서 쓰는 효과도 달라집니다.`,
   skill_mechanic: ({ caster, label, receivers }) =>
     `[스킬 근거] ${caster}의 스킬에 '${label} ▲' 버프 효과가 있고, ${join(receivers)}의 ` +
     `공격은 스킬 문구상 ${label}로 분류되어 있어 이 버프를 그대로 받습니다.`,
@@ -197,6 +204,10 @@ const EN = {
   burst_incomplete: ({ stages }) =>
     `There is no character for Burst stage ${join(stages)}, so this team cannot reach Full Burst. ` +
     `Its auto-battle efficiency drops sharply.`,
+  flex_stage: ({ name, stage, home }) =>
+    `[Burst slot] This team has no dedicated stage ${stage} character, so ${name} covers stage ${stage} ` +
+    `(listed as stage ${home} by default). For characters whose Burst skill differs by stage, the effect ` +
+    `used in this slot changes with it.`,
   skill_mechanic: ({ caster, label, receivers }) =>
     `[Skill evidence] ${caster}'s skill carries a '${label} up' buff, and the attacks of ${join(receivers)} ` +
     `are classified as ${label} in their own skill text, so they receive that buff directly.`,
@@ -345,6 +356,9 @@ const JA = {
   burst_incomplete: ({ stages }) =>
     `バースト${join(stages)}段階のキャラクターがいないため、フルバーストに到達できません。` +
     `この編成はオート戦闘の効率が大きく落ちます。`,
+  flex_stage: ({ name, stage, home }) =>
+    `［バースト枠］この編成には${stage}段階のキャラクターが別にいないため、${name}が${stage}段階を担当します` +
+    `（既定の表記は${home}段階）。バーストスキルが段階ごとに分かれるキャラクターなら、この枠で使う効果も変わります。`,
   skill_mechanic: ({ caster, label, receivers }) =>
     `［スキル根拠］${caster}のスキルに「${label}▲」のバフ効果があり、${join(receivers)}の` +
     `攻撃はスキル文面上${label}に分類されているため、このバフをそのまま受けられます。`,

@@ -969,6 +969,26 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     reasons.push(R.burst_incomplete({ stages: missingBursts }));
   }
 
+  // 2026-09-21 추가: **유연 멤버가 기본 표기와 다른 단계를 맡으면 그 사실을 밝힌다.**
+  //
+  // 버스트 스킬이 단계별로 갈리는 캐릭터가 있다 — 라피: 레드 후드는 1단계면 지원형
+  // (전 아군 ATK ▲18.01%, 자기 버스트 쿨 ▼20초), 3단계면 2808% 추가 피해다(스킬 원문).
+  // 엔진은 그동안 어느 자리를 맡는지 말하지 않았다. 점수는 건드리지 않는다 — 등록된
+  // 실사용 조합 63건 중 **25건이 고정 1버스트 없이** 이 캐릭터를 쓴다(2026-09-21 실측).
+  // 즉 낮은 단계로 내려가는 것 자체는 결함이 아니다. 조건을 밝히고 판단은 사용자에게 넘긴다(원칙 2).
+  if (validBurstChain && emptyStages.length && flexMembers.length) {
+    const takenBy = new Map();     // 단계 → 그 단계를 맡은 유연 멤버
+    const poolLeft = [...flexMembers];
+    [...covered].sort().forEach((stage) => {
+      const i = poolLeft.findIndex((m) => flexStagesOf(m).includes(stage));
+      if (i >= 0) takenBy.set(stage, poolLeft.splice(i, 1)[0]);
+    });
+    takenBy.forEach((m, stage) => {
+      if (String(m.burst) === String(stage)) return;   // 기본 표기 그대로면 말할 것이 없다
+      reasons.push(R.flex_stage({ name: rName(m, lang), stage, home: String(m.burst) }));
+    });
+  }
+
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
   const skillSynergies = findSkillMechanicSynergies(members);
   skillSynergies.forEach((syn) => {
