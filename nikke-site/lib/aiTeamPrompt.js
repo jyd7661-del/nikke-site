@@ -65,10 +65,21 @@ export function selectSynergyForRoster(synergyNotes, rosterTitles, mode, limit =
   return out.slice(0, limit);
 }
 
+// 🔴 2026-09-21 실측으로 고침: **이 스키마 때문에 AI 조합 구성이 한 번도 안 돌았다.**
+//
+// shadow를 켜자마자 모든 호출이 400으로 떨어졌다:
+//   "output_config.format.schema: For 'array' type, 'minItems' values other than 0 or 1 are not supported (got: [2, 5])"
+// 구조화 출력(json_schema)은 배열의 minItems를 0·1만 받는다. 5를 적어 놨으니 요청 자체가 거부됐고,
+// 라우트는 조용히 엔진 답으로 넘어갔다 — 화면도 멀쩡하고 비용도 안 나가서 **켜기 전에는 알 수 없었다**
+// (2026-09-15에 코드만 넣고 off로 둔 채 배포했었다. 원칙 3의 "조용한 누락"이 운영 코드에서 난 경우다).
+//
+// "정확히 5명"은 스키마가 아니라 **검산기**가 강제한다(lib/aiTeamVerify.js: 5명이 아니면 flaw →
+// 그 사유를 붙여 한 번 재요청). 프롬프트에도 "exactly 5"가 이미 있다.
+// ⚠️ 여기에 minItems/maxItems를 다시 넣지 말 것. scripts/testAiTeamSchema.mjs가 막는다.
 export const OUTPUT_SCHEMA = {
   type: 'object',
   properties: {
-    members: { type: 'array', minItems: 5, maxItems: 5, items: { type: 'string' } },
+    members: { type: 'array', items: { type: 'string' } },
     reasoning: { type: 'string' },
   },
   required: ['members', 'reasoning'],
