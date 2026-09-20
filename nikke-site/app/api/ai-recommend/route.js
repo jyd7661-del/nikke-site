@@ -302,7 +302,9 @@ async function composeTeamWithAi(client, characters, { mode, boss, tower }) {
     const msg = await client.messages.create({
       model: AI_TEAM_MODEL,
       max_tokens: 1500,
-      temperature: 0,
+      // ⚠️ temperature를 넣지 말 것 — 소넷 5는 받지 않는다(2026-09-21 shadow 실측:
+      //    400 "`temperature` is deprecated for this model."). 어차피 결정성은 temperature가
+      //    아니라 ai_team_cache가 만든다(같은 로스터 → 저장된 답). scripts/testAiTeamSchema.mjs가 막는다.
       system,
       messages,
       output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },

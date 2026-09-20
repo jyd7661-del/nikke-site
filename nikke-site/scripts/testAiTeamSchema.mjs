@@ -77,6 +77,13 @@ for (const field of OUTPUT_SCHEMA.required) {
 const sys = systemPrompt(roster, { variant: 'tier' });
 check('프롬프트가 "exactly 5"를 말한다', /exactly 5/i.test(sys));
 
+// 4. 모델이 안 받는 파라미터를 보내지 않는가 (2026-09-21 shadow 실측).
+//    스키마를 고치자 다음 400이 나왔다: "`temperature` is deprecated for this model."
+//    결정성은 temperature가 아니라 ai_team_cache가 만든다. 다시 넣으면 또 전부 400이 되는데
+//    화면에는 증상이 없다(조용히 엔진 답으로 넘어간다) — 그래서 소스에서 못 박는다.
+const teamCall = routeSrc.slice(routeSrc.indexOf('const msg = await client.messages.create('), routeSrc.indexOf('output_config'));
+check('AI 조합 호출에 temperature가 없다', !/temperature\s*:/.test(teamCall), teamCall.match(/temperature[^,]*/)?.[0] || '');
+
 const line = '─'.repeat(78);
 console.log(line);
 console.log('AI 조합 구성 — 구조화 출력 스키마 검사');
