@@ -68,6 +68,7 @@ const ms = j('metaStats.json');
 
 const problems = [];
 const stats = new Map();
+const SOLO_B3 = '[버스트 3 단독]';   // lib/engineReasons.js solo_burst3의 머리말(한국어)
 
 // --- 참고 지표: 풀버스트 순환 (판정 아님) ---
 const cdOf = (c) => {
@@ -138,9 +139,33 @@ for (const t of teams) {
     }
   }
 
+  // 2026-09-21 추가: **'버스트 3 단독' 문장이 랭커 조합에 붙으면 오탐이다.**
+  // 이 문장의 근거가 "PvE 등록 조합 194건 중 0건"이므로, 등록 조합에 하나라도 붙는 순간 문장 속 숫자가 거짓이 된다
+  // (데이터가 갱신돼 실제로 단독 조합이 등록되면 여기서 걸린다 — 그때는 문장을 고치거나 범위를 다시 잰다).
+  if (t.src !== 'PvP' && (scored.reasons || []).some((r) => String(r).startsWith(SOLO_B3))) {
+    problems.push(`[${t.src}] ${t.label}: 실제로 쓰인 조합에 '버스트 3 단독' 문장이 붙었다 — ${t.members.join(', ')}`);
+  }
   const cyc = cycleSeconds(members);
   if (cyc <= 20.001) s.cyc.ok += 1; else s.cyc.slow += 1;
   stats.set(t.src, s);
+}
+
+// --- '버스트 3 단독' 문장의 합성 시험 (2026-09-21) — 나와야 할 때 나오고, 아닐 때 안 나오는가 ---
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const says = (names, mode) => (engine.scoreTeam(T(names), mode, {}).reasons || []).some((r) => String(r).startsWith(SOLO_B3));
+  const cases = [
+    ['3버스트 1명(캠페인) → 나온다', ['Miranda', 'Emma', 'Delta', 'Diesel', 'Rapi'], 'campaign', true],
+    ['같은 5명 PvP → 안 나온다', ['Miranda', 'Emma', 'Delta', 'Diesel', 'Rapi'], 'pvp', false],
+    ['3버스트 2명 → 안 나온다', ['Miranda', 'Emma', 'Delta', 'Rapi', 'Snow White'], 'campaign', false],
+    ['3버스트 1명 + 남는 유연 멤버(레드 후드) → 안 나온다', ['Miranda', 'Delta', 'Diesel', 'Rapi', 'Red Hood'], 'campaign', false],
+    ['유연 멤버가 빈 1단계를 메우러 가면 3은 혼자다 → 나온다', ['Rapi: Red Hood', 'Delta', 'Diesel', 'Signal', 'Rapi'], 'campaign', true],
+  ];
+  for (const [label, names, mode, want] of cases) {
+    const miss = names.filter((n) => !byTitle.get(n));
+    if (miss.length) { problems.push(`[버스트 3 단독 시험] 시험용 이름이 DB에 없다 — ${miss.join(', ')}`); continue; }
+    if (says(names, mode) !== want) problems.push(`[버스트 3 단독 시험] ${label} — 기대와 다르다(기대 ${want})`);
+  }
 }
 
 const line = '─'.repeat(88);

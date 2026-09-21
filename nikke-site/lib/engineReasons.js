@@ -50,6 +50,13 @@ const KO = {
     `(기본 표기는 ${home}단계). 버스트 스킬이 단계별로 갈리는 캐릭터라면 이 자리에서 쓰는 효과도 달라집니다.`,
   // 버퍼 0명. 점수는 깎지 않는다 — 그렇게 했더니 등록 0건 캐릭터를 끌어들여 오히려 나빠졌다(2026-09-21).
   // 대신 실측을 그대로 알린다. PvP는 반대 경향(45%가 버퍼 0명)이라 이 문장을 쓰지 않는다.
+  // 버스트 3을 혼자 맡는다. 점수는 깎지 않는다 — 보유가 얇으면 어쩔 수 없다. 실측(2026-09-21):
+  // 등록된 PvE 실사용 조합 194건 중 0건. PvP(22건 중 8건)와 버스트 1·2 단독(모란 21건)에는 쓰지 않는다.
+  solo_burst3: ({ name, cd }) =>
+    `[버스트 3 단독] 이 조합에서 버스트 3단계는 ${name} 혼자 맡습니다(버스트 쿨타임 ${cd}초). ` +
+    '버스트 3은 전원이 40초라 혼자서는 매 사이클 풀버스트를 열 수 없습니다 — 한 번 쓰고 나면 다음 사이클은 비게 됩니다. ' +
+    'enikk.app에 등록된 실사용 조합(솔로레이드·타워·캠페인 194건)은 예외 없이 버스트 3을 2명 이상 넣습니다. ' +
+    '버스트 3 캐릭터를 한 명 더 넣을 수 있는지 확인해 보세요.',
   no_ally_buffer:
     '[참고] 이 조합에는 1·2스킬로 **전 아군에게 공격 버프**를 주는 인원이 없습니다. ' +
     'enikk.app에 등록된 실사용 조합에서는 드뭅니다 — 캠페인 19건 중 0건, 타워 50건 중 0건, ' +
@@ -215,6 +222,11 @@ const EN = {
     `[Burst slot] This team has no dedicated stage ${stage} character, so ${name} covers stage ${stage} ` +
     `(listed as stage ${home} by default). For characters whose Burst skill differs by stage, the effect ` +
     `used in this slot changes with it.`,
+  solo_burst3: ({ name, cd }) =>
+    `[Solo Burst 3] ${name} is the only Burst stage 3 character in this team (Burst cooldown ${cd}s). ` +
+    'Every Burst 3 character has a 40s cooldown, so one alone cannot open Full Burst every cycle — after one use the next cycle stays empty. ' +
+    'The real teams recorded on enikk.app (194 solo raid, tower and campaign teams) all carry two or more Burst 3 characters, without exception. ' +
+    'Check whether you can fit a second Burst 3 character in.',
   no_ally_buffer:
     '[Note] No member of this team gives the **whole party an attack buff** through skills 1-2. ' +
     'That is rare among the real teams recorded on enikk.app — 0 of 19 campaign teams, 0 of 50 tower teams, ' +
@@ -371,6 +383,11 @@ const JA = {
   flex_stage: ({ name, stage, home }) =>
     `［バースト枠］この編成には${stage}段階のキャラクターが別にいないため、${name}が${stage}段階を担当します` +
     `（既定の表記は${home}段階）。バーストスキルが段階ごとに分かれるキャラクターなら、この枠で使う効果も変わります。`,
+  solo_burst3: ({ name, cd }) =>
+    `［バースト3単独］この編成でバースト3段階を担当するのは${name}だけです（バーストのクールタイム${cd}秒）。` +
+    'バースト3は全員が40秒のため、一人では毎サイクルのフルバーストを開けません。一度使うと次のサイクルは空きます。' +
+    'enikk.appに登録された実使用の編成（ソロレイド・タワー・キャンペーン計194件）は、例外なくバースト3を2人以上入れています。' +
+    'バースト3のキャラクターをもう一人入れられないか確認してみてください。',
   no_ally_buffer:
     '［参考］この編成には、スキル1・2で**味方全体に攻撃バフ**を与えるメンバーがいません。' +
     'enikk.appに登録された実使用の編成では珍しく、キャンペーンは19件中0件、タワーは50件中0件、' +

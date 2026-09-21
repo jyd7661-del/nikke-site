@@ -295,7 +295,10 @@ async function composeTeamWithAi(client, characters, { mode, boss, tower }) {
   });
   const user = userPrompt({ mode, boss: boss || null, tower: tower || null });
   const messages = [{ role: 'user', content: user }];
-  const usage = { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
+  // thinking_tokens: 출력 토큰 중 '생각'의 몫. effort를 안 줘도 소넷 5는 생각한다 — 같은 모델로 돌린 12문항 실험에서
+  // 출력의 약 83%가 생각이었다(2026-09-21, docs/log). 이걸 안 남기면 "reasoning 글이 길어서 비싸다"와
+  // "생각이 길어서 비싸다"를 못 가른다. output_tokens에 이미 포함된 값이라 비용 계산(costKrw)에는 쓰지 않는다.
+  const usage = { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0, thinking_tokens: 0 };
   const t0 = Date.now();
   let last = null;
   for (let attempt = 0; attempt < 2; attempt++) {
@@ -310,6 +313,7 @@ async function composeTeamWithAi(client, characters, { mode, boss, tower }) {
       output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
     });
     for (const k of Object.keys(usage)) usage[k] += msg.usage?.[k] || 0;
+    usage.thinking_tokens += msg.usage?.output_tokens_details?.thinking_tokens || 0;   // 최상위 키가 아니라 위 루프로는 0이 더해진다
     const text = msg.content?.find((c) => c.type === 'text')?.text || '';
     const out = extractJsonLoose(text);
     const v = verifyAiTeam(out?.members, characters, { tower });

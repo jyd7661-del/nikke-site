@@ -982,17 +982,41 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 엔진은 그동안 어느 자리를 맡는지 말하지 않았다. 점수는 건드리지 않는다 — 등록된
   // 실사용 조합 63건 중 **25건이 고정 1버스트 없이** 이 캐릭터를 쓴다(2026-09-21 실측).
   // 즉 낮은 단계로 내려가는 것 자체는 결함이 아니다. 조건을 밝히고 판단은 사용자에게 넘긴다(원칙 2).
+  const takenBy = new Map();     // 단계 → 그 단계를 맡은 유연 멤버
+  const flexLeft = [...flexMembers];   // 빈 단계를 메우고도 남은 유연 멤버
   if (validBurstChain && emptyStages.length && flexMembers.length) {
-    const takenBy = new Map();     // 단계 → 그 단계를 맡은 유연 멤버
-    const poolLeft = [...flexMembers];
     [...covered].sort().forEach((stage) => {
-      const i = poolLeft.findIndex((m) => flexStagesOf(m).includes(stage));
-      if (i >= 0) takenBy.set(stage, poolLeft.splice(i, 1)[0]);
+      const i = flexLeft.findIndex((m) => flexStagesOf(m).includes(stage));
+      if (i >= 0) takenBy.set(stage, flexLeft.splice(i, 1)[0]);
     });
     takenBy.forEach((m, stage) => {
       if (String(m.burst) === String(stage)) return;   // 기본 표기 그대로면 말할 것이 없다
       reasons.push(R.flex_stage({ name: rName(m, lang), stage, home: String(m.burst) }));
     });
+  }
+
+  // 2026-09-21 추가: **버스트 3을 혼자 맡으면 그 사실을 밝힌다**(docs/engine.md 4-3-c의 미결 항목).
+  //
+  // 버스트 3은 80명 전원이 쿨 40초다(20초짜리가 없다). 혼자 맡으면 매 사이클 풀버스트가 돌지 않는데
+  // 엔진은 말이 없었다 — findWastedBurstMembers가 1명이면 쿨타임을 아예 안 본다. 추천 결과의 20~35%.
+  // 유저 제보(2026-08-04)와 같은 취지다.
+  //
+  // 범위는 실측으로 정했다(2026-09-21, 등록된 실사용 조합):
+  //   · 버스트 3 단독 — 솔로레이드 125 · 타워 50 · 캠페인 19 = **PvE 194건 중 0건.** 유연 멤버가 빈 1·2단계를
+  //     메우러 간 경우까지 따져도 0건이다. PvP는 22건 중 8건(36%) — 짧은 판이라 성격이 달라 말하지 않는다
+  //   · 버스트 1·2 단독 + 쿨 20초 초과는 **말하지 않는다** — 솔로레이드 21건이 모란(40초)을 혼자 쓴다.
+  //     랭커가 실제로 쓰는 구성에 경고를 붙이면 오탐이다(원칙 4)
+  // 점수는 건드리지 않는다. 얇은 로스터에선 3버스트가 한 명뿐일 수 있다 — 사실을 밝히고 판단은 사용자에게(원칙 2).
+  if (validBurstChain && mode !== 'pvp') {
+    const stage3 = [
+      ...members.filter((m) => !m.burstFlex && String(m.burst) === '3'),
+      ...(takenBy.has('3') ? [takenBy.get('3')] : []),
+      ...flexLeft.filter((m) => flexStagesOf(m).includes('3')),
+    ];
+    const cd = stage3.length === 1 ? burstCooldownSeconds(stage3[0]) : null;
+    if (cd !== null && cd > FAST_BURST_CD) {
+      reasons.push(R.solo_burst3({ name: rName(stage3[0], lang), cd }));
+    }
   }
 
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
