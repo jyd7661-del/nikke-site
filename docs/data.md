@@ -28,6 +28,8 @@
 캠페인·보스전·타워 세 모드의 "실제로 쓰인 5인 조합"이다. 엔진의
 `findRealUsageTeamMatch`가 이걸 읽어 **prydwen 등재 조합과 같은 층에서 겨루게** 한다.
 (PvP는 예전부터 `metaStats.pvp.topTeams`를 썼다.)
+PvP의 출처 화면은 둘이다 — `topTeams`는 enikk `champion-arena`의 **Teams 탭**, `pairs·trios·quads`는 **Advanced Statistics 탭** 맨 아래
+"Unit Combination Records"(Four-unit Cores = quads). 내장 브라우저에선 본문이 비고 **유저 Chrome에서만 렌더된다**(2026-09-21).
 
 ### 왜 화면에서 옮기나 — enikk API를 쓰지 않는 이유
 
