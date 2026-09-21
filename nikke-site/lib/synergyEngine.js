@@ -1007,6 +1007,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   //   · 버스트 1·2 단독 + 쿨 20초 초과는 **말하지 않는다** — 솔로레이드 21건이 모란(40초)을 혼자 쓴다.
   //     랭커가 실제로 쓰는 구성에 경고를 붙이면 오탐이다(원칙 4)
   // 점수는 건드리지 않는다. 얇은 로스터에선 3버스트가 한 명뿐일 수 있다 — 사실을 밝히고 판단은 사용자에게(원칙 2).
+  let soloBurst3 = false;   // 폴백 탐색의 순위에 쓰려고 밖으로 낸다
   if (validBurstChain && mode !== 'pvp') {
     const stage3 = [
       ...members.filter((m) => !m.burstFlex && String(m.burst) === '3'),
@@ -1015,6 +1016,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     ];
     const cd = stage3.length === 1 ? burstCooldownSeconds(stage3[0]) : null;
     if (cd !== null && cd > FAST_BURST_CD) {
+      soloBurst3 = true;
       reasons.push(R.solo_burst3({ name: rName(stage3[0], lang), cd }));
     }
   }
@@ -1561,6 +1563,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     // 2026-09-01 추가 — 계산은 원래 하고 있었고 밖으로 내보내지 않았을 뿐이다.
     // scripts/probeRecommendations.mjs가 "추천에 죽은 자리가 있는가"를 세는 데 쓴다.
     wastedCount: burstAnalysis.wasted.length,
+    soloBurst3,
     reasons,
     // 보스별 방어 구성 문장 — reasons에도 들어 있지만 **따로도** 내보낸다. (2026-09-13)
     // 추천 화면(ResultPanel)은 reasons를 렌더하지 않는다(AI 프롬프트 재료로만 쓰인다). 이 문장은
@@ -1767,6 +1770,18 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   //    → 대신 **사실을 문장으로 밝힌다**(아래 no_ally_buffer). 판단은 사용자 몫이다(원칙 2).
   candidateTeams.sort(
     (a, z) =>
+      // 2026-09-21: **버스트 3을 혼자 맡는 후보는 뒤로 민다**(대안이 없으면 그대로 나간다).
+      //
+      // 문장(solo_burst3)만 붙였더니 실측에서 이게 드러났다 — 문장이 붙은 1위 추천 13건 **전부** 로스터에
+      // 3버스트가 2명 이상 있었다. 보유가 얇아서가 아니라 엔진이 티어 합만 보고 1·2버스트를 3명씩 쌓은 것이다.
+      // 근거는 등록된 PvE 실사용 조합 194건 중 단독 0건(scoreTeam의 solo_burst3 주석). PvP는 soloBurst3가
+      // 항상 false라 영향이 없다. 가중치가 아니라 관문이다 — 숫자를 새로 만들지 않는다(원칙 2).
+      //
+      // 이전 엔진 대비(무작위 로스터 179건 중 답이 바뀐 9건, 판정=클로드): **나아짐 7 · 같음 2 · 나빠짐 0.**
+      // 애매한 2건은 티어 C·F를 두 번째 3버스트로 끌어온 경우다(점수 −2·−4). 같은 날 기각한 "버퍼 0명 관문"
+      // (나빠짐 3)과 같은 잣대로 쟀다. 가드 불변 — 랭커 백분위 69.0% · 일치율 71.8%(표본 40건은 답이 안 바뀜).
+      // `skipSoloB3Gate`는 이 비교를 다시 하기 위한 시험용 스위치다. 화면에서는 쓰지 않는다.
+      (opts.skipSoloB3Gate ? 0 : (Number(!!a.soloBurst3) - Number(!!z.soloBurst3))) ||
       (z.totalScore - a.totalScore) ||
       ((a.wastedCount || 0) - (z.wastedCount || 0)) ||
       // 2026-09-18: 동점이면 **버프 대상이 없는 멤버가 적은 쪽**(D1).

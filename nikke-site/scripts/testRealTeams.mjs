@@ -166,6 +166,20 @@ for (const t of teams) {
     if (miss.length) { problems.push(`[버스트 3 단독 시험] 시험용 이름이 DB에 없다 — ${miss.join(', ')}`); continue; }
     if (says(names, mode) !== want) problems.push(`[버스트 3 단독 시험] ${label} — 기대와 다르다(기대 ${want})`);
   }
+
+  // 관문(2026-09-21): 두 번째 3버스트를 넣을 수 있으면 단독 조합을 1위로 내지 않는다.
+  // 같은 로스터를 관문 없이 돌리면 단독이 1위여야 한다 — 아니면 이 시험은 아무것도 재지 않는다(빈 시험 방지).
+  const roster = T(['Anis: Star', 'Rouge', 'Prika', 'Helm: Aquamarine', 'Snow White: Heavy Arms', 'Quency: Escape Queen']);
+  if (roster.some((c) => !c)) problems.push('[버스트 3 단독 관문] 시험용 이름이 DB에 없다');
+  else {
+    const gated = engine.recommendTeams(roster, 'bossing', {}).teams?.[0];
+    const raw = engine.recommendTeams(roster, 'bossing', { skipSoloB3Gate: true }).teams?.[0];
+    if (!raw?.soloBurst3) problems.push('[버스트 3 단독 관문] 관문 없이도 단독이 1위가 아니다 — 시험 로스터가 더는 이 고장을 재현하지 못한다');
+    if (!gated || gated.soloBurst3) problems.push('[버스트 3 단독 관문] 3버스트가 2명 있는 로스터인데 단독 조합이 1위로 나왔다');
+    // 대안이 없으면(3버스트가 1명뿐) 빈 결과가 아니라 그 조합이 그대로 나와야 한다.
+    const only = engine.recommendTeams(roster.filter((c) => c.title !== 'Quency: Escape Queen'), 'bossing', {}).teams?.[0];
+    if (!only) problems.push('[버스트 3 단독 관문] 3버스트가 1명뿐인 로스터에서 추천이 비었다');
+  }
 }
 
 const line = '─'.repeat(88);
