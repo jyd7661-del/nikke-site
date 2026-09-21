@@ -55,6 +55,7 @@ node scripts/testGuides.mjs          # 가이드 글 — 목록↔본문, 글의
 node scripts/testSkillSources.mjs    # 스킬 원문 3개 국어 교차 검증 (래칫: 숫자 불일치 11건)
 node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
 node scripts/testTraffic.mjs         # 자체 방문 계측의 경로·봇 판정
+node scripts/testAiTeamSchema.mjs    # AI 조합 호출이 API에 거부당하지 않는가(구조화 출력 스키마·temperature)
 node scripts/findTotems.mjs          # 기준선: 1군 0명 / 검토 후 기각 1명(아르카나)
 node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
 node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
@@ -91,7 +92,10 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 > 시간이 갈수록 벌어지는 격차다.
 >
 > **그러니 "AI에게 조합을 맡기는 제안"을 반사적으로 기각하지 말 것.** **2026-09-15 운영 코드가 들어갔다**
-> — 폴백 구간만 소넷이 구성, 엔진이 검산, 원 단위 상한 10,000원/일, 기본 `AI_TEAMS_MODE=off`(셰도우 대기).
+> — 폴백 구간만 소넷이 구성, 엔진이 검산, 원 단위 상한 10,000원/일. **2026-09-21부터 `AI_TEAMS_MODE=shadow` 가동 중**
+> (호출·기록만, 화면은 엔진 답). 켜자마자 **9-15 코드가 한 번도 안 돌고 있었음**이 드러났다 — 구조화 출력 minItems와
+> 소넷 5가 안 받는 temperature. 둘 다 조용히 엔진 답으로 넘어가는 실패였다(`scripts/testAiTeamSchema.mjs`가 막는다).
+> 첫 기록 건당 19.85원, 그중 81%가 출력 토큰 — `reasoning`을 1,063자 만들어 400자만 쓴다(단가 절감 여지).
 > 설계는 `docs/ai-teams-plan.md`. 진행(`docs/log/2026-09.md` "클로드 플랫폼 검토"부터):
 > 캐시 적중률 측정 ✅(약 28%) → 채점 실험 1차 ✅ — 스킬 원문만 주면 Haiku 40% · Sonnet 59%로
 > 엔진(랭커 백분위 70%)보다 낮다 → **2차 ✅(2026-09-14) — enikk 채용률 등급을 붙이면 Sonnet 80%·완전일치 4/12로
