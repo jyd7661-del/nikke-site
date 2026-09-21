@@ -103,12 +103,15 @@ const cases = [];
   }
   let i = 0; for (const c of byKey.values()) { c.id = `Q${String(i++).padStart(2, '0')}-${c.src}${c.boss ? '-' + c.boss : ''}${c.tower ? '-' + c.tower : ''}`; c.bossNames = [...c.bossNames]; cases.push(c); }
 }
+const EFFORT = arg('effort', 'medium');   // none = 운영과 같은 설정(effort 미지정)
 const SAMPLES = Number(arg('samples', 1)) || 1;   // 같은 질문을 몇 번 묻는가(모델 답의 흔들림을 보려면 3)
 
 const OUTPUT_SCHEMA = {
   type: 'object',
   properties: {
-    members: { type: 'array', minItems: 5, maxItems: 5, items: { type: 'string' } },
+    // ⚠️ minItems/maxItems를 넣지 말 것 — 구조화 출력은 배열 minItems를 0·1만 받아 요청이 통째로 400이 된다
+    //    (운영 코드 lib/aiTeamPrompt.js와 같은 고장, 2026-09-21 첫 --live에서 드러남). 인원 수는 grade()의 valid5가 본다.
+    members: { type: 'array', items: { type: 'string' } },
     reasoning: { type: 'string' },
   },
   required: ['members', 'reasoning'],
@@ -116,8 +119,10 @@ const OUTPUT_SCHEMA = {
 };
 const paramsFor = (t) => ({
   model: M.id,
-  max_tokens: 2000,
-  ...(M.thinking ? { output_config: { effort: 'medium', format: { type: 'json_schema', schema: OUTPUT_SCHEMA } } }
+  // ⚠️ 2000이면 effort=medium의 생각이 토큰을 다 써서 답이 안 나온다(2026-09-21 첫 --live: 2건 모두 stop=max_tokens,
+  //    thinking 1,999/2,000). --effort=none 은 운영 호출(app/api/ai-recommend, effort 지정 없음)과 같은 설정이다.
+  max_tokens: 8000,
+  ...(M.thinking && EFFORT !== 'none' ? { output_config: { effort: EFFORT, format: { type: 'json_schema', schema: OUTPUT_SCHEMA } } }
                  : { output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } } }),
   system: [{ type: 'text', text: systemFor(t.src), cache_control: { type: 'ephemeral', ttl: '1h' } }],
   messages: [{ role: 'user', content: userFor(t) }],
