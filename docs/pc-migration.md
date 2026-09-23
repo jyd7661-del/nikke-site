@@ -44,6 +44,11 @@ git에 이미 있는 것(다시 안 챙겨도 됨): `CLAUDE.md` · `docs\` · `.
 4. 새 세션에서 "메모리 읽었어?"로 확인
 
 ### 2-4. 주간 점검(⑤) 되살리기
+
+> ✅ **미니 PC에서는 윈도우 작업 스케줄러 대신 WSL cron으로 했다(2026-09-24).** 이 PC 윈도우엔 Node가 없고,
+> WSL은 "Claude Server" 작업으로 늘 켜져 있다. 실행기 `scripts/weekly-check.sh`, 로그 `~/nikke-weekly.log`.
+> 아래 윈도우 방식은 WSL을 안 쓰는 PC에서만 쓴다.
+
 ```powershell
 schtasks /Create /TN "니케 주간 점검" /XML "C:\Users\<이름>\Desktop\Claude\nikke\_이관\windows-task\니케 주간 점검.xml"
 ```
