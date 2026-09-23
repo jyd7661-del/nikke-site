@@ -168,6 +168,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 | `docs/open-items.md` | **지금 열린 항목 · 현재 기준선 · 성장 계획 3축(단일 출처)** — 짧게 유지 |
 | `docs/log/YYYY-MM.md` | 작업 경위·실측·함정 기록(새것이 위). 옛 `open-items.md` 본문이 여기 있다 |
 | `docs/claude-code.md` | 클로드 코드 이관·설정 방법 |
+| `docs/pc-migration.md` | **미니 PC 이관(2026-09-24)** — git 밖에 있는 것(`.env.local`·`probe-data`·메모리·예약 작업 2종)과 새 PC 순서 |
 
 과거 인수인계 문서 `HANDOFF.md`는 위 파일들로 분리했다(2026-08-12). 원문은 `git show ff9997e:HANDOFF.md`.
 

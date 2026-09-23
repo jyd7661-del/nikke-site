@@ -33,7 +33,8 @@
 
 | 항목 | 왜 | → 경위 |
 |---|---|---|
-| (지금 없음) | 2026-09-21에 4건 모두 처리 — API 키 · enikk PvP 갱신 · Search Console. enikk·Search Console은 **유저 Chrome으로 클로드가 할 수 있다**(내장 브라우저에선 enikk 본문이 빈다) | 09 enikk PvP 데이터 갱신 |
+| **미니 PC 이관** — 새 PC에서 `docs/pc-migration.md` 2장 순서대로. GitHub 로그인·Chrome 확장·Cowork 예약 작업 재생성·작업 스케줄러 등록은 유저 몫(클로드는 새 PC에서 확인만) | 이관 꾸러미는 `Desktop\Claude
+ikke\_이관\`. 끝나면 메인 PC 예약 작업 2종을 끈다(중복 실행 방지) | 09 미니 PC 이관 준비 |
 
 ## 🔧 시스템 보완 — 사이트 추천을 내 판정에 맞춰 간다 (2026-09-18 유저 지시)
 
