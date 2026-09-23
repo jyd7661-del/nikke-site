@@ -14,7 +14,7 @@ GitHub에서 새로 clone하면 아래 ①②가 **빠진다.**
 |---|---|---|---|---|
 | ① | **`.env.local`** — Supabase 키 · `ANTHROPIC_API_KEY`(로컬 실험용, 09-21 발급) | `nikke-site-git\nikke-site\.env.local` | ❌ (gitignore) | 로컬 실험·dev 서버 불가. Supabase 키는 대시보드에서, Anthropic 키는 새로 발급 |
 | ② | **`probe-data\`** 85파일 6.2MB — 판정 파일(`thin-judgments-*.txt`), 실험 기록, 재판정 | `nikke-site-git\nikke-site\probe-data\` | ❌ (gitignore) | ⚠️ **`testJudgmentMatch`(일치율 71.8%)의 정답지가 사라진다.** 되살릴 방법 없음 |
-| ③ | **클로드 메모리** 14파일 | `C:\Users\정연도\.claude\projects\C--Users-----Desktop-Claude-nikke\memory\` → 사본 `_이관\claude-memory\` | ❌ | 유저 지시(자동 푸시·판단 위임 등)를 새 세션이 모른다 |
+| ③ | **클로드 메모리** 15파일 | `C:\Users\정연도\.claude\projects\C--Users-----Desktop-Claude-nikke\memory\` → 사본 `_이관\claude-memory\` | ❌ | 유저 지시(자동 푸시·판단 위임 등)를 새 세션이 모른다 |
 | ④ | **주간 데이터 조사** 예약 작업 지시서 (Cowork, 매주 월 10:04) | `C:\Users\정연도\Claude\Scheduled\nikke-site-data-research\SKILL.md` → 사본 `_이관\scheduled-cowork\` | ❌ | 주간 조사가 멈춘다. `checkWeeklyReport`가 9일 뒤 경고 |
 | ⑤ | **주간 점검** 윈도우 작업 스케줄러 `니케 주간 점검`(매주 월 10:00) | 작업 스케줄러 → 내보낸 XML `_이관\windows-task\` | ❌ (실행 파일 `scripts\weekly-check.cmd`는 git에 있다) | 주간 점검이 멈춘다 |
 | ⑥ | 클로드 코드 사용자 설정 | `C:\Users\정연도\.claude\settings.json` → 사본 `_이관\claude-user-settings.json` | ❌ | 테마 정도. 중요도 낮음 |
