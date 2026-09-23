@@ -37,6 +37,10 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 폐기된 원칙 1을 그대로 로드하고 있었다(`docs/log/2026-09.md` "Fable 5.1 전환 후 재검토").
 (`...\Desktop\nikke-site` 는 이관 전 옛 복사본이니 건드리지 말 것.)
 
+> **2026-09-24부터 미니 PC의 WSL에서 작업한다.** 경로는 `~/projects/nikke/nikke-site-git`
+> (윈도우 `C:\Users\jyd76\OneDrive\Desktop\claude\nikke\`로 가는 심볼릭 링크). Node는 WSL의 nvm(v24)이라
+> 명령 앞에 `export NVM_DIR=$HOME/.nvm; . $NVM_DIR/nvm.sh`가 필요하다. 이 PC 윈도우 쪽엔 Node가 없다.
+
 ```bash
 cd nikke-site-git/nikke-site
 node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
@@ -52,7 +56,7 @@ node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
 node scripts/testGuides.mjs          # 가이드 글 — 목록↔본문, 글의 수치를 원본에서 재계수
-node scripts/testSkillSources.mjs    # 스킬 원문 3개 국어 교차 검증 (래칫: 숫자 불일치 11건)
+node scripts/testSkillSources.mjs    # 스킬 원문 3개 국어 교차 검증 (래칫: 숫자 불일치 0건 — 2026-09-07에 11건 수정)
 node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
 node scripts/testTraffic.mjs         # 자체 방문 계측의 경로·봇 판정
 node scripts/testAiTeamSchema.mjs    # AI 조합 호출이 API에 거부당하지 않는가(구조화 출력 스키마·temperature)

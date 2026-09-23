@@ -1,10 +1,10 @@
 ---
-description: 니케 사이트의 자동 검사 15종을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 20종(`npm run verify` 19종 + `findTotems`)을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
 
-`nikke-site/`에서 아래를 순서대로 실행한다.
+`nikke-site/`에서 `npm run verify`(아래 목록 중 `findTotems` 외 전부, `&&`로 이어져 하나라도 실패하면 멈춘다)와 `node scripts/findTotems.mjs`를 실행한다.
 
 ```bash
 cd nikke-site
@@ -12,7 +12,10 @@ node scripts/checkData.mjs
 node scripts/testI18n.mjs
 node scripts/testEngineReasons.mjs
 node scripts/testRealTeams.mjs
+node scripts/testEngineDeterminism.mjs
+node scripts/testBossProfile.mjs
 node scripts/simulateTeams.mjs --selftest
+node scripts/testRankerTeams.mjs
 node scripts/analyzeSkillTriggers.mjs
 node scripts/testCharacterNames.mjs
 node scripts/testGlossary.mjs
@@ -21,6 +24,7 @@ node scripts/testGuides.mjs
 node scripts/testSkillSources.mjs
 node scripts/testDataI18n.mjs
 node scripts/testTraffic.mjs
+node scripts/testAiTeamSchema.mjs
 node scripts/findTotems.mjs
 node scripts/checkAdPlacement.mjs
 node scripts/checkWeeklyReport.mjs
@@ -33,18 +37,22 @@ node scripts/checkWeeklyReport.mjs
 | `checkData.mjs` | **ERROR 0 / WARN 3** | 데이터 정합성. WARN 3건은 `name_ja` 도입으로 생긴 `NAME_SUBSTRING`이며 정상 |
 | `testI18n.mjs` | **25건 통과** | 키 집합·중복·값 타입·함수형 호출·빈 값·폴백, 코드가 쓰는 키 존재, 컴포넌트마다 `useLanguage`, `t` 가림, 날짜 하드코딩, **engineReasons 3개국어 키 일치·엔진이 쓰는 키 존재·엔진 코드에 한국어 없음** |
 | `testEngineReasons.mjs` | **문제 0건** | 근거 문장을 세 언어로 **실제로 만들어본다**. 인자 누락(`undefined`)과 데이터 번역 누락(영어·일본어에 한국어 누출)을 잡는다. 아키타입 345건 전수 포함 |
-| `testRealTeams.mjs` | **문제 0건 · 214건(솔로레이드 125 · 타워 50 · 캠페인 19 · PvP 20)** | 등록된 **실제 조합**을 우리 규칙에 넣어 본다. 사람들이 실제로 클리어에 쓴 조합이 우리 규칙에서 불성립이면 데이터나 규칙이 틀린 것이다. 2026-09-01에 20건이 걸렸고 원인은 라피: 레드 후드의 유연 버스트 누락이었다(타워 elysion 클리어의 20.8%가 후보에서 빠져 있었다). ⚠️ 버스트 **순환 속도**는 판정하지 않고 참고로만 찍는다 — PvP 등록 조합의 95%가 20초 주기로 안 돌아서, 그걸 판정에 넣으면 검증된 조합을 무효로 만든다 |
+| `testRealTeams.mjs` | **문제 0건 · 216건(솔로레이드 125 · 타워 50 · 캠페인 19 · PvP 22)** | 등록된 **실제 조합**을 우리 규칙에 넣어 본다. 사람들이 실제로 클리어에 쓴 조합이 우리 규칙에서 불성립이면 데이터나 규칙이 틀린 것이다. 2026-09-01에 20건이 걸렸고 원인은 라피: 레드 후드의 유연 버스트 누락이었다(타워 elysion 클리어의 20.8%가 후보에서 빠져 있었다). ⚠️ 버스트 **순환 속도**는 판정하지 않고 참고로만 찍는다 — PvP 등록 조합의 95%가 20초 주기로 안 돌아서, 그걸 판정에 넣으면 검증된 조합을 무효로 만든다 |
+| `testEngineDeterminism.mjs` | **문제 0건 · 표본 40건 × 순서 6회** | 같은 로스터면 **고른 순서와 무관하게** 같은 조합이 나오는가. 2026-09-18 역테스트 17/40 → 0/40 |
+| `testBossProfile.mjs` | **문제 0건** | 보스별 방어 구성 — 랭커 조합에서 센 값·`bossDefenseNote` 문장(세 언어)·점수 불변 |
 | `simulateTeams.mjs --selftest` | **문제 0건 · 5건 검사** | 조합 상대 비교기의 **단조성**. 더 나쁜 멤버로 바꾸면 점수가 오르면 안 되고, 버퍼를 넣으면 내려가면 안 되고, 속성 한정 버프는 대상이 없으면 안 붙어야 한다. ⚠️ **"맞다"의 증명이 아니다** — 이 비교기는 실측으로 검증된 적이 없다(솔로레이드 avgDamage와 상관 0.16, 티어 합은 0.10). 앞뒤가 맞는지만 본다 |
+| `testRankerTeams.mjs` | **문제 0건 · 메타 풀 백분위 중앙 69.0%**(216팀) | 실제 랭커 조합이 우리 계산에서도 높은가. 50% = 무작위. 엔진을 고칠 때 이 값이 깎이면 되돌린다 |
 | `analyzeSkillTriggers.mjs` | **분류 안 됨 179절** (래칫) | 스킬 절을 **발동 빈도 계열**로 분류한다 — 전투 시작 1회 / 풀버스트 사이클마다 / 평타 N발마다 / 탄창마다 / 풀차지마다 등. 계수를 그냥 더하면 "평타마다 3%"와 "버스트마다 2808%"가 같은 자리에 들어가 **모더니아가 3점**이 된다. 새 캐릭터가 새 표현을 들고 오면 분류 안 된 절이 늘어 ERROR |
 | `testCharacterNames.mjs` | **26건 통과** | 언어별 표기, 폴백, 3개국어 검색, 로스터 전수(현재 170명) |
 | `testGlossary.mjs` | **35건 통과** | 번역 시 이름 보호 치환(`⟦N⟧`) |
-| `testDexUsage.mjs` | **전부 통과 · 조합 214건 · 데이터가 붙는 캐릭터 98/198명** | 도감 "실사용 데이터" 절의 집계. 198명 **전원**을 원본 JSON에서 다시 세어 대조한다 — 이 절은 데이터가 없으면 안 그리는 설계라 집계가 통째로 실패해도 화면이 멀쩡해 보인다 |
-| `testGuides.mjs` | **문제 0건 · 5종 · 글 3편** | 가이드(`/guide`)의 안전망. 목록(`lib/guides.js`)과 본문(`app/guide/[slug]/page.js`)이 어긋나면 404가 나고, 글의 수치는 원본 JSON에서 **다시 세어** 대조한다. 손으로 적은 수치는 파일별 래칫으로 막는다 |
-| `testSkillSources.mjs` | **문제 0건 · 세 언어 582개 · 숫자 불일치 11건** | 스킬 원문 `desc`/`desc_kr`/`desc_ja`를 대조한다. 개수가 같고 KR·JA가 일치하는데 EN만 다른 값만 센다(2:1). 그중 6건은 비교기 계산에 실제로 들어간다 |
-| `testDataI18n.mjs` | **퇴행 없음** (남은 backlog: squad 62 · desc_ja 9 · desc_kr 6 · 보스명 5. 아키타입 name·note는 483/483 완료) | 화면에 나가는 **데이터**가 사이트 언어와 맞는가. `testI18n`은 UI 라벨만 봐서 "한국어 화면인데 조합 이름·설명이 영어"를 24건 통과하는 동안 놓쳤다. **래칫이다 — EXPECTED보다 늘면 ERROR, 줄면 숫자를 낮추라고 알린다** |
-| `testTraffic.mjs` | **전부 통과 · 계측 대상 경로 207개** | 자체 방문 계측의 경로·봇 판정. 계측은 **조용히 안 쌓인다** — 경로 판정이 막으면 표가 비고, 봇을 못 거르면 크롤러가 203페이지를 훑어 "인원 대비 로딩" 비율이 무의미해진다. DB 없이 검사할 수 있게 `lib/traffic.js`로 순수 로직을 뗐다 |
+| `testDexUsage.mjs` | **전부 통과 · 조합 216건 · 데이터가 붙는 캐릭터 101/200명** | 도감 "실사용 데이터" 절의 집계. 200명 **전원**을 원본 JSON에서 다시 세어 대조한다 — 이 절은 데이터가 없으면 안 그리는 설계라 집계가 통째로 실패해도 화면이 멀쩡해 보인다 |
+| `testGuides.mjs` | **문제 0건 · 6종 · 글 3편** | 가이드(`/guide`)의 안전망. 목록(`lib/guides.js`)과 본문(`app/[lang]/guide/[slug]/page.js`)이 어긋나면 404가 나고, 글의 수치는 원본 JSON에서 **다시 세어** 대조한다. 손으로 적은 수치는 파일별 래칫으로 막는다 |
+| `testSkillSources.mjs` | **문제 0건 · 세 언어 582개 · 숫자 불일치 0건 · 표기 오타 0건** | 스킬 원문 `desc`/`desc_kr`/`desc_ja`를 대조한다. 개수가 같고 KR·JA가 일치하는데 EN만 다른 값만 센다(2:1). 2026-09-07에 11건을 KR·JA 다수결로 고쳐 기준선이 0이 됐다 |
+| `testDataI18n.mjs` | **퇴행 없음** (남은 backlog: desc_ja 12 · desc_kr 9 · 보스명 5 · squad 일본어 1. 아키타입 name·note 완료) | 화면에 나가는 **데이터**가 사이트 언어와 맞는가. `testI18n`은 UI 라벨만 봐서 "한국어 화면인데 조합 이름·설명이 영어"를 24건 통과하는 동안 놓쳤다. **래칫이다 — EXPECTED보다 늘면 ERROR, 줄면 숫자를 낮추라고 알린다** |
+| `testTraffic.mjs` | **전부 통과 · 계측 대상 경로 627개**(3개 언어 × 209) | 자체 방문 계측의 경로·봇 판정. 계측은 **조용히 안 쌓인다** — 경로 판정이 막으면 표가 비고, 봇을 못 거르면 크롤러가 203페이지를 훑어 "인원 대비 로딩" 비율이 무의미해진다. DB 없이 검사할 수 있게 `lib/traffic.js`로 순수 로직을 뗐다 |
+| `testAiTeamSchema.mjs` | **문제 0건** | AI 조합 호출이 API에 거부당하지 않는가(구조화 출력 스키마 제약·temperature). 2026-09-21 둘 다 조용히 엔진 답으로 넘어가던 실패 |
 | `findTotems.mjs` | **1군 0명 · 검토 후 기각 1명**(아르카나) | 토템 후보 누락. 2026-09-01에 솔로레이드 125건 + 타워 50건을 붙였다 — 그전까지 실사용 214건 중 **175건(82%)을 안 보고 있어** 1군이 계속 0명이었다. `totemRole` 등록은 언제나 B등급이라 사람이 판단한다 |
-| `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
+| `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/[lang]/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |
 | `checkWeeklyReport.mjs` | **마지막 보고서 9일 이내 / 미처리 목록** | 주간 조사 예약 작업이 돌았는지, 그 결과를 사람이 처리했는지 |
 
 ## `checkWeeklyReport`는 막지 않는다
@@ -73,7 +81,7 @@ npx next build && npm run check:canonical
 
 | 스크립트 | 기준선 | 무엇을 보는가 |
 |---|---|---|
-| `checkCanonical.mjs` | **ERROR 0 / 203개** | 사이트맵에 실리는 주소마다 자기 자신을 가리키는 canonical이 있는가 |
+| `checkCanonical.mjs` | **ERROR 0 / 618개**(번역 202×3 · 한국어 전용 4×3) | 사이트맵에 실리는 주소마다 자기 자신을 가리키는 canonical·noindex·hreflang이 맞는가 |
 
 `/`·`/combos`·`/board`는 `'use client'`라 페이지에서 metadata를 export할 수 없어 **별도 레이아웃
 파일**로 canonical을 붙였다. 이 구조는 (1) 레이아웃을 지우면 태그가 사라지고 (2) 자식 라우트가
