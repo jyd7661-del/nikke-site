@@ -140,5 +140,23 @@
     "decidedOn": "2026-08-24",
     "why": "백분위 비교: 우리 보스전 A=33% · prydwen B=48% · nikke.gg S=21%. 종합은 우리 48% vs game8 S=48%로 일치. 낮추라는 곳은 prydwen뿐",
     "revisedOn": "2026-08-24"
+  },
+  {
+    "id": "sakura",
+    "mode": "pvp",
+    "ours": "B",
+    "prydwen": "A",
+    "verdict": "keep",
+    "decidedOn": "2026-09-24",
+    "why": "PvP 등급을 주는 살아 있는 출처가 prydwen뿐이다(game8은 종합 하나, nikke.gg는 정지 출처이고 robots.txt가 Anthropic·AI 에이전트를 막아 조회하지 않음). 보조 신호 enikk 아레나 채용(2026-09-13)에서 S~C로 게시된 SSR 51명에 없다 = SSR 상위 30.2% 밖 → prydwen A(상위 31.2%)를 뒷받침하지 않는다. prydwen 노트도 \"풍압 딜러 상대 탱커, 틈새 용도\". 우리 B(상위 52.9%) 유지"
+  },
+  {
+    "id": "neon-vision-eye",
+    "mode": "pvp",
+    "ours": "S",
+    "prydwen": "SS",
+    "verdict": "hold",
+    "decidedOn": "2026-09-24",
+    "why": "prydwen SS(상위 12.4%) vs 우리 S(18.6%). 두 번째 PvP 등급 출처가 없다(game8 종합뿐, nikke.gg 제외). enikk 아레나 채용 SSR 20위(65.2%, 2026-09-13) = 상위 11.6%로 우리 척도의 SS/S 경계에 딱 걸린다. 그런데 같은 표에서 채용률이 더 높은 레드 후드(68.2%)를 S로 유지하고 있어, 채용률만으로 올리면 두 판정이 서로 어긋난다. 한 등급 차이라 보류 — PvP 등급을 주는 새 출처가 생기거나 enikk 아레나를 다시 옮길 때 재판정"
   }
 ]
