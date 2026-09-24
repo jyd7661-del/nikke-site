@@ -10639,7 +10639,9 @@
         "cd": "N/A",
         "desc": "Activates when entering Full Burst. Affects self. Changes the weapon in use: Super Duper Overdrive Charge Time: Fixed at 1.5 sec Damage: 243.75% of final ATK Pellet Count: 15 Full Charge Damage: 300% Max Ammunition Capacity: 6 Activates when Super Duper Overdrive ends. Affects self. Removes 100% of ammo.",
         "name_ja": "オーバーオーバードライブ",
-        "desc_ja": "フルバーストタイムが発動した時、自分に「使用武器変更：オーバーオーバードライブ」：チャージ時間：1.5秒に固定 ダメージ：最終攻撃力の243.75%のダメージ ペレット数：15個 フルチャージダメージ：300% 最大装弾数：6発 オーバーオーバードライブ状態が終了した時、自分に「残弾数100%低下」"
+        "desc_ja": "フルバーストタイムが発動した時、自分に「使用武器変更：オーバーオーバードライブ」：チャージ時間：1.5秒に固定 ダメージ：最終攻撃力の243.75%のダメージ ペレット数：15個 フルチャージダメージ：300% 最大装弾数：6発 オーバーオーバードライブ状態が終了した時、自分に「残弾数100%低下」",
+        "name_kr": "오버 오버 드라이브",
+        "desc_kr": "풀 버스트 타임 시작 시 자신에게 [사용 무기 변경 : 오버 오버 드라이브] : 차지 시간 : 1.5초로 고정 대미지 : 최종 공격력 243.75% 대미지 펠릿 개수 : 15개 풀 차지 대미지 : 300% 최대 장탄 수 : 6발 오버 오버 드라이브 상태 종료 시 자신에게 [탄환 100% 제거]"
       },
       {
         "name": "Fashionably Late Villain",
@@ -10647,7 +10649,9 @@
         "cd": "N/A",
         "desc": "Activates when Full Burst ends. Affects all allies. Max HP ▲ 10.5% of the skill user's max HP (without restoring HP) continuously. Stacks up to 4 times. Activates at the start of battle. Affects self. Fashionably Late: ATK ▲ 6.23% of the skill user's final max HP continuously.",
         "name_ja": "ヴィランは遅れてやってくる",
-        "desc_ja": "フルバーストタイムが終了した時、味方全体に「スキル発動者基準で最大HPのみ10.5%▲」「4スタック」「持続」 戦闘開始時、自分に「遅刻：スキル発動者の最終最大HPの6.23%分の攻撃力▲」「持続」"
+        "desc_ja": "フルバーストタイムが終了した時、味方全体に「スキル発動者基準で最大HPのみ10.5%▲」「4スタック」「持続」 戦闘開始時、自分に「遅刻：スキル発動者の最終最大HPの6.23%分の攻撃力▲」「持続」",
+        "name_kr": "빌런, 지각하다",
+        "desc_kr": "풀 버스트 타임 종료 시 아군 전체에게 [시전자 기준 최대 체력만 10.5% ▲] [4 중첩] [지속] 전투 시작 시 자신에게 [지각 : 시전자의 최종 최대 체력의 6.23% 만큼 공격력 ▲] [지속]"
       },
       {
         "name": "Special Villainous Web",
@@ -10655,7 +10659,61 @@
         "cd": "40",
         "desc": "Affects self. Attack Damage ▲ 27.5% for 25 sec. Affects all enemies. Deals 1350% of final ATK as Burst Skill damage.",
         "name_ja": "ヴィランウェップスペシャル",
-        "desc_ja": "自分に「攻撃ダメージ27.5%▲」「25秒間維持」 敵全体に「最終攻撃力の1350%のバーストスキルダメージ」"
+        "desc_ja": "自分に「攻撃ダメージ27.5%▲」「25秒間維持」 敵全体に「最終攻撃力の1350%のバーストスキルダメージ」",
+        "name_kr": "빌런 웹 스페셜",
+        "desc_kr": "자신에게 [공격 대미지 27.5% ▲] [25초 유지] 적 전체에게 [ 최종 공격력 1350% 버스트 스킬 대미지]"
+      }
+    ]
+  },
+  {
+    "id": "guilty-mighty-bunny",
+    "title": "Guilty: Mighty Bunny",
+    "name_kr": "길티 : 마이티 바니",
+    "name_ja": "ギルティ：マイティバニー",
+    "class": "attacker",
+    "burst": "3",
+    "element": "water",
+    "weapon": "sr",
+    "manufacturer": "missilis",
+    "rarity": "SSR",
+    "squad": "Real Kindness",
+    "releaseDate": "2026-09-17",
+    "img": "7/71/Guilty_Mighty_Bunny_MI.png",
+    "tiers": {
+      "story": "S",
+      "bossing": "A",
+      "pvp": "B"
+    },
+    "skills": [
+      {
+        "name": "What Should I Do...?",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. ATK ▲ 20.1%. This effect is continuous. Activates at the start of battle and when Full Charge is maintained for 1 or more seconds while this unit is not in the Mighty Stomp state. Affects self. Initiates a new Bunny Mode based on the current mode. Activates if this unit is in the Bunny Mode: Stance state. Initiates Bunny Mode: Engage. This effect is continuous and cannot be removed. Activates if this unit is not in the Bunny Mode: Stance state. Initiates Bunny Mode: Stance. This effect is continuous and cannot be removed. Activates when this unit enters the Bunny Mode: Engage state. Affects all allies in the Bunny Mode: Stance state. Initiates Bunny Mode: Engage. This effect is continuous and cannot be removed. Activates when this unit enters the Bunny Mode: Stance state. Affects all allies in the Bunny Mode: Engage state. Initiates Bunny Mode: Stance. This effect is continuous and cannot be removed.",
+        "name_kr": "어떻게 하는 게 좋아…?",
+        "desc_kr": "전투 시작 시 자신에게 [공격력 20.1% ▲] [지속] 전투 시작 시와 풀 차지 상태를 1초 이상 유지 시 마이티 스톰프 상태가 아니라면 자신에게 [상태에 맞는 바니 모드 만 적용] 자신이 바니 모드 : 스탠스 상태라면 [ 바니 모드 : 인게이지] [지속] [해제 불가] 자신이 바니 모드 : 스탠스 상태가 아니라면 [ 바니 모드 : 스탠스] [지속] [해제 불가] 자신에게 바니 모드 : 인게이지 적용 시 바니 모드 : 스탠스 상태인 아군 전체에게 [ 바니 모드 : 인게이지] [지속] [해제 불가] 자신에게 바니 모드 : 스탠스 적용 시 바니 모드 : 인게이지 상태인 아군 전체에게 [ 바니 모드 : 스탠스] [지속] [해제 불가]",
+        "name_ja": "どうしたらいい…？",
+        "desc_ja": "戦闘開始時、自分に「攻撃力20.1%▲」「持続」。 戦闘開始時およびフルチャージ状態を1秒以上維持した場合、マイティスキン状態でなければ自分に「条件に合うバニーモードのみ適用」。 自分がバニーモード：スタンス状態なら、「バニーモード：エンゲージ」「持続」「解除不可」。 自分がバニーモード：スタンス状態でなければ、「バニーモード：スタンス」「持続」「解除不可」。"
+      },
+      {
+        "name": "Can I Take These Off...?",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates only if this unit is in the Bunny Mode: Engage state. Chain Release Function: Changes some attacks' damage into true damage. Effect 1: Affects self. Normal attacks deal true damage. This effect is continuous and cannot be removed. Effect 2: Affects self. Mighty Stomp deals true damage. This effect is continuous and cannot be removed. Effect 3: Activates when landing a Full Charge attack. Affects the target. Deals 370.08% of final ATK as true damage. Activates only when this unit is in the Bunny Mode: Stance state. Chain Enhance Function: Enhances this unit's offensive capabilities. Effect 1: Affects self. Attack Damage ▲ 20.45%. This effect is continuous and cannot be removed. Effect 2: Affects self. Charge Damage ▲ 40%. This effect is continuous and cannot be removed. Effect 3: Activates when landing a Full Charge attack. Affects the target. Deals 450.89% of final ATK as additional damage.",
+        "name_kr": "이거…풀어도 돼?",
+        "desc_kr": "자신이 바니 모드 : 인게이지 상태일 때 한하여 [체인 릴리즈] 기능 : 공격을 방어력 무시 대미지로 변경합니다. 효과 1 : 자신에게 [일반 공격을 방어력 무시 대미지로 적용] [지속] [해제 불가] 효과 2 : 자신에게 [마이티 스톰프를 방어력 무시 대미지로 적용] [지속] [해제 불가] 효과 3 : 풀 차지 공격 명중 시 대상에게 [ 최종 공격력 370.08% 방어력 무시 대미지] 자신이 바니 모드 : 스탠스 상태일 때 한하여 [체인 인핸스] 기능 : 공격 능력을 강화합니다. 효과 1 : 자신에게 [공격 대미지 20.45% ▲] [지속] [해제 불가] 효과 2 : 자신에게 [차지 대미지 40% ▲] [지속] [해제 불가] 효과 3 : 풀 차지 공격 명중 시 대상에게 [ 최종 공격력 450.89% 추가 대미지]",
+        "name_ja": "これ…ほどいてもいい？",
+        "desc_ja": "自分がバニーモード：エンゲージ状態の時に限り、「チェーンリリース」。 機能：攻撃を防御力無視ダメージに変更。効果1：自分に「通常攻撃に防御力無視ダメージを適用」「持続」「解除不可」。効果2：自分に「マイティスキンに防御力無視ダメージを適用」「持続」「解除不可」。効果3：フルチャージ攻撃が命中した時、対象に「最終攻撃力の370.08%の防御力無視ダメージ」。 自分がバニーモード：スタンス状態の時に限り、「チェーンエンハンス」。機能：攻撃能力を強化する。効果1：自分に「攻撃ダメージ20.45%▲」「持続」「解除不可」。効果2：自分に「チャージダメージ40%▲」「持続」「解除不可」。効果3：フルチャージ攻撃が命中した時、対象に「最終攻撃力の450.89%の追加ダメージ」。"
+      },
+      {
+        "name": "I'm Finally Free...!",
+        "type": "Active",
+        "cd": "40",
+        "desc": "Affects self. Mighty Stomp: Changes the weapon in use Charge Time: Fixed at 1.5 sec Damage: 101.3% of final ATK Full Charge Damage: 250% Duration: 1 rounds Additional Effect 1: Charge Damage ▲ 1400% for 1 rounds. Additional Effect 2: Attack Damage ▲ 77.35% for 10 sec.",
+        "name_kr": "드디어 풀려났어…!",
+        "desc_kr": "자신에게 [마이티 스톰프 : 사용 무기 변경] : 차지 시간 : 1.5초로 고정 대미지 : 최종 공격력 101.3% 풀 차지 대미지 : 250% 대미지 유지 시간 : 1발 추가 효과 1 : [차지 대미지 1400% ▲] [1발 유지] 추가 효과 2 : [공격 대미지 77.35% ▲] [10초 유지]",
+        "name_ja": "やっとほどけたぁ…！",
+        "desc_ja": "自分に「マイティストンプ：使用武器変更」。チャージ時間：1.5秒に固定。ダメージ：最終攻撃力の101.3%。フルチャージダメージ：250%。維持時間：1秒。追加効果1：「チャージダメージ1400%▲」「1発間維持」。追加効果2：「攻撃ダメージ77.35%▲」「10秒間持続」。"
       }
     ]
   }

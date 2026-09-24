@@ -73,7 +73,7 @@ const EXPECTED = {
   //                                   (`스킬 이름 1` · `스킬 일반 글씨` · `버스트 x`). 파서가 거부하는 게 맞다
   //   desc_ja +3 aigis              — game8이 아이기스·유키코 페이지의 **스킬 본문을 서로 바꿔** 올렸다.
   //                                   수집기 숫자 대조에서 둘이 거울처럼 어긋난다(docs/open-items.md 2026-09-13)
-  'skill.desc_kr': 9,          // 나무위키가 막은 캐릭터. idoll-flower는 "채우지 않기로" 결정된 건이다 · + drake-great-villain
+  'skill.desc_kr': 6,          // 나무위키가 막은 캐릭터. idoll-flower는 "채우지 않기로" 결정된 건이다 · drake-great-villain은 2026-09-24 나무위키가 채워져 -3
   'skill.desc_ja': 12,         // yukiko·aigis는 game8 본문 뒤바뀜(2026-08-24엔 "안 채운 페이지"로 오진했다) · 나머지는 game8 미작성
   'squad(한국어 없음)': 0,       // 2026-08-25 나무위키에서 62종 전부 옮겼다
   'squad(일본어 없음)': 1,       // 2026-08-26 game8에서 61종 수집. 남은 1종은 WILLE —

@@ -31,7 +31,9 @@ const ROOT = path.join(__dirname, '..');
 const cdb = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'characterDatabase.json'), 'utf8'));
 
 // 기준선 — 분류 안 된 절의 수. 규칙을 늘리면 이 값을 함께 낮춘다.
-const EXPECTED_UNMATCHED = 179;
+// 2026-09-24 179 → 185: 길티 : 마이티 바니의 "바니 모드: 스탠스/인게이지" 상태 조건 6절. 저격 모드·화력 차지 상태처럼
+// 이름 붙은 자기 상태라 전환 빈도를 원문만으로 확정할 수 없다 — 기존 같은 유형도 분류하지 않고 둔다.
+const EXPECTED_UNMATCHED = 185;
 
 // 빈도 계열. **위에서부터 먼저 맞는 것**을 쓴다(순서가 의미를 가진다).
 export const TRIGGER_CLASSES = [

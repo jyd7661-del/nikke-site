@@ -199,7 +199,7 @@ npx next build && npm run check:canonical
 | 한국어 스킬 | 나무위키 스킬 칸이 자리표시자에서 채워지면 | `refreshSkillsKrFromNamu` 재실행 |
 | `squad` | 영문 표기가 확인되면 | game8 `部隊` → `squadNames.json`의 `ja` 역조회(한 부대에만 쓰이는 표기일 때) |
 
-**2026-09-13 기준 남은 것:** `aigis` 일본어(game8 본문 뒤바뀜) · `drake-great-villain` 한국어(나무위키 자리표시자) ·
+**2026-09-13 기준 남은 것:** `aigis` 일본어(game8 본문 뒤바뀜) · ~~`drake-great-villain` 한국어~~(2026-09-24 채움) ·
 `yukiko` 일본어(같은 뒤바뀜) · `queen-makoto`·`yukiko` squad(영문 표기 미확인)
 
 > ⚠️ **`refreshSkillsFromPrydwen --only`는 이제 `dataFreshness.characterSkills`를 건드리지 않는다**(2026-09-13).

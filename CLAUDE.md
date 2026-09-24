@@ -51,7 +51,7 @@ node scripts/testEngineDeterminism.mjs # 기준선: 문제 0건 (같은 로스�
 node scripts/testBossProfile.mjs     # 기준선: 문제 0건 (보스별 방어 구성 — 랭커 조합에서 센 값·문장·점수 불변)
 node scripts/simulateTeams.mjs --selftest  # 기준선: 문제 0건 (조합 상대 비교기의 단조성)
 node scripts/testRankerTeams.mjs     # 기준선: 메타 풀 백분위 중앙값 69% (2026-09-21 PvP Season 38 갱신 뒤. 실제 랭커 조합이 우리 계산에서도 높은가)
-node scripts/analyzeSkillTriggers.mjs # 기준선: 분류 안 됨 179절 (래칫 — 늘면 ERROR)
+node scripts/analyzeSkillTriggers.mjs # 기준선: 분류 안 됨 185절 (래칫 — 늘면 ERROR. 2026-09-24 신캐 상태 조건 +6)
 node scripts/testCharacterNames.mjs  # 26건
 node scripts/testGlossary.mjs        # 35건
 node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
@@ -90,7 +90,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 > *"조합은 내 궁극적인 목표로 고도화된 AI가 추천을 해주는 방식이 맞아.
 > 정해져 있는 답에서 해결책을 찾다보면 언젠가 꼬이게 된다고 생각하거든."*
 >
-> 근거가 있는 판단이다. 규칙 기반의 구멍이 계속 나오고 있다 — 발동 조건 **미분류 179절(27%)**,
+> 근거가 있는 판단이다. 규칙 기반의 구멍이 계속 나오고 있다 — 발동 조건 **미분류 185절(27%)**,
 > 락온·광역(83명)·관통(26명) 미반영, 풀차지 배율 누락, 무기별 연사속도 오류. 그리고 **새
 > 캐릭터가 나올 때마다 사람이 규칙을 손으로 짜야 한다**(`docs/new-character.md`, 함정 5개).
 > 시간이 갈수록 벌어지는 격차다.

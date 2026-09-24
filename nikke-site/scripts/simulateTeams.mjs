@@ -717,10 +717,10 @@ const AMMO_MOVED_BASELINE = 34;  // 2026-09-08 여집합 규칙으로 크라운�
 const AMMO_PENALTY_BASELINE = 2;
 
 // `for N round(s)` 버프를 버렸을 때 자기버프 배수가 실제로 내려가는 캐릭터 수.
-const ROUND_BUFF_BASELINE = 10;  // 2026-09-08 `for N shots`(괄호 없는 복수형) 2명이 합류해 8 → 10
+const ROUND_BUFF_BASELINE = 11;  // 2026-09-08 `for N shots`(괄호 없는 복수형) 2명이 합류해 8 → 10 · 2026-09-24 길티 : 마이티 바니로 11
 
 // 재장전을 반영했을 때 평타가 실제로 낮아지는 캐릭터 수. 줄면 재장전 반영이 되돌려진 것이다.
-const RELOAD_LOWERED_BASELINE = 200;  // 2026-09-13 신캐 2명(아이기스·드레이크 : 그레이트 빌런) 추가로 198 → 200
+const RELOAD_LOWERED_BASELINE = 201;  // 2026-09-13 신캐 2명(아이기스·드레이크 : 그레이트 빌런) 추가로 198 → 200 · 2026-09-24 길티 : 마이티 바니로 201
 
 // 쿨타임 가동률을 켰을 때 팀 점수가 실제로 낮아지는 캐릭터 수. 줄면 계산이 되돌려진 것이다.
 const UPTIME_LOWERED_BASELINE = 6;
