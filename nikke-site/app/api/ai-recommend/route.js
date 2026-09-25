@@ -304,21 +304,29 @@ async function composeTeamWithAi(client, characters, { mode, boss, tower }) {
   for (let attempt = 0; attempt < 2; attempt++) {
     const msg = await client.messages.create({
       model: AI_TEAM_MODEL,
-      max_tokens: 1500,
+      // ⚠️ max_tokens·effort는 **실험(scripts/experimentAiTeams.mjs --live, 73.4%)과 같은 값**이어야 한다 — testAiTeamSchema가 대조한다.
+      //    2026-09-25 shadow 12건 중 5건이 답 없이 끝났다: 1500이던 상한을 소넷의 생각(기본 effort high)이 다 써서
+      //    두 번 다 stop=max_tokens(출력 정확히 1500×2). 성공한 건도 대부분 첫 시도가 잘려 재요청 — 입력 1.8만 토큰을 두 번 냈다.
+      //    같은 고장을 실험 쪽은 09-21에 겪고 8000으로 고쳤는데 운영엔 옮기지 않았었다.
+      max_tokens: 8000,
       // ⚠️ temperature를 넣지 말 것 — 소넷 5는 받지 않는다(2026-09-21 shadow 실측:
       //    400 "`temperature` is deprecated for this model."). 어차피 결정성은 temperature가
       //    아니라 ai_team_cache가 만든다(같은 로스터 → 저장된 답). scripts/testAiTeamSchema.mjs가 막는다.
       system,
       messages,
-      output_config: { format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
+      output_config: { effort: 'medium', format: { type: 'json_schema', schema: OUTPUT_SCHEMA } },
     });
     for (const k of Object.keys(usage)) usage[k] += msg.usage?.[k] || 0;
     usage.thinking_tokens += msg.usage?.output_tokens_details?.thinking_tokens || 0;   // 최상위 키가 아니라 위 루프로는 0이 더해진다
     const text = msg.content?.find((c) => c.type === 'text')?.text || '';
     const out = extractJsonLoose(text);
     const v = verifyAiTeam(out?.members, characters, { tower });
-    last = { members: out?.members || null, reasoning: out?.reasoning || '', flaws: v.flaws, resolved: v.resolved, retried: attempt > 0 };
-    if (v.ok) break;
+    // 상한에 걸려 잘린 답은 "0명"이 아니라 잘림으로 적는다 — 그래야 shadow 기록에서 원인이 보인다.
+    // 같은 요청을 다시 보내도 또 잘리므로 재요청하지 않는다(입력 토큰만 두 번 낸다).
+    const truncated = msg.stop_reason === 'max_tokens';
+    const flaws = truncated ? [`Truncated at max_tokens (stop_reason=max_tokens).`, ...v.flaws] : v.flaws;
+    last = { members: out?.members || null, reasoning: out?.reasoning || '', flaws, resolved: v.resolved, retried: attempt > 0 };
+    if (v.ok || truncated) break;
     // 재요청: 위반 사유를 그대로 붙인다(영문 한 줄들 — verifyAiTeam이 그 용도로 만든다).
     messages.push({ role: 'assistant', content: text || '{}' });
     messages.push({ role: 'user', content: `Your team violates the rules:\n- ${v.flaws.join('\n- ')}\nReturn a corrected team of exactly 5 members from the roster.` });

@@ -84,6 +84,21 @@ check('프롬프트가 "exactly 5"를 말한다', /exactly 5/i.test(sys));
 const teamCall = routeSrc.slice(routeSrc.indexOf('const msg = await client.messages.create('), routeSrc.indexOf('output_config'));
 check('AI 조합 호출에 temperature가 없다', !/temperature\s*:/.test(teamCall), teamCall.match(/temperature[^,]*/)?.[0] || '');
 
+// 5. 운영 호출이 **측정한 설정**으로 도는가 (2026-09-25 shadow 실측).
+//    운영은 max_tokens 1500·effort 미지정(=high)이었고 실험(--live 73.4%)은 8000·medium이었다. 운영은 측정한 적 없는
+//    설정으로 돌며 12건 중 5건이 생각에 상한을 다 써 답 없이 끝났다 — 같은 고장을 실험 쪽은 09-21에 고쳤는데 옮기지 않았다.
+//    둘 중 하나만 바뀌면 여기서 걸린다. 바꾸려면 실험을 다시 돌리고 둘을 같이 바꾼다.
+const teamCallFull = routeSrc.slice(routeSrc.indexOf('const msg = await client.messages.create('), routeSrc.indexOf('for (const k of Object.keys(usage))'));
+const expSrc = fs.readFileSync(path.join(ROOT, 'scripts', 'experimentAiTeams.mjs'), 'utf8');
+const num = (src) => Number(src.match(/max_tokens:\s*(\d+)/)?.[1]);
+const routeMax = num(teamCallFull);
+const expMax = num(expSrc);
+check(`운영 max_tokens(${routeMax})가 실험(${expMax})과 같다`, routeMax === expMax && routeMax >= 8000);
+const routeEffort = teamCallFull.match(/effort:\s*'(\w+)'/)?.[1] || '(미지정=high)';
+const expEffort = expSrc.match(/arg\('effort',\s*'(\w+)'\)/)?.[1];
+check(`운영 effort(${routeEffort})가 실험 기본값(${expEffort})과 같다`, routeEffort === expEffort);
+check('잘린 답(stop_reason=max_tokens)을 잘림으로 기록한다', /stop_reason\s*===\s*'max_tokens'/.test(routeSrc));
+
 const line = '─'.repeat(78);
 console.log(line);
 console.log('AI 조합 구성 — 구조화 출력 스키마 검사');
