@@ -1,0 +1,9 @@
+{
+  "note": "주간 AI 조사(docs/weekly-research-prompt.md)가 회차 사이에 넘겨받는 상태. 무인 실행이 읽고 고친다.",
+  "youtubeBacklog": {
+    "monthsAgo": 2,
+    "done": null,
+    "history": "Cowork 시절 N=2(2026-08-10 보고서, 구간에 도달 못 해 유지). 이후 5주간 조사가 멈춰 있었으므로 N=2부터 다시 시작한다"
+  },
+  "lastRun": null
+}
