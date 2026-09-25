@@ -57,13 +57,11 @@ schtasks /Create /TN "니케 주간 점검" /XML "C:\Users\<이름>\Desktop\Clau
 - 확인: `schtasks /Run /TN "니케 주간 점검"` → 로그 파일에 `exit code` 줄
 
 ### 2-5. 주간 데이터 조사(④) 되살리기
-Cowork 예약 작업은 **데스크톱 앱이 이 PC에 저장**한다. 계정을 따라오지 않는다.
-1. 새 PC 데스크톱 앱에서 Cowork 예약 작업을 새로 만든다 — 이름 `nikke-site-data-research`, 매주 월 10:04
-2. 지시문은 `_이관\scheduled-cowork\nikke-site-data-research\SKILL.md`를 붙여넣는다
-3. ⚠️ **이 지시서는 낡았다(2026-08-08 마지막 수정)** — 새로 만들 때 고칠 것:
-   - 로컬 클론 경로가 `C:\Users\정연도\Desktop\nikke-site-git\` — **지금은 `Desktop\Claude\nikke\nikke-site-git\`**
-   - 배포 주소가 `nikke-site.vercel.app` — **지금은 `nikketeamguide.com`**
-   - 캐릭터 수 196명 — 지금 200명
+
+> ✅ **미니 PC에서는 Cowork를 다시 만들지 않고 WSL cron 무인 실행으로 대체했다(2026-09-25).**
+> 실행기 `scripts/weekly-research.sh`(월 10:30), 지시서 `docs/weekly-research-prompt.md`, 상태 `reports/research-state.json`, 로그 `~/nikke-research.log`.
+> 옛 Cowork 지시서(`_이관/scheduled-cowork/…/SKILL.md`)는 참고용으로만 남는다 — 경로·주소·기준선이 낡았다.
+> 확인 결과 Cowork 조사는 **08-10 보고서가 마지막**이었다. 그 뒤로는 돌지 않았다.
 
 ### 2-6. 계정·연결 확인(파일이 아니라 로그인으로 따라오는 것)
 | 무엇 | 확인 방법 |

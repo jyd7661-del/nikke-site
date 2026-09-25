@@ -1,9 +1,30 @@
 {
   "note": "주간 AI 조사(docs/weekly-research-prompt.md)가 회차 사이에 넘겨받는 상태. 무인 실행이 읽고 고친다.",
   "youtubeBacklog": {
-    "monthsAgo": 2,
-    "done": null,
-    "history": "Cowork 시절 N=2(2026-08-10 보고서, 구간에 도달 못 해 유지). 이후 5주간 조사가 멈춰 있었으므로 N=2부터 다시 시작한다"
+    "note": "채널마다 오늘 기준 monthsAgo~monthsAgo+1개월 전 구간을 본다. 영상이 있었으면 그 채널만 +1, 구간에 니케 영상이 없었으면 done에 날짜. 목록을 못 내렸으면 그대로 둔다",
+    "channels": {
+      "gonyo": {
+        "handle": "@gonyo1",
+        "monthsAgo": 3,
+        "done": null
+      },
+      "sperando": {
+        "handle": "@Sperando_TV",
+        "monthsAgo": 3,
+        "done": null
+      },
+      "efenbaum": {
+        "handle": "@efenbaum",
+        "monthsAgo": 2,
+        "done": null
+      },
+      "jinseo": {
+        "handle": "@jinseo0101",
+        "monthsAgo": 2,
+        "done": null
+      }
+    },
+    "history": "Cowork 시절 N=2(2026-08-10 보고서, 구간에 도달 못 해 유지). 이후 5주간 조사가 멈춰 있었으므로 N=2부터 다시 시작한다. 2026-09-25: N=2 구간에서 고뇨·스페란도 영상 확인 → 3. 에펜바움·김진서는 이 구간에 도달 못 함(RSS 한계·playboard 429) — 다음 실행에서 curl로 2026-06~07을 따로 볼 것 · 2026-09-25 채널별 N으로 나눔: 고뇨·스페란도 3, 에펜바움·김진서 2(구간 미도달이라 되돌림)"
   },
-  "lastRun": null
+  "lastRun": "2026-09-25"
 }
