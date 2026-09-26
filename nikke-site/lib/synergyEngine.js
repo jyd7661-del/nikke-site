@@ -761,7 +761,7 @@ export function archetypePartialPoints(haveCount, needCount) {
 const FAST_BURST_CD = 20; // 이 이하면 혼자서 매 사이클 버스트를 안정적으로 커버 가능
 const ALTERNATE_BURST_CD = 45; // 이 이하 캐릭터 2명이면 번갈아 커버 가능
 // 낭비 판정(20초 순환 전제)을 하지 않는 모드. 근거는 findWastedBurstMembers 안의 2026-09-26 주석.
-const NO_WASTE_RULE_MODES = new Set(['pvp']);
+const NO_WASTE_RULE_MODES = new Set(['pvp', 'bossing']);
 
 // 유연 버스트 캐릭터가 실제로 채울 수 있는 단계.
 //
@@ -897,7 +897,10 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     // 랭커가 실제로 쓰는 구성을 0점 처리하고 있었던 것이다 — 블랑(PvP SSS·아레나 S 97.4%)이 나유타와 같은
     // 버스트 2라는 이유로 0점이 되어, 엔진이 그 조합을 피하고 PvP B인 프리카를 골랐다(하이쿠 실험이 드러냄).
     // PvP는 한 판이 짧아 순환을 전제하지 않는다 — testRealTeams도 "20초 순환 아님"을 PvP에선 판정하지 않는다.
-    // 숫자를 만든 게 아니라 전제가 안 맞는 모드에서 규칙을 끈 것이다(원칙 2). 솔로레이드(27%)는 따로 재서 정한다.
+    // 숫자를 만든 게 아니라 전제가 안 맞는 모드에서 규칙을 끈 것이다(원칙 2).
+    // 같은 날 **솔로레이드도 껐다** — 등록 125건 중 34건(27%)이 걸렸고, 걸린 36명 중 25명이 공격형이었다
+    // (3분 딜 경쟁이라 버스트를 안 써도 평타·스킬 1·2로 딜을 넣는다). 이전 엔진 대비(바뀐 34건): 나아짐 15 · 같음 14 · 나빠짐 5.
+    // 나빠짐 4건은 레이드 채용률 높은 캐릭터가 prydwen 등급만 높은 쪽에 밀린 것 — 낭비 판정이 아니라 티어 vs 실사용 저울(D7)의 문제다.
     if (NO_WASTE_RULE_MODES.has(mode)) return;
     sorted.slice(needed).forEach(({ m }) => {
       const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
