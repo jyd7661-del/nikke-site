@@ -145,6 +145,12 @@ for (const t of teams) {
   if (t.src !== 'PvP' && (scored.reasons || []).some((r) => String(r).startsWith(SOLO_B3))) {
     problems.push(`[${t.src}] ${t.label}: 실제로 쓰인 조합에 '버스트 3 단독' 문장이 붙었다 — ${t.members.join(', ')}`);
   }
+  // 2026-09-26 추가: **PvP 등록 조합에 '낭비 인원'이 나오면 안 된다.**
+  // 낭비 판정은 20초 순환 전제라 PvP에서 껐다(synergyEngine NO_WASTE_RULE_MODES). 끄기 전엔 PvP 상위 22팀 중 13팀이
+  // 걸려 랭커 구성을 0점 처리했고, 엔진이 블랑+나유타 같은 조합을 피했다. 다시 켜지면 여기서 걸린다.
+  if (t.src === 'PvP' && (scored.wastedCount || 0) > 0) {
+    problems.push(`[PvP] ${t.label}: 실제로 쓰인 조합에 낭비 인원 ${scored.wastedCount}명 — PvP 낭비 판정이 다시 켜졌다 — ${t.members.join(', ')}`);
+  }
   const cyc = cycleSeconds(members);
   if (cyc <= 20.001) s.cyc.ok += 1; else s.cyc.slow += 1;
   stats.set(t.src, s);

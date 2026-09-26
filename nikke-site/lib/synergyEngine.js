@@ -760,6 +760,8 @@ export function archetypePartialPoints(haveCount, needCount) {
 // 없는 멤버가 하나라도 섞여 있으면 판단 근거가 불충분하므로 그 단계는 건너뛴다(과잉 판정 방지).
 const FAST_BURST_CD = 20; // 이 이하면 혼자서 매 사이클 버스트를 안정적으로 커버 가능
 const ALTERNATE_BURST_CD = 45; // 이 이하 캐릭터 2명이면 번갈아 커버 가능
+// 낭비 판정(20초 순환 전제)을 하지 않는 모드. 근거는 findWastedBurstMembers 안의 2026-09-26 주석.
+const NO_WASTE_RULE_MODES = new Set(['pvp']);
 
 // 유연 버스트 캐릭터가 실제로 채울 수 있는 단계.
 //
@@ -888,6 +890,15 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     // 아니라 "자리가 하나 더 생긴다"는 사실을 그대로 옮긴 것이다.
     if (group.some((m) => m.burstReentry)) needed = Math.min(needed + 1, sorted.length);
     sorted.forEach(({ m }, i) => burstOrder.set(m.id, i));
+    // 2026-09-26 — **PvP에서는 낭비 판정을 하지 않는다**(표시 순번은 위에서 그대로 매긴다).
+    //
+    // 이 규칙은 캠페인의 20초 버스트 순환을 전제로 만들었는데 모드를 안 보고 있었다. 등록 실사용 조합에 대 보니
+    // **PvP 상위 22팀 중 13팀(59%)이 이 규칙에 "낭비"로 걸렸다**(캠페인 0/19 · 타워 1/50 · 솔로레이드 34/125).
+    // 랭커가 실제로 쓰는 구성을 0점 처리하고 있었던 것이다 — 블랑(PvP SSS·아레나 S 97.4%)이 나유타와 같은
+    // 버스트 2라는 이유로 0점이 되어, 엔진이 그 조합을 피하고 PvP B인 프리카를 골랐다(하이쿠 실험이 드러냄).
+    // PvP는 한 판이 짧아 순환을 전제하지 않는다 — testRealTeams도 "20초 순환 아님"을 PvP에선 판정하지 않는다.
+    // 숫자를 만든 게 아니라 전제가 안 맞는 모드에서 규칙을 끈 것이다(원칙 2). 솔로레이드(27%)는 따로 재서 정한다.
+    if (NO_WASTE_RULE_MODES.has(mode)) return;
     sorted.slice(needed).forEach(({ m }) => {
       const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
       if (note?.totemRole && totemConditionMet(note, m, members)) {
