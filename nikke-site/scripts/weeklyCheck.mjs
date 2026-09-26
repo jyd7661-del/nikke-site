@@ -217,6 +217,25 @@ for (const [key, meta] of Object.entries(freshness)) {
     notes.push(`${key} 신선도 정상 (${days}/${meta.staleAfterDays}일)`);
   }
 }
+// metaStats.json 안의 블록은 각자 meta.asOf·staleAfterDays를 들고 있고 dataFreshness.json엔 없다(파일 note가 그렇게 정했다).
+// 2026-09-26까지 여기서 안 봐서 **soloRaidByElement(07-29, 상한 45일)와 campaignCompositions(08-21, 상한 30일)가 만료된 채
+// 아무 경고 없이** 엔진 점수에 쓰이고 있었다. dataFreshness에 같은 자료가 이미 있는 블록은 건너뛴다(중복 경고 방지).
+const IN_FRESHNESS = { pvp: 'pvpTopTeams', meta: 'usageTier' };
+const metaStats = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/metaStats.json'), 'utf8'));
+for (const [key, block] of Object.entries(metaStats)) {
+  const meta = key === 'meta' ? block : block?.meta;
+  if (!meta || typeof meta !== 'object' || !meta.asOf || !meta.staleAfterDays) continue;
+  if (IN_FRESHNESS[key] && freshness[IN_FRESHNESS[key]]) continue;
+  const days = Math.floor((today - Date.parse(meta.asOf + 'T00:00:00Z')) / 86400000);
+  if (days > meta.staleAfterDays) {
+    findings.push({
+      title: `\`metaStats.${key}\` 자료가 낡았습니다 — 기준일 ${meta.asOf} (${days}일 전, 상한 ${meta.staleAfterDays}일)`,
+      body: '갱신 방법: `docs/data.md "enikk 실사용 조합" 절 참고` — enikk은 화면에서 사람이(또는 크롬 세션이) 옮긴다',
+    });
+  } else {
+    notes.push(`metaStats.${key} 신선도 정상 (${days}/${meta.staleAfterDays}일)`);
+  }
+}
 
 // ── 4. 검사 6종 ────────────────────────────────────────────────────────────
 // 데이터는 안 건드렸지만, 다른 경로로 깨졌을 수 있으니 기준선을 확인한다.
