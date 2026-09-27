@@ -45,7 +45,8 @@ CC BY-NC-SA 2.0 KR이 덮는 것은 **위키 기여자가 직접 쓴 글**(평�
 
 ### 1-1. 이번 주 `-auto` 보고서의 후속 처리
 
-- **"신규 캐릭터 … 티어 있음 → 추가 가능"** → `docs/new-character.md`를 **처음부터 끝까지** 따라 추가한다.
+- **"신규 캐릭터 … 티어 있음 → 추가 가능"** → 먼저 `node scripts/newCharacterDraft.mjs --slug=<slug> --kr="<나무위키 문서명 후보>"`로 초안·출처를 모으고,
+  `docs/new-character.md`를 **처음부터 끝까지** 따라 추가한다.
   필수 필드(`id/title/name_kr/name_ja/class/burst/element/weapon/releaseDate/tiers/skills[3]`)와 `characters.js`·`img`·`game8PageMap`까지.
   **하나라도 못 구하면 추가하지 말고** 무엇이 없어서 못 넣었는지 보고서에 적는다. 값을 지어내지 않는다
 - **"prydwen 티어와 어긋나는 값"** → `data/tierSources.json`의 `rule`대로 대조한다(살아 있는 출처끼리, **백분위로**, 모드를 맞춰서, enikk는 보조).

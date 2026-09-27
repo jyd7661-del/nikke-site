@@ -7,21 +7,21 @@
 
 모두 `nikke-site/data/` 아래에 있습니다.
 
-| 파일 | 내용 | 현재 규모 |
+| 파일 | 내용 | 규모(2026-09-27) |
 |---|---|---|
-| `characterDatabase.json` | 캐릭터 상세(스킬 3종, 쿨타임, 버스트, 원소, 클래스, 무기, 제조사, 출시일, 모드별 티어, prydwenTags, **이름 3개 국어 `title`/`name_kr`/`name_ja`**) | 198명 (SSR 170 / SR 19 / R 9) |
-| `characters.js` | **화면 캐릭터 선택 그리드가 읽는 UI 목록. SSR 전용** | 170 항목 |
+| `characterDatabase.json` | 캐릭터 상세(스킬 3종, 쿨타임, 버스트, 원소, 클래스, 무기, 제조사, 출시일, 모드별 티어, prydwenTags, **이름 3개 국어 `title`/`name_kr`/`name_ja`**) | 201명 (SSR 172 / SR 20 / R 9) |
+| `characters.js` | **화면 캐릭터 선택 그리드가 읽는 UI 목록. SSR + SR**(2026-09-15부터 SR 포함, R 제외) | 192 항목 |
 | `synergyNotes.json` | prydwen 아키타입, 시너지 페어, 카운터 | 아키타입 483 / 페어 13 / 카운터 4 |
 | `characterInvestmentNotes.json` | 애장품 필요 여부, 투자 우선순위, **토템 역할** | 76건 (토템 18명) |
 | `treasureEffects.json` | 애장품 효과 | 17명 (전원) |
-| `metaStats.json` | enikk.app 실사용 데이터 — 캐릭터별 채용률(`usageTier`), PvP 조합, **캠페인 조합** | 캠페인 조합 19 / PvP 상위 20 |
+| `metaStats.json` | enikk.app 실사용 데이터 — 캐릭터별 채용률(`usageTier`), PvP 조합, **캠페인 조합** | 캠페인 조합 19 / PvP 상위 22 |
 | `soloRaidTeams.json` | enikk 솔로레이드 **실사용 5인 조합** (시즌=원소별) | 5시즌 × 25팀 = 125 |
 | `towerCompositions.json` | enikk 타워 **실사용 5인 조합** (타워 풀별) | 5풀 × 10팀 = 50 |
 | `enikkAlias.json` | enikk 화면 표기 → 우리 `title` 별칭 + **이름 충돌 근거** | 별칭 8 / 충돌 1 |
 | `tierJudgments.json` | prydwen 티어 불일치를 사람이 판정한 기록 | 8건 (유지 7 / 보류 1) |
-| `game8PageMap.json` · `game8Alias.json` | 일본어 스킬 수집용 game8 페이지 주소·별칭 | 매핑 203 / 별칭 24 |
+| `game8PageMap.json` · `game8Alias.json` | 일본어 스킬 수집용 game8 페이지 주소·별칭 | 매핑 205 / 별칭 24 |
 | `dataFreshness.json` | 각 파일의 asOf / 만료일 | — |
-| `glossary.json` | 커뮤니티 번역용 게임 용어 3개 국어 표기 (§7-3) | 20건 |
+| `glossary.json` | 커뮤니티 번역용 게임 용어 3개 국어 표기 (`docs/i18n.md`) | 21건 |
 
 ## enikk 실사용 조합 3종 — 수집 규칙 (2026-08-19~21 신설)
 

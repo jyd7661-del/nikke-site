@@ -1,7 +1,8 @@
 # 새 캐릭터를 추가할 때 (실행 순서)
 
 2026-08-24에 페르소나 콜라보 2명(`queen-makoto`·`yukiko`)을 넣으면서 정리한 절차다.
-**밟은 함정을 전부 적어뒀으니 순서대로 따라갈 것.** 다섯 개를 밟았고 그중 둘은
+**밟은 함정을 전부 적어뒀으니 순서대로 따라갈 것.**
+> 1~3·8단계 조사는 `node scripts/newCharacterDraft.mjs --slug=<slug> --kr="<문서명 후보>"`가 한 번에 한다(대조군·태그 역검증 포함, 2026-09-27). 실행 순서는 `/new-character`. 다섯 개를 밟았고 그중 둘은
 화면에 아무 증상이 없는 종류였다.
 
 ## 0. 전제 — prydwen 티어리스트에 카드가 있어야 한다
@@ -143,8 +144,7 @@ yukiko  스킬1 숫자 불일치: 영어 1/3/5.7/65.37/15/400.31 vs 일본어 1/
 - ⚠️ **`img`는 `characterDatabase.json`과 여기 두 곳에 같이 넣는다.** 도감은 앞쪽을, 홈 선택 화면은
   이쪽을 읽는다. 2026-09-13에 마코토·유키코 사진을 앞쪽에만 넣고 **배포까지 했다가** 홈 화면엔 여전히
   자리표시자였다. 이제 `checkData`의 `UI_CDB_IMG_DRIFT`가 잡는다
-- ⚠️ **이 목록은 SSR 전용이다**(`UI_NON_SSR`). 아이기스(SR, 무료 배포)는 넣지 않았다 — 라피·아니스 같은
-  기존 SR도 전부 빠져 있는 설계라서다. 무료 SR을 넣을지는 설계 판단이다
+- 이 목록은 **SSR + SR**이다(2026-09-15부터 SR 20명 — `rarity: 'SR'` 표시, 아이기스 포함). R 등급은 넣지 않는다
 
 ## 7. 새 제조사·새 용어가 나오면 `glossary.json`
 
@@ -181,9 +181,9 @@ npx next build && npm run check:canonical
 `asOf`를 안 갱신하면 `TAGS_MAYBE_STALE` 경고가 뜬다 — **티어리스트를 실제로 다시 받아
 태그를 대조했을 때만** 갱신할 것.
 
-기준선: `checkData` ERROR 0 / WARN 3 · `testI18n` 22 · `testCharacterNames` 26 ·
-`testGlossary` 35 · `findTotems` 1군 0명 · `checkAdPlacement` ERROR 0 ·
-`checkCanonical` ERROR 0(사이트맵 URL 수는 캐릭터가 늘면 함께 는다)
+기준선은 `.claude/skills/verify/SKILL.md`. 신캐 추가로 흔히 움직이는 것: `analyzeSkillTriggers`(새 표현 → 래칫, 규칙을 늘리거나
+근거를 적고 기준선을 올린다) · `simulateTeams` 정보성 기준선(재장전·발수 인원) · `testDataI18n`(공백이 줄면 낮춘다) ·
+`checkCanonical`(주소 수가 언어 수만큼 는다). 2026-09-24 길티 : 마이티 바니 추가 때 전부 겪었다(`docs/log/2026-09.md`).
 
 **도감 페이지와 sitemap은 자동으로 따라온다** — 손으로 만들지 않는다. 실제로
 201 → 203으로 늘었다.

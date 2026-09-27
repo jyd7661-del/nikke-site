@@ -18,7 +18,7 @@ paths:
   `name_ja`를 고르지 않는다** — 규칙이 갈라지면 언어 하나만 조용히 틀린다.
   - 서버 컴포넌트: `lib/characterNames.js`
   - **클라이언트 컴포넌트: `lib/memberName.js`** (정의는 여기 하나뿐이고 `characterNames.js`가
-    재수출한다). `characterNames.js`는 `characterDatabase.json` **666KB**를 읽으므로
+    재수출한다). `characterNames.js`는 `characterDatabase.json`(약 700KB)를 읽으므로
     클라이언트에서 import하면 그게 통째로 번들에 실린다.
 - **클라이언트 컴포넌트에서 `lib/dex.js`를 import하지 않는다.** 같은 이유로 데이터 파일
   1.1MB가 딸려 온다. 도감 라벨은 `lib/dexLabels.js`(glossary 5KB만 읽음)를 쓴다.
@@ -27,6 +27,6 @@ paths:
 - 클라이언트 컴포넌트에 넘기는 props는 **RSC 페이로드로 직렬화된다.** 캐릭터 객체를 통째로
   넘기면 `skills`(3개 × 3개국어 설명)까지 실린다. 화면이 쓰는 필드만 추려서 넘긴다.
 - 키를 추가·삭제하면 **한/영/일 세 언어 모두** 손댄다. 하나라도 빠지면 `testI18n`이 잡는다.
-- 고친 뒤 반드시 `/verify` (기준선 `testI18n` 24건 · `testCharacterNames` 26건).
+- 고친 뒤 반드시 `/verify` (기준선은 `.claude/skills/verify/SKILL.md`).
 
 자세한 내용: `docs/i18n.md`

@@ -1,86 +1,49 @@
-# 미니 PC로 이관하기 (2026-09-24)
+# 미니 PC 이관 — 완료(2026-09-24~25)
 
-메인 PC에서 돌리던 클로드 작업을 새 미니 PC로 옮긴다. **git에 없는 것**이 핵심이다 —
+메인 PC(윈도우)에서 미니 PC의 WSL로 옮겼다. 다음에 PC를 또 옮길 때 핵심은 **git에 없는 것**이다 —
 저장소는 GitHub에서 다시 받으면 되지만, 아래 표의 것들은 이 PC에만 있고 잃으면 되살릴 수 없거나 조용히 멈춘다.
 
-> 옛 이관 문서 `docs/claude-code.md`는 Cowork → 클로드 코드 이관(2026-08-12) 기록이다. 이 문서와 다르다.
+(2026-09-27 정리: 윈도우 설치 순서·`_이관/` 묶음·Cowork 예약 작업 재생성 절차 — git 이력 참고. `_이관/` 백업은 `~/staging/Claude/nikke`)
 
-## 1. 옮길 것 — 전부 `Desktop\Claude\nikke\` 한 폴더에 모아 뒀다
+## git 밖에 있어 PC와 함께 옮겨야 하는 것
 
-**가장 간단한 방법: `C:\Users\정연도\Desktop\Claude\nikke\` 폴더를 통째로 복사한다**(`node_modules`·`.next`는 빼도 된다 — 새 PC에서 다시 설치).
-GitHub에서 새로 clone하면 아래 ①②가 **빠진다.**
+| 무엇 | 위치 | 잃으면 |
+|---|---|---|
+| **`.env.local`** — Supabase 키 · `ANTHROPIC_API_KEY`(로컬 실험용) | `nikke-site/.env.local` (gitignore) | 로컬 실험·dev 서버·무인 AI 조사 불가. Supabase 키는 대시보드에서, Anthropic 키는 새로 발급 |
+| **`probe-data/`** — 판정 파일(`thin-judgments-*.txt`), 실험 기록, 재판정 | `nikke-site/probe-data/` (gitignore) | ⚠️ **`testJudgmentMatch`의 정답지가 사라진다. 되살릴 방법 없음** |
+| **클로드 메모리** | `~/.claude/projects/<프로젝트 경로에서 만든 이름>/memory/` | 유저 지시(자동 푸시·판단 위임 등)를 새 세션이 모른다. 폴더 이름이 경로에서 만들어지므로 새 PC에서 세션을 한 번 연 뒤 생긴 폴더에 복사 |
+| crontab 두 줄 | `crontab -l` | 주간 작업이 멈춘다(`checkWeeklyReport`가 경고). 내용은 아래 표 |
 
-| # | 무엇 | 현재 위치 | git에 있나 | 잃으면 |
-|---|---|---|---|---|
-| ① | **`.env.local`** — Supabase 키 · `ANTHROPIC_API_KEY`(로컬 실험용, 09-21 발급) | `nikke-site-git\nikke-site\.env.local` | ❌ (gitignore) | 로컬 실험·dev 서버 불가. Supabase 키는 대시보드에서, Anthropic 키는 새로 발급 |
-| ② | **`probe-data\`** 85파일 6.2MB — 판정 파일(`thin-judgments-*.txt`), 실험 기록, 재판정 | `nikke-site-git\nikke-site\probe-data\` | ❌ (gitignore) | ⚠️ **`testJudgmentMatch`(일치율 71.8%)의 정답지가 사라진다.** 되살릴 방법 없음 |
-| ③ | **클로드 메모리** 15파일 | `C:\Users\정연도\.claude\projects\C--Users-----Desktop-Claude-nikke\memory\` → 사본 `_이관\claude-memory\` | ❌ | 유저 지시(자동 푸시·판단 위임 등)를 새 세션이 모른다 |
-| ④ | **주간 데이터 조사** 예약 작업 지시서 (Cowork, 매주 월 10:04) | `C:\Users\정연도\Claude\Scheduled\nikke-site-data-research\SKILL.md` → 사본 `_이관\scheduled-cowork\` | ❌ | 주간 조사가 멈춘다. `checkWeeklyReport`가 9일 뒤 경고 |
-| ⑤ | **주간 점검** 윈도우 작업 스케줄러 `니케 주간 점검`(매주 월 10:00) | 작업 스케줄러 → 내보낸 XML `_이관\windows-task\` | ❌ (실행 파일 `scripts\weekly-check.cmd`는 git에 있다) | 주간 점검이 멈춘다 |
-| ⑥ | 클로드 코드 사용자 설정 | `C:\Users\정연도\.claude\settings.json` → 사본 `_이관\claude-user-settings.json` | ❌ | 테마 정도. 중요도 낮음 |
+git에 이미 있는 것(다시 안 챙겨도 됨): `CLAUDE.md` · `docs/` · `.claude/`(rules·skills·settings) · `reports/` · 스크립트 전부(`weekly-check.sh`·`weekly-research.sh` 포함).
 
-git에 이미 있는 것(다시 안 챙겨도 됨): `CLAUDE.md` · `docs\` · `.claude\`(rules·skills·settings) · `reports\`(주간 보고서) · 스크립트 전부.
-상위 폴더 `Desktop\Claude\nikke\`의 `CLAUDE.md`·`docs\`는 **읽기 전용 사본**이다(CLAUDE.md "세션 시작 시" 참고).
+## 지금 어디에 있나
 
-## 2. 새 PC에서 할 일 — 순서대로
-
-### 2-1. 설치
-- **Node.js** — 지금 v24.19.0. ⚠️ **기본 경로 `C:\Program Files\nodejs\`에 설치할 것** — `weekly-check.cmd`가 이 절대 경로를 쓴다(예약 실행은 PATH가 다르다)
-- **Git for Windows** — 지금 2.55. 없으면 클로드의 셸이 PowerShell로 폴백해 `docs/`의 예제 명령이 안 돈다
-- **Claude 데스크톱 앱** + 같은 계정 로그인(`jyd7661@gmail.com`). Code 탭과 Cowork(예약 작업)가 여기 있다
-- **Chrome + Claude in Chrome 확장** — enikk·Search Console은 이걸로 한다(내장 브라우저에선 enikk 본문이 빈다, 2026-09-21)
-
-### 2-2. 폴더 놓기
-- **같은 경로 `C:\Users\<이름>\Desktop\Claude\nikke\`에 두는 것을 권한다.** 경로가 같으면 ③④⑤를 거의 그대로 쓸 수 있다
-- 복사 뒤 `nikke-site-git\nikke-site`에서 `npm ci`
-- `git status`가 0인지, `git push`가 되는지 확인. 처음 push 때 GitHub 로그인 창이 뜬다(Git Credential Manager) — **유저가 직접 로그인**
-
-### 2-3. 클로드 메모리(③) 되살리기
-메모리 폴더 이름은 **프로젝트 경로에서 만들어진다**(`C:\Users\정연도\Desktop\Claude\nikke` → `C--Users-----Desktop-Claude-nikke`, 한글은 `-`로 바뀐다).
-사용자 이름이나 폴더 위치가 다르면 이름도 달라진다. 그래서:
-1. 새 PC에서 `Desktop\Claude\nikke` 폴더로 클로드 세션을 **한 번 연다**
-2. `C:\Users\<이름>\.claude\projects\`에 새로 생긴 폴더를 찾는다
-3. 그 안에 `memory\`를 만들고 `_이관\claude-memory\*`를 복사한다
-4. 새 세션에서 "메모리 읽었어?"로 확인
-
-### 2-4. 주간 점검(⑤) 되살리기
-
-> ✅ **미니 PC에서는 윈도우 작업 스케줄러 대신 WSL cron으로 했다(2026-09-24).** 이 PC 윈도우엔 Node가 없고,
-> WSL은 "Claude Server" 작업으로 늘 켜져 있다. 실행기 `scripts/weekly-check.sh`, 로그 `~/nikke-weekly.log`.
-> 아래 윈도우 방식은 WSL을 안 쓰는 PC에서만 쓴다.
-
-```powershell
-schtasks /Create /TN "니케 주간 점검" /XML "C:\Users\<이름>\Desktop\Claude\nikke\_이관\windows-task\니케 주간 점검.xml"
-```
-- XML 안에 **사용자 이름과 경로가 박혀 있다**(`C:\Users\정연도\...`, 로그 `...\AppData\Local\Temp\nikke-weekly.log`). 다르면 먼저 고친다
-- 미니 PC가 월요일 10시에 **켜져 있어야** 돈다(잠자기면 안 돈다). 절전 설정 확인
-- 확인: `schtasks /Run /TN "니케 주간 점검"` → 로그 파일에 `exit code` 줄
-
-### 2-5. 주간 데이터 조사(④) 되살리기
-
-> ✅ **미니 PC에서는 Cowork를 다시 만들지 않고 WSL cron 무인 실행으로 대체했다(2026-09-25).**
-> 실행기 `scripts/weekly-research.sh`(월 10:30), 지시서 `docs/weekly-research-prompt.md`, 상태 `reports/research-state.json`, 로그 `~/nikke-research.log`.
-> 옛 Cowork 지시서(`_이관/scheduled-cowork/…/SKILL.md`)는 참고용으로만 남는다 — 경로·주소·기준선이 낡았다.
-> 확인 결과 Cowork 조사는 **08-10 보고서가 마지막**이었다. 그 뒤로는 돌지 않았다.
-
-### 2-6. 계정·연결 확인(파일이 아니라 로그인으로 따라오는 것)
-| 무엇 | 확인 방법 |
+| 무엇 | 값 |
 |---|---|
-| Supabase | claude.ai 커넥터로 붙는다(메모리 `nikke-env-facts`). 새 세션에서 테이블 목록 조회가 되는지. 저장소 `.mcp.json` 쪽은 `SUPABASE_ACCESS_TOKEN`이 없어 안 붙는다(원래도 그랬다) |
-| Vercel | GitHub push → 자동 배포. 로컬 CLI 연결(`.vercel\`)은 없다 — 할 일 없음 |
-| Search Console · 애드센스 | Chrome에서 로그인. 애드센스는 **다른 구글 계정**(authuser=1) |
-| Anthropic 콘솔 | 로컬 키(①)는 **만료 30일 권장으로 발급했다** — 만료되면 새로 발급해 `.env.local`에 |
+| 저장소 | `~/projects/nikke/nikke-site-git` (윈도우 `C:\Users\jyd76\OneDrive\Desktop\claude\nikke\`로 가는 심볼릭 링크) |
+| 상위 폴더 `~/projects/nikke/` | 저장소를 가리키는 짧은 `CLAUDE.md`만. docs 사본 없음 |
+| Node | WSL nvm(v24). 셸마다 `export NVM_DIR=$HOME/.nvm; . $NVM_DIR/nvm.sh`. 윈도우 쪽엔 Node 없음 |
+| 주간 코드 점검 | cron 월 10:00 `scripts/weekly-check.sh` → `reports/YYYY-MM-DD-auto.md`, 로그 `~/nikke-weekly.log` |
+| 주간 AI 조사 | cron 월 10:30 `scripts/weekly-research.sh`(`claude -p`) → `reports/YYYY-MM-DD.md`, 로그 `~/nikke-research.log`. 커밋 안 함 |
+| Supabase | claude.ai Supabase 커넥터(MCP) |
+| Vercel | GitHub push → 자동 배포. 로컬 CLI 연결 없음 |
+| Search Console · 애드센스 · enikk | Chrome(Claude in Chrome). 애드센스는 **다른 구글 계정**(authuser=1) |
 
-### 2-7. 끝났는지 확인
+WSL이 월요일 10시에 켜져 있어야 cron이 돈다. 자세한 것은 `docs/weekly-research.md`.
+
+## 옮긴 뒤 확인
+
 ```bash
-cd nikke-site-git/nikke-site
-npm run verify                        # 전부 통과
-node scripts/testJudgmentMatch.mjs    # 일치 28/39 = 71.8% — probe-data(②)가 왔는지
+cd ~/projects/nikke/nikke-site-git/nikke-site
+npm ci && npm run verify              # 전부 통과
+node scripts/testJudgmentMatch.mjs    # 판정 파일을 못 찾으면 probe-data/가 안 온 것
 node scripts/checkWeeklyReport.mjs    # 보고서 상태
 ```
-`testJudgmentMatch`가 판정 파일을 못 찾으면 ②가 안 온 것이다.
 
-## 3. 메인 PC는
+## 남은 일 — 사람이 해야 함
 
-새 PC에서 2-7까지 통과하면 메인 PC의 **작업 스케줄러 `니케 주간 점검`과 Cowork 예약 작업을 끈다.**
-두 PC에서 동시에 돌면 주간 조사가 같은 파일을 두 번 고치고 보고서가 겹친다.
+- [ ] **옛 메인 PC의 작업 스케줄러 `니케 주간 점검` 끄기.** 두 PC에서 동시에 돌면 보고서가 겹친다.
+  옛 PC의 관리자 명령 프롬프트에서:
+  ```
+  schtasks /Change /TN "니케 주간 점검" /DISABLE
+  ```

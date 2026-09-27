@@ -14,14 +14,15 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 
 | 축 | 뜻 | 현재 상태 |
 |---|---|---|
-| **성장** | 검색 유입·방문 | Search Console·자체 방문 계측 가동, sitemap 205 URL. 병목은 색인 면적이 아니라 순위 |
-| **수익** | 광고 수입 | 애드센스 **3차 반려(2026-09-03)**. **2026-09-04 유저: 판단 기준은 애드센스가 아니라 "유저가 유용하다고 느끼는가".** 심사를 기다리며 좋은 변경을 참지 않는다("원인 분리 실험" 틀은 2026-08-25 폐기) |
-| **자동화** | 사람 손 없이 도는 업무 | 주간 점검(`weeklyCheck.mjs`) 1건. 도감은 데이터가 곧 페이지라 유지비 0 |
+| **성장** | 검색 유입·방문 | Search Console·자체 방문 계측 가동, 언어별 주소(/·/en·/ja) 621 URL. 병목은 색인 면적이 아니라 순위 |
+| **수익** | 광고 수입 | 애드센스 **4차 검토 요청 중(2026-09-21)**. **2026-09-04 유저: 판단 기준은 애드센스가 아니라 "유저가 유용하다고 느끼는가".** 심사를 기다리며 좋은 변경을 참지 않는다("원인 분리 실험" 틀은 2026-08-25 폐기) |
+| **자동화** | 사람 손 없이 도는 업무 | 미니 PC WSL cron 2종 — 코드 점검(월 10:00)·AI 조사(월 10:30, 커밋 안 함). `docs/weekly-research.md`. 도감은 데이터가 곧 페이지라 유지비 0 |
 
 진행 상황의 **단일 출처는 `docs/open-items.md`의 "성장 계획 3축" 표**다. 여기 요약을
 믿지 말고 그 파일을 읽을 것.
 
-> 비용 판단 기준: AI 설명은 건당 약 4.9원, AI 조합 구성은 약 19~52원(보유 15~50명). 천장은 둘이다 —
+> 비용 판단 기준: AI 설명은 건당 약 4.9원, AI 조합 구성은 소넷 실측 약 67원(28명, 2026-09-25). **2026-09-26 유저: 그 비용은 광고로 못 덮는다 —
+> 엔진을 고쳐 하이쿠(건당 4~5원)로도 되게 한다.** 천장은 둘이다 —
 > 횟수 `AI_DAILY_GLOBAL_LIMIT` **1,000회/일**과 원 단위 `AI_DAILY_BUDGET_KRW` **10,000원/일**(유저 결정 2026-09-15).
 > 둘 다 지출이 아니라 차단선이고 임의로 낮추지 않는다.
 >
@@ -31,39 +32,19 @@ PvP·타워)에 맞는 5인 조합을 추천하고, 커뮤니티에서 조합·�
 
 ## 세션 시작 시 먼저 할 일
 
-**저장소 루트는 `nikke-site-git/`이다.** 세션이 한 단계 위(`...\Claude\nikke`)에서 열리는
-경우가 있는데, 그 위치의 `CLAUDE.md`·`docs/`는 **사본**이다. 작업은 반드시 저장소 안에서 한다.
-**정본을 고치면 사본도 `chmod u+w` 뒤 `cp`로 맞출 것(사본은 읽기 전용으로 잠겨 있다)** — 2026-09-05에 사본이 34줄 낡아서, 그 폴더에서 연 세션이
-폐기된 원칙 1을 그대로 로드하고 있었다(`docs/log/2026-09.md` "Fable 5.1 전환 후 재검토").
-(`...\Desktop\nikke-site` 는 이관 전 옛 복사본이니 건드리지 말 것.)
-
-> **2026-09-24부터 미니 PC의 WSL에서 작업한다.** 경로는 `~/projects/nikke/nikke-site-git`
-> (윈도우 `C:\Users\jyd76\OneDrive\Desktop\claude\nikke\`로 가는 심볼릭 링크). Node는 WSL의 nvm(v24)이라
-> 명령 앞에 `export NVM_DIR=$HOME/.nvm; . $NVM_DIR/nvm.sh`가 필요하다. 이 PC 윈도우 쪽엔 Node가 없다.
+**저장소 루트는 `nikke-site-git/`이다**(미니 PC WSL: `~/projects/nikke/nikke-site-git`, 윈도우 `C:\Users\jyd76\OneDrive\Desktop\claude\nikke\`로 가는 심볼릭 링크).
+상위 폴더 `~/projects/nikke/`에는 이 파일을 가리키는 짧은 안내문만 있다 — 2026-09-27까지 두던 CLAUDE.md·docs 사본은 여러 번 어긋나 없앴다(사본 동기화 규칙도 폐지).
+Node는 WSL의 nvm(v24)이라 셸마다 `export NVM_DIR=$HOME/.nvm; . $NVM_DIR/nvm.sh`가 필요하다.
 
 ```bash
 cd nikke-site-git/nikke-site
-node scripts/checkData.mjs           # 기준선: ERROR 0 / WARN 3
-node scripts/testI18n.mjs            # 25건
-node scripts/testEngineReasons.mjs   # 기준선: 문제 0건 (근거 문장 3개국어 실행 검사)
-node scripts/testRealTeams.mjs       # 기준선: 문제 0건 (등록된 실사용 조합 216건이 우리 규칙에서 성립하는가)
-node scripts/testEngineDeterminism.mjs # 기준선: 문제 0건 (같은 로스터면 **고른 순서와 무관하게** 같은 조합인가)
-node scripts/testBossProfile.mjs     # 기준선: 문제 0건 (보스별 방어 구성 — 랭커 조합에서 센 값·문장·점수 불변)
-node scripts/simulateTeams.mjs --selftest  # 기준선: 문제 0건 (조합 상대 비교기의 단조성)
-node scripts/testRankerTeams.mjs     # 기준선: 메타 풀 백분위 중앙값 69% (2026-09-21 PvP Season 38 갱신 뒤. 실제 랭커 조합이 우리 계산에서도 높은가)
-node scripts/analyzeSkillTriggers.mjs # 기준선: 분류 안 됨 185절 (래칫 — 늘면 ERROR. 2026-09-24 신캐 상태 조건 +6)
-node scripts/testCharacterNames.mjs  # 26건
-node scripts/testGlossary.mjs        # 35건
-node scripts/testDexUsage.mjs        # 도감 실사용 데이터 집계 — 198명 전원 원본 대조
-node scripts/testGuides.mjs          # 가이드 글 — 목록↔본문, 글의 수치를 원본에서 재계수
-node scripts/testSkillSources.mjs    # 스킬 원문 3개 국어 교차 검증 (래칫: 숫자 불일치 0건 — 2026-09-07에 11건 수정)
-node scripts/testDataI18n.mjs        # 화면에 나가는 '데이터'가 사이트 언어와 맞는가 (래칫)
-node scripts/testTraffic.mjs         # 자체 방문 계측의 경로·봇 판정
-node scripts/testAiTeamSchema.mjs    # AI 조합 호출이 API에 거부당하지 않는가(구조화 출력 스키마·temperature)
-node scripts/findTotems.mjs          # 기준선: 1군 0명 / 검토 후 기각 1명(아르카나)
-node scripts/checkAdPlacement.mjs    # 기준선: ERROR 0 (애드센스 정책)
-node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는지 / 결과를 처리했는지
+npm run verify                    # 검사 19종 — 하나라도 실패하면 멈춘다
+node scripts/findTotems.mjs       # 20번째(verify 밖) — 1군 0명
+node scripts/testJudgmentMatch.mjs  # 사이트 추천 ↔ 내 판정 일치율(판정 정답지는 probe-data/, git 밖)
 ```
+
+**검사별 기준선의 단일 출처는 `.claude/skills/verify/SKILL.md`**(`/verify`)다. 여기와 open-items에 따로 적던 숫자가 서로 어긋나서 한 곳으로 모았다.
+`checkWeeklyReport`가 "미처리 보고서"를 띄우면 `/weekly-review`. 엔진을 고쳤으면 `/engine-change`(이전 엔진 대비 판정).
 
 > 다른 것을 시작하기 전에 `docs/open-items.md`를 읽을 것 — **지금 열린 항목과 현재 기준선만** 짧게 있다.
 > 경위·실측은 `docs/log/YYYY-MM.md`(새것이 위). 작업 기록은 log 맨 위에 절로 쓰고, open-items엔 표 한 줄만 고친다.
@@ -81,7 +62,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 
 **현재 구조: 조합 구성·점수·근거는 100% `lib/synergyEngine.js`가 결정한다.** AI는 이미
 확정된 5명을 자연스러운 한 문단으로 설명하는 일만 한다. 이 구조 덕분에 엔진이 완전히
-결정적(deterministic)이고, 그래서 캐싱과 `verify` 19종이 성립한다.
+결정적(deterministic)이고, 그래서 캐싱과 `verify`가 성립한다.
 
 예전에는 AI에게 자유 구성을 맡겼는데 "왜 이 조합이 나왔는지" 설명이 계속 부실했다.
 그래서 오랫동안 **"절대 AI에게 조합 구성을 돌려주지 말 것"**이 원칙이었다.
@@ -95,7 +76,14 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 > 캐릭터가 나올 때마다 사람이 규칙을 손으로 짜야 한다**(`docs/new-character.md`, 함정 5개).
 > 시간이 갈수록 벌어지는 격차다.
 >
-> **그러니 "AI에게 조합을 맡기는 제안"을 반사적으로 기각하지 말 것.** **2026-09-15 운영 코드가 들어갔다**
+> **그러니 "AI에게 조합을 맡기는 제안"을 반사적으로 기각하지 말 것.**
+>
+> 🔄 **최신(2026-09-25~27)** — 소넷 셰도우 12건 중 5건이 출력 상한(1500)에 걸려 답 없이 끝나고 있었다(고침: 실험과 같은 8000·medium).
+> 고친 뒤 실호출 66.75원·25초. **유저: 그 비용은 광고로 못 덮는다 → 엔진을 고쳐 하이쿠로.** 같은 날 엔진 수정 두 번(PvP·레이드 "낭비 판정" 끔, 0원)이
+> 이전 엔진 대비 +29−2 · +15−2였고, 하이쿠 "엔진 후보 고르기+한 자리 교체"(4.5원·2.9초)는 그 위에 +4−2라 **아직 운영에 안 넣었다.**
+> 지금 우선순위는 **엔진 개선**이다. 아래는 그 전의 경위다.
+>
+> **2026-09-15 운영 코드가 들어갔다**
 > — 폴백 구간만 소넷이 구성, 엔진이 검산, 원 단위 상한 10,000원/일. **2026-09-21부터 `AI_TEAMS_MODE=shadow` 가동 중**
 > (호출·기록만, 화면은 엔진 답). 켜자마자 **9-15 코드가 한 번도 안 돌고 있었음**이 드러났다 — 구조화 출력 minItems와
 > 소넷 5가 안 받는 temperature. 둘 다 조용히 엔진 답으로 넘어가는 실패였다(`scripts/testAiTeamSchema.mjs`가 막는다).
@@ -167,17 +155,15 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 | `docs/ops.md` | Supabase·Vercel·배포·환경변수 |
 | `docs/pitfalls.md` | 개발 환경의 함정 |
 | `docs/new-character.md` | **새 캐릭터 추가 실행 순서** — 밟은 함정 5개 포함 |
-| `docs/weekly-research.md` | 주간 데이터 조사 예약 작업 |
-| `docs/ai-teams-plan.md` | **AI 조합 추천 운영 전환 설계**(2026-09-15 초안) — 혼합 구조·프롬프트 v3·원 단위 상한·shadow 롤아웃 |
+| `docs/weekly-research.md` | 주간 두 실행기(코드 점검·AI 조사) — 보고서 처리 절차 |
+| `docs/weekly-research-prompt.md` | AI 조사(무인 `claude -p`)의 **지시서 본문** — 규칙을 고치면 여기 |
+| `docs/ai-teams-plan.md` | AI 조합 추천 운영 전환 설계(2026-09-15, 소넷 기준) — **09-26 유저 결정으로 하이쿠·엔진 우선으로 바뀜**(머리말) |
 | `docs/open-items.md` | **지금 열린 항목 · 현재 기준선 · 성장 계획 3축(단일 출처)** — 짧게 유지 |
 | `docs/log/YYYY-MM.md` | 작업 경위·실측·함정 기록(새것이 위). 옛 `open-items.md` 본문이 여기 있다 |
-| `docs/claude-code.md` | 클로드 코드 이관·설정 방법 |
-| `docs/pc-migration.md` | **미니 PC 이관(2026-09-24)** — git 밖에 있는 것(`.env.local`·`probe-data`·메모리·예약 작업 2종)과 새 PC 순서 |
-
-과거 인수인계 문서 `HANDOFF.md`는 위 파일들로 분리했다(2026-08-12). 원문은 `git show ff9997e:HANDOFF.md`.
+| `docs/pc-migration.md` | 미니 PC 이관(2026-09-24~25 완료) — **git 밖에 있어 PC를 옮길 때 같이 옮겨야 하는 것**(`.env.local`·`probe-data`·메모리) |
 
 경로별 규칙은 `.claude/rules/`에 있다 — 해당 파일을 건드릴 때만 자동으로 들어온다.
-검사 실행은 `/verify` 또는 `npm run verify`.
+검사 실행은 `/verify` 또는 `npm run verify`. 프로젝트 스킬: `/verify` · `/engine-change` · `/new-character` · `/weekly-review`(`.claude/skills/`).
 
 ---
 
@@ -188,8 +174,8 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 - **`git add -A` 금지.** 반드시 **파일을 이름으로 지정해 `git add`** 할 것.
 - **`git status`의 미커밋 변경을 습관적으로 무시하지 말 것.** 예전에는 41개가 뜨는데 30개가
   줄바꿈(CRLF/LF) 차이라 무시해도 됐지만, **2026-08-14 기준 `git status`는 0이다.**
-  지금 거기 뭔가 떠 있다면 진짜 변경이고, **주간 조사 예약 작업이 남긴 것일 수 있다**
-  (그 작업은 파일만 고치고 커밋하지 않는다). `docs/weekly-research.md` 참고.
+  지금 거기 뭔가 떠 있다면 진짜 변경이고, **월요일 AI 조사(`weekly-research.sh`)가 남긴 것일 수 있다**
+  (그 작업은 파일만 고치고 커밋하지 않는다). `/weekly-review` · `docs/weekly-research.md` 참고.
 - 커밋 메시지는 **무엇을 왜 고쳤는지**를 적는다. 특히 실측·역테스트 결과를 남긴다.
 - `.env.local`에 Supabase 키와 `ANTHROPIC_API_KEY`가 있다. **절대 커밋하지 말 것.**
 
@@ -216,7 +202,7 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
 
 ### 도감 페이지 `/nikke` (2026-08-13 추가, 성장 계획 Phase 1)
 
-`characterDatabase.json` 하나로 인덱스 1 + 상세 200페이지를 **빌드 때 정적 생성**한다(2026-09-13 기준. 캐릭터가 늘면 따라 늘어난다).
+`characterDatabase.json` 하나로 인덱스 1 + 캐릭터마다 상세 1쪽(2026-09 기준 201명)을 언어별로 **빌드 때 정적 생성**한다.
 헬퍼는 `lib/dex.js`, 페이지는 `app/[lang]/nikke/`(언어별 주소는 `docs/i18n.md` "언어별 주소" 절).
 
 - **데이터가 곧 페이지다.** 캐릭터를 추가·수정하면 다음 배포에서 페이지와 sitemap이 함께
@@ -230,10 +216,10 @@ node scripts/checkWeeklyReport.mjs   # 주간 조사 예약 작업이 돌았는�
   정적 생성은 유지되고 토글에만 반응한다. ⚠️ 서버→클라이언트로 **함수는 props로 못 넘긴다**
   (`next build`가 "Functions cannot be passed directly to Client Components"로 실패한다)
 - **"실사용 데이터" 절**(2026-08-25 추가)만은 데이터 파일을 그대로 옮기는 게 아니라 **세어서**
-  만든다 — enikk 조합 214건을 캐릭터 기준으로 뒤집는다(`lib/usage.js` → `components/DexUsage.js`).
+  만든다 — enikk 실사용 조합(2026-09 기준 216건)을 캐릭터 기준으로 뒤집는다(`lib/usage.js` → `components/DexUsage.js`).
   세는 것은 원본에서 기계적으로 따라 나오므로 새 판정이 아니지만, **더하면 안 되는 값이 있다**:
   솔로레이드 `parses`는 서버별 표본이고 타워 `pctOfClears`는 풀 안의 비율이라 조합끼리 합산 금지.
-  198명 중 **98명만** 데이터가 붙는다(enikk이 상위만 게시한다). 나머지는 절을 안 그린다 —
+  201명 중 **101명만** 데이터가 붙는다(2026-09 기준 — enikk이 상위만 게시한다). 나머지는 절을 안 그린다 —
   그래서 집계가 통째로 실패해도 화면이 멀쩡해 보인다. `scripts/testDexUsage.mjs`가 그걸 막는다
 - 한국어 라벨(화력형·수냉·작열 등)은 `data/glossary.json`의 확정 표기를 따른다. 임의 번역 금지
 

@@ -52,13 +52,14 @@ MCP로는 못 바꿉니다. **Chrome 확장(`mcp__claude-in-chrome__*`)으로 �
 > 참고: `computer_*`(기기 제어) 도구는 **브라우저를 읽기 전용으로만** 허용합니다.
 > 웹에서 클릭·입력이 필요하면 Chrome 확장 쪽을 쓰세요.
 >
-> 그리고 이때 `device_bash`(사용자 컴퓨터의 리눅스 작업공간)가 `Workspace unavailable`로
-> 죽어 있어서 `cowork-lock.sh`를 실행할 수 없었습니다. 잠금 파일을 직접 읽고 쓰는 방식으로
+> (Cowork 시절 기록) 이때 `device_bash`(사용자 컴퓨터의 리눅스 작업공간)가 `Workspace unavailable`로
+> 죽어 있어서 `cowork-lock.sh`를 실행할 수 없었고, 잠금 파일을 직접 읽고 쓰는 방식으로
 > 스크립트와 같은 순서(대기표 등록 → 잠금 확인 → 획득 → 검증)를 따랐습니다.
-> **다시 이런 상황이 오면 같은 방법을 쓰되, 다른 세션이 `waiting` 상태인지 반드시 먼저
-> 확인하세요.** 확인 없이 잠금 파일을 덮어쓰면 남의 잠금을 지우게 됩니다.
+> Cowork 세션 간 화면 락은 지금 환경(미니 PC WSL의 클로드 코드)에는 없습니다.
 
-### ⚠️ `device_bash`가 `Workspace unavailable`일 때 — 재시작 후 **몇 분** 기다릴 것
+### (Cowork 시절 기록) `device_bash`가 `Workspace unavailable`일 때 — 재시작 후 **몇 분** 기다릴 것
+
+> 2026-09-27 주: Cowork 기기 워크스페이스 전용 증상이다. 지금 환경에는 해당 없음. 기록으로만 둔다.
 
 2026-08-09에 겪었습니다. 증상은 `device_bash`만 죽고 파일 작업(`device_stage_files` /
 `device_commit_files`)·폴더 연결·Chrome 확장은 전부 정상입니다.

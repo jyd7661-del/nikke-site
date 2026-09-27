@@ -7,20 +7,31 @@
 
 ### Supabase (프로젝트 `yttfwroeyplwrchyitud`)
 
-마이그레이션은 `nikke-site/supabase/` 아래. **전부 실행 완료 상태**입니다.
+마이그레이션은 `nikke-site/supabase/` 아래 12파일. **전부 실행 완료 상태**입니다.
+접근은 claude.ai의 Supabase 커넥터(MCP)로 한다(저장소 `.mcp.json` 경로는 없앴다).
 
 | 파일 | 용도 |
 |---|---|
 | `schema.sql` | 기본 테이블 + RLS |
-| `treasure_migration.sql` | `owned_nikke.has_treasure` 컬럼 |
+| `treasure_migration.sql` | `owned_nikke.has_treasure` 컬럼 — **`schema.sql`에 흡수됨.** 옛 프로젝트용 |
 | `ai_rate_limit_migration.sql` | `ai_explain_usage` (이름이 옛 기능을 가리키지만 용도는 레이트리밋) |
+| `ai_daily_budget_migration.sql` | `ai_daily_budget` + `increment_ai_daily_budget()` (전역 일일 상한) |
 | `ai_explain_cache_migration.sql` | `ai_explain_cache` (2026-08-08 실행) |
+| `ai_recommend_feedback_rls_migration.sql` | `ai_recommend_feedback` RLS |
+| `ai_tables_lock_anon_write_migration.sql` | AI 테이블 anon 쓰기 회수 (`docs/security.md`) |
+| `ai_teams_migration.sql` | AI 조합 구성 — `ai_team_cache`·`ai_team_shadow`·원 단위 예산(`ai_daily_budget.krw`) (`docs/ai-teams-plan.md`) |
+| `board_private_posts_migration.sql` | 게시판 비밀글·운영자(`is_private`·`is_admin`) (`docs/board.md`) |
+| `content_translations_migration.sql` | 커뮤니티 번역 `content_translations`·`source_lang` (`docs/i18n.md`) |
+| `translate_budget_migration.sql` | 번역 일일 상한 `translate_daily_budget` |
+| `traffic_migration.sql` | 자체 방문 계측 `page_views`·`daily_visitors` (아래 절) |
 
 ### Vercel 환경변수
 
 ```
 NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY
+SUPABASE_SERVICE_ROLE_KEY            (서버 전용 — NEXT_PUBLIC_ 금지. docs/security.md)
 ANTHROPIC_API_KEY
+(AI_DAILY_GLOBAL_LIMIT — 선택. 기본 1000회/일)
 NEXT_PUBLIC_ADSENSE_CLIENT_ID        = ca-pub-1541956672617594
 NEXT_PUBLIC_ADSENSE_SLOT_BANNER      = 7234519961
 NEXT_PUBLIC_ADSENSE_SLOT_RECTANGLE   = 5842768434
@@ -54,9 +65,7 @@ AI_DAILY_BUDGET_KRW    = 10000               (하루 원 단위 천장. 유저 �
 시절의 잔재로, 쇼츠·배당·블로그 세션 모두 "자기 것 아니다"라고 확인해줘서 덮어썼습니다.
 토글이 꺼져 있어 사용 중이 아니었습니다.
 
-**남은 정리**: 매직링크(`sendLink`)가 `components/Header.js`에 "이메일로 로그인"으로 접혀
-있습니다. 구글이 검증됐으니 지워도 됩니다. 지우면 `signInWithOtp` 관련 상태(email/sent)도
-함께 정리하세요.
+매직링크(`signInWithOtp`) 로그인은 같은 날 `components/Header.js`에서 **지웠다.** 지금 로그인은 구글뿐이다.
 
 ⚠️ **구글 클라우드 프로젝트 표시 이름이 `My Project 34158nikke-site`로 잘못 지어졌습니다.**
 (생성 시 입력이 기본값 뒤에 붙음) 내부용이라 기능엔 영향 없지만 정리하면 좋습니다.
@@ -86,6 +95,9 @@ Authentication → Rate Limits 에서 더 올릴 수 있습니다.
 
 ### 애드센스 — 정책 위반 판정 (2026-08-13)
 
+> **현재(2026-09-27): 4차 검토 요청 중 — 2026-09-21 접수.** 진행·결과는 `docs/open-items.md` "수익" 행.
+> 아래는 1~3차의 경위다.
+
 **⚠️ "검토 대기라 우리 쪽 문제가 아니다"는 틀렸습니다.** 2026-08-13 06:52(KST)에
 `nikke-site.vercel.app`이 **`주의 필요`**로 바뀌었습니다. 대기가 아니라 반려입니다.
 
@@ -108,13 +120,13 @@ sitemap 201개 URL 중 `<ins class="adsbygoogle">`가 실제로 들어가는 곳
 | `/board` | 0 | 231자 | 글 2건이 전부이고 제목이 "테스트"·"시험"이었음 |
 
 **조치 (2026-08-13):**
-- 홈 상단 배너를 **맨 아래(커뮤니티 섹션 뒤)로** 이동 — `app/page.js`.
+- 홈 상단 배너를 **맨 아래(커뮤니티 섹션 뒤)로** 이동 — `app/[lang]/(home)/page.js`.
   추천받기 버튼 바로 위·아래는 오클릭 유발이라 또 다른 정책 위험이므로 일부러 피했습니다.
   i18n 키도 `top_banner_ad` → `footer_ad`로 바꿨습니다(자리가 바뀌었는데 라벨이 "상단"이면 거짓말)
 - 게시판 테스트 글 2건 정리 — **삭제가 아니라 `is_private = true`** 로 숨겼습니다.
   RLS `posts_select_visible`가 `is_private = false OR user_id = auth.uid()`라 익명 방문자와
   크롤러에게는 안 보입니다. 되돌릴 수 있고, 로그인 안 한 브라우저로 확인했습니다
-- **`/combos` 광고를 조건부로** — `app/combos/page.js`. `{!loading && combos.length > 0 && ...}`
+- **`/combos` 광고를 조건부로** — `app/[lang]/combos/page.js`. `{!loading && combos.length > 0 && ...}`
   로 감싸고 위치도 목록 아래로 내렸습니다. 등록 조합이 0건인 지금은 광고가 아예 안 그려집니다.
   이게 이번 반려의 직접 원인이었습니다
 
@@ -164,9 +176,9 @@ sitemap 201개 URL 중 `<ins class="adsbygoogle">`가 실제로 들어가는 곳
 | 3 | ✅(방식 변경) Vercel 환경변수 `NEXT_PUBLIC_SITE_URL=https://새도메인` 추가 후 **재배포** | 실제로는 환경변수 대신 **`data/siteConfig.json`에 적었다**. 대시보드에만 있는 값은 git에 흔적이 안 남아 다음 세션이 알 수 없기 때문이다. 환경변수는 여전히 우선순위가 높아 미리보기 배포에서 덮어쓸 수 있다 |
 | 4 | ✅ `npm run check:canonical` | 201건 통과 확인. 스크립트도 같은 환경변수를 읽는다 |
 | 5 | ~~구 주소 → 새 주소 **301 리다이렉트**~~ | ✅ **코드에 이미 넣어뒀다**(`next.config.js`). 3번에서 환경변수를 새 주소로 바꾸는 순간 자동으로 켜진다 |
-| 6 | ✅ Search Console **새 속성 등록**(도메인 속성 `sc-domain:nikketeamguide.com`, DNS TXT 인증) + sitemap 제출(상태 성공 · 발견 201) | ⚠️ `app/layout.js`의 인증 토큰은 **옛 속성용**이다. 새 속성은 토큰이 다르니 DNS TXT(도메인 속성) 인증이 편하다. **기존 태그를 지우면 옛 속성 소유권이 풀린다** |
+| 6 | ✅ Search Console **새 속성 등록**(도메인 속성 `sc-domain:nikketeamguide.com`, DNS TXT 인증) + sitemap 제출(상태 성공 · 발견 201) | ⚠️ `app/[lang]/layout.js`의 인증 토큰은 **옛 속성용**이다. 새 속성은 토큰이 다르니 DNS TXT(도메인 속성) 인증이 편하다. **기존 태그를 지우면 옛 속성 소유권이 풀린다** |
 | 7 | ⏳ 애드센스에 **새 사이트 추가** → 검토 요청 | `public/ads.txt`는 정적 파일이라 새 도메인에서 자동으로 서빙된다 |
-| 8 | ✅ Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`components/Header.js:41`) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
+| 8 | ✅ Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`components/Header.js:45`) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
 
 #### ⚠️ 정식 주소는 **apex**다 — www로 잡았다가 같은 날 되돌렸다 (2026-08-24)
 
@@ -208,7 +220,7 @@ sitemap·robots가 전부 따라온다(주소를 한 파일로 모아둔 덕. �
 
 > **www를 정식으로 되돌리지 말 것.** 되돌리면 애드센스 소유권 확인이 다시 깨진다.
 
-코드 준비는 이미 끝나 있다 — `lib/site.js`가 환경변수 하나를 읽고 `app/layout.js`·`app/robots.js`·
+코드 준비는 이미 끝나 있다 — `lib/site.js`가 환경변수 하나를 읽고 `app/[lang]/layout.js`·`app/robots.js`·
 `app/sitemap.js`·`scripts/checkCanonical.mjs`가 전부 그 값을 쓴다(커밋 `306009b`).
 
 **결정한 도메인: `nikketeamguide.com`** (2026-08-24). 사이트 영문명 "Nikke Team Guide"와 일치한다.
@@ -246,7 +258,7 @@ apex를 고친 뒤에도 소유권 확인이 계속 실패했다. apex는 200을
 <link rel="preload" href="https://pagead2.googlesyndication.com/..." as="script"/>
 ```
 
-`app/layout.js`가 로더를 `next/script`(`<Script strategy="afterInteractive">`)로 붙이고
+`app/[lang]/layout.js`(당시 `app/layout.js`)가 로더를 `next/script`(`<Script strategy="afterInteractive">`)로 붙이고
 있었다. **Next.js는 HTML에 preload 링크만 내보내고 진짜 `<script>` 태그는 브라우저에서
 JS로 만든다.** 브라우저로 열면 광고가 정상으로 보이므로 사람 눈으로는 절대 못 잡는다.
 
@@ -395,7 +407,7 @@ IP도 UA도 저장하지 않는다. `visitor_hash = sha256(ip|ua|날짜)`이고 
 부풀어 **"인원 대비 로딩" 비율이 통째로 의미를 잃는다.** `scripts/testTraffic.mjs`가
 양방향(봇을 거르는가 / 사람을 안 거르는가)으로 검사한다.
 
-### 예약 작업 `nikke-site-data-research`
+### 주간 예약 작업
 
-매주 월요일 10:04(KST) 실행. **→ `docs/weekly-research.md`에 전부 정리했다.**
-(A/B 규칙, 보고서 위치, 지시서 파일 접근 문제, 클로드 코드 이관 시 선택지)
+미니 PC WSL cron 2종 — 월 10:00 `weekly-check.sh`(코드 점검) · 월 10:30 `weekly-research.sh`(AI 조사, 커밋 안 함).
+**→ `docs/weekly-research.md`.** (옛 Cowork 예약 작업 `nikke-site-data-research`는 2026-08-10이 마지막 실행)
