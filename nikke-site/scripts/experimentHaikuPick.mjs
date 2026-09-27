@@ -38,7 +38,7 @@ try { process.loadEnvFile(path.join(ROOT, '.env.local')); } catch { /* 환경변
 const arg = (n, d) => { const m = process.argv.find((a) => a.startsWith('--' + n + '=')); return m ? m.slice(n.length + 3) : d; };
 const has = (n) => process.argv.includes('--' + n);
 const VARIANT = arg('variant', 'compact');
-if (!['compact', 'skills'].includes(VARIANT)) { console.error('--variant=compact|skills'); process.exit(1); }
+if (!['compact', 'skills', 'v2'].includes(VARIANT)) { console.error('--variant=compact|skills|v2'); process.exit(1); }
 const MODEL = 'claude-haiku-4-5';
 const PRICE = { in: 1, out: 5 };   // $/1M — lib 쪽 costKrw와 같은 환율로 원 환산
 const KRW = 1400;
@@ -52,6 +52,16 @@ const cdb = j('characterDatabase.json');
 const metaStats = j('metaStats.json');
 const synergyNotes = j('synergyNotes.json');
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
+// v2: 보스 약점 속성 시즌의 등록 상위 25팀 중 등장 비율(%) — soloRaidTeams(A등급)를 세기만 한다. 엔진은 이 신호를 순위에 못 쓴다(새 가중치가 필요) → 모델에게 근거로 준다
+const EL_KEY = { iron: 'Iron', wind: 'Wind', water: 'Water', electric: 'Electronic', fire: 'Fire' };
+const ELEMENT_SHARE = new Map();
+for (const s of j('soloRaidTeams.json').seasons || []) {
+  const k = EL_KEY[String(s.weakness || '').toLowerCase()]; if (!k) continue;
+  const m = ELEMENT_SHARE.get(k) || new Map(); const n = (s.teams || []).length || 1;
+  for (const t of s.teams || []) for (const x of new Set(t.members)) m.set(x, Math.round((m.get(x) || 0) + 100 / n));
+  ELEMENT_SHARE.set(k, m);
+}
+const burstSummary = (titles) => { const c = { 1: 0, 2: 0, 3: 0 }; for (const t of titles) { const ch = byTitle.get(t); const st = Array.isArray(ch?.burstStages) && ch.burstStages.length ? ch.burstStages.join('/') : String(ch?.burst); if (c[st] !== undefined) c[st]++; else c[st] = (c[st] || 0) + 1; } return Object.entries(c).filter(([, v]) => v).map(([k, v]) => `B${k}x${v}`).join(' '); };
 const nm = (t) => byTitle.get(t)?.name_kr || t;
 const setKey = (ts) => [...ts].sort().join('|');
 
@@ -82,11 +92,12 @@ function candidatesFor(roster, mode, o) {
   return out;
 }
 
-const compactLine = (c, slice, mode) => JSON.stringify({
+const compactLine = (c, slice, mode, boss) => JSON.stringify({
   title: c.title, burst: (Array.isArray(c.burstStages) && c.burstStages.length ? c.burstStages.join('/') : String(c.burst)),
   class: c.class, element: c.element, weapon: c.weapon, manufacturer: c.manufacturer, squad: c.squad || null,
   tier: mode === 'pvp' ? c.tiers?.pvp : mode === 'bossing' ? c.tiers?.bossing : c.tiers?.story,
   usage: usageOf(metaStats, slice, c.title),
+  ...(VARIANT === 'v2' && mode === 'bossing' && boss ? { bossSeasonTopTeamShare: ELEMENT_SHARE.get(boss)?.get(c.title) ?? 0 } : {}),
 });
 
 function buildPrompt(sample, cands) {
@@ -99,18 +110,22 @@ function buildPrompt(sample, cands) {
     'Rules for a replacement: the team must still cover Burst I, II and III; use exact roster titles; replace only if you can name the concrete reason (a buff that reaches no one, a missing buffer/healer, a clearly stronger same-stage unit by usage/tier, a known synergy pair). Otherwise leave swap fields empty.',
     '- "tier" is the prydwen rating for this mode (SSS > SS > S > A > B > C > D). "usage" is real adoption among top players from enikk.app for this mode (tier S > A > B > C, pct = share of tracked top teams); null = rarely used. Usage is strong evidence of real strength.',
     '- Engine reasons are rule outputs; they can miss things (e.g. conditional buffs whose target is absent, PvP speed).',
+    ...(VARIANT === 'v2' ? [
+      '- "bursts" line per candidate gives the exact burst-stage counts — trust it instead of recounting. In PvE a team needs at least 2 Burst III users (a single Burst III is almost never used by top players); a swap that leaves only one Burst III will be rejected.',
+      '- For boss fights, "bossSeasonTopTeamShare" = % of the 25 top recorded teams against a boss with this same weakness that included the character (any element). It is direct evidence for THIS boss; prefer it over general tier when they disagree.',
+    ] : []),
     '',
     'ROSTER:',
     ...(VARIANT === 'skills'
       ? roster.map((c) => rosterLine(c, { variant: 'tier', metaStats, slice }))
-      : roster.map((c) => compactLine(c, slice, sample.mode))),
+      : roster.map((c) => compactLine(c, slice, sample.mode, sample.boss))),
     ...(synergy.length ? ['', 'KNOWN SYNERGIES IN THIS ROSTER (published guides / real clears):', ...synergy.map((s) => JSON.stringify({ name: s.name, members: s.members, note: s.note }))] : []),
   ].join('\n');
   const user = [
     `Mode: ${MODE_LABEL[sample.mode] || MODE_LABEL.campaign}.` + (sample.boss ? ` The boss is weak to ${sample.boss}: ${sample.boss}-element characters deal bonus damage to it.` : '') + (sample.mode === 'tribe_tower' ? TOWER_RULE(sample.tower) : ''),
     '',
     'CANDIDATES (engine order, 1 = engine\'s choice):',
-    ...cands.map((c, i) => `${i + 1}. ${c.titles.join(', ')}\n   engine reasons: ${c.reasons.slice(0, 4).map((r) => String(r).replace(/\s+/g, ' ').slice(0, 220)).join(' | ') || '(none)'}`),
+    ...cands.map((c, i) => `${i + 1}. ${c.titles.join(', ')}` + (VARIANT === 'v2' ? `\n   bursts: ${burstSummary(c.titles)}` : '') + `\n   engine reasons: ${c.reasons.slice(0, 4).map((r) => String(r).replace(/\s+/g, ' ').slice(0, 220)).join(' | ') || '(none)'}`),
     '',
     'Return the candidate number, an optional single swap (swap_out = a member of that candidate, swap_in = a roster character not in it; both empty strings for no swap), and a 1-2 sentence reasoning.',
   ].join('\n');
@@ -176,7 +191,9 @@ if (has('dry') || has('live')) {
     if (out && out.swap_out && out.swap_in) {
       const trial = pick.titles.map((t) => (t === out.swap_out ? out.swap_in : t));
       const v = verifyAiTeam(trial, roster, { tower: c.sample.tower || null });
-      if (v.ok && trial.includes(out.swap_in) && !pick.titles.includes(out.swap_in)) { final = trial; swapApplied = true; } else swapFlaws = v.flaws.length ? v.flaws : ['swap names not in candidate/roster'];
+      // v2: 엔진이 이미 막는 구성(PvE 버스트 3 단독)을 교체로 되살리지 못하게 한다(1차에서 하이쿠가 실제로 만들었다)
+      const soloB3 = VARIANT === 'v2' && c.sample.mode !== 'pvp' && v.ok && !!E.scoreTeam(trial.map((t) => byTitle.get(t)), c.sample.mode, { bossElement: c.sample.boss || null }).soloBurst3;
+      if (v.ok && !soloB3 && trial.includes(out.swap_in) && !pick.titles.includes(out.swap_in)) { final = trial; swapApplied = true; } else swapFlaws = soloB3 ? ['solo Burst III in PvE'] : (v.flaws.length ? v.flaws : ['swap names not in candidate/roster']);
     }
     const u = msg.usage || {};
     const cost = ((u.input_tokens || 0) * PRICE.in + (u.output_tokens || 0) * PRICE.out) / 1e6 * KRW;
@@ -185,6 +202,28 @@ if (has('dry') || has('live')) {
     process.stdout.write(`${c.key} 후보${out?.candidate ?? '?'}${swapApplied ? ` 교체 ${out.swap_out}→${out.swap_in}` : ''} ${cost.toFixed(1)}원\n`);
   }
   console.log(`${line}\n${n}건 · 합계 ${krw.toFixed(0)}원 · 건당 ${(krw / Math.max(n, 1)).toFixed(1)}원 → ${path.relative(ROOT, OUT)}`);
+}
+
+if (has('score2')) {
+  // 지금 엔진(사이트 1위 = cands[0])과 비교한다. 하이쿠가 답을 바꾼 건만 판정 대상(판정 파일: haiku-pick-<variant>-judg2.txt, "s1-T01 H|E|=")
+  const rows = fs.readFileSync(OUT, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse);
+  const jp = path.join(ROOT, 'probe-data', `haiku-pick-${VARIANT}-judg2.txt`);
+  const J = new Map(fs.existsSync(jp) ? fs.readFileSync(jp, 'utf8').split(/\r?\n/).map((l) => l.match(/^(s\d-T\d\d)\s+([HE=])/)).filter(Boolean).map((m) => [m[1], m[2]]) : []);
+  const byKey = new Map(cases.map((c) => [c.key, c]));
+  let kept = 0, H = 0, Ev = 0, same = 0, pend = 0, krw = 0, ms = 0, rej = 0; const md = [];
+  for (const r of rows) {
+    krw += r.krw; ms += r.ms; if (r.swapFlaws?.length) rej++;
+    if (setKey(r.final) === setKey(r.cands[0])) { kept++; continue; }
+    const v = J.get(r.key); if (v === 'H') H++; else if (v === 'E') Ev++; else if (v === '=') same++; else pend++;
+    const c = byKey.get(r.key);
+    md.push(`## ${r.key} [${c.sample.mode}${c.sample.boss ? ' ' + c.sample.boss : ''}${c.sample.tower ? ' ' + c.sample.tower : ''}] ${v ? '판정 ' + v : '⏳'}\n- 엔진 1위: ${r.cands[0].map(nm).join(', ')}\n- 하이쿠: ${r.final.map(nm).join(', ')}${r.swapApplied ? ` (후보${r.out.candidate} + ${nm(r.out.swap_out)}→${nm(r.out.swap_in)})` : ` (후보${r.out?.candidate})`}\n- 이유: ${r.out?.reasoning || ''}\n`);
+  }
+  fs.writeFileSync(path.join(ROOT, 'probe-data', `haiku-pick-${VARIANT}-diff.md`), md.join('\n'));
+  console.log(line);
+  console.log(`하이쿠 ${VARIANT} vs 지금 엔진 — ${rows.length}건 · 건당 ${(krw / rows.length).toFixed(1)}원 · 평균 ${(ms / rows.length / 1000).toFixed(1)}초 · 교체 거부 ${rej}`);
+  console.log(`  엔진 1위 그대로 ${kept} · 바꿈 ${rows.length - kept} → 나아짐 ${H} · 나빠짐 ${Ev} · 같음 ${same}${pend ? ` · 판정 대기 ${pend}` : ''}`);
+  console.log(`  목록 → probe-data/haiku-pick-${VARIANT}-diff.md`);
+  console.log(line);
 }
 
 if (has('score')) {
