@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # 주간 자동 점검 실행기 — 미니 PC WSL의 cron이 부른다(2026-09-24~).
-# 윈도우 작업 스케줄러용 weekly-check.cmd의 리눅스판. 점검 로직은 weeklyCheck.mjs에 있다.
+# (옛 윈도우 작업 스케줄러용 weekly-check.cmd를 대체 — 2026-09-27 삭제.) 점검 로직은 weeklyCheck.mjs에 있다.
 #
 # cron은 로그인 셸이 아니라 PATH에 nvm의 node·npm이 없다. weeklyCheck.mjs가 안에서
 # `npm run verify`를 부르므로 nvm을 여기서 직접 불러온다.

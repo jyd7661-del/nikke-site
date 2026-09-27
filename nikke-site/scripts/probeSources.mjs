@@ -1,4 +1,4 @@
-// 1차 출처 6곳에 **지금 이 환경에서** 접속이 되는지만 확인한다.
+// 1차 출처(지금 쓰는 4곳)에 **지금 이 환경에서** 접속이 되는지만 확인한다.
 //
 // ■ 왜 이게 따로 필요한가 (2026-08-17)
 //
@@ -25,11 +25,11 @@ const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML,
 
 const SOURCES = [
   { name: 'prydwen.gg', url: 'https://www.prydwen.gg/nikke/characters/helm', must: 'rating_story' },
-  { name: 'nikke.gg', url: 'https://nikke.gg/tier-list/', must: 'Tier List' },
+  // nikke.gg는 2026-09-24부터 조회하지 않는다(robots.txt가 Anthropic·AI 에이전트를 막는다 — data/tierSources.json).
+  // nikke.wikiru.jp는 갱신이 멈춘 출처라 쓰지 않는다(docs/weekly-research-prompt.md). 둘 다 목록에서 뺐다(2026-09-27).
   { name: 'game8.jp', url: 'https://game8.jp/nikke/492712', must: 'ニケ' },
   { name: 'enikk.app', url: 'https://enikk.app/champion-arena', must: 'Arena' },
   { name: 'namu.wiki', url: 'https://namu.wiki/w/' + encodeURIComponent('헬름(승리의 여신: 니케)'), must: '스킬 1' },
-  { name: 'nikke.wikiru.jp', url: 'https://nikke.wikiru.jp/?%E3%83%98%E3%83%AB%E3%83%A0', must: 'スキル' },
 ];
 
 let ok = 0;

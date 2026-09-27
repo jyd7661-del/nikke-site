@@ -3,7 +3,7 @@
 import { createContext, useContext, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { t as translate, LOCALES, DEFAULT_LOCALE } from '@/lib/i18n';
-import { localePath, splitLocale, swapLocale } from '@/lib/locale';
+import { localePath, swapLocale } from '@/lib/locale';
 
 const LanguageContext = createContext({
   lang: DEFAULT_LOCALE,
@@ -89,7 +89,3 @@ export function useLanguage() {
   return useContext(LanguageContext);
 }
 
-// 지금 주소에서 언어 접두어를 뗀 경로. 메뉴의 "지금 여기" 표시 등에 쓴다.
-export function useBarePath() {
-  return splitLocale(usePathname() || '/').path;
-}

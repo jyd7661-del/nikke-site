@@ -11,6 +11,7 @@
 import Link from 'next/link';
 import { GUIDES } from '@/lib/guides';
 import { localeMeta, localePath } from '@/lib/locale';
+import { USAGE } from '@/lib/guideStats';
 
 // 언어별 주소(2026-09-19): 본문이 한국어뿐이라 **한국어판만 색인**한다. /en·/ja 주소로도 열리지만
 // noindex + canonical을 한국어판으로 둔다(lib/locale.js localeMeta). 영어 주소에 한국어 본문을 색인시키면 해가 된다.
@@ -18,7 +19,7 @@ export function generateMetadata({ params }) {
   return {
     title: '니케 조합 가이드 — 실사용 데이터로 본 조합 원리 | 니케 조합 추천',
     description:
-      '승리의 여신: 니케의 조합을 실제 데이터로 분석한 글 모음. 실사용 조합 214건 통계, '
+      `승리의 여신: 니케의 조합을 실제 데이터로 분석한 글 모음. 실사용 조합 ${USAGE.total}건 통계, `
       + '버스트 쿨타임이 도는 방식, 무기 타입별 평타 DPS 계산.',
     ...localeMeta(params.lang, '/guide'),
   };

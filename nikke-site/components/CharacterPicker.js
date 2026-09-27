@@ -51,7 +51,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
   const { lang, t } = useLanguage();
 
   // 애장품 표시는 화면 id(characters.js) 기준인데 엔진은 characterDatabase id로 판정한다.
-  // 카드마다 Set을 새로 만들면 168번 돌므로 한 번만 변환해 재사용한다.
+  // 카드마다 Set을 새로 만들면 카드 수(2026-09 기준 192)만큼 돌므로 한 번만 변환해 재사용한다.
   const treasureCdbIds = useMemo(() => {
     const s = new Set();
     (treasureIds ? [...treasureIds] : []).forEach((uiId) => {
@@ -76,11 +76,11 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
   // 용도(캠페인/보스전/PvP/타워)가 바뀐 재정렬은 **애니메이션 없이** 넘긴다.
   //
   // 애니메이션은 원래 "💎를 눌렀는데 카드 한 장이 순간이동한다"를 고치려고 넣은 것이다.
-  // 그런데 용도를 바꾸면 티어 기준 자체가 바뀌어 168장이 거의 전부 자리를 옮긴다. 그걸
+  // 그런데 용도를 바꾸면 티어 기준 자체가 바뀌어 카드 거의 전부가 거의 전부 자리를 옮긴다. 그걸
   // 420ms 동안 한꺼번에 움직이면 도움이 되기는커녕 화면 전체가 출렁이고, 사용자는 아래쪽
   // 추천 영역을 보고 있는데 위쪽 그리드가 통째로 요동친다("모드 버튼을 누르면 화면이
   // 이동한다", 2026-08-13 지적).
-  // 한 장이 움직일 때는 눈으로 따라갈 수 있어 유용하고, 168장이 움직일 때는 소음이다.
+  // 한 장이 움직일 때는 눈으로 따라갈 수 있어 유용하고, 전부가 움직일 때는 소음이다.
   const prevMode = useRef(aiMode);
 
   useIsomorphicLayoutEffect(() => {
@@ -100,7 +100,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
       //      카드가 미끄러진다. 두 번째부터는 기억된 위치가 최신이라 멀쩡하다
       //      ("최초 한 번만 그렇다"던 증상의 정체).
       //    문서 기준(+ scrollX/scrollY)이면 스크롤은 빠지지만 → **그리드 위쪽 콘텐츠의
-      //      높이 변화**가 남는다. 그리드가 통째로 내려가면 168장 전부가 같은 거리만큼
+      //      높이 변화**가 남는다. 그리드가 통째로 내려가면 카드 전부가 같은 거리만큼
       //      이동한 것으로 계산돼 그리드가 미끄러진다.
       //      ※ 지금 이 사이트에서는 실제로 일어나지 않는다. 라이브에서 재보니 캐릭터를
       //        6명까지 골라도, 💎를 토글해도 그리드 top은 4418px로 고정이었다
@@ -250,7 +250,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
             {/* [overflow-anchor:none] — 크롬의 스크롤 앵커링을 이 그리드에서 끈다.
                 크롬은 화면 안의 요소 하나를 기준점으로 잡아 두고, 그 위쪽 콘텐츠 높이가
                 바뀌면 기준점이 제자리에 보이도록 스크롤을 자동으로 보정한다. 보통은 도움이
-                되지만, 카드 168장이 **순서를 바꾸는** 경우엔 기준점 자신이 다른 자리로
+                되지만, 카드 전부가 **순서를 바꾸는** 경우엔 기준점 자신이 다른 자리로
                 옮겨가므로 브라우저가 엉뚱하게 스크롤을 움직인다(재정렬 목록의 알려진 함정).
                 html에 scroll-behavior:smooth가 걸려 있어 그 보정이 스르륵 미끄러지는
                 애니메이션으로 보인다 — "자동으로 화면이 이동한다"의 유력한 정체다. */}

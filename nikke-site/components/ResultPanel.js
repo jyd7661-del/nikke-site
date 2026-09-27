@@ -5,7 +5,7 @@ import { localePath } from '@/lib/locale';
 import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
-import { memberName, characterName } from '@/lib/characterNames';
+import { memberName } from '@/lib/characterNames';
 
 // 모듈 스코프라 t()를 부를 수 없다. 문구 대신 **키**만 들고 있다가 화면에서 t()로 푼다.
 // (여기에 한국어를 그대로 적으면 언어를 바꿔도 이 목록만 한국어로 남는다 — A단계에서 겪은 그 문제)
@@ -52,13 +52,11 @@ const BOSS_ELEMENT_OPTIONS = [
   { key: 'Fire', labelKey: 'element_fire' },
 ];
 
-// AI가 "규칙 엔진이 미리 뽑아둔 후보 중 하나를 설명"하는 게 아니라, 보유 로스터(roster.resolved)와
-// 공략 근거자료를 통째로 서버(app/api/ai-recommend)에 넘겨 AI가 직접 5인 조합을 구성하게 하는 버튼.
-// 응답에 포함된 team.reasons/totalScore는 lib/synergyEngine.js의 scoreTeam이 AI의 결과물을 사후
-// 검증/채점한 것이고, aiReasoning은 AI가 직접 쓴 구성 이유다.
+// 보유 로스터(roster.resolved)를 서버(app/api/ai-recommend)에 넘겨 5인 조합을 받는 버튼.
+// 조합은 **엔진이 정한다**(enikk 실사용 완전일치 → prydwen 아키타입 → 폴백 탐색). AI는 확정된 5명의 설명 문단만 쓴다.
+// 예외: 폴백 구간에서 AI_TEAMS_MODE=on이면 AI가 구성하고 엔진이 검산한다(운영은 shadow — 화면엔 엔진 답).
 // "다른 조합 보기"를 누르면 이전까지 나온 멤버 목록을 excludeTitles로 함께 보내 겹치지 않는 조합을 유도한다.
-// 👍/👎 버튼은 app/api/ai-recommend/feedback에 평가를 저장하고, 그 통계는 다음 AI 추천 호출 때
-// app/api/ai-recommend가 "반응 좋았던 조합" 힌트로 다시 읽어 프롬프트에 실어 보낸다.
+// 👍/👎 버튼은 app/api/ai-recommend/feedback에 평가를 저장한다(지금은 저장만 한다 — 추천 라우트가 다시 읽지 않는다).
 // 조합이 어느 근거에서 나왔는지 표시하는 라벨.
 // 유저 정의: "검증된 조합"이란 사람들이 두루두루 쓰는 조합(enikk 실사용) 또는 prydwen에
 // 등록된 조합이며, 둘은 대등하다. 어느 쪽 근거인지 밝혀야 사용자가 판단할 수 있다.

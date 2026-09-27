@@ -7,16 +7,16 @@ import { useLanguage } from '@/components/LanguageProvider';
 import { termLabel } from '@/lib/dexLabels';
 import { memberName } from '@/lib/memberName';
 
-// 도감 상세의 "실사용 데이터" 절 — enikk.app에서 옮긴 조합 214건을 이 캐릭터 기준으로 뒤집은 것.
+// 도감 상세의 "실사용 데이터" 절 — enikk.app에서 옮긴 실사용 조합(2026-09 기준 216건)을 이 캐릭터 기준으로 뒤집은 것.
 // 집계 규칙과 "무엇은 세면 안 되는가"는 lib/usage.js 주석에 있다.
 //
 // ⚠️ 멤버는 **서버에서 미리 풀어서** 받는다({ id, title, name_kr, name_ja }).
 //    여기서 lib/dex.js나 lib/usage.js를 import하면 데이터 JSON이 통째로 브라우저 번들에
 //    실린다 — DexTeams가 같은 이유로 서버에서 풀어 받는다(그 파일 주석 참고).
 //
-// ⚠️ 이 절은 데이터가 없으면 **안 그린다**(198명 중 100명이 그렇다 — enikk은 상위만 게시한다).
+// ⚠️ 이 절은 데이터가 없으면 **안 그린다**(2026-09 기준 201명 중 100명 — enikk은 상위만 게시한다).
 //    그래서 집계가 통째로 실패해도 화면은 멀쩡해 보인다. scripts/testDexUsage.mjs가
-//    198명 전원을 원본과 대조해서 그 조용한 실패를 잡는다.
+//    도감 전원을 원본과 대조해서 그 조용한 실패를 잡는다.
 
 const SLICE_KEY = {
   overall: 'dex_usage_slice_overall',

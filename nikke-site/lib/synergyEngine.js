@@ -4,8 +4,9 @@
 // synergyNotes.json(prydwen 공략글을 사람이 재구성한 근거자료), 그리고 metaStats.json(enikk.app의
 // 실제 플레이어 픽률·챔피언 아레나 승률 기록)에 이미 적혀 있는 정보를 명시적인 규칙으로 그대로
 // 옮긴 것입니다. 가중치 상수(WEIGHTS)는 "이 자료가 있으면 왜 이만큼 더 좋다고 볼 수 있는지"가 각
-// 규칙 옆 주석에 설명되어 있고, 나중에 유저 데이터(투표/채택률)가 쌓이면 이 가중치들을 실측치로
-// 교체하는 것이 다음 단계입니다(README '향후 계획' 참고).
+// 규칙 옆 주석에 설명되어 있습니다.
+// ⚠️ 2026-09 현재 **추천 순위**는 WEIGHTS 전체가 아니라 티어 합(tierTotal) + 실사용 등급 합 × 0.5로 정한다(recommendTeams 폴백).
+//    WEIGHTS로 쌓는 `score`는 조합 화면(/combos)의 점수 표시에 쓰인다. 가중치를 새로 만들지 않는 원칙은 CLAUDE.md 원칙 2.
 //
 // 핵심 설계 원칙 (사용자 요구사항 반영):
 // 1) 사람이 만든 근거자료(synergyNotes)는 정확하지만 갱신이 느리다는 한계가 있으므로,
@@ -551,14 +552,6 @@ const DOMINANT_PARTNERS = (() => {
   return result;
 })();
 
-// 이 캐릭터가 파트너 의존형인데 팀에 그 짝이 하나도 없는가.
-function partnerConditionUnmet(character, members) {
-  const req = DOMINANT_PARTNERS.get(character?.title);
-  if (!req) return null;
-  const present = req.partners.filter((p) => members.some((m) => m.title === p.title));
-  return present.length ? null : req;
-}
-
 function normalizeElement(el) {
   return (el || '').toLowerCase();
 }
@@ -704,7 +697,7 @@ const WEIGHTS = {
   REAL_PVP_TEAM_SCALE: 3,
   // enikk.app 캠페인 Compositions 실전 기록(pctOfClears, 전체 클리어 중 이 조합의 비중) 기반
   // 보너스. 승률 개념이 없는 PvE라 "얼마나 많이 실제로 채택됐는지" 자체를 신호로 쓴다.
-  // 1위 조합 pctOfClears가 15.43%이므로 FULL_SCALE=0.6이면 최대 약 +9.3점(ARCHETYPE_FULL_MATCH와
+  // 1위 조합 pctOfClears가 13~15%대라(갱신마다 바뀐다) FULL_SCALE=0.6이면 최대 약 +8~9점(ARCHETYPE_FULL_MATCH와
   // 비슷한 스케일), 부분 일치(4/5)는 그 절반 비중으로 낮춘다.
   REAL_CAMPAIGN_FULL_SCALE: 0.6,
   REAL_CAMPAIGN_PARTIAL_SCALE: 0.3,
@@ -758,6 +751,7 @@ export function archetypePartialPoints(haveCount, needCount) {
 // 낭비로 본다. 낭비로 판정된 캐릭터도 토템 후보(characterInvestmentNotes.json의 totemRole)로
 // 등록되어 있으면 버스트 대신 상시 버프/유틸리티로 기여하므로 예외로 둔다. 쿨타임 데이터가
 // 없는 멤버가 하나라도 섞여 있으면 판단 근거가 불충분하므로 그 단계는 건너뛴다(과잉 판정 방지).
+// ⚠️ 2026-09-26부터 **캠페인·타워에서만** 판정한다(PvP·솔로레이드는 NO_WASTE_RULE_MODES — 등록 실사용 조합의 59%·27%를 0점 처리하고 있었다).
 const FAST_BURST_CD = 20; // 이 이하면 혼자서 매 사이클 버스트를 안정적으로 커버 가능
 const ALTERNATE_BURST_CD = 45; // 이 이하 캐릭터 2명이면 번갈아 커버 가능
 // 낭비 판정(20초 순환 전제)을 하지 않는 모드. 근거는 findWastedBurstMembers 안의 2026-09-26 주석.
@@ -890,7 +884,7 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     // 아니라 "자리가 하나 더 생긴다"는 사실을 그대로 옮긴 것이다.
     if (group.some((m) => m.burstReentry)) needed = Math.min(needed + 1, sorted.length);
     sorted.forEach(({ m }, i) => burstOrder.set(m.id, i));
-    // 2026-09-26 — **PvP에서는 낭비 판정을 하지 않는다**(표시 순번은 위에서 그대로 매긴다).
+    // 2026-09-26 — **PvP·솔로레이드에서는 낭비 판정을 하지 않는다**(표시 순번은 위에서 그대로 매긴다).
     //
     // 이 규칙은 캠페인의 20초 버스트 순환을 전제로 만들었는데 모드를 안 보고 있었다. 등록 실사용 조합에 대 보니
     // **PvP 상위 22팀 중 13팀(59%)이 이 규칙에 "낭비"로 걸렸다**(캠페인 0/19 · 타워 1/50 · 솔로레이드 34/125).
@@ -1046,7 +1040,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     }));
   });
 
-  // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리) ---
+  // --- 티어 합산 (같은 버스트 단계에서 실제로 쓰이지 못하는 낭비 인원은 0점 처리 — 캠페인·타워만) ---
   const burstAnalysis = findWastedBurstMembers(members, mode, treasureIds);
   const wastedMembers = burstAnalysis.wasted;
   const wastedIds = new Set(wastedMembers.map((m) => m.id));
@@ -2002,12 +1996,6 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   };
 }
 
-// id 배열(보유 캐릭터 id 목록)을 받아 characterDatabase.json에서 실제 객체로 변환하는 헬퍼.
-export function resolveOwnedCharacters(ownedIds) {
-  const idSet = new Set(ownedIds);
-  return characterDatabase.filter((c) => idSet.has(c.id));
-}
-
 // ---------------------------------------------------------------------------
 // prydwen.gg 커뮤니티 검증 조합 완전일치 매칭 (AI 자유 구성 생략용)
 //
@@ -2058,7 +2046,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   // 2026-08-08 수정: flex에만 아무 조건이 없어서 사실상 '아무나'였다. 유저 지적 —
   // "각 칸의 용도에 맞는 조건으로 최고 티어를 넣어야 한다. B3면 3버스트 중 최고,
   //  FLEX면 버프류 중 최고." prydwen 조합에서 이 자리는 실제로 버퍼/토템이 들어가는 곳이다.
-  // 그래서 flex는 '전 아군에게 의미 있는 버프를 주는 캐릭터'로 좁힌다(196명 중 74명).
+  // 그래서 flex는 '전 아군에게 의미 있는 버프를 주는 캐릭터'로 좁힌다(2026-09 기준 약 70명대).
   // 다만 로스터가 좁아 버퍼가 하나도 없으면 조합 자체가 성립 불가가 되어버리므로,
   // 그때는 조건을 풀어 아무나 채운다 — 자리를 못 채워 추천이 사라지는 쪽이 더 나쁘다.
   const slotCandidates = (slot, used) => {
@@ -2285,6 +2273,3 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   };
 }
 
-// 사용 예:
-// const owned = resolveOwnedCharacters(['rapi-red-hood', 'mast-romantic-maid', ...]);
-// const { teams, dataFreshness } = recommendTeams(owned, 'bossing', { bossElement: 'Iron' });

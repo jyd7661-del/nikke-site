@@ -20,8 +20,8 @@ const charMap = Object.fromEntries(CHARACTERS.map((c) => [c.id, c]));
 //        AI 추천이 이미 "가진 것으로 최선"을 만들어 주므로 역할도 겹칩니다.
 //   · 낡은 정보가 같은 화면에서 AI 추천과 다른 말을 해 신뢰를 깎고 있었습니다.
 //
-// 되살리려면 수기 목록이 아니라 data/metaStats.json 의 campaignCompositions.list(20건)와
-// pvp.topTeams(25건)에서 뽑으세요. 주간 작업이 갱신하는 파일이라 저절로 최신이 됩니다.
+// 되살리려면 수기 목록이 아니라 data/metaStats.json 의 campaignCompositions.list와
+// pvp.topTeams에서 뽑으세요. 주간 작업이 갱신하는 파일이라 저절로 최신이 됩니다.
 export function recommend(ownedIds) {
   const owned = new Set(ownedIds);
   return {

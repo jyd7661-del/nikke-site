@@ -2,8 +2,7 @@
 /**
  * 니케 사이트 데이터 정합성 검사기
  *
- * 사용법: nikke-site/scripts/checkData.js 로 저장 후
- *   node scripts/checkData.js
+ * 사용법: node scripts/checkData.mjs   (nikke-site/에서. npm run verify의 첫 검사)
  *
  * 왜 필요한가:
  * 2026-08-07, characterInvestmentNotes.json의 레드 후드 항목에 "characterDatabase.json 기준

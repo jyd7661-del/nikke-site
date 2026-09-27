@@ -24,8 +24,10 @@ import { verifyAiTeam } from '@/lib/aiTeamVerify';
 // 조합)를 요청 모드와 호환되는 것만(MODE_COMPAT) 필터링하고, 5명 전원을 보유한 것 중 티어 합이
 // 가장 높은 것을 고른다(더 이상 아키타입 개수로 점수가 쌓이지 않고, 순수 티어 합으로만 비교).
 // 그래서 findExactTeamMatch를 1순위로 복원하고, 등록된 완전일치 조합이 하나도 없을 때만
-// recommendTeams(전체 로스터 대상 순수 티어 탐색)로 폴백한다. 어느 경로든 "구성"은 AI가 전혀
-// 관여하지 않고, AI는 이미 확정된 5명이 왜 좋은지 설명하는 문장만 작성한다.
+// recommendTeams(전체 로스터 대상 순수 티어 탐색)로 폴백한다. 그때는 "구성"에 AI가 전혀
+// 관여하지 않았고, AI는 이미 확정된 5명이 왜 좋은지 설명하는 문장만 작성했다.
+// ⚠️ 지금 순서는 enikk 실사용 완전일치 → prydwen 아키타입 → 폴백이고(아래 7차 주석), 2026-09-15부터는 **폴백 구간에서만**
+//    AI_TEAMS_MODE=shadow|on이면 AI가 5명을 구성한다(shadow = 호출·기록만, 화면은 엔진 답). 아래 "AI 조합 구성" 절.
 //
 // 2026-08-07 수정(5차): 유저가 "포메이션 기준으로 선정되는 느낌이 난다"고 재차 지적해, 결과
 // 화면의 포메이션 라벨과 선정 로직 내부의 '포메이션' 개념을 완전히 제거했다(lib/synergyEngine.js
@@ -58,8 +60,8 @@ const DAILY_GLOBAL_LIMIT = Number(process.env.AI_DAILY_GLOBAL_LIMIT || 1000);
 //
 // 이 엔드포인트에서 AI가 하는 일은 "이미 확정된 5인 조합과 그 근거를 자연스러운 한 문단으로
 // 다시 쓰기"뿐이다. 조합 구성·점수·근거는 전부 lib/synergyEngine.js가 결정하므로 추론 능력이
-// 필요한 작업이 아니다. 반면 비용 차이는 크다 — Sonnet 5는 2026-09-01부터 $3/$15(per 1M),
-// Haiku 4.5는 $1/$5로 3배 싸다.
+// 필요한 작업이 아니다. 반면 비용 차이는 크다 — Sonnet 5 $2/$10(per 1M), Haiku 4.5 $1/$5.
+// (09-01에 $3/$15로 오른다던 인상은 취소됐다 — 공식 요금표 확인 2026-09-27)
 //
 // 되돌리기 쉽게 환경변수로 뺐다. 설명 품질이 떨어진다고 판단되면 Vercel 환경변수에
 // AI_EXPLAIN_MODEL=claude-sonnet-5 를 넣으면 코드 수정 없이 원복된다.
@@ -72,10 +74,11 @@ const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-4-5';
 // 얇은 로스터 40건 A/B에서 AI가 이긴 곳이 전부 폴백이었고, 실사용 조합은 AI가 이길 이유도 판정할
 // 방법도 없다(§1). 엔진은 검산기(lib/aiTeamVerify.js)로 남는다.
 //
-//   AI_TEAMS_MODE   off(기본) | shadow(호출하고 기록만, 화면은 엔진 답) | on(폴백을 AI 답으로)
-//   AI_TEAM_MODEL   기본 claude-sonnet-5. 하이쿠는 규칙을 놓친다(버스트 불성립 2/12, 속성 무시) — 후보 아님
+//   AI_TEAMS_MODE   off(코드 기본) | shadow(호출하고 기록만, 화면은 엔진 답 — 운영은 2026-09-21부터 이것) | on(폴백을 AI 답으로)
+//   AI_TEAM_MODEL   기본 claude-sonnet-5. ⚠️ 2026-09-26 유저 결정: 소넷 건당 약 67원은 광고로 못 덮는다 → 엔진 개선 우선,
+//                   AI는 하이쿠로 되는지 실험 중(scripts/experimentHaikuPick.mjs — 자유 구성이 아니라 엔진 후보 고르기). docs/open-items.md
 //   AI_DAILY_BUDGET_KRW  하루 원 단위 천장(기본 10,000원). 지출이 아니라 차단선 — 실제로 쓴 만큼만 나간다.
-//       조합 구성 1건 ≈ 19원(보유 15명) ~ 52원(50명). 설명 1건 ≈ 4.9원. 둘 다 여기 합산한다.
+//       조합 구성 1건 실측 ≈ 67원(소넷, 28명, 2026-09-25 — 설계 추정 19~52원보다 높았다). 설명 1건 ≈ 4.9원. 둘 다 여기 합산한다.
 //       닿으면 그날은 엔진 폴백 답 + budgetExhausted 표시. 되돌리기 = 환경변수 하나.
 const AI_TEAMS_MODE = ['off', 'shadow', 'on'].includes(process.env.AI_TEAMS_MODE) ? process.env.AI_TEAMS_MODE : 'off';
 const AI_TEAM_MODEL = process.env.AI_TEAM_MODEL || 'claude-sonnet-5';

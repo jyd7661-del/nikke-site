@@ -1,7 +1,7 @@
 import { USAGE, PAIRS, CLASS_KR } from '@/lib/guideStats';
 import { Section, Table, Note, CharLink, Lead } from './GuideBits';
 
-// 가이드 ①: 실사용 조합 214건을 캐릭터 기준으로 뒤집은 통계.
+// 가이드 ①: 실사용 조합(건수는 lib/guideStats가 센다)을 캐릭터 기준으로 뒤집은 통계.
 //
 // 이 글의 숫자는 **전부 lib/guideStats.js가 빌드 때 센 값**이다. 본문에 손으로 적은
 // 수치가 하나도 없어야 한다 — scripts/testGuides.mjs가 그걸 검사한다.

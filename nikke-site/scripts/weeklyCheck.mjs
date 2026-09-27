@@ -180,8 +180,8 @@ if (drift.length) {
   findings.push({
     title: `prydwen 티어와 어긋나는 값 ${drift.length}건 (판정 기록에 없는 것만)`,
     body: drift.join('\n') +
-      '\n\n⚠️ **바로 고치지 마세요.** prydwen은 한 곳일 뿐입니다. nikke.gg·game8·enikk를 함께 대조해' +
-      ' 2곳 이상이 일치하는 값만 반영합니다. 2026-08-15에 8건 중 7건이 prydwen 아웃라이어였습니다.' +
+      '\n\n⚠️ **바로 고치지 마세요.** prydwen은 한 곳일 뿐입니다. `data/tierSources.json` 규칙대로(살아 있는 출처끼리·백분위로·enikk는 보조) 대조해' +
+      ' 2곳 이상이 일치하는 값만 반영합니다. nikke.gg는 조회하지 않습니다(robots). 2026-08-15에 8건 중 7건이 prydwen 아웃라이어였습니다.' +
       ' 판정한 뒤에는 `data/tierJudgments.json`에 근거와 함께 남기세요 — 그래야 다음 주에 다시 안 올라옵니다.' +
       ' 경위는 `docs/log/2026-08.md` "prydwen 티어 불일치" 절.',
   });

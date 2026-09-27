@@ -52,7 +52,7 @@ export const TAG_I18N_KEY = {
   partner: 'dex_tag_partner',
 };
 
-// 아키타입의 mode -> i18n 키. lib/dex.js의 MODE_KR과 같은 매핑을 언어별로 쓴다.
+// 아키타입의 mode -> i18n 키(캠페인·보스전·PvP·타워를 언어별로).
 export const MODE_I18N_KEY = {
   campaign: 'mode_campaign', story: 'mode_campaign',
   bossing: 'mode_bossing', raid: 'mode_bossing',

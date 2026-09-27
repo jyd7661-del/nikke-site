@@ -15,7 +15,7 @@ import { memberName } from '@/lib/memberName';
 //   (원문이 이미 영어인 prydwen Team Database 조합도 있어서 en이 원문과 같을 수 있다)
 //
 // ⚠️ 멤버는 **서버에서 미리 풀어서** 받는다({ id, title, name_kr, name_ja } 또는 { title }).
-//    여기서 lib/dex.js의 byTitle을 부르면 characterDatabase.json 666KB가 브라우저 번들에
+//    여기서 lib/dex.js의 byTitle을 부르면 characterDatabase.json(약 700KB)가 브라우저 번들에
 //    실린다 — 실제로 그렇게 만들었다가 /nikke의 First Load JS가 94kB -> 347kB로 뛰었다.
 //    자세한 경위는 lib/dexLabels.js 주석.
 function MemberChip({ member, lang }) {

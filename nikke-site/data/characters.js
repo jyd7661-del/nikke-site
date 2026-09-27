@@ -1,8 +1,8 @@
-// 니케 캐릭터 데이터 (2026년 7월 메타 기준. SSR 전원 + 2026-09-15부터 SR 20명 — rarity: 'SR' 표시)
-// tier: T0(최상) ~ T4(하위) / burst: 1=서포터·힐러, 2=탱커·버퍼, 3=메인딜러
-// role: 화면 표시 및 추천 로직에 사용되는 태그
-// SR/R 등급 캐릭터와 중복으로 들어가 있던 코스튬 항목은 실제 엔드콘텐츠 조합에서 거의 쓰이지 않아 정리했습니다.
-// (데이터 업데이트 방법은 README 참고)
+// 홈 화면 "보유 니케 선택" 목록. SSR 전원 + 2026-09-15부터 SR(rarity: 'SR'). R 등급은 넣지 않는다.
+// 엔진이 쓰는 데이터는 characterDatabase.json이고 여기와는 **id로만** 잇는다(엔진 id가 다르면 cdbId).
+// ⚠️ tier·role 필드는 지금 어떤 코드도 읽지 않는다(선택 카드의 등급 배지는 characterDatabase의 tiers에서 온다 —
+//    components/CharacterPicker.js). 새 캐릭터를 넣을 때 관례로만 채운다. img는 characterDatabase와 **같은 값**(checkData UI_CDB_IMG_DRIFT).
+// 새 캐릭터 추가 절차: docs/new-character.md
 
 export const CHARACTERS = [
   // ── 버스트 I (서포터 / 힐러) ────────────────────
@@ -213,4 +213,3 @@ export const CHARACTERS = [
 // BURST_LABEL은 2026-08-10에 제거했습니다. 한국어 한 가지로 고정돼 있어서 언어를 바꿔도
 // 그대로 남았기 때문입니다. 지금은 lib/i18n.js의 burst_label_1/2/3 키를 t()로 씁니다.
 // 여기에 다시 만들지 마세요 — 만들면 그 화면만 조용히 한국어로 돌아갑니다.
-export const TIER_ORDER = ['T0', 'T1', 'T2', 'T3', 'T4'];

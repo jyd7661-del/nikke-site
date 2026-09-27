@@ -41,19 +41,7 @@ export const CORP_KR = {
   elysion: '엘리시온', missilis: '미실리스', tetra: '테트라', pilgrim: '필그림',
   abnormal: '어브노멀',
 };
-export const WEAPON_KR = { ar: 'AR', mg: 'MG', rl: 'RL', sr: 'SR', sg: 'SG', smg: 'SMG' };
-export const MODE_KR = {
-  campaign: '캠페인', story: '캠페인', bossing: '보스전', raid: '보스전',
-  pvp: 'PvP(아레나)', tribe_tower: '트라이브 타워',
-};
-// prydwen 티어리스트 아이콘 라벨 (docs/data.md)
-export const TAG_KR = {
-  limited: '한정 캐릭터',
-  invest: '고투자 전제',
-  expert: '수동 조작 숙련 필요',
-  partner: '특정 동료와 함께일 때 강함',
-};
 
 // 언어별 라벨은 lib/dexLabels.js에 있다(클라이언트 안전 모듈).
 // ⚠️ 여기서 재수출하지 않는다 — 클라이언트가 lib/dex를 import하면 characterDatabase.json
-//    666KB가 브라우저 번들에 실린다. 필요한 쪽에서 lib/dexLabels를 직접 import할 것.
+//    약 700KB가 브라우저 번들에 실린다. 필요한 쪽에서 lib/dexLabels를 직접 import할 것.

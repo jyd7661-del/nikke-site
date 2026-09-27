@@ -66,7 +66,7 @@ export default function NikkeDetailPage({ params }) {
   const shownTeams = teams.slice(0, 6);
 
   // 조합 멤버를 **서버에서** 캐릭터 객체로 풀어 둔다. 클라이언트에서 byTitle을 부르면
-  // lib/dex.js가 딸려 들어가 characterDatabase.json 666KB가 브라우저 번들에 실린다
+  // lib/dex.js가 딸려 들어가 characterDatabase.json(약 700KB)가 브라우저 번들에 실린다
   // (실측: /nikke First Load JS 94kB -> 347kB). 순수 데이터만 넘긴다.
   const teamsForClient = shownTeams.map((a) => ({
     id: a.id,
@@ -88,8 +88,8 @@ export default function NikkeDetailPage({ params }) {
   // 실사용 데이터(enikk 집계). 없으면 null이고 DexUsage가 절을 통째로 안 그린다.
   //
   // ⚠️ 여기서도 멤버를 **서버에서** 캐릭터 객체로 풀어 넘긴다. 클라이언트에서 풀면
-  //    characterDatabase.json 666KB가 브라우저 번들에 실린다(DexTeams와 같은 이유).
-  // ⚠️ 조회 키는 title이다. id로 부르면 198명 전원이 null이 되고 **에러 없이 절만 사라진다** —
+  //    characterDatabase.json(약 700KB)가 브라우저 번들에 실린다(DexTeams와 같은 이유).
+  // ⚠️ 조회 키는 title이다. id로 부르면 전원이 null이 되고 **에러 없이 절만 사라진다** —
   //    scripts/testDexUsage.mjs가 그 경우를 못으로 박아뒀다.
   const u = usageFor(c.title);
   const asMember = (title) => {
@@ -162,7 +162,7 @@ export default function NikkeDetailPage({ params }) {
       {/* 등장 조합 — prydwen 아키타입에서 이 캐릭터가 멤버인 것 */}
       <DexTeams teams={teamsForClient} totalCount={teams.length} />
 
-      {/* 실사용 데이터 — enikk에서 옮긴 조합 214건을 우리가 집계한 것.
+      {/* 실사용 데이터 — enikk에서 옮긴 실사용 조합(2026-09 기준 216건)을 우리가 집계한 것.
           위 '등장 조합'(prydwen의 추천 구성)과 성격이 다르다: 이쪽은 실제로 쓰인 기록이다. */}
       <DexUsage usage={usageForClient} />
 
