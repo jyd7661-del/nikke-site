@@ -411,3 +411,12 @@ IP도 UA도 저장하지 않는다. `visitor_hash = sha256(ip|ua|날짜)`이고 
 
 미니 PC WSL cron 2종 — 월 10:00 `weekly-check.sh`(코드 점검) · 월 10:30 `weekly-research.sh`(AI 조사, 커밋 안 함).
 **→ `docs/weekly-research.md`.** (옛 Cowork 예약 작업 `nikke-site-data-research`는 2026-08-10이 마지막 실행)
+
+## Search Console API (2026-09-29)
+
+브라우저 없이 검색 실적·URL 검사를 보려고 서비스 계정으로 연결한다(이 PC엔 로그인된 브라우저가 없다).
+
+- 키: `~/.config/nikke/gsc-sa.json`(저장소 밖, 폴더 권한 700). `.gitignore`에 `*-sa.json`·`*service-account*.json`도 막아 뒀다
+- 권한: Search Console → 설정 → 사용자 및 권한에 서비스 계정 이메일을 **"제한됨"**으로. 스크립트는 `webmasters.readonly` 범위만 쓴다
+- 조회: `node scripts/gscReport.mjs --sites | --summary | --daily | --query="…" | --inspect=/nikke/phantom` (머리 주석 참고)
+- 외부 라이브러리 없이 node:crypto로 JWT 서명 — 사이트 의존성을 늘리지 않는다

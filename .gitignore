@@ -40,3 +40,7 @@ desktop.ini
 # 클로드 코드
 .claude/settings.local.json
 .claude/worktrees/
+
+# 서비스 계정 키(Search Console API 등) — 절대 커밋하지 않는다. 키는 저장소 밖 ~/.config/nikke/에 둔다
+*-sa.json
+*service-account*.json
