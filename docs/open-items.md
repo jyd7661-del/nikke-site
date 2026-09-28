@@ -33,6 +33,7 @@
 
 | 항목 | 왜 | → 경위 |
 |---|---|---|
+| **Search Console API 키**(2026-09-29 대기) — Google Cloud에서 서비스 계정 + JSON 키 → Search Console 사용자에 그 이메일을 "제한됨"으로 → 키 파일을 미니 PC `C:\Users\jyd76\Downloads`(또는 바탕화면 `claude`)에. 클로드가 `~/.config/nikke/gsc-sa.json`(600)으로 옮기고 원본 삭제 | "최근 검색어가 전부 영어" 원인 확정용 — 영어 검색어가 `/en`으로 오는지 한국어 주소로 오는지, 한국어 페이지 마지막 크롤링. 조회 스크립트 `scripts/gscReport.mjs` 준비됨. 유저가 PC를 못 쓰는 동안 보류 | 09 검색 점검 |
 | **네이버 서치어드바이저 등록**(2026-09-29 발견) — searchadvisor.naver.com에서 사이트 추가 → HTML 태그 방식의 `naver-site-verification` 값을 클로드에게 주면 `app/[lang]/layout.js`의 `verification`에 넣어 배포 → "소유 확인" → sitemap(`https://nikketeamguide.com/sitemap.xml`) 제출 · 웹 페이지 수집 요청 | 네이버 검색에 우리 페이지가 **0개**다(`site:` 포함 4개 검색어 실측). 유저는 등록했다고 기억하지만 **소유 확인 흔적이 없다**(메타 태그·확인 파일이 코드 이력 전체에 없고 DNS TXT도 구글 것뿐) — 대시보드에서 상태 확인 필요. 사이트는 봇에게 한국어로 정상 렌더링됨(헤드리스 크롬 확인) | 09 검색 점검 |
 | **미니 PC 이관 — 남은 것 1개**: 메인 PC 작업 스케줄러 `니케 주간 점검` 끄기(`schtasks /Change /TN "니케 주간 점검" /DISABLE`). 클로드 앱 종료만으로는 안 꺼진다. Cowork 조사는 미니 PC 무인 실행으로 대체 완료(2026-09-25) | 안 끄면 월요일에 메인 PC가 켜져 있을 때 `-auto` 보고서가 두 PC에서 생긴다 | 09 주간 AI 조사 대체 |
 
