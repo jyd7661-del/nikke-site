@@ -5,26 +5,26 @@
     "channels": {
       "gonyo": {
         "handle": "@gonyo1",
-        "monthsAgo": 3,
+        "monthsAgo": 4,
         "done": null
       },
       "sperando": {
         "handle": "@Sperando_TV",
-        "monthsAgo": 3,
+        "monthsAgo": 4,
         "done": null
       },
       "efenbaum": {
         "handle": "@efenbaum",
-        "monthsAgo": 2,
+        "monthsAgo": 3,
         "done": null
       },
       "jinseo": {
         "handle": "@jinseo0101",
-        "monthsAgo": 2,
+        "monthsAgo": 3,
         "done": null
       }
     },
-    "history": "Cowork 시절 N=2(2026-08-10 보고서, 구간에 도달 못 해 유지). 이후 5주간 조사가 멈춰 있었으므로 N=2부터 다시 시작한다. 2026-09-25: N=2 구간에서 고뇨·스페란도 영상 확인 → 3. 에펜바움·김진서는 이 구간에 도달 못 함(RSS 한계·playboard 429) — 다음 실행에서 curl로 2026-06~07을 따로 볼 것 · 2026-09-25 채널별 N으로 나눔: 고뇨·스페란도 3, 에펜바움·김진서 2(구간 미도달이라 되돌림)"
+    "history": "Cowork 시절 N=2(2026-08-10 보고서, 구간에 도달 못 해 유지). 이후 5주간 조사가 멈춰 있었으므로 N=2부터 다시 시작한다. 2026-09-25: N=2 구간에서 고뇨·스페란도 영상 확인 → 3. 에펜바움·김진서는 이 구간에 도달 못 함(RSS 한계·playboard 429) — 다음 실행에서 curl로 2026-06~07을 따로 볼 것 · 2026-09-25 채널별 N으로 나눔: 고뇨·스페란도 3, 에펜바움·김진서 2(구간 미도달이라 되돌림) · 2026-09-28: /videos의 ytInitialData + youtubei browse 연속 로딩(richGrid 안의 토큰만 — 첫 토큰은 '정보' 탭이라 빈 목록)으로 채널당 300편 이상 내려 네 채널 모두 구간 도달, 게시일은 영상 페이지 publishDate로 이분 탐색. 네 채널 모두 구간에 니케 영상 있음 → 고뇨·스페란도 4, 에펜바움·김진서 3"
   },
-  "lastRun": "2026-09-25"
+  "lastRun": "2026-09-28"
 }
