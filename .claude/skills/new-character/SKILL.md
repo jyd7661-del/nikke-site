@@ -27,6 +27,7 @@ node scripts/newCharacterDraft.mjs --slug=<prydwen slug> --kr="<나무위키 문
 - `data/game8PageMap.json`에 `"<name_ja>": "https://game8.jp/nikke/<번호>"`
 - `data/characters.js`에 한 줄(버스트 구역 안, 기존 줄 형식 그대로). `tier`는 최고 등급 기준(T0=SS~SSS · T1=S · T2=A~B · T3=C 이하), `img`는 DB와 **같은 값**
 - 새 제조사·용어면 `data/glossary.json`(세 언어 출처 확인)
+- `data/soloRaidTeams.json`의 `meta.excludedForUnknownMember`에 그 캐릭터가 든 팀이 있으면 **그 시즌 teams의 제자리(rank)로 되돌리고** 목록에서 지운다(2026-09-29: 신 : 스위프트 바니 3팀 — 시즌 41)
 
 ## 3. 스킬 3개 국어
 

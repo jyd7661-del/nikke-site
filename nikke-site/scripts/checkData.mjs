@@ -40,6 +40,7 @@ const err = (code, msg) => errors.push({ code, msg });
 const warn = (code, msg) => warns.push({ code, msg });
 
 const TITLES = new Set(cdb.map((c) => c.title));
+const DB_BY_TITLE = new Map(cdb.map((c) => [c.title, c]));
 const IDS = new Set(cdb.map((c) => c.id));
 const BY_TITLE = new Map(cdb.map((c) => [c.title, c]));
 
@@ -1371,6 +1372,20 @@ if (glossarySrc) {
     }
     const unknown = t.members.filter((m) => !TITLES.has(m));
     if (unknown.length) err('CAMPCOMP_UNKNOWN_MEMBER', `${w}: DB에 없는 이름 ${unknown.join(', ')}`);
+    // 2026-09-29: 화면에서 % 열이 사라져 위 % 교차검증은 이제 계산값끼리 비교다(전사 오류를 못 잡는다).
+    // 대신 **화면의 버스트 배지**(이름과 다른 요소에서 읽는다)를 DB 버스트와 댄다 — 이름을 잘못 옮기거나 행이 밀리면 어긋난다.
+    if (!Array.isArray(t.bursts) || t.bursts.length !== 5) {
+      err('CAMPCOMP_SHAPE', `${w}: bursts(화면 버스트 배지 5개)가 없다 — 전사 교차검증을 할 수 없다`);
+    } else {
+      t.members.forEach((m, k) => {
+        const c = DB_BY_TITLE.get(m);
+        if (!c) return;
+        const stages = (Array.isArray(c.burstStages) && c.burstStages.length ? c.burstStages : [c.burst]).map(String);
+        if (!c.burstFlex && !stages.includes(String(t.bursts[k]))) {
+          err('CAMPCOMP_BURST_MISMATCH', `${w}: ${m}의 화면 배지 B${t.bursts[k]}인데 DB는 B${stages.join('/')} — 이름이나 순서를 잘못 옮겼다`);
+        }
+      });
+    }
     if (!Number.isInteger(t.totalUses) || t.totalUses <= 0) {
       err('CAMPCOMP_SHAPE', `${w}: totalUses='${t.totalUses}' — 1 이상의 정수여야 한다`);
     } else if (Number.isInteger(analyzed) && analyzed > 0) {

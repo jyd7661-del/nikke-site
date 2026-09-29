@@ -1492,8 +1492,8 @@
   },
   "soloRaidByElement": {
     "meta": {
-      "note": "각 원소별로 '그 원소가 약점인 보스'가 나온 대표 시즌 하나를 골라 해당 시즌의 enikk.app Advantage Nikkes(해당 원소 캐릭터 한정 실사용률) 데이터를 그대로 옮긴 것입니다. 시즌마다 표본이 다르므로 %는 절대치가 아니라 '그 원소 캐릭터들 사이의 상대적 우선순위'로 해석해야 합니다. Fire 데이터는 낮은 사용률 구간이 누락되었을 수 있습니다(추출 한계).",
-      "asOf": "2026-07-29",
+      "note": "각 원소별로 '그 원소가 약점인 보스'가 나온 대표 시즌 하나를 골라 해당 시즌의 enikk.app Advantage Nikkes(해당 원소 캐릭터 한정 실사용률) 데이터를 그대로 옮긴 것입니다. 시즌마다 표본이 다르므로 %는 절대치가 아니라 '그 원소 캐릭터들 사이의 상대적 우선순위'로 해석해야 합니다. Fire 데이터는 낮은 사용률 구간이 누락되었을 수 있습니다(추출 한계). ⚠️ 2026-09-29: enikk 시즌 페이지의 Nikkes 탭이 'Character Table(Top 50 All Server, 전 속성)'로 바뀌었다. 그 표에서 **보스 약점 속성 캐릭터만 골라** 같은 값을 만든다 — 철갑(시즌 39) 표를 이 방식으로 다시 만들어 기존 20행과 이름·값이 전부 일치함을 확인했다. 작열은 시즌 35→40, 수냉은 37→41로 교체. 목록은 가상 스크롤이라 내리며 모아야 50행이 다 나온다. 화면의 역할(Attacker 등)을 DB class와 대조(전부 일치).",
+      "asOf": "2026-09-29",
       "staleAfterDays": 45
     },
     "Iron": {
@@ -1657,67 +1657,75 @@
       ]
     },
     "Water": {
-      "season": 37,
-      "boss": "Ultra",
+      "season": 41,
+      "boss": "Liberalio Body",
       "entries": [
         {
           "title": "Snow White: Heavy Arms",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Soline: Frost Ticket",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Dorothy: Serendipity",
-          "usage": 100
-        },
-        {
-          "title": "Mast: Romantic Maid",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Tove",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Helm",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Privaty",
-          "usage": 100
+          "usage": 100.0
         },
         {
-          "title": "Anchor: Innocent Maid",
+          "title": "Elegg: Boom and Shock",
+          "usage": 99.7
+        },
+        {
+          "title": "Mast: Romantic Maid",
           "usage": 99.7
         },
         {
           "title": "Ludmilla: Winter Owner",
-          "usage": 99.7
+          "usage": 97.0
         },
         {
-          "title": "Elegg: Boom and Shock",
-          "usage": 99.3
+          "title": "Anchor: Innocent Maid",
+          "usage": 96.0
+        },
+        {
+          "title": "Phantom",
+          "usage": 71.7
+        },
+        {
+          "title": "Guilty: Mighty Bunny",
+          "usage": 66.7
         },
         {
           "title": "Bready",
-          "usage": 80
+          "usage": 61.7
         },
         {
           "title": "Quency: Escape Queen",
-          "usage": 79.3
+          "usage": 59.0
         },
         {
           "title": "Prika",
-          "usage": 62
+          "usage": 34.7
         },
         {
           "title": "Guillotine: Winter Slayer",
-          "usage": 9
+          "usage": 2.0
         },
         {
-          "title": "Delta: Ninja Thief",
+          "title": "Leona",
           "usage": 0.3
         },
         {
@@ -1813,61 +1821,85 @@
       ]
     },
     "Fire": {
-      "season": 35,
-      "boss": "Crystal Chamber",
+      "season": 40,
+      "boss": "Luxurious Spider",
       "entries": [
         {
-          "title": "Brid: Silent Track",
-          "usage": 100
+          "title": "Arcana: Fortune Mate",
+          "usage": 100.0
         },
         {
           "title": "Diesel: Winter Sweets",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Mihara: Bonding Chain",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Rapi: Red Hood",
-          "usage": 100
+          "usage": 100.0
         },
         {
           "title": "Drake",
-          "usage": 100
+          "usage": 100.0
         },
         {
-          "title": "Miranda",
-          "usage": 100
+          "title": "Brid: Silent Track",
+          "usage": 99.7
+        },
+        {
+          "title": "Yukiko",
+          "usage": 99.0
+        },
+        {
+          "title": "Queen (Makoto Niijima)",
+          "usage": 99.0
         },
         {
           "title": "Modernia",
-          "usage": 96.3
+          "usage": 96.7
+        },
+        {
+          "title": "Grave",
+          "usage": 96.0
         },
         {
           "title": "Alice",
-          "usage": 93.7
+          "usage": 86.0
         },
         {
-          "title": "Rei",
-          "usage": 76.7
+          "title": "Rei Ayanami",
+          "usage": 73.3
+        },
+        {
+          "title": "Miranda",
+          "usage": 6.7
+        },
+        {
+          "title": "D: Killer Wife",
+          "usage": 0.7
         },
         {
           "title": "Asuka Shikinami Langley",
-          "usage": 1.3
+          "usage": 0.3
+        },
+        {
+          "title": "2B",
+          "usage": 0.3
         }
       ]
     }
   },
   "campaignCompositions": {
     "meta": {
-      "note": "enikk.app 캠페인 > Compositions 탭의 'Most Used Compositions' 목록입니다. 각 항목은 실제로 관측된 '정확히 5인 로스터'이며, totalUses는 그 로스터가 클리어에 쓰인 횟수, pctOfClears는 분석된 전체 클리어(analyzedClears) 중 비율입니다. 화면 % 값은 totalUses/analyzedClears와 19행 전부 일치했습니다(전사 오류 검출용 교차검증). 2026-07-29판에 있던 weakElementBreakdown은 지금 화면의 행 단위 정보에 없어 싣지 않습니다 — 원소별 정보는 같은 페이지의 별도 'Boss Compositions' 절에 있습니다.",
+      "note": "enikk.app 캠페인 > Compositions 탭의 'Most Used Compositions' 1~2쪽(20행)입니다. 각 항목은 실제로 관측된 '정확히 5인 로스터'이며, totalUses는 그 로스터가 클리어에 쓰인 횟수입니다. ⚠️ 2026-09-29판부터 화면에 '% of clears' 열이 없다 — pctOfClears는 totalUses/analyzedClears로 **계산한 값**이다(화면 값이 아님). 대신 전사 교차검증은 행마다 화면의 버스트 배지(bursts)를 DB 버스트와 대는 것으로 한다(20행 100명 전부 일치). 원소별 정보는 같은 페이지의 별도 'Boss Compositions' 절에 있다(싣지 않음).",
       "source": "enikk.app/campaign#compositions",
       "server": "ALL",
-      "asOf": "2026-08-21",
-      "analyzedClears": 248482,
-      "bossClears": 5893,
-      "distinctRosters": 4199,
+      "asOf": "2026-09-29",
+      "analyzedClears": 304141,
+      "bossClears": 7263,
+      "distinctRosters": 4551,
       "staleAfterDays": 30
     },
     "list": [
@@ -1879,12 +1911,19 @@
           "Snow White: Heavy Arms",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 33207,
-        "stages": 1539,
-        "bossClears": 250,
-        "avgPower": 635900,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 36582,
+        "stages": 1540,
+        "bossClears": 260,
+        "avgPower": 635800,
         "lowestPower": 81600,
-        "pctOfClears": 13.36
+        "pctOfClears": 12.03
       },
       {
         "members": [
@@ -1894,12 +1933,19 @@
           "Rapi: Red Hood",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 13034,
-        "stages": 902,
-        "bossClears": 206,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 18395,
+        "stages": 997,
+        "bossClears": 275,
         "avgPower": 1200000,
         "lowestPower": 91300,
-        "pctOfClears": 5.25
+        "pctOfClears": 6.05
       },
       {
         "members": [
@@ -1909,12 +1955,41 @@
           "Liberalio",
           "Crown"
         ],
-        "totalUses": 10477,
-        "stages": 262,
-        "bossClears": 393,
+        "bursts": [
+          "2",
+          "3",
+          "1",
+          "3",
+          "2"
+        ],
+        "totalUses": 12645,
+        "stages": 267,
+        "bossClears": 492,
         "avgPower": 1400000,
         "lowestPower": 286000,
-        "pctOfClears": 4.22
+        "pctOfClears": 4.16
+      },
+      {
+        "members": [
+          "Crown",
+          "Snow White: Heavy Arms",
+          "Anis: Star",
+          "Neon: Vision Eye",
+          "Mast: Romantic Maid"
+        ],
+        "bursts": [
+          "2",
+          "3",
+          "1",
+          "3",
+          "2"
+        ],
+        "totalUses": 9838,
+        "stages": 728,
+        "bossClears": 116,
+        "avgPower": 852000,
+        "lowestPower": 80100,
+        "pctOfClears": 3.23
       },
       {
         "members": [
@@ -1924,39 +1999,41 @@
           "Snow White: Heavy Arms",
           "Crown"
         ],
-        "totalUses": 8694,
-        "stages": 1349,
-        "avgPower": 669300,
-        "lowestPower": 102300,
-        "pctOfClears": 3.5
-      },
-      {
-        "members": [
-          "Crown",
-          "Snow White: Heavy Arms",
-          "Anis: Star",
-          "Neon: Vision Eye",
-          "Mast: Romantic Maid"
+        "bursts": [
+          "1",
+          "3",
+          "3",
+          "3",
+          "2"
         ],
-        "totalUses": 8332,
-        "stages": 722,
-        "avgPower": 845300,
-        "lowestPower": 80100,
-        "pctOfClears": 3.35
+        "totalUses": 9202,
+        "stages": 1350,
+        "bossClears": 66,
+        "avgPower": 666100,
+        "lowestPower": 102300,
+        "pctOfClears": 3.03
       },
       {
         "members": [
+          "Anis: Star",
           "Crown",
           "Rapi: Red Hood",
-          "Anis: Star",
           "Vesti: Tactical Upgrade",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 6625,
-        "stages": 696,
-        "avgPower": 719000,
-        "lowestPower": 140000,
-        "pctOfClears": 2.67
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 7691,
+        "stages": 797,
+        "bossClears": 8,
+        "avgPower": 727300,
+        "lowestPower": 81200,
+        "pctOfClears": 2.53
       },
       {
         "members": [
@@ -1966,11 +2043,19 @@
           "Helm",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 5447,
-        "stages": 951,
-        "avgPower": 674400,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 6285,
+        "stages": 1002,
+        "bossClears": 83,
+        "avgPower": 685100,
         "lowestPower": 137100,
-        "pctOfClears": 2.19
+        "pctOfClears": 2.07
       },
       {
         "members": [
@@ -1980,25 +2065,41 @@
           "Crown",
           "Privaty"
         ],
-        "totalUses": 4702,
-        "stages": 246,
+        "bursts": [
+          "3",
+          "2",
+          "1",
+          "2",
+          "3"
+        ],
+        "totalUses": 5884,
+        "stages": 265,
+        "bossClears": 131,
         "avgPower": 1200000,
         "lowestPower": 161300,
-        "pctOfClears": 1.89
+        "pctOfClears": 1.93
       },
       {
         "members": [
+          "Cinderella: Crystal Wave",
+          "Flora",
           "Anis: Star",
-          "Crown",
           "Rapi: Red Hood",
-          "Snow White: Heavy Arms",
-          "Privaty"
+          "Crown"
         ],
-        "totalUses": 4120,
-        "stages": 1086,
-        "avgPower": 1200000,
-        "lowestPower": 97900,
-        "pctOfClears": 1.66
+        "bursts": [
+          "3",
+          "2",
+          "1",
+          "3",
+          "2"
+        ],
+        "totalUses": 5342,
+        "stages": 447,
+        "bossClears": 78,
+        "avgPower": 1500000,
+        "lowestPower": 392200,
+        "pctOfClears": 1.76
       },
       {
         "members": [
@@ -2008,12 +2109,41 @@
           "Ada Wong",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 3936,
+        "bursts": [
+          "2",
+          "1",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 4909,
         "stages": 267,
-        "bossClears": 286,
-        "avgPower": 1200000,
+        "bossClears": 330,
+        "avgPower": 1300000,
         "lowestPower": 322800,
-        "pctOfClears": 1.58
+        "pctOfClears": 1.61
+      },
+      {
+        "members": [
+          "Anis: Star",
+          "Crown",
+          "Rapi: Red Hood",
+          "Snow White: Heavy Arms",
+          "Privaty"
+        ],
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "3"
+        ],
+        "totalUses": 4745,
+        "stages": 1101,
+        "bossClears": 11,
+        "avgPower": 1100000,
+        "lowestPower": 97900,
+        "pctOfClears": 1.56
       },
       {
         "members": [
@@ -2023,11 +2153,41 @@
           "Cinderella: Crystal Wave",
           "Privaty"
         ],
-        "totalUses": 3592,
-        "stages": 533,
+        "bursts": [
+          "2",
+          "1",
+          "3",
+          "3",
+          "3"
+        ],
+        "totalUses": 4410,
+        "stages": 630,
+        "bossClears": 35,
         "avgPower": 1600000,
         "lowestPower": 159500,
         "pctOfClears": 1.45
+      },
+      {
+        "members": [
+          "Neon: Vision Eye",
+          "Flora",
+          "Ada Wong",
+          "Crown",
+          "Anis: Star"
+        ],
+        "bursts": [
+          "3",
+          "2",
+          "3",
+          "2",
+          "1"
+        ],
+        "totalUses": 4149,
+        "stages": 257,
+        "bossClears": 90,
+        "avgPower": 1700000,
+        "lowestPower": 391300,
+        "pctOfClears": 1.36
       },
       {
         "members": [
@@ -2037,11 +2197,19 @@
           "Ada Wong",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 3388,
-        "stages": 549,
-        "avgPower": 755100,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 3681,
+        "stages": 600,
+        "bossClears": 19,
+        "avgPower": 776300,
         "lowestPower": 263300,
-        "pctOfClears": 1.36
+        "pctOfClears": 1.21
       },
       {
         "members": [
@@ -2051,12 +2219,41 @@
           "Mast: Romantic Maid",
           "Helm"
         ],
-        "totalUses": 3063,
-        "stages": 419,
-        "bossClears": 211,
-        "avgPower": 616800,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "2",
+          "3"
+        ],
+        "totalUses": 3469,
+        "stages": 430,
+        "bossClears": 259,
+        "avgPower": 621000,
         "lowestPower": 104300,
-        "pctOfClears": 1.23
+        "pctOfClears": 1.14
+      },
+      {
+        "members": [
+          "Anis: Star",
+          "Crown",
+          "Rapi: Red Hood",
+          "Cinderella: Crystal Wave",
+          "Helm"
+        ],
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "3"
+        ],
+        "totalUses": 3221,
+        "stages": 651,
+        "bossClears": 8,
+        "avgPower": 1300000,
+        "lowestPower": 133100,
+        "pctOfClears": 1.06
       },
       {
         "members": [
@@ -2066,25 +2263,19 @@
           "Scarlet: Black Shadow",
           "Nayuta"
         ],
-        "totalUses": 2731,
-        "stages": 186,
-        "avgPower": 1400000,
-        "lowestPower": 278000,
-        "pctOfClears": 1.1
-      },
-      {
-        "members": [
-          "Anis: Star",
-          "Crown",
-          "Rapi: Red Hood",
-          "Cinderella: Crystal Wave",
-          "Helm"
+        "bursts": [
+          "2",
+          "3",
+          "1",
+          "3",
+          "2"
         ],
-        "totalUses": 2536,
-        "stages": 575,
-        "avgPower": 1300000,
-        "lowestPower": 133100,
-        "pctOfClears": 1.02
+        "totalUses": 3181,
+        "stages": 188,
+        "bossClears": 56,
+        "avgPower": 1500000,
+        "lowestPower": 278000,
+        "pctOfClears": 1.05
       },
       {
         "members": [
@@ -2094,54 +2285,63 @@
           "Cinderella",
           "Mast: Romantic Maid"
         ],
-        "totalUses": 2505,
-        "stages": 245,
-        "bossClears": 248,
-        "avgPower": 1900000,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
+        ],
+        "totalUses": 3051,
+        "stages": 262,
+        "bossClears": 309,
+        "avgPower": 1800000,
         "lowestPower": 84300,
-        "pctOfClears": 1.01
+        "pctOfClears": 1.0
       },
       {
         "members": [
-          "Mast: Romantic Maid",
-          "Crown",
           "Anis: Star",
-          "Rapi: Red Hood",
-          "Red Hood"
+          "Crown",
+          "Cinderella: Crystal Wave",
+          "Mast: Romantic Maid",
+          "Snow White: Heavy Arms"
         ],
-        "totalUses": 2308,
-        "stages": 384,
-        "avgPower": 1300000,
-        "lowestPower": 157900,
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "2",
+          "3"
+        ],
+        "totalUses": 2839,
+        "stages": 835,
+        "bossClears": 19,
+        "avgPower": 483900,
+        "lowestPower": 85200,
         "pctOfClears": 0.93
       },
       {
         "members": [
           "Anis: Star",
-          "Moran",
+          "Crown",
           "Rapi: Red Hood",
-          "Crown",
-          "Snow White: Heavy Arms"
+          "Neon: Vision Eye",
+          "Mast: Romantic Maid"
         ],
-        "totalUses": 2133,
-        "stages": 761,
-        "avgPower": 792700,
-        "lowestPower": 226400,
-        "pctOfClears": 0.86
-      },
-      {
-        "members": [
-          "Crown",
-          "Naga",
-          "Alice",
-          "D: Killer Wife",
-          "Red Hood"
+        "bursts": [
+          "1",
+          "2",
+          "3",
+          "3",
+          "2"
         ],
-        "totalUses": 2108,
-        "stages": 731,
-        "avgPower": 420200,
-        "lowestPower": 176600,
-        "pctOfClears": 0.85
+        "totalUses": 2441,
+        "stages": 789,
+        "bossClears": 63,
+        "avgPower": 860000,
+        "lowestPower": 92400,
+        "pctOfClears": 0.8
       }
     ]
   }

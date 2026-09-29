@@ -15,7 +15,7 @@
 | `characterInvestmentNotes.json` | 애장품 필요 여부, 투자 우선순위, **토템 역할** | 76건 (토템 18명) |
 | `treasureEffects.json` | 애장품 효과 | 17명 (전원) |
 | `metaStats.json` | enikk.app 실사용 데이터 — 캐릭터별 채용률(`usageTier`), PvP 조합, **캠페인 조합** | 캠페인 조합 19 / PvP 상위 22 |
-| `soloRaidTeams.json` | enikk 솔로레이드 **실사용 5인 조합** (시즌=원소별) | 5시즌 × 25팀 = 125 |
+| `soloRaidTeams.json` | enikk 솔로레이드 **실사용 5인 조합** (시즌=원소별) | 5시즌 × 25팀 − DB에 없는 캐릭터 든 3팀 = 122 (2026-09-29, 뺀 팀은 `meta.excludedForUnknownMember`) |
 | `towerCompositions.json` | enikk 타워 **실사용 5인 조합** (타워 풀별) | 5풀 × 10팀 = 50 |
 | `enikkAlias.json` | enikk 화면 표기 → 우리 `title` 별칭 + **이름 충돌 근거** | 별칭 8 / 충돌 1 |
 | `tierJudgments.json` | prydwen 티어 불일치를 사람이 판정한 기록 | 8건 (유지 7 / 보류 1) |
