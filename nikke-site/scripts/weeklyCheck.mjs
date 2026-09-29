@@ -237,6 +237,24 @@ for (const [key, block] of Object.entries(metaStats)) {
   }
 }
 
+// PvP 버스트 수급 시트(data/pvpBurstGen.json 출처)에 새 버전이 나왔나. 시트 첫 탭의 변경 기록 맨 윗줄과 우리 source.version을 댄다.
+// 신캐가 시트에 추가되면 그 캐릭터가 든 PvP 조합의 버스트 속도가 "모름"에서 풀린다. (2026-09-29)
+{
+  const bg = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/pvpBurstGen.json'), 'utf8'));
+  const csv = get('https://docs.google.com/spreadsheets/d/11KWYeyvef91A-vfFuqglJJ8-OhR90TcKFVpJ6Ny_5h4/export?format=csv&gid=1990278246');
+  const top = csv && (csv.split('\n').map((l) => l.split(',')).find((r, i, all) => i > 0 && all[i - 1][0] === 'Version' && all[i - 1][1] === 'Date') || null);
+  if (!top) {
+    findings.push({ title: 'PvP 버스트 수급 시트를 못 읽었습니다', body: '접속 실패이거나 시트 구조가 바뀜 — `node scripts/refreshPvpBurstGen.mjs`로 직접 확인. "못 봤다"를 "그대로다"로 넘기지 말 것' });
+  } else if (top[0] !== bg.source.version) {
+    findings.push({
+      title: `PvP 버스트 수급 시트 새 버전 ${top[0]} (${top[1]}) — 우리는 ${bg.source.version}`,
+      body: `변경: ${top.slice(2).join(',').replace(/^"|"$/g, '')}\n\n→ \`node scripts/refreshPvpBurstGen.mjs\`(대조) → \`--write\` → \`node scripts/testRankerTeams.mjs\` (값을 잴 수 있는 PvP 팀 수가 늘면 기준선 EXPECTED_PVP_BURST_TEAMS를 올린다)`,
+    });
+  } else {
+    notes.push(`PvP 버스트 수급 시트 최신(${bg.source.version})`);
+  }
+}
+
 // ── 4. 검사 6종 ────────────────────────────────────────────────────────────
 // 데이터는 안 건드렸지만, 다른 경로로 깨졌을 수 있으니 기준선을 확인한다.
 let verifyOut = '';

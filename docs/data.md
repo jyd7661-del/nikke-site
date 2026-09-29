@@ -22,6 +22,7 @@
 | `game8PageMap.json` · `game8Alias.json` | 일본어 스킬 수집용 game8 페이지 주소·별칭 | 매핑 205 / 별칭 24 |
 | `dataFreshness.json` | 각 파일의 asOf / 만료일 | — |
 | `glossary.json` | 커뮤니티 번역용 게임 용어 3개 국어 표기 (`docs/i18n.md`) | 21건 |
+| `pvpBurstGen.json` | **PvP** 버스트 게이지 수급 — 단계(2RL~4RL) 시간 안에 채우는 %. 커뮤니티 계산기 시트(KosMiu, prydwen PvP 가이드가 링크)를 `scripts/refreshPvpBurstGen.mjs`가 옮긴다(가이드 계산 예시 7개 대조·무기 열 대조). 손으로 고치지 말 것. 애장품·스킬 레벨별 행은 `variants`(기본은 조건 없는 행 → lvl 10) | 180명 · v1.4.22 |
 
 ## enikk 실사용 조합 3종 — 수집 규칙 (2026-08-19~21 신설)
 

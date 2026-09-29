@@ -46,6 +46,13 @@ const EXPECTED_MEDIAN = 74;
 const TOLERANCE = 1;
 // 등록 조합인데 버스트 1·2·3을 못 덮는 것의 수. 0이어야 한다 — 데이터가 깨진 신호다.
 const EXPECTED_REAL_INVALID = 0;
+// PvP 버스트 속도 백분위(아래 절). 2026-09-29 첫 측정: 값 있는 12팀 중앙 74.5%(같은 12팀의 딜 계산 ②는 0.5%·2.5%짜리가 섞여 있었다).
+// 역테스트: 캐릭터끼리 값을 뒤섞으면(--shuffle-burst-gen) 48.4% — 이 기준선에 걸린다.
+// 대조: 헬름·라플라스·드레이크를 애장품 보유로 보면(--treasure) 92.8%(헬름 2RL 값 5.6 → 39.82). enikk 등록 조합엔 애장품 여부가 없어 기본은 미보유.
+const EXPECTED_PVP_BURST_MEDIAN = 74;
+// 값을 잴 수 있는 PvP 등록 팀 수 — 신캐(아니스: 스타·라플라스: 얼티밋 히어로·네온: 비전 아이)가 시트에 없어 22팀 중 10팀이 빠진다.
+// 줄면 이름 연결이나 데이터가 깨진 것이다. 늘면(시트가 신캐를 추가) 올린다.
+const EXPECTED_PVP_BURST_TEAMS = 12;
 
 const arg = (n, d) => {
   const m = process.argv.find((a) => a.startsWith('--' + n + '='));
@@ -184,6 +191,58 @@ console.log('');
 console.log('  무작위 5인 중 버스트 1·2·3이 성립한 비율 ' + (kept / drawn * 100).toFixed(0) + '%'
   + ' · 등록 조합 중 버스트 불성립 ' + realInvalid + '팀');
 
+// --- PvP 버스트 속도 (2026-09-29) ---
+// 위 ②의 PvP 줄은 **딜 계산**이라 PvP를 못 잰다. 딜 계산이 가장 낮게 본 PvP 등록 조합(0.5%·2.5%)이 전부 클립 RL·SG
+// 배터리 팀이었다 — PvP는 먼저 버스트하는 쪽이 이긴다. 그래서 PvP는 **버스트 속도만으로** 따로 잰다(lib/pvpBurst.js,
+// data/pvpBurstGen.json). 메타 풀·버스트 성립·중간 순위는 ②와 같다. 한 명이라도 값이 없는 조합은 양쪽 다 뺀다(모름 ≠ 느림).
+// --shuffle-burst-gen : 역테스트 — 캐릭터끼리 값을 뒤섞으면 50% 근처로 떨어져야 한다.
+// --treasure : 시트에 애장품 행이 있는 캐릭터(헬름·라플라스·드레이크)를 전부 애장품 보유로 본다(등록 조합·무작위 조합 모두).
+//   enikk 등록 조합에는 애장품 여부가 없다 — 그래서 기본은 애장품 없음이고, 이 스위치는 대조용이다.
+const { teamBurstSpeed, burstSpeedScore } = await import(pathToFileURL(path.join(ROOT, 'lib', 'pvpBurst.js')).href);
+const burstGen = j('pvpBurstGen.json');
+if (process.argv.includes('--shuffle-burst-gen')) {
+  const ks = Object.keys(burstGen.byTitle); const vs = ks.map((k) => burstGen.byTitle[k]);
+  for (let i = vs.length - 1; i > 0; i--) { const r = Math.floor(rnd() * (i + 1)); [vs[i], vs[r]] = [vs[r], vs[i]]; }
+  burstGen.byTitle = Object.fromEntries(ks.map((k, i) => [k, vs[i]]));
+}
+const TREASURE = process.argv.includes('--treasure')
+  ? new Set(Object.entries(burstGen.variants || {}).filter(([, v]) => v.some((x) => /^Treasure/.test(x.condition || ''))).map(([k]) => k)) : null;
+const bo = { treasure: TREASURE };
+const pvpBurst = []; let pvpBurstUnknown = 0;
+for (const t of teams.filter((x) => x.src === 'PvP')) {
+  const realS = burstSpeedScore(t.m, burstGen, bo);
+  if (realS == null) { pvpBurstUnknown += 1; continue; }
+  const mpool = cdb.filter((c) => metaPool.PvP.has(c.id) && burstGen.byTitle[c.title]);
+  let below = 0; let n = 0; let guard = 0;
+  while (n < SAMPLES && guard < SAMPLES * 20) {
+    guard += 1;
+    const cand = pick5(mpool);
+    if (!burstValid(cand)) continue;
+    n += 1;
+    const v = burstSpeedScore(cand.map((c) => c.title), burstGen, bo);
+    if (v < realS - 1e-9) below += 1;
+    else if (Math.abs(v - realS) <= 1e-9) below += 0.5;
+  }
+  pvpBurst.push({ m: t.m, pct: below / n * 100, tier: teamBurstSpeed(t.m, burstGen, bo).tier });
+}
+const pvpBurstMed = pvpBurst.length ? med(pvpBurst.map((x) => x.pct)) : null;
+console.log('');
+console.log('  PvP 버스트 속도(딜 계산 대신) — 값 있는 ' + pvpBurst.length + '팀 중앙 ' + (pvpBurstMed ?? NaN).toFixed(1) + '% · 50% 미만 '
+  + pvpBurst.filter((x) => x.pct < 50).length + '팀 · 값 없는 멤버가 있어 뺀 ' + pvpBurstUnknown + '팀'
+  + ' (시트 v' + burstGen.source.version + ')');
+if (process.argv.includes('--worst')) {
+  [...pvpBurst].sort((a, b) => a.pct - b.pct).forEach((r) =>
+    console.log('    ' + r.pct.toFixed(1).padStart(5) + '%  ' + String(r.tier).padEnd(6) + r.m.join(', ')));
+}
+if (pvpBurstMed == null || pvpBurstMed < EXPECTED_PVP_BURST_MEDIAN - TOLERANCE) {
+  problems.push('PvP 버스트 속도 백분위 중앙값이 기준선 ' + EXPECTED_PVP_BURST_MEDIAN + '% → ' + (pvpBurstMed ?? NaN).toFixed(1)
+    + '% — 버스트 수급 데이터(data/pvpBurstGen.json)나 lib/pvpBurst.js가 깨졌을 수 있다');
+}
+if (pvpBurst.length < EXPECTED_PVP_BURST_TEAMS) {
+  problems.push('PvP 버스트 속도를 잴 수 있는 팀이 ' + pvpBurst.length + '팀으로 줄었다(기준 ' + EXPECTED_PVP_BURST_TEAMS
+    + ') — 이름이 안 이어졌거나 값이 빠졌다. node scripts/refreshPvpBurstGen.mjs');
+}
+
 if (process.argv.includes('--by-pool')) {
   const g = {};
   rows.filter((r) => r.pool).forEach((r) => (g[r.pool] ||= []).push(r.pct));
@@ -210,7 +269,7 @@ if (realInvalid > EXPECTED_REAL_INVALID) {
 
 console.log('');
 console.log('  ⚠️ ①은 쉬운 대조다. 멤버가 세면 이기므로 조합 능력을 안 잰다. 판정은 ②로 한다.');
-console.log('  ⚠️ 우리 시뮬레이터는 원소 상성·CC·버스트 순환을 안 본다. PvP는 특히 못 믿는다.');
+console.log('  ⚠️ 우리 시뮬레이터는 CC·버스트 순환을 안 본다. PvP ② 줄(딜 계산)은 못 믿는다 — PvP는 버스트 속도 줄을 볼 것.');
 console.log(line);
 
 if (problems.length) {

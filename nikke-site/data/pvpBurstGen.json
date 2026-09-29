@@ -1,0 +1,1976 @@
+{
+  "_doc": "PvP 버스트 게이지 수급 — 단계 시간 안에 그 니케가 채우는 게이지 %. 5명 합이 100 이상인 가장 빠른 단계가 팀 버스트 속도. 생성: scripts/refreshPvpBurstGen.mjs (손으로 고치지 말 것)",
+  "source": {
+    "name": "Nikke PVP Burst Generation Calculator (KosMiu)",
+    "tab": "Burst Gen",
+    "version": "1.4.22",
+    "versionDate": "3/30/2026",
+    "url": "https://docs.google.com/spreadsheets/d/11KWYeyvef91A-vfFuqglJJ8-OhR90TcKFVpJ6Ny_5h4/edit#gid=136921467",
+    "linkedFrom": "https://www.prydwen.gg/nikke/guides/pvp-burst"
+  },
+  "fetchedAt": "2026-09-29",
+  "tiers": [
+    "2RL",
+    "2.5RL",
+    "3RL",
+    "3.5RL",
+    "4RL"
+  ],
+  "caveats": "PvP 전용. 로켓 빗나감(i-frame)·차지 속도·퀀텀 큐브·재칼 피드·RL이 1·3명만 맞히는 경우는 반영 안 됨(가이드 명시). PvE 게이지와는 다르다",
+  "byTitle": {
+    "Helm": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Snow White: Heavy Arms": {
+      "gen": [
+        33.6,
+        56,
+        67.2,
+        75.6,
+        86.8
+      ],
+      "gun": "SR (AOE+Proc+Cover)"
+    },
+    "Trina": {
+      "gen": [
+        28.8,
+        28.8,
+        43.2,
+        43.2,
+        57.6
+      ],
+      "gun": "Clip RL"
+    },
+    "Anis": {
+      "gen": [
+        28.4,
+        28.4,
+        42.6,
+        42.6,
+        56.8
+      ],
+      "gun": "Clip RL"
+    },
+    "Jackal": {
+      "gen": [
+        28.4,
+        28.4,
+        42.6,
+        42.6,
+        56.8
+      ],
+      "gun": "Clip RL"
+    },
+    "Centi": {
+      "gen": [
+        27.6,
+        27.6,
+        41.4,
+        41.4,
+        55.2
+      ],
+      "gun": "Clip RL"
+    },
+    "Rumani": {
+      "gen": [
+        26,
+        26,
+        39,
+        39,
+        52
+      ],
+      "gun": "Clip RL"
+    },
+    "Emilia": {
+      "gen": [
+        25.2,
+        25.2,
+        37.8,
+        37.8,
+        50.4
+      ],
+      "gun": "RL (Special)"
+    },
+    "Noah": {
+      "gen": [
+        24,
+        24,
+        36,
+        36,
+        48
+      ],
+      "gun": "RL (Special)"
+    },
+    "Laplace": {
+      "gen": [
+        11.6,
+        11.6,
+        17.4,
+        17.4,
+        23.2
+      ],
+      "gun": "RL"
+    },
+    "Pascal": {
+      "gen": [
+        18.4,
+        23,
+        27.6,
+        32.2,
+        36.8
+      ],
+      "gun": "RL (Special)"
+    },
+    "Maiden: Ice Rose": {
+      "gen": [
+        18.2,
+        18.2,
+        27.3,
+        27.3,
+        36.4
+      ],
+      "gun": "RL"
+    },
+    "Liberalio": {
+      "gen": [
+        16.8,
+        16.8,
+        33.6,
+        33.6,
+        50.4
+      ],
+      "gun": "SR"
+    },
+    "Drake": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Maiden": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Neon": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Noir": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Pepper": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Sugar": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Viper": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Soda: Twinkling Bunny": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "A2": {
+      "gen": [
+        15.6,
+        15.6,
+        31.2,
+        31.2,
+        31.2
+      ],
+      "gun": "RL (Special)"
+    },
+    "Nihilister": {
+      "gen": [
+        14,
+        14,
+        25.2,
+        25.2,
+        36.4
+      ],
+      "gun": "SR (Special)"
+    },
+    "Vesti: Tactical Upgrade": {
+      "gen": [
+        7.8,
+        23.4,
+        31.2,
+        31.2,
+        31.2
+      ],
+      "gun": "RL(Special+proc)"
+    },
+    "Zwei": {
+      "gen": [
+        14,
+        17.5,
+        21,
+        24.5,
+        28
+      ],
+      "gun": "2x SG Special"
+    },
+    "Mica: Snow Buddy": {
+      "gen": [
+        12.8,
+        15.6,
+        21.6,
+        24.8,
+        27.6
+      ],
+      "gun": "SMG",
+      "sheetName": "Mica:Snow Buddy(level 10 s2)",
+      "condition": "level 10 s2"
+    },
+    "Arcana": {
+      "gen": [
+        12,
+        12,
+        18,
+        18,
+        24
+      ],
+      "gun": "RL"
+    },
+    "Diesel: Winter Sweets": {
+      "gen": [
+        11.6,
+        11.6,
+        17.4,
+        17.4,
+        23.2
+      ],
+      "gun": "RL"
+    },
+    "Rapunzel": {
+      "gen": [
+        11.6,
+        11.6,
+        17.4,
+        17.4,
+        23.2
+      ],
+      "gun": "RL"
+    },
+    "Ada Wong": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL",
+      "sheetName": "Ada"
+    },
+    "Quiry": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Tia": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Anchor: Innocent Maid": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Anne: Miracle Fairy": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Biscuit": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Mica": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Anchor": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Bay": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Crust": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Noise": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Power": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Sora": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Vesti": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL"
+    },
+    "Grave": {
+      "gen": [
+        9.45,
+        12.15,
+        15.75,
+        18.45,
+        21.6
+      ],
+      "gun": "AR"
+    },
+    "Scarlet": {
+      "gen": [
+        9.45,
+        12.15,
+        15.75,
+        18.45,
+        21.6
+      ],
+      "gun": "AR"
+    },
+    "Mana": {
+      "gen": [
+        8.946,
+        11.502,
+        14.91,
+        17.466,
+        20.448
+      ],
+      "gun": "AR",
+      "sheetName": "Mana (S2 lvl 10)",
+      "condition": "S2 lvl 10"
+    },
+    "Scarlet: Black Shadow": {
+      "gen": [
+        8.75,
+        11.25,
+        13.75,
+        17.5,
+        20
+      ],
+      "gun": "RL"
+    },
+    "Harran": {
+      "gen": [
+        8.7,
+        8.7,
+        14.5,
+        14.5,
+        20.3
+      ],
+      "gun": "SR (Special)"
+    },
+    "Asuka Shikinami Langley": {
+      "gen": [
+        6.3,
+        8.1,
+        10.5,
+        12.3,
+        14.4
+      ],
+      "gun": "AR (Special)",
+      "sheetName": "Asuka(Ammo OLed)",
+      "condition": "Ammo OLed"
+    },
+    "Anis: Sparkling Summer": {
+      "gen": [
+        10,
+        13,
+        13,
+        13,
+        15.5
+      ],
+      "gun": "SG",
+      "sheetName": "Anis:Sparkling Summer(5 Bullet+Resil Cube)",
+      "condition": "5 Bullet+Resil Cube"
+    },
+    "Raven": {
+      "gen": [
+        7,
+        7,
+        14,
+        14,
+        15.4
+      ],
+      "gun": "RL (Special)"
+    },
+    "Arcana: Fortune Mate": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Brid: Silent Track": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Ether": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Privaty: Unkind Maid": {
+      "gen": [
+        8.4,
+        10.4,
+        12.8,
+        14.8,
+        16.8
+      ],
+      "gun": "SG"
+    },
+    "Dorothy: Serendipity": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Guilty": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Isabel": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Naga": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Marciana": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Mary": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Neve": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Poli": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Leona": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Soline: Frost Ticket": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Label": {
+      "gen": [
+        7.1568,
+        9.2016,
+        11.928,
+        13.9728,
+        16.3584
+      ],
+      "gun": "AR",
+      "sheetName": "Label (s2 lvl 10)",
+      "condition": "s2 lvl 10"
+    },
+    "Jill Valentine": {
+      "gen": [
+        6.6,
+        7.7,
+        12.1,
+        14.3,
+        15.4
+      ],
+      "gun": "AR(Special)",
+      "sheetName": "Jill"
+    },
+    "Ein": {
+      "gen": [
+        5.6,
+        5.6,
+        11.2,
+        11.2,
+        14
+      ],
+      "gun": "SR"
+    },
+    "Crow": {
+      "gen": [
+        6.4,
+        7.8,
+        10.8,
+        12.4,
+        13.8
+      ],
+      "gun": "Dual SMG"
+    },
+    "Quency": {
+      "gen": [
+        6.4,
+        7.8,
+        10.8,
+        12.4,
+        13.8
+      ],
+      "gun": "Dual SMG"
+    },
+    "K": {
+      "gen": [
+        6.4,
+        7.8,
+        10.8,
+        12.4,
+        13.8
+      ],
+      "gun": "Dual SMG",
+      "sheetName": "K(excluding procs)",
+      "condition": "excluding procs"
+    },
+    "Soline": {
+      "gen": [
+        6.4,
+        7.8,
+        10.8,
+        12.4,
+        13.8
+      ],
+      "gun": "Dual SMG"
+    },
+    "Belorta": {
+      "gen": [
+        5.6,
+        5.6,
+        11.2,
+        11.2,
+        16.8
+      ],
+      "gun": "RL"
+    },
+    "N102": {
+      "gen": [
+        5.6,
+        5.6,
+        11.2,
+        11.2,
+        16.8
+      ],
+      "gun": "RL"
+    },
+    "Yan": {
+      "gen": [
+        5.6,
+        5.6,
+        11.2,
+        11.2,
+        16.8
+      ],
+      "gun": "RL"
+    },
+    "Yuni": {
+      "gen": [
+        5.6,
+        5.6,
+        11.2,
+        11.2,
+        16.8
+      ],
+      "gun": "RL"
+    },
+    "Rei Ayanami (Tentative Name)": {
+      "gen": [
+        5.5,
+        7,
+        9,
+        10.75,
+        12.5
+      ],
+      "gun": "AR",
+      "sheetName": "Rei Ayanami: (Tentative Name)"
+    },
+    "Mihara": {
+      "gen": [
+        5.25,
+        6.75,
+        8.75,
+        10.25,
+        12
+      ],
+      "gun": "AR"
+    },
+    "Phantom": {
+      "gen": [
+        5.25,
+        6.75,
+        8.75,
+        10.25,
+        12
+      ],
+      "gun": "AR"
+    },
+    "Snow White": {
+      "gen": [
+        5.25,
+        6.75,
+        8.75,
+        10.25,
+        12
+      ],
+      "gun": "AR"
+    },
+    "Ade": {
+      "gen": [
+        5.25,
+        6.75,
+        8.75,
+        10.25,
+        12
+      ],
+      "gun": "AR"
+    },
+    "Moran": {
+      "gen": [
+        5.25,
+        6.75,
+        8.75,
+        10.25,
+        12
+      ],
+      "gun": "AR"
+    },
+    "Ade: Agent Bunny": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Eunhwa: Tactical Upgrade": {
+      "gen": [
+        5.8,
+        5.8,
+        8.7,
+        8.7,
+        11.6
+      ],
+      "gun": "SR"
+    },
+    "Eunhwa": {
+      "gen": [
+        5.8,
+        5.8,
+        8.7,
+        8.7,
+        11.6
+      ],
+      "gun": "SR"
+    },
+    "Himeno": {
+      "gen": [
+        5.8,
+        5.8,
+        8.7,
+        8.7,
+        11.6
+      ],
+      "gun": "SR"
+    },
+    "Rapunzel: Pure Grace": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Red Hood": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Ram": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Bready": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Cocoa": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Dolla": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Exia": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Mari Makinami Illustrious": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR",
+      "sheetName": "Mari"
+    },
+    "Maxwell": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Milk": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Milk: Blooming Bunny": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Rouge": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Takina Inoue": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR",
+      "sheetName": "Takina"
+    },
+    "Trony": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "D: Killer Wife": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Velvet": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Yulha": {
+      "gen": [
+        5.5,
+        5.5,
+        8.25,
+        8.25,
+        11
+      ],
+      "gun": "SR"
+    },
+    "Admi": {
+      "gen": [
+        5.4,
+        5.4,
+        8.1,
+        8.1,
+        10.8
+      ],
+      "gun": "SR"
+    },
+    "Sakura": {
+      "gen": [
+        5.4,
+        5.4,
+        8.1,
+        8.1,
+        10.8
+      ],
+      "gun": "SR"
+    },
+    "Ludmilla": {
+      "gen": [
+        4.8,
+        5.85,
+        8.1,
+        9.3,
+        10.35
+      ],
+      "gun": "SMG"
+    },
+    "Sakura: Bloom in Summer": {
+      "gen": [
+        4.8,
+        6,
+        8,
+        8.2,
+        10.8
+      ],
+      "gun": "AR"
+    },
+    "Delta": {
+      "gen": [
+        5.3,
+        5.3,
+        7.95,
+        7.95,
+        10.6
+      ],
+      "gun": "SR"
+    },
+    "Frima": {
+      "gen": [
+        5.3,
+        5.3,
+        7.95,
+        7.95,
+        10.6
+      ],
+      "gun": "SR"
+    },
+    "Mary: Bay Goddess": {
+      "gen": [
+        5.3,
+        5.3,
+        7.95,
+        7.95,
+        10.6
+      ],
+      "gun": "SR"
+    },
+    "Modernia": {
+      "gen": [
+        3.5,
+        5.1,
+        7.2,
+        8.9,
+        11
+      ],
+      "gun": "MG"
+    },
+    "Quency: Escape Queen": {
+      "gen": [
+        4.736,
+        5.772,
+        7.992,
+        9.176,
+        10.212
+      ],
+      "gun": "Dual SMG"
+    },
+    "EVE": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR",
+      "sheetName": "Eve"
+    },
+    "2B": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Tove": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Blanc": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Brid": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Dorothy": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Folkwang": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Guillotine: Winter Slayer": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Helm: Aquamarine": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR",
+      "sheetName": "Helm:Aquamarine"
+    },
+    "Julia": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Mori": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Privaty": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Rapi": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Rosanna: Chic Ocean": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Rupee": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Rupee: Winter Shopper": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Sin": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Alice": {
+      "gen": [
+        2.8,
+        5.6,
+        5.6,
+        5.6,
+        8.4
+      ],
+      "gun": "SR"
+    },
+    "Chime": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Chisato Nishikigi": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG",
+      "sheetName": "Chisato"
+    },
+    "Clay": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "D": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "E.H.": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Epinel": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Lily": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Liter": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Makima": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Misato Katsuragi": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG",
+      "sheetName": "Misato"
+    },
+    "Mast": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Miranda": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Nayuta": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Nero": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Novel": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Rei": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Little Mermaid": {
+      "gen": [
+        3.7,
+        4.4,
+        5.9,
+        6.7,
+        7.4
+      ],
+      "gun": "SMG"
+    },
+    "Alice: Wonderland Bunny": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Signal": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Sakura Suzuhara": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Volume": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    },
+    "Rem": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Aria": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Asuka: WILLE": {
+      "gen": [
+        1.75,
+        2.6,
+        3.65,
+        4.5,
+        5.55
+      ],
+      "gun": "MG",
+      "sheetName": "Asuka: Wille"
+    },
+    "Crown": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Diesel": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Emma": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Emma: Tactical Upgrade": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Elegg: Boom and Shock": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Elegg": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Flora": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Kilo": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Guillotine": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Mihara: Bonding Chain": {
+      "gen": [
+        2.55,
+        3.55,
+        4.5,
+        5.3,
+        6.25
+      ],
+      "gun": "MG"
+    },
+    "Neon: Blue Ocean": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Rapi: Red Hood": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Rei Ayanami": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Rosanna": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Mast: Romantic Maid": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Soda": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Ludmilla: Winter Owner": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Cinderella": {
+      "gen": [
+        1.8,
+        2.7,
+        3.6,
+        4.05,
+        4.95
+      ],
+      "gun": "RL(Special)",
+      "sheetName": "Cinderella(weird aim)",
+      "condition": "weird aim"
+    },
+    "Snow White: Innocent Days": {
+      "gen": [
+        1.05,
+        1.35,
+        1.8,
+        2.1,
+        2.45
+      ],
+      "gun": "AR",
+      "sheetName": "Snow White Innocent Days"
+    },
+    "IDoll Ocean": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG",
+      "sheetName": "iDoll Ocean"
+    },
+    "Product 08": {
+      "gen": [
+        5.6,
+        5.6,
+        8.4,
+        8.4,
+        11.2
+      ],
+      "gun": "SR"
+    },
+    "Product 12": {
+      "gen": [
+        1.75,
+        2.55,
+        3.6,
+        4.45,
+        5.5
+      ],
+      "gun": "MG"
+    },
+    "Product 23": {
+      "gen": [
+        18,
+        22.5,
+        27,
+        31.5,
+        36
+      ],
+      "gun": "Clip SG"
+    },
+    "Soldier EG": {
+      "gen": [
+        4.2,
+        5.4,
+        7,
+        8.2,
+        9.6
+      ],
+      "gun": "AR"
+    },
+    "Soldier FA": {
+      "gen": [
+        8,
+        10,
+        12,
+        14,
+        16
+      ],
+      "gun": "SG"
+    },
+    "Soldier OW": {
+      "gen": [
+        3.2,
+        3.9,
+        5.4,
+        6.2,
+        6.9
+      ],
+      "gun": "SMG"
+    }
+  },
+  "variants": {
+    "Helm": [
+      {
+        "sheetName": "Helm Treasure(s2+max s1)",
+        "condition": "Treasure, s2+max s1",
+        "gen": [
+          39.82,
+          39.82,
+          59.73,
+          59.73,
+          79.64
+        ]
+      },
+      {
+        "sheetName": "Helm treasure(s1 lvl 4)",
+        "condition": "Treasure, s1 lvl 4",
+        "gen": [
+          26.42,
+          26.42,
+          39.63,
+          39.63,
+          52.84
+        ]
+      }
+    ],
+    "Emilia": [
+      {
+        "sheetName": "Emilia(21% CS)",
+        "condition": "21% CS",
+        "gen": [
+          25.2,
+          37.8,
+          37.8,
+          50.4,
+          63
+        ]
+      }
+    ],
+    "Laplace": [
+      {
+        "sheetName": "Laplace(Treasure)",
+        "condition": "Treasure",
+        "gen": [
+          23.2,
+          23.2,
+          34.8,
+          34.8,
+          46.4
+        ]
+      }
+    ],
+    "Drake": [
+      {
+        "sheetName": "Drake Treasure",
+        "condition": "Treasure",
+        "gen": [
+          18,
+          22.95,
+          27.45,
+          31.95,
+          36.45
+        ]
+      }
+    ],
+    "Mica: Snow Buddy": [
+      {
+        "sheetName": "Mica:Snow Buddy(level 1 s2)",
+        "condition": "level 1 s2",
+        "gen": [
+          7.04,
+          8.58,
+          11.88,
+          13.64,
+          15.18
+        ]
+      }
+    ],
+    "Mana": [
+      {
+        "sheetName": "Mana (s2 lvl 4)",
+        "condition": "s2 lvl 4",
+        "gen": [
+          7.938,
+          10.206,
+          13.23,
+          15.498,
+          18.144
+        ]
+      }
+    ],
+    "Label": [
+      {
+        "sheetName": "Label (s2 lvl 7)",
+        "condition": "s2 lvl 7",
+        "gen": [
+          6.7536,
+          8.6832,
+          11.256,
+          13.1856,
+          15.4368
+        ]
+      },
+      {
+        "sheetName": "Label (s2 lvl 4)",
+        "condition": "s2 lvl 4",
+        "gen": [
+          6.3504,
+          8.1648,
+          10.584,
+          12.3984,
+          14.5152
+        ]
+      }
+    ]
+  },
+  "unmatched": [
+    "Delta: True Ninja"
+  ],
+  "rejected": [
+    {
+      "sheetName": "iDoll Flower",
+      "reason": "무기 불일치 — 시트 \"AR\" · DB rl"
+    },
+    {
+      "sheetName": "iDoll Sun",
+      "reason": "무기 불일치 — 시트 \"RL\" · DB ar"
+    }
+  ]
+}
