@@ -350,6 +350,7 @@ async function tryAiTeam({ client, supabase, characters, mode, boss, tower, trea
       totalScore: scored.tierTotal,
       reasons: scored.reasons,
       bossDefenseNote: scored.bossDefenseNote || null,
+      pvpBurstNote: scored.pvpBurstNote || null,
       aiReasoning: reasoning,
     };
   };
@@ -860,6 +861,8 @@ export async function POST(req) {
         // 보스별 방어 구성 한 줄(없으면 null). reasons는 화면에 안 그리므로 따로 넘긴다(2026-09-13).
         // 캐시는 AI 설명문만 저장하므로 캐시 적중 때도 이 값은 매번 새로 계산돼 나간다.
         bossDefenseNote: chosen.bossDefenseNote || null,
+        // PvP 버스트 속도 한 줄(PvP가 아니거나 값이 없는 멤버가 있으면 null). 2026-09-29
+        pvpBurstNote: chosen.pvpBurstNote || null,
       },
       aiReasoning,
       // 'enikk-real-usage' | 'prydwen-exact-match' | 'skill-synergy-fallback' | 'ai-composed'(2026-09-15, AI_TEAMS_MODE=on)

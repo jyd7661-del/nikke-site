@@ -136,6 +136,9 @@ const KO = {
   real_pvp_subset: ({ combo, sourceLabel, wr, n, adoption }) =>
     `[실전 기록] ${combo.join(' + ')} (${sourceLabel}) 조합은 챔피언 아레나 실제 대전에서 ` +
     `승률 ${wr}%(${n}전, 채택률 ${adoption}%)를 기록했습니다. (출처: enikk.app)`,
+  pvp_burst_speed: ({ tier, slower }) => (slower
+    ? `[버스트 속도] 5명의 버스트 게이지 수급을 합쳐도 4RL(로켓 4발) 안에 게이지가 차지 않습니다. PvP 버스트 가이드는 이보다 느린 팀을 권하지 않습니다. (출처: prydwen.gg PvP 버스트 가이드의 계산기)`
+    : `[버스트 속도] 이 조합은 ${tier} 팀입니다 — 로켓 ${tier.replace('RL', '')}발 만에 버스트 게이지가 찹니다. PvP는 먼저 버스트하는 쪽이 유리합니다. (출처: prydwen.gg PvP 버스트 가이드의 계산기)`),
   real_pvp_exact: ({ wr, n, adoption }) =>
     `[실전 기록] 이 5인 조합은 챔피언 아레나에서 실제로 승률 ${wr}%(${n}전, ` +
     `채택률 ${adoption}%)로 기록된 완전 일치 구성입니다. (출처: enikk.app)`,
@@ -304,6 +307,9 @@ const EN = {
   real_pvp_subset: ({ combo, sourceLabel, wr, n, adoption }) =>
     `[Field record] The ${combo.join(' + ')} (${sourceLabel}) combination recorded a ` +
     `${wr}% win rate in real Champion Arena matches (${n} matches, ${adoption}% adoption). (Source: enikk.app)`,
+  pvp_burst_speed: ({ tier, slower }) => (slower
+    ? `[Burst speed] Even combined, these 5 don't fill the Burst gauge within 4RL (4 rocket shots). The PvP burst guide doesn't recommend teams slower than that. (Source: prydwen.gg PvP burst guide calculator)`
+    : `[Burst speed] This is a ${tier} team — the Burst gauge fills in ${tier.replace('RL', '')} rocket shots. In PvP, bursting first is an advantage. (Source: prydwen.gg PvP burst guide calculator)`),
   real_pvp_exact: ({ wr, n, adoption }) =>
     `[Field record] This exact five-unit team is recorded in Champion Arena with a ${wr}% win rate ` +
     `(${n} matches, ${adoption}% adoption). (Source: enikk.app)`,
@@ -465,6 +471,9 @@ const JA = {
   real_pvp_subset: ({ combo, sourceLabel, wr, n, adoption }) =>
     `［実戦記録］${combo.join(' + ')}（${sourceLabel}）の組み合わせは、チャンピオンアリーナの実際の対戦で` +
     `勝率${wr}%（${n}戦、採用率${adoption}%）を記録しました。（出典：enikk.app）`,
+  pvp_burst_speed: ({ tier, slower }) => (slower
+    ? `［バースト速度］5人のバーストゲージ回収を合わせても4RL（ロケット4発）以内にゲージが溜まりません。PvPバーストガイドはこれより遅い編成を推奨していません。（出典：prydwen.gg PvPバーストガイドの計算機）`
+    : `［バースト速度］この編成は${tier}編成です — ロケット${tier.replace('RL', '')}発でバーストゲージが溜まります。PvPでは先にバーストした側が有利です。（出典：prydwen.gg PvPバーストガイドの計算機）`),
   real_pvp_exact: ({ wr, n, adoption }) =>
     `［実戦記録］この5人編成は、チャンピオンアリーナで実際に勝率${wr}%（${n}戦、採用率${adoption}%）を` +
     `記録した完全一致の構成です。（出典：enikk.app）`,

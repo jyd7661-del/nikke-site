@@ -42,7 +42,7 @@ const fixImports = (src) =>
       `from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'data', `${name}.json`)).href)} with { type: 'json' };`)
     .replace(/from '\.\/(\w+)(?:\.js)?';/g, (_, name) =>
       `from ${JSON.stringify(pathToFileURL(path.join(tmp, `${name}.mjs`)).href)};`);
-for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets']) {
+for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets', 'pvpBurst']) {
   fs.writeFileSync(path.join(tmp, `${f}.mjs`), fixImports(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
 }
 const engine = await import(pathToFileURL(path.join(tmp, 'synergyEngine.mjs')).href);
@@ -187,6 +187,35 @@ for (const t of teams) {
     const only = engine.recommendTeams(roster.filter((c) => c.title !== 'Quency: Escape Queen'), 'bossing', {}).teams?.[0];
     if (!only) problems.push('[버스트 3 단독 관문] 3버스트가 1명뿐인 로스터에서 추천이 비었다');
   }
+}
+
+// --- PvP 버스트 속도 관문 (2026-09-29) — lib/pvpBurst.js · recommendTeams ---
+// ① 1위가 4RL보다 느리면 4RL 이내로 **확인된** 후보로 바꾼다. 이 로스터는 관문 없이는 느린 팀(99)이 1위이고,
+//    첫 설계(정렬 비교에 "느림이면 뒤로")에서는 값이 없는 퀸이 든 팀으로 빠져나갔다 — 그 고장까지 잡는다.
+// ② 애장품은 가진 것만 반영한다(유저 2026-09-29: 없는데 있는 것처럼 짜면 초보가 곤란하다).
+// ③ 값이 없는 멤버가 있으면 모름(null) — 문장도 안 붙는다.
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const roster = T(['Soda: Twinkling Bunny', 'Dolla', 'Sakura: Bloom in Summer', 'Chime', 'Rem', 'Ada Wong', 'Helm: Aquamarine', 'Grave',
+    'Nayuta', 'Flora', 'Anchor: Innocent Maid', 'Signal', 'Yuni', 'Queen (Makoto Niijima)', 'Rapunzel: Pure Grace']);
+  if (roster.some((c) => !c)) problems.push('[PvP 버스트 관문] 시험용 이름이 DB에 없다');
+  else {
+    const raw = engine.recommendTeams(roster, 'pvp', { skipPvpBurstGate: true }).teams?.[0];
+    const gated = engine.recommendTeams(roster, 'pvp', {}).teams?.[0];
+    if (raw?.pvpBurst?.tier !== 'slower') problems.push(`[PvP 버스트 관문] 관문 없이도 1위가 느린 팀이 아니다(${raw?.pvpBurst?.tier}) — 시험 로스터가 더는 이 고장을 재현하지 못한다`);
+    if (!gated?.pvpBurst?.tier) problems.push('[PvP 버스트 관문] 느린 1위를 값을 모르는 팀으로 바꿨다 — 대체 후보는 4RL 이내로 확인된 팀이어야 한다');
+    else if (gated.pvpBurst.tier === 'slower') problems.push('[PvP 버스트 관문] 4RL 이내 후보가 있는데 4RL보다 느린 팀이 1위로 나왔다');
+  }
+  const helm = byTitle.get('Helm');
+  const nayutaTeam = T(['Nayuta', 'Helm', 'Laplace', 'Red Hood', 'Emilia']);
+  const plain = engine.scoreTeam(nayutaTeam, 'pvp', {}).pvpBurst?.tier;
+  const withT = engine.scoreTeam(nayutaTeam, 'pvp', { treasureIds: new Set([helm?.id]) }).pvpBurst?.tier;
+  if (plain !== '4RL' || withT !== '3RL') problems.push(`[PvP 버스트 애장품] 헬름 애장품 미보유 4RL · 보유 3RL이어야 한다 — 실제 ${plain} · ${withT}`);
+  const unk = engine.scoreTeam(T(['Anis: Star', 'Blanc', 'Privaty', 'Biscuit', 'Maiden: Ice Rose']), 'pvp', {});
+  if (unk.pvpBurst?.tier !== null || (unk.reasons || []).some((r) => String(r).startsWith('[버스트 속도]'))) {
+    problems.push('[PvP 버스트 모름] 값이 없는 멤버(아니스 : 스타)가 있는데 속도를 냈거나 문장을 붙였다');
+  }
+  if (engine.scoreTeam(nayutaTeam, 'bossing', {}).pvpBurst !== null) problems.push('[PvP 버스트] PvP가 아닌 모드에서 속도를 계산했다');
 }
 
 const line = '─'.repeat(88);

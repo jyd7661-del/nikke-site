@@ -278,6 +278,12 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           {team.bossDefenseNote}
         </p>
       )}
+      {/* PvP 버스트 속도(2026-09-29) — 같은 방식으로 엔진이 조립한 문장. 값이 없는 멤버가 있으면 오지 않는다. */}
+      {team.pvpBurstNote && (
+        <p className="text-xs text-slate-300 bg-slate-800/60 border border-slate-600 rounded-lg px-3 py-2 mb-3">
+          {team.pvpBurstNote}
+        </p>
+      )}
       {reasoning && (
         <div className="bg-slate-900/60 border border-nikke-accent/20 rounded-lg p-3 mb-3">
           <p className="text-xs text-nikke-accent font-semibold mb-1.5">

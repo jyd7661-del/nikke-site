@@ -32,7 +32,9 @@ import metaStats from '../data/metaStats.json';
 import soloRaidTeams from '../data/soloRaidTeams.json';
 import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
+import pvpBurstGen from '../data/pvpBurstGen.json';
 import { engineText } from './engineReasons';
+import { teamBurstSpeed } from './pvpBurst';
 import { deadBuffCount, emptyBuffMembers } from './buffTargets';
 
 // --- 근거 문장의 언어 처리 (2026-08-25) ---
@@ -1346,6 +1348,20 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   const distinctElements = new Set(members.map((m) => normalizeElement(m.element)).filter(Boolean));
   score += (distinctElements.size - 1) * WEIGHTS.ELEMENT_DIVERSITY;
 
+  // --- PvP 버스트 속도 (2026-09-29) ---
+  // PvP는 먼저 버스트하는 쪽이 이긴다. 5명의 게이지 수급 합으로 2RL~4RL 단계를 낸다(lib/pvpBurst.js, 출처 data/pvpBurstGen.json).
+  // 애장품은 **유저가 가진 것만** 반영한다 — 헬름은 애장품 유무로 2RL 값이 7배 차이 나는데, 없는데 있는 것처럼 짜면
+  // 초보가 그 조합을 못 굴린다(2026-09-29 유저). 한 명이라도 값이 없으면 tier null(모름) — 점수·순위에 영향 없음.
+  let pvpBurst = null;
+  let pvpBurstNote = null;
+  if (mode === 'pvp') {
+    const treasureTitles = new Set(members.filter((m) => treasureIds.has(m.id)).map((m) => m.title));
+    const r = teamBurstSpeed(titles, pvpBurstGen, { treasure: treasureTitles });
+    pvpBurst = { tier: r.tier, missing: r.missing };
+    // 화면에도 한 줄로 띄운다(bossDefenseNote와 같은 방식 — reasons는 화면에 안 그린다).
+    if (r.tier) { pvpBurstNote = R.pvp_burst_speed({ tier: r.tier, slower: r.tier === 'slower' }); reasons.push(pvpBurstNote); }
+  }
+
   // --- 카운터 정보 (PvP일 때만 참고 정보로 추가) ---
   if (mode === 'pvp') {
     synergyNotes.counters.forEach((c) => {
@@ -1572,12 +1588,15 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     // scripts/probeRecommendations.mjs가 "추천에 죽은 자리가 있는가"를 세는 데 쓴다.
     wastedCount: burstAnalysis.wasted.length,
     soloBurst3,
+    // PvP만: { tier: '2RL'…'4RL' | 'slower' | null(모름), missing: 값 없는 멤버 }. 폴백 순위와 화면 표시에 쓴다.
+    pvpBurst,
     reasons,
     // 보스별 방어 구성 문장 — reasons에도 들어 있지만 **따로도** 내보낸다. (2026-09-13)
     // 추천 화면(ResultPanel)은 reasons를 렌더하지 않는다(AI 프롬프트 재료로만 쓰인다). 이 문장은
     // "이 보스는 방어형 없이도 된다"처럼 사용자가 **직접 보고 판단할 사실**이라 화면에 한 줄로 띄운다.
     // reasons 배열에서 머리말로 골라내면 3개 국어라 깨지기 쉬워 구조로 넘긴다.
     bossDefenseNote,
+    pvpBurstNote,
     dataFreshness: getDataFreshnessMeta(),
   };
 }
@@ -1803,6 +1822,20 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       tieKey(a).localeCompare(tieKey(z))
   );
 
+  // 2026-09-29: **PvP — 1위가 4RL보다 느리면, 4RL 이내로 확인된 가장 높은 후보를 앞으로 올린다**(없으면 그대로).
+  // 출처 가이드(prydwen PvP Burst Generation) 원문: "Teams that are slower than 4RL are not recommended".
+  // 가중치가 아니라 관문이다(원칙 2).
+  //
+  // ⚠️ 처음엔 정렬 비교에 "느림이면 뒤로"를 넣었다. 그랬더니 바뀐 답 14건 중 **9건이 값을 모르는 팀으로 빠져나갔다**
+  //    (느린 소다 : 트윙클링 바니 → 값 없는 퀸 등). 모르는 팀도 느릴 수 있는데, 관문이 확인된 느림만 벌하니
+  //    "모르는 쪽"이 이득을 봤다. 그래서 **대체 후보는 값이 있고 4RL 이내로 확인된 팀만** 쓴다.
+  //    1위가 원래 모르는 팀이면 건드리지 않는다 — 모름 ≠ 느림(신캐가 든 팀을 벌하지 않는다).
+  // `skipPvpBurstGate`는 이전 엔진 대비 비교용 스위치다. 화면에서는 쓰지 않는다.
+  if (mode === 'pvp' && !opts.skipPvpBurstGate && candidateTeams[0]?.pvpBurst?.tier === 'slower') {
+    const i = candidateTeams.findIndex((t) => t.pvpBurst?.tier && t.pvpBurst.tier !== 'slower');
+    if (i > 0) candidateTeams.unshift(...candidateTeams.splice(i, 1));
+  }
+
   // 2026-09-01: **팀도 에러도 없이 빈 결과를 내던 구멍을 막는다.**
   //
   // 위의 `missing` 검사는 "각 버스트 단계에 1명 이상 있는가"만 본다. 그런데 5인을 채우려면
@@ -1986,6 +2019,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     reasons: [headline, ...best.scored.reasons, ...treasureReasons],
     // ⚠️ scoreTeam 결과를 필드를 골라 옮기는 함수다 — 새 필드는 여기 따로 적어야 한다(2026-09-13).
     bossDefenseNote: best.scored.bossDefenseNote || null,
+    pvpBurstNote: best.scored.pvpBurstNote || null,
     realUsage: source === 'campaign'
       ? { kind: 'campaign', totalUses: e.totalUses, pctOfClears: e.pctOfClears }
       : source === 'soloraid'
@@ -2266,6 +2300,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     // ⚠️ 이 함수는 scoreTeam 결과를 **필드를 골라** 옮긴다. 새 필드를 여기 안 적으면 조용히 빠진다
     //    (2026-09-13 방어 구성 문장을 넣을 때 실제로 빠질 뻔했다 — recommendTeams만 `...result`로 통째로 옮긴다).
     bossDefenseNote: best.scored.bossDefenseNote || null,
+    pvpBurstNote: best.scored.pvpBurstNote || null,
     // 원문(영어) 그대로 사용하지 말 것 — 호출부에서 이 두 필드를 참고 자료로만 삼아
     // AI에게 한국어(또는 선택 언어)로 재구성하도록 넘긴다.
     archetypeName: best.archetype.name,

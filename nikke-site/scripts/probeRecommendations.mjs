@@ -56,7 +56,7 @@ const fixImports = (src) =>
       `from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'data', `${name}.json`)).href)} with { type: 'json' };`)
     .replace(/from '\.\/(\w+)(?:\.js)?';/g, (_, name) =>
       `from ${JSON.stringify(pathToFileURL(path.join(tmp, `${name}.mjs`)).href)};`);
-for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets']) {
+for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets', 'pvpBurst']) {
   fs.writeFileSync(path.join(tmp, `${f}.mjs`), fixImports(fs.readFileSync(path.join(LIB, `${f}.js`), 'utf8')));
 }
 const E = await import(pathToFileURL(path.join(tmp, 'synergyEngine.mjs')).href);
