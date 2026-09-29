@@ -30,6 +30,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import { towerEligible } from '../lib/aiTeamPrompt.js';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
@@ -38,7 +39,8 @@ const { scoreComposition } = await import(pathToFileURL(path.join(ROOT, 'scripts
 // 기준선 — 메타 풀 백분위의 중앙값(%). 기본 표본 400에서 실측 70.5 (2026-09-09 버스트 쿨 감소 반영으로 69.5 → 70.5) (표본 1200이면 71.3 —
 // 표본 수를 바꾸면 값이 조금 움직이므로 기준선은 기본값 기준이다). 떨어지면 시뮬레이터를 나쁘게 바꾼 것이다.
 // 2026-09-29 속성 우위 반영(레이드를 그 시즌 약점으로 채점) 69 → 72.
-const EXPECTED_MEDIAN = 72;
+// 같은 날 타워를 입장 가능 캐릭터끼리 비교(채점 공정성 — 모델은 그대로) 72 → 74. 타워 중앙은 오히려 68.3 → 64.5로 내려갔다(`--by-pool`).
+const EXPECTED_MEDIAN = 74;
 // 씨앗이 고정이라 코드가 그대로면 값도 그대로다 — 여유를 크게 둘 이유가 없다.
 // 2로 뒀더니 **버프를 통째로 무시하는 역테스트(69.5 → 67.5)가 빠져나갔다.** 1로 조인다.
 const TOLERANCE = 1;
@@ -50,6 +52,8 @@ const arg = (n, d) => {
   return m ? m.split('=')[1] : d;
 };
 const SAMPLES = Number(arg('samples', 400)) || 400;
+// --unfair-tower : 2026-09-29 이전처럼 타워도 입장 규칙 없이 비교(대조용)
+const FAIR_TOWER = !process.argv.includes('--unfair-tower');
 
 const cdb = j('characterDatabase.json').filter((c) => (c.skills || []).length);
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
@@ -81,7 +85,7 @@ const teams = [];
 j('soloRaidTeams.json').seasons.forEach((s) => (s.teams || []).forEach((t) =>
   teams.push({ src: '솔로레이드', m: t.members, boss: s.weakness })));
 j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t) =>
-  teams.push({ src: '타워', m: t.members })));
+  teams.push({ src: '타워', m: t.members, pool: p.pool, tower: p.tower ?? null })));
 const ms = j('metaStats.json');
 (ms.campaignCompositions?.list || []).forEach((t) => teams.push({ src: '캠페인', m: t.members }));
 (ms.pvp?.topTeams || []).forEach((t) => teams.push({ src: 'PvP', m: t.members }));
@@ -118,7 +122,10 @@ for (const t of teams) {
 
   // ① 무작위 풀 — 실제 5명 + 무작위 15명
   const ids = new Set(real.map((c) => c.id));
-  const others = cdb.filter((c) => !ids.has(c.id));
+  // 기업 타워는 **그 타워에 들어갈 수 있는 캐릭터끼리** 비교한다(2026-09-29). 그전에는 입장 불가 캐릭터가 섞인 조합과
+  // 겨뤄 채점이 불공정했다 — 레이드를 그 시즌 약점으로 채점한 것과 같은 종류의 수정. 규칙은 엔진·AI 검산기와 같은 towerEligible.
+  const eligible = (c) => (t.src === '타워' && FAIR_TOWER ? towerEligible(c, t.tower) : true);
+  const others = cdb.filter((c) => !ids.has(c.id) && eligible(c));
   const rpool = [...real];
   for (let i = 0; i < 15; i++) rpool.push(...others.splice(Math.floor(rnd() * others.length), 1));
   // ⚠️ **동점을 절반으로 센다(중간 순위).** `<=`로 세면 **점수가 모두 같은 계산기가 100%**를
@@ -133,7 +140,7 @@ for (const t of teams) {
   (easy[t.src] = easy[t.src] || []).push(belowE / SAMPLES * 100);
 
   // ② 메타 풀 — 버스트가 성립하는 조합끼리만
-  const mpool = cdb.filter((c) => metaPool[t.src].has(c.id));
+  const mpool = cdb.filter((c) => metaPool[t.src].has(c.id) && eligible(c));
   let belowH = 0; let n = 0; let guard = 0;
   while (n < SAMPLES && guard < SAMPLES * 20) {
     guard += 1; drawn += 1;
@@ -147,7 +154,7 @@ for (const t of teams) {
   if (n) {
     const pct = belowH / n * 100;
     (hard[t.src] = hard[t.src] || []).push(pct);
-    rows.push({ src: t.src, m: t.m, pct });
+    rows.push({ src: t.src, m: t.m, pct, pool: t.pool });
   }
 }
 
@@ -177,6 +184,11 @@ console.log('');
 console.log('  무작위 5인 중 버스트 1·2·3이 성립한 비율 ' + (kept / drawn * 100).toFixed(0) + '%'
   + ' · 등록 조합 중 버스트 불성립 ' + realInvalid + '팀');
 
+if (process.argv.includes('--by-pool')) {
+  const g = {};
+  rows.filter((r) => r.pool).forEach((r) => (g[r.pool] ||= []).push(r.pct));
+  console.log('\n  타워 풀별 메타 풀 백분위(중앙) — ' + Object.entries(g).map(([k, v]) => `${k} ${med(v).toFixed(1)}%`).join(' · '));
+}
 if (process.argv.includes('--worst')) {
   console.log('\n  우리 계산이 가장 낮게 본 등록 조합 8건 — 여기에 우리가 못 보는 것이 있다');
   [...rows].sort((a, b) => a.pct - b.pct).slice(0, 8).forEach((r) =>
