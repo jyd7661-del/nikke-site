@@ -37,7 +37,8 @@ const { scoreComposition } = await import(pathToFileURL(path.join(ROOT, 'scripts
 
 // 기준선 — 메타 풀 백분위의 중앙값(%). 기본 표본 400에서 실측 70.5 (2026-09-09 버스트 쿨 감소 반영으로 69.5 → 70.5) (표본 1200이면 71.3 —
 // 표본 수를 바꾸면 값이 조금 움직이므로 기준선은 기본값 기준이다). 떨어지면 시뮬레이터를 나쁘게 바꾼 것이다.
-const EXPECTED_MEDIAN = 70;
+// 2026-09-29 속성 우위 반영(레이드를 그 시즌 약점으로 채점) 69 → 72.
+const EXPECTED_MEDIAN = 72;
 // 씨앗이 고정이라 코드가 그대로면 값도 그대로다 — 여유를 크게 둘 이유가 없다.
 // 2로 뒀더니 **버프를 통째로 무시하는 역테스트(69.5 → 67.5)가 빠져나갔다.** 1로 조인다.
 const TOLERANCE = 1;
@@ -78,7 +79,7 @@ function burstValid(team) {
 // --- 등록된 실사용 조합 (수집 규칙은 docs/data.md) ---
 const teams = [];
 j('soloRaidTeams.json').seasons.forEach((s) => (s.teams || []).forEach((t) =>
-  teams.push({ src: '솔로레이드', m: t.members })));
+  teams.push({ src: '솔로레이드', m: t.members, boss: s.weakness })));
 j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t) =>
   teams.push({ src: '타워', m: t.members })));
 const ms = j('metaStats.json');
@@ -111,7 +112,9 @@ for (const t of teams) {
   const real = t.m.map((x) => byTitle.get(x)).filter(Boolean);
   if (real.length !== 5) continue;
   if (!burstValid(real)) realInvalid += 1;
-  const realScore = scoreComposition(real).total;
+  // 레이드는 **그 시즌 보스 약점**으로 채점한다(2026-09-29 — 시뮬레이터가 속성 우위를 안 볼 때 레이드 125팀 중 39팀이 50% 미만이었다).
+  const so = t.boss ? { bossElement: t.boss } : {};
+  const realScore = scoreComposition(real, so).total;
 
   // ① 무작위 풀 — 실제 5명 + 무작위 15명
   const ids = new Set(real.map((c) => c.id));
@@ -123,7 +126,7 @@ for (const t of teams) {
   //    중간 순위로 세면 상수 계산기는 정확히 50%가 된다.
   let belowE = 0;
   for (let k = 0; k < SAMPLES; k++) {
-    const v = scoreComposition(pick5(rpool)).total;
+    const v = scoreComposition(pick5(rpool), so).total;
     if (v < realScore - 1e-9) belowE += 1;
     else if (Math.abs(v - realScore) <= 1e-9) belowE += 0.5;
   }
@@ -137,7 +140,7 @@ for (const t of teams) {
     const cand = pick5(mpool);
     if (!burstValid(cand)) continue;
     kept += 1; n += 1;
-    const v = scoreComposition(cand).total;
+    const v = scoreComposition(cand, so).total;
     if (v < realScore - 1e-9) belowH += 1;
     else if (Math.abs(v - realScore) <= 1e-9) belowH += 0.5;
   }

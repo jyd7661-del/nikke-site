@@ -106,6 +106,14 @@ export const ASSUMPTIONS = {
   // 버스트 쿨 감소를 버스트 스킬 가동률에 반영할 것인가. (2026-09-09)
   // false로 두면 이전처럼 통째로 무시한다 — selfTest 17번이 두 계산을 대본다.
   BURST_CDR: true,
+  // 속성 우위(보스 약점)를 반영할 것인가. (2026-09-29)
+  // `opts.bossElement`가 주어질 때만 작동한다(레이드처럼 약점이 정해진 판). 약점 속성 멤버의 딜에
+  // (1 + (ELEMENT_ADVANTAGE_PCT + 그 멤버가 받는 "Damage as strong element ▲" 합) / 100)을 곱한다.
+  // 10%는 새로 정한 값이 아니라 데이터에 적힌 게임 규칙이다 — synergyNotes.mechanics.elementCycle.rule
+  // "상성 우위(피해량 +10%)". 우위 속성 대미지 버프(스킬 원문 18절)는 그동안 어느 통에도 안 들어가 버려지고 있었다.
+  // false로 두면 이전처럼 속성을 통째로 무시한다 — selfTest가 두 계산을 대본다.
+  ELEMENT_ADVANTAGE: true,
+  ELEMENT_ADVANTAGE_PCT: 10,
   // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
   //
   // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
@@ -148,6 +156,10 @@ const BUFF_BUCKETS = {
 };
 const BUCKET_KEYS = Object.keys(BUFF_BUCKETS);
 const DMG_TAKEN = /Damage Taken\s*▲\s*(\d[\d.]*)%/ig;
+// 우위 속성으로 칠 때만 붙는 버프 — 약점 속성 멤버에게만 곱한다(ELEMENT_ADVANTAGE).
+const STRONG_ELEMENT = /Damage as strong element\s*▲\s*(\d[\d.]*)%/ig;
+// 보스 약점 표기(화면 Iron·Electronic / 데이터 iron·electric)를 캐릭터 element 표기로 맞춘다.
+const normEl = (e) => { const x = String(e || '').toLowerCase(); return x === 'electronic' ? 'electric' : x; };
 
 // **최대 장탄수 버프는 통(BUFF_BUCKETS)에 넣지 않는다 — 곱셈 배수가 아니기 때문이다.** (2026-09-08)
 //
@@ -517,6 +529,8 @@ export function scoreComposition(members, opts = {}) {
   const buffOn = new Map(members.map((m) => [m.id, Object.fromEntries(BUCKET_KEYS.map((k) => [k, 0]))]));
   // 최대 장탄수는 배수가 아니라 **장탄 자체**를 바꾸므로 통과 따로 모은다. (2026-09-08)
   const ammoOn = new Map(members.map((m) => [m.id, { pct: 0, flat: 0, reloadPct: 0 }]));
+  const strongOn = new Map(members.map((m) => [m.id, 0]));   // 우위 속성 대미지 ▲ 합(%)
+  const bossEl = A.ELEMENT_ADVANTAGE !== false && opts.bossElement ? normEl(opts.bossElement) : null;
   let dmgTaken = 0;
   const notes = [];
 
@@ -625,6 +639,10 @@ export function scoreComposition(members, opts = {}) {
           else { noteBranch(scope, `buf:${k}`, v * uptime); notes.push(`대상절 해석 못 함(버림): "${scope}"`); }
         });
         void anyBuff;
+        if (bossEl) {
+          const se = sumRe(cl, STRONG_ELEMENT);
+          if (se) { const tg = targetsOf(scope, caster, members); if (tg) tg.forEach((m) => { strongOn.set(m.id, strongOn.get(m.id) + se * uptime); }); }
+        }
         // 최대 장탄수 — 정수 표기와 백분율 표기가 섞여 있다. ▼도 읽는다(자기 페널티).
         const aPct = sumSigned(cl, AMMO_PCT);
         const aFlat = sumSigned(cl, AMMO_FLAT);
@@ -683,10 +701,13 @@ export function scoreComposition(members, opts = {}) {
     const self = na + sd;
     const b = buffOn.get(m.id);
     // 통 안에서는 더하고, 통끼리는 곱한다.
-    const mult = BUCKET_KEYS.reduce((a, k) => a * (1 + b[k] / 100), 1);
+    let mult = BUCKET_KEYS.reduce((a, k) => a * (1 + b[k] / 100), 1);
+    // 속성 우위 — 약점 속성 멤버만. 게임 규칙 +10%에 우위 속성 대미지 버프를 더한 별도 통.
+    const adv = bossEl && normEl(m.element) === bossEl ? (A.ELEMENT_ADVANTAGE_PCT + strongOn.get(m.id)) : 0;
+    mult *= 1 + adv / 100;
     const v = self * mult;
     total += v;
-    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, ammo, mult, value: v };
+    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, ammo, adv, mult, value: v };
   });
   total *= (1 + dmgTaken / 100);
 
@@ -1234,6 +1255,38 @@ function selfTest() {
       console.log('  ℹ️ 버스트 쿨 감소가 걸리는 캐릭터가 ' + CDR_MOVERS_BASELINE + ' → ' + movers + '명으로 늘었다. 기준선을 올릴 것.');
     }
     console.log('  버스트 쿨 감소 — 합성 시험 6종 통과 · 실제로 걸리는 캐릭터 ' + movers + '명');
+  }
+  // (7) **속성 우위(보스 약점).** (2026-09-29)
+  //     약점 속성 멤버에게만 +10%(+우위 속성 대미지 버프)가 붙는가 · 약점을 안 주면 옛 계산과 완전히 같은가 · 스위치를 끄면 무시되는가.
+  //     랭커 검사에서의 근거: 레이드 메타 풀 중앙 68.3% → 74.0%(올바른 약점) · 67.0%(일부러 틀린 약점) — 신호가 진짜다.
+  {
+    const withSkills = cdb.filter((c) => (c.skills || []).length);
+    const team = withSkills.slice(0, 5);
+    const el = team[0].element;
+    const base = scoreComposition(team, { detail: true });
+    const on = scoreComposition(team, { bossElement: el, detail: true });
+    const off = scoreComposition(team, { bossElement: el, assumptions: { ELEMENT_ADVANTAGE: false } }).total;
+    if (Math.abs(off - base.total) > 1e-9) problems.push('ELEMENT_ADVANTAGE=false인데 약점을 줬을 때 점수가 달라졌다 — 스위치가 안 먹는다');
+    on.parts.forEach((p, i) => {
+      const same = team[i].element === el;
+      if (same && !(p.adv >= 10)) problems.push(`약점 속성 멤버 ${p.kr}에 속성 우위가 안 붙었다(adv ${p.adv})`);
+      if (!same && p.adv !== 0) problems.push(`약점이 아닌 멤버 ${p.kr}에 속성 우위가 붙었다(adv ${p.adv})`);
+    });
+    if (!(on.total > base.total)) problems.push('약점 속성 멤버가 있는데 점수가 안 올랐다');
+    // 표기 두 가지(화면 Electronic · 데이터 electric)가 같은 속성으로 읽히는가
+    const ec = withSkills.filter((c) => c.element === 'electric').slice(0, 5);
+    if (ec.length === 5 && Math.abs(scoreComposition(ec, { bossElement: 'Electronic' }).total - scoreComposition(ec, { bossElement: 'electric' }).total) > 1e-9) {
+      problems.push("보스 약점 'Electronic'과 'electric'이 다르게 채점된다 — 표기 정규화가 깨졌다");
+    }
+    // 우위 속성 대미지 버프(원문 "Damage as strong element ▲")가 실제로 읽히는 캐릭터 수
+    let strongMovers = 0;
+    withSkills.forEach((c) => {
+      const t = [c, ...withSkills.filter((x) => x.id !== c.id && x.element === c.element).slice(0, 4)];
+      const r = scoreComposition(t, { bossElement: c.element, detail: true });
+      if (r.parts.some((p) => p.adv > 10)) strongMovers += 1;
+    });
+    if (strongMovers === 0) problems.push('우위 속성 대미지 ▲ 버프가 한 명에게도 안 읽힌다 — 원문 표기가 바뀌었거나 정규식이 깨졌다');
+    console.log('  속성 우위 — 합성 시험 통과 · 우위 속성 대미지 버프가 붙는 팀 ' + strongMovers + '개');
   }
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
   //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).
