@@ -218,6 +218,33 @@ for (const t of teams) {
   if (engine.scoreTeam(nayutaTeam, 'bossing', {}).pvpBurst !== null) problems.push('[PvP 버스트] PvP가 아닌 모드에서 속도를 계산했다');
 }
 
+// --- 아키타입 속성 관문 (2026-09-30) — 보스 약점이 정해지면 다른 속성 약점용 조합은 완전일치 후보가 아니다 ---
+// 빈 자리(flexSlots) 복원 뒤 이 로스터(50명)는 수냉 보스에 전격 약점용 조합이 잡혔다. 다섯 속성 모두에서
+// 고른 조합의 element가 비었거나('All') 보스와 같아야 한다. 관문을 끄면(역테스트) 여기서 걸린다.
+{
+  const names = ['Queen (Makoto Niijima)', 'Marciana', 'Arcana: Fortune Mate', 'Phantom', 'Cocoa', 'E.H.', 'Ein', 'EVE', 'Red Hood', 'Leona',
+    'Elegg: Boom and Shock', 'Ludmilla: Winter Owner', 'Delta: Ninja Thief', 'Grave', 'Dolla', 'Modernia', 'Mori', 'Ludmilla', 'Mari Makinami Illustrious',
+    'Nero', 'Frima', 'Cinderella: Crystal Wave', 'Vesti: Tactical Upgrade', 'Privaty: Unkind Maid', 'Snow White', 'Asuka Shikinami Langley', 'Rapunzel',
+    'Maxwell: Ordinary Mechanic', 'D: Killer Wife', 'Trina', 'Exia', 'Emilia', 'Crust', 'Mana', 'Helm: Aquamarine', 'Anis: Star', 'Nayuta', 'Scarlet',
+    'Noah', 'Sin', 'Poli', 'Sakura', 'Yuni', 'Jackal', 'Cinderella', 'Privaty', 'Admi', 'Prika', 'Scarlet: Black Shadow', 'Raven'];
+  const roster = names.map((n) => byTitle.get(n));
+  if (roster.some((c) => !c)) problems.push('[아키타입 속성 관문] 시험용 이름이 DB에 없다');
+  else {
+    const archByName = new Map(j('synergyNotes.json').archetypes.map((a) => [a.name, a]));
+    let hits = 0;
+    for (const boss of engine.BOSS_ELEMENTS) {
+      const m = engine.findExactTeamMatch(roster, 'bossing', { bossElement: boss });
+      const a = m && archByName.get(m.archetypeName);
+      if (!a) continue;
+      hits += 1;
+      if (a.element && engine.WEAKNESS_TO_BOSS_ELEMENT[a.element] !== boss) {
+        problems.push(`[아키타입 속성 관문] ${boss} 보스에 ${a.element} 약점용 조합 "${a.name}"을 완전일치로 냈다`);
+      }
+    }
+    if (!hits) problems.push('[아키타입 속성 관문] 다섯 속성 어디서도 아키타입이 안 잡혔다 — 시험 로스터가 더는 아무것도 재지 않는다');
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

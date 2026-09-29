@@ -134,6 +134,10 @@ archOrphans.forEach((m) => {
 // 4건만 채워져 있어 나머지가 무방비였다(2026-08-15 발견).
 syn.archetypes.forEach((a) => {
   const where = `아키타입 '${a.id || a.name}'`;
+  // element(2026-09-30): prydwen 팀의 약점 속성. 엔진이 WEAKNESS_TO_BOSS_ELEMENT로 보스와 대므로 어휘가 어긋나면 조용히 전부 걸러진다.
+  if (a.element !== undefined && !['fire', 'iron', 'wind', 'water', 'electric'].includes(a.element)) {   // DOMAIN.element와 같은 목록 — DOMAIN은 아래에서 정의돼 여기선 못 쓴다
+    err('ARCH_ELEMENT', `${where}의 element='${a.element}' — fire/iron/wind/water/electric 중 하나여야 함(prydwen 'Electric'은 'electric')`);
+  }
   if (a.requiresTreasure !== undefined) {
     if (!Array.isArray(a.requiresTreasure) || a.requiresTreasure.length === 0) {
       err('ARCH_TREASURE_SHAPE', `${where}의 requiresTreasure는 비어 있지 않은 배열이어야 함`);

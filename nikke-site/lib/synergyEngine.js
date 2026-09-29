@@ -2241,6 +2241,10 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     if (new Set(members).size !== members.length) return false;
     if (a.ambiguousBurst) return false;
     if (!compatModes.includes(a.mode)) return false;
+    // 2026-09-30: 보스 약점 속성이 정해졌으면 **다른 속성 약점용으로 짜인 조합은 후보에서 뺀다.**
+    // `element`는 prydwen 팀 데이터의 element 그대로다('All'은 적지 않아 여기서 안 걸린다).
+    // 빈 자리(flexSlots)를 복원하자 수냉 보스에 전격 약점용 조합이 완전일치로 잡혀 더 나은 폴백 답을 밀어냈다.
+    if (bossElement && a.element && WEAKNESS_TO_BOSS_ELEMENT[a.element] !== bossElement) return false;
     if (!members.every((m) => ownedTitleSet.has(m))) return false;
     if (members.some((m) => excludeTitles.has(m))) return false;
     // 애장품 전제 조합은 그 애장품을 보유했을 때만 완전일치 후보로 인정한다.

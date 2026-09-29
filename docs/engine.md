@@ -253,6 +253,12 @@ core 문장 유지 111 · 캡 경합 3 · 누락 0). 5인 순회는 `members.len
 > 순간 "부분일치에 밀렸다"고 잘못 판정했습니다. **헤드라인이 두 종류가 됐으면 세는 쪽도
 > 같이 고쳐야 합니다**(`isArchetypeHeadline`).
 
+### 4-2c. 아키타입 속성 관문 (2026-09-30)
+
+`findExactTeamMatch`는 보스 약점(`bossElement`)이 정해지면 **`element`가 다른 아키타입을 후보에서 뺀다.** `element`는 prydwen 팀 데이터의
+element 그대로(그 조합이 겨냥한 약점 속성, 'All'은 안 적음). 빈 자리 복원 뒤 수냉 보스에 전격 약점용 조합이 잡혀 더 나은 폴백 답을 밀어냈다.
+`testRealTeams`가 50명 로스터로 다섯 속성을 돌려 지킨다(관문을 끄면 4건 걸림).
+
 ### 4-2b. PvP 버스트 속도 (2026-09-29)
 
 PvP 폴백은 5명 게이지 수급 합으로 버스트 속도(2RL~4RL)를 낸다 — `lib/pvpBurst.js` · `data/pvpBurstGen.json`(커뮤니티 계산기 시트, `scripts/refreshPvpBurstGen.mjs`).
