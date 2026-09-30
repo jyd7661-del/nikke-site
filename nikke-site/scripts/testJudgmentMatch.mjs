@@ -213,16 +213,9 @@ async function loadEngine() {
 }
 const E = await loadEngine();
 // 사이트와 같은 선정 경로(experimentThinRoster.engineAnswer와 동일)
+// 사이트와 같은 선정 경로 — 엔진의 pickSiteTeam(2026-09-30부터 한 곳)
 function siteAnswer(roster, mode, o) {
-  let real = null, exact = null;
-  try { real = E.findRealUsageTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-  try { exact = E.findExactTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-  if (real || exact) {
-    const rs = real?.totalScore ?? -1, es = exact?.totalScore ?? -1;
-    return real && rs >= es ? real : exact;
-  }
-  const r = E.recommendTeams(roster, mode, { ...o, topN: 1 });
-  return r.teams?.[0] || null;
+  return E.pickSiteTeam(roster, mode, o).team || null;
 }
 const rosterOf = new Map();   // id → 표본 로스터(제목)
 for (const seed of SEEDS) {

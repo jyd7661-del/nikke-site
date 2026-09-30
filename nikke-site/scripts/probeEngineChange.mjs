@@ -11,6 +11,7 @@
  *   node scripts/probeEngineChange.mjs --tally=pvp-waste                # 판정 집계 → probe-data/rejudge-<label>.json
  *
  *   --mode = pvp | bossing | campaign | tribe_tower | all (기본 all)
+ *   --variant=noflexcompete  2026-09-30 이전 경로(빈 자리 아키타입도 폴백보다 무조건 먼저) — 비교용
  *
  * ■ 왜 필요한가
  *   CLAUDE.md·testJudgmentMatch 머리 주석의 규칙: **엔진을 고쳐 답이 바뀐 건은 이전 엔진 대비로 판정하고,
@@ -61,15 +62,13 @@ const BOSSES = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 
 // ── 스냅숏 ──────────────────────────────────────────────────────────────
 const SNAP = arg('snap', null);
+const VARIANT = arg('variant', null);
 if (SNAP) {
   const E = await loadEngine();
+  // 사이트 경로는 엔진의 pickSiteTeam 하나로 잰다(2026-09-30). --variant=noflexcompete 로 그 전 경로.
   const site = (roster, mode, o) => {
-    let real = null, exact = null;
-    try { real = E.findRealUsageTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-    try { exact = E.findExactTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-    if (real || exact) { const t = real && (real.totalScore ?? -1) >= (exact?.totalScore ?? -1) ? real : exact; return { path: t === real ? 'real' : 'arch', team: t.members.map((m) => m.title) }; }
-    const r = E.recommendTeams(roster, mode, { ...o, topN: 1 });
-    return { path: r.teams?.length ? 'fallback' : 'error', team: r.teams?.[0]?.members.map((m) => m.title) || [] };
+    const r = E.pickSiteTeam(roster, mode, { ...o, noFlexCompete: VARIANT === 'noflexcompete' });
+    return { path: r.path, team: r.team?.members.map((m) => m.title) || [] };
   };
   const out = {};
   for (const s of [1, 2]) {

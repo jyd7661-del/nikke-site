@@ -61,17 +61,11 @@ async function loadEngine() {
   return import(pathToFileURL(path.join(tmp, 'synergyEngine.mjs')).href);
 }
 // 사이트와 같은 선정 경로 — 실사용 완전일치 → 아키타입 → 폴백. probeRecommendations.mjs와 동일.
+// 사이트와 같은 선정 경로 — 엔진의 pickSiteTeam(2026-09-30부터 한 곳)
 function engineAnswer(E, roster, mode, o) {
-  let real = null, exact = null;
-  try { real = E.findRealUsageTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-  try { exact = E.findExactTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-  if (real || exact) {
-    const rs = real?.totalScore ?? -1, es = exact?.totalScore ?? -1;
-    return real && rs >= es ? { path: 'real', team: real } : { path: 'arch', team: exact };
-  }
-  const r = E.recommendTeams(roster, mode, { ...o, topN: 1 });
-  if (r.error || !r.teams?.length) return { path: 'error', error: r.error || '(에러도 팀도 없음)' };
-  return { path: 'fallback', team: r.teams[0] };
+  const r = E.pickSiteTeam(roster, mode, o);
+  if (r.path === 'error') return { path: 'error', error: r.error || '(에러도 팀도 없음)' };
+  return { path: r.path, team: r.team };
 }
 
 function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }

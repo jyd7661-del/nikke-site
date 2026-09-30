@@ -245,6 +245,23 @@ for (const t of teams) {
   }
 }
 
+// --- 빈 자리 아키타입 vs 폴백 (2026-09-30) — pickSiteTeam · fallbackBeatsFlexArchetype ---
+// 이 로스터(얇은 표본 s2 T13)는 빈 자리를 채운 아키타입이 크라운(SSS)을 두고 앵커를 넣었다. 폴백과 겨루면 폴백(크라운 포함)이 이겨야 하고,
+// 옛 경로(noFlexCompete)에선 아키타입이 나와야 한다(시험이 여전히 그 고장을 재현하는지). 라우트도 같은 함수를 부르는지 소스로 본다.
+{
+  const roster = ['Anchor: Innocent Maid', 'Brid', 'Chisato Nishikigi', 'Crown', 'Elegg: Boom and Shock', 'Exia', 'Helm', 'Kilo',
+    'Mast: Romantic Maid', 'Tove', 'Trina', 'Yuni'].map((n) => byTitle.get(n));
+  if (roster.some((c) => !c)) problems.push('[빈 자리 아키타입 vs 폴백] 시험용 이름이 DB에 없다');
+  else {
+    const now = engine.pickSiteTeam(roster, 'campaign', {});
+    const old = engine.pickSiteTeam(roster, 'campaign', { noFlexCompete: true });
+    if (old.path !== 'arch') problems.push(`[빈 자리 아키타입 vs 폴백] 옛 경로에서 아키타입이 안 나온다(${old.path}) — 시험 로스터가 더는 이 경우를 재현하지 못한다`);
+    if (now.path !== 'fallback' || !now.flexLoser) problems.push(`[빈 자리 아키타입 vs 폴백] 빈 자리 아키타입이 더 센 폴백을 이겼다(${now.path})`);
+  }
+  const routeSrc = fs.readFileSync(path.join(ROOT, 'app', 'api', 'ai-recommend', 'route.js'), 'utf8');
+  if (!/fallbackBeatsFlexArchetype\(/.test(routeSrc)) problems.push('[빈 자리 아키타입 vs 폴백] 라우트가 fallbackBeatsFlexArchetype를 안 부른다 — 사이트와 검사의 경로가 갈렸다');
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

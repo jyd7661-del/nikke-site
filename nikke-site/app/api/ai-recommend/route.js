@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch, scoreTeam, orderMembersForDisplay } from '@/lib/synergyEngine';
+import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch, scoreTeam, orderMembersForDisplay, fallbackBeatsFlexArchetype } from '@/lib/synergyEngine';
 import characterInvestmentNotes from '@/data/characterInvestmentNotes.json';
 import metaStats from '@/data/metaStats.json';
 import synergyNotes from '@/data/synergyNotes.json';
@@ -706,7 +706,20 @@ export async function POST(req) {
     const realUsageMatch = findRealUsageTeamMatch(characters, mode, matchOpts);
     const exactMatch = findExactTeamMatch(characters, mode, matchOpts);
 
-    const candidates = [
+    // 2026-09-30: **빈 자리를 우리가 채운 아키타입**이 이기는 경우만 폴백 1위와 같은 잣대로 겨룬다
+    // (lib/synergyEngine.js fallbackBeatsFlexArchetype — 유저 지시 "동일한 조합이면 먼저"는 5명이 다 정해진 조합 얘기다).
+    // 폴백이 이기면 폴백 답을 내고 그 아키타입은 대안으로 보여준다. 이 경우 AI 조합 구성(셰도우 포함)은 건너뛴다 —
+    // 호출이 늘어 비용이 커지는 것을 막으려고(2026-09-26 유저: 소넷 비용은 광고로 못 덮는다).
+    let flexLoser = null;
+    if (exactMatch?.flexSlotCount && !(realUsageMatch && realUsageMatch.totalScore >= exactMatch.totalScore)) {
+      const probe = recommendTeams(characters, mode, {
+        treasureIds: treasureIdSet, bossElement: bossElement || null, tower: towerKey, topN: 20, lang: langKey,
+      }).teams || [];
+      const top = probe.find((t) => !t.members.some((m) => excludeSet.has(m.title))) || probe[0];
+      if (fallbackBeatsFlexArchetype(exactMatch, top, mode, matchOpts)) flexLoser = exactMatch;
+    }
+
+    const candidates = flexLoser ? [] : [
       realUsageMatch && { match: realUsageMatch, source: 'enikk-real-usage', rank: 0 },
       exactMatch && { match: exactMatch, source: 'prydwen-exact-match', rank: 1 },
     ].filter(Boolean);
@@ -762,10 +775,19 @@ export async function POST(req) {
       const pool = rec.teams.filter((t) => !t.members.some((m) => excludeSet.has(m.title)));
       chosen = (pool.length > 0 ? pool : rec.teams)[0];
       matchSource = 'skill-synergy-fallback';
+      if (flexLoser) {
+        alternative = {
+          source: 'prydwen-exact-match',
+          members: flexLoser.members,
+          totalScore: flexLoser.totalScore,
+          archetypeName: flexLoser.archetypeName || null,
+          headline: (flexLoser.reasons || [])[0] || null,
+        };
+      }
 
       // 2026-09-15: 폴백 구간에서만 AI 조합 구성(docs/ai-teams-plan.md §1). "다른 조합 보기"(excludeTitles)는
       // 엔진 후보 순환이라 AI를 건너뛴다. Supabase가 없으면 캐시도 예산도 없으니 켜지 않는다.
-      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0) {
+      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0 && !flexLoser) {
         const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
         const ai = await tryAiTeam({
           client, supabase, characters, mode, boss: bossElement || null, tower: towerKey,

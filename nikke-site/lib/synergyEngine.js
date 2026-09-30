@@ -2309,6 +2309,47 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     // AI에게 한국어(또는 선택 언어)로 재구성하도록 넘긴다.
     archetypeName: best.archetype.name,
     archetypeNote: best.archetype.note,
+    // 빈 자리를 우리가 채운 아키타입인가(0이면 5명이 다 정해진 조합). fallbackBeatsFlexArchetype가 본다.
+    flexSlotCount: (best.archetype.flexSlots || []).length,
   };
 }
 
+// ---------------------------------------------------------------------------
+// 빈 자리를 채운 아키타입 vs 폴백 1위 (2026-09-30)
+//
+// 유저 지시(2026-08-07)는 "검증된 조합이기 때문에 **동일한 조합**이 있으면 먼저 선정한다"이다. 그런데 빈 자리(flexSlots)가
+// 있는 아키타입은 prydwen이 3~4명만 정한 틀이고 나머지는 **우리가 채운다** — 5명 그대로 검증된 조합이 아니다.
+// 그 채운 자리가 약하면(크러스트·클레이 등) 더 센 폴백 답을 밀어냈다(09-30 빈 자리 89건 복원 뒤 나빠짐의 주된 모양).
+//
+// 그래서 **빈 자리 아키타입만** 폴백 1위와 **폴백 정렬과 같은 잣대**(티어 합 + 실사용 등급 합 × 0.5)로 겨루게 한다.
+// 새 숫자는 없다 — recommendTeams가 쓰는 totalScore 그대로다. 5명이 다 정해진 아키타입은 지금처럼 먼저 나간다.
+// 이전 엔진 대비(280건 중 바뀐 67): 나아짐 36 · 같음 27 · 나빠짐 4(probe-data/rejudge-flexcompete.json).
+// 폴백이 이기면 true. 호출부는 아키타입을 대안으로 함께 보여준다.
+export function fallbackBeatsFlexArchetype(exact, fallbackTop, mode, opts = {}) {
+  if (!exact || !exact.flexSlotCount || !fallbackTop) return false;
+  const byTitle = new Map(characterDatabase.map((c) => [c.title, c]));
+  const s = scoreTeam(exact.members.map((m) => byTitle.get(m.title)).filter(Boolean), mode, opts);
+  const archRank = s.tierTotal + (s.realTierTotal || 0) * WEIGHTS.REAL_USAGE_TIER_SUM;
+  return fallbackTop.totalScore > archRank + 1e-9;
+}
+
+// 사이트(app/api/ai-recommend/route.js)의 선정 경로를 **검사·탐침이 똑같이** 재현하도록 한 곳에 둔다(2026-09-30).
+// 그 전엔 스크립트 4곳(probeEngineChange·testJudgmentMatch·testEngineDeterminism·experimentThinRoster)에 같은 코드가
+// 복사돼 있어, 경로를 바꾸면 한 곳만 고쳐지고 나머지는 옛 경로로 조용히 재는 일이 생길 수 있었다.
+// 라우트는 대안·"다른 조합 보기"·AI 구성 때문에 자체 흐름을 쓰지만 **순서는 이것과 같아야 한다.**
+//   ① enikk 실사용 vs ② prydwen 아키타입 — totalScore 높은 쪽(동점이면 ①)
+//   단 ②가 빈 자리 아키타입으로 이기면 폴백 1위와 겨룬다(fallbackBeatsFlexArchetype) · 둘 다 없으면 폴백
+// opts.noFlexCompete: 2026-09-30 이전 경로 재현(비교용).
+export function pickSiteTeam(roster, mode, opts = {}) {
+  let real = null; let exact = null;
+  try { real = findRealUsageTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ }
+  try { exact = findExactTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ }
+  const realWins = real && (real.totalScore ?? -1) >= (exact?.totalScore ?? -1);
+  if (!realWins && exact?.flexSlotCount && !opts.noFlexCompete) {
+    const top = recommendTeams(roster, mode, { ...opts, topN: 1 }).teams?.[0];
+    if (fallbackBeatsFlexArchetype(exact, top, mode, opts)) return { path: 'fallback', team: top, flexLoser: exact };
+  }
+  if (real || exact) return realWins ? { path: 'real', team: real } : { path: 'arch', team: exact };
+  const r = recommendTeams(roster, mode, { ...opts, topN: 1 });
+  return r.teams?.length ? { path: 'fallback', team: r.teams[0] } : { path: 'error', team: null, error: r.error || null };
+}

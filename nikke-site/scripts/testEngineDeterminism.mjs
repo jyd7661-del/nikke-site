@@ -51,16 +51,9 @@ const shuffled = (arr, seed) => {
 const keyOf = (team) => [...team.members.map((m) => m.title)].sort().join('|');
 
 // 사이트와 같은 선정 경로 — 세 갈래를 다 태워야 화면에 나가는 답을 재는 것이 된다.
+// 사이트와 같은 선정 경로 — 엔진의 pickSiteTeam(2026-09-30부터 한 곳)
 function siteAnswer(roster, mode, o) {
-  let real = null, exact = null;
-  try { real = E.findRealUsageTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-  try { exact = E.findExactTeamMatch(roster, mode, o); } catch { /* 무시 */ }
-  if (real || exact) {
-    const rs = real?.totalScore ?? -1, es = exact?.totalScore ?? -1;
-    return real && rs >= es ? real : exact;
-  }
-  const r = E.recommendTeams(roster, mode, { ...o, topN: 1 });
-  return r.teams?.[0] || null;
+  return E.pickSiteTeam(roster, mode, o).team || null;
 }
 
 // 표본 — 얇은 로스터 표본이 있으면 그것을(실제로 문제가 난 구간), 없으면 무작위 로스터를 만든다.
