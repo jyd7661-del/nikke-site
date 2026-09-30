@@ -1,8 +1,8 @@
 {
   "meta": {
     "source": "Prydwen.gg NIKKE 가이드(Team Building, Meta Teams - Story/Tribe Tower, Teams Database, Tier List 변경 이력) 및 니케 위키를 참고해 정리한 2차 자료. 원문을 그대로 인용하지 않고 우리말로 재구성/요약함. 캐릭터 이름은 데이터베이스(characterDatabase.json)의 title/name_kr 기준. 2026-07-31부터는 사용자가 지정한 니케 유튜버 4인(고뇨/스페란도/에펜바움/김진서)의 최근 영상 내용도 1순위 자료로 반영.",
-    "lastUpdated": "2026-08-04",
-    "updateNote": "새 공략/패치 정보를 확인할 때마다 archetypes, synergyPairs, counters 배열에 계속 항목을 추가해 나갈 것. 이 파일은 조합 추천 스코어링 엔진의 '근거 자료'로 쓰인다. 2026-07-31: 7/23 패치(신규 유닛 라플라스: 얼티밋 히어로, 맥스웰: 오디너리 미케닉 출시)와 관련해 스페란도(유튜버) 영상들에서 반복적으로 소개된 PVP 조합을 1건 추가함(archetypes 'laplace-maxwell-pip-deck', synergyPairs 마지막 항목). 국내 유튜버 1개 채널 기준 정보라 추가 확인 필요. 2026-08-04: 주간 조사 결과 반영 — archetypes에 'wind-laplace-maxwell'(풍라플/풍맥덱, 스페란도 출처, 맥스웰 기여도에 대한 이견 있음), 'swha-alt-marciana'(마르차나: 마린 스터디를 스노우화이트: 헤비암즈 대체픽으로 활용, 김진서 출처) 2건 추가. 기존 'laplace-maxwell-pip-deck'(피뻥덱)과는 별개의 조합임. (2026-08-07: prydwen 개별 캐릭터 Team 탭 447개 임포트 중 실제로는 5인 팀 시너지를 설명하지 않고 캐릭터 1명에 대한 일반 조언이거나 내용 없는 플레이스홀더였던 항목 72개를 품질 검수 후 제거함.)",
+    "lastUpdated": "2026-09-30",
+    "updateNote": "새 공략/패치 정보를 확인할 때마다 archetypes, synergyPairs, counters 배열에 계속 항목을 추가해 나갈 것. 이 파일은 조합 추천 스코어링 엔진의 '근거 자료'로 쓰인다. 2026-07-31: 7/23 패치(신규 유닛 라플라스: 얼티밋 히어로, 맥스웰: 오디너리 미케닉 출시)와 관련해 스페란도(유튜버) 영상들에서 반복적으로 소개된 PVP 조합을 1건 추가함(archetypes 'laplace-maxwell-pip-deck', synergyPairs 마지막 항목). 국내 유튜버 1개 채널 기준 정보라 추가 확인 필요. 2026-08-04: 주간 조사 결과 반영 — archetypes에 'wind-laplace-maxwell'(풍라플/풍맥덱, 스페란도 출처, 맥스웰 기여도에 대한 이견 있음), 'swha-alt-marciana'(마르차나: 마린 스터디를 스노우화이트: 헤비암즈 대체픽으로 활용, 김진서 출처) 2건 추가. 기존 'laplace-maxwell-pip-deck'(피뻥덱)과는 별개의 조합임. (2026-08-07: prydwen 개별 캐릭터 Team 탭 447개 임포트 중 실제로는 5인 팀 시너지를 설명하지 않고 캐릭터 1명에 대한 일반 조언이거나 내용 없는 플레이스홀더였던 항목 72개를 품질 검수 후 제거함.) 2026-09-30: prydwen 캐릭터 페이지에 새로 생긴 조합 66건 임포트(이상 모드 22건·DB에 없는 캐릭터 포함 2건·빈 자리 표시가 엔진에 없는 것(ClipSG 등) 3건 제외). 이름·설명은 원문을 우리말·일본어로 옮겼고 외부 링크는 뺐다. importedOn·prydwenTeamId로 표시.",
     "lastCleanup": "2026-08-08",
     "cleanupNote": "2026-08-08: 같은 조합이 출처마다 다른 이름으로 중복 등록돼 있어 33건을 병합했다(516 -> 483). 이름은 aliases로, 설명은 note 뒤에 출처를 밝혀 이어 붙여 정보를 버리지 않았다. 내역: (1) 모드·멤버·슬롯이 완전히 같은 순수 중복 26건, (2) 멤버는 같은데 한쪽에만 자유 슬롯이 있어 슬롯 없는 쪽이 완전일치 후보가 될 수 없던 반쪽 기록 7건. 슬롯 구성 자체가 다른 변형(El-Macho의 B1-CDR vs El Ma-chor의 B1)은 서로 다른 조합이라 남겼다. 2026-09-30: prydwen 캐릭터 페이지 팀(pwc-) 임포트 때 버려진 정보 복원 — 빈 자리 표시(B3·flex·B1-CDR 등) 89건을 flexSlots로(그전엔 5인이 안 돼 완전일치 후보가 될 수 없었다), 애장품 표시(helm-treasure 등) 78건을 requiresTreasure로(그전엔 애장품이 없는 유저에게도 추천될 수 있었다). 대조: 지금 prydwen 캐릭터 페이지의 같은 이름 팀, 고정 멤버가 우리 것과 같을 때만. 같은 날 prydwen 팀의 element(그 조합이 겨냥한 약점 속성) 143건을 element 필드로 옮겼다 — 전에는 설명문 '(속성: 수냉)'에만 있어 엔진이 못 읽었다. 'All'은 적지 않는다."
   },
@@ -2306,7 +2306,11 @@
       "name_en": "2B Mast wombo combo",
       "name_ja": "2B Mast wombo combo（2B＋マストの必殺コンボ）",
       "note_en": "[Source: prydwen.gg character page] Old meta General comp for 2B. (Element: Fire)",
-      "note_ja": "［出典：prydwen.gg character page］旧メタ。2B向けの汎用編成。（属性：灼熱）"
+      "note_ja": "［出典：prydwen.gg character page］旧メタ。2B向けの汎用編成。（属性：灼熱）",
+      "flexSlots": [
+        "flex"
+      ],
+      "element": "fire"
     },
     {
       "id": "pwc-a2-clearing-your-screen",
@@ -9107,6 +9111,1382 @@
       "name_ja": "Liquid Holes（液体の穴）",
       "note_en": "[Source: prydwen.gg character page] Water-Weak content can also make use of Zwei's Pierce damage buffs with Snow White: Heavy Arms. However, it might require very particular scenarios, such as Blacksmith's double core, to make Snow White's normal weapon type potent enough to deal relevant damage. (Element: Water)",
       "note_ja": "［出典：prydwen.gg character page］水冷弱点のコンテンツでも、スノーホワイト：ヘビーアームズと組ませればツバイの貫通ダメージバフを活かせる。ただし彼女の通常武器の種類で意味のあるダメージを出すには、ブラックスミスの二重コアのような、かなり特殊な状況が必要になるかもしれない。（属性：水冷）"
+    },
+    {
+      "id": "pwc-snake-writes-about-snakes-teams",
+      "name": "Snake Writes about Snake’s Teams (뱀이 쓰는 뱀 공략 팀)",
+      "members": [
+        "Anchor: Innocent Maid",
+        "Rapi: Red Hood",
+        "Bready",
+        "Helm",
+        "Crown"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 캠페인의 블랙 스네이크(특히 캠페인)는 누구나 한 번은 막히는 벽이다. 이 조합은 그 보스를 상대로 쓸 만한 조합 중 하나로, 높은 전투력 차이에서도 클리어할 수 있다. (속성: 수냉)",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "element": "water",
+      "name_en": "Snake Writes about Snake’s Teams",
+      "name_ja": "Snake Writes about Snake’s Teams（スネークが書くスネーク攻略編成）",
+      "note_en": "[Source: prydwen.gg character page] The fight against Black Snake in Campaign (specifically Campaign) is a wall every one of us will have to face. This team can be considered one of the better ones to fight against it and clear at the high deficits. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］キャンペーンのブラックスネーク(特にキャンペーン)は誰もが一度はぶつかる壁だ。この編成はそのボス相手に使える編成の一つで、大きな戦力差でもクリアできる。（属性：水冷）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 11
+    },
+    {
+      "id": "pwc-trina-the-buffer",
+      "name": "Trina the Buffer! (버퍼 트리나!)",
+      "members": [
+        "Liter",
+        "Trina",
+        "Asuka: WILLE",
+        "Rei Ayanami (Tentative Name)",
+        "Privaty"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 최근 출시돼 새로 시작한 유저도 쉽게 얻을 수 있는 캐릭터들로 짠 조합이다. 이상적인 조합은 아니지만 캠페인과 보스전 모두에서 꽤 효과적이다.",
+      "name_en": "Trina the Buffer!",
+      "name_ja": "Trina the Buffer!（バッファーのトリナ!）",
+      "note_en": "[Source: prydwen.gg character page] A team for recently released and easily available units for new players. Not an ideal team but very effective for both Campaign and Bossing.",
+      "note_ja": "［出典：prydwen.gg character page］最近実装され、新規プレイヤーでも入手しやすいキャラで組んだ編成。理想的ではないが、キャンペーンとボス戦の両方でかなり効果的。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 20
+    },
+    {
+      "id": "pwc-syuens-minions",
+      "name": "Syuen’s Minions (슈엔의 부하들)",
+      "members": [
+        "Liter",
+        "Trina",
+        "Ein",
+        "Quency: Escape Queen",
+        "Laplace"
+      ],
+      "mode": "tribe_tower",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 티아·나가가 없는 유저를 위한 미실리스 타워 조합이다.",
+      "requiresTreasure": [
+        "Laplace"
+      ],
+      "name_en": "Syuen’s Minions",
+      "name_ja": "Syuen’s Minions（シュエンの手下たち）",
+      "note_en": "[Source: prydwen.gg character page] A team for Missilis Tower for players who do not have Tia Naga.",
+      "note_ja": "［出典：prydwen.gg character page］ティア・ナガがいないプレイヤー向けのミシリス塔編成。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 21
+    },
+    {
+      "id": "pwc-rocket-punch-with-the-forgotten-rocket-supporter",
+      "name": "Rocket PUNCH with the forgotten Rocket Supporter (잊혀진 로켓 서포터와 로켓 펀치)",
+      "members": [
+        "Cinderella",
+        "Rouge",
+        "Laplace",
+        "Rem",
+        "Emilia"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 로켓 런처 캐릭터가 조금씩 늘고 있다. 여기서는 렘도 한몫할 수 있다.",
+      "requiresTreasure": [
+        "Laplace"
+      ],
+      "name_en": "Rocket PUNCH with the forgotten Rocket Supporter",
+      "name_ja": "Rocket PUNCH with the forgotten Rocket Supporter（忘れられたロケットサポーターとロケットパンチ）",
+      "note_en": "[Source: prydwen.gg character page] Rocket launchers are getting abundant, slowly but surely. Rem can have a piece of the fun as well here",
+      "note_ja": "［出典：prydwen.gg character page］ロケットランチャーのキャラが少しずつ増えている。ここではレムも一役買える。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 80
+    },
+    {
+      "id": "pwc-slowly-but-steady",
+      "name": "Slowly but steady (느리지만 꾸준하게)",
+      "members": [
+        "Noise",
+        "Anchor: Innocent Maid",
+        "Cinderella",
+        "Anis",
+        "Maiden: Ice Rose"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 3RL 속도의 신데렐라 팀. 버스트가 강하고 매우 단단해서, 신데렐라의 후속 공격으로 상대의 벽을 녹인다.",
+      "name_en": "Slowly but steady",
+      "name_ja": "Slowly but steady（遅くても着実に）",
+      "note_en": "[Source: prydwen.gg character page] 3 RL Cinderella with strong Burst and extremely tanky to melt down the wall with Cinderella's attack following ups",
+      "note_ja": "［出典：prydwen.gg character page］3RL速度のシンデレラ編成。バーストが強く非常に硬いので、シンデレラの追撃で相手の壁を溶かす。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 82
+    },
+    {
+      "id": "pwc-god-of-thunder",
+      "name": "God of thunder (천둥의 신)",
+      "members": [
+        "Cinderella",
+        "Rouge",
+        "Anis: Sparkling Summer",
+        "Mari Makinami Illustrious",
+        "Maiden: Ice Rose"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 전원 전격 니케로 짠 현재의 전격 조합이다. 투자나 돌파가 아주 높으면 보스의 속성 QTE를 버텨내기도 한다. (속성: 전격)",
+      "element": "electric",
+      "name_en": "God of thunder",
+      "name_ja": "God of thunder（雷神）",
+      "note_en": "[Source: prydwen.gg character page] The current Electric comp featuring full Electric Nikkes. Sometimes people can tank the Boss Elemental QTE with this team if super high invested or high number of dupes. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］全員電撃ニケで組んだ現在の電撃編成。育成や限界突破がとても高ければ、ボスの属性QTEを耐え切れることもある。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 97
+    },
+    {
+      "id": "pwc-a-fistful-of-nuke",
+      "name": "A Fistful of Nuke (한 줌의 핵폭탄)",
+      "members": [
+        "Rei Ayanami",
+        "Anne: Miracle Fairy",
+        "Centi",
+        "Red Hood",
+        "Jackal"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 아야나미 레이를 앞세운 기본 한 방(누크) 조합이다. 특별한 것은 없다 — 자칼 + 앤 : 미라클 페어리/블랑 조합의 원리는 대부분 이미 알 것이다. 공격용으로 좋고 방어용으로는 그만 못하지만 쓸 만하다.",
+      "name_en": "A Fistful of Nuke",
+      "name_ja": "A Fistful of Nuke（一握りの核）",
+      "note_en": "[Source: prydwen.gg character page] A basic nuking team featuring Rei. Nothing special here. Most of you have already understood the thought process behind Jackal + Anne: Miracle Fairy/Blanc teams. Good for Attacking, not so much for Defending but usable.",
+      "note_ja": "［出典：prydwen.gg character page］綾波レイを軸にした基本的な一撃(ヌーク)編成。特別なことはない — ジャッカル＋エヌ：ミラクルフェアリー/ブランの考え方はもうご存じだろう。攻撃向けで、防衛ではそれほどではないが使える。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 102
+    },
+    {
+      "id": "pwc-syuens-minions-2",
+      "name": "Syuen’s Minions (슈엔의 부하들 (티아·나가))",
+      "members": [
+        "Tia",
+        "Naga",
+        "Liter",
+        "Ein",
+        "Maxwell"
+      ],
+      "mode": "tribe_tower",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 아마 엘리시온 최고의 캠페인 캐릭터! 아인은 잡몹 정리가 특기이고 자기 버프 덕분에 집중 딜도 준수하다. 잡몹이 다 죽으면 깃털이 단일 대상 집중 딜 보조로 바뀌어 고정 피해를 준다!",
+      "name_en": "Syuen’s Minions",
+      "name_ja": "Syuen’s Minions（シュエンの手下たち（ティア・ナガ））",
+      "note_en": "[Source: prydwen.gg character page] Probably the best Campaign unit from Elysion! Ein specialises in mob clearing and also provides decent focus damage due to her self buffs. If all mobs are dead, her feathers become a special single target focus DPS assist that deal true damage!",
+      "note_ja": "［出典：prydwen.gg character page］おそらくエリシオン最高のキャンペーンキャラ!アインは雑魚処理が得意で、自己バフのおかげで単体火力もそこそこ。雑魚がいなくなると羽が単体集中の補助火力に変わり、固定ダメージを与える!",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 110
+    },
+    {
+      "id": "pwc-eins-best-bossing-team",
+      "name": "Ein's Best Bossing team (아인 최고의 보스전 조합)",
+      "members": [
+        "Exia",
+        "Crown",
+        "Ein",
+        "Anis: Sparkling Summer",
+        "D: Killer Wife"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 솔로 레이드에서 자주 보이는 최고의 아인 조합이다. (속성: 전격)",
+      "requiresTreasure": [
+        "Exia"
+      ],
+      "element": "electric",
+      "name_en": "Ein's Best Bossing team",
+      "name_ja": "Ein's Best Bossing team（アイン最強のボス戦編成）",
+      "note_en": "[Source: prydwen.gg character page] The best ein team that we can often see being used in solo raids (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］ソロレイドでよく見かける最強のアイン編成。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 111
+    },
+    {
+      "id": "pwc-surprise-shotgun",
+      "name": "Surprise Shotgun (깜짝 샷건)",
+      "members": [
+        "Soda: Twinkling Bunny",
+        "Anne: Miracle Fairy",
+        "Rosanna",
+        "Drake",
+        "Noir"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 챔피언 아레나가 뜨면서, 한때 PvP에서 가장 위험했던 무기 샷건이 다시 떠올랐다. 이 조합은 상대가 버스트 게이지를 채우기도 전에 P1(또는 P5)을 날려버리고, 그 뒤로도 몰아친다.",
+      "requiresTreasure": [
+        "Drake"
+      ],
+      "name_en": "Surprise Shotgun",
+      "name_ja": "Surprise Shotgun（サプライズ・ショットガン）",
+      "note_en": "[Source: prydwen.gg character page] Due to the rising of CA, it reminds us what used to be the most dangerous weapon in PVP - SG. This team will oliberate your P1 (or P5) before you can even fill your Burst bar, and rip afterward",
+      "note_ja": "［出典：prydwen.gg character page］チャンピオンアリーナの台頭で、かつてPvPで最も危険だった武器ショットガンが再び注目された。この編成は相手がバーストゲージを溜める前にP1(またはP5)を消し飛ばし、その後も押し切る。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 125
+    },
+    {
+      "id": "pwc-stall-team-2",
+      "name": "Stall team 2 (스톨 팀 2)",
+      "members": [
+        "Noise",
+        "Quiry",
+        "Bay",
+        "Red Hood",
+        "Jackal"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 상대의 버스트를 늦추며 버티는 스톨(지연) 팀이다. 원리는 출처 페이지의 영상에서 볼 수 있다.",
+      "name_en": "Stall team 2",
+      "name_ja": "Stall team 2（ストール編成2）",
+      "note_en": "[Source: prydwen.gg character page] A stall team. The source page links a video that shows how it works.",
+      "note_ja": "［出典：prydwen.gg character page］相手のバーストを遅らせて耐えるストール(遅延)編成。仕組みは出典ページの動画で見られる。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 130
+    },
+    {
+      "id": "pwc-farewell-marciana-squad",
+      "name": "Farewell, Marciana! Squad (잘 가, 마르차나! 스쿼드)",
+      "members": [
+        "Dorothy",
+        "Rem",
+        "Anis: Sparkling Summer",
+        "Scarlet",
+        "Privaty"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 때로는 회복을 더 늘릴 필요가 없다. 렘은 훨씬 높은 딜을 보여줬고, 대부분의 경우 우리가 가장 신경 쓰는 것은 딜이다. 이 조합에서 렘은 '짧은 재장전' 운용의 덕도 봐서 딜이 더 오른다.",
+      "name_en": "Farewell, Marciana! Squad",
+      "name_ja": "Farewell, Marciana! Squad（さよなら、マルチャーナ!スクワッド）",
+      "note_en": "[Source: prydwen.gg character page] Sometimes, more healing is not really necessary. Rem has shown to provide a much higher damage output, which is what we care most of the time. In this team, Rem also enjoys the \"short reload\" strat, which helps increase her damage.",
+      "note_ja": "［出典：prydwen.gg character page］回復をさらに増やす必要がない場面もある。レムははるかに高い火力を見せており、たいていの場合いちばん大事なのは火力だ。この編成ではレムも「短いリロード」運用の恩恵を受け、火力がさらに上がる。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 145
+    },
+    {
+      "id": "pwc-emilia-as-burst-gen-battery",
+      "name": "Emilia as Burst Gen Battery (버스트 배터리 에밀리아)",
+      "members": [
+        "Noah",
+        "Biscuit",
+        "Anis: Sparkling Summer",
+        "Emilia",
+        "Rumani"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 기본 중의 기본. 대략 2~2.5RL 속도의 아니스 : 스파클링 서머 조합으로, 흔한 홍련·자칼 조합을 기습할 수 있다.",
+      "name_en": "Emilia as Burst Gen Battery",
+      "name_ja": "Emilia as Burst Gen Battery（バーストバッテリーのエミリア）",
+      "note_en": "[Source: prydwen.gg character page] Bread and butter one. This is roughly 2~2.5 RL Anis: Sparkling Summer comp which may surprise some random Scarlet-Jackal comp.",
+      "note_ja": "［出典：prydwen.gg character page］基本中の基本。おおよそ2〜2.5RL速度のアニス：スパークリングサマー編成で、よくある紅蓮・ジャッカル編成の不意を突ける。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 149
+    },
+    {
+      "id": "pwc-campaign-team",
+      "name": "Campaign Team (캠페인 팀)",
+      "members": [
+        "D: Killer Wife",
+        "Tia",
+        "Naga",
+        "Scarlet: Black Shadow",
+        "Alice"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 24챕터부터는 기둥형·침묵 랩처가 나오므로 D나 루주가 필요하다. 풀버스트 1과 2 사이의 4초 공백은 보통 전멸로 이어지는데, D가 그 이상한 쿨타임을 없애준다.",
+      "name_en": "Campaign Team",
+      "name_ja": "Campaign Team（キャンペーン編成）",
+      "note_en": "[Source: prydwen.gg character page] You will need D or Rouge after Chapter 24 because they start introducing Column and Silence Raptures. The 4s cd between Full Burst 1 and 2 normally results in death, but D will remove that weird cooldown",
+      "note_ja": "［出典：prydwen.gg character page］24章以降は柱型・沈黙ラプチャーが出てくるのでDかルージュが必要。フルバースト1と2の間の4秒の空白はたいてい全滅につながるが、Dがその妙なクールタイムを消してくれる。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 151
+    },
+    {
+      "id": "pwc-typical-boss-comp",
+      "name": "Typical boss comp (전형적인 보스전 조합)",
+      "members": [
+        "D: Killer Wife",
+        "Blanc",
+        "Noir",
+        "Red Hood",
+        "Alice"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] D가 들어간 또 다른 조합이다. 여러 조합을 직접 시험해 보고 어느 조합이 가장 딜이 잘 나오는지 확인하는 것이 좋다.",
+      "name_en": "Typical boss comp",
+      "name_ja": "Typical boss comp（典型的なボス戦編成）",
+      "note_en": "[Source: prydwen.gg character page] This is another team featuring D. You should probably try some teams out and see which combinations offer the most damage.",
+      "note_ja": "［出典：prydwen.gg character page］Dを入れた別の編成。いくつか試して、どの組み合わせが一番火力が出るか確かめるとよい。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 152
+    },
+    {
+      "id": "pwc-electric-sg-team",
+      "name": "Electric SG team (전격 샷건 팀)",
+      "members": [
+        "Tia",
+        "Tove",
+        "Naga",
+        "Privaty: Unkind Maid",
+        "Drake"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 전격 약점 레이드에서 쓸 만한 샷건 조합 중 하나다. (속성: 전격)",
+      "requiresTreasure": [
+        "Drake"
+      ],
+      "element": "electric",
+      "name_en": "Electric SG team",
+      "name_ja": "Electric SG team（電撃ショットガン編成）",
+      "note_en": "[Source: prydwen.gg character page] One of the better SG teams for Electric Weak content for use in Raids (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］電撃弱点のレイドで使えるショットガン編成の一つ。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 157
+    },
+    {
+      "id": "pwc-sometimes-sg-means-school-girls",
+      "name": "Sometimes, SG means School Girls (가끔 SG는 스쿨걸이다)",
+      "members": [
+        "Tia",
+        "Tove",
+        "Soda: Twinkling Bunny",
+        "Drake",
+        "Naga"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 샷건 팀이 너무 강해서 티아·나가까지 요구하는 게 아니다. 요즘 보스에게 파츠와 코어가 없어서 바니들과 스쿨걸 모두 찬밥 신세이기 때문이다.",
+      "requiresTreasure": [
+        "Drake"
+      ],
+      "name_en": "Sometimes, SG means School Girls",
+      "name_ja": "Sometimes, SG means School Girls（時々SGはスクールガールの意味）",
+      "note_en": "[Source: prydwen.gg character page] It's not about SG team is too strong to demand Tiga, but because both Bunnies and School Girls are out of favor these days due to Boss having no parts and Cores.",
+      "note_ja": "［出典：prydwen.gg character page］ショットガン編成が強すぎてティア・ナガを要求するわけではない。最近のボスにはパーツもコアもないので、バニーもスクールガールも冷遇されているからだ。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 163
+    },
+    {
+      "id": "pwc-2rl-slash-or-die",
+      "name": "2RL - Slash or Die (2RL - 베거나 죽거나)",
+      "members": [
+        "Scarlet",
+        "Laplace",
+        "Trina",
+        "Helm",
+        "Jackal"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 속도! 이 조합의 전부다. 한껏 버프받은 홍련의 한 방으로 끝낸다! 막을 수 있는 건 충분히 빠른 노아·베이·블랑 팀뿐이다. 속도가 핵심.",
+      "requiresTreasure": [
+        "Laplace",
+        "Helm"
+      ],
+      "name_en": "2RL - Slash or Die",
+      "name_ja": "2RL - Slash or Die（2RL - 斬るか死ぬか）",
+      "note_en": "[Source: prydwen.gg character page] SPEED! That is what this team is about. A hyper-buffed Scarlet nuke to end them all! Only blockable by fast enough Noah, Bay, or Blanc teams. Big emphasis on speed!",
+      "note_ja": "［出典：prydwen.gg character page］スピード!この編成のすべてだ。バフを盛った紅蓮の一撃で終わらせる!止められるのは十分に速いノア・ベイ・ブラン編成だけ。速度が肝心。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 172
+    },
+    {
+      "id": "pwc-3rl-nuke-wombo-combo",
+      "name": "3RL Nuke Wombo Combo (3RL 누크 필살 콤보)",
+      "members": [
+        "Rei Ayanami (Tentative Name)",
+        "Anne: Miracle Fairy",
+        "Red Hood",
+        "Centi",
+        "Jackal"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 순수하게 화력을 쌓은 조합이다. 아야나미 레이 (가칭)가 느린 상대나 즉시 처치해 오지 않는 상대를 한 번에 쓰러뜨릴 강타를 날린다.",
+      "name_en": "3RL Nuke Wombo Combo",
+      "name_ja": "3RL Nuke Wombo Combo（3RLヌーク必殺コンボ）",
+      "note_en": "[Source: prydwen.gg character page] This team has pure stacked power. It allows Rei to deal a devastating blow that can kill off a slow enough enemy team, or an enemy team that is not instantly killing you.",
+      "note_ja": "［出典：prydwen.gg character page］純粋に火力を積んだ編成。アヤナミレイ(仮称)が、遅い相手や即座に倒しに来ない相手を一撃で倒す強打を放つ。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 175
+    },
+    {
+      "id": "pwc-alice-raid-team-1",
+      "name": "Alice Raid Team 1 (앨리스 레이드 팀 1)",
+      "members": [
+        "D: Killer Wife",
+        "Crown",
+        "Alice",
+        "Scarlet: Black Shadow",
+        "Privaty"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 레이드에서 앨리스를 쓸 때의 탄탄한 조합이다. (속성: 작열)",
+      "element": "fire",
+      "name_en": "Alice Raid Team 1",
+      "name_ja": "Alice Raid Team 1（アリス レイド編成1）",
+      "note_en": "[Source: prydwen.gg character page] A solid team to use for Alice in Raids. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］レイドでアリスを使うときの堅実な編成。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 184
+    },
+    {
+      "id": "pwc-alice-raid-team-2",
+      "name": "Alice Raid Team 2 (앨리스 레이드 팀 2)",
+      "members": [
+        "D: Killer Wife",
+        "Mast: Romantic Maid",
+        "Alice",
+        "Scarlet: Black Shadow",
+        "Anchor: Innocent Maid"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 레이드에서 앨리스를 쓸 때의 탄탄한 조합이다. (속성: 작열)",
+      "element": "fire",
+      "name_en": "Alice Raid Team 2",
+      "name_ja": "Alice Raid Team 2（アリス レイド編成2）",
+      "note_en": "[Source: prydwen.gg character page] A solid team to use for Alice in Raids. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］レイドでアリスを使うときの堅実な編成。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 185
+    },
+    {
+      "id": "pwc-snow-whites-old-friends",
+      "name": "Snow White's Old friends (스노우 화이트의 옛 친구들 (노벨))",
+      "members": [
+        "Liter",
+        "Novel",
+        "Helm",
+        "Snow White",
+        "Yulha"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 회복이 필요 없던 시절 노벨을 쓰던 옛 스노우 화이트 조합이다.",
+      "name_en": "Snow White's Old friends",
+      "name_ja": "Snow White's Old friends（スノーホワイトの旧友たち（ノベル））",
+      "note_en": "[Source: prydwen.gg character page] Old Snow White Comp for Novel when no healing was required.",
+      "note_ja": "［出典：prydwen.gg character page］回復が不要だった頃にノベルを使っていた旧スノーホワイト編成。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 194
+    },
+    {
+      "id": "pwc-snow-whites-old-friends-2",
+      "name": "Snow White's Old friends (스노우 화이트의 옛 친구들 (율하))",
+      "members": [
+        "Miranda",
+        "Helm: Aquamarine",
+        "Helm",
+        "Snow White",
+        "Yulha"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 율하를 쓰는 옛 스노우 화이트 조합으로, 변형은 지금도 보인다. (속성: 철갑)",
+      "element": "iron",
+      "name_en": "Snow White's Old friends",
+      "name_ja": "Snow White's Old friends（スノーホワイトの旧友たち（ユルハ））",
+      "note_en": "[Source: prydwen.gg character page] Old Snow White Comp with Yulha, variations of which are still seen today. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］ユルハを使う旧スノーホワイト編成で、その変形は今でも見かける。（属性：鉄甲）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 195
+    },
+    {
+      "id": "pwc-gravedigger-og-sg-comp",
+      "name": "GraveDigger OG SG comp (그레이브디거 원조 샷건 조합)",
+      "members": [
+        "Liter",
+        "Dolla",
+        "Sugar",
+        "Isabel",
+        "Drake"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 2023년의 구 메타 샷건 조합이다.",
+      "name_en": "GraveDigger OG SG comp",
+      "name_ja": "GraveDigger OG SG comp（グレイブディガー元祖ショットガン編成）",
+      "note_en": "[Source: prydwen.gg character page] Old Meta Shotgun comp from 2023.",
+      "note_ja": "［出典：prydwen.gg character page］2023年の旧メタのショットガン編成。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 196
+    },
+    {
+      "id": "pwc-rupee-the-iron-buffer",
+      "name": "Rupee the Iron Buffer (철갑 버퍼 루피)",
+      "members": [
+        "Liter",
+        "Rupee",
+        "Red Hood",
+        "Rapi: Red Hood",
+        "Rapunzel"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 2023년의 구 메타 루피 조합에 지금의 B3를 넣은 것이다.",
+      "name_en": "Rupee the Iron Buffer",
+      "name_ja": "Rupee the Iron Buffer（鉄甲バッファーのルピー）",
+      "note_en": "[Source: prydwen.gg character page] Old meta rupee comp from 2023 with new B3 units now",
+      "note_ja": "［出典：prydwen.gg character page］2023年の旧メタのルピー編成に、今のB3を入れたもの。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 198
+    },
+    {
+      "id": "pwc-anis-biscuit-special",
+      "name": "Anis Biscuit Special (아니스·비스킷 스페셜)",
+      "members": [
+        "Dorothy",
+        "Biscuit",
+        "Anis: Sparkling Summer",
+        "Privaty",
+        "Poli"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 도로시가 들어간 독특한 아니스 : 스파클링 서머 조합이다. (속성: 전격)",
+      "element": "electric",
+      "name_en": "Anis Biscuit Special",
+      "name_ja": "Anis Biscuit Special（アニス・ビスケット スペシャル）",
+      "note_en": "[Source: prydwen.gg character page] Unique Summer Anis team with Dorothy. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］ドロシーを入れた独特なアニス：スパークリングサマー編成。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 214
+    },
+    {
+      "id": "pwc-neve-sg-team",
+      "name": "Neve SG team (네베 샷건 팀)",
+      "members": [
+        "Tove",
+        "Leona",
+        "Soda: Twinkling Bunny",
+        "Drake",
+        "Neve"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 네베가 들어간 샷건 조합이다. (속성: 수냉)",
+      "requiresTreasure": [
+        "Drake"
+      ],
+      "element": "water",
+      "name_en": "Neve SG team",
+      "name_ja": "Neve SG team（ネヴェのショットガン編成）",
+      "note_en": "[Source: prydwen.gg character page] Neve SG team. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］ネヴェを入れたショットガン編成。（属性：水冷）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 217
+    },
+    {
+      "id": "pwc-guilty-pleasure",
+      "name": "Guilty Pleasure (길티 플레저)",
+      "members": [
+        "Tove",
+        "Blanc",
+        "Drake",
+        "Guilty",
+        "Noir"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 풍압 약점 콘텐츠용의 매우 강한 샷건 조합이다. (속성: 풍압)",
+      "requiresTreasure": [
+        "Drake"
+      ],
+      "element": "wind",
+      "name_en": "Guilty Pleasure",
+      "name_ja": "Guilty Pleasure（ギルティ・プレジャー）",
+      "note_en": "[Source: prydwen.gg character page] Super strong SG team for Wind Weak content. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］風圧弱点コンテンツ向けの非常に強いショットガン編成。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 224
+    },
+    {
+      "id": "pwc-general-old-bossing-team",
+      "name": "General Old bossing team (구 보스전 범용 조합)",
+      "members": [
+        "Dorothy",
+        "Marciana",
+        "Scarlet",
+        "Anis: Sparkling Summer",
+        "Privaty"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 홍련의 오래된 메타 조합 중 하나지만, 보유가 덜 갖춰진 유저에게는 여전히 효과적이다. (속성: 전격)",
+      "element": "electric",
+      "name_en": "General Old bossing team",
+      "name_ja": "General Old bossing team（旧ボス戦の汎用編成）",
+      "note_en": "[Source: prydwen.gg character page] One of the older meta teams for Scarlet, but still effective for incomplete box. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］紅蓮の古いメタ編成の一つだが、手持ちが揃っていないプレイヤーにはまだ有効。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 225
+    },
+    {
+      "id": "pwc-raven-claws",
+      "name": "Raven Claws (레이븐의 발톱)",
+      "members": [
+        "Rapi: Red Hood",
+        "Crown",
+        "Little Mermaid",
+        "Raven",
+        "Helm"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 철갑 약점 보스(유니온 레이드에서 자주 만난다)를 상대로 한 레이븐의 표준 조합이다. 예를 들면 런웨이, 헤비 메탈 같은 보스가 떠오른다. (속성: 철갑)",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "element": "iron",
+      "name_en": "Raven Claws",
+      "name_ja": "Raven Claws（レイヴンの爪）",
+      "note_en": "[Source: prydwen.gg character page] The standard team for Raven against Iron weak boss (which you might meet a lot in Union Raid). For example, Runway and Heavy Metals are 2 bosses that come to mind. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］鉄甲弱点ボス(ユニオンレイドでよく出会う)相手のレイヴンの標準編成。例えばランウェイやヘビーメタルといったボスが思い浮かぶ。（属性：鉄甲）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 270
+    },
+    {
+      "id": "pwc-steward-to-fight-math",
+      "name": "Steward to fight Math (수학과 싸우는 집사)",
+      "members": [
+        "Crown",
+        "Little Mermaid",
+        "Scarlet: Black Shadow",
+        "Asuka: WILLE",
+        "Sora"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 풍압 약점 보스용 조합으로, 특히 머티리얼 H가 떠오른다. (속성: 풍압)",
+      "element": "wind",
+      "name_en": "Steward to fight Math",
+      "name_ja": "Steward to fight Math（数学と戦う執事）",
+      "note_en": "[Source: prydwen.gg character page] A team For wind weak bosses, especially and quite possibly Material H. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］風圧弱点ボス向けの編成で、特にマテリアルHが思い浮かぶ。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 274
+    },
+    {
+      "id": "pwc-pompeii",
+      "name": "Pompeii (폼페이)",
+      "members": [
+        "Blanc",
+        "Vesti: Tactical Upgrade",
+        "Helm",
+        "Centi",
+        "Jackal"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 루키 아레나의 기본 조합(여기에 모든 걸 쏟아붓기 때문). 전부 쓸어버린다.",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "name_en": "Pompeii",
+      "name_ja": "Pompeii（ポンペイ）",
+      "note_en": "[Source: prydwen.gg character page] Very bread and butter team in Rookie Arena (because you pour everything into this team). Kill everything.",
+      "note_ja": "［出典：prydwen.gg character page］ルーキーアリーナの基本編成(すべてをこの編成に注ぎ込むから)。全部なぎ払う。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 289
+    },
+    {
+      "id": "pwc-the-ol-biscuit-special",
+      "name": "The Ol' Biscuit Special (옛 비스킷 스페셜)",
+      "members": [
+        "Delta: Ninja Thief",
+        "Biscuit",
+        "Red Hood",
+        "Trina",
+        "Emilia"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 구 메타 범용 PvP 조합으로, 비스킷이 P1에서 피해를 막는다.",
+      "name_en": "The Ol' Biscuit Special",
+      "name_ja": "The Ol' Biscuit Special（昔ながらのビスケットスペシャル）",
+      "note_en": "[Source: prydwen.gg character page] General old meta PvP team, involves Biscuit to block the damage in P1.",
+      "note_ja": "［出典：prydwen.gg character page］旧メタの汎用PvP編成で、ビスケットがP1で被害を防ぐ。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 314
+    },
+    {
+      "id": "pwc-water-mayhem",
+      "name": "Water Mayhem (수냉 대혼란)",
+      "members": [
+        "Little Mermaid",
+        "Crown",
+        "Ludmilla: Winter Owner",
+        "Helm",
+        "Delta: Ninja Thief"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 마스트 : 로망틱 메이드와 일레그 : 붐 앤 쇼크가 없는 유저를 위한 수냉 보스전 조합이다!",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "name_en": "Water Mayhem",
+      "name_ja": "Water Mayhem（水冷の大混乱）",
+      "note_en": "[Source: prydwen.gg character page] Water Team for bossing for players without Maid Mast and Summer Elegg!",
+      "note_ja": "［出典：prydwen.gg character page］マスト：ロマンチックメイドとエレグ：ブーム・アンド・ショックがいないプレイヤー向けの水冷ボス戦編成!",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 315
+    },
+    {
+      "id": "pwc-standard-libby-nuke",
+      "name": "Standard Libby Nuke (표준 리버렐리오 누크)",
+      "members": [
+        "Rumani",
+        "Bay",
+        "Biscuit",
+        "Liberalio",
+        "Helm"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 리버렐리오를 앞세운 기본 2RL 한 방 조합이다. 그녀의 버스트에는 지연이 있어 카운터하기가 비교적 쉽다는 점에 주의.",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "name_en": "Standard Libby Nuke",
+      "name_ja": "Standard Libby Nuke（標準リバーレリオ・ヌーク）",
+      "note_en": "[Source: prydwen.gg character page] This team is a basic 2 RL Nuke featuring Liberalio. Note that her Burst has a delay, so countering her is kind of easy.",
+      "note_ja": "［出典：prydwen.gg character page］リバーレリオを軸にした基本の2RLヌーク編成。彼女のバーストには遅延があるので、比較的カウンターされやすい点に注意。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 328
+    },
+    {
+      "id": "pwc-off-burst-xbrid",
+      "name": "Off-Burst XBrid (버스트 밖의 브리드 : 사일런트 트랙)",
+      "members": [
+        "Little Mermaid",
+        "Crown",
+        "Rapi: Red Hood",
+        "Mihara: Bonding Chain",
+        "Brid: Silent Track"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 장비 투자 없이도(스킬은 최대로) 브리드 : 사일런트 트랙은 작열 약점 보스전에서 버스트 안의 B2로도, 버스트 밖의 B2로도 훌륭한 지원을 한다.",
+      "name_en": "Off-Burst XBrid",
+      "name_ja": "Off-Burst XBrid（バースト外のブリッド：サイレントトラック）",
+      "note_en": "[Source: prydwen.gg character page] XBrid without gear investment (but with maxed skill investment) can still provide great support in Fire-weak Bossing, both as an in-burst or as an off-burst B2.",
+      "note_ja": "［出典：prydwen.gg character page］装備投資なしでも(スキルは最大で)ブリッド：サイレントトラックは灼熱弱点のボス戦で、バースト内のB2としてもバースト外のB2としても優れた支援をする。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 345
+    },
+    {
+      "id": "pwc-blak-snek",
+      "name": "Blak Snek (블랙 스네이크 공략)",
+      "members": [
+        "Rapi: Red Hood",
+        "Crown",
+        "Snow White: Heavy Arms",
+        "Helm",
+        "Anchor: Innocent Maid"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 스노우 화이트 : 헤비암즈 출시 뒤 블랙 스네이크의 새 최적 조합. 블랙 스네이크는 캠페인과 타워에 나오는 보스다. 이 조합에는 분산 피해가 없으므로 분신은 MG로 직접 쏴서 떨어뜨려야 한다. (속성: 수냉)",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "element": "water",
+      "name_en": "Blak Snek",
+      "name_ja": "Blak Snek（ブラックスネーク攻略）",
+      "note_en": "[Source: prydwen.gg character page] Black Snake's new BiS comp after SWHA's release. Black Snake is a boss featured in Campaign & Towers. This team doesn't have Distributed Damage. You need to manually shoot down the clone using MGs. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］スノーホワイト：ヘビーアームズ実装後のブラックスネークの新しい最適編成。ブラックスネークはキャンペーンとタワーに登場するボス。この編成には分散ダメージがないので、分身はMGで手動で撃ち落とす必要がある。（属性：水冷）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 357
+    },
+    {
+      "id": "pwc-2024-dps-2026-supports",
+      "name": "2024 DPS, 2026 Supports (2024년 딜러, 2026년 서포터)",
+      "members": [
+        "Little Mermaid",
+        "Crown",
+        "Red Hood",
+        "Alice",
+        "Velvet"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 그냥 잘 돌아가는 조합이다. 벨벳을 차지 피해 버퍼로 쓰는 예로 실어 둔다.",
+      "name_en": "2024 DPS, 2026 Supports",
+      "name_ja": "2024 DPS, 2026 Supports（2024年のアタッカー、2026年のサポーター）",
+      "note_en": "[Source: prydwen.gg character page] A comp that just works. Just here as an example of how Velvet can be used as a Charge Damage buffer.",
+      "note_ja": "［出典：prydwen.gg character page］とにかくうまく回る編成。ベルベットをチャージダメージのバッファーとして使う例として載せている。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 369
+    },
+    {
+      "id": "pwc-fire-and-water-collide-wirh-a-windy-chance",
+      "name": "Fire and Water Collide wirh a Windy chance (불과 물이 부딪히고 바람도 살짝)",
+      "members": [
+        "Tove",
+        "Arcana: Fortune Mate",
+        "Dorothy: Serendipity",
+        "Drake",
+        "Soline: Frost Ticket"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 아르카나 : 포츈 메이트의 일반적인 조합이다. 작열·풍압·수냉 약점 레이드에 두루 쓸 수 있다.",
+      "requiresTreasure": [
+        "Tove",
+        "Drake"
+      ],
+      "name_en": "Fire and Water Collide wirh a Windy chance",
+      "name_ja": "Fire and Water Collide wirh a Windy chance（炎と水がぶつかり、風も少し）",
+      "note_en": "[Source: prydwen.gg character page] The general team composition for Altcana. Usable across Fire-Weak, Wind-Weak and Water Weak Raids.",
+      "note_ja": "［出典：prydwen.gg character page］アルカナ：フォーチュンメイトの一般的な編成。灼熱・風圧・水冷弱点のレイドで幅広く使える。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 399
+    },
+    {
+      "id": "pwc-fire-2-electric-boogaloo",
+      "name": "Fire 2: Electric Boogaloo (작열 2: 전격 부갈루)",
+      "members": [
+        "Tove",
+        "Arcana: Fortune Mate",
+        "Drake",
+        "Soda: Twinkling Bunny",
+        "Brid: Silent Track"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 브리드는 딜러 겸 버퍼라는 꿈을 아직 버리지 않았다. 최고의 작열 샷건 조합은 브리드가 들어가도 여전히 빛난다! (속성: 작열)",
+      "requiresTreasure": [
+        "Tove",
+        "Drake"
+      ],
+      "element": "fire",
+      "name_en": "Fire 2: Electric Boogaloo",
+      "name_ja": "Fire 2: Electric Boogaloo（灼熱2：電撃ブーガルー）",
+      "note_en": "[Source: prydwen.gg character page] Brid has not necessarily given up her dream of being a DPS/Buffer hybrid. The best fire SG team still shines with Brid in the mix! (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］ブリッドはアタッカー兼バッファーという夢をまだ捨てていない。最強の灼熱ショットガン編成はブリッドが入っても変わらず輝く!（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 400
+    },
+    {
+      "id": "pwc-super-slow-snow-crane-pvp-team",
+      "name": "Super-Slow Snow Crane PVP team (아주 느린 백학 PvP 팀)",
+      "members": [
+        "Mihara: Bonding Chain",
+        "Moran",
+        "Snow Crane",
+        "Biscuit",
+        "Cinderella"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 아주 느린 조합이라 챔피언 아레나에서나 써서 딜러 팀의 허를 찌르는 용도다.",
+      "requiresTreasure": [
+        "Moran"
+      ],
+      "name_en": "Super-Slow Snow Crane PVP team",
+      "name_ja": "Super-Slow Snow Crane PVP team（超鈍足のシラツルPvP編成）",
+      "note_en": "[Source: prydwen.gg character page] This team is super slow, which you may only use in Champion Arena instead, hoping to catch some DPS teams offguard.",
+      "note_ja": "［出典：prydwen.gg character page］非常に遅い編成なので、チャンピオンアリーナでアタッカー編成の不意を突く用途でしか使わない。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 404
+    },
+    {
+      "id": "pwc-push-campaign",
+      "name": "Push Campaign! (캠페인을 밀자!)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Rapi: Red Hood",
+        "Vesti: Tactical Upgrade",
+        "Ada Wong"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 아니스 : 스타는 캠페인을 밀 때 아주 강하다! 이건 쓸 수 있는 조합 중 하나일 뿐이고 변형이 여럿 있다.",
+      "name_en": "Push Campaign!",
+      "name_ja": "Push Campaign!（キャンペーンを進めよう!）",
+      "note_en": "[Source: prydwen.gg character page] Anis can be very powerful for pushing Campaign! This is just one of the teams you can use, but there are multiple variations.",
+      "note_ja": "［出典：prydwen.gg character page］アニス：スターはキャンペーンを進めるときにとても強い!これは使える編成の一つにすぎず、バリエーションがいくつもある。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 405
+    },
+    {
+      "id": "pwc-anis-pushes-tetra-tower",
+      "name": "Anis Pushes Tetra Tower! (아니스가 테트라 타워를 민다!)",
+      "members": [
+        "Anis: Star",
+        "Ade: Agent Bunny",
+        "Milk: Blooming Bunny",
+        "Alice",
+        "Velvet"
+      ],
+      "mode": "tribe_tower",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 지금 테트라 타워 최고의 단독 B1은 아니스 : 스타다.",
+      "name_en": "Anis Pushes Tetra Tower!",
+      "name_ja": "Anis Pushes Tetra Tower!（アニスがテトラ塔を進める!）",
+      "note_en": "[Source: prydwen.gg character page] Anis: Star is the best solo B1 for Tetra Tower now.",
+      "note_ja": "［出典：prydwen.gg character page］今のテトラ塔で最強の単独B1はアニス：スター。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 406
+    },
+    {
+      "id": "pwc-wind-weak-musical",
+      "name": "Wind-Weak Musical (풍압 약점 뮤지컬)",
+      "members": [
+        "Anis: Star",
+        "Nayuta",
+        "Liberalio",
+        "Scarlet: Black Shadow",
+        "Velvet"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 최고의 풍압 약점 보스전 조합이다. (속성: 풍압)",
+      "element": "wind",
+      "name_en": "Wind-Weak Musical",
+      "name_ja": "Wind-Weak Musical（風圧弱点ミュージカル）",
+      "note_en": "[Source: prydwen.gg character page] Best Wind-weak Bossing comp. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］最強の風圧弱点ボス戦編成。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 409
+    },
+    {
+      "id": "pwc-fire-weak-musical-i",
+      "name": "Fire-Weak Musical I (작열 약점 뮤지컬 I)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Rapi: Red Hood",
+        "Mihara: Bonding Chain",
+        "Mast: Romantic Maid"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 디버프 면역 보스를 상대로 하는 최고의 작열 약점 조합이다. (속성: 작열)",
+      "element": "fire",
+      "name_en": "Fire-Weak Musical I",
+      "name_ja": "Fire-Weak Musical I（灼熱弱点ミュージカル I）",
+      "note_en": "[Source: prydwen.gg character page] Best Fire-weak comp against bosses with debuff immunity. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］デバフ無効のボス相手の最強の灼熱弱点編成。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 410
+    },
+    {
+      "id": "pwc-fire-weak-musical-ii",
+      "name": "Fire-Weak Musical II (작열 약점 뮤지컬 II)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Rapi: Red Hood",
+        "Helm",
+        "Mihara: Bonding Chain"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 디버프 면역 보스를 상대로 회복까지 갖춘 최고의 작열 약점 조합이다. (속성: 작열)",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "element": "fire",
+      "name_en": "Fire-Weak Musical II",
+      "name_ja": "Fire-Weak Musical II（灼熱弱点ミュージカル II）",
+      "note_en": "[Source: prydwen.gg character page] Best Fire-weak comp with healing against bosses with debuff immunity. (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］デバフ無効のボス相手に回復も備えた最強の灼熱弱点編成。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 411
+    },
+    {
+      "id": "pwc-fire-weak-musical-iii",
+      "name": "Fire-Weak Musical III (작열 약점 뮤지컬 III)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Rapi: Red Hood",
+        "Diesel: Winter Sweets",
+        "Mihara: Bonding Chain"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 디버프 면역이 없는 보스를 상대로 하는 최고의 작열 약점 조합이다. (속성: 작열)",
+      "element": "fire",
+      "name_en": "Fire-Weak Musical III",
+      "name_ja": "Fire-Weak Musical III（灼熱弱点ミュージカル III）",
+      "note_en": "[Source: prydwen.gg character page] Best Fire-weak comp against bosses without debuff immunity (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］デバフ無効を持たないボス相手の最強の灼熱弱点編成。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 412
+    },
+    {
+      "id": "pwc-electric-weak-musical",
+      "name": "Electric-Weak Musical (전격 약점 뮤지컬)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Cinderella",
+        "Anis: Sparkling Summer",
+        "Maiden: Ice Rose"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 최고의 전격 약점 보스전 조합이다. (속성: 전격)",
+      "element": "electric",
+      "name_en": "Electric-Weak Musical",
+      "name_ja": "Electric-Weak Musical（電撃弱点ミュージカル）",
+      "note_en": "[Source: prydwen.gg character page] Best Electric-weak Bossing comp. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］最強の電撃弱点ボス戦編成。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 413
+    },
+    {
+      "id": "pwc-water-weak-musical",
+      "name": "Water-Weak Musical (수냉 약점 뮤지컬)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Snow White: Heavy Arms",
+        "Privaty",
+        "Elegg: Boom and Shock"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 최고의 수냉 약점 보스전 조합이다. (속성: 수냉)",
+      "requiresTreasure": [
+        "Privaty"
+      ],
+      "element": "water",
+      "name_en": "Water-Weak Musical",
+      "name_ja": "Water-Weak Musical（水冷弱点ミュージカル）",
+      "note_en": "[Source: prydwen.gg character page] Best Water-weak Bossing comp. (Element: Water)",
+      "note_ja": "［出典：prydwen.gg character page］最強の水冷弱点ボス戦編成。（属性：水冷）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 415
+    },
+    {
+      "id": "pwc-shotgun-dance-crew",
+      "name": "Shotgun Dance Crew (샷건 댄스 크루)",
+      "members": [
+        "Nayuta",
+        "Anis: Star",
+        "Soda: Twinkling Bunny",
+        "Noir",
+        "Drake"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 광역 압박이 강한 2RL 샷건 조합이다. 허술하게 짠 방어 팀을 상대로 좋은 PvP 공격 조합.",
+      "requiresTreasure": [
+        "Drake"
+      ],
+      "name_en": "Shotgun Dance Crew",
+      "name_ja": "Shotgun Dance Crew（ショットガン・ダンスクルー）",
+      "note_en": "[Source: prydwen.gg character page] A 2RL shotgun team with oppressive AoE. A good PvP Attack team against poorly built teams.",
+      "note_ja": "［出典：prydwen.gg character page］範囲攻撃の圧が強い2RLショットガン編成。雑に組まれた防衛編成相手に良いPvP攻撃編成。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 420
+    },
+    {
+      "id": "pwc-neons-best-team-without-sanis-xmaiden",
+      "name": "Neon's Best Team Without SAnis & XMaiden (아니스 : 스파클링 서머·메이든 : 아이스 로즈 없이 네온 최고의 조합)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Neon: Vision Eye",
+        "Liberalio",
+        "Mast: Romantic Maid"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 두 캐릭터 없이도 네온 : 비전 아이의 딜을 크게 끌어내는 조합으로, 두 메이드 조합보다 딜이 높아 솔로 레이드에서 유용하다. (속성: 전격)",
+      "element": "electric",
+      "name_en": "Neon's Best Team Without SAnis & XMaiden",
+      "name_ja": "Neon's Best Team Without SAnis & XMaiden（アニス：スパークリングサマー・メイデン：アイスローズなしのネオン最強編成）",
+      "note_en": "[Source: prydwen.gg character page] This Neon team without SAnis & XMaiden promises a high output for Neon, higher than the Dual Maids team, which can be a useful for Solo Raid. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］二人がいなくてもネオン：ビジョン・アイの火力を大きく引き出す編成で、ダブルメイド編成より火力が高く、ソロレイドで役立つ。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 428
+    },
+    {
+      "id": "pwc-the-best-electric-team-of-all-time",
+      "name": "The Best Electric Team Of All Time (역대 최강 전격 조합)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Neon: Vision Eye",
+        "Anis: Sparkling Summer",
+        "Maiden: Ice Rose"
+      ],
+      "mode": "bossing",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 한 팀만 중요한 레이드 밖에서는 가성비가 중요하지 않다. 지금 가장 강한 전격 조합을 소개한다 — 신데렐라조차 없다! 유니온 레이드에 좋다. (속성: 전격)",
+      "element": "electric",
+      "name_en": "The Best Electric Team Of All Time",
+      "name_ja": "The Best Electric Team Of All Time（史上最強の電撃編成）",
+      "note_en": "[Source: prydwen.gg character page] Outside Raids, where only one team matters, cost-efficiency is not important. Introducing the strongest Electric team right now, and yes, it doesn't even include Cinderella! Good for Union Raid. (Element: Electric)",
+      "note_ja": "［出典：prydwen.gg character page］1編成だけが重要なレイド以外ではコスパは重要ではない。今いちばん強い電撃編成を紹介する — シンデレラすら入っていない!ユニオンレイドに向いている。（属性：電撃）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 429
+    },
+    {
+      "id": "pwc-black-in-the-hole",
+      "name": "Black in the Hole (블랙 인 더 홀)",
+      "members": [
+        "Jackal",
+        "Blanc",
+        "Ark Ranger Black",
+        "Helm",
+        "Rumani"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 제대로 된 좀비·지속 피해 PvP 조합이다. 노아·목단 같은 극단적인 스톨 팀만 아니면 꽤 강한 한 방을 낸다.",
+      "requiresTreasure": [
+        "Helm"
+      ],
+      "name_en": "Black in the Hole",
+      "name_ja": "Black in the Hole（ブラック・イン・ザ・ホール）",
+      "note_en": "[Source: prydwen.gg character page] Just a proper zombie DoT PvP team. Unless you meet a super stall team like Noah-Moran, this team should pack quite a punch.",
+      "note_ja": "［出典：prydwen.gg character page］ちゃんとしたゾンビ・継続ダメージのPvP編成。ノア・モランのような極端なストール編成でなければ、かなり強い一撃を出す。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 448
+    },
+    {
+      "id": "pwc-slipper-y-rockets",
+      "name": "Slipper-y Rockets (미끄러운 로켓)",
+      "members": [
+        "Anis: Star",
+        "Crown",
+        "Vesti: Tactical Upgrade",
+        "Cinderella: Crystal Wave",
+        "Mast: Romantic Maid"
+      ],
+      "mode": "campaign",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 베스티 : 택티컬 업의 엄청난 광역 피해 덕에 무속성 대응이 더 좋은 캠페인 대안 조합이다. (속성: 철갑)",
+      "element": "iron",
+      "name_en": "Slipper-y Rockets",
+      "name_ja": "Slipper-y Rockets（すべりやすいロケット）",
+      "note_en": "[Source: prydwen.gg character page] Alternative campaign team with better Neutral coverage thanks to TVesti's monstrous AoE damage. (Element: Iron)",
+      "note_ja": "［出典：prydwen.gg character page］ベスティー：タクティカル・アップの凄まじい範囲ダメージのおかげで、無属性対応がより良いキャンペーンの代替編成。（属性：鉄甲）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 453
+    },
+    {
+      "id": "pwc-makoto-sg",
+      "name": "Makoto SG (마코토 샷건)",
+      "members": [
+        "Tove",
+        "Arcana: Fortune Mate",
+        "Queen (Makoto Niijima)",
+        "Drake",
+        "Soline: Frost Ticket"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 작열 약점 콘텐츠용의 정석 샷건 조합이다. 최대치에서는 퀸(니지마 마코토)이 여기서 드레이크보다 20~30%쯤 더 딜을 낸다. (속성: 작열)",
+      "requiresTreasure": [
+        "Tove",
+        "Drake"
+      ],
+      "element": "fire",
+      "name_en": "Makoto SG",
+      "name_ja": "Makoto SG（マコトのショットガン）",
+      "note_en": "[Source: prydwen.gg character page] The proper SG comp for Fire weak content. At peak, Makoto should deal more than Drake here around 20-30% (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］灼熱弱点コンテンツ向けの正統派ショットガン編成。最大値ではクイーン（新島真）がここでドレイクより20〜30%ほど多く火力を出す。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 512
+    },
+    {
+      "id": "pwc-persona-maid-reload",
+      "name": "Persona Maid Reload (페르소나 메이드 재장전)",
+      "members": [
+        "Mast: Romantic Maid",
+        "Yukiko",
+        "Queen (Makoto Niijima)",
+        "Anchor: Innocent Maid"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 이 조합은 퀸(니지마 마코토)보다 아마기 유키코에게 더 도움이 된다 — MG에게 아주 중요한 재장전 버프를 주기 때문이다. 퀸은 여기서 꽤 괜찮은 딜도 내는 서포터 역할이다. (속성: 작열)",
+      "flexSlots": [
+        "B1-CDR"
+      ],
+      "element": "fire",
+      "name_en": "Persona Maid Reload",
+      "name_ja": "Persona Maid Reload（ペルソナ メイド リロード）",
+      "note_en": "[Source: prydwen.gg character page] This team helps Yukiko more than Makoto, because it provides reload buff which is very important for MG wielder. Makoto acts as supporter here who can deal pretty good damage too (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］この編成はクイーン（新島真）より天城雪子の助けになる — MG使いにとって非常に重要なリロードバフをくれるからだ。クイーンはここでそこそこの火力も出すサポーター役。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 515
+    },
+    {
+      "id": "pwc-persona-crown-reload",
+      "name": "Persona Crown Reload (페르소나 크라운 재장전)",
+      "members": [
+        "Crown",
+        "Yukiko",
+        "Queen (Makoto Niijima)"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 미하라가 크라운 팀에 없을 때(미란다와 함께 방치 운용이 가능해서) 나올 수 있는 조합이다. 마지막 자리는 마스트 : 로망틱 메이드를 넣으면 딜이 더 좋다. 대체: 자유 자리는 마스트 : 로망틱 메이드나 프리바티가 이상적이다. (속성: 작열)",
+      "flexSlots": [
+        "B1-CDR",
+        "flex"
+      ],
+      "element": "fire",
+      "name_en": "Persona Crown Reload",
+      "name_ja": "Persona Crown Reload（ペルソナ クラウン リロード）",
+      "note_en": "[Source: prydwen.gg character page] This team can show up when Mihara is not in Crown team (due to she can stay afk with Miranda). Last spot can be M.Mast for better output Substitutions: Flex unit may ideally be Maid Mast or Privaty (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］ミハラがクラウン編成にいないとき(ミランダと一緒に放置運用できるため)に出てくる編成。最後の枠はマスト：ロマンチックメイドにすると火力が上がる。差し替え：自由枠はマスト：ロマンチックメイドかプリバティが理想的。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 516
+    },
+    {
+      "id": "pwc-yukikos-great-separation-1",
+      "name": "Yukiko's Great Separation 1 (유키코의 대분리 1)",
+      "members": [
+        "Crown",
+        "Alice",
+        "Yukiko"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 관통·코어 상황이라면, 퀸(니지마 마코토)을 아직 못 키운 유저에게 나쁘지 않은 조합일 수 있다. 대체: 자유 자리는 마스트 : 로망틱 메이드나 프리바티가 이상적이다. (속성: 작열)",
+      "flexSlots": [
+        "B1-CDR",
+        "flex"
+      ],
+      "element": "fire",
+      "name_en": "Yukiko's Great Separation 1",
+      "name_ja": "Yukiko's Great Separation 1（雪子の大分離1）",
+      "note_en": "[Source: prydwen.gg character page] In a Pierce/Core situation, this team might not be that bad of an idea if players do not have Makoto built up yet. Substitutions: Flex unit may ideally be Maid Mast or Privaty (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］貫通・コアの状況なら、クイーン（新島真）をまだ育てていないプレイヤーにとって悪くない編成かもしれない。差し替え：自由枠はマスト：ロマンチックメイドかプリバティが理想的。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 517
+    },
+    {
+      "id": "pwc-yukikos-great-separation-2",
+      "name": "Yukiko's Great Separation 2 (유키코의 대분리 2)",
+      "members": [
+        "Little Mermaid",
+        "Mast: Romantic Maid",
+        "Yukiko",
+        "Rei Ayanami",
+        "Anchor: Innocent Maid"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 플레이 메모: 버스트 게이지 수급을 위해 앵커를 수동으로 조작할 것. (속성: 작열)",
+      "element": "fire",
+      "name_en": "Yukiko's Great Separation 2",
+      "name_ja": "Yukiko's Great Separation 2（雪子の大分離2）",
+      "note_en": "[Source: prydwen.gg character page] Note to player: Manual Anchor for burst generation (Element: Fire)",
+      "note_ja": "［出典：prydwen.gg character page］プレイメモ：バーストゲージ回収のためにアンカーを手動で操作すること。（属性：灼熱）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 518
+    },
+    {
+      "id": "pwc-the-greatest-villain-i",
+      "name": "The Greatest Villain I (최고의 악당 I)",
+      "members": [
+        "Laplace: Ultimate Hero",
+        "Rouge",
+        "Drake: Great Villain",
+        "Maxwell: Ordinary Mechanic",
+        "Privaty"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 풍압 약점 콘텐츠에서 꽤 강한 조합이다. 루주·드레이크 : 그레이트 빌런·맥스웰 : 오디너리 미케닉에게서 최대 HP 증가가 크게 쌓이고, 딜도 솔로 레이드 3팀감으로 충분하다. 문제는 애장품 프리바티를 다른 팀에서도 원할 수 있다는 것 — 그럴 때는 II·III 변형을 볼 것. 대체: 애장품 프리바티는 애장품 헬름으로 바꿀 수 있다. (속성: 풍압)",
+      "requiresTreasure": [
+        "Privaty"
+      ],
+      "element": "wind",
+      "name_en": "The Greatest Villain I",
+      "name_ja": "The Greatest Villain I（最高の悪役 I）",
+      "note_en": "[Source: prydwen.gg character page] This team is pretty strong for Wind-weak content: It has a huge amount of Max HP▲ (from Rouge, Drake, and Maxwell). The damage is enough to be a Team 3-material in Solo Raid. The only problem is PrivT might be wanted in other teams. In that case, read Variant II and III. Substitutions: Privaty (Treasure) can be replaced by Helm (Treasure). (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］風圧弱点コンテンツでかなり強い編成。ルージュ・ドレイク：グレイトヴィラン・マクスウェル：オーディナリーメカニックから最大HP増加が大きく積み上がり、火力もソロレイド3編成目として十分。問題は宝ものプリバティを他の編成でも使いたくなること — その場合はII・IIIの変形を見ること。差し替え：宝ものプリバティは宝ものヘルムに置き換え可能。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 519
+    },
+    {
+      "id": "pwc-the-greatest-villain-ii",
+      "name": "The Greatest Villain II (최고의 악당 II)",
+      "members": [
+        "Laplace: Ultimate Hero",
+        "Rouge",
+        "Drake: Great Villain",
+        "Trina",
+        "Maxwell: Ordinary Mechanic"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 버스트 밖 딜러가 없는 변형이다. 맥스웰 : 오디너리 미케닉이 드레이크 : 그레이트 빌런과, 트리나가 라플라스 : 얼티밋 히어로와 버스트한다. 프리바티나 헬름을 다른 팀에 남겨 두고, 맥스웰이 매번 버스트하지 않아 투자 부담도 줄어든다. 대신 라플라스 : 얼티밋 히어로의 투자가 시험대에 오른다. 순환은 드레이크부터 시작하고 트리나로 게이지를 수급할 것. (속성: 풍압)",
+      "element": "wind",
+      "name_en": "The Greatest Villain II",
+      "name_ja": "The Greatest Villain II（最高の悪役 II）",
+      "note_en": "[Source: prydwen.gg character page] This off-burst-less variant features Mom Bursting with VDrake and Trina Bursting with Lapluh. This saves Privaty or Helm for other teams and reduces investment pressure on Mom as she doesn't Burst all the time. That said, this tests Lapluh's investments. Start the rotation with VDrake and use Trina for burst gen. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］バースト外アタッカーがいない変形。マクスウェル：オーディナリーメカニックがドレイク：グレイトヴィランと、トリナがラプラス：アルティメットヒーローとバーストする。プリバティやヘルムを他の編成に回せ、マクスウェルが毎回バーストしないので育成負担も減る。そのぶんラプラス：アルティメットヒーローの育成が試される。ローテーションはドレイクから始め、トリナでゲージを回収すること。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 520
+    },
+    {
+      "id": "pwc-the-greatest-villain-iii",
+      "name": "The Greatest Villain III (최고의 악당 III)",
+      "members": [
+        "Laplace: Ultimate Hero",
+        "Rouge",
+        "Drake: Great Villain",
+        "Trina",
+        "Ludmilla: Winter Owner"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 맥스웰 : 오디너리 미케닉이 없다면? 간단하다. 라플라스 : 얼티밋 히어로와 드레이크 : 그레이트 빌런에 버스트 밖 받는 피해 증가를 붙이면 된다. 트리나의 버스트 스킬은 딜 비중은 작아도 드레이크의 버스트 스킬과 궁합이 좋다. 풀버스트를 14번 할 수 있으면 드레이크부터, 아니면 라플라스부터 버스트한다. 대체: 루드밀라 : 윈터 오너는 스즈하라 사쿠라(콜라보 SR)나 델타 : 닌자 시프로 바꿀 수 있다. (속성: 풍압)",
+      "element": "wind",
+      "name_en": "The Greatest Villain III",
+      "name_ja": "The Greatest Villain III（最高の悪役 III）",
+      "note_en": "[Source: prydwen.gg character page] Say, you don't have Maxwell: Ordinary Mechanic. What should you do? Easy. Pair Lapluh and Drake with off-burst Damage Taken instead. Trina's Burst Skill has good synergy with VDrake's Burst Skill despite it being the smaller portion of her total damage. Burst with VDrake first if 14 Full Bursts are possible, otherwise Lapluh first. Substitutions: Ludmilla: Winter Owner can be replaced by Sakura Suzuhara (SR coillab unit) or Delta: Ninja Thief. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］マクスウェル：オーディナリーメカニックがいない?簡単だ。ラプラス：アルティメットヒーローとドレイク：グレイトヴィランに、バースト外の被ダメージ増加を組み合わせればよい。トリナのバーストスキルは火力の比重は小さくてもドレイクのバーストスキルと相性が良い。フルバーストを14回できるならドレイクから、そうでなければラプラスからバーストする。差し替え：ルドミラ：ウィンターオーナーは鈴原サクラ（コラボSR）かデルタ：ニンジャシーフに置き換え可能。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 521
+    },
+    {
+      "id": "pwc-sneaky-sneaky-draky",
+      "name": "Sneaky Sneaky Draky (살금살금 드레이크)",
+      "members": [
+        "Little Mermaid",
+        "Nayuta",
+        "Liberalio",
+        "Drake: Great Villain",
+        "Velvet"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 홍련 : 흑영의 풍압 팀과 닮았다 — 실제로 홍련 : 흑영 자리를 드레이크 : 그레이트 빌런으로 바꾼 것이다. 홍련 : 흑영이 준비되지 않았을 때의 대안이다. 딜은 못 미치지만 드레이크가 좋아하는 것들을 잔뜩 챙겨준다. (속성: 풍압)",
+      "element": "wind",
+      "name_en": "Sneaky Sneaky Draky",
+      "name_ja": "Sneaky Sneaky Draky（こっそりドレイク）",
+      "note_en": "[Source: prydwen.gg character page] This looks a lot like the Wind team of SBS but replacing SBS with Drake. Well it is, this time an alternative when you don't have Scarlet: Black Shadow ready. The damage won't match SBS, but this team provides Drake a lot of stuff she likes. (Element: Wind)",
+      "note_ja": "［出典：prydwen.gg character page］紅蓮：ブラックシャドウの風圧編成に似ている — 実際に紅蓮：ブラックシャドウの枠をドレイク：グレイトヴィランに替えたものだ。紅蓮：ブラックシャドウが用意できていないときの代替。火力は及ばないが、ドレイクが好むものをたくさん与えられる。（属性：風圧）",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 522
+    },
+    {
+      "id": "pwc-new-missilis-tower",
+      "name": "New Missilis Tower (새 미실리스 타워)",
+      "members": [
+        "Liter",
+        "Maxwell: Ordinary Mechanic",
+        "Laplace: Ultimate Hero",
+        "Flora",
+        "Drake: Great Villain"
+      ],
+      "mode": "tribe_tower",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 아인이나 애장품 라플라스 같은 옛 캐릭터에 투자하고 싶지 않다면 이렇게 풍압 위주로 가면 된다. 작열·수냉 속성 실드에는 고전하므로 상황에 따라 라플라스 : 얼티밋 히어로나 드레이크 : 그레이트 빌런을 바꿔야 한다.",
+      "requiresTreasure": [
+        "Flora"
+      ],
+      "name_en": "New Missilis Tower",
+      "name_ja": "New Missilis Tower（新ミシリス塔）",
+      "note_en": "[Source: prydwen.gg character page] For someone who doesn't want to invest in old units like Ein, Laplace (Treasure), well you can go huge Wind like this. This team will struggle against Fire and Water elemental shield so you still need to swap either Laplace or Drake depending on the situation.",
+      "note_ja": "［出典：prydwen.gg character page］アインや宝ものラプラスのような古いキャラに投資したくないなら、このように風圧中心でいける。灼熱・水冷の属性シールドには苦戦するので、状況に応じてラプラス：アルティメットヒーローかドレイク：グレイトヴィランを入れ替える必要がある。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 523
+    },
+    {
+      "id": "pwc-shotgang-with-drake",
+      "name": "Shotgang with Drake (드레이크 샷건 갱)",
+      "members": [
+        "Drake: Great Villain",
+        "Drake",
+        "Sugar",
+        "Rosanna",
+        "Label"
+      ],
+      "mode": "pvp",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 챔피언 아레나의 표준 조합으로, 샷건 4.5(드레이크 : 그레이트 빌런 = 2.5 SG) 구성이다. 상대에게 보호가 없다면 SG 3발 만에 P1/P5를 지울 수 있고, 로산나 덕에 버스트 수급에도 도움이 된다.",
+      "requiresTreasure": [
+        "Drake",
+        "Sugar"
+      ],
+      "name_en": "Shotgang with Drake",
+      "name_ja": "Shotgang with Drake（ドレイクのショットガン軍団）",
+      "note_en": "[Source: prydwen.gg character page] A standard team for Champion Arena, featuring 4.5 SG (DrakeV = 2.5 SG). You may delete P1/P5 Nikke at 3 SG shots assuming they don't have protection, which helps with burst gen thanks to Rosanna.",
+      "note_ja": "［出典：prydwen.gg character page］チャンピオンアリーナの標準編成で、ショットガン4.5(ドレイク：グレイトヴィラン＝2.5SG)構成。相手に保護がなければSG3発でP1/P5を消せ、ロザンナのおかげでバースト回収にも役立つ。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 524
+    },
+    {
+      "id": "pwc-cindys-new-best-friends-not-lore-wise",
+      "name": "Cindy's New Best Friends (Not Lore Wise) (신데렐라의 새 절친들 (설정상 아님))",
+      "members": [
+        "Laplace: Ultimate Hero",
+        "Rouge",
+        "Cinderella",
+        "Maxwell: Ordinary Mechanic",
+        "Drake: Great Villain"
+      ],
+      "mode": "raid",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 드레이크 : 그레이트 빌런은 버스트 밖에서도 준수한 딜을 내고 지원 버프도 그대로다. 라플라스 : 얼티밋 히어로·신데렐라를 버스트 자리에 두면 무속성 솔로 레이드에서 좋은 결과를 기대할 수 있다. 맥스웰 : 오디너리 미케닉도 이 구성에 강력 추천.",
+      "name_en": "Cindy's New Best Friends (Not Lore Wise)",
+      "name_ja": "Cindy's New Best Friends (Not Lore Wise)（シンデレラの新しい親友たち（設定上ではない））",
+      "note_en": "[Source: prydwen.gg character page] VDrake deals decent damage as off-burst, and her supportive buff is intact. Pair her with Lapluh + Cindy in the in-burst positions, and you can expect some greatness for Neutral Solo Raid. Maxwell is also heavily recommended for this setup.",
+      "note_ja": "［出典：prydwen.gg character page］ドレイク：グレイトヴィランはバースト外でもそこそこの火力を出し、支援バフもそのまま。ラプラス：アルティメットヒーロー・シンデレラをバースト枠に置けば、無属性ソロレイドで良い結果が期待できる。マクスウェル：オーディナリーメカニックもこの構成に強く推奨。",
+      "importedOn": "2026-09-30",
+      "prydwenTeamId": 525
     }
   ],
   "synergyPairs": [

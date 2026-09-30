@@ -6,8 +6,8 @@
     "staleAfterDays": 60
   },
   "synergyNotes": {
-    "asOf": "2026-07-27",
-    "source": "prydwen.gg 팀 빌딩/메타팀/팀 데이터베이스/티어 변경 이력 가이드 (2차 가공)",
+    "asOf": "2026-09-30",
+    "source": "prydwen.gg 팀 빌딩/메타팀/팀 데이터베이스/티어 변경 이력 가이드 (2차 가공) · 2026-09-30: prydwen 캐릭터 페이지 팀 435건과 대조해 새 조합 66건 추가·손실 정보 복원",
     "refreshMethod": "README.md '데이터 업데이트 방법' 참고",
     "staleAfterDays": 60
   },
