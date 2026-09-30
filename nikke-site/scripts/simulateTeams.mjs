@@ -132,6 +132,19 @@ export const ASSUMPTIONS = {
   // 풀버스트 한 사이클(초). "사이클마다" 계열 스킬의 초당 발동 횟수를 여기서 나눈다.
   // ⚠️ 게임의 표준 주기이지만 우리가 정한 값이다 — 실제로는 팀 구성·재진입에 따라 달라진다.
   BURST_CYCLE_SEC: 20,
+  // 풀버스트 지속(초). 게임 기본값 — 유저 확인(2026-09-29: "기본 10초, 스킬에 따라 늘 수 있다"). 버스트 버프 가동률의 기본 지속도 10이다.
+  // "풀버스트 동안 N초마다" 계열의 사이클당 횟수를 여기서 센다(2026-10-01).
+  FULL_BURST_SEC: 10,
+  // 쿨타임 있는 액티브 스킬(발동 조건 줄 없음)을 쿨타임마다 1회로 셀 것인가 · "every N sec"를 읽을 것인가. (2026-10-01)
+  // false면 이전처럼 0 — selfTest가 두 계산을 대본다.
+  CD_ACTIVE_FREQ: true,
+  EVERY_SEC_FREQ: true,
+  EVERY_SEC_ALWAYS: false,   // 상시 "every N sec" — 기각(skillDps 주석). 켜서 다시 잴 수 있게 남겨 둔다
+  // 같은 발동 블록의 **앞 절**(대상절)에 적힌 "every N sec"까지 읽을 것인가 — 사실상 에이다 섬광탄(풀버스트 중 2초마다 420% 고정 피해).
+  // ⛔ 보류(기본 false, 2026-10-01): 켜면 에이다 든 레이드 팀이 +29~+54로 오르고 레이드 평균 68.0 → 69.6 · 50% 미만 29 → 24팀이지만,
+  //   93팀이 조금씩 내려 **전체 중앙 75.2 → 73.7(표본 1200)**. 캠페인 등록 팀이 −9~−12 — 무작위 캠페인 조합에 에이다가 섞이면 이긴다.
+  //   레이드에선 맞는 신호, 모드 구분 없이는 과대. 모드를 받게 되면 다시 볼 것(open-items 시뮬레이터 백로그).
+  EVERY_SEC_BLOCK: false,
   // 전투 길이(초). "전투 시작 1회" 계열을 초당으로 환산할 때만 쓴다.
   // ⚠️ 솔로레이드는 180초, 캠페인은 훨씬 짧다. 우리가 정한 값이다.
   BATTLE_SEC: 180,
@@ -363,12 +376,19 @@ function freqPerSec(cls, nShots, c, A, ammo) {
 
 // 스킬 딜(초당). 계수를 **그 절의 발동 빈도로 곱해서** 더한다.
 // 예전에는 그냥 더해서 "평타마다 3.05%"와 "버스트마다 2808%"가 같은 자리에 들어갔다.
+const EVERY_SEC = /every (\d[\d.]*) sec/i;
+const DURING_FB = /during full burst/i;
 function skillDps(c, A, ammo, onlyTrue = false) {
   const skills = c.skills || [];
   let total = 0;
   skills.forEach((sk, si) => {
     const isBurst = si === skills.length - 1;
-    let cls = isBurst ? 'perCycle' : null;   // 버스트 스킬의 절은 기본이 사이클마다
+    // 2026-10-01: **쿨타임 있는 액티브 스킬**은 발동 조건 줄이 없으면 그 자체가 쿨타임마다 한 번이다
+    //   (루피 S2 20초 528.97% · 브리드 10초 · 이사벨 15초 … 12절이 빈도 0이었다). 확률 발동 패시브는 여전히 0.
+    const skCd = Number(sk.cd);
+    let cls = isBurst ? 'perCycle' : (A.CD_ACTIVE_FREQ !== false && /active/i.test(String(sk.type || '')) && skCd > 0 ? 'perCd' : null);
+    let trig = '';
+    let blockEvery = null;   // 같은 발동 블록의 앞 절(대상절)에 적힌 "every N sec" — 에이다: "Affects enemies … every 2 sec. … Deals 420% …"
     let nShots = 1;
     // 적 대상절 — 광역 딜은 대상 수만큼 곱해야 한다. (2026-09-08)
     // ⚠️ 대상절과 계수가 **같은 절에 붙어 있는 경우가 있다**(프리바티:
@@ -380,6 +400,7 @@ function skillDps(c, A, ammo, onlyTrue = false) {
       if (m) {
         const hit = TRIGGER_CLASSES.find(([, re]) => re.test(m[1]));
         cls = hit ? hit[0] : (isBurst ? 'perCycle' : null);
+        trig = m[1]; blockEvery = null;
         // ⚠️ 어순이 두 가지다 — "after landing 30 normal attacks"와
         //    "when normal attacks hits 30 times". 옛 정규식은 `time\(s\)`라는
         //    **리터럴 괄호**를 요구해서 "30 times"를 놓쳤고, 두 번째 어순도 못 잡았다.
@@ -393,9 +414,23 @@ function skillDps(c, A, ammo, onlyTrue = false) {
       const es = scopeOf(cl);
       if (es !== null) eTargets = enemyTargetsOf(es, A);
       const coef = sumRe(cl, SELF_COEF);
-      if (!coef) return;
+      if (!coef) { const e0 = A.EVERY_SEC_BLOCK && cl.match(EVERY_SEC); if (e0) blockEvery = e0; return; }
       if (onlyTrue && !TRUE_SKILL_CLAUSE.test(cl)) return;
-      total += coef * eTargets * freqPerSec(cls, nShots, c, A, ammo);
+      let f = cls === 'perCd' ? 1 / skCd : freqPerSec(cls, nShots, c, A, ammo);
+      // 2026-10-01: **"풀버스트 동안 N초마다"** — 발동 조건을 분류 못 했을 때만(분류된 것은 덮지 않는다).
+      //   사이클당 (FULL_BURST_SEC ÷ N)번. 에이다 섬광탄(풀버스트 중 2초마다 420%)·리틀 머메이드(1초마다 63.36%×4)가 빈도 0이었다.
+      // ⛔ **상시 "every N sec"(1/N)는 기각**(EVERY_SEC_ALWAYS, 기본 false). 원문대로 읽으면 사실상 신데렐라:CW 한 명(5초마다 900%)이
+      //   초당 180%가 되는데, 랭커 백분위가 75.5 → 74.1(오버스펙 타워 53.6 → 48.4)로 떨어졌다. 그녀는 이미 레이드 등록 팀 평균 95.5%라
+      //   더 올리면 그녀가 없는 등록 조합(보유 편중일 수 있다)이 밀린다. 읽기가 틀렸다는 근거는 없다 — 지표가 기각했다.
+      if (!f && A.EVERY_SEC_FREQ !== false) {
+        const ev = (cl.match(EVERY_SEC) || trig.match(EVERY_SEC) || blockEvery);
+        if (ev) {
+          const n = parseFloat(ev[1]);
+          if (DURING_FB.test(trig) || DURING_FB.test(cl)) f = (A.FULL_BURST_SEC / n) / A.BURST_CYCLE_SEC;
+          else if (A.EVERY_SEC_ALWAYS) f = 1 / n;
+        }
+      }
+      total += coef * eTargets * f;
     });
   });
   return atkFactor(c) * total;
@@ -1351,6 +1386,23 @@ function selfTest() {
       });
     } else problems.push('고정 피해 시험 팀 이름이 DB에 없다');
     console.log('  고정 피해 — 딜로 세는 절 ' + trueClauses + '개 · 고정 피해 몫에만 증가 적용');
+  }
+  // (7c) **발동 줄 없는 쿨타임 액티브 스킬 · 풀버스트 중 N초마다.** (2026-10-01)
+  //     브리드 S2(액티브 10초, 211.2%)·리틀 머메이드(발동 줄에 '풀버스트 중 1초마다')가 스위치를 켜면 딜이 붙고 끄면 0이어야 한다.
+  //     에이다(앞 절의 every N sec)는 보류 — 스위치가 먹는지만 본다.
+  //     상시 "every N sec"은 기각(기본 꺼짐) — 신데렐라:CW의 5초마다 900%가 기본값에서 안 세어지는지 본다.
+  //     랭커 검사(표본 1200): 이전 75.3 · 새 75.2 — 중립.
+  {
+    const one = (t, asm) => { const c = pick(t); return c ? skillDps(c, { ...ASSUMPTIONS, ...(asm || {}) }, null) : null; };
+    const brOn = one('Brid'); const brOff = one('Brid', { CD_ACTIVE_FREQ: false });
+    if (brOn == null || !(brOn > brOff)) problems.push(`브리드 S2(액티브 10초 211.2%)가 쿨타임마다 세어지지 않는다(${brOn} vs ${brOff})`);
+    const lmOn = one('Little Mermaid'); const lmOff = one('Little Mermaid', { EVERY_SEC_FREQ: false });
+    if (lmOn == null || !(lmOn > lmOff)) problems.push(`리틀 머메이드(풀버스트 중 1초마다 63.36%×4)가 세어지지 않는다(${lmOn} vs ${lmOff})`);
+    const adDef = one('Ada Wong'); const adBlock = one('Ada Wong', { EVERY_SEC_BLOCK: true });
+    if (adDef == null || !(adBlock > adDef)) problems.push(`앞 절 "every N sec" 스위치가 안 먹는다(에이다 섬광탄 ${adBlock} vs ${adDef})`);
+    const cwDef = one('Cinderella: Crystal Wave'); const cwAlways = one('Cinderella: Crystal Wave', { EVERY_SEC_ALWAYS: true });
+    if (cwDef == null || !(cwAlways > cwDef)) problems.push('상시 every N sec 스위치가 안 먹는다(신데렐라:CW 5초마다 900%)');
+    console.log('  쿨타임 액티브·풀버스트 중 N초마다 — 합성 시험 통과(상시 N초마다는 기각 상태)');
   }
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
   //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).

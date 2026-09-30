@@ -48,7 +48,8 @@ export const TRIGGER_CLASSES = [
   ['onHit',       /when attacked/i,                                               '피격 시'],
 ];
 
-const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage)/ig;
+// simulateTeams.mjs의 SELF_COEF와 같아야 한다(2026-10-01 고정 피해 표기 추가 — 한쪽만 고치면 분류와 계산이 다른 절을 본다)
+const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage|(?:Burst Skill )?true damage)/ig;
 const STACK = /stacks up to (\d+) time\(s\)/ig;
 
 const sumRe = (s, re) => { let m; let t = 0; re.lastIndex = 0; while ((m = re.exec(s))) t += parseFloat(m[1]); return t; };
