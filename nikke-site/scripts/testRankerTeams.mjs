@@ -40,7 +40,9 @@ const { scoreComposition } = await import(pathToFileURL(path.join(ROOT, 'scripts
 // 표본 수를 바꾸면 값이 조금 움직이므로 기준선은 기본값 기준이다). 떨어지면 시뮬레이터를 나쁘게 바꾼 것이다.
 // 2026-09-29 속성 우위 반영(레이드를 그 시즌 약점으로 채점) 69 → 72.
 // 같은 날 타워를 입장 가능 캐릭터끼리 비교(채점 공정성 — 모델은 그대로) 72 → 74. 타워 중앙은 오히려 68.3 → 64.5로 내려갔다(`--by-pool`).
-const EXPECTED_MEDIAN = 74;
+// 2026-10-01 고정 피해(딜 계수 `as true damage` 9절 + True Damage ▲ 버프를 고정 피해 몫에만) 74.3 → 75.8.
+//   레이드 77.3 → 76.0 · 타워 65.8 → 60.0(엘리시온 68.3 → 55.9 — 택티컬 업 3인 팀이 올라 메이드 조합이 상대적으로 밀림) · PvP 67.8 → 76.8.
+const EXPECTED_MEDIAN = 75;
 // 씨앗이 고정이라 코드가 그대로면 값도 그대로다 — 여유를 크게 둘 이유가 없다.
 // 2로 뒀더니 **버프를 통째로 무시하는 역테스트(69.5 → 67.5)가 빠져나갔다.** 1로 조인다.
 const TOLERANCE = 1;
@@ -242,6 +244,9 @@ if (pvpBurst.length < EXPECTED_PVP_BURST_TEAMS) {
   problems.push('PvP 버스트 속도를 잴 수 있는 팀이 ' + pvpBurst.length + '팀으로 줄었다(기준 ' + EXPECTED_PVP_BURST_TEAMS
     + ') — 이름이 안 이어졌거나 값이 빠졌다. node scripts/refreshPvpBurstGen.mjs');
 }
+
+// --dump=<파일> : 팀별 백분위를 JSON으로 남긴다(무엇을 못 보는지 캐릭터별로 따져보려고, 2026-10-01)
+if (arg('dump', null)) fs.writeFileSync(arg('dump', null), JSON.stringify(rows.map((r) => ({ src: r.src, pool: r.pool || null, m: r.m, pct: r.pct }))));
 
 if (process.argv.includes('--by-pool')) {
   const g = {};

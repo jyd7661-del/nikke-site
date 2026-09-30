@@ -114,6 +114,9 @@ export const ASSUMPTIONS = {
   // false로 두면 이전처럼 속성을 통째로 무시한다 — selfTest가 두 계산을 대본다.
   ELEMENT_ADVANTAGE: true,
   ELEMENT_ADVANTAGE_PCT: 10,
+  // 고정 피해 증가(True Damage ▲)를 반영할 것인가. (2026-10-01) 받는 멤버의 고정 피해 몫에만 곱한다(TRUE_DMG_BUFF 주석).
+  // false로 두면 이전처럼 통째로 버린다 — selfTest가 두 계산을 대본다.
+  TRUE_DAMAGE: true,
   // `for N round(s)` / `for N shot(s)` 로 끝나는 버프를 셀 것인가. (2026-09-07)
   //
   // **이건 지속시간이 아니라 발수다.** 그런데 `DURATION`이 `for N sec`만 읽어서 이 절들은
@@ -155,6 +158,33 @@ const BUFF_BUCKETS = {
   pierceDamage: /Pierce Damage\s*▲\s*(\d[\d.]*)%/ig,
 };
 const BUCKET_KEYS = Object.keys(BUFF_BUCKETS);
+// **고정 피해 증가(True Damage ▲)는 통에 넣되, 받는 쪽의 "고정 피해인 부분"에만 곱한다.** (2026-10-01)
+//
+// 이 버프는 원문에 8명(타키나 전 아군 ▲140.49% · 에이다 · 치사토 · 아인 · 베스티:TU · 질 · 클레이 · 플로라)이 갖고 있는데
+// 그동안 **어느 통에도 안 들어가 통째로 버려졌다.** 랭커 조합 검증에서 레이드 하위권 캐릭터 1·2위가 타키나(16.5%)·
+// 에이다(23.3%)였다 — 둘 다 이 버프가 핵심이다.
+// ⚠️ 다른 통처럼 멤버 딜 **전체**에 곱했더니 엘리시온 타워가 68.3 → 58.8%로 떨어졌다(아인은 잡몹이 없을 때만,
+//    타키나는 버스트 10초만 고정 피해다). 그래서 고정 피해 몫만 센다 — 새 숫자는 없다:
+//      평타: "Normal attacks deal true damage for N sec" → 그 N초의 가동률(버스트면 N ÷ max(사이클, 버스트 쿨)),
+//            기간 표기가 없거나 continuously면 평타 전체
+//      스킬: "… as true damage" 절의 딜만
+const TRUE_DMG_BUFF = /True Damage\s*▲\s*(\d[\d.]*)%/ig;
+const TRUE_SKILL_CLAUSE = /as true damage/i;
+const TRUE_NORMAL = /Normal attacks deal true damage(?:\s+for\s+(\d[\d.]*)\s*sec)?/i;
+function trueNormalShare(c, A) {
+  const skills = c.skills || [];
+  let share = 0;
+  skills.forEach((sk, si) => {
+    const m = (sk.desc || '').match(TRUE_NORMAL);
+    if (!m) return;
+    if (!m[1]) { share = 1; return; }
+    const n = parseFloat(m[1]);
+    const isBurst = si === skills.length - 1;
+    const cd = isBurst ? Math.max(A.BURST_CYCLE_SEC, burstCd(c)) : (Number(sk.cd) > 0 ? Number(sk.cd) : null);
+    share = Math.max(share, cd ? Math.min(1, n / cd) : 1);
+  });
+  return share;
+}
 const DMG_TAKEN = /Damage Taken\s*▲\s*(\d[\d.]*)%/ig;
 // 우위 속성으로 칠 때만 붙는 버프 — 약점 속성 멤버에게만 곱한다(ELEMENT_ADVANTAGE).
 const STRONG_ELEMENT = /Damage as strong element\s*▲\s*(\d[\d.]*)%/ig;
@@ -195,7 +225,9 @@ const sumSigned = (str, re) => {
   while ((m = re.exec(str))) t += (m[1] === '▼' ? -1 : 1) * parseFloat(m[2]);
   return t;
 };
-const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage)/ig;
+// 2026-10-01: `as true damage` · `as Burst Skill true damage`(대소문자 섞임)도 딜이다. 이 두 표기를 몰라서 **고정 피해 스킬 딜 9절이
+// 딜로 아예 안 세어졌다**(에이다 섬광탄 420% · 베스티:TU 버스트 492.3% · 치사토 472.18% · 아인 300.02% · 길티 : 마이티 바니 370.08% 등).
+const SELF_COEF = /(\d[\d.]*)%\s*of final ATK as (?:damage|Burst Skill damage|Additional Damage|(?:Burst Skill )?true damage)/ig;
 const DURATION = /for (\d[\d.]*) sec/i;
 // `for 1 round(s)` · `for 2 shot(s)` — **발수다. 지속시간이 아니다.** 위 DURATION이 이걸 못 읽어서
 // 지속을 모르는 절로 취급됐고, 그러면 가동률이 1.0(상시)이 된다. 실측 9절인데 그중 하나가
@@ -331,7 +363,7 @@ function freqPerSec(cls, nShots, c, A, ammo) {
 
 // 스킬 딜(초당). 계수를 **그 절의 발동 빈도로 곱해서** 더한다.
 // 예전에는 그냥 더해서 "평타마다 3.05%"와 "버스트마다 2808%"가 같은 자리에 들어갔다.
-function skillDps(c, A, ammo) {
+function skillDps(c, A, ammo, onlyTrue = false) {
   const skills = c.skills || [];
   let total = 0;
   skills.forEach((sk, si) => {
@@ -362,6 +394,7 @@ function skillDps(c, A, ammo) {
       if (es !== null) eTargets = enemyTargetsOf(es, A);
       const coef = sumRe(cl, SELF_COEF);
       if (!coef) return;
+      if (onlyTrue && !TRUE_SKILL_CLAUSE.test(cl)) return;
       total += coef * eTargets * freqPerSec(cls, nShots, c, A, ammo);
     });
   });
@@ -527,6 +560,7 @@ export function scoreComposition(members, opts = {}) {
   const A = { ...ASSUMPTIONS, ...(opts.assumptions || {}) };
   // 멤버별 · 통별 버프 합(%)
   const buffOn = new Map(members.map((m) => [m.id, Object.fromEntries(BUCKET_KEYS.map((k) => [k, 0]))]));
+  const trueOn = new Map(members.map((m) => [m.id, 0]));   // 고정 피해 증가 %(가동률 반영) — 고정 피해 몫에만 곱한다
   // 최대 장탄수는 배수가 아니라 **장탄 자체**를 바꾸므로 통과 따로 모은다. (2026-09-08)
   const ammoOn = new Map(members.map((m) => [m.id, { pct: 0, flat: 0, reloadPct: 0 }]));
   const strongOn = new Map(members.map((m) => [m.id, 0]));   // 우위 속성 대미지 ▲ 합(%)
@@ -639,6 +673,10 @@ export function scoreComposition(members, opts = {}) {
           else { noteBranch(scope, `buf:${k}`, v * uptime); notes.push(`대상절 해석 못 함(버림): "${scope}"`); }
         });
         void anyBuff;
+        if (A.TRUE_DAMAGE !== false) {
+          const tv = sumRe(cl, TRUE_DMG_BUFF);
+          if (tv) { const tg = targetsOf(scope, caster, members); if (tg) tg.forEach((m) => { trueOn.set(m.id, trueOn.get(m.id) + tv * uptime); }); }
+        }
         if (bossEl) {
           const se = sumRe(cl, STRONG_ELEMENT);
           if (se) { const tg = targetsOf(scope, caster, members); if (tg) tg.forEach((m) => { strongOn.set(m.id, strongOn.get(m.id) + se * uptime); }); }
@@ -705,9 +743,12 @@ export function scoreComposition(members, opts = {}) {
     // 속성 우위 — 약점 속성 멤버만. 게임 규칙 +10%에 우위 속성 대미지 버프를 더한 별도 통.
     const adv = bossEl && normEl(m.element) === bossEl ? (A.ELEMENT_ADVANTAGE_PCT + strongOn.get(m.id)) : 0;
     mult *= 1 + adv / 100;
-    const v = self * mult;
+    // 고정 피해 증가 — 그 멤버 딜 중 **고정 피해인 몫**에만(2026-10-01, TRUE_DMG_BUFF 주석)
+    const tb = trueOn.get(m.id);
+    const truePart = tb ? na * trueNormalShare(m, A) + skillDps(m, A, ammo, true) : 0;
+    const v = (self + truePart * tb / 100) * mult;
     total += v;
-    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, ammo, adv, mult, value: v };
+    return { title: m.title, kr: m.name_kr || m.title, self, normal: na, skill: sd, buckets: b, ammo, adv, trueBuff: tb, truePart, mult, value: v };
   });
   total *= (1 + dmgTaken / 100);
 
@@ -722,8 +763,10 @@ export function scoreComposition(members, opts = {}) {
 // 계측기가 그동안 버프 축을 안 재고 있었던 것이다. 경위는 아래 (6)번 주석.
 // 버스트 쿨 감소가 실제로 팀 점수를 바꾸는 캐릭터 수.
 const CDR_MOVERS_BASELINE = 12;
+// `as true damage` 스킬 딜로 세어지는 절 수(2026-10-01 SELF_COEF 확장). 줄면 표기가 바뀐 것이다.
+const TRUE_CLAUSE_BASELINE = 9;
 
-const TIER_RHO_BASELINE = 0.59;  // 2026-09-08 `for N shots` 누락을 고쳐 0.579 → 0.588
+const TIER_RHO_BASELINE = 0.60;  // 2026-09-08 `for N shots` 누락을 고쳐 0.579 → 0.588 · 2026-10-01 고정 피해 딜·버프를 읽어 0.593 → 0.607
 
 // SCOPE_RULES가 실제로 해석하는 절의 수. 줄면 표기가 어긋난 것이라 실패시킨다.
 const SCOPE_CLAUSE_BASELINE = 36;  // 2026-09-08 마침표 누락을 고쳐 팬텀의 대상절이 열려 35 → 36
@@ -1287,6 +1330,27 @@ function selfTest() {
     });
     if (strongMovers === 0) problems.push('우위 속성 대미지 ▲ 버프가 한 명에게도 안 읽힌다 — 원문 표기가 바뀌었거나 정규식이 깨졌다');
     console.log('  속성 우위 — 합성 시험 통과 · 우위 속성 대미지 버프가 붙는 팀 ' + strongMovers + '개');
+  }
+  // (7b) **고정 피해.** (2026-10-01)
+  //     ① "as true damage" 스킬 딜이 딜로 세어지는가(기준선 9절) — SELF_COEF가 이 표기를 몰라 통째로 빠져 있었다.
+  //     ② 고정 피해 증가는 **고정 피해 몫에만** 붙는가 — 고정 피해를 안 내는 멤버의 값은 스위치와 무관해야 한다.
+  //     ③ 스위치를 끄면 무시되는가. 랭커 검사 근거: 전체 74.3 → 75.8%(에이다·타키나·치사토 팀 +9~+23).
+  {
+    let trueClauses = 0;
+    cdb.forEach((c) => (c.skills || []).forEach((s) => (String(s.desc || '').split(/(?<=\.)\s+/).forEach((cl) => {
+      if (/true damage/i.test(cl) && sumRe(cl, SELF_COEF) > 0) trueClauses += 1;
+    }))));
+    if (trueClauses < TRUE_CLAUSE_BASELINE) problems.push(`딜로 세는 고정 피해 절이 ${trueClauses}개로 줄었다(기준 ${TRUE_CLAUSE_BASELINE}) — SELF_COEF가 "as true damage"를 놓친다`);
+    const team = ['Takina Inoue', 'Ada Wong', 'Chisato Nishikigi', 'Liter', 'Crown'].map(pick).filter(Boolean);
+    if (team.length === 5) {
+      const on = scoreComposition(team, { detail: true });
+      const off = scoreComposition(team, { detail: true, assumptions: { TRUE_DAMAGE: false } });
+      if (!(on.total > off.total)) problems.push('타키나(전 아군 고정 피해 ▲140%)가 있는데 고정 피해 증가가 점수에 안 붙었다');
+      on.parts.forEach((p, i) => {
+        if (p.truePart === 0 && Math.abs(p.value - off.parts[i].value) > 1e-9) problems.push(`고정 피해를 안 내는 ${p.kr}의 값이 고정 피해 증가로 바뀌었다 — 몫이 아니라 전체에 곱하고 있다`);
+      });
+    } else problems.push('고정 피해 시험 팀 이름이 DB에 없다');
+    console.log('  고정 피해 — 딜로 세는 절 ' + trueClauses + '개 · 고정 피해 몫에만 증가 적용');
   }
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
   //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).
