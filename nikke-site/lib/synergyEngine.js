@@ -837,6 +837,36 @@ function burstCooldownSeconds(character) {
   return Number(cd);
 }
 
+// 풀버스트 한 바퀴에 걸리는 시간(초) — 단계마다 그 단계 멤버들이 번갈아 쓸 때의 주기(1 / Σ 1/쿨)를 구하고 가장 느린 단계.
+// 유연 멤버는 가능한 배치 중 가장 빠른 쪽. 쿨타임을 모르는 멤버가 있으면 null(모름 ≠ 느림 — PvP 관문에서 배운 것).
+// 쿨감(CDR) 패시브는 넣지 않는다 — 근거로 쓴 등록 조합 집계(scripts/testRealTeams.mjs cycleSeconds)와 같은 식이어야 비교가 성립한다.
+function fullBurstCycleSeconds(members) {
+  if (members.some((m) => burstCooldownSeconds(m) === null)) return null;
+  const flex = members.filter((m) => m.burstFlex);
+  const base = { 1: [], 2: [], 3: [] };
+  members.filter((m) => !m.burstFlex).forEach((m) => base[m.burst]?.push(burstCooldownSeconds(m)));
+  const evaluate = (st) => {
+    let worst = 0;
+    for (const b of ['1', '2', '3']) {
+      if (!st[b].length) return Infinity;
+      worst = Math.max(worst, 1 / st[b].reduce((acc, cd) => acc + 1 / cd, 0));
+    }
+    return worst;
+  };
+  let best = Infinity;
+  const place = (i, st) => {
+    if (i === flex.length) { best = Math.min(best, evaluate(st)); return; }
+    for (const b of flexStagesOf(flex[i])) {
+      place(i + 1, { ...st, [b]: [...st[b], burstCooldownSeconds(flex[i])] });
+    }
+  };
+  place(0, base);
+  return best;
+}
+// 풀버스트 주기 관문을 거는 모드. 근거(등록 실사용 조합, testRealTeams "20초 순환 아님"): 캠페인 0/20 · 타워 7/50.
+// PvP(19/22)·솔로레이드(40/122)는 20초 주기를 전제하지 않는 판이라 걸지 않는다.
+const CYCLE_GATE_MODES = new Set(['campaign', 'tribe_tower']);
+
 // 2026-08-07 추가: 토템 역할에 조건이 붙는 경우 처리.
 //
 // 토템은 "버스트를 못 써도 상시 효과로 팀에 기여한다"는 이유로 낭비 판정에서 빠진다. 그런데
@@ -1109,6 +1139,12 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       reasons.push(R.solo_burst3({ name: rName(stage3[0], lang), cd }));
     }
   }
+
+  // 2026-10-01: **풀버스트 주기가 20초보다 느린가**(캠페인·타워만). 폴백 순위에서 뒤로 미는 데만 쓴다 — 점수는 그대로.
+  // 등록 캠페인 조합 20건은 전부 20초 주기인데 엔진 1위는 44%(캠페인)·48%(타워)가 40초 이상이었다(무작위 로스터 탐침).
+  // 토템이 쉬게 되자(같은 날) 세 번째 3버스트를 넣으려고 20초 2버스트를 빼는 답도 생겼다.
+  const cycleSec = CYCLE_GATE_MODES.has(mode) && validBurstChain ? fullBurstCycleSeconds(members) : null;
+  const slowCycle = cycleSec !== null && cycleSec > FAST_BURST_CD + 1e-6;
 
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
   const skillSynergies = findSkillMechanicSynergies(members);
@@ -1668,6 +1704,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     // scripts/probeRecommendations.mjs가 "추천에 죽은 자리가 있는가"를 세는 데 쓴다.
     wastedCount: burstAnalysis.wasted.length,
     soloBurst3,
+    slowCycle,
     // PvP만: { tier: '2RL'…'4RL' | 'slower' | null(모름), missing: 값 없는 멤버 }. 폴백 순위와 화면 표시에 쓴다.
     pvpBurst,
     reasons,
@@ -1889,6 +1926,10 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       // (나빠짐 3)과 같은 잣대로 쟀다. 가드 불변 — 랭커 백분위 69.0% · 일치율 71.8%(표본 40건은 답이 안 바뀜).
       // `skipSoloB3Gate`는 이 비교를 다시 하기 위한 시험용 스위치다. 화면에서는 쓰지 않는다.
       (opts.skipSoloB3Gate ? 0 : (Number(!!a.soloBurst3) - Number(!!z.soloBurst3))) ||
+      // 2026-10-01: **풀버스트 주기가 20초보다 느린 후보는 뒤로 민다**(캠페인·타워, 대안이 없으면 그대로 나간다).
+      // 근거: 등록 실사용 조합 캠페인 0/20 · 타워 7/50이 20초보다 느리다(scoreTeam의 slowCycle 주석). 가중치가 아니라 관문이다.
+      // `__NIKKE_CYCLE_GATE_OFF`는 이전 엔진 대비 비교용 스위치.
+      (globalThis.__NIKKE_CYCLE_GATE_OFF ? 0 : (Number(!!a.slowCycle) - Number(!!z.slowCycle))) ||
       (z.totalScore - a.totalScore) ||
       ((a.wastedCount || 0) - (z.wastedCount || 0)) ||
       // 2026-09-18: 동점이면 **버프 대상이 없는 멤버가 적은 쪽**(D1).

@@ -371,6 +371,27 @@ for (const t of teams) {
   }
 }
 
+// --- 캠페인·타워 풀버스트 주기 관문 (2026-10-01) ---
+// 근거: 등록 캠페인 20건 전부·타워 50건 중 43건이 20초 주기(위 표의 "20초 순환 아님"). 엔진 1위는 44~48%가 40초 이상이었다.
+// ① 등록 캠페인 조합에는 slowCycle이 하나도 안 붙어야 한다(근거와 판정식이 같은지).
+// ② 블라인드 표본 씨앗 14 B15: 옛 순위는 라푼젤(1버스트 60초)로 60초 주기 팀을 냈다 — 지금은 20초여야 하고, 스위치를 켜면 재현돼야 한다.
+{
+  const campSlow = (ms.campaignCompositions?.list || []).filter((t) => engine.scoreTeam(t.members.map((n) => byTitle.get(n)), 'campaign', {}).slowCycle);
+  if (campSlow.length) problems.push(`[주기 관문] 등록 캠페인 조합 ${campSlow.length}건이 느린 주기로 판정됐다 — 근거(0/20)와 판정식이 어긋난다: ${campSlow.map((t) => t.members.join('/')).join(' · ')}`);
+  const roster = ['Admi', 'Alice', 'Ark Ranger Black', 'Chisato Nishikigi', 'Makima', 'Mari Makinami Illustrious', 'Mary', 'Mast: Romantic Maid', 'Maxwell',
+    'Miranda', 'Rapunzel', 'Rei', 'Rumani', 'Scarlet', 'Signal', 'Sin', 'Snow White', 'Snow White: Innocent Days'].map((n) => byTitle.get(n));
+  if (roster.some((c) => !c)) problems.push('[주기 관문] 시험용 이름이 DB에 없다');
+  else {
+    const slowOf = (r) => engine.scoreTeam((r.team?.members || []).map((m) => byTitle.get(m.title)), 'campaign', {}).slowCycle;
+    const now = engine.pickSiteTeam(roster, 'campaign', {});
+    globalThis.__NIKKE_CYCLE_GATE_OFF = true;
+    const old = engine.pickSiteTeam(roster, 'campaign', {});
+    globalThis.__NIKKE_CYCLE_GATE_OFF = false;
+    if (!slowOf(old)) problems.push('[주기 관문] 스위치를 켜도 느린 팀이 안 나온다 — 시험이 더는 이 경우를 재현하지 못한다');
+    if (slowOf(now)) problems.push('[주기 관문] 20초 주기 대안이 있는 로스터에서 40초 이상 주기 팀을 추천했다');
+  }
+}
+
 // --- D3(버프가 비는 멤버 0점)는 지원형 시전자만 · 받는 쪽은 공격형 또는 3버스트 (2026-10-01, lib/buffTargets.js) ---
 // 레이드 등록 팀에서 메이든 : 아이스 로즈가 든 11팀 전부 다른 전격 공격형 없이 아니스:SS·목단과 쓴다. 그 구성을 0점으로 만들면 안 된다.
 {
