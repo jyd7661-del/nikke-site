@@ -856,6 +856,16 @@ const BURST_CDR_BY_TITLE = (() => {
 function fullBurstCycleSeconds(members, treasureIds = null) {
   if (members.some((m) => burstCooldownSeconds(m) === null)) return { sec: null, unknownCdr: false };
   const useCdr = !globalThis.__NIKKE_CYCLE_CDR_OFF;
+  // selfFlat = 본인 쿨타임 자체가 상시 줄어든다(애장품 목단 "Fervor: Cooldown of Burst Skill ▼ 20 sec continuously" → 40초가 20초).
+  // 처음엔 이걸 빠뜨리고 전 아군 7.48초만 넣어 애장품 목단 단독 1버스트를 32.5초로 쟀다(유저 10-01 지적).
+  const cdOf = (m) => {
+    const base = burstCooldownSeconds(m);
+    if (!useCdr) return base;
+    const flat = (BURST_CDR_BY_TITLE.get(m.title) || [])
+      .filter((e) => e.kind === 'selfFlat' && (e.cond !== 'treasure' || treasureIds?.has(m.id)))
+      .reduce((acc, e) => acc + e.sec, 0);
+    return Math.max(1, base - flat);
+  };
   const unmodeled = (m, target) => (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => e.kind === 'unmodeled' && e.target === target);
   const unknownAlly = useCdr && members.some((m) => unmodeled(m, 'ally'));
   const flex = members.filter((m) => m.burstFlex);
@@ -886,8 +896,8 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
     for (const b of ['1', '2', '3']) {
       const group = members.filter((m) => stageOf.get(m.id) === b);
       if (!group.length) return { sec: Infinity, unknown: false };
-      const inv = group.reduce((acc, m) => acc + 1 / burstCooldownSeconds(m), 0);
-      const credit = group.reduce((acc, m) => acc + (allyX + (selfX.get(m.id) || 0)) / burstCooldownSeconds(m), 0);
+      const inv = group.reduce((acc, m) => acc + 1 / cdOf(m), 0);
+      const credit = group.reduce((acc, m) => acc + (allyX + (selfX.get(m.id) || 0)) / cdOf(m), 0);
       const c = Math.max(0, (1 - credit) / inv);
       worst = Math.max(worst, c);
       if (c > FAST_BURST_CD + 1e-6 && !unknownAlly && !(useCdr && group.some((m) => unmodeled(m, 'self')))) slowSure = true;

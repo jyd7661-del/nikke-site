@@ -400,6 +400,12 @@ for (const t of teams) {
   const rrhOff = S(rrh);
   globalThis.__NIKKE_CYCLE_CDR_OFF = false;
   if (!rrhOff) problems.push('[주기 관문·쿨감] 쿨감을 꺼도 라피RH 팀이 빠르다 — 시험이 더는 쿨감 효과를 재지 못한다');
+  // ⑤ 애장품 목단(유저 10-01 "40초지만 사실상 20초"): 1스킬 Fervor로 본인 버스트 쿨타임이 상시 20초 준다(selfFlat).
+  //    목단 혼자 1버스트인 팀은 애장품이 있으면 빠름, 없으면 느림이어야 한다. 처음엔 이 20초를 빠뜨렸다.
+  const moranTeam = ['Moran', 'Crown', 'Mast: Romantic Maid', 'Alice', 'Maxwell'];
+  const moranSlow = (ids) => engine.scoreTeam(moranTeam.map((n) => byTitle.get(n)), 'campaign', { treasureIds: ids }).slowCycle;
+  if (moranSlow(new Set([byTitle.get('Moran').id]))) problems.push('[주기 관문·쿨감] 애장품 목단(Fervor: 본인 버스트 ▼20초 상시) 단독 1버스트 팀을 느리다고 판정했다');
+  if (!moranSlow(new Set())) problems.push('[주기 관문·쿨감] 애장품 없는 목단(40초) 단독 1버스트 팀이 빠르다 — 애장품 조건이 안 걸린다');
   if (!S(['Tia', 'Emma: Tactical Upgrade', 'Mast: Romantic Maid', 'Alice', 'Maxwell'])) {
     problems.push('[주기 관문·쿨감] 티아(본인만 쿨감)가 있다고 혼자인 40초 마스트(2버스트) 팀을 느림에서 뺐다');
   }
