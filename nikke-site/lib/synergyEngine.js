@@ -34,6 +34,7 @@ import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 import pvpBurstGen from '../data/pvpBurstGen.json';
 import offBurstShare from '../data/offBurstShare.json';
+import burstCdr from '../data/burstCdr.json';
 import { engineText } from './engineReasons';
 import { teamBurstSpeed } from './pvpBurst';
 import { deadBuffCount, emptyBuffMembers } from './buffTargets';
@@ -837,31 +838,73 @@ function burstCooldownSeconds(character) {
   return Number(cd);
 }
 
-// 풀버스트 한 바퀴에 걸리는 시간(초) — 단계마다 그 단계 멤버들이 번갈아 쓸 때의 주기(1 / Σ 1/쿨)를 구하고 가장 느린 단계.
-// 유연 멤버는 가능한 배치 중 가장 빠른 쪽. 쿨타임을 모르는 멤버가 있으면 null(모름 ≠ 느림 — PvP 관문에서 배운 것).
-// 쿨감(CDR) 패시브는 넣지 않는다 — 근거로 쓴 등록 조합 집계(scripts/testRealTeams.mjs cycleSeconds)와 같은 식이어야 비교가 성립한다.
-function fullBurstCycleSeconds(members) {
-  if (members.some((m) => burstCooldownSeconds(m) === null)) return null;
+// 풀버스트 한 바퀴에 걸리는 시간(초). 2026-10-01.
+// 단계마다 그 단계 멤버들이 번갈아 버스트할 때 버틸 수 있는 가장 짧은 주기 C를 구하고, 가장 느린 단계가 팀의 주기다.
+//   멤버 i는 한 바퀴 동안 C초 + 쿨감 X_i초만큼 충전된다 → 그 단계가 매 바퀴 버스트하려면 Σ (C + X_i) / cd_i ≥ 1
+//   → C = (1 − Σ X_i/cd_i) / Σ (1/cd_i). 쿨감이 없으면 예전 식 1/Σ(1/cd) 그대로다.
+// 쿨감 X는 data/burstCdr.json(스킬 원문 수치, A등급)에서: 전 아군(ally) + 본인(self), 조건(다른 1버스트 없음·1버스트로 씀·같은 스쿼드·애장품)을 따진다.
+// 유저(10-01): "40초 주기라도 버스트가 잘 돌게 짜여 있으면 좋은 거다 — 목단 애장품은 40초지만 쿨감 스킬이 있어 사실상 20초."
+// 반환 { sec, unknownCdr }: sec = 유연 멤버 배치 중 가장 빠른 주기(쿨타임을 모르는 멤버가 있으면 null),
+//   unknownCdr = 가장 느린 단계에 한 바퀴당 양을 원문만으로 못 정하는 쿨감이 닿는다(전 아군형: 루주·D:KW 등 / 본인형: 티아는 자기 단계만)
+//   — 그러면 느리다고 단정하지 않는다. 처음엔 팀에 있기만 하면 '모름'으로 봐서 티아가 있으면 혼자인 40초 마스트도 통과했다.
+// `__NIKKE_CYCLE_CDR_OFF`(비교용)면 쿨감을 빼고 잰다(첫 판).
+const BURST_CDR_BY_TITLE = (() => {
+  const m = new Map();
+  for (const e of burstCdr.characters || []) m.set(e.title, [...(m.get(e.title) || []), e]);
+  return m;
+})();
+function fullBurstCycleSeconds(members, treasureIds = null) {
+  if (members.some((m) => burstCooldownSeconds(m) === null)) return { sec: null, unknownCdr: false };
+  const useCdr = !globalThis.__NIKKE_CYCLE_CDR_OFF;
+  const unmodeled = (m, target) => (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => e.kind === 'unmodeled' && e.target === target);
+  const unknownAlly = useCdr && members.some((m) => unmodeled(m, 'ally'));
   const flex = members.filter((m) => m.burstFlex);
-  const base = { 1: [], 2: [], 3: [] };
-  members.filter((m) => !m.burstFlex).forEach((m) => base[m.burst]?.push(burstCooldownSeconds(m)));
-  const evaluate = (st) => {
+  const evaluate = (stageOf) => {
+    const inStage1 = members.filter((m) => stageOf.get(m.id) === '1');
+    const condMet = (e, m) => {
+      if (!e.cond) return true;
+      if (e.cond === 'noOtherB1') return stageOf.get(m.id) === '1' && inStage1.length === 1;
+      if (e.cond === 'asStage1') return stageOf.get(m.id) === '1';
+      if (e.cond === 'sameSquad') return !!m.squad && members.some((o) => o.id !== m.id && o.squad === m.squad);
+      if (e.cond === 'treasure') return !!treasureIds?.has(m.id);
+      return false;
+    };
+    let allyX = 0;
+    const selfX = new Map();
+    if (useCdr) {
+      for (const m of members) {
+        for (const e of BURST_CDR_BY_TITLE.get(m.title) || []) {
+          if (!condMet(e, m)) continue;
+          if (e.kind === 'ally') allyX += e.sec;
+          else if (e.kind === 'self') selfX.set(m.id, (selfX.get(m.id) || 0) + e.sec);
+        }
+      }
+    }
+    // 느린 단계(20초 초과) 중 하나라도 '모르는 쿨감'이 닿지 않으면 그 배치는 확실히 느리다.
     let worst = 0;
+    let slowSure = false;
     for (const b of ['1', '2', '3']) {
-      if (!st[b].length) return Infinity;
-      worst = Math.max(worst, 1 / st[b].reduce((acc, cd) => acc + 1 / cd, 0));
+      const group = members.filter((m) => stageOf.get(m.id) === b);
+      if (!group.length) return { sec: Infinity, unknown: false };
+      const inv = group.reduce((acc, m) => acc + 1 / burstCooldownSeconds(m), 0);
+      const credit = group.reduce((acc, m) => acc + (allyX + (selfX.get(m.id) || 0)) / burstCooldownSeconds(m), 0);
+      const c = Math.max(0, (1 - credit) / inv);
+      worst = Math.max(worst, c);
+      if (c > FAST_BURST_CD + 1e-6 && !unknownAlly && !(useCdr && group.some((m) => unmodeled(m, 'self')))) slowSure = true;
     }
-    return worst;
+    return { sec: worst, unknown: worst > FAST_BURST_CD + 1e-6 && !slowSure };
   };
-  let best = Infinity;
-  const place = (i, st) => {
-    if (i === flex.length) { best = Math.min(best, evaluate(st)); return; }
-    for (const b of flexStagesOf(flex[i])) {
-      place(i + 1, { ...st, [b]: [...st[b], burstCooldownSeconds(flex[i])] });
+  let best = { sec: Infinity, unknown: false };
+  const place = (i, stageOf) => {
+    if (i === flex.length) {
+      const r = evaluate(stageOf);
+      if (r.sec < best.sec || (r.sec === best.sec && r.unknown && !best.unknown)) best = r;
+      return;
     }
+    for (const b of flexStagesOf(flex[i])) place(i + 1, new Map(stageOf).set(flex[i].id, b));
   };
-  place(0, base);
-  return best;
+  place(0, new Map(members.filter((m) => !m.burstFlex).map((m) => [m.id, String(m.burst)])));
+  return { sec: best.sec, unknownCdr: best.unknown };
 }
 // 풀버스트 주기 관문을 거는 모드. 근거(등록 실사용 조합, testRealTeams "20초 순환 아님"): 캠페인 0/20 · 타워 7/50.
 // PvP(19/22)·솔로레이드(40/122)는 20초 주기를 전제하지 않는 판이라 걸지 않는다.
@@ -1143,8 +1186,10 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 2026-10-01: **풀버스트 주기가 20초보다 느린가**(캠페인·타워만). 폴백 순위에서 뒤로 미는 데만 쓴다 — 점수는 그대로.
   // 등록 캠페인 조합 20건은 전부 20초 주기인데 엔진 1위는 44%(캠페인)·48%(타워)가 40초 이상이었다(무작위 로스터 탐침).
   // 토템이 쉬게 되자(같은 날) 세 번째 3버스트를 넣으려고 20초 2버스트를 빼는 답도 생겼다.
-  const cycleSec = CYCLE_GATE_MODES.has(mode) && validBurstChain ? fullBurstCycleSeconds(members) : null;
-  const slowCycle = cycleSec !== null && cycleSec > FAST_BURST_CD + 1e-6;
+  // 같은 날 유저 지적으로 쿨감(data/burstCdr.json)을 넣었다 — 쿨감으로 실제로는 20초에 도는 팀까지 느리다고 밀고 있었다.
+  // 한 바퀴당 양을 못 정하는 쿨감(풀차지 8회마다 등)이 있으면 느리다고 단정하지 않는다(모름 ≠ 느림).
+  const cycle = CYCLE_GATE_MODES.has(mode) && validBurstChain ? fullBurstCycleSeconds(members, treasureIds) : null;
+  const slowCycle = !!cycle && cycle.sec !== null && cycle.sec > FAST_BURST_CD + 1e-6 && !cycle.unknownCdr;
 
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
   const skillSynergies = findSkillMechanicSynergies(members);

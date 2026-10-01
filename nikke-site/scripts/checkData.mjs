@@ -1270,6 +1270,28 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 버스트 쿨감 표 (data/burstCdr.json, 2026-10-01) — 캠페인·타워 풀버스트 주기 계산에 쓴다.
+// 스킬 원문에 "Cooldown of Burst Skill ▼"가 있는데 표에 없으면 그 쿨감이 **조용히 0**이 되어 잘 도는 팀을 느리다고 민다.
+// 새 캐릭터가 들어오면 여기서 걸린다 — kind(ally/self/unmodeled/none)와 원문을 적어 넣을 것.
+// ---------------------------------------------------------------------------
+{
+  const cdr = read('burstCdr.json');
+  const listed = new Set((cdr.characters || []).map((e) => e.title));
+  for (const c of cdb) {
+    if ((c.skills || []).some((s) => /cooldown of burst skill\s*▼/i.test(s.desc || '')) && !listed.has(c.title)) {
+      err('BURST_CDR_MISSING', `${c.title}: 스킬에 버스트 쿨감(▼)이 있는데 burstCdr.json에 없다 — 주기 계산에서 쿨감 0으로 빠진다`);
+    }
+  }
+  for (const e of cdr.characters || []) {
+    if (!TITLES.has(e.title)) err('BURST_CDR_UNKNOWN', `burstCdr.json: DB에 없는 이름 '${e.title}'`);
+    if (!['ally', 'self', 'unmodeled', 'none'].includes(e.kind)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: kind '${e.kind}'`);
+    if ((e.kind === 'ally' || e.kind === 'self') && !(e.sec > 0)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: sec가 없다`);
+    if (e.kind === 'unmodeled' && !['ally', 'self'].includes(e.target)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: unmodeled는 target(ally/self)이 있어야 한다`);
+    if (e.cond && !['noOtherB1', 'asStage1', 'sameSquad', 'treasure'].includes(e.cond)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: 엔진이 모르는 cond '${e.cond}' — 조건이 조용히 거짓이 된다`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 캐릭터별 채용률 등급 (metaStats.usageTier)
 //
 // 엔진이 REAL_TIER_SCORE로 점수를 매기는 값이라 등급 문자열이 어긋나면 **조용히 0점**이 된다

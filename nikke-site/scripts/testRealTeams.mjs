@@ -390,6 +390,19 @@ for (const t of teams) {
     if (!slowOf(old)) problems.push('[주기 관문] 스위치를 켜도 느린 팀이 안 나온다 — 시험이 더는 이 경우를 재현하지 못한다');
     if (slowOf(now)) problems.push('[주기 관문] 20초 주기 대안이 있는 로스터에서 40초 이상 주기 팀을 추천했다');
   }
+  // ③ 쿨감(data/burstCdr.json, 유저 10-01 "40초라도 쿨감으로 사실상 20초"). 라피: 레드 후드를 1버스트로 쓰면 본인 20초 + 전 아군 7.48초 →
+  //    40초 멤버뿐인 팀도 20초에 돈다 — 느림이 아니어야 하고, 쿨감을 끄면(CYCLE_CDR_OFF) 느림이어야 한다.
+  // ④ 티아의 쿨감(엄폐물 회복, 양 모름)은 **본인 단계만** 줄인다 — 혼자인 40초 2버스트(마스트)는 여전히 느림이어야 한다(처음엔 이게 빠져나갔다).
+  const S = (names) => engine.scoreTeam(names.map((n) => byTitle.get(n)), 'campaign', {}).slowCycle;
+  const rrh = ['Helm: Aquamarine', 'Rapi: Red Hood', 'Scarlet', 'Alice', 'Scarlet: Black Shadow'];
+  if (S(rrh)) problems.push('[주기 관문·쿨감] 라피RH 1버스트(본인 20초+전 아군 7.48초) 팀을 느리다고 판정했다 — 쿨감이 안 들어간다');
+  globalThis.__NIKKE_CYCLE_CDR_OFF = true;
+  const rrhOff = S(rrh);
+  globalThis.__NIKKE_CYCLE_CDR_OFF = false;
+  if (!rrhOff) problems.push('[주기 관문·쿨감] 쿨감을 꺼도 라피RH 팀이 빠르다 — 시험이 더는 쿨감 효과를 재지 못한다');
+  if (!S(['Tia', 'Emma: Tactical Upgrade', 'Mast: Romantic Maid', 'Alice', 'Maxwell'])) {
+    problems.push('[주기 관문·쿨감] 티아(본인만 쿨감)가 있다고 혼자인 40초 마스트(2버스트) 팀을 느림에서 뺐다');
+  }
 }
 
 // --- D3(버프가 비는 멤버 0점)는 지원형 시전자만 · 받는 쪽은 공격형 또는 3버스트 (2026-10-01, lib/buffTargets.js) ---
