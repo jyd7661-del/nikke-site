@@ -278,8 +278,22 @@ function wastedTierScore(character, mode, treasureIds) {
   return share ? tierScore(character, mode, treasureIds) * share : 0;
 }
 
+// **애장품을 안 가졌으면 그 캐릭터의 실사용 수치를 쓰지 않는다** (2026-10-01 유저: "목단은 애장품이 있을 때만 랭크가 높아져").
+// enikk 사용률은 상위 유저 기록이라 애장품을 낀 상태의 숫자다. 애장품이 이 모드의 티어를 올리는 캐릭터(characterInvestmentNotes
+// treasureTiers > 기본 티어)인데 사용자가 애장품이 없으면, 그 숫자는 사용자의 그 캐릭터를 말하지 않는다 —
+// 목단(보스전 기본 D · 애장품 SS)이 전격 시즌 상위 50인 100%로 S 가산을 받고 있었다. 기준은 데이터의 두 티어 비교뿐, 새 숫자 없음.
+// `TREASURE_USAGE_GATE_OFF` 스위치(테스트용)로 옛 동작을 재현한다.
+function usageNeedsMissingTreasure(character, mode, treasureIds) {
+  if (globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF) return false;
+  if (treasureIds?.has(character?.id)) return false;
+  const key = MODE_TO_TIER_KEY[mode] || 'story';
+  const boosted = INVESTMENT_NOTE_BY_NAME.get(character?.title)?.treasureTiers?.[key];
+  return !!boosted && (TIER_SCORE[boosted] || 0) > (TIER_SCORE[character?.tiers?.[key]] || 0);
+}
+
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
-function realUsageTierScore(character, mode, bossElement = null) {
+function realUsageTierScore(character, mode, bossElement = null, treasureIds = null) {
+  if (usageNeedsMissingTreasure(character, mode, treasureIds)) return 0;
   // 2026-10-01: **보스 약점이 정해진 보스전은 그 속성 시즌의 사용률로** 등급을 매긴다(seasonUsageTier).
   // 전체 레이드 채용 등급은 시즌을 섞은 값이라, 전격 보스에 토브(전체 A 67% · 전격 시즌 상위 50인 0.3%)가 가산점을 받고
   // 목단·메이든IR(전격 시즌 100%)과 같은 대접을 받았다(블라인드 판정 개발 60건 중 3건).
@@ -318,8 +332,9 @@ function seasonUsageTier(character, bossElement) {
 // 실사용률(%)을 조회. metaStats.soloRaidByElement는 원소별 대표 시즌 하나의 Advantage
 // Nikkes(그 원소 캐릭터 한정 실사용률) 기록이라, 값이 있으면 "그 원소 안에서 얼마나
 // 우선순위 높은 픽인지"를 곧바로 알려준다.
-function realElementUsage(character, bossElement) {
+function realElementUsage(character, bossElement, mode = 'bossing', treasureIds = null) {
   if (!bossElement) return null;
+  if (usageNeedsMissingTreasure(character, mode, treasureIds)) return null;
   const table = metaStats.soloRaidByElement?.[bossElement];
   if (!table) return null;
   const entry = (table.entries || []).find((e) => e.title === character.title);
@@ -1124,9 +1139,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   }
 
   // --- 실사용 픽률 등급 합산 (enikk.app) ---
-  const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode, bossElement), 0);
+  const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode, bossElement, treasureIds), 0);
   score += realTierTotal * WEIGHTS.REAL_USAGE_TIER_SUM;
-  const sTierRealMembers = members.filter((m) => realUsageTierScore(m, mode) >= REAL_TIER_SCORE.S);
+  const sTierRealMembers = members.filter((m) => realUsageTierScore(m, mode, null, treasureIds) >= REAL_TIER_SCORE.S);
   if (sTierRealMembers.length > 0) {
     reasons.push(R.real_s_tier({ names: sTierRealMembers.map((m) => rName(m, lang)) }));
   }
@@ -1146,7 +1161,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // --- 솔로 레이드 보스 약점 속성별 실사용률 (bossing/raid + bossElement 지정 시) ---
   if ((mode === 'bossing' || mode === 'raid') && bossElement) {
     const elementUsageMembers = members
-      .map((m) => ({ m, usage: realElementUsage(m, bossElement) }))
+      .map((m) => ({ m, usage: realElementUsage(m, bossElement, mode, treasureIds) }))
       .filter((x) => x.usage !== null);
     elementUsageMembers.forEach(({ m, usage }) => {
       score += (usage / 100) * WEIGHTS.REAL_ELEMENT_USAGE_SCALE * 10;
@@ -1760,8 +1775,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
     buckets[b] = buckets[b]
       .slice()
       .sort((a, z) => {
-        const za = tierScore(z, mode, treasureIds) + ((bossElement && realElementUsage(z, bossElement)) || 0) / 20;
-        const aa = tierScore(a, mode, treasureIds) + ((bossElement && realElementUsage(a, bossElement)) || 0) / 20;
+        const za = tierScore(z, mode, treasureIds) + ((bossElement && realElementUsage(z, bossElement, mode, treasureIds)) || 0) / 20;
+        const aa = tierScore(a, mode, treasureIds) + ((bossElement && realElementUsage(a, bossElement, mode, treasureIds)) || 0) / 20;
         return za - aa;
       })
       .slice(0, BUCKET_CAP);

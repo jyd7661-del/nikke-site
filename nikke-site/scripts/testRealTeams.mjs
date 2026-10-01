@@ -290,12 +290,43 @@ for (const t of teams) {
   if (roster.some((c) => !c)) problems.push('[시즌 실사용 등급] 시험용 이름이 DB에 없다');
   else {
     const hasTove = (r) => (r.team?.members || []).some((m) => m.title === 'Tove');
+    // 토브는 애장품 캐릭터라 애장품 실사용 게이트(아래 절)도 토브를 뺀다 — 시즌 등급 효과만 보려고 그 게이트는 양쪽 다 끈다.
+    globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF = true;
     const now = engine.pickSiteTeam(roster, 'bossing', { bossElement: 'Electronic' });
     globalThis.__NIKKE_SEASON_USAGE_OFF = true;
     const old = engine.pickSiteTeam(roster, 'bossing', { bossElement: 'Electronic' });
     globalThis.__NIKKE_SEASON_USAGE_OFF = false;
+    globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF = false;
     if (!hasTove(old)) problems.push('[시즌 실사용 등급] 옛 전체 등급에서도 토브가 안 나온다 — 시험 로스터가 더는 이 경우를 재현하지 못한다');
     if (hasTove(now)) problems.push('[시즌 실사용 등급] 전격 시즌 상위 50인 0.3%인 토브가 전격 보스 추천에 들어갔다 — 시즌 등급을 안 쓰고 있다');
+  }
+}
+
+// --- 애장품이 없으면 그 캐릭터의 실사용 수치를 안 쓴다 (2026-10-01 유저: "목단은 애장품이 있을 때만 랭크가 높아져") ---
+// 블라인드 판정 표본(씨앗 15 B03, 수냉 보스): 프리바티(보스전 기본 B · 애장품 SS)가 수냉 시즌 상위 50인 100%로 S 가산을 받아
+// 네온:VE(SS) 자리를 차지했다. 애장품이 없으면 빠져야 하고, 스위치를 끄면 다시 들어와야 하며, 애장품을 가지면 쓰여야 한다.
+{
+  const roster = ['Anchor: Innocent Maid', 'Arcana', 'Arcana: Fortune Mate', 'Aria', 'Brid: Silent Track', 'Epinel', 'Eunhwa: Tactical Upgrade',
+    'Little Mermaid', 'Naga', 'Neon: Vision Eye', 'Nihilister', 'Noise', 'Privaty', 'Rem', 'Rouge', 'Scarlet: Black Shadow', 'Soline',
+    'Soline: Frost Ticket'].map((n) => byTitle.get(n));
+  if (roster.some((c) => !c)) problems.push('[애장품 실사용] 시험용 이름이 DB에 없다');
+  else {
+    const hasPrivaty = (r) => (r.team?.members || []).some((m) => m.title === 'Privaty');
+    const opt = { bossElement: 'Water' };
+    const now = engine.pickSiteTeam(roster, 'bossing', opt);
+    const owned = engine.pickSiteTeam(roster, 'bossing', { ...opt, treasureIds: new Set([byTitle.get('Privaty').id]) });
+    globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF = true;
+    const old = engine.pickSiteTeam(roster, 'bossing', opt);
+    globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF = false;
+    if (!hasPrivaty(old)) problems.push('[애장품 실사용] 스위치를 꺼도 프리바티가 안 나온다 — 시험 로스터가 더는 이 경우를 재현하지 못한다');
+    if (hasPrivaty(now)) problems.push('[애장품 실사용] 애장품 없는 프리바티(보스전 B)가 애장품 보유자 사용률로 추천에 들어갔다');
+    if (!hasPrivaty(owned)) problems.push('[애장품 실사용] 애장품을 가진 프리바티(보스전 SS)가 빠졌다 — 게이트가 보유자까지 막고 있다');
+    // 위 줄은 애장품 티어(SS)만으로도 통과해서 "보유자의 실사용 점수"를 못 본다(역테스트로 확인) — 점수로 직접 잰다.
+    const team = ['Privaty', 'Neon: Vision Eye', 'Anchor: Innocent Maid', 'Little Mermaid', 'Scarlet: Black Shadow'].map((n) => byTitle.get(n));
+    const realOf = (ids) => engine.scoreTeam(team, 'bossing', { ...opt, treasureIds: ids }).realTierTotal;
+    if (!(realOf(new Set([byTitle.get('Privaty').id])) > realOf(new Set()))) {
+      problems.push('[애장품 실사용] 애장품을 가진 프리바티의 실사용 점수가 안 붙는다 — 게이트가 보유자까지 막고 있다');
+    }
   }
 }
 

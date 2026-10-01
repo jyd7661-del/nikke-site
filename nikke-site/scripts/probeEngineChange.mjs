@@ -12,6 +12,7 @@
  *
  *   --mode = pvp | bossing | campaign | tribe_tower | all (기본 all)
  *   --variant=noflexcompete  2026-09-30 이전 경로(빈 자리 아키타입도 폴백보다 무조건 먼저) — 비교용
+ *   --off=TREASURE_USAGE_GATE_OFF  엔진 스위치(globalThis.__NIKKE_<이름>)를 켜고 찍는다 — 고친 코드 그대로 "이전 엔진"을 재현
  *
  * ■ 왜 필요한가
  *   CLAUDE.md·testJudgmentMatch 머리 주석의 규칙: **엔진을 고쳐 답이 바뀐 건은 이전 엔진 대비로 판정하고,
@@ -63,6 +64,7 @@ const BOSSES = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
 // ── 스냅숏 ──────────────────────────────────────────────────────────────
 const SNAP = arg('snap', null);
 const VARIANT = arg('variant', null);
+for (const sw of (arg('off', '') || '').split(',').filter(Boolean)) globalThis['__NIKKE_' + sw] = true;
 if (SNAP) {
   const E = await loadEngine();
   // 사이트 경로는 엔진의 pickSiteTeam 하나로 잰다(2026-09-30). --variant=noflexcompete 로 그 전 경로.
