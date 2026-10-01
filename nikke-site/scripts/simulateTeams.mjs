@@ -1404,6 +1404,22 @@ function selfTest() {
     if (cwDef == null || !(cwAlways > cwDef)) problems.push('상시 every N sec 스위치가 안 먹는다(신데렐라:CW 5초마다 900%)');
     console.log('  쿨타임 액티브·풀버스트 중 N초마다 — 합성 시험 통과(상시 N초마다는 기각 상태)');
   }
+  // (7d) **엔진이 쓰는 "버스트 없이 남는 딜 비율"(data/offBurstShare.json)이 지금 계산과 같은가.** (2026-10-01)
+  //     엔진의 낭비 인원 점수가 이 값을 쓴다. 스킬·시뮬레이터가 바뀌었는데 파일을 다시 안 만들면 엔진이 옛 값으로 조용히 채점한다.
+  {
+    const p = path.join(ROOT, 'data', 'offBurstShare.json');
+    const saved = fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')).byTitle || {} : {};
+    let drift = 0; const ex = [];
+    cdb.forEach((c) => {
+      if ((c.skills || []).length !== 3) return;
+      const full = scoreComposition([c]).total;
+      if (!(full > 0)) return;
+      const v = Math.round(Math.min(1, Math.max(0, scoreComposition([{ ...c, skills: c.skills.slice(0, 2) }]).total / full)) * 100) / 100;
+      if (saved[c.title] !== v) { drift += 1; if (ex.length < 5) ex.push(`${c.title} ${saved[c.title]}→${v}`); }
+    });
+    if (drift) problems.push(`data/offBurstShare.json이 지금 계산과 ${drift}명 다르다(${ex.join(', ')}) — node scripts/buildOffBurstShare.mjs --write`);
+    else console.log('  버스트 밖 딜 비율 파일 — 지금 계산과 일치');
+  }
   // (6) **prydwen 보스 티어와의 순위상관 래칫.** (2026-09-03 · 2026-09-07 재는 값을 바꿈)
   //     ⚠️ 팀 버프는 여전히 안 본다(캐릭터 1명으로 점수를 내므로 남이 걸어주는 버프가 없다).
   //        **자기 버프는 이제 본다.**

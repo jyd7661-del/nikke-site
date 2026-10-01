@@ -33,6 +33,7 @@ import soloRaidTeams from '../data/soloRaidTeams.json';
 import towerCompositions from '../data/towerCompositions.json';
 import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 import pvpBurstGen from '../data/pvpBurstGen.json';
+import offBurstShare from '../data/offBurstShare.json';
 import { engineText } from './engineReasons';
 import { teamBurstSpeed } from './pvpBurst';
 import { deadBuffCount, emptyBuffMembers } from './buffTargets';
@@ -263,6 +264,18 @@ export function effectiveTier(character, mode, treasureIds) {
 
 function tierScore(character, mode, treasureIds) {
   return TIER_SCORE[effectiveTier(character, mode, treasureIds)] || 0;
+}
+
+// **낭비 인원(버스트를 못 쓰는 멤버)의 점수.** (2026-10-01)
+// 그동안 0점이었다. 그런데 그 멤버도 평타·일반 스킬로 딜을 넣어서, 0점이면 엔진이 강한 세 번째 B3 대신 D~B급 B2를 넣었다
+// (블라인드 판정 개발 60건 중 5건 — 아르카나(D)·에이드(D)·도라(B)). 예전 "낭비 인원 70%"는 근거 없는 숫자라 기각됐다(원칙 2).
+// 그래서 비율을 **캐릭터마다 스킬 원문에서** 가져온다: data/offBurstShare.json = 시뮬레이터 자체 딜(버스트 스킬 뺀 것 ÷ 전부).
+// 예: 앨리스·맥스웰 0.88 · 퀀시:EQ 0.76 · SWHA 0.43 · 도로시:S 0.42. 값이 없으면 0(옛 동작).
+// `OFF_BURST_OFF` 스위치(테스트용)로 옛 0점을 재현한다.
+function wastedTierScore(character, mode, treasureIds) {
+  if (globalThis.__NIKKE_OFF_BURST_OFF) return 0;
+  const share = offBurstShare.byTitle?.[character?.title];
+  return share ? tierScore(character, mode, treasureIds) * share : 0;
 }
 
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
@@ -1061,8 +1074,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 실측(얇은 로스터 40건): 답이 바뀐 4건 전부 **이전 엔진보다 나아졌다**(나빠짐 0).
   // 일치율 53.8% → 57.9%. 가드는 그대로 — 랭커 백분위 중앙 70.5%, 실사용 조합 0건.
   const emptyTitles = new Set(emptyBuffMembers(members).map((x) => x.title));
+  // 2026-10-01: 낭비 인원은 0점이 아니라 **티어 × 버스트 없이 남는 딜 비율**(wastedTierScore 주석).
   const tierTotal = members.reduce(
-    (sum, m) => sum + ((wastedIds.has(m.id) || emptyTitles.has(m.title)) ? 0 : tierScore(m, mode, treasureIds)),
+    (sum, m) => sum + (emptyTitles.has(m.title) ? 0 : wastedIds.has(m.id) ? wastedTierScore(m, mode, treasureIds) : tierScore(m, mode, treasureIds)),
     0
   );
   score += tierTotal * WEIGHTS.TIER_SUM;
@@ -2103,7 +2117,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const { wasted } = findWastedBurstMembers(members, mode, treasureIds);
     const wastedIds = new Set(wasted.map((m) => m.id));
     return members.reduce(
-      (sum, m) => sum + (wastedIds.has(m.id) ? 0 : tierScore(m, mode, treasureIds)),
+      (sum, m) => sum + (wastedIds.has(m.id) ? wastedTierScore(m, mode, treasureIds) : tierScore(m, mode, treasureIds)),
       0
     );
   };

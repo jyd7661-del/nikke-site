@@ -262,6 +262,24 @@ for (const t of teams) {
   if (!/fallbackBeatsFlexArchetype\(/.test(routeSrc)) problems.push('[빈 자리 아키타입 vs 폴백] 라우트가 fallbackBeatsFlexArchetype를 안 부른다 — 사이트와 검사의 경로가 갈렸다');
 }
 
+// --- 낭비 인원 점수 = 티어 × 버스트 없이 남는 딜 비율 (2026-10-01, data/offBurstShare.json) ---
+// 블라인드 판정 표본(씨앗 11 B13)의 캠페인 로스터: 0점 처리일 때는 세 번째 B3 대신 아르카나(D B2)를 넣었다.
+// 지금은 아르카나가 빠져야 하고, 옛 0점(__NIKKE_OFF_BURST_OFF)으로 돌리면 아르카나가 다시 들어와야 한다(시험이 그 고장을 재현하는지).
+{
+  const roster = ['Arcana', 'Brid: Silent Track', 'D', 'Guillotine: Winter Slayer', 'Jill Valentine', 'Ludmilla', 'Quency: Escape Queen',
+    'Raven', 'Rupee', 'Sakura', 'Scarlet: Black Shadow', 'Trony'].map((n) => byTitle.get(n));
+  if (roster.some((c) => !c)) problems.push('[낭비 인원 점수] 시험용 이름이 DB에 없다');
+  else {
+    const has = (r) => (r.team?.members || []).some((m) => m.title === 'Arcana');
+    const now = engine.pickSiteTeam(roster, 'campaign', {});
+    globalThis.__NIKKE_OFF_BURST_OFF = true;
+    const old = engine.pickSiteTeam(roster, 'campaign', {});
+    globalThis.__NIKKE_OFF_BURST_OFF = false;
+    if (!has(old)) problems.push('[낭비 인원 점수] 옛 0점에서도 아르카나가 안 나온다 — 시험 로스터가 더는 이 고장을 재현하지 못한다');
+    if (has(now)) problems.push('[낭비 인원 점수] 세 번째 B3 대신 아르카나(D B2)를 넣었다 — 낭비 인원을 0점으로 세고 있다');
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);
