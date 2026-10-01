@@ -283,12 +283,15 @@ function wastedTierScore(character, mode, treasureIds) {
 // treasureTiers > 기본 티어)인데 사용자가 애장품이 없으면, 그 숫자는 사용자의 그 캐릭터를 말하지 않는다 —
 // 목단(보스전 기본 D · 애장품 SS)이 전격 시즌 상위 50인 100%로 S 가산을 받고 있었다. 기준은 데이터의 두 티어 비교뿐, 새 숫자 없음.
 // `TREASURE_USAGE_GATE_OFF` 스위치(테스트용)로 옛 동작을 재현한다.
-function usageNeedsMissingTreasure(character, mode, treasureIds) {
-  if (globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF) return false;
+function treasureRaisesTierUnowned(character, mode, treasureIds) {
   if (treasureIds?.has(character?.id)) return false;
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const boosted = INVESTMENT_NOTE_BY_NAME.get(character?.title)?.treasureTiers?.[key];
   return !!boosted && (TIER_SCORE[boosted] || 0) > (TIER_SCORE[character?.tiers?.[key]] || 0);
+}
+function usageNeedsMissingTreasure(character, mode, treasureIds) {
+  if (globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF) return false;
+  return treasureRaisesTierUnowned(character, mode, treasureIds);
 }
 
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
@@ -2018,6 +2021,11 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     if (titles.some((t) => excludeTitles.has(t))) return;
 
     const members = titles.map((t) => byTitle.get(t));
+    // **애장품이 그 모드 티어를 올리는 멤버를 애장품 없이 가졌으면 그 기록은 이 사용자의 조합이 아니다** (2026-10-01).
+    // 유저: "완성된 조합을 보통 쓰는 사람들은 애장품이 거의 있다고 봐야 해." 예전엔 출처에 애장품 정보가 없어
+    // "모른다"고만 밝히고 그대로 추천했다(아래 treasureGaps). 아키타입의 requiresTreasure와 같은 관문이다.
+    // 스위치 `REAL_TEAM_TREASURE_OFF`(테스트용)로 옛 동작.
+    if (!globalThis.__NIKKE_REAL_TEAM_TREASURE_OFF && members.some((m) => treasureRaisesTierUnowned(m, mode, treasureIds))) return;
     const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
     if (!scored.valid) return; // 버스트 I/II/III 조건을 못 갖추면 제외
     if (!best || rank > best.rank) best = { entry: e, rank, members, scored };
@@ -2046,6 +2054,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   }
 
   // --- 애장품 공백 메우기 (2026-08-21) ---
+  // ⚠️ 2026-10-01부터 위 관문이 이런 멤버가 든 기록을 걸러서, 이 블록은 스위치(REAL_TEAM_TREASURE_OFF)를 켰을 때만 뭔가를 낸다.
   //
   // enikk 실사용 기록에는 **애장품(Favorite Item) 정보가 없다.** 멤버별 돌파/코어와 CP는
   // 화면에 있지만 그건 그 기록을 남긴 플레이어의 상태이지 조합의 필요 조건이 아니다.

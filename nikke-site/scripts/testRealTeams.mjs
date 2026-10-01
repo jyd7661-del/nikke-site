@@ -124,7 +124,9 @@ for (const t of teams) {
   // 위의 valid 검사는 그걸 못 잡는다 — 조합 자체는 멀쩡했기 때문이다.
   // 그 조합 5명만 담은 로스터에 그 조합의 맥락(보스 속성·타워 풀)을 그대로 넘겨서,
   // findRealUsageTeamMatch가 그 조합을 돌려주는지 본다.
-  const found = engine.findRealUsageTeamMatch(members, t.mode, t.ctx || {});
+  // 2026-10-01: 실사용 경로는 애장품이 필요한 멤버를 애장품 없이 가진 사용자에게 그 기록을 안 낸다(유저: 완성 조합 사용자는 애장품이 거의 있다).
+  // 기록은 보유자의 것이므로 여기서는 전원 애장품 보유로 찾는다 — 도달성(어휘·맥락)만 본다.
+  const found = engine.findRealUsageTeamMatch(members, t.mode, { ...(t.ctx || {}), treasureIds: new Set(members.map((m) => m.id)) });
   if (!found) {
     s.unreachable += 1;
     problems.push(
@@ -327,6 +329,28 @@ for (const t of teams) {
     if (!(realOf(new Set([byTitle.get('Privaty').id])) > realOf(new Set()))) {
       problems.push('[애장품 실사용] 애장품을 가진 프리바티의 실사용 점수가 안 붙는다 — 게이트가 보유자까지 막고 있다');
     }
+  }
+}
+
+// --- 실사용 완성 조합은 애장품 보유자의 기록 (2026-10-01 유저: "완성된 조합을 보통 쓰는 사람들은 애장품이 거의 있다") ---
+// 레이드 시즌 41(수냉) 등록 조합에 목단·헬름이 있다. 애장품 없이 그 5명만 가졌으면 실사용 경로가 그 기록을 내면 안 되고,
+// 두 애장품을 다 가졌으면 내야 한다. 스위치(REAL_TEAM_TREASURE_OFF)를 켜면 옛 동작대로 미보유에게도 낸다.
+{
+  const names = ['Moran', 'Nayuta', 'Ludmilla: Winter Owner', 'Helm', 'Elegg: Boom and Shock'];
+  const team = names.map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[실사용 애장품] 시험용 이름이 DB에 없다');
+  else {
+    const opt = { bossElement: 'Water' };
+    const none = engine.findRealUsageTeamMatch(team, 'bossing', opt);
+    const owned = engine.findRealUsageTeamMatch(team, 'bossing', { ...opt, treasureIds: new Set(['Moran', 'Helm'].map((n) => byTitle.get(n).id)) });
+    const oneOnly = engine.findRealUsageTeamMatch(team, 'bossing', { ...opt, treasureIds: new Set([byTitle.get('Moran').id]) });
+    globalThis.__NIKKE_REAL_TEAM_TREASURE_OFF = true;
+    const old = engine.findRealUsageTeamMatch(team, 'bossing', opt);
+    globalThis.__NIKKE_REAL_TEAM_TREASURE_OFF = false;
+    if (!old) problems.push('[실사용 애장품] 스위치를 꺼도 시즌 41 목단·헬름 조합이 안 나온다 — 시험이 더는 이 경우를 재현하지 못한다');
+    if (none) problems.push('[실사용 애장품] 애장품 없는 목단·헬름으로 랭커 완성 조합을 추천했다');
+    if (oneOnly) problems.push('[실사용 애장품] 헬름 애장품이 없는데 그 조합을 추천했다 — 한 명만 보유해도 통과한다');
+    if (!owned) problems.push('[실사용 애장품] 두 애장품을 다 가졌는데 그 조합이 안 나온다 — 관문이 보유자까지 막는다');
   }
 }
 
