@@ -354,6 +354,23 @@ for (const t of teams) {
   }
 }
 
+// --- 같은 쿨타임 3버스트가 넘치면 토템이 쉰다 (2026-10-01 유저: "애장품 헬름은 거의 토템으로만 쓰여서 3버스트가 3명인 경우가 많다") ---
+// 캠페인 · 애장품 헬름 + 앨리스 + 맥스웰(셋 다 40초 B3, 둘만 버스트). 옛 순서는 헬름을 버스트시키고 공격형 하나를 낭비로 깎았다.
+// 토템인 헬름이 쉬면 낭비 0이어야 하고, 스위치(TOTEM_REST_OFF)를 켜면 옛 동작(낭비 1)이 재현돼야 한다.
+{
+  const team = ['Liter', 'Crown', 'Helm', 'Alice', 'Maxwell'].map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[토템 휴식] 시험용 이름이 DB에 없다');
+  else {
+    const opt = { treasureIds: new Set([byTitle.get('Helm').id]) };
+    const now = engine.scoreTeam(team, 'campaign', opt);
+    globalThis.__NIKKE_TOTEM_REST_OFF = true;
+    const old = engine.scoreTeam(team, 'campaign', opt);
+    globalThis.__NIKKE_TOTEM_REST_OFF = false;
+    if (!(old.wastedCount > 0)) problems.push('[토템 휴식] 스위치를 켜도 낭비가 안 나온다 — 시험이 더는 이 경우를 재현하지 못한다');
+    if (now.wastedCount > 0) problems.push(`[토템 휴식] 애장품 헬름이 버스트하고 공격형이 낭비로 깎였다(낭비 ${now.wastedCount}) — 토템이 먼저 쉬어야 한다`);
+  }
+}
+
 // --- D3(버프가 비는 멤버 0점)는 지원형 시전자만 · 받는 쪽은 공격형 또는 3버스트 (2026-10-01, lib/buffTargets.js) ---
 // 레이드 등록 팀에서 메이든 : 아이스 로즈가 든 11팀 전부 다른 전격 공격형 없이 아니스:SS·목단과 쓴다. 그 구성을 0점으로 만들면 안 된다.
 {
@@ -377,10 +394,13 @@ for (const t of teams) {
   if (team.some((c) => !c)) problems.push('[쉬는 B3 선택] 시험용 이름이 DB에 없다');
   else {
     const last = (o) => o.filter((m) => String(m.burst) === '3').slice(-1)[0]?.title;
+    // 에이다는 토템이라 "토템이 먼저 쉰다"(아래 절)가 앞선다 — 여기서는 비율 정렬만 보려고 그 규칙을 양쪽 다 끈다.
+    globalThis.__NIKKE_TOTEM_REST_OFF = true;
     const now = last(engine.orderMembersForDisplay(team, 'tribe_tower', new Set()));
     globalThis.__NIKKE_OFF_BURST_OFF = true;
     const old = last(engine.orderMembersForDisplay(team, 'tribe_tower', new Set()));
     globalThis.__NIKKE_OFF_BURST_OFF = false;
+    globalThis.__NIKKE_TOTEM_REST_OFF = false;
     if (old === 'Alice') problems.push('[쉬는 B3 선택] 옛 순서에서도 앨리스가 쉰다 — 시험이 더는 그 경우를 재현하지 못한다');
     if (now !== 'Alice') problems.push(`[쉬는 B3 선택] 버스트에 덜 기대는 앨리스가 아니라 ${now}가 쉰다`);
   }

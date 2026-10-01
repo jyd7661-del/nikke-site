@@ -929,9 +929,18 @@ function findWastedBurstMembers(members, mode, treasureIds) {
       const sh = offBurstShare.byTitle?.[m.title];
       return tierScore(m, mode, treasureIds) * (1 - (sh ?? 0));
     };
+    // 2026-10-01 — **같은 쿨타임이면 토템이 쉰다.** 유저: "버스트를 못 써도 토템 역할을 하고 있으면 역할을 다 하는 것.
+    // 애장품 헬름은 거의 토템으로만 쓰여서 애장품 헬름이 있는 조합은 3버스트가 3명인 경우가 많다."
+    // 위 비율 정렬만 있으면 헬름(비율 0.64 → 버스트 몫이 커 보임)이 버스트하고 공격형이 쉬어, 토템이 아닌 쪽이 낭비로 깎였다.
+    // 토템은 정의상 버스트를 안 쓰는 자리이므로 쉬는 순번 뒤로 보낸다(정렬 키, 가중치 아님). 스위치 `TOTEM_REST_OFF`.
+    const restsAsTotem = (m) => {
+      if (globalThis.__NIKKE_TOTEM_REST_OFF) return 0;
+      const note = INVESTMENT_NOTE_BY_NAME.get(m.title);
+      return note?.totemRole && totemConditionMet(note, m, members) ? 1 : 0;
+    };
     const sorted = [...withCd].sort(
       (a, b) => (Number(!!b.m.burstReentry) - Number(!!a.m.burstReentry))
-        || (a.cd - b.cd) || (burstShare(b.m) - burstShare(a.m))
+        || (a.cd - b.cd) || (restsAsTotem(a.m) - restsAsTotem(b.m)) || (burstShare(b.m) - burstShare(a.m))
         || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
         || String(a.m.id).localeCompare(String(b.m.id))
     );
