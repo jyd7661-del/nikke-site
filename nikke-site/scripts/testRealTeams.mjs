@@ -299,6 +299,21 @@ for (const t of teams) {
   }
 }
 
+// --- D3(버프가 비는 멤버 0점)는 지원형 시전자만 · 받는 쪽은 공격형 또는 3버스트 (2026-10-01, lib/buffTargets.js) ---
+// 레이드 등록 팀에서 메이든 : 아이스 로즈가 든 11팀 전부 다른 전격 공격형 없이 아니스:SS·목단과 쓴다. 그 구성을 0점으로 만들면 안 된다.
+{
+  const team = ['Anis: Sparkling Summer', 'Ade: Agent Bunny', 'Moran', 'Maiden: Ice Rose', 'Privaty'].map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[D3 범위] 시험용 이름이 DB에 없다');
+  else {
+    const now = engine.scoreTeam(team, 'bossing', { bossElement: 'Electronic' });
+    globalThis.__NIKKE_D3_ALL_CLASSES = true; globalThis.__NIKKE_RECEIVER_ATTACKER_ONLY = true;
+    const old = engine.scoreTeam(team, 'bossing', { bossElement: 'Electronic' });
+    globalThis.__NIKKE_D3_ALL_CLASSES = false; globalThis.__NIKKE_RECEIVER_ATTACKER_ONLY = false;
+    if (!(old.tierTotal < now.tierTotal)) problems.push('[D3 범위] 옛 규칙에서도 이 등록 팀 점수가 안 깎인다 — 시험이 더는 그 고장을 재현하지 못한다');
+    if (now.tierTotal < old.tierTotal) problems.push('[D3 범위] 등록 팀(아니스SS·목단·메이든IR)에서 누군가가 버프 대상 없음으로 0점이 됐다');
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

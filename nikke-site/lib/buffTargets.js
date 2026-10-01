@@ -74,13 +74,22 @@ function conditionalScopes(c) {
 //   그래서 두 가지를 좁혔다. 둘 다 스킬 원문·클래스 데이터(A등급)에서 나오는 사실이고 점수가 아니다:
 //     ① **공격형 시전자는 세지 않는다.** 공격형의 가치는 본인 딜이고 조건부 버프는 덤이다.
 //     ② **대상은 공격형이어야 산 것으로 본다.** 공격 버프가 방어형·지원형에게 닿는 건 빈 것과 같다.
+//        → 2026-10-01: "공격형 또는 3버스트"로 넓혔다(isBuffReceiver 주석).
+// **버프를 "받는 쪽"으로 셀 멤버** — 공격형 또는 3버스트(2026-10-01).
+// 그동안 공격형만 셌다(아래 ②). 그런데 3버스트 딜러 중 방어형·지원형이 있다 — 메이든 : 아이스 로즈(방어형·보스전 S)·
+// 신데렐라(방어형)·아니스 : 스파클링 서머(지원형). 레이드 등록 팀에서 메이든IR이 든 11팀 **전부** 다른 전격 공격형 없이
+// 아니스:SS·목단과 서로 버프를 주고받는다(아니스:SS 12팀도 전부). 공격형만 세면 메이든이 0점이 돼 엔진이 공격형 F급(로산나)을 끼워 넣었다.
+// 1버스트 방어형(목단·킬로…)은 여전히 안 센다 — 09-18에 "트리나의 전격 소총 버프 → 목단"을 빈 버프로 본 근거가 그대로다.
+const stagesOfMember = (m) => (Array.isArray(m.burstStages) && m.burstStages.length ? m.burstStages.map(String) : [String(m.burst)]);
+export const isBuffReceiver = (m) => lc(m.class) === 'attacker' || (!globalThis.__NIKKE_RECEIVER_ATTACKER_ONLY && stagesOfMember(m).includes('3'));
+
 export function buffWithNoTarget(team) {
   const out = [];
   for (const c of team) {
     if (lc(c.class) === 'attacker') continue;                                   // ①
     const dead = conditionalScopes(c).filter((sc) => {
       const t = resolveAllyScope(sc, c, team);
-      return t !== null && t.filter((m) => m.id !== c.id && lc(m.class) === 'attacker').length === 0; // ②
+      return t !== null && t.filter((m) => m.id !== c.id && isBuffReceiver(m)).length === 0; // ②
     });
     if (dead.length) out.push({ title: c.title, scopes: dead });
   }
@@ -132,12 +141,17 @@ function allyScopes(c) {
 export function emptyBuffMembers(team) {
   const out = [];
   for (const c of team) {
+    // 2026-10-01: **지원형만 센다.** 이 판정은 "버퍼 자리에 버프가 빈다 → 그 칸은 0점"인데, 방어형은 버퍼가 아니다 —
+    //   메이든 : 아이스 로즈(방어형·보스전 S)는 본인 딜이 가치인데 전격 버프가 1버스트 탱커(목단)에게만 닿는 팀에서 통째로 0점이 됐고,
+    //   엔진은 공격형 F급(로산나)을 끼워 그녀를 "살렸다". 레이드 등록 팀 11/11이 메이든을 다른 전격 공격형 없이 쓴다.
+    //   (이전: 공격형만 빼고 셌다 — D1 ①과 같은 이유. D1 동점 처리 쪽은 그대로 둔다)
+    if (lc(c.class) !== 'supporter' && !globalThis.__NIKKE_D3_ALL_CLASSES) continue;
     if (lc(c.class) === 'attacker') continue;   // D1 ①과 같은 이유 — 공격형의 몫은 본인 딜이다
     const { uncond, cond } = allyScopes(c);
     if (uncond || cond.length === 0) continue;  // 조건 없는 아군 절이 있거나, 아군 절 자체가 없으면 세지 않는다
     const lands = cond.some((sc) => {
       const t = resolveAllyScope(sc, c, team);
-      return t !== null && t.some((m) => m.id !== c.id && lc(m.class) === 'attacker');
+      return t !== null && t.some((m) => m.id !== c.id && isBuffReceiver(m));
     });
     if (!lands) out.push({ title: c.title, id: c.id, scopes: cond });
   }
