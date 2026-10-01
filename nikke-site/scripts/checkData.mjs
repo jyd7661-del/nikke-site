@@ -1253,6 +1253,23 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 레이드 시즌별 상위 50인 사용률 (metaStats.soloRaidSeasonUsage, 2026-10-01)
+// 엔진이 보스 약점이 정해진 보스전의 실사용 등급으로 쓴다. 이름이 어긋나면 그 캐릭터는 조용히 "표에 없음(등급 없음)"이 된다.
+// ---------------------------------------------------------------------------
+{
+  const su = meta.soloRaidSeasonUsage || {};
+  const ELS = ['Iron', 'Wind', 'Water', 'Electronic', 'Fire'];
+  for (const el of ELS) {
+    const t = su[el];
+    if (!t?.usage || !Object.keys(t.usage).length) { err('SEASONUSAGE_MISSING', `soloRaidSeasonUsage.${el}가 비었다 — 그 속성 보스전은 전체 등급으로 떨어진다`); continue; }
+    for (const [title, u] of Object.entries(t.usage)) {
+      if (!TITLES.has(title)) err('SEASONUSAGE_UNKNOWN', `soloRaidSeasonUsage.${el}: DB에 없는 이름 '${title}' — enikkAlias.json 확인`);
+      if (!(u >= 0 && u <= 100)) err('SEASONUSAGE_SHAPE', `soloRaidSeasonUsage.${el}['${title}']=${u} — 0~100이어야 한다`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 캐릭터별 채용률 등급 (metaStats.usageTier)
 //
 // 엔진이 REAL_TIER_SCORE로 점수를 매기는 값이라 등급 문자열이 어긋나면 **조용히 0점**이 된다

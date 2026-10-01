@@ -279,11 +279,39 @@ function wastedTierScore(character, mode, treasureIds) {
 }
 
 // enikk.app 실사용 픽률 등급 조회 (없으면 0점 = 실데이터 미확보, 영향 없음).
-function realUsageTierScore(character, mode) {
+function realUsageTierScore(character, mode, bossElement = null) {
+  // 2026-10-01: **보스 약점이 정해진 보스전은 그 속성 시즌의 사용률로** 등급을 매긴다(seasonUsageTier).
+  // 전체 레이드 채용 등급은 시즌을 섞은 값이라, 전격 보스에 토브(전체 A 67% · 전격 시즌 상위 50인 0.3%)가 가산점을 받고
+  // 목단·메이든IR(전격 시즌 100%)과 같은 대접을 받았다(블라인드 판정 개발 60건 중 3건).
+  if (mode === 'bossing' && bossElement && !globalThis.__NIKKE_SEASON_USAGE_OFF) {
+    const t = seasonUsageTier(character, bossElement);
+    if (t !== undefined) return REAL_TIER_SCORE[t] || 0;
+  }
   const slice = MODE_TO_META_SLICE[mode] || 'campaign';
   const entry = metaStats.usageTier?.[slice]?.[character.title];
   if (!entry) return 0;
   return REAL_TIER_SCORE[entry.tier] || 0;
+}
+
+// 그 약점 속성 시즌 상위 50인 사용률(metaStats.soloRaidSeasonUsage) → enikk 등급 글자.
+// **경계를 새로 정하지 않는다** — enikk가 레이드 전체 채용에 매긴 등급(usageTier.soloraid)에서 등급별 최솟값을 읽어 쓴다
+// (지금 S ≥ 98.9 · A ≥ 43.8 · B ≥ 16.5 · C ≥ 6.5). 경계 사이 값은 낮은 등급, 가장 낮은 경계 아래·표에 없음은 등급 없음.
+// 그 속성 시즌 표가 없으면 undefined(전체 등급으로 떨어진다).
+const SEASON_TIER_FLOOR = (() => {
+  const by = {};
+  for (const e of Object.values(metaStats.usageTier?.soloraid || {})) {
+    if (!e?.tier || !(e.usage >= 0)) continue;
+    by[e.tier] = Math.min(by[e.tier] ?? Infinity, e.usage);
+  }
+  return ['S', 'A', 'B', 'C'].filter((t) => Number.isFinite(by[t])).map((t) => [t, by[t]]);
+})();
+function seasonUsageTier(character, bossElement) {
+  const table = metaStats.soloRaidSeasonUsage?.[bossElement];
+  if (!table?.usage) return undefined;
+  const u = table.usage[character.title];
+  if (!(u >= 0)) return null;
+  const hit = SEASON_TIER_FLOOR.find(([, floor]) => u >= floor);
+  return hit ? hit[0] : null;
 }
 
 // 솔로 레이드 보스의 약점 속성(bossElement)이 주어졌을 때, 그 속성 안에서 이 캐릭터의
@@ -1085,7 +1113,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   }
 
   // --- 실사용 픽률 등급 합산 (enikk.app) ---
-  const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode), 0);
+  const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode, bossElement), 0);
   score += realTierTotal * WEIGHTS.REAL_USAGE_TIER_SUM;
   const sTierRealMembers = members.filter((m) => realUsageTierScore(m, mode) >= REAL_TIER_SCORE.S);
   if (sTierRealMembers.length > 0) {

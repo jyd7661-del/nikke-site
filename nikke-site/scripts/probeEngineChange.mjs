@@ -97,8 +97,13 @@ const DIFF = arg('diff', null);
 if (DIFF) {
   const [bn, an] = DIFF.split(',');
   const LABEL = arg('label', `${bn}-${an}`);
-  const b = JSON.parse(fs.readFileSync(snapPath(bn), 'utf8')).answers;
-  const a = JSON.parse(fs.readFileSync(snapPath(an), 'utf8')).answers;
+  const B0 = JSON.parse(fs.readFileSync(snapPath(bn), 'utf8'));
+  const A0 = JSON.parse(fs.readFileSync(snapPath(an), 'utf8'));
+  // ⚠️ 2026-10-01: 무작위 로스터는 모드 순서대로 씨앗을 소비한다 — `--mode=all`과 `--mode=bossing` 스냅숏은 **같은 키라도 로스터가 다르다.**
+  //    실제로 그렇게 대 놓고 "63건이 바뀌었다"를 판정할 뻔했다. 모드가 다르면 멈춘다.
+  if (B0.mode !== A0.mode) { console.error(`스냅숏 모드가 다르다(${bn}: ${B0.mode} · ${an}: ${A0.mode}) — 무작위 로스터가 달라 비교가 무의미하다. 같은 --mode로 다시 찍을 것`); process.exit(1); }
+  const b = B0.answers;
+  const a = A0.answers;
   const ms = j('metaStats.json');
   const SLICE = { pvp: 'arena', bossing: 'soloraid', campaign: 'campaign', tribe_tower: 'campaign' };
   const EL = { iron: 'Iron', wind: 'Wind', water: 'Water', electric: 'Electronic', fire: 'Fire' };

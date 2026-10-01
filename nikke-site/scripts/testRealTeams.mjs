@@ -280,6 +280,25 @@ for (const t of teams) {
   }
 }
 
+// --- 보스전 실사용 등급 = 그 약점 속성 시즌 상위 50인 사용률 (2026-10-01, metaStats.soloRaidSeasonUsage) ---
+// 블라인드 판정 표본(씨앗 11 B04, 전격 보스): 전체 레이드 채용 A(67%)인 토브가 들어갔다 — 전격 시즌 상위 50인 사용률은 0.3%.
+// 시즌 등급으로는 토브가 빠져야 하고, 옛 전체 등급(__NIKKE_SEASON_USAGE_OFF)으로 돌리면 다시 들어와야 한다.
+{
+  const roster = ['Aria', 'Asuka: WILLE', 'Crust', 'Delta: Ninja Thief', 'Emilia', 'Epinel', 'Folkwang', 'Ludmilla', 'Maiden: Ice Rose', 'Mary',
+    'Mast: Romantic Maid', 'Maxwell: Ordinary Mechanic', 'Mint', 'Moran', 'Naga', 'Power', 'Rem', 'Rosanna', 'Rupee: Winter Shopper', 'Snow Crane',
+    'Snow White: Innocent Days', 'Tove', 'Trony', 'Velvet', 'Volume'].map((n) => byTitle.get(n));
+  if (roster.some((c) => !c)) problems.push('[시즌 실사용 등급] 시험용 이름이 DB에 없다');
+  else {
+    const hasTove = (r) => (r.team?.members || []).some((m) => m.title === 'Tove');
+    const now = engine.pickSiteTeam(roster, 'bossing', { bossElement: 'Electronic' });
+    globalThis.__NIKKE_SEASON_USAGE_OFF = true;
+    const old = engine.pickSiteTeam(roster, 'bossing', { bossElement: 'Electronic' });
+    globalThis.__NIKKE_SEASON_USAGE_OFF = false;
+    if (!hasTove(old)) problems.push('[시즌 실사용 등급] 옛 전체 등급에서도 토브가 안 나온다 — 시험 로스터가 더는 이 경우를 재현하지 못한다');
+    if (hasTove(now)) problems.push('[시즌 실사용 등급] 전격 시즌 상위 50인 0.3%인 토브가 전격 보스 추천에 들어갔다 — 시즌 등급을 안 쓰고 있다');
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);
