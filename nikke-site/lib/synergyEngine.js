@@ -901,9 +901,20 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     // 즉 같은 조합의 점수가 입력 순서에 따라 달라지고 있었다 — 화면 점수·게시판 배지·
     // 추천 선택이 전부 그 위에 있었다. 에러가 없어 안 보였다(원칙 3의 "조용한 누락").
     // `scripts/testEngineDeterminism.mjs`가 이걸 지킨다.
+    // 2026-10-01 — **쿨타임이 같으면 "버스트에 기대는 값"이 큰 쪽을 남긴다.**
+    // 버스트를 못 쓰는 사람은 이제 0점이 아니라 티어 × 버스트 없이 남는 딜 비율(wastedTierScore)이다. 그러면 누구를 쉬게 하느냐가
+    // 팀 값을 바꾼다 — 에이다(SSS·0.23)·네온:VE(S·0.38)·앨리스(S·0.88)에서 티어 순(동률이면 id)으로 네온을 쉬게 하면
+    // 앨리스보다 4점 가까이 손해다. 그래서 동점 구간에서 `티어 × (1 − 비율)`(버스트로만 나오는 몫)이 큰 쪽을 앞에 둔다.
+    // 쿨타임 순서가 먼저라 순환 계산(needed)은 그대로다. 비율이 없으면 0으로 봐서 옛 순서(티어)와 같다.
+    const burstShare = (m) => {
+      if (globalThis.__NIKKE_OFF_BURST_OFF) return tierScore(m, mode, treasureIds);
+      const sh = offBurstShare.byTitle?.[m.title];
+      return tierScore(m, mode, treasureIds) * (1 - (sh ?? 0));
+    };
     const sorted = [...withCd].sort(
       (a, b) => (Number(!!b.m.burstReentry) - Number(!!a.m.burstReentry))
-        || (a.cd - b.cd) || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
+        || (a.cd - b.cd) || (burstShare(b.m) - burstShare(a.m))
+        || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
         || String(a.m.id).localeCompare(String(b.m.id))
     );
     let needed;

@@ -94,7 +94,8 @@ if (has('sheet')) {
     md.push(`## ${c.id} — ${c.mode}${ctx ? ' · ' + ctx : ''} · ${c.roster.length}명`, '');
     for (const t of c.roster) {
       const x = byT.get(t); const u = ms.usageTier?.[SLICE[c.mode]]?.[t];
-      const sh = c.mode === 'bossing' ? ` · 속성시즌 ${Math.round(share[c.boss]?.get(t) || 0)}%` : '';
+      const top = ms.soloRaidSeasonUsage?.[c.boss]?.usage?.[t];
+      const sh = c.mode === 'bossing' ? ` · 속성시즌 등록팀 ${Math.round(share[c.boss]?.get(t) || 0)}% · 시즌 상위50 ${top ?? '-'}` : '';
       // 2026-10-01: 애장품·오버스펙 표시. 애장품 캐릭터의 채용률은 **애장품 보유 기준**이라(헬름 아레나 S99.9 등) 로스터만 보고
       // 판정하면 과대평가하게 된다(유저 결정: 애장품은 없다고 본다). 오버스펙은 필그림 타워에 들어간다(네온:VE 판정 실수).
       const flags = [TREASURE_IDS.has(x.id) ? '⚠️애장품 캐릭터(채용률은 보유 기준일 수 있음)' : '', x.overspec ? '오버스펙(필그림 타워 가능)' : ''].filter(Boolean).join(' · ');

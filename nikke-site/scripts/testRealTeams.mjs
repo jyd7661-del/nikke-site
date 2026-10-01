@@ -314,6 +314,23 @@ for (const t of teams) {
   }
 }
 
+// --- 쿨타임이 같으면 버스트에 기대는 값이 큰 쪽이 버스트한다 (2026-10-01) ---
+// 에이다(SSS·버스트 밖 비율 0.23)·네온:VE(S·0.38)·앨리스(S·0.88)가 같은 B3·같은 쿨이면 쉬는 자리(표시 순서 마지막 B3)는 앨리스여야 한다.
+// 옛 순서(티어 → id)면 네온이 쉬었다 — 팀 값이 4점 가까이 깎였다(블라인드 판정 씨앗 11 B06).
+{
+  const team = ['Dorothy', 'Prika', 'Ada Wong', 'Neon: Vision Eye', 'Alice'].map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[쉬는 B3 선택] 시험용 이름이 DB에 없다');
+  else {
+    const last = (o) => o.filter((m) => String(m.burst) === '3').slice(-1)[0]?.title;
+    const now = last(engine.orderMembersForDisplay(team, 'tribe_tower', new Set()));
+    globalThis.__NIKKE_OFF_BURST_OFF = true;
+    const old = last(engine.orderMembersForDisplay(team, 'tribe_tower', new Set()));
+    globalThis.__NIKKE_OFF_BURST_OFF = false;
+    if (old === 'Alice') problems.push('[쉬는 B3 선택] 옛 순서에서도 앨리스가 쉰다 — 시험이 더는 그 경우를 재현하지 못한다');
+    if (now !== 'Alice') problems.push(`[쉬는 B3 선택] 버스트에 덜 기대는 앨리스가 아니라 ${now}가 쉰다`);
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);
