@@ -38,6 +38,14 @@ node scripts/refreshSkillsJaFromGame8.mjs --write    # game8 503이면 받아 �
 git diff --stat   # 새 캐릭터 외에 바뀐 캐릭터가 누구인지 확인(나무위키 자리표시자가 채워져 덤으로 들어오는 경우가 있다)
 ```
 
+### 3-1. 버스트 쿨감 · 애장품 (2026-10-01)
+
+- 스킬에 `Cooldown of Burst Skill ▼`가 있으면 `data/burstCdr.json`에 원문 그대로(kind·cond·quote). 없으면 `checkData` BURST_CDR_MISSING
+- **애장품이 나온 캐릭터**(새 캐릭터든 기존 캐릭터의 애장품 추가든): `node scripts/refreshTreasureSkills.mjs <id>` → `data/treasureSkills.json`.
+  애장품은 **기존 스킬 칸에 효과가 붙거나 강화되는** 구조다 — `treasureEffects.json` 설명은 이 원문과 기본 스킬을 **칸별로 대조해** 단계마다
+  "새로 붙음 / 강화(기본 → 애장)"만 3개 국어로 쓴다. 기억·요약으로 쓰지 말 것(2026-08 손 요약에서 목단 −20초 누락·츠바이 정반대). 설명 숫자가 원문에 없으면 TREASURE_NUM_UNSOURCED
+- 애장품 원문에 쿨감·재진입처럼 **엔진이 쓰는 메커니즘**이 있으면 엔진 데이터(`burstCdr.json` `cond: "treasure"` 등)에도 넣는다
+
 ## 4. 검사 · 빌드
 
 ```bash
