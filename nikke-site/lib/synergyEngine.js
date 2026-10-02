@@ -2542,8 +2542,9 @@ export function fallbackBeatsFlexArchetype(exact, fallbackTop, mode, opts = {}) 
 // opts.noFlexCompete: 2026-09-30 이전 경로 재현(비교용).
 export function pickSiteTeam(roster, mode, opts = {}) {
   let real = null; let exact = null;
-  try { real = findRealUsageTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ }
-  try { exact = findExactTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ }
+  // opts.skipRealUsage / skipArchetype: 시험용(scripts/benchRankerRecall.mjs) — 랭커 기록을 그대로 꺼내는 경로를 끄고 엔진이 스스로 찾는지 잰다. 화면에서는 쓰지 않는다.
+  if (!opts.skipRealUsage) { try { real = findRealUsageTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ } }
+  if (!opts.skipArchetype) { try { exact = findExactTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ } }
   const realWins = real && (real.totalScore ?? -1) >= (exact?.totalScore ?? -1);
   if (!realWins && exact?.flexSlotCount && !opts.noFlexCompete) {
     const top = recommendTeams(roster, mode, { ...opts, topN: 1 }).teams?.[0];
