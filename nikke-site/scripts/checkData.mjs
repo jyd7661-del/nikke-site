@@ -924,6 +924,18 @@ if (uiCharacters) {
         err('UI_SSR_MARKED', `${u.name}은(는) SSR인데 characters.js 항목에 rarity '${u.rarity}'가 적혀 있음`);
       }
     });
+
+  // 2026-10-01: 애장품이 티어를 바꾸는 캐릭터(investmentNotes treasureTiers)는 화면에 💎 버튼이 있어야 한다.
+  // 엔진은 💎 없는 그 니케를 애장품 없이 계산하고(실사용 가산·랭커 조합 제외), 결과 화면은 "💎를 눌러 달라"고 안내한다 —
+  // 버튼(characters.js hasTreasure)이 없으면 사용자는 애장품을 가져도 표시할 방법이 없다.
+  const uiByCdb = new Map(uiCharacters.map((u) => [u.cdbId || u.id, u]));
+  notes.characters.filter((n) => n.treasureTiers).forEach((n) => {
+    const c = cdb.find((x) => x.title === n.name);
+    const u = c && uiByCdb.get(c.id);
+    if (u && !u.hasTreasure) {
+      err('UI_TREASURE_BUTTON_MISSING', `${n.name}: 애장품 티어(treasureTiers)가 있는데 characters.js에 hasTreasure가 없다 — 💎 버튼이 안 떠 애장품을 표시할 수 없다`);
+    }
+  });
 }
 
 // 이름에 위키 템플릿 잔재나 제어문자가 들어간 항목 — "{{hover" 유형 재발 방지.

@@ -301,7 +301,8 @@ function wastedTierScore(character, mode, treasureIds) {
 // treasureTiers > 기본 티어)인데 사용자가 애장품이 없으면, 그 숫자는 사용자의 그 캐릭터를 말하지 않는다 —
 // 목단(보스전 기본 D · 애장품 SS)이 전격 시즌 상위 50인 100%로 S 가산을 받고 있었다. 기준은 데이터의 두 티어 비교뿐, 새 숫자 없음.
 // `TREASURE_USAGE_GATE_OFF` 스위치(테스트용)로 옛 동작을 재현한다.
-function treasureRaisesTierUnowned(character, mode, treasureIds) {
+// 화면(ResultPanel)도 같은 함수를 쓴다 — "💎를 표시하면 추천이 달라지는 니케" 안내(2026-10-01). 엔진 관문과 기준이 어긋날 수 없게.
+export function treasureRaisesTierUnowned(character, mode, treasureIds) {
   if (treasureIds?.has(character?.id)) return false;
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const boosted = INVESTMENT_NOTE_BY_NAME.get(character?.title)?.treasureTiers?.[key];

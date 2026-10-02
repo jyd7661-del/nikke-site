@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { memberName } from '@/lib/characterNames';
+import { treasureRaisesTierUnowned } from '@/lib/synergyEngine';
 
 // 모듈 스코프라 t()를 부를 수 없다. 문구 대신 **키**만 들고 있다가 화면에서 t()로 푼다.
 // (여기에 한국어를 그대로 적으면 언어를 바꿔도 이 목록만 한국어로 남는다 — A단계에서 겪은 그 문제)
@@ -362,8 +363,13 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
 }
 
 function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   if (!roster) return null;
+  // 2026-10-01: 💎(애장품)를 안 누른 니케 중 **애장품이 이 모드 티어를 올리는** 니케. 엔진은 그 니케를 애장품 없이 계산하고
+  // (실사용 가산 제외), 그 니케가 든 랭커 조합도 내지 않는다 — 가졌는데 표시만 안 한 사용자는 이유를 모른 채 약한 추천을 받는다.
+  // 기준은 엔진 관문과 같은 함수(treasureRaisesTierUnowned)라 어긋나지 않는다. 새 판정이 아니라 사실 안내다.
+  const treasureSet = new Set(roster.treasureIds || []);
+  const uncheckedTreasure = (roster.resolved || []).filter((c) => treasureRaisesTierUnowned(c, aiMode, treasureSet));
   const isStale = dataFreshness && (dataFreshness.characterDatabase.stale || dataFreshness.synergyNotes.stale);
 
   return (
@@ -458,6 +464,12 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
       {isStale && (
         <p className="text-xs text-amber-400 mb-3">
           {t('data_stale_note')(dataFreshness.characterDatabase.asOf, dataFreshness.synergyNotes.asOf)}
+        </p>
+      )}
+
+      {uncheckedTreasure.length > 0 && (
+        <p className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3">
+          {t('treasure_unchecked_note')(uncheckedTreasure.map((c) => memberName(c, lang)).join(', '))}
         </p>
       )}
 

@@ -123,6 +123,7 @@ const dict = {
     tower_pilgrim_note: '필그림 타워에는 오버스펙 니케(라피: 레드 후드, 미하라: 본딩 체인, 아니스: 스타, 네온: 비전 아이)도 출전할 수 있습니다.',
     data_stale_note: (a, b) => `⚠ 근거 자료 일부가 오래되었을 수 있습니다 (캐릭터 데이터 기준일 ${a}, 시너지 자료 기준일 ${b}). 새 패치나 신규 캐릭터 정보와 다를 수 있어요.`,
     unresolved_note: (n) => `보유 캐릭터 중 ${n}명은 아직 상세 데이터(스킬/티어)가 없어 이 분석에서 제외되었습니다.`,
+    treasure_unchecked_note: (names) => `💎 애장품이 있다면 선택 목록에서 💎를 눌러 주세요 — ${names}. 표시가 없으면 애장품 없이 계산해서, 이 모드 티어가 낮게 잡히고 그 니케가 든 랭커 조합도 추천하지 않습니다.`,
     // ── 도감 상세 스킬 목록 (2026-08-15) ─────────────────────────
     dex_skills_heading: '스킬',
     dex_cooldown: '쿨타임',
@@ -386,6 +387,7 @@ const dict = {
     tower_pilgrim_note: 'Overspec Nikkes (Rapi: Red Hood, Mihara: Bonding Chain, Anis: Sparkling Summer, Neon: Blue Ocean) can also enter the Pilgrim tower.',
     data_stale_note: (a, b) => `⚠ Some source data may be outdated (character data as of ${a}, synergy data as of ${b}). It may differ from the latest patch or new characters.`,
     unresolved_note: (n) => `${n} of your Nikkes have no detailed data (skills/tiers) yet and were excluded from this analysis.`,
+    treasure_unchecked_note: (names) => `💎 If you own their Treasure, tap 💎 in the picker — ${names}. Without the mark we score them without the Treasure, so their tier in this mode is lower and ranker teams that include them are not recommended.`,
     dex_skills_heading: 'Skills',
     dex_cooldown: 'Cooldown',
     dex_seconds: 's',
@@ -647,6 +649,7 @@ const dict = {
     tower_pilgrim_note: 'ピルグリムタワーにはオーバースペックのニケ（ラピ：レッドフード、ミハラ：ボンディングチェーン、アニス：スパークリングサマー、ネオン：ブルーオーシャン）も出撃できます。',
     data_stale_note: (a, b) => `⚠ 根拠資料の一部が古い可能性があります（キャラデータ基準日 ${a}、シナジー資料基準日 ${b}）。新パッチや新キャラの情報と異なる場合があります。`,
     unresolved_note: (n) => `所持ニケのうち${n}人はまだ詳細データ（スキル／ティア）がないため、この分析から除外されました。`,
+    treasure_unchecked_note: (names) => `💎 宝ものを持っているなら、選択リストで💎を押してください — ${names}。表示がないと宝ものなしで計算するため、このモードのティアが低く見積もられ、そのニケが入ったランカー編成も推薦しません。`,
     dex_skills_heading: 'スキル',
     dex_cooldown: 'クールタイム',
     dex_seconds: '秒',
