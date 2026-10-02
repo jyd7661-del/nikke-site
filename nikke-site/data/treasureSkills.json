@@ -1,0 +1,516 @@
+{
+  "_doc": "애장품 스킬 원문(prydwen \"<id>-treasure\" 페이지, A등급). scripts/refreshTreasureSkills.mjs가 만든다 — 손으로 고치지 말 것. phase = 그 칸이 바뀌는 애장품 단계. treasureEffects.json의 설명은 이 원문과 characterDatabase 기본 스킬의 차이로 쓴다(checkData TREASURE_NUM_UNSOURCED).",
+  "fetchedOn": "2026-10-02",
+  "characters": [
+    {
+      "characterId": "bay",
+      "source": "https://www.prydwen.gg/nikke/characters/bay-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "You Can Do It",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when using Burst Skill, only if self is alive. Affects all allies. Proportionally shares damage taken continuously. DEF ▲ 10.13% of the caster's DEF continuously. ■ Activates when performing Full Charge attacks. Affects all allies (except self). Recovers 4% of caster's final Max HP."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Cheer Up Together",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when using Burst Skill, only if self is alive. Affects self's cover. Proportionally shares damage taken continuously. ■ Activates when Full Burst ends. Affects self. Continuously recovers Cover's HP equal to 2.88% of caster's final Max HP every 1 sec for 5 sec. ■ Activates when entering Burst Stage 1 and self's cover has been destroyed. Affects self. Recovers 20% of caster's final Max HP."
+        },
+        {
+          "slot": "Burst",
+          "name": "First Winner",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects self if self's cover has been destroyed. Rebuild Cover with 20% HP. Activates once per battle. ■ Affects self. Max HP of Cover ▲ 18% of caster's Max HP for 20 sec. ■ Affects all allies. Damage Taken ▼ 8.87% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "centi",
+      "source": "https://www.prydwen.gg/nikke/characters/centi-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Maintain Fortification",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when landing a Full Charge attack. Affects self. Cooldown of Skill 2 ▼ 9.16%. ■ Activates when Skill 2 activates. Affects all Iron Code allies. Elemental Advantage Attack Damage ▲ 5.69%. Stacks up to 10 times and lasts for 10 sec. ■ Activates at the start of battle. Affects all allies. Stockpile: Stores excess incoming healing, up to 7% of the skill user's max HP. Lasts for 5 sec. Restores HP equal to 7% of the skill user's final max HP. ■ Activates when an ally's HP (including this unit's) drops to 100% or below while this unit is in the Stockpile state. Affects all allies. Restores HP equal to 7% of the skill user's final max HP."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Field Discussion",
+          "type": "Active",
+          "cooldown": 9,
+          "phase": 1,
+          "text": "Affects self. Creates a shared shield with 7% of the skill user's final max HP that protects all allies from damage. Lasts for 5 sec. ■ Affects all allies. ATK ▲ 4.6% of the skill user's ATK. Stacks up to 10 times and lasts for 8 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Start Construction",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 3,
+          "text": "Affects the 5 enemy unit(s) with the lowest remaining HP. Deals 145.46% of final ATK as damage. DEF ▼ 14.54% for 10 sec. ■ Affects all allies. Restores HP equal to 30.2% of the skill user's final max HP."
+        }
+      ]
+    },
+    {
+      "characterId": "drake",
+      "source": "https://www.prydwen.gg/nikke/characters/drake-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Overcharge",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when entering Full Burst. Affects all allies. Hit Rate ▲ 20.09% for 10 sec. ATK ▲ 11.85% for 10 sec. ■ Activates when entering Full Burst. Affects all allies with a Shotgun. ATK ▲ 63.88% for 10 sec. Max Ammunition Capacity ▲ 50.14% for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Thunder Bolt",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates after 10 normal attack(s). Affects 3 enemy unit(s) with the lowest remaining HP. Deals 98.55% of final ATK as damage. ■ Activates after 5 normal attack(s). Affects 1 enemy unit(s) with the lowest remaining HP. Deals 201.6% of final ATK as damage."
+        },
+        {
+          "slot": "Burst",
+          "name": "Drake Special",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects enemies within attack range. Deals 3009.6% of final ATK as damage. ■ Affects self. Max Ammunition Capacity ▲ 72.18% for 10 sec. Attack Damage ▲ 31.68% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "exia",
+      "source": "https://www.prydwen.gg/nikke/characters/exia-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Invasion",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates when the last bullet hits the target. Affects the target if the caster is in Collect Hacking Code. ATK ▼ 13.77% for 5 sec. DEF ▼ 13.77% for 5 sec. ■ Activates at the start of Full Burst Time. Affects self. Fixed to increase Reloading Speed by 95% for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Secret Code",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when landing an attack with Full Charge. Affects self. Collect Hacking Code: ATK ▲ 28%, stacks up to 5 time(s) for 5 sec. ■ When the last round of ammunition hits, affects all Electric Code ally units if the caster is in Collect Hacking Code. ATK ▲ 5.8% of caster's ATK, stacks up to 5 time(s) for 15 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Partisan Protocol",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 2,
+          "text": "Affects 10 enemy unit(s) with the highest DEF. Deals 122.32% of final ATK as damage. DEF ▼ 2.71% for 5 sec. ■ Activates when Collect Hacking Code is fully stacked. Affects the same target(s). Deals 122.32% of final ATK as additional damage. Damage Taken ▲ 18.04% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "flora",
+      "source": "https://www.prydwen.gg/nikke/characters/flora-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Petunia",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates at the start of battle as long as this unit is alive. Affects self and both adjacent allies. Peace of Mind: Restores HP equal to 1% of the skill user's final Max HP every second continuously. Incoming Healing ▲ 4% continuously. Stacks up to 5 times. ■ Activates after landing 100 normal attacks. Affects all Electric Code allies. Increases the stack count of stackable buffs by 1. ■ Activates when entering Burst Stage 2. Affects all allies in the Peace of Mind state. Max HP ▲ 15.01% of the skill user's max HP (without restoring HP) for 2 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Iris",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when the HP of an adjacent ally drops to 90% or below while the ally is still alive. Affects all allies. Creates a shield with 10.22% of the skill user's final max HP that lasts for 10 sec. ■ Activates when either adjacent ally reaches max HP. Affects all allies. True Damage ▲ 30.97% for 10 sec. ■ Activates when a shield is placed in front of this unit. Affects all allies in the Peace of Mind state. ATK ▲ 45.12% of the skill user's ATK for 10 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Secret Garden",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects all allies. Restores HP equal to 10.45% of the skill user's final max HP. True Damage ▲ 42.39% for 10 sec. ATK ▲ 85.86% of the skill user's ATK for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "helm",
+      "source": "https://www.prydwen.gg/nikke/characters/helm-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Frontline Command",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when the last bullet hits the target. Affects all allies. Critical Rate of normal attacks ▲ 14.64% for 5 sec. ■ Activates when attacking with Full Charge. Affects all allies. Recovers 0.59% of caster's final Max HP. Fills Burst Gauge by 14.31%."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Fire Away",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Affects all allies. Damage to Interruption Parts ▲ 3.08% continuously. ■ Activates when entering Full Burst. Affects all allies. Attack Damage ▲ 27.87% for 10 sec. ■ Activates when hitting a target with Full Charge. Affects the target. Deals 178.98% of final ATK as additional damage."
+        },
+        {
+          "slot": "Burst",
+          "name": "Aegis Cannon",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects the enemy with the highest ATK. Deals 8236.8% of final ATK as damage. ■ Affects all allies. Recovers 54.45% of attack damage as HP for 10 sec. ■ Affects self. Charge Damage Multiplier ▲ 158.4% for 10 round(s)."
+        }
+      ]
+    },
+    {
+      "characterId": "julia",
+      "source": "https://www.prydwen.gg/nikke/characters/julia-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Decrescendo",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 2,
+          "text": "Affects self. Critical Rate ▲ 26.04% for 10 sec. ATK ▲ 20% for 10 sec. Normal Attack Critical Rate ▲ 36.16% for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Crescendo",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates after landing 6 critical hit(s) with normal attacks. Affects self. Crescendo: Critical Damage ▲ 24.79%, stacks up to 5 time(s) and lasts for 15 sec. ■ Activates after landing 8 critical hit(s) with normal attacks. Affects the target(s). Marcato: Deals 88% of final ATK as additional damage. ■ Activates if Marcato lands as a crit attack. Affects the same target. Deals 100% of final ATK as additional damage. ■ Activates when entering battle. Affects self. Forcefully uses Skill 1."
+        },
+        {
+          "slot": "Burst",
+          "name": "Climax",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects random enemies. Deals 544.5% of final ATK as damage. Attacks sequentially for 5 time(s). ■ Activates when Crescendo is fully stacked. Affects the same target. Deals 544.5% of final ATK as additional damage."
+        }
+      ]
+    },
+    {
+      "characterId": "laplace",
+      "source": "https://www.prydwen.gg/nikke/characters/laplace-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Hero Vision",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates when attacking with Full Charge. Affects self. Hero Vision: Explosion Range up 3.57%, stacks up to 5 time(s) and lasts for 15 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Hero Bomber",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when hitting a target with Full Charge. Affects the target. Deals 132.45% of final ATK as additional damage. ■ Activates when hitting the target's Parts. Affects the target's body. Deals 14.78% of final ATK as additional damage."
+        },
+        {
+          "slot": "Burst",
+          "name": "Laplace Buster",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 2,
+          "text": "Affects Self. Change the weapon in use: Initial Damage: 1455.72% of final ATK Damage Over Time: 22.2% of final ATK Lasts for 10 sec. Additional Effect 1: Pierce. Additional Effect 2: Normal damage is applied as true damage when Hero Vision is fully stacked. Attention: Unable to take cover when using Burst Skill. ■ Affects the same enemy unit(s) when \"Hero Vision\" is fully stacked. Deals 11.9% of final ATK as true damage."
+        }
+      ]
+    },
+    {
+      "characterId": "miranda",
+      "source": "https://www.prydwen.gg/nikke/characters/miranda-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Health Up!",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates after landing 30 normal attack(s). Affects all allies. Hit Rate ▲ 5.44% for 5 sec. ■ Activates after landing 30 normal attack(s). Affects all allies with a Submachine Gun. Hit Rate ▲ 3.79% for 5 sec. ■ Activates after landing 30 normal attack(s). Affects self. ATK ▲ 50.06% for 5 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Wake Up!",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when entering Full Burst. Affects all allies. Critical Damage ▲ 32.99% for 10 sec. ■ Activates when entering Full Burst. Affects self. Critical Rate ▲ 30.1% for 10 sec. Attack Damage ▲ 23.7% for 10 sec. ■ Activates when entering Full Burst. Affects 1 ally unit(s) with the highest ATK (except caster; including the caster if there are not enough allies). Critical Rate ▲ 85.42% for 1 round(s)."
+        },
+        {
+          "slot": "Burst",
+          "name": "Powering Up!",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 1,
+          "text": "Affects 2 ally unit(s) with the highest ATK (except caster; including the caster if there are not enough allies). ATK ▲ 40.4% for 10 sec. Critical Damage ▲ 56.23% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "moran",
+      "source": "https://www.prydwen.gg/nikke/characters/moran-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Bring It On!",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates at the start of battle. Affects self. DEF ▲ 3.51% continuously for every 1% of HP lost. ■ Activates when landing 5 normal attack(s) while weapon is charged. Affects the target. Deals 47.18% of final ATK as additional damage. ■ Activates when Raptures appear. Affects self. Fervor: Cooldown of Burst Skill ▼ 20 sec continuously."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Leave It To Me!",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when firing the final bullet. Affects the 3 enemy unit(s) with the highest final ATK. Taunts for 4 sec. ■ Activates when HP falls below 20%. Affects self. Effect changes according to the number of activation times. Perseverance: Effect of each phase does not stack. Once: Max HP ▲ 91% for 3 sec. Activates once per battle. Twice: Max HP ▲ 69.84% for 3 sec. Activates once per battle. Three Times: Max HP ▲ 51.09% for 3 sec. Activates once per battle. ■ Activates when entering Full Burst while in Fervor status. Affects all allies. Cooldown of Burst Skill ▼ 7.48 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Fair and Square",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects self. Changes the weapon in use: Damage: 14.7% of final ATK Duration: 10 sec Additional Effect: Recovers 36.14% of attack damage as HP for 10 sec. Attract: Taunts all enemies for 10 sec. Unlimited ammunition for 10 sec. ■ Affects all allies. Damage Taken ▼ 35.14% for 10 sec. DEF ▲ 14.85% of caster's DEF for 10 sec. ATK ▲ 42.57% of caster's ATK for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "phantom",
+      "source": "https://www.prydwen.gg/nikke/characters/phantom-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Thief's Calling Card",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when landing a normal attack on a Rapture that is not in the Calling Card state. Affects the target. Calling Card: DEF ▼ 32.19% for 5 sec. ■ Activates when landing a normal attack on a Rapture that is not in the Calling Card state. Affects self. Thief's Dagger: Hit Rate ▲ 25.75%. Stacks up to 3 times and lasts for 5 sec. ■ Activates after landing 30 normal attacks on the stage target. Affects self. Thief's Dagger: Hit Rate ▲ 25.75%. Stacks up to 3 times and lasts for 5 sec. ■ Activates when landing a normal attack on a target that is in the Calling Card state. Affects self. Attack Damage ▲ 75.17% for 1 round(s)."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Thief's Vision",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when Thief's Dagger is at max stacks. Affects targets in the Calling Card state. Deals 84.33% of final ATK as additional damage. Removes Calling Card. ■ Activates when Thief's Dagger is at max stacks. Affects self. Distributed Damage ▲ 12.86% continuously. Stacks up to 3 times. Stacks are removed when using Burst Skill. ■ Activates when Thief's Dagger is at max stacks. Removes stacks and affects all enemies. Deals 250% of final ATK as Distributed Damage. ■ Activates after landing 10 normal attacks. Affects self. ATK ▲ 85.12% for 5 sec. Distributed Damage ▲ 31.92% for 10 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Secret Trick: Rampage of Thieves",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects all enemies. Deals 1457.28% of final ATK as distributed damage. ■ Affects the enemy if the enemy is a Fire Code stage target. Damage Taken ▲ 18% for 30 sec. ■ Affects self. Max Ammunition Capacity ▲ 50% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "privaty",
+      "source": "https://www.prydwen.gg/nikke/characters/privaty-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Ex Magazine",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates when entering Full Burst. Affects all allies. ATK ▲ 23.61% for 10 sec. Reloading Speed ▲ 51.16% for 10 sec. Max Ammunition Capacity ▼ 50.66% for 10 sec. Attack Damage ▲ 20.16% for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "LD Assault",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when the last bullet hits the target. Affects the target. Damage Taken ▲ 10.01% for 10 sec. Deals 256.17% of final ATK as additional damage. ■ Activates when the last bullet hits a target in Designated Target status. Affects the target. Deals 1687% of final ATK as additional damage."
+        },
+        {
+          "slot": "Burst",
+          "name": "AK Missile",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 1,
+          "text": "Affects self. Superior Elemental Code Attack Damage ▲ 130% for 10 sec. ■ Affects all enemies. Deals 1407.64% of final ATK as Burst Skill damage. Stuns for 3 sec. Designated Target: ATK ▼ 5.02% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "rosanna",
+      "source": "https://www.prydwen.gg/nikke/characters/rosanna-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "On the Lam",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates after landing 120 normal attacks. Affects self. Concealment: Prevents being targeted by single-target attacks for 10 sec. This effect is removed upon taking a direct hit. Critical Rate ▲ 19.34% for 3 sec. ■ Activates after performing 10 normal attacks. Affects the 2 enemy unit(s) with the highest final ATK. Removes 5 buff(s). Activates once per battle. ■ Activates when the stage target appears. Affects self. Elemental Advantage Attack Damage ▲ 20% continuously."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Capo dei Capi",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates at the start of battle. Affects self. Concealment: Prevents being targeted by single-target attacks for 5 sec. This effect is removed upon taking a direct hit. ■ Activates when a Nikke is incapacitated. Affects self. Frenzy: ATK ▲ 22.61%. Stacks up to 10 times and lasts for 30 sec. Fills Burst Gauge by 36.54%. ■ Activates when a Nikke is incapacitated. Prioritizes Attacker-type enemies. Affects 1 unit(s). Deals 400% of final ATK as damage. ■ Activates after landing 500 normal attacks on the stage target. Affects self. Frenzy: ATK ▲ 22.61%. Stacks up to 10 times and lasts for 30 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Vendetta",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 2,
+          "text": "Prioritizes Attacker-type enemies. Affects 2 enemy unit(s). Assalto: Deals 1310.4% of final ATK as damage. ■ Activates when the skill user is in the Concealment state. Affects the target(s) hit by Assalto. Deals 561.6% of final ATK as additional damage. ■ Activates if the target that was hit by Assalto is a Water Code stage target. Affects the target. Damage Taken ▲ 29% for 30 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "sugar",
+      "source": "https://www.prydwen.gg/nikke/characters/sugar-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Black Typhoon",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when cover is attacked. Affects self. Critical Damage ▲ 16.39% for 10 sec. Reload Speed ▲ 12.12% for 10 sec. Restores Cover HP an amount equal to 1.5% of the skill user's final Max HP. ■ Activates if this unit's cover is still intact. Affects self. Attack Damage ▲ 19.98% continuously. ■ Activates at the start of battle. Affects self. Converts damage to Elemental Advantage damage against Fire Code enemies. This effect is continuous and cannot be removed."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Noire Sensor",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when entering Full Burst. Affects self. Critical Rate ▲ 13.02% for 10 sec. ATK ▲ 25.01% for 10 sec. ■ Activates when entering Full Burst. Affects all allies with shotguns. Max Ammunition Capacity ▲ 83.8% for 15 sec. ■ Activates when entering Full Burst. Affects all Water Code and Iron Code allies with shotguns. Elemental Advantage Attack Damage ▲ 40.02% for 15 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Trouble Shooter",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects self. Attack Speed ▲ 66% for 15 sec. Hit Rate ▲ 33% for 15 sec. ATK ▲ 20% for 15 sec . ■ Affects all Water Code and Iron Code allies with shotguns. Elemental Advantage Attack Damage ▲ 60.01% for 15 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "tove",
+      "source": "https://www.prydwen.gg/nikke/characters/tove-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Emergency-Crafted Bullets",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when performing 10 normal attack(s). Affects self. Emergency-Crafted Bullets: Reload 5.31% of the magazine. ■ Activates during Emergency-Crafted Bullets. Affects all allies. Temporary Modification: Max Ammunition Capacity ▲ 2, stacks up to 3 time(s) and lasts for 5 sec. Critical Damage ▲ 5.24% for 5 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Modification Successful",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Only activates when Temporary Modification is fully stacked. Affects all allies. Critical Rate ▲ 10.08% continuously. ■ Only activates when Temporary Modification is fully stacked. Affects all shotgun-wielding allies. Attack Speed ▲ 42.24% continuously."
+        },
+        {
+          "slot": "Burst",
+          "name": "Miracle of Makeshifts",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 2,
+          "text": "Affects all allies. Miracle of Makeshifts: ATK ▲ 2.32% of caster's ATK. Mirrors the stack count of Temporary Modification for 15 sec. ■ Affects all shotgun-wielding allies. Miracle of Makeshifts: ATK ▲ 24.21% of caster's ATK. Mirrors the stack count of Temporary Modification for 15 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "viper",
+      "source": "https://www.prydwen.gg/nikke/characters/viper-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Snake Sense",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when the target appears. Affects all allies. ATK ▲ 25.98% for 10 sec. Hit Rate ▲ 11.13% for 10 sec. ■ Only activates when attacking in Vamp status. Affects self. Sustained Damage ▲ 4.4%, stacks up to 10 time(s) and lasts for 10 sec. Hit Rate ▲ 1.84%, stacks up to 10 time(s) and lasts for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Snake Scale",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Affects self. Hit Rate ▲ 21.96% continuously. ■ Activates when entering Full Burst. Affects self. Vamp: Prevents self from being the target of single-target attacks continuously. Loses effect when the caster takes damage. Invulnerable for 1 sec. ■ Activates when using Burst Skill. Affects all allies. Re-enter Burst Skill Stage 2."
+        },
+        {
+          "slot": "Burst",
+          "name": "Snake Bite",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 2,
+          "text": "Affects 1 designated enemy unit(s). Deals 1029.6% of final ATK as damage. ■ Activates when the designated enemy unit(s) include the stage target. Affects the same enemy unit(s). DEF ▼ 19.83% for 10 sec. Deals 105.3% of final ATK as sustained damage every 1 sec for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "zwei",
+      "source": "https://www.prydwen.gg/nikke/characters/zwei-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Pierce Equation",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates when entering Full Burst. Affects all allies. Pierce Damage ▲ 20.13% for 1 round(s). Pierce Damage ▲ 10.06% for 10 sec. ■ Activates when performing a normal attack during Full Burst. Affects all allies. Pierce Damage ▲ 24.99%, stacks up to 3 Time(s), for 1 round(s)."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Frame Analysis",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates after 5 normal attack(s). Affects all allies. Recovers Cover's HP by 7.52%. ■ Activates when entering Full Burst. Affects all allies. Critical Rate ▲ 18.63% for 10 sec. ■ Activates when performing a normal attack while in Pierce Attacks 101 status. Affects all allies. Critical Rate ▲ 15% for 5 sec, stacks up to 3 time(s)."
+        },
+        {
+          "slot": "Burst",
+          "name": "Overcharge Formula",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 1,
+          "text": "Affects self. Changes the weapon in use: Charge Time: 1.2 sec Damage: 50.69% of final ATK Full Charge Damage: 300% of damage Max Ammunition Capacity: 1 Additional Effect: Pierce ■ Affects all allies. Pierce Attacks 101: Pierce Damage ▲ 25.03% for 10 sec."
+        }
+      ]
+    }
+  ]
+}

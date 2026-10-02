@@ -1282,12 +1282,53 @@ if (glossarySrc) {
       err('BURST_CDR_MISSING', `${c.title}: 스킬에 버스트 쿨감(▼)이 있는데 burstCdr.json에 없다 — 주기 계산에서 쿨감 0으로 빠진다`);
     }
   }
+  // 애장품 스킬 원문(data/treasureSkills.json)도 본다 — 2026-10-01 목단 애장품 "Fervor: 본인 버스트 ▼20초"를 이 검사가 못 잡았다(기본 스킬만 봤다).
+  const ts = read('treasureSkills.json');
+  const idToTitle = new Map(cdb.map((c) => [c.id, c.title]));
+  for (const c of ts.characters || []) {
+    const title = idToTitle.get(c.characterId);
+    if ((c.skills || []).some((s) => /cooldown of burst skill\s*▼/i.test(s.text || ''))
+      && !(cdr.characters || []).some((e) => e.title === title && e.cond === 'treasure')) {
+      err('BURST_CDR_MISSING', `${title}: 애장품 스킬에 버스트 쿨감(▼)이 있는데 burstCdr.json에 cond "treasure" 항목이 없다`);
+    }
+  }
   for (const e of cdr.characters || []) {
     if (!TITLES.has(e.title)) err('BURST_CDR_UNKNOWN', `burstCdr.json: DB에 없는 이름 '${e.title}'`);
     if (!['ally', 'self', 'selfFlat', 'unmodeled', 'none'].includes(e.kind)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: kind '${e.kind}'`);
     if (['ally', 'self', 'selfFlat'].includes(e.kind) && !(e.sec > 0)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: sec가 없다`);
     if (e.kind === 'unmodeled' && !['ally', 'self'].includes(e.target)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: unmodeled는 target(ally/self)이 있어야 한다`);
     if (e.cond && !['noOtherB1', 'asStage1', 'sameSquad', 'treasure'].includes(e.cond)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: 엔진이 모르는 cond '${e.cond}' — 조건이 조용히 거짓이 된다`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// 애장품 설명 (data/treasureEffects.json) ↔ 애장품 스킬 원문 (data/treasureSkills.json), 2026-10-01
+// 설명을 원문 없이 손으로 요약했다가 틀렸다 — 목단 버스트 쿨감 −20초 누락, 츠바이 "크리티컬 부족"(실제로는 크리티컬 확률을 올려 준다).
+// 유저: "애장품은 기존 스킬에 효과가 하나 더 붙거나 스킬이 강화되는 방식" → 설명은 원문과 기본 스킬의 차이로 쓴다.
+//   TREASURE_SKILLS_MISSING  설명은 있는데 원문이 없다(scripts/refreshTreasureSkills.mjs <id>)
+//   TREASURE_NUM_UNSOURCED   설명(3개 국어) 속 숫자가 애장품 원문·기본 스킬·쿨타임 어디에도 없다 — 지어낸 숫자이거나 잘못 옮긴 것
+// ---------------------------------------------------------------------------
+{
+  const te = read('treasureEffects.json');
+  const ts = read('treasureSkills.json');
+  const tsById = new Map((ts.characters || []).map((c) => [c.characterId, c]));
+  const dbById = new Map(cdb.map((c) => [c.id, c]));
+  const nums = (x) => new Set((String(x).match(/\d+(?:\.\d+)?/g) || []).map((n) => String(Number(n))));
+  for (const e of te.characters || []) {
+    const raw = tsById.get(e.characterId);
+    if (!raw) { err('TREASURE_SKILLS_MISSING', `${e.characterId}: treasureEffects 설명은 있는데 treasureSkills.json 원문이 없다 — node scripts/refreshTreasureSkills.mjs ${e.characterId}`); continue; }
+    const base = dbById.get(e.characterId);
+    const allowed = new Set([
+      ...nums((raw.skills || []).map((s) => `${s.text} ${s.cooldown ?? ''}`).join(' ')),
+      ...nums((base?.skills || []).map((s) => `${s.desc || ''} ${s.cd ?? ''}`).join(' ')),
+    ]);
+    for (const [field, label] of [['treasureEffect', 'ko'], ['treasureEffect_en', 'en'], ['treasureEffect_ja', 'ja']]) {
+      // 단계·칸 이름의 숫자는 원문 수치가 아니다
+      const txt = String(e[field] || '')
+        .replace(/\d단계|Phase \d|フェーズ\d|\d스킬|Skill \d|スキル\d/g, ' ');
+      const bad = [...nums(txt)].filter((n) => !allowed.has(n));
+      if (bad.length) err('TREASURE_NUM_UNSOURCED', `${e.characterId} ${label}: 원문에 없는 숫자 ${bad.join(', ')} — treasureSkills.json·기본 스킬과 대조`);
+    }
   }
 }
 
