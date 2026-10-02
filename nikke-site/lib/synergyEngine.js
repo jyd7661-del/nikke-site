@@ -35,6 +35,7 @@ import characterInvestmentNotes from '../data/characterInvestmentNotes.json';
 import pvpBurstGen from '../data/pvpBurstGen.json';
 import offBurstShare from '../data/offBurstShare.json';
 import burstCdr from '../data/burstCdr.json';
+import treasureSkills from '../data/treasureSkills.json';
 import { engineText } from './engineReasons';
 import { teamBurstSpeed } from './pvpBurst';
 import { deadBuffCount, emptyBuffMembers } from './buffTargets';
@@ -62,6 +63,22 @@ const rName = (m, lang) => (lang === 'ja' ? (m?.name_ja || m?.title || '') : (m?
 
 // characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
 const TREASURE_EFFECT_BY_ID = new Map(treasureEffects.characters.map((t) => [t.characterId, t]));
+
+// 애장품 원문(data/treasureSkills.json, prydwen)에 버스트 재진입("Re-enter Burst Skill Stage N")이 있는 캐릭터 → 그 단계. (2026-10-01)
+// 애장품 바이퍼 2스킬(3단계): "Activates when using Burst Skill. Affects all allies. Re-enter Burst Skill Stage 2." — 기본 스킬엔 없다.
+// 목록을 손으로 두지 않고 원문에서 읽는다(손으로 옮긴 애장품 설명이 틀렸던 2026-10-01 교훈).
+const TREASURE_REENTRY_STAGE_BY_ID = new Map(
+  (treasureSkills.characters || []).flatMap((c) => {
+    const m = (c.skills || []).map((s) => s.text || '').join(' ').match(/Re-enters? Burst (?:Skill )?Stage (\d)/i);
+    return m ? [[c.characterId, m[1]]] : [];
+  }),
+);
+// 재진입이 켜져 있는가 — 기본 스킬(burstReentry) 또는 애장품을 가진 경우의 애장품 원문.
+function hasBurstReentry(m, treasureIds) {
+  if (m?.burstReentry) return true;
+  if (globalThis.__NIKKE_TREASURE_REENTRY_OFF) return false;
+  return !!treasureIds?.has(m?.id) && TREASURE_REENTRY_STAGE_BY_ID.get(m.id) === String(m.burst);
+}
 
 // title(=characterDatabase.json title) → 캐릭터 투자 프로필(애장품 필요 여부/저점·고점) 조회용 맵.
 // (enjoy-game-life.tistory.com 개별 캐릭터 공략을 조사해 재구성한 참고 자료. data/characterInvestmentNotes.json 참고)
@@ -1022,7 +1039,7 @@ function findWastedBurstMembers(members, mode, treasureIds) {
       return note?.totemRole && totemConditionMet(note, m, members) ? 1 : 0;
     };
     const sorted = [...withCd].sort(
-      (a, b) => (Number(!!b.m.burstReentry) - Number(!!a.m.burstReentry))
+      (a, b) => (Number(hasBurstReentry(b.m, treasureIds)) - Number(hasBurstReentry(a.m, treasureIds)))
         || (a.cd - b.cd) || (restsAsTotem(a.m) - restsAsTotem(b.m)) || (burstShare(b.m) - burstShare(a.m))
         || (tierScore(b.m, mode, treasureIds) - tierScore(a.m, mode, treasureIds))
         || String(a.m.id).localeCompare(String(b.m.id))
@@ -1046,7 +1063,7 @@ function findWastedBurstMembers(members, mode, treasureIds) {
     //
     // 근거는 스킬 원문(A등급)이고 `burstReentryNote`에 인용을 남긴다. 임의 가중치가
     // 아니라 "자리가 하나 더 생긴다"는 사실을 그대로 옮긴 것이다.
-    if (group.some((m) => m.burstReentry)) needed = Math.min(needed + 1, sorted.length);
+    if (group.some((m) => hasBurstReentry(m, treasureIds))) needed = Math.min(needed + 1, sorted.length);
     sorted.forEach(({ m }, i) => burstOrder.set(m.id, i));
     // 2026-09-26 — **PvP·솔로레이드에서는 낭비 판정을 하지 않는다**(표시 순번은 위에서 그대로 매긴다).
     //
@@ -1696,7 +1713,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 2026-09-01: 재진입 배치 안내. 화면 순서만 고쳐 놓으면 사용자는 왜 그 순서인지 모른다.
   // 니케는 왼쪽에서 오른쪽으로 버스트를 쓰고, 재진입은 같은 단계 니케가 **바로 뒤에** 있어야
   // 발동한다(앞에 두면 발동하지 않는다 — 인벤 news=303197). 그래서 순서를 근거로 밝힌다.
-  members.filter((m) => m.burstReentry).forEach((m) => {
+  members.filter((m) => hasBurstReentry(m, treasureIds)).forEach((m) => {
     const partners = members
       .filter((o) => o.id !== m.id && String(o.burst) === String(m.burst) && !o.burstFlex)
       .map((o) => rName(o, lang));

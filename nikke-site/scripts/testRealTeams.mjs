@@ -411,6 +411,26 @@ for (const t of teams) {
   }
 }
 
+// --- 애장품 재진입 (2026-10-01) — 애장품 바이퍼 2스킬(3단계) "Re-enter Burst Skill Stage 2"는 treasureSkills.json 원문에서 읽는다 ---
+// 캠페인 · 리타/바이퍼/크라운/앨리스/맥스웰: 애장품이 없으면 같은 20초 2버스트 둘 중 하나가 낭비(1), 있으면 재진입으로 둘 다 쓴다(0)이고 바이퍼가 앞.
+// 스위치(TREASURE_REENTRY_OFF)를 켜면 애장품이 있어도 낭비 1로 돌아가야 한다.
+{
+  const team = ['Liter', 'Viper', 'Crown', 'Alice', 'Maxwell'].map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[애장품 재진입] 시험용 이름이 DB에 없다');
+  else {
+    const owned = new Set([byTitle.get('Viper').id]);
+    const now = engine.scoreTeam(team, 'campaign', { treasureIds: owned });
+    const none = engine.scoreTeam(team, 'campaign', {});
+    globalThis.__NIKKE_TREASURE_REENTRY_OFF = true;
+    const off = engine.scoreTeam(team, 'campaign', { treasureIds: owned });
+    globalThis.__NIKKE_TREASURE_REENTRY_OFF = false;
+    if (!(none.wastedCount > 0) || !(off.wastedCount > 0)) problems.push('[애장품 재진입] 애장품 없이(또는 스위치로) 낭비가 안 나온다 — 시험이 더는 이 경우를 재현하지 못한다');
+    if (now.wastedCount > 0) problems.push('[애장품 재진입] 애장품 바이퍼(2버스트 재진입)가 있는데 같은 단계 동료를 낭비로 깎았다 — 애장품 원문의 재진입을 못 읽는다');
+    const order = engine.orderMembersForDisplay(team, 'campaign', owned).map((m) => m.title);
+    if (order.indexOf('Viper') > order.indexOf('Crown')) problems.push('[애장품 재진입] 재진입 바이퍼가 같은 단계 동료보다 뒤에 놓였다 — 재진입은 앞에 있어야 발동한다');
+  }
+}
+
 // --- D3(버프가 비는 멤버 0점)는 지원형 시전자만 · 받는 쪽은 공격형 또는 3버스트 (2026-10-01, lib/buffTargets.js) ---
 // 레이드 등록 팀에서 메이든 : 아이스 로즈가 든 11팀 전부 다른 전격 공격형 없이 아니스:SS·목단과 쓴다. 그 구성을 0점으로 만들면 안 된다.
 {
