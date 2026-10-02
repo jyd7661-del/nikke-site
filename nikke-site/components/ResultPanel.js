@@ -63,6 +63,7 @@ const BOSS_ELEMENT_OPTIONS = [
 // 등록된 조합이며, 둘은 대등하다. 어느 쪽 근거인지 밝혀야 사용자가 판단할 수 있다.
 const SOURCE_LABEL_KEY = {
   'enikk-real-usage': 'source_enikk',
+  'enikk-real-usage-partial': 'source_enikk_partial',
   'prydwen-exact-match': 'source_prydwen',
   'skill-synergy-fallback': 'source_fallback',
   // 2026-09-15: 폴백 구간을 AI가 직접 구성한 경우(AI_TEAMS_MODE=on). 엔진 폴백 답은 alternative로 같이 온다.

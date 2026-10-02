@@ -431,6 +431,32 @@ for (const t of teams) {
   }
 }
 
+// --- 실사용 4/5 부분 일치 (2026-10-03) — 랭커 조합에서 한 명만 없으면 나머지 4명을 살리고 같은 버스트 단계에서 채운다 ---
+// 등록 캠페인 1위 조합에서 3버스트 한 명을 빼고 다른 3버스트(조합에 없는)를 넣은 로스터: 실사용 경로가 그 4명 + 넣은 사람을 내야 하고(partial 표시),
+// 스위치(REAL_PARTIAL_OFF)를 켜면 실사용 경로가 아무것도 안 내야 한다(옛 동작 — 5명이 다 있어야 했다).
+{
+  const reg = (ms.campaignCompositions?.list || [])[0];
+  const team = (reg?.members || []).map((n) => byTitle.get(n));
+  const out = team.find((c) => c && String(c.burst) === '3' && !c.burstFlex);
+  const sub = out && cdb.find((c) => String(c.burst) === '3' && !c.burstFlex && String(c.rarity).toUpperCase() === 'SSR' && !reg.members.includes(c.title)
+    && engine.scoreTeam([...team.filter((x) => x !== out), c], 'campaign', {}).valid);
+  if (!reg || team.some((c) => !c) || !out || !sub) problems.push('[실사용 부분 일치] 시험 로스터를 못 만들었다 — 등록 캠페인 1위 조합 구성이 바뀌었는지 볼 것');
+  else {
+    const roster = [...team.filter((x) => x !== out), sub];
+    const now = engine.findRealUsageTeamMatch(roster, 'campaign', {});
+    globalThis.__NIKKE_REAL_PARTIAL_OFF = true;
+    const old = engine.findRealUsageTeamMatch(roster, 'campaign', {});
+    globalThis.__NIKKE_REAL_PARTIAL_OFF = false;
+    if (old) problems.push('[실사용 부분 일치] 스위치를 켜도 4/5 로스터에서 실사용 조합이 나온다 — 시험이 더는 부분 일치를 재지 못한다');
+    const got = new Set((now?.members || []).map((m) => m.title));
+    const core = reg.members.filter((t) => t !== out.title);
+    if (!now || !now.partial || !core.every((t) => got.has(t)) || !got.has(sub.title)) {
+      problems.push(`[실사용 부분 일치] 랭커 조합 4명(${core.join('/')}) + ${sub.title}를 못 냈다 — ${now ? [...got].join('/') : '결과 없음'}`);
+    }
+    if (now && !(now.reasons || []).some((r) => String(r).startsWith('[실사용 핵심 + 한 자리]'))) problems.push('[실사용 부분 일치] 한 자리를 바꿨다는 문장(real_partial)이 없다');
+  }
+}
+
 // --- D3(버프가 비는 멤버 0점)는 지원형 시전자만 · 받는 쪽은 공격형 또는 3버스트 (2026-10-01, lib/buffTargets.js) ---
 // 레이드 등록 팀에서 메이든 : 아이스 로즈가 든 11팀 전부 다른 전격 공격형 없이 아니스:SS·목단과 쓴다. 그 구성을 0점으로 만들면 안 된다.
 {

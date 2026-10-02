@@ -2137,9 +2137,13 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
           : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
 
   let best = null;
+  // 시험용(scripts/benchRankerRecall.mjs): 정답 팀 자신을 실사용 표에서 뺀다(leave-one-out). 화면에서는 쓰지 않는다.
+  const skipSig = opts.excludeRealSig || null;
+  const sigOf = (titles) => [...titles].sort().join('|');
   entries.forEach(({ e, rank }) => {
     const titles = e.members || [];
     if (titles.length !== 5 || new Set(titles).size !== 5) return;
+    if (skipSig && sigOf(titles) === skipSig) return;
     if (!titles.every((t) => ownedTitles.has(t))) return;
     if (titles.some((t) => excludeTitles.has(t))) return;
 
@@ -2153,6 +2157,45 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     if (!scored.valid) return; // 버스트 I/II/III 조건을 못 갖추면 제외
     if (!best || rank > best.rank) best = { entry: e, rank, members, scored };
   });
+
+  // 2026-10-03: **랭커 조합 4명이 로스터에 있으면 빠진 한 자리를 같은 버스트 단계에서 채운다**(4/5 부분 일치).
+  // prydwen 아키타입의 빈 자리(flexSlots)와 같은 생각을 enikk 실사용 조합에 적용 — 랭커 PvP 핵심(나유타·헬름·라플라스·레드후드)을
+  // 엔진이 티어 합만 보고 깨는 걸 랭커 복원 시험(scripts/benchRankerRecall.mjs, 정답 팀 자신은 뺀 leave-one-out)이 드러냈다.
+  // 채운 멤버는 그 단계 후보 중 팀이 유효하고 티어 합이 가장 큰 쪽. 고른 기록은 완전일치와 같은 순위(사용 수·승률·parses).
+  // 랭커 복원(전체 214팀): 완전 복원 30.4 → 42.5% · 4명+ 78.5 → 89.3%(레이드 25 → 42 · PvP 27 → 36 · 캠페인 35 → 45 · 타워 42 → 46).
+  // 폴백과 티어 합으로 겨루게 하면 30.4%로 그대로였다(티어 합은 늘 폴백이 이긴다) — 그래서 겨루지 않는다(opts.realPartialCompete는 비교용).
+  // 스위치 `__NIKKE_REAL_PARTIAL_OFF`(비교용)로 끈다.
+  if (!best && !globalThis.__NIKKE_REAL_PARTIAL_OFF && opts.realPartial !== false) {
+    entries.forEach(({ e, rank }) => {
+      const titles = e.members || [];
+      if (titles.length !== 5 || new Set(titles).size !== 5) return;
+      if (skipSig && sigOf(titles) === skipSig) return;
+      if (titles.some((t) => excludeTitles.has(t))) return;
+      const missing = titles.filter((t) => !ownedTitles.has(t));
+      if (missing.length !== 1) return;
+      const gone = characterDatabase.find((c) => c.title === missing[0]);
+      if (!gone) return;
+      const stages = gone.burstFlex ? flexStagesOf(gone) : [String(gone.burst)];
+      const base = titles.filter((t) => t !== missing[0]).map((t) => byTitle.get(t));
+      // 완전일치와 같은 애장품 관문 — 남는 4명 중 애장품이 필요한 멤버를 애장품 없이 가졌으면 그 기록은 이 사용자의 조합이 아니다
+      // (처음엔 빠뜨려서 testRealTeams "실사용 애장품"이 걸렸다: 애장품 없는 목단·헬름 조합을 4/5로 가져왔다).
+      if (!globalThis.__NIKKE_REAL_TEAM_TREASURE_OFF && base.some((m) => treasureRaisesTierUnowned(m, mode, treasureIds))) return;
+      let pick = null;
+      ownedCharacters.forEach((c) => {
+        if (titles.includes(c.title) || excludeTitles.has(c.title)) return;
+        const cs = c.burstFlex ? flexStagesOf(c) : [String(c.burst)];
+        if (!cs.some((x) => stages.includes(x))) return;
+        // 채우는 멤버는 랭커 기록이 아니라 우리 선택이라 애장품 관문을 걸지 않는다 — 애장품이 없으면 기본 티어로 채점될 뿐이다.
+        const members = [...base, c];
+        const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
+        if (!scored.valid) return;
+        if (!pick || scored.tierTotal > pick.scored.tierTotal ||
+          (scored.tierTotal === pick.scored.tierTotal && String(c.id) < String(pick.filler.id))) pick = { members, scored, filler: c };
+      });
+      if (!pick) return;
+      if (!best || rank > best.rank) best = { entry: e, rank, members: pick.members, scored: pick.scored, partial: { missing: gone, filler: pick.filler } };
+    });
+  }
 
   if (!best) return null;
 
@@ -2216,7 +2259,12 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     })),
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
     totalScore: best.scored.tierTotal,
-    reasons: [headline, ...best.scored.reasons, ...treasureReasons],
+    // 4/5 일치 + 한 자리 채움이면 { missing, filler }(title) — 화면 꼬리표를 "실사용 핵심 + 한 자리"로 바꾼다
+    partial: best.partial ? { missing: best.partial.missing.title, filler: best.partial.filler.title } : null,
+    reasons: [
+      ...(best.partial ? [R.real_partial({ missing: rName(best.partial.missing, lang), filler: rName(best.partial.filler, lang) })] : []),
+      headline, ...best.scored.reasons, ...treasureReasons,
+    ],
     // ⚠️ scoreTeam 결과를 필드를 골라 옮기는 함수다 — 새 필드는 여기 따로 적어야 한다(2026-09-13).
     bossDefenseNote: best.scored.bossDefenseNote || null,
     pvpBurstNote: best.scored.pvpBurstNote || null,
@@ -2545,6 +2593,11 @@ export function pickSiteTeam(roster, mode, opts = {}) {
   // opts.skipRealUsage / skipArchetype: 시험용(scripts/benchRankerRecall.mjs) — 랭커 기록을 그대로 꺼내는 경로를 끄고 엔진이 스스로 찾는지 잰다. 화면에서는 쓰지 않는다.
   if (!opts.skipRealUsage) { try { real = findRealUsageTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ } }
   if (!opts.skipArchetype) { try { exact = findExactTeamMatch(roster, mode, opts); } catch { /* 경로 없음 */ } }
+  // 비교용(opts.realPartialCompete): 4/5 실사용을 빈 자리 아키타입처럼 폴백과 겨루게 한다 — 랭커 복원이 오르지 않아 기본은 끔.
+  if (real?.partial && opts.realPartialCompete) {
+    const top = recommendTeams(roster, mode, { ...opts, topN: 1 }).teams?.[0];
+    if (fallbackBeatsFlexArchetype({ ...real, flexSlotCount: 1 }, top, mode, opts)) real = null;
+  }
   const realWins = real && (real.totalScore ?? -1) >= (exact?.totalScore ?? -1);
   if (!realWins && exact?.flexSlotCount && !opts.noFlexCompete) {
     const top = recommendTeams(roster, mode, { ...opts, topN: 1 }).teams?.[0];

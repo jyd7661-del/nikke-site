@@ -7,6 +7,8 @@
  *   node scripts/benchRankerRecall.mjs --extra=25      # 섞는 니케 수(기본 15)
  *   node scripts/benchRankerRecall.mjs --off=SWITCH    # 엔진 스위치(globalThis.__NIKKE_<이름>)를 켜고 잰다 — 이전 엔진 대비
  *   node scripts/benchRankerRecall.mjs --verbose       # 못 맞힌 건마다 무엇을 골랐는지
+ *   node scripts/benchRankerRecall.mjs --loo           # 실사용 경로를 켜되 정답 팀 자신만 뺀다(leave-one-out)
+ *   node scripts/benchRankerRecall.mjs --loo --off=REAL_PARTIAL_OFF   # 실사용 4/5 부분 일치를 끈 판(2026-10-03 이전)
  *
  * ■ 왜 필요한가
  *   judgmentBench(엔진 = 내 조합)는 99%까지 올랐지만 정답지가 **내 판정**이다. 2026-10-01 하루에만 내 판정이 여러 번 틀렸다
@@ -31,6 +33,10 @@ const has = (n) => process.argv.includes('--' + n);
 const EXTRA = Number(arg('extra', 15));
 const NO_ARCH = has('no-arch');
 const VERBOSE = has('verbose');
+// --loo: 실사용 경로를 켜되 정답 팀 자신만 뺀다(leave-one-out). 실사용 4/5 부분 일치(2026-10-03 기본 켬)는 여기서만 의미가 있다.
+//   --off=REAL_PARTIAL_OFF로 부분 일치를 끈 판과 비교한다. --partial-compete는 부분 일치를 폴백과 겨루게 하는 비교용(기본 엔진은 안 겨룸).
+const LOO = has('loo');
+const COMPETE = has('partial-compete');
 for (const sw of (arg('off', '') || '').split(',').filter(Boolean)) globalThis['__NIKKE_' + sw] = true;
 
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
@@ -67,7 +73,9 @@ for (const c of cases) {
   const roster = [...team];
   while (roster.length < 5 + EXTRA && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
   const treasureIds = new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
-  const r = E.pickSiteTeam(roster, c.mode, { ...c.ctx, treasureIds, skipRealUsage: true, skipArchetype: NO_ARCH });
+  const r = E.pickSiteTeam(roster, c.mode, LOO
+    ? { ...c.ctx, treasureIds, skipArchetype: NO_ARCH, excludeRealSig: [...c.members].sort().join('|'), realPartialCompete: COMPETE }
+    : { ...c.ctx, treasureIds, skipRealUsage: true, skipArchetype: NO_ARCH });
   const got = (r.team?.members || []).map((m) => m.title);
   const ov = got.filter((t) => c.members.includes(t)).length;
   const s = (stats[c.mode] ||= { n: 0, exact: 0, four: 0, ov: 0, paths: {} });
@@ -77,7 +85,7 @@ for (const c of cases) {
 }
 
 const NAME = { campaign: '캠페인', tribe_tower: '타워', bossing: '솔로레이드', pvp: 'PvP' };
-console.log(`랭커 조합 복원 — 섞은 니케 ${EXTRA}명 · 실사용 경로 끔${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}`);
+console.log(`랭커 조합 복원 — 섞은 니케 ${EXTRA}명 · ${LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}`);
 let T = { n: 0, exact: 0, four: 0, ov: 0 };
 for (const [m, s] of Object.entries(stats)) {
   console.log(`  ${NAME[m].padEnd(6)} ${String(s.n).padStart(3)}팀 · 완전 복원 ${(s.exact / s.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(s.four / s.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(s.ov / s.n).toFixed(2)} · 경로 ${JSON.stringify(s.paths)}`);

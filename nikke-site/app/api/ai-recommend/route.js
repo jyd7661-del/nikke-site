@@ -720,7 +720,8 @@ export async function POST(req) {
     }
 
     const candidates = flexLoser ? [] : [
-      realUsageMatch && { match: realUsageMatch, source: 'enikk-real-usage', rank: 0 },
+      // 2026-10-03: 4/5 일치 + 한 자리 채움은 꼬리표를 따로 — "실사용 검증"은 5명이 다 같은 기록일 때만이다
+      realUsageMatch && { match: realUsageMatch, source: realUsageMatch.partial ? 'enikk-real-usage-partial' : 'enikk-real-usage', rank: 0 },
       exactMatch && { match: exactMatch, source: 'prydwen-exact-match', rank: 1 },
     ].filter(Boolean);
 
@@ -887,7 +888,7 @@ export async function POST(req) {
         pvpBurstNote: chosen.pvpBurstNote || null,
       },
       aiReasoning,
-      // 'enikk-real-usage' | 'prydwen-exact-match' | 'skill-synergy-fallback' | 'ai-composed'(2026-09-15, AI_TEAMS_MODE=on)
+      // 'enikk-real-usage' | 'enikk-real-usage-partial'(2026-10-03, 4/5 + 한 자리) | 'prydwen-exact-match' | 'skill-synergy-fallback' | 'ai-composed'(2026-09-15, AI_TEAMS_MODE=on)
       model: matchSource,
       cached,
       // AI 조합 구성 경로가 응답 캐시에서 나왔는지(비용 0). 화면엔 안 그리고 관측용.
