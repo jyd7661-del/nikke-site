@@ -864,7 +864,7 @@ function burstCooldownSeconds(character) {
 // 반환 { sec, unknownCdr }: sec = 유연 멤버 배치 중 가장 빠른 주기(쿨타임을 모르는 멤버가 있으면 null),
 //   unknownCdr = 가장 느린 단계에 한 바퀴당 양을 원문만으로 못 정하는 쿨감이 닿는다(전 아군형: 루주·D:KW 등 / 본인형: 티아는 자기 단계만)
 //   — 그러면 느리다고 단정하지 않는다. 처음엔 팀에 있기만 하면 '모름'으로 봐서 티아가 있으면 혼자인 40초 마스트도 통과했다.
-// `__NIKKE_CYCLE_CDR_OFF`(비교용)면 쿨감을 빼고 잰다(첫 판).
+// `__NIKKE_CYCLE_CDR_OFF`(비교용)면 쿨감을 빼고 잰다(첫 판). `__NIKKE_TREASURE_CDR_OFF`면 애장품 쿨감(cond treasure)만 뺀다.
 const BURST_CDR_BY_TITLE = (() => {
   const m = new Map();
   for (const e of burstCdr.characters || []) m.set(e.title, [...(m.get(e.title) || []), e]);
@@ -879,7 +879,7 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
     const base = burstCooldownSeconds(m);
     if (!useCdr) return base;
     const flat = (BURST_CDR_BY_TITLE.get(m.title) || [])
-      .filter((e) => e.kind === 'selfFlat' && (e.cond !== 'treasure' || treasureIds?.has(m.id)))
+      .filter((e) => e.kind === 'selfFlat' && (e.cond !== 'treasure' || (!globalThis.__NIKKE_TREASURE_CDR_OFF && treasureIds?.has(m.id))))
       .reduce((acc, e) => acc + e.sec, 0);
     return Math.max(1, base - flat);
   };
@@ -893,7 +893,7 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
       if (e.cond === 'noOtherB1') return stageOf.get(m.id) === '1' && inStage1.length === 1;
       if (e.cond === 'asStage1') return stageOf.get(m.id) === '1';
       if (e.cond === 'sameSquad') return !!m.squad && members.some((o) => o.id !== m.id && o.squad === m.squad);
-      if (e.cond === 'treasure') return !!treasureIds?.has(m.id);
+      if (e.cond === 'treasure') return !globalThis.__NIKKE_TREASURE_CDR_OFF && !!treasureIds?.has(m.id);
       return false;
     };
     let allyX = 0;

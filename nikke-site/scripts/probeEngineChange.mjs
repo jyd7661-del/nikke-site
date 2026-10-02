@@ -83,12 +83,20 @@ if (SNAP) {
     }
   }
   const ssr = cdb.filter((c) => String(c.rarity).toUpperCase() === 'SSR');
+  const TREASURE_IDS = new Set(j('treasureEffects.json').characters.map((t) => t.characterId));
   const rnd = mulberry32(20260926);   // 씨앗 고정 — before/after가 같은 로스터를 본다
   for (const mode of MODES) for (const size of [15, 30, 50]) for (let i = 0; i < 20; i++) {
     const pool = [...ssr]; const roster = [];
     while (roster.length < size) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
     const boss = mode === 'bossing' ? BOSSES[i % 5] : null;
     out[`rnd-${mode}-${size}-${i}`] = { mode, boss, tower: null, roster: roster.map((c) => c.title), ...site(roster, mode, { bossElement: boss }) };
+    // 2026-10-01: **같은 로스터에 애장품을 가진 판**(로스터의 애장품 캐릭터 전원 보유). 그때까지 표본에 애장품이 하나도 없어
+    //   애장품 관련 변경(목단 쿨감 −20초, 바이퍼 재진입, 실사용 애장품 관문)을 이 도구로 잴 수 없었다. 씨앗 소비는 그대로라 기존 키는 안 바뀐다.
+    const owned = roster.filter((c) => TREASURE_IDS.has(c.id));
+    if (owned.length) {
+      out[`rnd-${mode}-${size}-${i}-T`] = { mode, boss, tower: null, roster: roster.map((c) => c.title), treasure: owned.map((c) => c.title),
+        ...site(roster, mode, { bossElement: boss, treasureIds: new Set(owned.map((c) => c.id)) }) };
+    }
   }
   fs.writeFileSync(snapPath(SNAP), JSON.stringify({ mode: MODE, at: new Date().toISOString(), answers: out }));
   console.log(`${Object.keys(out).length}건 → ${path.relative(ROOT, snapPath(SNAP))}`);
