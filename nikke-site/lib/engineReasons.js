@@ -203,9 +203,9 @@ const KO = {
     `보유 캐릭터 중 조건에 맞고 이 모드 티어가 가장 높은 ${join(filled)}로 채웠습니다. ` +
     `이 자리는 같은 조건을 만족하는 다른 캐릭터로 바꿔도 조합이 성립합니다.`,
 
-  real_partial: ({ missing, filler }) =>
+  real_partial: ({ missing, filler, record }) =>
     `[실사용 핵심 + 한 자리] 랭커가 실제로 쓴 조합에서 ${missing}만 없어, 같은 버스트 단계의 보유 캐릭터 중 티어가 가장 높은 ${filler}로 채웠습니다. ` +
-    `나머지 네 명은 랭커 기록 그대로입니다.`,
+    `나머지 네 명은 랭커 기록 그대로입니다. 다음 기록은 ${missing}가 들어간 원래 조합의 것이며, ${filler}를 넣은 이 5명 그대로의 기록은 아닙니다 — ${record}`,
 
   // --- 기업 타워 이름 ---
   tower_elysion: '엘리시온',
@@ -374,9 +374,9 @@ const EN = {
     `They were filled with ${join(filled)} — the highest-tier characters for this mode among the ones you own ` +
     `that meet each slot's condition. Any other character meeting the same condition also works here.`,
 
-  real_partial: ({ missing, filler }) =>
+  real_partial: ({ missing, filler, record }) =>
     `[Ranker core + one slot] You own every member of a team rankers actually used except ${missing}, so that slot was filled with ${filler} — ` +
-    `your highest-tier character of the same burst stage. The other four are exactly as in the ranker record.`,
+    `your highest-tier character of the same burst stage. The other four are exactly as in the ranker record. The following record belongs to the original team with ${missing}, not to these exact five with ${filler} — ${record}`,
 
   tower_elysion: 'Elysion',
   tower_missilis: 'Missilis',
@@ -540,9 +540,9 @@ const JA = {
     `所持キャラクターのうち条件に合い、このモードのティアが最も高い${join(filled)}で埋めました。` +
     `この枠は同じ条件を満たす他のキャラクターに変えても編成は成立します。`,
 
-  real_partial: ({ missing, filler }) =>
+  real_partial: ({ missing, filler, record }) =>
     `［実使用コア＋1枠］ランカーが実際に使った編成のうち${missing}だけがいないため、同じバースト段階の所持キャラクターで最もティアの高い${filler}で埋めました。` +
-    `残りの4人はランカーの記録どおりです。`,
+    `残りの4人はランカーの記録どおりです。次の記録は${missing}が入った元の編成のもので、${filler}を入れたこの5人そのものの記録ではありません — ${record}`,
 
   tower_elysion: 'エリシオン',
   tower_missilis: 'ミシリス',

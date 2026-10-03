@@ -2261,9 +2261,13 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     totalScore: best.scored.tierTotal,
     // 4/5 일치 + 한 자리 채움이면 { missing, filler }(title) — 화면 꼬리표를 "실사용 핵심 + 한 자리"로 바꾼다
     partial: best.partial ? { missing: best.partial.missing.title, filler: best.partial.filler.title } : null,
+    // 부분 일치면 사용 기록(headline)을 real_partial 문장 **안에** 넣는다 — 따로 두면 AI 설명이 "이 5명이 N회 검증됐다"로 합쳐 썼다
+    // (2026-10-03 운영 화면 확인: 스화헤비 자리를 헬름으로 바꾼 조합을 "36,582회 기록으로 검증된 최강 구성"이라 설명).
     reasons: [
-      ...(best.partial ? [R.real_partial({ missing: rName(best.partial.missing, lang), filler: rName(best.partial.filler, lang) })] : []),
-      headline, ...best.scored.reasons, ...treasureReasons,
+      best.partial
+        ? R.real_partial({ missing: rName(best.partial.missing, lang), filler: rName(best.partial.filler, lang), record: headline })
+        : headline,
+      ...best.scored.reasons, ...treasureReasons,
     ],
     // ⚠️ scoreTeam 결과를 필드를 골라 옮기는 함수다 — 새 필드는 여기 따로 적어야 한다(2026-09-13).
     bossDefenseNote: best.scored.bossDefenseNote || null,
