@@ -1345,6 +1345,25 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// PvP 버스트 수급 보충 (data/pvpBurstGenSupplement.json, 2026-10-03) — 시트에 없는 캐릭터를 prydwen 리뷰 수치로 채운다
+// 손으로 옮긴 값이라 ① 인용문에 기준 수치(1발 값/1RL 값)가 그대로 있는지 ② 단계 값이 시트 규칙으로 계산한 값과 같은지 본다.
+// ---------------------------------------------------------------------------
+{
+  const sp = read('pvpBurstGenSupplement.json');
+  for (const e of sp.characters || []) {
+    const w = `pvpBurstGenSupplement ${e.title}`;
+    if (!TITLES.has(e.title)) { err('PVPGEN_SUPP', `${w}: DB에 없는 이름`); continue; }
+    const base = e.perShot ?? e.perRL;
+    if (!(base > 0) || !String(e.quote || '').includes(String(base))) err('PVPGEN_SUPP', `${w}: 기준 수치(${base})가 인용문에 없다 — 원문에서 옮긴 값인지 확인`);
+    const mult = e.perShot != null ? [2, 2, 3, 3, 4] : [2, 2.5, 3, 3.5, 4];
+    const want = mult.map((m) => Math.round(base * m * 100) / 100);
+    if (!Array.isArray(e.gen) || e.gen.length !== 5 || e.gen.some((g, i) => Math.abs(g - want[i]) > 1e-6)) {
+      err('PVPGEN_SUPP', `${w}: 단계 값 [${e.gen}]이 시트 규칙(${e.perShot != null ? '1발 × 발 수' : '1RL × RL 수'}) 계산 [${want}]과 다르다`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 캐릭터별 채용률 등급 (metaStats.usageTier)
 //
 // 엔진이 REAL_TIER_SCORE로 점수를 매기는 값이라 등급 문자열이 어긋나면 **조용히 0점**이 된다

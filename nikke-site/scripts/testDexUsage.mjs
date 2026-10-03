@@ -48,7 +48,8 @@ const check = (name, cond, detail = '') => {
 // 원본에서 **독립적으로** 다시 센다. lib/usage.js를 참조하지 않는다.
 // ---------------------------------------------------------------------------
 const teams = []; // { kind, members }
-(solo.seasons || []).forEach((s) => (s.teams || []).forEach((t) => teams.push({ kind: 'raid', members: t.members })));
+// 지난 시즌(archive, 2026-10-03)은 도감이 세지 않는다(lib/usage.js) — 원본 쪽도 같은 범위로 센다
+(solo.seasons || []).filter((s) => !s.archive).forEach((s) => (s.teams || []).forEach((t) => teams.push({ kind: 'raid', members: t.members })));
 (tower.pools || []).forEach((p) => (p.teams || []).forEach((t) => teams.push({ kind: 'tower', members: t.members })));
 ((meta.campaignCompositions || {}).list || []).forEach((t) => teams.push({ kind: 'campaign', members: t.members }));
 ((meta.pvp || {}).topTeams || []).forEach((t) => teams.push({ kind: 'pvp', members: t.members }));

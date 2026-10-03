@@ -85,7 +85,8 @@ const SLUGS = [...guidesSrc.matchAll(/slug:\s*'([^']+)'/g)].map((m) => m[1]);
 
   // 조합을 원본에서 처음부터 다시 모은다.
   const teams = [];
-  (solo.seasons || []).forEach((s) => (s.teams || []).forEach((t) => teams.push({ k: 'raid', m: t.members || [] })));
+  // 지난 시즌(archive, 2026-10-03)은 가이드 통계(lib/guideStats.js)가 세지 않는다 — 원본 쪽도 같은 범위로
+  (solo.seasons || []).filter((s) => !s.archive).forEach((s) => (s.teams || []).forEach((t) => teams.push({ k: 'raid', m: t.members || [] })));
   (tower.pools || []).forEach((p) => (p.teams || []).forEach((t) => teams.push({ k: 'tower', m: t.members || [] })));
   ((meta.campaignCompositions || {}).list || []).forEach((t) => teams.push({ k: 'campaign', m: t.members || [] }));
   ((meta.pvp || {}).topTeams || []).forEach((t) => teams.push({ k: 'pvp', m: t.members || [] }));

@@ -1,0 +1,19 @@
+{
+  "_doc": "PvP 버스트 수급 시트(pvpBurstGen.json 출처, v1.4.22)에 없는 캐릭터의 값 — prydwen 캐릭터 리뷰 본문에 **수치가 적힌 경우만**. scripts/refreshPvpBurstGen.mjs가 시트에 그 캐릭터가 없을 때만 byTitle에 넣는다(시트에 생기면 시트가 이긴다). 단계 값은 원문 수치에 시트와 같은 규칙만 적용: RL = 1발 값 × 그 구간 발 수(2·2·3·3·4), 그 밖 = 1RL 값 × RL 수(2·2.5·3·3.5·4). 원문이 그 계산을 직접 보여 주지 않거나(발사 속도가 특수) 수치가 없으면 넣지 않는다 — 아니스: 스타(1초 1발이라 3RL 이후 해석 필요)·아크레인저 블랙(수치 없음).",
+  "addedOn": "2026-10-03",
+  "characters": [
+    {
+      "title": "Neon: Vision Eye", "gun": "SG", "perRL": 2.96,
+      "gen": [5.92, 7.4, 8.88, 10.36, 11.84],
+      "source": "https://www.prydwen.gg/nikke/characters/neon-vision-eye",
+      "quote": "NeonVE has a LOWER than standard burst gen rated at 0.74/shot, and with 500 range pre-Burst, this equals to 4 shots * 0.74 = 2.96 per RL or 5.92 @ 2 RL."
+    },
+    {
+      "title": "Laplace: Ultimate Hero", "gun": "RL", "perShot": 5.6,
+      "gen": [11.2, 11.2, 16.8, 16.8, 22.4],
+      "source": "https://www.prydwen.gg/nikke/characters/laplace-ultimate-hero",
+      "quote": "Her burst gen in RL mode is standard 5.6 (same as Noise, Rapunzel, etc), but her 2nd rocket onward benefits from built-in Charge Speed▲.",
+      "note": "시트의 노이즈와 같은 값(1발 5.6). 둘째 로켓부터의 차지 속도 이득은 시트 규칙(차지 속도 미반영)대로 뺐다"
+    }
+  ]
+}

@@ -54,10 +54,11 @@ const EXPECTED_REAL_INVALID = 0;
 // 역테스트: 캐릭터끼리 값을 뒤섞으면(--shuffle-burst-gen) 48.4% — 이 기준선에 걸린다.
 // 대조: 헬름·라플라스·드레이크를 애장품 보유로 보면(--treasure) 92.8%(헬름 2RL 값 5.6 → 39.82). enikk 등록 조합엔 애장품 여부가 없어 기본은 미보유.
 // 2026-10-03 시즌 39 갱신으로 값 있는 팀 12 → 10, 중앙 76.6 → 69.8(정답 팀이 바뀜 — 옛 데이터로는 같은 코드에서 76.6).
-const EXPECTED_PVP_BURST_MEDIAN = 70;
+// 2026-10-03 시트에 없는 신캐 2명(네온VE·라플라스UH)을 prydwen 리뷰 수치로 보충(data/pvpBurstGenSupplement.json) → 값 있는 팀 10 → 13, 중앙 69.8 → 74.5.
+const EXPECTED_PVP_BURST_MEDIAN = 74;
 // 값을 잴 수 있는 PvP 등록 팀 수 — 신캐(아니스: 스타·라플라스: 얼티밋 히어로·네온: 비전 아이)가 시트에 없어 22팀 중 10팀이 빠진다.
 // 줄면 이름 연결이나 데이터가 깨진 것이다. 늘면(시트가 신캐를 추가) 올린다.
-const EXPECTED_PVP_BURST_TEAMS = 10;   // 2026-10-03 시즌 39(19팀 중 9팀에 시트에 없는 캐릭터)
+const EXPECTED_PVP_BURST_TEAMS = 13;   // 2026-10-03 보충 뒤(19팀 중 6팀이 아직 모름 — 아니스: 스타·아크레인저 블랙 등)
 
 const arg = (n, d) => {
   const m = process.argv.find((a) => a.startsWith('--' + n + '='));
@@ -94,7 +95,8 @@ function burstValid(team) {
 
 // --- 등록된 실사용 조합 (수집 규칙은 docs/data.md) ---
 const teams = [];
-j('soloRaidTeams.json').seasons.forEach((s) => (s.teams || []).forEach((t) =>
+// 지난 시즌(archive, 2026-10-03 — 엔진의 완전일치 전용)은 정답 표본에서 뺀다 — 현재 메타 기준선을 유지한다.
+j('soloRaidTeams.json').seasons.filter((s) => !s.archive).forEach((s) => (s.teams || []).forEach((t) =>
   teams.push({ src: '솔로레이드', m: t.members, boss: s.weakness })));
 j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t) =>
   teams.push({ src: '타워', m: t.members, pool: p.pool, tower: p.tower ?? null })));

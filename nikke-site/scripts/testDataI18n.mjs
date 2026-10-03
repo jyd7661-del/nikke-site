@@ -79,7 +79,7 @@ const EXPECTED = {
   'squad(일본어 없음)': 1,       // 2026-08-26 game8에서 61종 수집. 남은 1종은 WILLE —
                                // game8이 'NERV'로 적는데 NERV는 우리 DB의 다른 부대라
                                // 채택하지 않고 영문으로 폴백시켰다(refreshSquadJaFromGame8 주석)
-  'raidBoss(번역 없음)': 5,      // 솔로레이드 보스명. 위와 같은 이유
+  'raidBoss(번역 없음)': 10,     // 솔로레이드 보스명. 위와 같은 이유. 2026-10-03 지난 시즌 5개(archive — 엔진 완전일치 전용) 추가로 5 → 10, 영문 그대로 나간다
 };
 
 const errors = [];

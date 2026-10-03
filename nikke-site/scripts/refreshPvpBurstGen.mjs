@@ -104,6 +104,18 @@ for (const [title, rows] of cand) {
   if (rest.length) variants[title] = rest.map(({ sheetName, cond, gen: g }) => ({ sheetName, condition: cond, gen: g }));
 }
 
+// 2026-10-03: 시트에 없는 캐릭터는 prydwen 리뷰 본문 수치(data/pvpBurstGenSupplement.json, 원문 인용 포함)로 채운다 — 시트에 생기면 시트가 이긴다.
+// 시즌 39 PvP 상위 19팀 중 9팀이 시트에 없는 캐릭터 때문에 속도 "모름"이었다.
+const SUPP = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'pvpBurstGenSupplement.json'), 'utf8'));
+const suppUsed = [];
+for (const e of SUPP.characters || []) {
+  if (byTitle[e.title]) { console.log(`  보충 안 씀(시트에 있음): ${e.title} — pvpBurstGenSupplement.json에서 지워도 된다`); continue; }
+  if (!cdb.some((c) => c.title === e.title)) { problems.push(`보충 ${e.title}: DB에 없는 이름`); continue; }
+  byTitle[e.title] = { gen: e.gen, gun: e.gun, supplement: e.source };
+  suppUsed.push(e.title);
+}
+if (suppUsed.length) console.log(`  보충(prydwen 리뷰 수치): ${suppUsed.join(', ')}`);
+
 for (const [n, col, v] of CONTROLS) {
   const got = byTitle[n]?.gen?.[col];
   if (got !== v) problems.push(`대조군 ${n}: 가이드 ${v} · 시트 ${got}`);

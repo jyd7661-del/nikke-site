@@ -42,8 +42,11 @@ for (const sw of (arg('off', '') || '').split(',').filter(Boolean)) globalThis['
 
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
 const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'nikke-rr-'));
+// --raid-teams=<파일>: 엔진이 읽는 soloRaidTeams.json을 바꿔 끼운다(실험 — 표를 넓히면 나아지는가). 운영 파일은 안 건드린다.
+const RAID_TEAMS = arg('raid-teams', null);
+const dataPath = (n) => (n === 'soloRaidTeams' && RAID_TEAMS ? path.resolve(ROOT, RAID_TEAMS) : path.join(ROOT, 'data', `${n}.json`));
 const fix = (src) => src
-  .replace(/from '\.\.\/data\/([\w.]+)\.json';/g, (_, n) => `from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'data', `${n}.json`)).href)} with { type: 'json' };`)
+  .replace(/from '\.\.\/data\/([\w.]+)\.json';/g, (_, n) => `from ${JSON.stringify(pathToFileURL(dataPath(n)).href)} with { type: 'json' };`)
   .replace(/from '\.\/(\w+)(?:\.js)?';/g, (_, n) => `from ${JSON.stringify(pathToFileURL(path.join(tmp, `${n}.mjs`)).href)};`);
 for (const f of ['synergyEngine', 'engineReasons', 'i18n', 'buffTargets', 'pvpBurst']) fs.writeFileSync(path.join(tmp, `${f}.mjs`), fix(fs.readFileSync(path.join(ROOT, 'lib', `${f}.js`), 'utf8')));
 const E = await import(pathToFileURL(path.join(tmp, 'synergyEngine.mjs')).href);
@@ -71,7 +74,7 @@ if (HOLDOUT) {
 if (!HOLDOUT) {
 (ms.campaignCompositions?.list || []).forEach((t, i) => cases.push({ key: `camp-${i}`, mode: 'campaign', members: t.members, ctx: {} }));
 j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t, i) => cases.push({ key: `tower-${p.tower || p.pool}-${i}`, mode: 'tribe_tower', members: t.members, ctx: { tower: p.tower || null } })));
-j('soloRaidTeams.json').seasons.forEach((s) => (s.teams || []).forEach((t, i) => cases.push({
+j('soloRaidTeams.json').seasons.filter((s) => !s.archive).forEach((s) => (s.teams || []).forEach((t, i) => cases.push({
   key: `raid-${s.raid}-${i}`, mode: 'bossing', members: t.members,
   ctx: { bossElement: E.WEAKNESS_TO_BOSS_ELEMENT[String(s.weakness || '').toLowerCase()] } })));
 (ms.pvp?.topTeams || []).forEach((t, i) => cases.push({ key: `pvp-${i}`, mode: 'pvp', members: t.members, ctx: {} }));
@@ -101,7 +104,7 @@ for (const c of cases) {
 }
 
 const NAME = { campaign: '캠페인', tribe_tower: '타워', bossing: '솔로레이드', pvp: 'PvP' };
-console.log(`랭커 조합 복원${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}`);
+console.log(`랭커 조합 복원${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}`);
 let T = { n: 0, exact: 0, four: 0, ov: 0 };
 for (const [m, s] of Object.entries(stats)) {
   console.log(`  ${NAME[m].padEnd(6)} ${String(s.n).padStart(3)}팀 · 완전 복원 ${(s.exact / s.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(s.four / s.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(s.ov / s.n).toFixed(2)} · 경로 ${JSON.stringify(s.paths)}`);

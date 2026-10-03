@@ -120,7 +120,7 @@ if (DIFF) {
   const reg = { pvp: (ms.pvp?.topTeams || []).map((t) => new Set(t.members)), campaign: (ms.campaignCompositions?.list || []).map((t) => new Set(t.members)), tribe_tower: [] };
   for (const p of j('towerCompositions.json').pools || []) for (const t of p.teams || []) reg.tribe_tower.push(new Set(t.members));
   const regBoss = {}; const share = {};
-  for (const s of j('soloRaidTeams.json').seasons || []) {
+  for (const s of (j('soloRaidTeams.json').seasons || []).filter((x) => !x.archive)) {   // 외부 지표 '속성팀'은 현재 시즌 기준
     const k = EL[String(s.weakness || '').toLowerCase()]; if (!k) continue;
     (regBoss[k] ||= []); const m = (share[k] ||= new Map()); const n = (s.teams || []).length || 1;
     for (const t of s.teams || []) { regBoss[k].push(new Set(t.members)); for (const x of new Set(t.members)) m.set(x, (m.get(x) || 0) + 100 / n); }

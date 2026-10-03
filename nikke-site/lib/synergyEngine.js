@@ -169,6 +169,8 @@ const BOSS_DEFENSE = (() => {
   (soloRaidTeams.seasons || []).forEach((se) => {
     const key = WEAKNESS_TO_BOSS_ELEMENT[String(se.weakness || '').toLowerCase()];
     if (!key) return;
+    // 지난 시즌(archive, 2026-10-03 추가)은 세지 않는다 — 속성마다 시즌이 둘이 되자 뒤에 오는 옛 시즌이 현재 시즌 값을 덮어썼다.
+    if (se.archive || out[key]) return;
     const teams = se.teams || [];
     // 이름을 못 찾는 멤버가 있는 팀은 **세지 않는다** — 방어형이 누락된 채 "없음"으로 셀 수 있다.
     const usable = teams.filter((t) => (t.members || []).every((n) => byTitle.has(n)));
@@ -2118,7 +2120,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     const seasons = (soloRaidTeams.seasons || []).filter(
       (s) => !bossElement || WEAKNESS_TO_BOSS_ELEMENT[normalizeElement(s.weakness)] === bossElement,
     );
-    return seasons.flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0 })));
+    return seasons.flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0, archive: !!s.archive })));
   };
   // 타워는 **그 타워의 풀만** 본다. 기업 타워는 애초에 로스터가 그 기업으로 걸러지므로
   // 다른 풀의 조합은 어차피 매칭되지 않지만, 근거 문장이 엉뚱한 타워를 가리키면 안 된다.
@@ -2166,7 +2168,10 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   // 폴백과 티어 합으로 겨루게 하면 30.4%로 그대로였다(티어 합은 늘 폴백이 이긴다) — 그래서 겨루지 않는다(opts.realPartialCompete는 비교용).
   // 스위치 `__NIKKE_REAL_PARTIAL_OFF`(비교용)로 끈다.
   if (!best && !globalThis.__NIKKE_REAL_PARTIAL_OFF && opts.realPartial !== false) {
-    entries.forEach(({ e, rank }) => {
+    entries.forEach(({ e, rank, archive }) => {
+      // 지난 시즌(archive) 기록은 5명이 다 맞을 때만 쓴다 — 부분 일치에 쓰면 현재 메타 폴백(시즌 사용률 90~100% 멤버)을
+      // 옛 메타 핵심(사용률 3~50%)으로 바꿨다(2026-10-03 표 넓히기 실험, 무작위 로스터 7건 중 다수).
+      if (archive && !globalThis.__NIKKE_ARCHIVE_PARTIAL) return;
       const titles = e.members || [];
       if (titles.length !== 5 || new Set(titles).size !== 5) return;
       if (skipSig && sigOf(titles) === skipSig) return;

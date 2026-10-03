@@ -37,7 +37,8 @@ const median = (a) => {
 // (usage.js는 "캐릭터 한 명"을 위한 뷰라 전체 집계 함수가 없다. 여기서 다시 만든다.)
 function buildEntries() {
   const out = [];
-  (solo.seasons || []).forEach((s) => (s.teams || []).forEach((t) => out.push({ kind: 'raid', members: t.members || [] })));
+  // 지난 시즌(archive, 2026-10-03)은 가이드 통계에 넣지 않는다 — 현재 시즌 기준.
+  (solo.seasons || []).filter((s) => !s.archive).forEach((s) => (s.teams || []).forEach((t) => out.push({ kind: 'raid', members: t.members || [] })));
   (tower.pools || []).forEach((p) => (p.teams || []).forEach((t) => out.push({ kind: 'tower', members: t.members || [] })));
   ((meta.campaignCompositions || {}).list || []).forEach((t) => out.push({ kind: 'campaign', members: t.members || [] }));
   ((meta.pvp || {}).topTeams || []).forEach((t) => out.push({ kind: 'pvp', members: t.members || [] }));

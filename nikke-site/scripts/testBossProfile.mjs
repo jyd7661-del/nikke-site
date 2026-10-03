@@ -60,7 +60,7 @@ console.log(line);
 
 // ① 엔진 밖에서 따로 센다
 const expect = {};
-for (const se of solo.seasons || []) {
+for (const se of (solo.seasons || []).filter((x) => !x.archive)) {   // 지난 시즌(archive)은 엔진도 세지 않는다(2026-10-03)
   const key = engine.WEAKNESS_TO_BOSS_ELEMENT[String(se.weakness || '').toLowerCase()];
   if (!key) { problems.push(`약점 속성을 매핑 못 함: '${se.weakness}' (시즌 ${se.raid})`); continue; }
   const usable = (se.teams || []).filter((t) => (t.members || []).every((n) => byTitle.has(n)));

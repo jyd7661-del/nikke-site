@@ -83,7 +83,7 @@ if (has('sheet')) {
   const seed = Number(arg('seed', 11));
   const EL = { iron: 'Iron', wind: 'Wind', water: 'Water', electric: 'Electronic', fire: 'Fire' };
   const share = {};
-  for (const s of j('soloRaidTeams.json').seasons) {
+  for (const s of j('soloRaidTeams.json').seasons.filter((x) => !x.archive)) {   // 지난 시즌(archive)은 판정지의 '그 속성 시즌 등록 비중'에 안 넣는다
     const k = EL[s.weakness]; const m = (share[k] ||= new Map()); const n = s.teams.length;
     for (const t of s.teams) for (const x of new Set(t.members)) m.set(x, (m.get(x) || 0) + 100 / n);
   }

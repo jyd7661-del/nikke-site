@@ -8,7 +8,7 @@
     "url": "https://docs.google.com/spreadsheets/d/11KWYeyvef91A-vfFuqglJJ8-OhR90TcKFVpJ6Ny_5h4/edit#gid=136921467",
     "linkedFrom": "https://www.prydwen.gg/nikke/guides/pvp-burst"
   },
-  "fetchedAt": "2026-09-29",
+  "fetchedAt": "2026-10-03",
   "tiers": [
     "2RL",
     "2.5RL",
@@ -1843,6 +1843,28 @@
         6.9
       ],
       "gun": "SMG"
+    },
+    "Neon: Vision Eye": {
+      "gen": [
+        5.92,
+        7.4,
+        8.88,
+        10.36,
+        11.84
+      ],
+      "gun": "SG",
+      "supplement": "https://www.prydwen.gg/nikke/characters/neon-vision-eye"
+    },
+    "Laplace: Ultimate Hero": {
+      "gen": [
+        11.2,
+        11.2,
+        16.8,
+        16.8,
+        22.4
+      ],
+      "gun": "RL",
+      "supplement": "https://www.prydwen.gg/nikke/characters/laplace-ultimate-hero"
     }
   },
   "variants": {

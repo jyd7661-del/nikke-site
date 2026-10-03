@@ -35,7 +35,8 @@ function buildEntries() {
   const out = [];
 
   // 솔로레이드 — 시즌마다 보스와 약점 속성이 다르다. 그게 이 조합의 조건이라 함께 싣는다.
-  (solo.seasons || []).forEach((s) => {
+  // 지난 시즌(archive, 2026-10-03 — 엔진의 완전일치 전용)은 도감에 세지 않는다. 화면의 "등록 조합"은 현재 시즌 기준이다.
+  (solo.seasons || []).filter((s) => !s.archive).forEach((s) => {
     (s.teams || []).forEach((t) => {
       out.push({
         kind: 'raid',
