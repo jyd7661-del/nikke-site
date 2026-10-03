@@ -163,6 +163,87 @@ for (const seed of SEEDS) {
 
 const line = '─'.repeat(84);
 
+// ── 랭커 복원 모드(2026-10-04) — 정답지를 내 판정이 아니라 **랭커 조합**으로(scripts/benchRankerRecall.mjs와 같은 로스터·씨앗) ──
+//   node scripts/experimentHaikuPick.mjs --ranker --dry | --ranker --live | --ranker --score   (변형은 compact만 — v2의 시즌 등장 비율엔 정답 팀이 섞인다)
+//   로스터 = 등록 5명 + 무작위 SSR 15명, 애장품 전원 보유. 1번 후보 = 사이트 답(pickSiteTeam, 자기 팀은 실사용 표에서 뺌), 나머지는 폴백 상위.
+//   지표: 하이쿠 최종 답과 정답의 겹침 vs 엔진 1번 후보와 정답의 겹침(완전 복원·4명+·평균).
+if (has('ranker')) {
+  if (VARIANT !== 'compact') { console.error('--ranker는 --variant=compact만'); process.exit(1); }
+  const ROUT = path.join(ROOT, 'probe-data', 'haiku-ranker-compact.jsonl');
+  const ssr = cdb.filter((c) => String(c.rarity).toUpperCase() === 'SSR');
+  const TREASURE = new Set(j('treasureEffects.json').characters.map((t) => t.characterId));
+  function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
+  const rc = [];
+  (metaStats.campaignCompositions?.list || []).forEach((t, i) => rc.push({ key: `camp-${i}`, mode: 'campaign', members: t.members, ctx: {} }));
+  j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t, i) => rc.push({ key: `tower-${p.tower || p.pool}-${i}`, mode: 'tribe_tower', members: t.members, ctx: { tower: p.tower || null } })));
+  j('soloRaidTeams.json').seasons.filter((x) => !x.archive).forEach((x) => (x.teams || []).forEach((t, i) => rc.push({ key: `raid-${x.raid}-${i}`, mode: 'bossing', members: t.members, ctx: { bossElement: EL_KEY[String(x.weakness || '').toLowerCase()] } })));
+  (metaStats.pvp?.topTeams || []).forEach((t, i) => rc.push({ key: `pvp-${i}`, mode: 'pvp', members: t.members, ctx: {} }));
+  const rnd = mulberry32(20261001);
+  const samples = [];
+  for (const c of rc) {
+    const team = c.members.map((n) => byTitle.get(n)); if (team.length !== 5 || team.some((x) => !x)) continue;
+    const pool = ssr.filter((x) => !c.members.includes(x.title)); const roster = [...team];
+    while (roster.length < 20 && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
+    const treasureIds = new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
+    const o = { ...c.ctx, treasureIds, excludeRealSig: setKey(c.members) };
+    samples.push({ ...c, roster, o, sample: { roster: roster.map((x) => x.title), mode: c.mode, boss: c.ctx.bossElement || null, tower: c.ctx.tower || null } });
+  }
+  const candsOf = (sm) => {
+    const site = E.pickSiteTeam(sm.roster, sm.mode, { ...sm.o, lang: 'en' }).team;
+    const out = [];
+    const push = (t) => { if (t && !out.some((x) => setKey(x.titles) === setKey(t.members.map((m) => m.title)))) out.push({ titles: t.members.map((m) => m.title), reasons: t.reasons || [], score: t.totalScore }); };
+    push(site);
+    for (const t of E.recommendTeams(sm.roster, sm.mode, { ...sm.o, lang: 'en', topN: K + 3 }).teams || []) { if (out.length >= K) break; push(t); }
+    return out;
+  };
+  const ov = (a, b) => a.filter((t) => b.includes(t)).length;
+  if (has('dry') || has('live')) {
+    const client = has('live') ? new Anthropic() : null;
+    if (has('live') && !process.env.ANTHROPIC_API_KEY) { console.error('ANTHROPIC_API_KEY 없음(.env.local)'); process.exit(1); }
+    const done = new Set(fs.existsSync(ROUT) ? fs.readFileSync(ROUT, 'utf8').trim().split('\n').filter(Boolean).map((l) => JSON.parse(l).key) : []);
+    let krw = 0, n = 0;
+    for (const sm of samples) {
+      if (done.has(sm.key)) continue;
+      const cands = candsOf(sm);
+      const { system, user } = buildPrompt(sm.sample, cands);
+      if (has('dry')) { console.log(system + '\n\n=== USER ===\n' + user); console.log(`\n추정 입력 ≈ ${Math.round((system.length + user.length) / 3.2)} 토큰 · 표본 ${samples.length}건`); process.exit(0); }
+      const t0 = Date.now();
+      const msg = await client.messages.create({ model: MODEL, max_tokens: 1000, system, messages: [{ role: 'user', content: user }], output_config: { format: { type: 'json_schema', schema: SCHEMA } } });
+      const text = msg.content.find((b) => b.type === 'text')?.text || '';
+      let out = null; try { out = JSON.parse(text); } catch { /* 아래 */ }
+      const pick = cands[(out?.candidate || 1) - 1] || cands[0];
+      let final = pick.titles, swapApplied = false, swapFlaws = [];
+      if (out && out.swap_out && out.swap_in) {
+        const trial = pick.titles.map((t) => (t === out.swap_out ? out.swap_in : t));
+        const v = verifyAiTeam(trial, sm.roster, { tower: sm.sample.tower || null });
+        if (v.ok && trial.includes(out.swap_in) && !pick.titles.includes(out.swap_in)) { final = trial; swapApplied = true; } else swapFlaws = v.flaws.length ? v.flaws : ['swap names not in candidate/roster'];
+      }
+      const u = msg.usage || {};
+      const cost = ((u.input_tokens || 0) * PRICE.in + (u.output_tokens || 0) * PRICE.out) / 1e6 * KRW;
+      krw += cost; n++;
+      fs.appendFileSync(ROUT, JSON.stringify({ key: sm.key, mode: sm.mode, want: sm.members, cands: cands.map((x) => x.titles), out, final, swapApplied, swapFlaws, usage: u, krw: +cost.toFixed(2), ms: Date.now() - t0 }) + '\n');
+      if (n % 20 === 0) process.stdout.write(`${n}건 · ${krw.toFixed(0)}원\n`);
+    }
+    console.log(`${n}건 · 합계 ${krw.toFixed(0)}원 · 건당 ${(krw / Math.max(n, 1)).toFixed(1)}원 → ${path.relative(ROOT, ROUT)}`);
+  }
+  if (has('score')) {
+    const rows = fs.readFileSync(ROUT, 'utf8').trim().split('\n').filter(Boolean).map(JSON.parse);
+    const agg = {};
+    let krw = 0, ms = 0, changed = 0, better = 0, worse = 0;
+    for (const r of rows) {
+      krw += r.krw; ms += r.ms;
+      const e = ov(r.cands[0], r.want), h = ov(r.final, r.want);
+      if (setKey(r.final) !== setKey(r.cands[0])) { changed++; if (h > e) better++; else if (h < e) worse++; }
+      for (const [k, v] of [['엔진', e], ['하이쿠', h]]) { const a = ((agg[r.mode] ||= {})[k] ||= { n: 0, ex: 0, f4: 0, ov: 0 }); a.n++; a.ov += v; if (v === 5) a.ex++; if (v >= 4) a.f4++; }
+    }
+    console.log(line);
+    console.log(`하이쿠 고르기(랭커 복원) — ${rows.length}건 · 건당 ${(krw / rows.length).toFixed(1)}원 · 평균 ${(ms / rows.length / 1000).toFixed(1)}초 · 답을 바꾼 ${changed}건: 정답에 가까워짐 ${better} · 멀어짐 ${worse}`);
+    for (const [m, x] of Object.entries(agg)) for (const k of ['엔진', '하이쿠']) { const a = x[k]; console.log(`  ${m.padEnd(12)} ${k.padEnd(4)} 완전 ${(a.ex / a.n * 100).toFixed(1)}% · 4명+ ${(a.f4 / a.n * 100).toFixed(1)}% · 겹침 ${(a.ov / a.n).toFixed(2)} (${a.n})`); }
+    console.log(line);
+  }
+  process.exit(0);
+}
+
 if (has('dry') || has('live')) {
   const client = has('live') ? new Anthropic() : null;
   if (has('live') && !process.env.ANTHROPIC_API_KEY) { console.error('ANTHROPIC_API_KEY 없음(.env.local)'); process.exit(1); }

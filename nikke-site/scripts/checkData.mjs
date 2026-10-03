@@ -1364,6 +1364,21 @@ if (glossarySrc) {
 }
 
 // ---------------------------------------------------------------------------
+// 타워 사용률 (metaStats.towerUsage, 2026-10-04) — 엔진이 tribe_tower 실사용 등급에 쓴다. 이름이 어긋나면 그 캐릭터는 조용히 등급 없음
+// ---------------------------------------------------------------------------
+{
+  const tu = meta.towerUsage;
+  if (tu) {
+    const n = Object.keys(tu.usage || {}).length;
+    if (!n) err('TOWERUSAGE_MISSING', 'metaStats.towerUsage.usage가 비었다 — 타워 실사용 등급이 전부 사라진다');
+    for (const [t, u] of Object.entries(tu.usage || {})) {
+      if (!TITLES.has(t)) err('TOWERUSAGE_UNKNOWN', `towerUsage: DB에 없는 이름 '${t}' — enikkAlias.json 확인`);
+      if (!(u >= 0 && u <= 100)) err('TOWERUSAGE_SHAPE', `towerUsage['${t}']=${u} — 0~100이어야 한다`);
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 캐릭터별 채용률 등급 (metaStats.usageTier)
 //
 // 엔진이 REAL_TIER_SCORE로 점수를 매기는 값이라 등급 문자열이 어긋나면 **조용히 0점**이 된다

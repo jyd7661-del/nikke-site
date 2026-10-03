@@ -2596,5 +2596,53 @@
         "Drake": 0.3
       }
     }
+  },
+  "towerUsage": {
+    "source": "enikk.app/tower → Compositions 탭 → Character Insights \"Most used\"(All Towers, Show all)",
+    "asOf": "2026-10-04",
+    "analyzedClears": 1419262,
+    "note": "타워 전체(모든 풀) 클리어 중 그 캐릭터가 든 비율(%). 풀을 바꿔도 숫자는 같고 그 풀에 들어갈 수 있는 캐릭터만 걸러 보인다 — 풀별 사용률이 아니다. 엔진은 tribe_tower 실사용 등급에 쓰고, 등급 경계는 usageTier.campaign(같은 \"클리어 중 비율\" 수치)의 등급별 최솟값을 그대로 쓴다. 2026-10-04 헤드리스 크롬으로 화면 값을 옮김.",
+    "usage": {
+      "Anis: Star": 48.1,
+      "Rapi: Red Hood": 39.5,
+      "Crown": 32.8,
+      "Mast: Romantic Maid": 22.7,
+      "Liter": 19.6,
+      "Helm": 19.4,
+      "Alice": 17.8,
+      "Snow White: Heavy Arms": 17.7,
+      "Naga": 17.2,
+      "Anchor: Innocent Maid": 15.0,
+      "Neon: Vision Eye": 14.8,
+      "Tia": 14.1,
+      "D: Killer Wife": 10.8,
+      "Mint": 10.7,
+      "Ludmilla: Winter Owner": 10.2,
+      "Anis: Sparkling Summer": 10.0,
+      "Prika": 9.7,
+      "Ein": 9.6,
+      "Privaty": 8.5,
+      "Nayuta": 8.5,
+      "Milk: Blooming Bunny": 8.1,
+      "Ade: Agent Bunny": 8.1,
+      "Little Mermaid": 7.7,
+      "Scarlet: Black Shadow": 7.0,
+      "Quency: Escape Queen": 6.8,
+      "Moran": 6.8,
+      "Mihara: Bonding Chain": 5.6,
+      "Liberalio": 5.4,
+      "Red Hood": 5.0,
+      "Laplace": 4.9,
+      "Cinderella: Crystal Wave": 4.8,
+      "Vesti: Tactical Upgrade": 4.2,
+      "Blanc": 4.0,
+      "Noir": 3.9,
+      "Cinderella": 3.6,
+      "Flora": 3.0,
+      "Laplace: Ultimate Hero": 2.5,
+      "Modernia": 2.2,
+      "Dorothy: Serendipity": 2.1,
+      "Maxwell": 1.9
+    }
   }
 }

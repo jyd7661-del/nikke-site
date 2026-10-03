@@ -325,6 +325,12 @@ function realUsageTierScore(character, mode, bossElement = null, treasureIds = n
     const t = seasonUsageTier(character, bossElement);
     if (t !== undefined) return REAL_TIER_SCORE[t] || 0;
   }
+  // 2026-10-04: **타워는 타워 사용률로.** 그동안 캠페인 사용률(17명)을 빌려 썼다. metaStats.towerUsage = enikk 타워 전체 클리어 중
+  // 그 캐릭터가 든 비율(40명). 등급 경계는 같은 종류 수치인 캠페인 등급(usageTier.campaign)의 등급별 최솟값 — 새 숫자 없음. 표에 없으면 등급 없음.
+  if (mode === 'tribe_tower' && metaStats.towerUsage?.usage && !globalThis.__NIKKE_TOWER_USAGE_OFF) {
+    const t = TOWER_TIER_FLOOR.length ? (() => { const u = metaStats.towerUsage.usage[character.title]; if (!(u >= 0)) return null; return TOWER_TIER_FLOOR.find(([, f]) => u >= f)?.[0] ?? null; })() : undefined;
+    if (t !== undefined) return REAL_TIER_SCORE[t] || 0;
+  }
   const slice = MODE_TO_META_SLICE[mode] || 'campaign';
   const entry = metaStats.usageTier?.[slice]?.[character.title];
   if (!entry) return 0;
@@ -338,6 +344,14 @@ function realUsageTierScore(character, mode, bossElement = null, treasureIds = n
 const SEASON_TIER_FLOOR = (() => {
   const by = {};
   for (const e of Object.values(metaStats.usageTier?.soloraid || {})) {
+    if (!e?.tier || !(e.usage >= 0)) continue;
+    by[e.tier] = Math.min(by[e.tier] ?? Infinity, e.usage);
+  }
+  return ['S', 'A', 'B', 'C'].filter((t) => Number.isFinite(by[t])).map((t) => [t, by[t]]);
+})();
+const TOWER_TIER_FLOOR = (() => {
+  const by = {};
+  for (const e of Object.values(metaStats.usageTier?.campaign || {})) {
     if (!e?.tier || !(e.usage >= 0)) continue;
     by[e.tier] = Math.min(by[e.tier] ?? Infinity, e.usage);
   }
