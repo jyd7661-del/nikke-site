@@ -9,6 +9,7 @@
  *   node scripts/benchRankerRecall.mjs --verbose       # 못 맞힌 건마다 무엇을 골랐는지
  *   node scripts/benchRankerRecall.mjs --loo           # 실사용 경로를 켜되 정답 팀 자신만 뺀다(leave-one-out)
  *   node scripts/benchRankerRecall.mjs --loo --off=REAL_PARTIAL_OFF   # 실사용 4/5 부분 일치를 끈 판(2026-10-03 이전)
+ *   node scripts/benchRankerRecall.mjs --holdout=probe-data/soloRaidHoldout.json   # 엔진 데이터에 없는 지난 레이드 시즌으로만(검증)
  *
  * ■ 왜 필요한가
  *   judgmentBench(엔진 = 내 조합)는 99%까지 올랐지만 정답지가 **내 판정**이다. 2026-10-01 하루에만 내 판정이 여러 번 틀렸다
@@ -56,12 +57,25 @@ function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; 
 
 const cases = [];
 const ms = j('metaStats.json');
+// --holdout=<파일>: 엔진 데이터에 없는 지난 레이드 시즌(probe-data/soloRaidHoldout.json)으로만 잰다 — 오늘 엔진을 다듬으며 한 번도 안 본 데이터.
+//   그 팀들은 엔진의 실사용 표에 없으므로 자기 팀을 뺄 필요 없이 실사용 경로를 그대로 켠다(사이트와 같은 조건).
+const HOLDOUT = arg('holdout', null);
+if (HOLDOUT) {
+  const h = JSON.parse(fs.readFileSync(path.resolve(ROOT, HOLDOUT), 'utf8'));
+  // PvP 보관 시즌(probe-data/pvpHoldout-s38.json: { topTeams })
+  (h.topTeams || []).forEach((t, i) => cases.push({ key: `hold-pvp-${i}`, mode: 'pvp', members: t.members, ctx: {} }));
+  (h.seasons || []).forEach((s) => (s.teams || []).forEach((t, i) => cases.push({
+    key: `hold-${s.raid}-${i}`, mode: 'bossing', members: t.members,
+    ctx: { bossElement: E.WEAKNESS_TO_BOSS_ELEMENT[String(s.weakness || '').toLowerCase()] } })));
+}
+if (!HOLDOUT) {
 (ms.campaignCompositions?.list || []).forEach((t, i) => cases.push({ key: `camp-${i}`, mode: 'campaign', members: t.members, ctx: {} }));
 j('towerCompositions.json').pools.forEach((p) => (p.teams || []).forEach((t, i) => cases.push({ key: `tower-${p.tower || p.pool}-${i}`, mode: 'tribe_tower', members: t.members, ctx: { tower: p.tower || null } })));
 j('soloRaidTeams.json').seasons.forEach((s) => (s.teams || []).forEach((t, i) => cases.push({
   key: `raid-${s.raid}-${i}`, mode: 'bossing', members: t.members,
   ctx: { bossElement: E.WEAKNESS_TO_BOSS_ELEMENT[String(s.weakness || '').toLowerCase()] } })));
 (ms.pvp?.topTeams || []).forEach((t, i) => cases.push({ key: `pvp-${i}`, mode: 'pvp', members: t.members, ctx: {} }));
+}
 
 const rnd = mulberry32(20261001);
 const stats = {};
@@ -73,7 +87,9 @@ for (const c of cases) {
   const roster = [...team];
   while (roster.length < 5 + EXTRA && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
   const treasureIds = new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
-  const r = E.pickSiteTeam(roster, c.mode, LOO
+  const r = E.pickSiteTeam(roster, c.mode, HOLDOUT
+    ? { ...c.ctx, treasureIds, skipArchetype: NO_ARCH }
+    : LOO
     ? { ...c.ctx, treasureIds, skipArchetype: NO_ARCH, excludeRealSig: [...c.members].sort().join('|'), realPartialCompete: COMPETE }
     : { ...c.ctx, treasureIds, skipRealUsage: true, skipArchetype: NO_ARCH });
   const got = (r.team?.members || []).map((m) => m.title);
@@ -85,7 +101,7 @@ for (const c of cases) {
 }
 
 const NAME = { campaign: '캠페인', tribe_tower: '타워', bossing: '솔로레이드', pvp: 'PvP' };
-console.log(`랭커 조합 복원 — 섞은 니케 ${EXTRA}명 · ${LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}`);
+console.log(`랭커 조합 복원${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}`);
 let T = { n: 0, exact: 0, four: 0, ov: 0 };
 for (const [m, s] of Object.entries(stats)) {
   console.log(`  ${NAME[m].padEnd(6)} ${String(s.n).padStart(3)}팀 · 완전 복원 ${(s.exact / s.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(s.four / s.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(s.ov / s.n).toFixed(2)} · 경로 ${JSON.stringify(s.paths)}`);
