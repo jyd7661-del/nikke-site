@@ -90,7 +90,16 @@ for (const c of cases) {
   // --drop=k: 정답 5명 중 k명을 로스터에서 뺀다(불완전 로스터 — 그 자리는 무작위로 채워 크기는 같게). 지표는 **남은 정답 멤버를 몇 명 살렸나**.
   const DROP = Number(arg('drop', 0));
   const kept = [...team];
-  for (let d = 0; d < DROP; d++) kept.splice(Math.floor(rnd() * kept.length), 1);
+  // --drop-top: 무작위가 아니라 **그 모드 티어가 가장 높은 멤버부터** 뺀다(초보 로스터 흉내 — 고티어부터 없다). 동점은 실사용 비율 높은 쪽.
+  //   그리고 섞는 니케도 그 모드 티어 S 이상은 빼서 "강한 대체재가 없는" 로스터로 만든다.
+  const TOP = has('drop-top');
+  const TK = { campaign: 'story', tribe_tower: 'story', bossing: 'bossing', pvp: 'pvp' }[c.mode];
+  const TS = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
+  for (let d = 0; d < DROP; d++) {
+    if (TOP) { kept.sort((x, y) => (TS[y.tiers?.[TK]] || 0) - (TS[x.tiers?.[TK]] || 0) || String(x.id).localeCompare(String(y.id))); kept.splice(0, 1); }
+    else kept.splice(Math.floor(rnd() * kept.length), 1);
+  }
+  if (TOP) for (let i = pool.length - 1; i >= 0; i--) if ((TS[pool[i].tiers?.[TK]] || 0) >= TS.S) pool.splice(i, 1);
   const roster = [...kept];
   while (roster.length < 5 + EXTRA && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
   const treasureIds = new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
@@ -106,11 +115,11 @@ for (const c of cases) {
   // drop이면 '완전' = 남은 정답 멤버 전원 유지, '4명+' 자리는 남은 멤버의 (keptN-1)명 이상 유지
   s.n++; s.ov += ov; if (ov === keptN) s.exact++; if (ov >= keptN - 1) s.four++;
   s.paths[r.path] = (s.paths[r.path] || 0) + 1;
-  if (ov < keptN) misses.push({ key: c.key, mode: c.mode, ov, want: c.members, got, path: r.path });
+  if (ov < keptN) misses.push({ key: c.key, mode: c.mode, ov, want: c.members, got, path: r.path, ...(r.path === 'error' ? { roster: roster.map((x) => x.title), ctx: c.ctx, error: r.error || null } : {}) });
 }
 
 const NAME = { campaign: '캠페인', tribe_tower: '타워', bossing: '솔로레이드', pvp: 'PvP' };
-console.log(`랭커 조합 복원${arg('drop', 0) > 0 ? ` [불완전 로스터: 정답 ${arg('drop')}명 뺌 — 완전 = 남은 ${5 - arg('drop')}명 전원 유지 · 4명+ 칸 = ${4 - arg('drop')}명 이상 유지]` : ''}${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}`);
+console.log(`랭커 조합 복원${has('drop-top') ? ' [초보형: 고티어부터 뺌 · 섞는 니케는 S 미만만]' : ''}${arg('drop', 0) > 0 ? ` [불완전 로스터: 정답 ${arg('drop')}명 뺌 — 완전 = 남은 ${5 - arg('drop')}명 전원 유지 · 4명+ 칸 = ${4 - arg('drop')}명 이상 유지]` : ''}${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}`);
 let T = { n: 0, exact: 0, four: 0, ov: 0 };
 for (const [m, s] of Object.entries(stats)) {
   console.log(`  ${NAME[m].padEnd(6)} ${String(s.n).padStart(3)}팀 · 완전 복원 ${(s.exact / s.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(s.four / s.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(s.ov / s.n).toFixed(2)} · 경로 ${JSON.stringify(s.paths)}`);
