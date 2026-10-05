@@ -202,11 +202,16 @@ for (const t of teams) {
     'Nayuta', 'Flora', 'Anchor: Innocent Maid', 'Signal', 'Yuni', 'Queen (Makoto Niijima)', 'Rapunzel: Pure Grace']);
   if (roster.some((c) => !c)) problems.push('[PvP 버스트 관문] 시험용 이름이 DB에 없다');
   else {
-    const raw = engine.recommendTeams(roster, 'pvp', { skipPvpBurstGate: true }).teams?.[0];
+    // 2026-10-05 유저 결정으로 관문은 기본 꺼짐(느려도 티어 1위 + 경고). 기본 = 티어 1위(느림) 그대로 + 경고 문장,
+    // 비교 스위치(__NIKKE_PVP_BURST_GATE)를 켜면 옛 관문대로 4RL 이내로 확인된 팀으로 바뀌어야 한다.
+    const now = engine.recommendTeams(roster, 'pvp', {}).teams?.[0];
+    globalThis.__NIKKE_PVP_BURST_GATE = true;
     const gated = engine.recommendTeams(roster, 'pvp', {}).teams?.[0];
-    if (raw?.pvpBurst?.tier !== 'slower') problems.push(`[PvP 버스트 관문] 관문 없이도 1위가 느린 팀이 아니다(${raw?.pvpBurst?.tier}) — 시험 로스터가 더는 이 고장을 재현하지 못한다`);
-    if (!gated?.pvpBurst?.tier) problems.push('[PvP 버스트 관문] 느린 1위를 값을 모르는 팀으로 바꿨다 — 대체 후보는 4RL 이내로 확인된 팀이어야 한다');
-    else if (gated.pvpBurst.tier === 'slower') problems.push('[PvP 버스트 관문] 4RL 이내 후보가 있는데 4RL보다 느린 팀이 1위로 나왔다');
+    globalThis.__NIKKE_PVP_BURST_GATE = false;
+    if (now?.pvpBurst?.tier !== 'slower') problems.push(`[PvP 버스트] 기본 1위가 느린 팀이 아니다(${now?.pvpBurst?.tier}) — 시험 로스터가 더는 이 경우를 재현하지 못하거나 관문이 다시 켜졌다`);
+    else if (!String(now.pvpBurstNote || '').trim()) problems.push('[PvP 버스트] 4RL보다 느린 팀을 내면서 경고 문장(pvpBurstNote)이 없다');
+    if (!gated?.pvpBurst?.tier) problems.push('[PvP 버스트 관문(비교용)] 느린 1위를 값을 모르는 팀으로 바꿨다 — 대체 후보는 4RL 이내로 확인된 팀이어야 한다');
+    else if (gated.pvpBurst.tier === 'slower') problems.push('[PvP 버스트 관문(비교용)] 4RL 이내 후보가 있는데 4RL보다 느린 팀이 1위로 나왔다');
   }
   const helm = byTitle.get('Helm');
   const nayutaTeam = T(['Nayuta', 'Helm', 'Laplace', 'Red Hood', 'Emilia']);

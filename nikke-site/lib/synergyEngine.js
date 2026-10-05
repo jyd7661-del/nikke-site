@@ -2041,7 +2041,12 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   //    "모르는 쪽"이 이득을 봤다. 그래서 **대체 후보는 값이 있고 4RL 이내로 확인된 팀만** 쓴다.
   //    1위가 원래 모르는 팀이면 건드리지 않는다 — 모름 ≠ 느림(신캐가 든 팀을 벌하지 않는다).
   // `skipPvpBurstGate`는 이전 엔진 대비 비교용 스위치다. 화면에서는 쓰지 않는다.
-  if (mode === 'pvp' && !opts.skipPvpBurstGate && candidateTeams[0]?.pvpBurst?.tier === 'slower') {
+  //
+  // ⛔ 2026-10-05 **기본으로 끔 — 유저 결정: "증명된 티어는 이유가 있지 않을까"**(느려도 강한 핵심을 내고 경고만).
+  //    초보형 로스터(랭커 조합에서 고티어부터 뺀 것, benchRankerRecall --drop-top)에서 이 관문이 블랑(SSS)·비스킷(SSS)·신데렐라(SS) 핵심을
+  //    버리고 얀(D)·파워(C) 같은 4RL 팀으로 갈아탔다 — PvP가 모드 중 가장 낮았던(남은 랭커 멤버 유지 63~68%) 원인.
+  //    느린 팀에는 화면 한 줄 경고(pvpBurstNote, "4RL보다 느리다")가 그대로 붙는다. 비교용 `__NIKKE_PVP_BURST_GATE`로 옛 동작.
+  if (mode === 'pvp' && globalThis.__NIKKE_PVP_BURST_GATE && !opts.skipPvpBurstGate && candidateTeams[0]?.pvpBurst?.tier === 'slower') {
     const i = candidateTeams.findIndex((t) => t.pvpBurst?.tier && t.pvpBurst.tier !== 'slower');
     if (i > 0) candidateTeams.unshift(...candidateTeams.splice(i, 1));
   }
