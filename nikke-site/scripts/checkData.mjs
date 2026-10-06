@@ -1309,7 +1309,7 @@ if (glossarySrc) {
     if (!['ally', 'self', 'selfFlat', 'unmodeled', 'none'].includes(e.kind)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: kind '${e.kind}'`);
     if (['ally', 'self', 'selfFlat'].includes(e.kind) && !(e.sec > 0)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: sec가 없다`);
     if (e.kind === 'unmodeled' && !['ally', 'self'].includes(e.target)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: unmodeled는 target(ally/self)이 있어야 한다`);
-    if (e.cond && !['noOtherB1', 'asStage1', 'sameSquad', 'treasure'].includes(e.cond)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: 엔진이 모르는 cond '${e.cond}' — 조건이 조용히 거짓이 된다`);
+    if (e.cond && !['noOtherB1', 'asStage1', 'sameSquad', 'treasure', 'aloneInStage'].includes(e.cond)) err('BURST_CDR_SHAPE', `burstCdr.json ${e.title}: 엔진이 모르는 cond '${e.cond}' — 조건이 조용히 거짓이 된다`);
   }
 }
 

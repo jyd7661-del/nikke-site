@@ -414,6 +414,14 @@ for (const t of teams) {
   if (!S(['Tia', 'Emma: Tactical Upgrade', 'Mast: Romantic Maid', 'Alice', 'Maxwell'])) {
     problems.push('[주기 관문·쿨감] 티아(본인만 쿨감)가 있다고 혼자인 40초 마스트(2버스트) 팀을 느림에서 뺐다');
   }
+  // ⑥ 2026-10-06 아르카나 죽음 카드(전 아군 ▼6초)는 **본인이 버스트한 바퀴에만** 터진다(cond aloneInStage).
+  //    예전 데이터는 '무작위 카드 → 모름'이라 팀에 있기만 하면 느림에서 빠졌다. 2버스트를 크라운과 나누면 아르카나는 거의 버스트를 못 하므로
+  //    솔린 혼자인 40초 1버스트는 느림이어야 하고, 스위치(CDR_ALONE_OFF)를 켜면 옛 동작(모름 → 느림 아님)으로 돌아가야 한다.
+  const arc = ['Soline: Frost Ticket', 'Crown', 'Arcana', 'Neon: Vision Eye', 'Cinderella'];
+  if (!S(arc)) problems.push('[주기 관문·쿨감] 아르카나가 크라운과 2버스트를 나누는데(본인 버스트가 드묾) 죽음 카드 쿨감으로 솔린 혼자인 40초 1버스트 팀을 느림에서 뺐다 — 초보형 로스터에서 마스트(SS)를 빼고 아르카나(D)를 넣던 구멍');
+  globalThis.__NIKKE_CDR_ALONE_OFF = true;
+  if (S(arc)) problems.push('[주기 관문·쿨감] CDR_ALONE_OFF를 켜도 아르카나 팀이 느림이다 — 시험이 더는 옛 구멍을 재현하지 못한다');
+  globalThis.__NIKKE_CDR_ALONE_OFF = false;
 }
 
 // --- 애장품 재진입 (2026-10-01) — 애장품 바이퍼 2스킬(3단계) "Re-enter Burst Skill Stage 2"는 treasureSkills.json 원문에서 읽는다 ---

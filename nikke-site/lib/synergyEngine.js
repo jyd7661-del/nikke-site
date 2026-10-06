@@ -900,7 +900,9 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
       .reduce((acc, e) => acc + e.sec, 0);
     return Math.max(1, base - flat);
   };
-  const unmodeled = (m, target) => (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => e.kind === 'unmodeled' && e.target === target);
+  // 2026-10-06 `__NIKKE_CDR_ALONE_OFF`(비교용): 아르카나 죽음 카드를 옛 데이터처럼 '모르는 전 아군 쿨감'으로 본다(아래 aloneInStage 주석).
+  const aloneOff = !!globalThis.__NIKKE_CDR_ALONE_OFF;
+  const unmodeled = (m, target) => (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => (e.kind === 'unmodeled' && e.target === target) || (aloneOff && target === 'ally' && e.cond === 'aloneInStage'));
   const unknownAlly = useCdr && members.some((m) => unmodeled(m, 'ally'));
   const flex = members.filter((m) => m.burstFlex);
   const evaluate = (stageOf) => {
@@ -911,6 +913,11 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
       if (e.cond === 'asStage1') return stageOf.get(m.id) === '1';
       if (e.cond === 'sameSquad') return !!m.squad && members.some((o) => o.id !== m.id && o.squad === m.squad);
       if (e.cond === 'treasure') return !globalThis.__NIKKE_TREASURE_CDR_OFF && !!treasureIds?.has(m.id);
+      // 2026-10-06 aloneInStage = **본인이 그 바퀴에 버스트해야** 터지는 쿨감(아르카나 죽음 카드: 본인 버스트가 거는 '운명의 수레바퀴' 상태일 때
+      //   풀버스트 종료 시 전 아군 ▼6초). 매 바퀴 버스트가 확실한 건 자기 단계에 혼자일 때뿐이다 — 같은 단계에 다른 멤버가 있으면 안 센다.
+      //   예전엔 '무작위 카드'로 잘못 읽어 '모름'(unmodeled)으로 뒀고, 그러면 팀에 있기만 해도 20초 관문을 빠져나갔다:
+      //   초보형 로스터(아니스 : 스타 없음)에서 엔진이 마스트 : 로망틱 메이드(SS)·크라운(SSS)을 빼고 버스트도 못 쓰는 아르카나(D)를 넣었다.
+      if (e.cond === 'aloneInStage') return !aloneOff && members.filter((o) => stageOf.get(o.id) === stageOf.get(m.id)).length === 1;
       return false;
     };
     let allyX = 0;

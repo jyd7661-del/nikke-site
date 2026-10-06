@@ -6,6 +6,7 @@
  *   node scripts/benchRankerRecall.mjs --no-arch       # 아키타입(prydwen 등록 조합) 경로까지 끈다 — 폴백 탐색만
  *   node scripts/benchRankerRecall.mjs --extra=25      # 섞는 니케 수(기본 15)
  *   node scripts/benchRankerRecall.mjs --off=SWITCH    # 엔진 스위치(globalThis.__NIKKE_<이름>)를 켜고 잰다 — 이전 엔진 대비
+ *   node scripts/benchRankerRecall.mjs --no-treasure   # 로스터의 애장품 캐릭터를 전부 애장품 없음으로(기본은 보유)
  *   node scripts/benchRankerRecall.mjs --verbose       # 못 맞힌 건마다 무엇을 골랐는지
  *   node scripts/benchRankerRecall.mjs --loo           # 실사용 경로를 켜되 정답 팀 자신만 뺀다(leave-one-out)
  *   node scripts/benchRankerRecall.mjs --loo --off=REAL_PARTIAL_OFF   # 실사용 4/5 부분 일치를 끈 판(2026-10-03 이전)
@@ -102,7 +103,8 @@ for (const c of cases) {
   if (TOP) for (let i = pool.length - 1; i >= 0; i--) if ((TS[pool[i].tiers?.[TK]] || 0) >= TS.S) pool.splice(i, 1);
   const roster = [...kept];
   while (roster.length < 5 + EXTRA && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
-  const treasureIds = new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
+  // --no-treasure: 로스터의 애장품 캐릭터를 전부 **애장품 없음**으로 본다(초보 로스터 흉내 — 기본은 전부 보유로 본다).
+  const treasureIds = has('no-treasure') ? new Set() : new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
   const r = E.pickSiteTeam(roster, c.mode, HOLDOUT
     ? { ...c.ctx, treasureIds, skipArchetype: NO_ARCH }
     : LOO
@@ -115,17 +117,18 @@ for (const c of cases) {
   // drop이면 '완전' = 남은 정답 멤버 전원 유지, '4명+' 자리는 남은 멤버의 (keptN-1)명 이상 유지
   s.n++; s.ov += ov; if (ov === keptN) s.exact++; if (ov >= keptN - 1) s.four++;
   s.paths[r.path] = (s.paths[r.path] || 0) + 1;
-  if (ov < keptN) misses.push({ key: c.key, mode: c.mode, ov, want: c.members, got, path: r.path, ...(r.path === 'error' ? { roster: roster.map((x) => x.title), ctx: c.ctx, error: r.error || null } : {}) });
+  if (ov < keptN) misses.push({ key: c.key, mode: c.mode, ov, want: c.members, got, path: r.path, roster: roster.map((x) => x.title),
+    dropped: c.members.filter((t) => !kept.some((x) => x.title === t)), lost: kept.map((x) => x.title).filter((t) => !got.includes(t)), added: got.filter((t) => !c.members.includes(t)), ...(r.path === 'error' ? { ctx: c.ctx, error: r.error || null } : {}) });
 }
 
 const NAME = { campaign: '캠페인', tribe_tower: '타워', bossing: '솔로레이드', pvp: 'PvP' };
-console.log(`랭커 조합 복원${has('drop-top') ? ' [초보형: 고티어부터 뺌 · 섞는 니케는 S 미만만]' : ''}${arg('drop', 0) > 0 ? ` [불완전 로스터: 정답 ${arg('drop')}명 뺌 — 완전 = 남은 ${5 - arg('drop')}명 전원 유지 · 4명+ 칸 = ${4 - arg('drop')}명 이상 유지]` : ''}${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}`);
+console.log(`랭커 조합 복원${has('drop-top') ? ' [초보형: 고티어부터 뺌 · 섞는 니케는 S 미만만]' : ''}${has('no-treasure') ? ' [애장품 없음]' : ''}${arg('drop', 0) > 0 ? ` [불완전 로스터: 정답 ${arg('drop')}명 뺌 — 완전 = 남은 ${5 - arg('drop')}명 전원 유지 · 4명+ 칸 = ${4 - arg('drop')}명 이상 유지]` : ''}${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}`);
 let T = { n: 0, exact: 0, four: 0, ov: 0 };
 for (const [m, s] of Object.entries(stats)) {
   console.log(`  ${NAME[m].padEnd(6)} ${String(s.n).padStart(3)}팀 · 완전 복원 ${(s.exact / s.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(s.four / s.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(s.ov / s.n).toFixed(2)} · 경로 ${JSON.stringify(s.paths)}`);
   T = { n: T.n + s.n, exact: T.exact + s.exact, four: T.four + s.four, ov: T.ov + s.ov };
 }
 console.log(`  전체   ${String(T.n).padStart(3)}팀 · 완전 복원 ${(T.exact / T.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(T.four / T.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(T.ov / T.n).toFixed(2)}`);
-if (VERBOSE) for (const x of misses) console.log(`  [${x.key} ${x.ov}/5 ${x.path}] 랭커 ${x.want.join('/')}  ←→  엔진 ${x.got.join('/')}`);
+if (VERBOSE) for (const x of misses) console.log(`  [${x.key} ${x.ov}/5 ${x.path}] 랭커 ${x.want.join('/')}  ←→  엔진 ${x.got.join('/')}${x.dropped.length ? `  (뺌 ${x.dropped.join('/')})` : ''}  · 엔진이 버림 ${x.lost.join('/') || '-'} · 대신 ${x.added.join('/') || '-'}`);
 const out = arg('json', null);
 if (out) fs.writeFileSync(out, JSON.stringify({ stats, misses }, null, 1));
