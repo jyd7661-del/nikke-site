@@ -505,6 +505,33 @@ for (const t of teams) {
   }
 }
 
+// --- 솔로레이드 5팀 분배 (2026-10-06) — pickRaidSquads ---
+// ① 5팀은 서로 니케가 안 겹쳐야 한다(게임 규칙). ② 시즌마다 그 시즌 등록 팀에 나온 니케(랭커 풀)를 주면 등록 팀 5개를 서로 안 겹치게
+//    꺼내야 한다 — 시즌마다 그런 5팀이 있다(작열 40은 사용 횟수 1~5위). 탐욕 방식(algo greedy)은 원소와 무관한 아키타입이 1팀을 먼저 가져가
+//    25팀 중 3팀만 등록 팀이었다 → 역테스트로 greedy는 이 검사를 못 통과해야 한다.
+{
+  const TRE = new Set(j('treasureEffects.json').characters.map((t) => t.characterId));
+  const sig = (ms) => [...ms].sort().join('|');
+  let packBad = 0; let greedyRegistered = 0; let seasonsN = 0;
+  for (const s of j('soloRaidTeams.json').seasons.filter((x) => !x.archive)) {
+    seasonsN++;
+    const reg = new Set(s.teams.map((t) => sig(t.members)));
+    const pool = [...new Set(s.teams.flatMap((t) => t.members))].map((n) => byTitle.get(n)).filter(Boolean);
+    const opts = { bossElement: engine.WEAKNESS_TO_BOSS_ELEMENT[String(s.weakness).toLowerCase()], treasureIds: new Set(pool.filter((c) => TRE.has(c.id)).map((c) => c.id)) };
+    const got = engine.pickRaidSquads(pool, opts).squads.map((q) => q.team.members.map((m) => m.title));
+    const all = got.flat();
+    if (new Set(all).size !== all.length) problems.push(`[레이드 5팀] 시즌 ${s.raid}: 팀끼리 니케가 겹친다`);
+    if (got.length !== 5 || got.some((g) => !reg.has(sig(g)))) packBad++;
+    greedyRegistered += engine.pickRaidSquads(pool, { ...opts, algo: 'greedy' }).squads.filter((q) => reg.has(sig(q.team.members.map((m) => m.title)))).length;
+  }
+  if (packBad) problems.push(`[레이드 5팀] 랭커 풀 로스터에서 등록 팀 5개를 안 겹치게 꺼내지 못한 시즌 ${packBad}/${seasonsN}`);
+  if (greedyRegistered >= seasonsN * 5) problems.push('[레이드 5팀] 역테스트: greedy도 등록 팀을 전부 꺼낸다 — 시험이 더는 옛 문제를 재현하지 못한다');
+  // ③ 한 팀도 못 만드는 로스터(버스트 3 없음)는 squads 0과 엔진 이유 문장
+  const noB3 = cdb.filter((c) => String(c.rarity).toUpperCase() === 'SSR' && String(c.burst) !== '3' && !c.burstFlex).slice(0, 40);
+  const r0 = engine.pickRaidSquads(noB3, { bossElement: 'Water' });
+  if (r0.squads.length !== 0 || !r0.error) problems.push('[레이드 5팀] 버스트 3이 없는 로스터에서 팀이 나오거나 이유 문장이 없다');
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

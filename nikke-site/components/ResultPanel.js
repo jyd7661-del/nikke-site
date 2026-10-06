@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { memberName } from '@/lib/characterNames';
-import { treasureRaisesTierUnowned } from '@/lib/synergyEngine';
+import { treasureRaisesTierUnowned, pickRaidSquads } from '@/lib/synergyEngine';
 
 // 모듈 스코프라 t()를 부를 수 없다. 문구 대신 **키**만 들고 있다가 화면에서 t()로 푼다.
 // (여기에 한국어를 그대로 적으면 언어를 바꿔도 이 목록만 한국어로 남는다 — A단계에서 겪은 그 문제)
@@ -87,7 +87,7 @@ const SOURCE_LABEL_KEY = {
 // 모바일은 줄이지 않았다. 지금도 3열에서 약 85px인데 여기서 반으로 줄이면 43px이라
 // 얼굴을 알아볼 수 없어 원래 목적(한눈에 파악)이 사라진다. 88px이면 375px 화면에서
 // 여전히 한 줄에 3장 들어간다.
-function TeamMemberCards({ members, treasureIds }) {
+function TeamMemberCards({ members, treasureIds, caption = true }) {
   const { lang, t } = useLanguage();
   return (
     <>
@@ -96,7 +96,7 @@ function TeamMemberCards({ members, treasureIds }) {
         등록 조합의 실제 배치를 재보니 버스트 단계 오름차순인 것은 214건 중 37건(17%)뿐이었다.
         배치 규칙(전열/후열·좌우)은 근거가 충분한 것이 루주 자리 조건뿐이라 모델링을 보류했고
         (docs/engine.md 4-3-f), 그 사이 오해만이라도 없애기 위해 캡션을 붙인다. */}
-    <p className="text-[11px] text-slate-400 mb-1.5 leading-snug">{t('burst_order_caption')}</p>
+    {caption && <p className="text-[11px] text-slate-400 mb-1.5 leading-snug">{t('burst_order_caption')}</p>}
     <div className="flex flex-wrap gap-2 mb-3">
       {members.map((m) => {
         const name = `${memberName(m, lang)}${treasureIds?.includes(m.id) ? ` ${t('treasure_suffix')}` : ''}`;
@@ -363,6 +363,88 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
   );
 }
 
+// **솔로레이드 5팀 분배** (2026-10-06, 유저: "레이드 5팀 분배로 가자").
+// 솔로레이드는 서로 다른 니케로 5팀을 쓴다. 위 버튼(한 팀 + "다른 조합 보기")은 누를 때마다 서버를 부르고, 1팀이 핵심을 먼저 가져간다.
+// 여기서는 엔진(lib/synergyEngine.js pickRaidSquads)을 **브라우저에서 바로** 돌린다 — 이 파일이 이미 엔진을 싣고 있어(treasureRaisesTierUnowned)
+// 번들이 늘지 않고, AI를 안 써 비용이 0이다. 이번 시즌 랭커 조합을 겹치지 않게 먼저 채우고 남은 자리는 남은 니케로.
+// 속성을 안 고르면 다른 보스의 기록이 섞이므로 버튼을 내지 않는다(실사용 경로는 그 속성 시즌만 본다).
+// 채점: scripts/benchRaidSquads.mjs — 그 시즌을 뺀 측정에서 등록 팀 1 → 8/25 · 평균 겹침 2.92 → 3.88.
+const SQUAD_PATH_LABEL = { arch: 'source_prydwen', fallback: 'source_fallback' };
+function RaidSquadsPanel({ roster, bossElement }) {
+  const { lang, t } = useLanguage();
+  const [squads, setSquads] = useState(null);
+  const [error, setError] = useState(null);
+  const [busy, setBusy] = useState(false);
+  const treasureKey = (roster?.treasureIds || []).join(',');
+  const rosterKey = (roster?.resolved || []).map((c) => c.id).join(',');
+  useEffect(() => { setSquads(null); setError(null); setBusy(false); }, [bossElement, treasureKey, rosterKey]);
+
+  if (!bossElement) {
+    return <p className="text-xs text-slate-500 mt-4">{t('raid_squads_need_element')}</p>;
+  }
+  const build = () => {
+    setBusy(true);
+    // 계산이 동기라 버튼 상태가 먼저 그려지도록 한 틱 미룬다.
+    setTimeout(() => {
+      const r = pickRaidSquads(roster.resolved || [], { bossElement, treasureIds: new Set(roster.treasureIds || []), lang });
+      setSquads(r.squads);
+      // 한 팀도 못 만들면 엔진의 이유 문장(요청 언어로 조립됨 — 예: 버스트 3 없음)을 그대로 보여 준다
+      setError(r.error || null);
+      setBusy(false);
+    }, 0);
+  };
+  return (
+    <div className="mt-5 pt-4 border-t border-slate-800">
+      <h3 className="font-semibold text-slate-100 mb-1">{t('raid_squads_heading')}</h3>
+      <p className="text-xs text-slate-400 mb-3">{t('raid_squads_desc')}</p>
+      {!squads && (
+        <button
+          onClick={build}
+          disabled={busy}
+          className="text-sm bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-4 py-2 rounded-lg hover:bg-nikke-accent/20 transition disabled:opacity-50"
+        >
+          {busy ? t('raid_squads_building') : t('raid_squads_cta')}
+        </button>
+      )}
+      {squads && squads.length > 0 && <p className="text-[11px] text-slate-400 mb-2 leading-snug">{t('burst_order_caption')}</p>}
+      {squads && squads.length === 0 && (
+        <p className="text-xs text-amber-300 mb-3">{error || t('raid_squads_short')(0)}</p>
+      )}
+      {squads && squads.length > 0 && squads.length < 5 && (
+        <p className="text-xs text-amber-300 mb-3">{t('raid_squads_short')(squads.length)}</p>
+      )}
+      {squads && squads.map((q, i) => {
+        const labelKey = q.path === 'real' ? (q.team.partial ? 'source_enikk_partial' : 'source_enikk') : SQUAD_PATH_LABEL[q.path];
+        return (
+          <div key={q.team.members.map((m) => m.id).join('|')} className="bg-slate-900/40 border border-slate-700 rounded-lg p-3 mb-3">
+            <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
+              <p className="text-sm font-semibold text-slate-200">{t('raid_squads_team')(i + 1)}</p>
+              <div className="flex items-center gap-1.5">
+                {labelKey && (
+                  <span className="text-xs text-slate-300 bg-slate-800 border border-slate-700 rounded-full px-2 py-0.5">{t(labelKey)}</span>
+                )}
+                <span className="text-xs text-nikke-gold bg-nikke-gold/10 border border-nikke-gold/40 rounded-full px-2 py-0.5">
+                  {t('score')} {q.team.totalScore}
+                </span>
+              </div>
+            </div>
+            {/* 버스트 순서 캡션은 다섯 번 되풀이하지 않고 패널 위에 한 번만 */}
+            <TeamMemberCards members={q.team.members} treasureIds={roster.treasureIds} caption={false} />
+            {/* 랭커 기록 한 줄. 엔진 근거 문장(reasons)은 AI 프롬프트 재료라 ko에서도 영문 이름이 섞여(rName) 여기선 쓰지 않고,
+                시즌·보스·기록 수와 채운 자리를 사용자 언어 이름으로 조립한다. */}
+            {q.path === 'real' && q.team.realUsage?.kind === 'soloraid' && (
+              <p className="text-xs text-slate-500 leading-relaxed">
+                {t('raid_squads_record')(q.team.realUsage.raid, q.team.realUsage.boss, q.team.realUsage.parses)}
+                {q.team.partial?.missingMember && ` ${t('raid_squads_partial')(memberName(q.team.partial.missingMember, lang), memberName(q.team.partial.fillerMember, lang))}`}
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
   const { lang, t } = useLanguage();
   if (!roster) return null;
@@ -475,6 +557,8 @@ function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBos
       )}
 
       <AiRecommendButton roster={roster} mode={aiMode} bossElement={bossElement} tower={tower} />
+
+      {aiMode === 'bossing' && <RaidSquadsPanel roster={roster} bossElement={bossElement} />}
 
       {roster.unresolvedCount > 0 && (
         <p className="text-xs text-slate-500 mt-3">

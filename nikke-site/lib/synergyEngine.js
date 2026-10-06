@@ -2146,7 +2146,8 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     const seasons = (soloRaidTeams.seasons || []).filter(
       (s) => !bossElement || WEAKNESS_TO_BOSS_ELEMENT[normalizeElement(s.weakness)] === bossElement,
     );
-    return seasons.flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0, archive: !!s.archive })));
+    // opts.excludeRealRaid: 시험용(scripts/benchRaidSquads.mjs --loso) — 그 시즌 표 전체를 뺀다(시즌 단위 leave-one-out). 화면에서는 쓰지 않는다.
+    return seasons.filter((s) => s.raid !== opts.excludeRealRaid).flatMap((s) => (s.teams || []).map((t) => ({ e: { ...t, season: s }, rank: t.parses || 0, archive: !!s.archive })));
   };
   // 타워는 **그 타워의 풀만** 본다. 기업 타워는 애초에 로스터가 그 기업으로 걸러지므로
   // 다른 풀의 조합은 어차피 매칭되지 않지만, 근거 문장이 엉뚱한 타워를 가리키면 안 된다.
@@ -2291,7 +2292,12 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
     totalScore: best.scored.tierTotal,
     // 4/5 일치 + 한 자리 채움이면 { missing, filler }(title) — 화면 꼬리표를 "실사용 핵심 + 한 자리"로 바꾼다
-    partial: best.partial ? { missing: best.partial.missing.title, filler: best.partial.filler.title } : null,
+    // missingMember·fillerMember(2026-10-06): 화면이 사용자 언어 이름(memberName)으로 쓰도록 이름 필드를 함께 — 근거 문장(reasons)은 ko도 영문 title이다(rName 주석).
+    partial: best.partial ? {
+      missing: best.partial.missing.title, filler: best.partial.filler.title,
+      missingMember: { title: best.partial.missing.title, name_kr: best.partial.missing.name_kr, name_ja: best.partial.missing.name_ja || null },
+      fillerMember: { title: best.partial.filler.title, name_kr: best.partial.filler.name_kr, name_ja: best.partial.filler.name_ja || null },
+    } : null,
     // 부분 일치면 사용 기록(headline)을 real_partial 문장 **안에** 넣는다 — 따로 두면 AI 설명이 "이 5명이 N회 검증됐다"로 합쳐 썼다
     // (2026-10-03 운영 화면 확인: 스화헤비 자리를 헬름으로 바꾼 조합을 "36,582회 기록으로 검증된 최강 구성"이라 설명).
     reasons: [
@@ -2641,4 +2647,108 @@ export function pickSiteTeam(roster, mode, opts = {}) {
   if (real || exact) return realWins ? { path: 'real', team: real } : { path: 'arch', team: exact };
   const r = recommendTeams(roster, mode, { ...opts, topN: 1 });
   return r.teams?.length ? { path: 'fallback', team: r.teams[0] } : { path: 'error', team: null, error: r.error || null };
+}
+
+// **솔로레이드 5팀 분배** (2026-10-06, 유저: "레이드 5팀 분배로 가자").
+// 솔로레이드는 서로 다른 니케로 5팀을 짠다. 등록 상위 팀(soloRaidTeams)에서 서로 안 겹치는 5팀이 시즌마다 있고,
+// 작열(40)은 사용 횟수 1~5위가 그대로 서로 안 겹친다. 한 팀만 추천하면 1팀이 핵심을 다 가져가 나머지가 무너진다.
+// 채점은 scripts/benchRaidSquads.mjs(정답 = 그 시즌 등록 팀 중 서로 안 겹치는 5팀의 평균 피해 합 최대).
+//
+// algo 'greedy': 사이트 경로(pickSiteTeam)로 1팀 → 그 5명을 빼고 다시 → 5번.
+//   ⛔ 랭커 풀 로스터에서 등록 팀 25팀 중 3팀(실사용 켬)·2팀(끔)뿐이었다. 1팀 자리에 원소와 상관없는 prydwen 아키타입
+//   (아니스 : 스타·크라운·마스트 : 로망틱 메이드·신데렐라 : 크리스탈 웨이브·헬름)이 매 시즌 들어가 핵심 서포터를 한 팀에 몰았다.
+//   티어 합은 사람별 점수의 합이라 같은 25명을 어떻게 나눠도 합이 같다 — 분배의 좋고 나쁨을 못 가린다.
+// algo 'pack'(기본): ① 그 보스 속성 시즌 등록 팀(완전일치 + 이번 시즌 4/5)을 **서로 안 겹치게** 최대한 많이 고른다 —
+//   팀 수 → 이번 시즌 완전일치 수 → 평균 피해(avgDamage, 같은 시즌 안에서 비교 가능한 A등급 값) 합 순.
+//   ② 남은 자리는 남은 니케로 greedy.
+// 반환 { squads: [{ path, team }], error } — 만들 수 있는 만큼(0~5팀).
+const RAID_SQUADS = 5;
+const parseDamage = (x) => { const m = String(x || '').match(/^([\d.]+)\s*([BMK]?)$/i); return m ? Number(m[1]) * ({ B: 1e9, M: 1e6, K: 1e3 }[m[2].toUpperCase()] || 1) : 0; };
+function realRaidCandidates(roster, opts) {
+  const treasureIds = opts.treasureIds || new Set();
+  const bossElement = opts.bossElement || null;
+  const byTitle = new Map(roster.map((c) => [c.title, c]));
+  const out = [];
+  for (const s of soloRaidTeams.seasons || []) {
+    if (bossElement && WEAKNESS_TO_BOSS_ELEMENT[normalizeElement(s.weakness)] !== bossElement) continue;
+    if (s.raid === opts.excludeRealRaid) continue;
+    for (const t of s.teams || []) {
+      const titles = t.members || [];
+      if (titles.length !== 5 || new Set(titles).size !== 5) continue;
+      const missing = titles.filter((x) => !byTitle.has(x));
+      if (missing.length > 1 || (missing.length === 1 && (s.archive || globalThis.__NIKKE_REAL_PARTIAL_OFF))) continue;
+      const base = titles.filter((x) => byTitle.has(x)).map((x) => byTitle.get(x));
+      if (!globalThis.__NIKKE_REAL_TEAM_TREASURE_OFF && base.some((m) => treasureRaisesTierUnowned(m, 'bossing', treasureIds))) continue;
+      const w = { exactCur: !missing.length && !s.archive ? 1 : 0, dmg: s.archive ? 0 : parseDamage(t.avgDamage) };
+      if (!missing.length) {
+        if (!scoreTeam(base, 'bossing', { treasureIds, bossElement }).valid) continue;
+        out.push({ members: base, ...w });
+        continue;
+      }
+      // 4/5: 빠진 자리를 같은 버스트 단계에서 채운다(findRealUsageTeamMatch의 부분 일치와 같은 규칙 — 유효하고 티어 합 최대).
+      const gone = characterDatabase.find((c) => c.title === missing[0]);
+      if (!gone) continue;
+      const stages = gone.burstFlex ? flexStagesOf(gone) : [String(gone.burst)];
+      let pick = null;
+      for (const c of roster) {
+        if (titles.includes(c.title)) continue;
+        const cs = c.burstFlex ? flexStagesOf(c) : [String(c.burst)];
+        if (!cs.some((x) => stages.includes(x))) continue;
+        const sc = scoreTeam([...base, c], 'bossing', { treasureIds, bossElement });
+        if (!sc.valid) continue;
+        if (!pick || sc.tierTotal > pick.t || (sc.tierTotal === pick.t && String(c.id) < String(pick.c.id))) pick = { c, t: sc.tierTotal };
+      }
+      if (pick) out.push({ members: [...base, pick.c], ...w });
+    }
+  }
+  // 같은 5명이 여러 시즌·4/5로 겹쳐 나오면 가장 좋은 것 하나만
+  const seen = new Map();
+  for (const c of out) {
+    const k = c.members.map((m) => m.title).sort().join('|');
+    const o = seen.get(k);
+    if (!o || c.exactCur > o.exactCur || (c.exactCur === o.exactCur && c.dmg > o.dmg)) seen.set(k, c);
+  }
+  return [...seen.values()];
+}
+function packRealRaidSquads(cands) {
+  // 서로 안 겹치는 부분집합 중 (팀 수, 이번 시즌 완전일치 수, 피해 합) 사전순 최대. 후보는 많아야 수십이라 가지치기 DFS로 충분하다.
+  const better = (a, b) => a.n !== b.n ? a.n > b.n : a.e !== b.e ? a.e > b.e : a.d > b.d;
+  let best = { n: 0, e: 0, d: 0, pick: [] };
+  const sorted = cands.slice().sort((a, b) => b.exactCur - a.exactCur || b.dmg - a.dmg);
+  const rec = (i, used, pick, n, e, d) => {
+    const cur = { n, e, d, pick };
+    if (better(cur, best)) best = { ...cur, pick: [...pick] };
+    if (n === RAID_SQUADS || i >= sorted.length) return;
+    if (n + (sorted.length - i) < best.n) return;
+    for (let k = i; k < sorted.length; k++) {
+      const c = sorted[k];
+      if (c.members.some((m) => used.has(m.title))) continue;
+      const u = new Set(used); c.members.forEach((m) => u.add(m.title));
+      rec(k + 1, u, [...pick, c], n + 1, e + c.exactCur, d + c.dmg);
+    }
+  };
+  rec(0, new Set(), [], 0, 0, 0);
+  return best.pick;
+}
+export function pickRaidSquads(roster, opts = {}) {
+  const algo = opts.algo || 'pack';
+  const squads = [];
+  let left = roster.slice();
+  const take = (members) => { const used = new Set(members.map((m) => m.title)); left = left.filter((c) => !used.has(c.title)); };
+  if (algo === 'pack' && !opts.skipRealUsage) {
+    for (const c of packRealRaidSquads(realRaidCandidates(roster, opts))) {
+      // 화면용 팀 객체(근거 문장 포함)는 그 5명만 가진 로스터로 실사용 경로를 다시 돌려 만든다 — 완전일치면 그 기록, 4/5면 같은 채움.
+      const team = findRealUsageTeamMatch(c.members, 'bossing', opts);
+      if (!team) continue;
+      squads.push({ path: 'real', team });
+      take(c.members);
+    }
+  }
+  while (squads.length < RAID_SQUADS) {
+    const r = pickSiteTeam(left, 'bossing', opts);
+    if (!r.team) return { squads, error: squads.length ? null : (r.error || null) };
+    squads.push({ path: r.path, team: r.team });
+    take(r.team.members);
+  }
+  return { squads, error: null };
 }
