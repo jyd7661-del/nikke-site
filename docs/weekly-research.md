@@ -6,6 +6,7 @@
 |---|---|---|---|---|---|
 | 10:00 | `nikke-site/scripts/weekly-check.sh` → `weeklyCheck.mjs` | 코드만. 신규 캐릭터·prydwen 티어 어긋남·신선도·검사 | `reports/YYYY-MM-DD-auto.md` | 안 건드림 | `~/nikke-weekly.log` |
 | 10:30 | `nikke-site/scripts/weekly-research.sh` → `claude -p` | 위 보고서 후속(신규 캐릭터 추가·티어 대조 제안) · 스킬 문구 공백 · 유튜버 4인 · 커뮤니티 티어표 | `reports/YYYY-MM-DD.md` | **A만 고침, 커밋 안 함** | `~/nikke-research.log` |
+| 매시 17분 | `nikke-site/scripts/weekly-catchup.sh` | **따라잡기**(2026-10-08~, 10-12 주부터 적용). 이번 주 월요일 보고서가 없고 예정 시각이 지났으면 위 둘을 대신 돌린다. 작업마다 주 1회만 시도(`~/.nikke-catchup/`) · flock | 위와 같음 | 위와 같음 | `~/nikke-catchup.log` |
 
 지시서 본문은 **`docs/weekly-research-prompt.md`** — 규칙을 고치면 거기를 고치고 커밋한다.
 회차 사이 상태(유튜브 백로그 채널별 구간)는 `reports/research-state.json`.
@@ -14,7 +15,7 @@
 
 - **AI 조사 보고서가 미처리로 뜨면**: 1절에 적힌 파일이 커밋 안 된 채 있다. `git diff`를 보고 문제없으면 파일을 이름으로 커밋·푸시,
   제안 절의 반영 여부를 정하고 `reports/reviewed.json`에 추가한다(날짜만 적으면 그날의 `-auto`까지 처리한 것으로 본다)
-- **"멈췄을 수 있습니다"가 뜨면**: `crontab -l`과 해당 로그 끝을 본다. WSL이 그 시각에 꺼져 있었으면 건너뛴다
+- **"멈췄을 수 있습니다"가 뜨면**: `crontab -l`과 해당 로그 끝을 본다. WSL이 그 시각에 꺼져 있었으면 cron은 건너뛴다 — 그래서 따라잡기(`~/nikke-catchup.log`)가 있다(2026-10-05 월요일은 WSL이 11:13에 켜져 둘 다 놓쳤고, 유저가 "예약만 켜놔"라 그 주는 돌리지 않았다)
 
 ## A / B 규칙
 
