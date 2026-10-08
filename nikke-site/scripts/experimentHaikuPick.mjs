@@ -2,6 +2,7 @@
 /**
  * **하이쿠 = 엔진 후보 고르기 + 한 자리 교체** — 싼 모델로 AI 조합을 할 수 있는가 (2026-09-26, 유저 결정)
  *
+ *   node scripts/experimentHaikuPick.mjs --ranker --live --model=claude-haiku-5-5   # 모델 바꿔 재시험(결과 파일에 모델 꼬리표)
  *   node scripts/experimentHaikuPick.mjs --dry                      # 프롬프트 1건과 토큰 추정만(돈 0)
  *   node scripts/experimentHaikuPick.mjs --live --variant=compact   # 40건 호출(하이쿠 4.5) → probe-data/haiku-pick-<variant>.jsonl
  *   node scripts/experimentHaikuPick.mjs --score --variant=compact  # 채점: 내 판정 정답지와 대조
@@ -39,13 +40,18 @@ const arg = (n, d) => { const m = process.argv.find((a) => a.startsWith('--' + n
 const has = (n) => process.argv.includes('--' + n);
 const VARIANT = arg('variant', 'compact');
 if (!['compact', 'skills', 'v2'].includes(VARIANT)) { console.error('--variant=compact|skills|v2'); process.exit(1); }
-const MODEL = 'claude-haiku-4-5';
-const PRICE = { in: 1, out: 5 };   // $/1M — lib 쪽 costKrw와 같은 환율로 원 환산
+// --model(2026-10-08): 하이쿠 5.5(10-07 출시, 프롬프트 10만 토큰 이하 $0.10/$0.50 — 4.5의 1/10) 재시험용. 기본은 옛 결과와 같은 4.5.
+//   하이쿠 5.5는 적응형 생각이 기본으로 켜져(effort medium) 출력 토큰에 생각이 들어간다 → 상한 8000(소넷 셰도우 사고의 교훈: 1500이 생각에 다 쓰여 답 없이 끝남).
+const MODEL = arg('model', 'claude-haiku-4-5');
+const PRICE = { 'claude-haiku-4-5': { in: 1, out: 5 }, 'claude-haiku-5-5': { in: 0.1, out: 0.5 } }[MODEL];   // $/1M — lib 쪽 costKrw와 같은 환율로 원 환산
+if (!PRICE) { console.error(`--model=${MODEL}: 단가 표에 없음`); process.exit(1); }
+const MAX_TOKENS = MODEL === 'claude-haiku-4-5' ? 1000 : 8000;
+const MSUF = MODEL === 'claude-haiku-4-5' ? '' : `-${MODEL.replace('claude-', '')}`;
 const KRW = 1400;
 const K = 5;
 const SEEDS = [1, 2];
 const LABEL = 'sonnet-tier';
-const OUT = path.join(ROOT, 'probe-data', `haiku-pick-${VARIANT}.jsonl`);
+const OUT = path.join(ROOT, 'probe-data', `haiku-pick-${VARIANT}${MSUF}.jsonl`);
 
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
 const cdb = j('characterDatabase.json');
@@ -169,7 +175,7 @@ const line = '─'.repeat(84);
 //   지표: 하이쿠 최종 답과 정답의 겹침 vs 엔진 1번 후보와 정답의 겹침(완전 복원·4명+·평균).
 if (has('ranker')) {
   if (VARIANT !== 'compact') { console.error('--ranker는 --variant=compact만'); process.exit(1); }
-  const ROUT = path.join(ROOT, 'probe-data', 'haiku-ranker-compact.jsonl');
+  const ROUT = path.join(ROOT, 'probe-data', `haiku-ranker-compact${MSUF}.jsonl`);
   const ssr = cdb.filter((c) => String(c.rarity).toUpperCase() === 'SSR');
   const TREASURE = new Set(j('treasureEffects.json').characters.map((t) => t.characterId));
   function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
@@ -208,7 +214,7 @@ if (has('ranker')) {
       const { system, user } = buildPrompt(sm.sample, cands);
       if (has('dry')) { console.log(system + '\n\n=== USER ===\n' + user); console.log(`\n추정 입력 ≈ ${Math.round((system.length + user.length) / 3.2)} 토큰 · 표본 ${samples.length}건`); process.exit(0); }
       const t0 = Date.now();
-      const msg = await client.messages.create({ model: MODEL, max_tokens: 1000, system, messages: [{ role: 'user', content: user }], output_config: { format: { type: 'json_schema', schema: SCHEMA } } });
+      const msg = await client.messages.create({ model: MODEL, max_tokens: MAX_TOKENS, system, messages: [{ role: 'user', content: user }], output_config: { format: { type: 'json_schema', schema: SCHEMA } } });
       const text = msg.content.find((b) => b.type === 'text')?.text || '';
       let out = null; try { out = JSON.parse(text); } catch { /* 아래 */ }
       const pick = cands[(out?.candidate || 1) - 1] || cands[0];
@@ -261,7 +267,7 @@ if (has('dry') || has('live')) {
     }
     const t0 = Date.now();
     const msg = await client.messages.create({
-      model: MODEL, max_tokens: 1000, system,
+      model: MODEL, max_tokens: MAX_TOKENS, system,
       messages: [{ role: 'user', content: user }],
       output_config: { format: { type: 'json_schema', schema: SCHEMA } },
     });
