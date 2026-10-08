@@ -5,6 +5,7 @@
  *   node scripts/experimentExplain.mjs --dry                 # 프롬프트 1건만 출력(돈 0)
  *   node scripts/experimentExplain.mjs --live                # 표본마다 하이쿠 4.5 · 5.5로 한 번씩 → probe-data/explain-compare.md
  *   node scripts/experimentExplain.mjs --live --n=12 --lang=en
+ *   node scripts/experimentExplain.mjs --live --models=claude-haiku-5-5,claude-haiku-5-5@low,claude-haiku-5-5@medium   # @effort = 생각 켜고 그 수준
  *
  * 프롬프트와 요청 본문은 운영과 **같은 것**(lib/aiExplainPrompt.js)이다. 조합은 사이트 경로(pickSiteTeam)가 고른 1위.
  * 표본 = 얇은 로스터 판정 표본(probe-data/thin-cases-s1.jsonl)에서 모드마다 고르게. 판정은 사람(또는 클로드)이 md를 읽고 한다 —
@@ -68,7 +69,7 @@ for (const c of picks) {
   const fullMembers = r.team.members.map((m) => byTitle.get(m.title));
   const { system, userContent } = buildExplainPrompt({
     fullMembers, reasons: r.team.reasons, archetypeNote: r.team.archetypeNote || null, mode: c.mode,
-    modeLabel: MODE_LABEL[c.mode] || c.mode, treasureIdSet, langName: LANG_NAMES[LANG], noteByName,
+    modeLabel: MODE_LABEL[c.mode] || c.mode, treasureIdSet, langName: LANG_NAMES[LANG], noteByName, lang: LANG,
   });
   if (has('dry')) { console.log(system + '\n\n=== USER ===\n' + userContent); process.exit(0); }
   out.push(`## ${c.id} · ${MODE_LABEL[c.mode]}${c.boss ? ` · ${c.boss}` : ''} · ${r.path}`, '', `조합: ${fullMembers.map((m) => `${m.name_kr}${treasureIdSet.has(m.id) ? '💎' : ''}`).join(' · ')}`, '');
@@ -77,14 +78,15 @@ for (const c of picks) {
     const t0 = Date.now();
     let text = '', usage = {}, err = null;
     try {
-      const msg = await client.messages.create(explainRequest(model, system, userContent));
+      const [mid, effort] = model.split('@');
+      const msg = await client.messages.create(explainRequest(mid, system, userContent, effort || null));
       const raw = msg.content?.find((b) => b.type === 'text')?.text || '';
       text = msg.stop_reason === 'stop_sequence' ? `${raw}}` : raw;
       usage = msg.usage || {};
     } catch (e) { err = String(e.message || e).slice(0, 300); }
     const ms = Date.now() - t0;
     const parsed = text ? extractJson(text) : null;
-    const p = PRICE[model];
+    const p = PRICE[model.split('@')[0]];
     const krw = ((usage.input_tokens || 0) * p.in + (usage.output_tokens || 0) * p.out) / 1e6 * KRW;
     const t = tot[model]; t.krw += krw; t.ms += ms; if (!parsed?.reasoning) t.fail++; else t.chars += parsed.reasoning.length;
     out.push(`**${model}** — ${krw.toFixed(2)}원 · ${(ms / 1000).toFixed(1)}초 · 입력 ${usage.input_tokens || 0} / 출력 ${usage.output_tokens || 0}${usage.output_tokens_details?.thinking_tokens ? ` (생각 ${usage.output_tokens_details.thinking_tokens})` : ''}`, '');
@@ -94,7 +96,7 @@ for (const c of picks) {
 const n = picks.length;
 out.splice(4, 0, '| 모델 | 건당 | 평균 시간 | 실패 | 평균 글자 |', '|---|---|---|---|---|',
   ...MODELS.map((m) => `| ${m} | ${(tot[m].krw / n).toFixed(2)}원 | ${(tot[m].ms / n / 1000).toFixed(1)}초 | ${tot[m].fail} | ${Math.round(tot[m].chars / Math.max(1, n - tot[m].fail))} |`), '');
-const OUTF = path.join(ROOT, 'probe-data', `explain-compare-${LANG}.md`);
+const OUTF = path.join(ROOT, 'probe-data', `explain-compare-${LANG}${arg('tag', '') ? '-' + arg('tag') : ''}.md`);
 fs.writeFileSync(OUTF, out.join('\n'));
 for (const m of MODELS) console.log(`${m}: 건당 ${(tot[m].krw / n).toFixed(2)}원 · ${(tot[m].ms / n / 1000).toFixed(1)}초 · 실패 ${tot[m].fail}/${n}`);
 console.log(`→ ${path.relative(ROOT, OUTF)}`);

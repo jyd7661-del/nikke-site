@@ -17,7 +17,10 @@ function burstCooldownSeconds(c) {
 
 // 캐릭터 한 명을 AI 설명용 한 줄 요약으로. characterDatabase.json 항목(c)을 그대로 받는다.
 // (조합 구성에는 더 이상 쓰이지 않고, 이미 확정된 조합을 설명할 때 맥락으로만 사용한다.)
-export function charSummaryLine(c, mode, treasureIdSet, noteByName) {
+// lang(2026-10-08): 괄호 안 이름을 사용자 언어로 — 예전엔 언제나 name_kr이라 일본어 설명에도 한국어 이름만 주어졌고,
+//   하이쿠 5.5는 앞의 영문 title을 그대로 받아써서 한국어 문장에 "Miranda·Prika"가 섞였다(비교 8건 중 5건).
+const displayName = (c, lang) => (lang === 'ja' ? (c.name_ja || c.name_kr || c.title) : lang === 'en' ? c.title : (c.name_kr || c.title));
+export function charSummaryLine(c, mode, treasureIdSet, noteByName, lang = 'ko') {
   const tierKey = MODE_TIER_KEY[mode] || 'story';
   const note = noteByName?.get(c.title);
   const hasTreasure = treasureIdSet.has(c.id);
@@ -32,7 +35,7 @@ export function charSummaryLine(c, mode, treasureIdSet, noteByName) {
     parts.push('애장품 미보유(공략상 권장, 미보유 시 위 티어보다 훨씬 낮게 평가됨)');
   }
   if (note?.totemRole) parts.push('토템 후보(버스트 대신 상시 버프/회복 역할 가능)');
-  return `- ${c.title}(${c.name_kr}): ${parts.filter(Boolean).join(', ')}`;
+  return lang === 'en' ? `- ${c.title}: ${parts.filter(Boolean).join(', ')}` : `- ${c.title}(${displayName(c, lang)}): ${parts.filter(Boolean).join(', ')}`;
 }
 
 // AI가 reasoning 문자열 안에 이스케이프 없는 실제 줄바꿈을 넣는 경우가 있는데, 이건 JSON
@@ -74,8 +77,8 @@ const MAX_REASON_CHARS = 250;
 const MAX_NOTE_CHARS = 400;
 
 // 설명 프롬프트 — { system, userContent }. 인자는 옛 explainChosenTeam과 같고 noteByName(투자 노트 title→항목)만 더 받는다.
-export function buildExplainPrompt({ fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote = null, noteByName }) {
-  const rosterText = fullMembers.map((c) => charSummaryLine(c, mode, treasureIdSet, noteByName)).join('\n');
+export function buildExplainPrompt({ fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote = null, noteByName, lang = 'ko' }) {
+  const rosterText = fullMembers.map((c) => charSummaryLine(c, mode, treasureIdSet, noteByName, lang)).join('\n');
 
   // 아키타입 노트는 근거 문장 안에도 통째로 박혀 있고(synergyEngine이 "'X' 조합으로 알려진
   // 구성입니다. {note}" 형태로 만든다) 아래 noteBlock으로 한 번 더 보내진다. 같은 영어 원문을
@@ -115,6 +118,12 @@ export function buildExplainPrompt({ fullMembers, reasons, archetypeNote, mode, 
 - 스택을 모아 한 번에 터뜨리는 캐릭터가 있으면 그 운용도 한 마디로 짚어주세요.
 - 이건 조합을 바꾸라는 뜻이 아닙니다. 이미 확정된 구성이 **왜 그렇게 생겼는지**를 설명하라는 뜻입니다.
 
+[형식] (2026-10-08 하이쿠 5.5로 바꾸며 추가 — 비교 8건에서 평균 455자로 길었고 영문 이름이 섞였다)
+- 캐릭터 이름은 ${lang === 'en' ? '[확정된 조합]의 영문 이름' : '[확정된 조합] 줄의 괄호 안 이름'}을 그대로 쓰세요.${lang === 'en' ? '' : ' 영문 원문 이름(괄호 앞)은 쓰지 마세요.'}
+- 분량은 ${lang === 'en' ? '120단어' : '350자'}를 넘기지 마세요. 근거를 전부 나열하지 말고 조합 구조와 가장 중요한 주의점만 고르세요.
+- 채점 근거의 "[조건 확인]", "[랭커 기록]" 같은 대괄호 꼬리표는 문장에 옮기지 말고 내용만 풀어 쓰세요.
+- 토템·딜러 역할은 [확정된 조합]과 채점 근거에 적힌 것만 따르세요. "토템 후보"라고 적히지 않은 니케를 토템이라고 하지 마세요.
+
 반드시 아래 JSON 형식으로만, 다른 설명이나 코드블록 표시 없이 출력하세요.
 {"reasoning": "${langName}로 작성한 200~350자(영어는 60~120단어) 분량의 설명, 줄바꿈 없이 한 문단"}`;
 
@@ -135,13 +144,14 @@ ${reasonsText}${noteBlock}
 // 하이쿠 5.5부터는 적응형 생각이 **기본으로 켜져** 있어(effort medium) 그대로 두면 1024 상한을 생각이 먹을 수 있다 → 명시적으로 끈다.
 export const EXPLAIN_MAX_TOKENS = 1024;
 const THINKING_ON_BY_DEFAULT = new Set(['claude-haiku-5-5', 'claude-sonnet-5-5', 'claude-sonnet-5']);
-export function explainRequest(model, system, userContent) {
+// effort(선택, 2026-10-08 유저 제안 "노력 정도를 바꿀 수 있지 않나"): 주면 생각을 켜고 그 수준으로(low|medium|high). 생각 토큰이 출력에 들어가 상한을 넉넉히.
+export function explainRequest(model, system, userContent, effort = null) {
   return {
     model,
-    max_tokens: EXPLAIN_MAX_TOKENS,
+    max_tokens: effort ? 8000 : EXPLAIN_MAX_TOKENS,
     system,
     messages: [{ role: 'user', content: userContent }],
-    ...(THINKING_ON_BY_DEFAULT.has(model) ? { thinking: { type: 'disabled' } } : {}),
+    ...(effort ? { thinking: { type: 'adaptive' }, output_config: { effort } } : THINKING_ON_BY_DEFAULT.has(model) ? { thinking: { type: 'disabled' } } : {}),
     stop_sequences: ['}'],
   };
 }

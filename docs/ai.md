@@ -24,6 +24,7 @@
 **75% 절감.** 여기에 캐시 적중분은 추가로 제외됩니다.
 
 - 모델은 `AI_EXPLAIN_MODEL` 환경변수로 교체 가능 (`claude-sonnet-5` 넣으면 원복)
+- **2026-10-08: 하이쿠 4.5 → 하이쿠 5.5 + effort medium**(유저 지시). 프롬프트·요청 본문은 `lib/aiExplainPrompt.js`(실험 `scripts/experimentExplain.mjs`와 공유). 8건 비교: 4.5 6.95원·3.8초 → 5.5 medium 1.54원·7.4초, 영문 이름 섞임 0/8 · 평균 351자. 캐시 키 v4로 옛 설명 폐기
 - `thinking`/`output_config` 제거 — thinking 토큰은 출력 요금으로 청구되어 비용의 절반가량 차지
 - 프롬프트로 보내는 근거 문장은 250자, 아키타입 노트는 400자로 캡 (화면 원본은 그대로)
 - 아키타입 노트가 근거 문장과 noteBlock에 **두 번** 실려 나가던 것 제거

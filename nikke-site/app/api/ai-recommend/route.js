@@ -66,7 +66,13 @@ const DAILY_GLOBAL_LIMIT = Number(process.env.AI_DAILY_GLOBAL_LIMIT || 1000);
 //
 // 되돌리기 쉽게 환경변수로 뺐다. 설명 품질이 떨어진다고 판단되면 Vercel 환경변수에
 // AI_EXPLAIN_MODEL=claude-sonnet-5 를 넣으면 코드 수정 없이 원복된다.
-const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-4-5';
+// 2026-10-08: claude-haiku-4-5 -> claude-haiku-5-5 (유저 지시 "5.5로 바꿔"). 8건 비교에서 건당 6.56원 -> 0.77원.
+//   비교에서 보인 약점(지시보다 김 · 영문 이름 섞임 · 토템 오지정)은 lib/aiExplainPrompt.js [형식] 절로 막았다. AI_EXPLAIN_MODEL로 되돌릴 수 있다.
+const MODEL = process.env.AI_EXPLAIN_MODEL || 'claude-haiku-5-5';
+// effort(2026-10-08, 유저 제안 "노력 정도를 바꿀 수 있지 않나"): 생각을 켜고 medium. 8건 비교(probe-data/explain-compare-ko-effort.md):
+//   생각 끔 0.81원·2.6초·437자·영문 이름 섞임 4/8 · low 0.89원·412자·3/8 · **medium 1.54원·7.4초·351자·0/8** · high 2.05원·10.3초·330자·0/8.
+//   high는 수치까지 정확하지만 기다리는 화면에 10초는 길다. 'none'이면 생각 끔(옛 동작). AI_EXPLAIN_EFFORT로 바꾼다.
+const EXPLAIN_EFFORT = ['low', 'medium', 'high', 'none'].includes(process.env.AI_EXPLAIN_EFFORT) ? process.env.AI_EXPLAIN_EFFORT : 'medium';
 
 // ---------------------------------------------------------------------------
 // AI 조합 구성 (2026-09-15, docs/ai-teams-plan.md). 유저 결정: 예산 10,000원/일 · 소넷 · 폴백 구간만.
@@ -229,7 +235,8 @@ function buildCacheKey({ mode, tower, langKey, members, reasons, archetypeNote, 
     // v2(2026-08-08): 프롬프트로 보내는 근거 문장에 길이 상한을 두고 아키타입 노트 중복을 제거.
     // v3(2026-08-15): 조합의 **구조**(누가 딜러이고 누가 토템인지)를 반드시 쓰도록 지시 추가.
     //   안 올리면 이미 캐시된 조합은 옛 설명이 그대로 나가서 이 수정이 아무 효과가 없다.
-    v: 3,
+    // v4(2026-10-08): 설명 모델을 하이쿠 5.5로 바꾸고 [형식] 절(이름·분량·꼬리표·토템) 추가 — 옛 4.5 설명이 계속 나가지 않게.
+    v: 4,
     mode,
     // 2026-08-09: 기업 타워 추가. 멤버·근거가 달라지면 키도 달라지지만, 타워만 다르고
     // 결론이 같은 경우가 있을 수 있어 명시적으로 넣는다(설명 문장에 타워 이름이 들어간다).
@@ -419,15 +426,15 @@ async function tryAiTeam({ client, supabase, characters, mode, boss, tower, trea
 // composeNote(2026-09-15): AI가 조합을 직접 구성한 경우 그때의 영문 이유. 설명 프롬프트에 참고로 실어
 // 구성 의도(예: "Crust's distributed-damage buff feeds Yukiko")가 설명 문장에 이어지게 한다.
 // 반환은 { reasoning, usage } — usage로 원 단위 예산에 합산한다(옛 반환은 문자열이었다).
-async function explainChosenTeam(client, fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote = null) {
+async function explainChosenTeam(client, fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote = null, langKey = 'ko') {
   const { system, userContent } = buildExplainPrompt({
-    fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote, noteByName: INVESTMENT_NOTE_BY_NAME,
+    fullMembers, reasons, archetypeNote, mode, modeLabel, treasureIdSet, langName, composeNote, noteByName: INVESTMENT_NOTE_BY_NAME, lang: langKey,
   });
 
   try {
-    // 요청 본문은 lib/aiExplainPrompt.js explainRequest — 2026-08-08: thinking을 뺐다(이미 정해진 사실을 옮기는 일이라 추론이 필요 없고
-    // 생각 토큰이 비용의 절반). 생각이 기본으로 켜진 모델(하이쿠 5.5 등)은 거기서 명시적으로 끈다.
-    const msg = await client.messages.create(explainRequest(MODEL, system, userContent));
+    // 요청 본문은 lib/aiExplainPrompt.js explainRequest. 2026-08-08엔 thinking을 뺐는데(하이쿠 4.5에선 생각 토큰이 비용의 절반),
+    // 2026-10-08 하이쿠 5.5는 단가가 1/10이라 생각을 켜도(medium) 4.5보다 4.5배 싸고, 생각을 꺼면 지시(이름·분량)를 덜 지켰다.
+    const msg = await client.messages.create(explainRequest(MODEL, system, userContent, EXPLAIN_EFFORT === 'none' ? null : EXPLAIN_EFFORT));
     const rawText = msg.content?.find((c) => c.type === 'text')?.text || '';
     const text = msg.stop_reason === 'stop_sequence' ? `${rawText}}` : rawText;
     const parsed = extractJson(text);
@@ -738,7 +745,8 @@ export async function POST(req) {
         modeLabel,
         treasureIdSet,
         langName,
-        composeNote
+        composeNote,
+        langKey
       );
       if (generated?.reasoning) {
         aiReasoning = generated.reasoning;
