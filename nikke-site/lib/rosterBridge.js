@@ -25,6 +25,16 @@ const rosterIdToCdb = new Map(
     .filter(([, cdbChar]) => Boolean(cdbChar))
 );
 
+// **상시 모집 SR** — 콜라보가 아닌 SR(제조사 abnormal = 콜라보 한정). 2026-10-08 유저: "SR 중에서 뽑기에서 쉽게 뽑을 수 있는 애들은
+// 상시 선택이 좋아 보이는데" — 일반 모집에서 흔히 나오고 라피·아니스·네온은 스토리로 받으니 사실상 누구나 가졌다. 홈 화면이 처음부터
+// 보유로 골라 두고(해제 가능) 'SR 포함' 토글 없이도 보인다. 콜라보 SR(히메노·파스칼·람…)은 기간 한정이라 토글 뒤에 둔다.
+// 판정은 데이터(characterDatabase.manufacturer)에서 — 새 SR이 들어오면 자동으로 따라간다.
+export const STANDARD_SR_IDS = CHARACTERS
+  .filter((c) => c.rarity === 'SR' && rosterIdToCdb.get(c.id) && rosterIdToCdb.get(c.id).manufacturer !== 'abnormal')
+  .map((c) => c.id);
+const STANDARD_SR_SET = new Set(STANDARD_SR_IDS);
+export const isStandardSR = (id) => STANDARD_SR_SET.has(id);
+
 // UI id 하나를 characterDatabase 항목으로 바꾼다. 화면에서 티어 같은 원본 값을 보여줄 때 쓴다.
 // 여기서도 cdbId 매핑을 그대로 타므로 rita→liter 같은 13명이 조용히 빠지지 않는다.
 export function cdbForRosterId(id) {

@@ -6,7 +6,7 @@ import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import NicknamePrompt from '@/components/NicknamePrompt';
 import { recommend } from '@/lib/recommend';
-import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
+import { resolveRosterIdsToCdb, STANDARD_SR_IDS } from '@/lib/rosterBridge';
 import { getDataFreshnessMeta } from '@/lib/synergyEngine';
 import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -22,7 +22,8 @@ const TREASURE_AVAILABLE_IDS = new Set(CHARACTERS.filter((c) => c.hasTreasure).m
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
   const { t, lp } = useLanguage();
-  const [ownedIds, setOwnedIds] = useState(new Set());
+  // 2026-10-08: 상시 모집 SR(lib/rosterBridge STANDARD_SR_IDS)은 처음부터 보유로 골라 둔다(유저 요청 — 사실상 누구나 가졌다). 해제 가능.
+  const [ownedIds, setOwnedIds] = useState(() => new Set(STANDARD_SR_IDS));
   const [treasureIds, setTreasureIds] = useState(new Set());
   const [showResult, setShowResult] = useState(false);
   const [rosterLoading, setRosterLoading] = useState(false);
@@ -40,7 +41,13 @@ export default function Home() {
     if (!user) return;
     setRosterLoading(true);
     fetchRoster(user.id).then((rows) => {
-      setOwnedIds(new Set(rows.map((r) => r.id)));
+      const ids = new Set(rows.map((r) => r.id));
+      // 로그인 사용자는 저장된 보유 목록이 정본이다. 다만 상시 SR을 **하나도** 안 가진 목록(대개 SR이 화면에 없던 09-15 이전에 만든 것)이면
+      // 한 번 채워 저장한다. 그 뒤 사용자가 해제한 것은 다시 채우지 않는다(SR이 하나라도 남아 있으면 건드리지 않음).
+      if (!STANDARD_SR_IDS.some((id) => ids.has(id))) {
+        STANDARD_SR_IDS.forEach((id) => { ids.add(id); addToRoster(user.id, id); });
+      }
+      setOwnedIds(ids);
       // 애장품이 실제로 출시된 캐릭터만 인정합니다. 예전에는 모든 캐릭터에 💎 버튼이
       // 떠서, 애장품이 없는 캐릭터(예: 아니스: 스타)에도 보유 표시가 저장될 수 있었고
       // 그 상태가 결과 화면에 "(애장품)"으로 잘못 표시됐습니다. 이미 저장된 잘못된

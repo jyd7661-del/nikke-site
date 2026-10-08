@@ -5,7 +5,7 @@ import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { characterName, characterSearchText, localizedCharacter } from '@/lib/characterNames';
-import { cdbForRosterId } from '@/lib/rosterBridge';
+import { cdbForRosterId, isStandardSR } from '@/lib/rosterBridge';
 import { effectiveTier } from '@/lib/synergyEngine';
 
 // 카드 오른쪽 위 티어 배지.
@@ -143,11 +143,12 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
   const [burstFilter, setBurstFilter] = useState('all');
   // SR 표시 토글(2026-09-15). 기본은 접힘 — 대부분의 유저에겐 SSR 목록이 본체다.
   // 다만 이미 SR을 보유로 골라 둔 유저는 펼친 채로 시작해야 자기 선택이 보인다.
+  // 2026-10-08: 토글은 **콜라보 SR만** 접는다. 상시 모집 SR(lib/rosterBridge STANDARD_SR_IDS)은 처음부터 보유로 골라 두고 늘 보인다(유저 요청).
   const [showSR, setShowSR] = useState(false);
   useEffect(() => {
     let stored = null;
     try { stored = window.localStorage.getItem('nikke:showSR'); } catch { /* 사생활 모드 등 */ }
-    const ownsSR = CHARACTERS.some((c) => c.rarity === 'SR' && ownedIds.has(c.id));
+    const ownsSR = CHARACTERS.some((c) => c.rarity === 'SR' && !isStandardSR(c.id) && ownedIds.has(c.id));
     setShowSR(stored === '1' || ownsSR);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -158,7 +159,7 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
   const filtered = useMemo(() => {
     return CHARACTERS.filter((c) => {
       if (burstFilter !== 'all' && c.burst !== Number(burstFilter)) return false;
-      if (!showSR && c.rarity === 'SR') return false;
+      if (!showSR && c.rarity === 'SR' && !isStandardSR(c.id)) return false;
       // 검색은 한/영/일 어느 표기로 쳐도 걸린다(lib/characterNames.js).
       if (query && !characterSearchText(c).includes(query.trim().toLowerCase())) return false;
       return true;
