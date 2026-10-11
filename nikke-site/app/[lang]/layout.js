@@ -31,6 +31,8 @@ export function generateMetadata({ params }) {
     // 삭제하면 소유권이 풀려 Search Console 접근을 잃는다.
     verification: {
       google: 'cXe2elGxOSNx992Nm62TZGosEFaQTKt-3PZGWy3VLAk',
+      // 네이버 서치어드바이저 소유 확인(2026-10-11). 09-29~10-10 확인: 네이버에 우리 페이지 0개 — 사이트 등록 자체가 안 돼 있었다(목록엔 블로그만).
+      other: { 'naver-site-verification': '9d29c337685bc42ed9fcd8c2a8a9b185189c3e85' },
     },
   };
 }
