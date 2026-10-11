@@ -160,6 +160,7 @@ node scripts/testJudgmentMatch.mjs  # 사이트 추천 ↔ 내 판정 일치율(
 | `docs/ai-teams-plan.md` | AI 조합 추천 운영 전환 설계(2026-09-15, 소넷 기준) — **09-26 유저 결정으로 하이쿠·엔진 우선으로 바뀜**(머리말) |
 | `docs/open-items.md` | **지금 열린 항목 · 현재 기준선 · 성장 계획 3축(단일 출처)** — 짧게 유지 |
 | `docs/log/YYYY-MM.md` | 작업 경위·실측·함정 기록(새것이 위). 옛 `open-items.md` 본문이 여기 있다 |
+| `docs/new-game-playbook.md` | **다른 게임 확장 플레이북**(2026-10-11) — 니케에서 효과가 확인된 방법·함정·필요한 것, 출시 일정표, 새 게임 착수 질문 30개. 1순위 시프트업 차기작 |
 | `docs/pc-migration.md` | 미니 PC 이관(2026-09-24~25 완료) — **git 밖에 있어 PC를 옮길 때 같이 옮겨야 하는 것**(`.env.local`·`probe-data`·메모리) |
 
 경로별 규칙은 `.claude/rules/`에 있다 — 해당 파일을 건드릴 때만 자동으로 들어온다.
