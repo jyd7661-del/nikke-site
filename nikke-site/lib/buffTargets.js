@@ -45,6 +45,13 @@ export function resolveAllyScope(scope, caster, team) {
   return out;
 }
 
+// 대상절이 거는 조건(도감 "스킬로 이어지는 니케" 절이 화면 문구를 만들 때 쓴다, 2026-10-11). resolveAllyScope와 같은 해석.
+export function scopeCondition(scope) {
+  const s = lc(scope);
+  const el = ELEMENTS.find((e) => new RegExp(`all ${e} (code|type) all(y|ies)`).test(s) || new RegExp(`allies with ${e} element`).test(s)) || null;
+  const wp = WEAPON_WORDS.find(([w]) => s.includes(w));
+  return { element: el, weapon: wp ? wp[1] : null, squad: /from the same squad/.test(s) };
+}
 // 캐릭터마다 조건부 아군 범위 목록을 한 번만 뽑는다(엔진은 후보 수천 팀에 이걸 부른다).
 const scopeCache = new Map();
 function conditionalScopes(c) {

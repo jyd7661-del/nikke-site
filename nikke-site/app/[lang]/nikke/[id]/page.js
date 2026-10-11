@@ -31,6 +31,8 @@ import DexInvestment from '@/components/DexInvestment';
 import DexTeams from '@/components/DexTeams';
 import DexUsage from '@/components/DexUsage';
 import DexCta from '@/components/DexCta';
+import DexRelations from '@/components/DexRelations';
+import { alternativesFor, companionsFor, skillLinksFor } from '@/lib/dexRelations';
 import { localeMeta } from '@/lib/locale';
 import { seo, dexLabels } from '@/lib/seoText';
 
@@ -103,7 +105,6 @@ export default function NikkeDetailPage({ params }) {
     counts: u.counts,
     tiers: u.tiers,
     source: USAGE_SOURCE,
-    partners: u.partners.slice(0, 5).map((p) => ({ member: asMember(p.title), count: p.count })),
     teams: ['raid', 'tower', 'campaign', 'pvp']
       .map((kind) => u[kind][0])
       .filter(Boolean)
@@ -165,6 +166,15 @@ export default function NikkeDetailPage({ params }) {
       {/* 실사용 데이터 — enikk에서 옮긴 실사용 조합(2026-09 기준 216건)을 우리가 집계한 것.
           위 '등장 조합'(prydwen의 추천 구성)과 성격이 다르다: 이쪽은 실제로 쓰인 기록이다. */}
       <DexUsage usage={usageForClient} />
+
+      {/* 대신 쓸 니케 · 함께 쓸 니케 · 스킬 연결 (2026-10-11) — 계산은 lib/dexRelations.js(서버), 데이터 그대로의 사실만.
+          "이 니케 대신 누구를, 누구와 같이 쓰나" — 도감에 오는 사람이 묻는 것(유저 기준: 정보를 얻는 사람에게 유용한가) */}
+      <DexRelations
+        self={{ title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null }}
+        alternatives={alternativesFor(c)}
+        companions={companionsFor(c)}
+        skill={skillLinksFor(c)}
+      />
 
       {/* 도구로 보내는 퍼널 — 이 페이지의 최종 목적 */}
       <DexCta character={info} />

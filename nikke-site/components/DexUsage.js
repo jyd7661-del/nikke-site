@@ -57,7 +57,7 @@ export default function DexUsage({ usage }) {
   const { lang, t } = useLanguage();
   if (!usage) return null;
 
-  const { totals, counts, tiers, partners, teams, subsets, source } = usage;
+  const { totals, counts, tiers, teams, subsets, source } = usage;
   const hasAny = counts.all > 0 || (tiers || []).length > 0 || (subsets || []).length > 0;
   if (!hasAny) return null;
 
@@ -125,21 +125,7 @@ export default function DexUsage({ usage }) {
         </div>
       )}
 
-      {(partners || []).length > 0 && (
-        <div className="mt-4">
-          <h3 className="text-sm font-bold text-slate-200 mb-2">{t('dex_usage_partners_heading')}</h3>
-          <p className="text-sm space-x-2">
-            {partners.map((p, i) => (
-              <span key={p.member.id || p.member.title || i}>
-                {i > 0 && <span className="text-slate-600">· </span>}
-                <MemberChip member={p.member} lang={lang} />
-                <span className="text-slate-500 text-xs"> {t('dex_usage_times')(p.count)}</span>
-              </span>
-            ))}
-          </p>
-        </div>
-      )}
-
+      {/* 2026-10-11: '자주 함께 쓰인 니케'는 DexRelations의 '함께 쓰면 좋은 니케'로 옮겼다(추천 조합 횟수와 합쳐 한 목록으로 — 같은 목록이 두 번 나오지 않게) */}
       {(teams || []).length > 0 && (
         <div className="mt-4">
           <h3 className="text-sm font-bold text-slate-200 mb-2">{t('dex_usage_teams_heading')}</h3>
