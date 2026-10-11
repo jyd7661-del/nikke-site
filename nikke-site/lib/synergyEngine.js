@@ -391,10 +391,13 @@ function realElementUsage(character, bossElement, mode = 'bossing', treasureIds 
 // 21초 '늘리는' 대가로 강한 효과를 받는 캐릭터인데, 화면에는 "프리카가 쿨타임 감소를 제공해
 // 풀버스트 순환이 빨라집니다"라는 정반대 설명이 출력되고 있었다.
 // 이제 '버스트 스킬 쿨타임 ▼'만 CDR로 인정한다. (▼/▲ 기호는 게임 원문 표기 그대로다)
-function providesCDR(character) {
-  return (character.skills || []).some((s) =>
-    /cooldown of burst skill\s*▼/i.test(s.desc || '')
-  );
+// 2026-10-11: **애장품으로 생기는 전 아군 쿨감도 센다**(treasureIds를 받을 때). 기본 스킬 원문만 봐서, 애장품 목단(전 아군 ▼7.48초 —
+//   data/burstCdr.json cond "treasure")이 든 팀에도 "쿨타임 감소 제공 캐릭터가 없다"(cdr_missing)가 붙었다. AI 설명이 그 문장을 그대로 옮겼다
+//   (2026-10-08 설명 비교 T12). 출처는 주기 계산과 같은 burstCdr.json — 애장품 원문 대조로 적힌 값(A등급). `__NIKKE_TREASURE_CDR_PROVIDER_OFF`(비교용)면 옛 판정.
+function providesCDR(character, treasureIds = null) {
+  if ((character.skills || []).some((s) => /cooldown of burst skill\s*▼/i.test(s.desc || ''))) return true;
+  if (globalThis.__NIKKE_TREASURE_CDR_PROVIDER_OFF || !treasureIds?.has(character.id)) return false;
+  return (BURST_CDR_BY_TITLE.get(character.title) || []).some((e) => e.kind === 'ally' && e.cond === 'treasure');
 }
 
 // 버스트 스킬(항상 skills 배열의 마지막 원소)의 쿨타임이 20초인지.
@@ -1497,7 +1500,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   });
 
   // --- CDR 보유 여부 ---
-  const cdrMembers = members.filter(providesCDR);
+  const cdrMembers = members.filter((m) => providesCDR(m, treasureIds));
   if (cdrMembers.length > 0) {
     score += WEIGHTS.CDR_PRESENT;
     reasons.push(R.cdr_present({ names: cdrMembers.map((m) => rName(m, lang)) }));
@@ -2378,7 +2381,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     );
     const m = String(slot).match(/^B([123])/);
     let filtered = m ? pool.filter((c) => String(c.burst) === m[1]) : pool;
-    if (/-CDR$/i.test(String(slot))) filtered = filtered.filter(providesCDR);
+    if (/-CDR$/i.test(String(slot))) filtered = filtered.filter((c) => providesCDR(c, treasureIds));
     if (/^flex$/i.test(String(slot))) {
       const buffers = filtered.filter((c) => allyBuffStrengthCached(c) >= MEANINGFUL_ALLY_BUFF);
       if (buffers.length) filtered = buffers;

@@ -424,6 +424,21 @@ for (const t of teams) {
   globalThis.__NIKKE_CDR_ALONE_OFF = false;
 }
 
+// --- 애장품 쿨감도 "쿨감 제공 캐릭터"로 센다 (2026-10-11) — 애장품 목단 팀에 "쿨타임 감소 제공 캐릭터가 없다"가 붙어 AI 설명이 그대로 옮겼다 ---
+{
+  const team = ['Alice: Wonderland Bunny', 'Moran', 'Trina', 'Snow White: Heavy Arms', 'Maxwell'].map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[애장품 쿨감 제공] 시험용 이름이 DB에 없다');
+  else {
+    const missing = (r) => r.reasons.some((x) => /CDR\) 제공 캐릭터가 없어/.test(x));
+    const owned = new Set([byTitle.get('Moran').id]);
+    if (missing(engine.scoreTeam(team, 'campaign', { treasureIds: owned }))) problems.push('[애장품 쿨감 제공] 애장품 목단(전 아군 ▼7.48초)이 있는데 "쿨감 제공 캐릭터가 없다"가 붙는다');
+    if (!missing(engine.scoreTeam(team, 'campaign', {}))) problems.push('[애장품 쿨감 제공] 애장품 없는 목단도 쿨감 제공으로 센다 — 애장품 조건이 안 걸린다');
+    globalThis.__NIKKE_TREASURE_CDR_PROVIDER_OFF = true;
+    if (!missing(engine.scoreTeam(team, 'campaign', { treasureIds: owned }))) problems.push('[애장품 쿨감 제공] 스위치를 켜도 옛 문장이 안 나온다 — 시험이 옛 결함을 재현하지 못한다');
+    globalThis.__NIKKE_TREASURE_CDR_PROVIDER_OFF = false;
+  }
+}
+
 // --- 애장품 재진입 (2026-10-01) — 애장품 바이퍼 2스킬(3단계) "Re-enter Burst Skill Stage 2"는 treasureSkills.json 원문에서 읽는다 ---
 // 캠페인 · 리타/바이퍼/크라운/앨리스/맥스웰: 애장품이 없으면 같은 20초 2버스트 둘 중 하나가 낭비(1), 있으면 재진입으로 둘 다 쓴다(0)이고 바이퍼가 앞.
 // 스위치(TREASURE_REENTRY_OFF)를 켜면 애장품이 있어도 낭비 1로 돌아가야 한다.
