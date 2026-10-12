@@ -10684,6 +10684,9 @@
       "bossing": "A",
       "pvp": "B"
     },
+    "prydwenTags": [
+      "partner"
+    ],
     "skills": [
       {
         "name": "What Should I Do...?",
@@ -10714,6 +10717,61 @@
         "desc_kr": "자신에게 [마이티 스톰프 : 사용 무기 변경] : 차지 시간 : 1.5초로 고정 대미지 : 최종 공격력 101.3% 풀 차지 대미지 : 250% 대미지 유지 시간 : 1발 추가 효과 1 : [차지 대미지 1400% ▲] [1발 유지] 추가 효과 2 : [공격 대미지 77.35% ▲] [10초 유지]",
         "name_ja": "やっとほどけたぁ…！",
         "desc_ja": "自分に「マイティストンプ：使用武器変更」。チャージ時間：1.5秒に固定。ダメージ：最終攻撃力の101.3%。フルチャージダメージ：250%。維持時間：1秒。追加効果1：「チャージダメージ1400%▲」「1発間維持」。追加効果2：「攻撃ダメージ77.35%▲」「10秒間持続」。"
+      }
+    ]
+  },
+  {
+    "id": "sin-swift-bunny",
+    "title": "Sin: Swift Bunny",
+    "name_kr": "신 : 스위프트 바니",
+    "name_ja": "シン：スウィフトバニー",
+    "class": "attacker",
+    "burst": "3",
+    "element": "water",
+    "weapon": "sr",
+    "manufacturer": "missilis",
+    "rarity": "SSR",
+    "squad": "Real Kindness",
+    "releaseDate": "2026-09-24",
+    "img": "3/34/Sin_Swift_Bunny_MI.png",
+    "tiers": {
+      "story": "S",
+      "bossing": "A",
+      "pvp": "A"
+    },
+    "prydwenTags": [
+      "partner"
+    ],
+    "skills": [
+      {
+        "name": "Bunny Shift",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates at the start of battle. Affects self. ATK ▲ 15.35%. This effect is continuous. Activates during Full Charge if this unit is not in the Swift Carrot state. Affects self. Normal Attack Damage Multiplier ▲ 100% for 1 round(s). Charge Damage ▲ 52.12% for 1 round(s). Activates at the start of battle and when Full Charge is maintained for 1 or more seconds. Affects self. Initiates a new Bunny Mode based on the current mode. Activates if this unit is in the Bunny Mode: Stance state. Initiates Bunny Mode: Engage. This effect is continuous and cannot be removed. Activates if this unit is not in the Bunny Mode: Stance state. Initiates Bunny Mode: Stance. This effect is continuous and cannot be removed. Activates when this unit enters the Bunny Mode: Engage state. Affects all allies in the Bunny Mode: Stance state. Initiates Bunny Mode: Engage. This effect is continuous and cannot be removed. Activates when this unit enters the Bunny Mode: Stance state. Affects all allies in the Bunny Mode: Engage state. Initiates Bunny Mode: Stance. This effect is continuous and cannot be removed.",
+        "name_kr": "바니 시프트",
+        "desc_kr": "전투 시작 시 자신에게 [공격력 15.35% ▲] [지속] 풀 차지 시 자신이 스위프트 캐럿 상태가 아니라면 자신에게 [일반 공격 대미지 배율 100% ▲] [1발 유지] [차지 대미지 52.12% ▲] [1발 유지] 전투 시작 시와 풀 차지 상태를 1초 이상 유지 시 자신에게 [상태에 맞는 바니 모드 만 적용] 자신이 바니 모드 : 스탠스 상태라면 [ 바니 모드 : 인게이지] [지속] [해제 불가] 자신이 바니 모드 : 스탠스 상태가 아니라면 [ 바니 모드 : 스탠스] [지속] [해제 불가] 자신에게 바니 모드 : 인게이지 적용 시 바니 모드 : 스탠스 상태인 아군 전체에게 [ 바니 모드 : 인게이지] [지속] [해제 불가] 자신에게 바니 모드 : 스탠스 적용 시 바니 모드 : 인게이지 상태인 아군 전체에게 [ 바니 모드 : 스탠스] [지속] [해제 불가]",
+        "name_ja": "バニーシフト",
+        "desc_ja": "戦闘開始時、自分に「攻撃力15.35%▲」「持続」。 フルチャージした時、自分がスウィフトキャロット状態ではない場合は、自分に「通常攻撃ダメージ倍率100%▲」「1発間維持」「チャージダメージ52.12%▲」「1発間維持」。 戦闘開始時およびフルチャージ状態を1秒以上維持した時、自分に「条件に合うバニーモードのみ適用」。 自分がバニーモード：スタンス状態なら、「バニーモード：エンゲージ」「持続」「解除不可」。"
+      },
+      {
+        "name": "Bullet Switch",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates only if this unit is in the Bunny Mode: Engage state. Noise Bullets Function: Changes some attacks' damage into true damage. Effect 1: Normal attacks deal true damage. This effect is continuous and cannot be removed. Effect 2: Swift Carrot deals true damage. This effect is continuous and cannot be removed. Activates only if this unit is in the Bunny Mode: Stance state. Enhanced Bullets Function: Enhances this unit's offensive capabilities. Effect 1: Critical Rate ▲ 35.14%. This effect is continuous and cannot be removed. Effect 2: Critical Damage ▲ 75.12%. This effect is continuous and cannot be removed. Activates when using Burst Skill. Affects self. Swift Carrot: Changes the weapon in use Charge Time: Fixed at 0.5 sec Damage: 73.22% of final ATK Full Charge Damage: 300% Duration: 5 sec",
+        "name_kr": "스위칭 불렛",
+        "desc_kr": "자신이 바니 모드 : 인게이지 상태일 때 한하여 자신에게 [노이즈 불렛] 기능 : 공격을 방어력 무시 대미지로 변경합니다. 효과 1 : [일반 공격을 방어력 무시 대미지로 적용] [지속] [해제 불가] 효과 2 : [스위프트 캐럿을 방어력 무시 대미지로 적용] [지속] [해제 불가] 자신이 바니 모드 : 스탠스 상태일 때 한하여 자신에게 [인핸스 불렛] 기능 : 공격 능력을 강화합니다. 효과 1 : [크리티컬 확률 35.14% ▲] [지속] [해제 불가] 효과 2 : [크리티컬 대미지 75.12% ▲] [지속] [해제 불가] 버스트 스킬 사용 시 자신에게 [스위프트 캐럿 : 사용 무기 변경] : 차지 시간 : 0.5초로 고정 대미지 : 최종 공격력 73.22% 풀 차지 대미지 : 300% 대미지 유지 시간 : 5초",
+        "name_ja": "スイッチングバレット",
+        "desc_ja": "自分がバニーモード：エンゲージ状態の時のみ、自分に「ノイズバレット」。機能：攻撃を防御力無視ダメージに変更。効果1：「通常攻撃に防御力無視ダメージを適用」「持続」「解除不可」。効果2：「スウィフトキャロットを防御力無視ダメージとして適用」「持続」「解除不可」。 自分がバニーモード：スタンス状態の時のみ、自分に「エンハンスバレット」。機能：攻撃能力を強化する。効果1：「クリティカル確率35.14%▲」「持続」「解除不可」。効果2：「クリティカルダメージ75.12%▲」「持続」「解除不可」。 バーストスキル使用時、自分に「スウィフトキャロット：使用武器変更」。チャージ時間：0.5秒に固定。ダメージ：最終攻撃力の73.22%。フルチャージダメージ：300%。維持時間：5秒。"
+      },
+      {
+        "name": "Swift Piercing",
+        "type": "Active",
+        "cd": "40",
+        "desc": "Affects self. ATK ▲ 110% for 5 sec. Affects all enemies. Deals 516.6% of final ATK as Burst Skill damage. Activates if this unit is in the Bunny Mode: Stance state. Affects the same targets. Deals 958.9% of final ATK as additional damage. Activates if this unit is in the Bunny Mode: Engage state. Affects the same targets. Deals 854.6% of final ATK as true damage.",
+        "name_kr": "스위프트 피어싱",
+        "desc_kr": "자신에게 [공격력 110% ▲] [5초 유지] 적 전체에게 [ 최종 공격력 516.6% 버스트 스킬 대미지] 자신이 바니 모드 : 스탠스 상태라면 동일 적 대상에게 [ 최종 공격력 958.9% 추가 대미지] 자신이 바니 모드 : 인게이지 상태라면 동일 적 대상에게 [ 최종 공격력 854.6% 방어력 무시 대미지]",
+        "name_ja": "スウィフトピアシング",
+        "desc_ja": "自分に「攻撃ダメージ110%▲」「5秒間維持」。 敵全体に「最終攻撃力の516.6%のバーストスキルダメージ」。 自分がバニーモード：スタンス状態なら、同じ敵に「最終攻撃力の958.9%の追加ダメージ」。 自分がバニーモード：エンゲージ状態なら、同じ敵に「最終攻撃力の854.6%の防御力無視ダメージ」。"
       }
     ]
   }

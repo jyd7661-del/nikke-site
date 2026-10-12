@@ -33,7 +33,9 @@ const cdb = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'characterDatabas
 // 기준선 — 분류 안 된 절의 수. 규칙을 늘리면 이 값을 함께 낮춘다.
 // 2026-09-24 179 → 185: 길티 : 마이티 바니의 "바니 모드: 스탠스/인게이지" 상태 조건 6절. 저격 모드·화력 차지 상태처럼
 // 이름 붙은 자기 상태라 전환 빈도를 원문만으로 확정할 수 없다 — 기존 같은 유형도 분류하지 않고 둔다.
-const EXPECTED_UNMATCHED = 185;
+// 2026-10-12 185 → 193: 신 : 스위프트 바니(길티와 같은 부대 Real Kindness)의 같은 유형 8절 — "바니 모드: 스탠스/인게이지 상태일 때·진입할 때",
+// "Swift Carrot 상태가 아닐 때". 길티 때와 같은 이유(이름 붙은 자기 상태 — 전환 빈도를 원문으로 확정할 수 없다)로 분류하지 않는다.
+const EXPECTED_UNMATCHED = 193;
 
 // 빈도 계열. **위에서부터 먼저 맞는 것**을 쓴다(순서가 의미를 가진다).
 export const TRIGGER_CLASSES = [

@@ -9,59 +9,7 @@
     "staleAfterDays": 60,
     "excludedForUnknownMember": {
       "_note": "상위 25팀 중 우리 DB에 없는 캐릭터가 든 팀. 지어내지 않고 뺐다 — 그 캐릭터를 추가하면 이 팀들을 seasons의 제자리(rank)로 되돌릴 것(new-character 절차).",
-      "teams": [
-        {
-          "raid": 41,
-          "rank": 9,
-          "missing": [
-            "Sin: Swift Bunny"
-          ],
-          "members": [
-            "Moran",
-            "Takina Inoue",
-            "Guilty: Mighty Bunny",
-            "Flora",
-            "Sin: Swift Bunny"
-          ],
-          "parses": 200,
-          "maxDamage": "7.64B",
-          "avgDamage": "4.70B"
-        },
-        {
-          "raid": 41,
-          "rank": 10,
-          "missing": [
-            "Sin: Swift Bunny"
-          ],
-          "members": [
-            "Guilty: Mighty Bunny",
-            "Flora",
-            "Sin: Swift Bunny",
-            "Takina Inoue",
-            "Rapi: Red Hood"
-          ],
-          "parses": 200,
-          "maxDamage": "7.02B",
-          "avgDamage": "4.80B"
-        },
-        {
-          "raid": 41,
-          "rank": 18,
-          "missing": [
-            "Sin: Swift Bunny"
-          ],
-          "members": [
-            "Guilty: Mighty Bunny",
-            "Flora",
-            "Sin: Swift Bunny",
-            "Liter",
-            "Takina Inoue"
-          ],
-          "parses": 58,
-          "maxDamage": "7.75B",
-          "avgDamage": "5.07B"
-        }
-      ]
+      "teams": []
     }
   },
   "seasons": [
@@ -168,6 +116,30 @@
         },
         {
           "members": [
+            "Moran",
+            "Takina Inoue",
+            "Guilty: Mighty Bunny",
+            "Flora",
+            "Sin: Swift Bunny"
+          ],
+          "parses": 200,
+          "maxDamage": "7.64B",
+          "avgDamage": "4.70B"
+        },
+        {
+          "members": [
+            "Guilty: Mighty Bunny",
+            "Flora",
+            "Sin: Swift Bunny",
+            "Takina Inoue",
+            "Rapi: Red Hood"
+          ],
+          "parses": 200,
+          "maxDamage": "7.02B",
+          "avgDamage": "4.80B"
+        },
+        {
+          "members": [
             "Anis: Star",
             "Quency: Escape Queen",
             "Anchor: Innocent Maid",
@@ -249,6 +221,18 @@
           "parses": 58,
           "maxDamage": "9.21B",
           "avgDamage": "6.78B"
+        },
+        {
+          "members": [
+            "Guilty: Mighty Bunny",
+            "Flora",
+            "Sin: Swift Bunny",
+            "Liter",
+            "Takina Inoue"
+          ],
+          "parses": 58,
+          "maxDamage": "7.75B",
+          "avgDamage": "5.07B"
         },
         {
           "members": [
