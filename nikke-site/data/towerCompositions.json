@@ -3,9 +3,9 @@
     "source": "enikk.app",
     "sourceUrl": "https://enikk.app/tower#compositions",
     "server": "ALL",
-    "analyzedClears": 1057378,
-    "distinctRosters": 30198,
-    "method": "타워 > Compositions 탭을 브라우저로 열어 화면 값을 그대로 옮겼다(A등급). enikk의 /api/graphql은 robots.txt Disallow라 쓰지 않는다.",
+    "analyzedClears": 1487563,
+    "distinctRosters": 33088,
+    "method": "타워 > Compositions 탭을 브라우저로 열어 화면 값을 그대로 옮겼다(A등급). enikk의 /api/graphql은 robots.txt Disallow라 쓰지 않는다. 2026-10-12 갱신: 헤드리스 크롬으로 풀마다 상위 10팀 행을 펼쳐 Uses·% of clears·Floors·Avg/Lowest power를 옮겼다(멤버는 아이콘 접근성 이름).",
     "selection": "각 '타워 로스터 풀'의 'Most Used Compositions' 1페이지(사용 횟수 내림차순 상위 10팀)",
     "caveat": "KR 서버만 걸러 받으려 했으나 2026-08-20 기준 enikk 쪽에서 'Could not load compositions / Internal Server Error'가 나서 전 서버(ALL) 기준으로 옮겼다. 기존 campaignCompositions·pvp도 전 서버 기준이라 같은 잣대다.",
     "poolNote": "enikk '타워 로스터 풀' 칩 = 우리 tower 값. Tribe→null / Elysion / Missilis / Tetra / Over-Spec→pilgrim(우리는 필그림 제조사 또는 오버스펙을 같은 자격으로 본다).",
@@ -19,6 +19,8 @@
     {
       "pool": "tribe",
       "tower": null,
+      "poolTotal": 142,
+      "capturedOn": "2026-10-12",
       "teams": [
         {
           "members": [
@@ -28,10 +30,10 @@
             "Snow White: Heavy Arms",
             "Mast: Romantic Maid"
           ],
-          "uses": 23586,
-          "pctOfClears": 10.7,
-          "floors": 1260,
-          "avgPower": "898K",
+          "uses": 27474,
+          "pctOfClears": 9.8,
+          "floors": 1294,
+          "avgPower": "909.2K",
           "lowestPower": "74.6K"
         },
         {
@@ -42,9 +44,9 @@
             "Snow White: Heavy Arms",
             "Helm"
           ],
-          "uses": 11007,
-          "pctOfClears": 5,
-          "floors": 1279,
+          "uses": 12239,
+          "pctOfClears": 4.3,
+          "floors": 1285,
           "avgPower": "1.3M",
           "lowestPower": "34.4K"
         },
@@ -56,9 +58,9 @@
             "Scarlet: Black Shadow",
             "Crown"
           ],
-          "uses": 8861,
-          "pctOfClears": 4,
-          "floors": 442,
+          "uses": 12166,
+          "pctOfClears": 4.3,
+          "floors": 453,
           "avgPower": "1.5M",
           "lowestPower": "150.8K"
         },
@@ -70,25 +72,11 @@
             "Snow White: Heavy Arms",
             "Privaty"
           ],
-          "uses": 7017,
-          "pctOfClears": 3.2,
-          "floors": 1144,
+          "uses": 8324,
+          "pctOfClears": 3.0,
+          "floors": 1165,
           "avgPower": "1.9M",
           "lowestPower": "102.7K"
-        },
-        {
-          "members": [
-            "Anis: Star",
-            "Moran",
-            "Rapi: Red Hood",
-            "Crown",
-            "Snow White: Heavy Arms"
-          ],
-          "uses": 4653,
-          "pctOfClears": 2.1,
-          "floors": 1118,
-          "avgPower": "1.3M",
-          "lowestPower": "139.2K"
         },
         {
           "members": [
@@ -98,11 +86,25 @@
             "Cinderella: Crystal Wave",
             "Mast: Romantic Maid"
           ],
-          "uses": 4538,
-          "pctOfClears": 2.1,
-          "floors": 812,
+          "uses": 7876,
+          "pctOfClears": 2.8,
+          "floors": 929,
           "avgPower": "1.3M",
           "lowestPower": "95.6K"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Cinderella: Crystal Wave",
+            "Rapi: Red Hood",
+            "Privaty"
+          ],
+          "uses": 6149,
+          "pctOfClears": 2.2,
+          "floors": 781,
+          "avgPower": "2.2M",
+          "lowestPower": "152.6K"
         },
         {
           "members": [
@@ -112,9 +114,10 @@
             "Scarlet: Black Shadow",
             "Crown"
           ],
-          "uses": 4460,
-          "pctOfClears": 2,
-          "floors": 899,
+          "uses": 5503,
+          "pctOfClears": 2.0,
+          "floors": 1024,
+          "avgPower": "2.1M",
           "lowestPower": "75.6K"
         },
         {
@@ -125,9 +128,9 @@
             "Snow White: Heavy Arms",
             "Helm"
           ],
-          "uses": 4304,
+          "uses": 5236,
           "pctOfClears": 1.9,
-          "floors": 516,
+          "floors": 532,
           "avgPower": "1.8M",
           "lowestPower": "161.5K"
         },
@@ -139,32 +142,33 @@
             "Mast: Romantic Maid",
             "Helm"
           ],
-          "uses": 4100,
-          "pctOfClears": 1.9,
-          "floors": 563,
+          "uses": 5073,
+          "pctOfClears": 1.8,
+          "floors": 601,
+          "avgPower": "1.1M",
           "lowestPower": "140.6K"
         },
         {
           "members": [
-            "Crown",
             "Anis: Star",
-            "Cinderella: Crystal Wave",
+            "Crown",
             "Rapi: Red Hood",
-            "Privaty"
+            "Snow White: Heavy Arms",
+            "Moran"
           ],
-          "uses": 4034,
+          "uses": 5055,
           "pctOfClears": 1.8,
-          "floors": 682,
-          "avgPower": "2.2M",
-          "lowestPower": "218.7K"
+          "floors": 1130,
+          "avgPower": "1.3M",
+          "lowestPower": "126.4K"
         }
-      ],
-      "capturedOn": "2026-08-20"
+      ]
     },
     {
       "pool": "elysion",
       "tower": "elysion",
       "poolTotal": 30,
+      "capturedOn": "2026-10-12",
       "teams": [
         {
           "members": [
@@ -174,10 +178,10 @@
             "Rapi: Red Hood",
             "Helm"
           ],
-          "uses": 77487,
-          "pctOfClears": 38.1,
-          "floors": 1272,
-          "avgPower": "1.7M",
+          "uses": 103006,
+          "pctOfClears": 36.0,
+          "floors": 1339,
+          "avgPower": "2.1M",
           "lowestPower": "55.8K"
         },
         {
@@ -188,10 +192,10 @@
             "Privaty",
             "Helm"
           ],
-          "uses": 19616,
-          "pctOfClears": 9.6,
-          "floors": 1208,
-          "avgPower": "2.2M",
+          "uses": 33795,
+          "pctOfClears": 11.8,
+          "floors": 1281,
+          "avgPower": "2.4M",
           "lowestPower": "51.6K"
         },
         {
@@ -202,25 +206,11 @@
             "Helm",
             "Vesti: Tactical Upgrade"
           ],
-          "uses": 10897,
+          "uses": 15310,
           "pctOfClears": 5.4,
-          "floors": 1234,
-          "avgPower": "1.4M",
+          "floors": 1304,
+          "avgPower": "1.6M",
           "lowestPower": "45.3K"
-        },
-        {
-          "members": [
-            "Mast: Romantic Maid",
-            "D: Killer Wife",
-            "Rapi: Red Hood",
-            "Anchor: Innocent Maid",
-            "Vesti: Tactical Upgrade"
-          ],
-          "uses": 5902,
-          "pctOfClears": 2.9,
-          "floors": 1218,
-          "avgPower": "1.1M",
-          "lowestPower": "41.6K"
         },
         {
           "members": [
@@ -230,10 +220,10 @@
             "Helm",
             "Maiden: Ice Rose"
           ],
-          "uses": 5585,
-          "pctOfClears": 2.7,
-          "floors": 969,
-          "avgPower": "2.2M",
+          "uses": 8883,
+          "pctOfClears": 3.1,
+          "floors": 1049,
+          "avgPower": "2.5M",
           "lowestPower": "55.5K"
         },
         {
@@ -244,11 +234,25 @@
             "Mast: Romantic Maid",
             "Anchor: Innocent Maid"
           ],
-          "uses": 4337,
-          "pctOfClears": 2.1,
-          "floors": 1145,
-          "avgPower": "2.4M",
+          "uses": 7195,
+          "pctOfClears": 2.5,
+          "floors": 1258,
+          "avgPower": "2.9M",
           "lowestPower": "25.5K"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "D: Killer Wife",
+            "Rapi: Red Hood",
+            "Anchor: Innocent Maid",
+            "Vesti: Tactical Upgrade"
+          ],
+          "uses": 7181,
+          "pctOfClears": 2.5,
+          "floors": 1310,
+          "avgPower": "1.2M",
+          "lowestPower": "41.6K"
         },
         {
           "members": [
@@ -258,39 +262,11 @@
             "Privaty: Unkind Maid",
             "Helm"
           ],
-          "uses": 4106,
-          "pctOfClears": 2,
-          "floors": 905,
-          "avgPower": "2.4M",
+          "uses": 5772,
+          "pctOfClears": 2.0,
+          "floors": 971,
+          "avgPower": "2.7M",
           "lowestPower": "35.2K"
-        },
-        {
-          "members": [
-            "D: Killer Wife",
-            "Eunhwa: Tactical Upgrade",
-            "Vesti: Tactical Upgrade",
-            "Emma: Tactical Upgrade",
-            "Rapi: Red Hood"
-          ],
-          "uses": 2447,
-          "pctOfClears": 1.2,
-          "floors": 861,
-          "avgPower": "1.2M",
-          "lowestPower": "51.2K"
-        },
-        {
-          "members": [
-            "D: Killer Wife",
-            "Mast: Romantic Maid",
-            "Anchor: Innocent Maid",
-            "Rapi: Red Hood",
-            "Maiden: Ice Rose"
-          ],
-          "uses": 2402,
-          "pctOfClears": 1.2,
-          "floors": 687,
-          "avgPower": "1.6M",
-          "lowestPower": "47K"
         },
         {
           "members": [
@@ -300,19 +276,47 @@
             "Diesel: Winter Sweets",
             "Helm"
           ],
-          "uses": 2310,
-          "pctOfClears": 1.1,
-          "floors": 799,
-          "avgPower": "2.6M",
+          "uses": 3696,
+          "pctOfClears": 1.3,
+          "floors": 892,
+          "avgPower": "2.9M",
           "lowestPower": "54.6K"
+        },
+        {
+          "members": [
+            "Mast: Romantic Maid",
+            "Helm",
+            "Rapi: Red Hood",
+            "Anchor: Innocent Maid",
+            "Marciana: Marine Study"
+          ],
+          "uses": 3679,
+          "pctOfClears": 1.3,
+          "floors": 879,
+          "avgPower": "2.4M",
+          "lowestPower": "165.4K"
+        },
+        {
+          "members": [
+            "D: Killer Wife",
+            "Mast: Romantic Maid",
+            "Anchor: Innocent Maid",
+            "Rapi: Red Hood",
+            "Maiden: Ice Rose"
+          ],
+          "uses": 3235,
+          "pctOfClears": 1.1,
+          "floors": 795,
+          "avgPower": "2M",
+          "lowestPower": "47K"
         }
-      ],
-      "capturedOn": "2026-08-21"
+      ]
     },
     {
       "pool": "missilis",
       "tower": "missilis",
-      "poolTotal": 44,
+      "poolTotal": 58,
+      "capturedOn": "2026-10-12",
       "teams": [
         {
           "members": [
@@ -322,10 +326,10 @@
             "Quency: Escape Queen",
             "Liter"
           ],
-          "uses": 33908,
-          "pctOfClears": 16.1,
-          "floors": 1295,
-          "avgPower": "1.3M",
+          "uses": 35666,
+          "pctOfClears": 11.9,
+          "floors": 1358,
+          "avgPower": "1.4M",
           "lowestPower": "29.2K"
         },
         {
@@ -336,10 +340,10 @@
             "Neon: Vision Eye",
             "Ein"
           ],
-          "uses": 25987,
-          "pctOfClears": 12.3,
-          "floors": 1271,
-          "avgPower": "1.6M",
+          "uses": 32528,
+          "pctOfClears": 10.8,
+          "floors": 1338,
+          "avgPower": "1.7M",
           "lowestPower": "39.8K"
         },
         {
@@ -350,10 +354,10 @@
             "Neon: Vision Eye",
             "Quency: Escape Queen"
           ],
-          "uses": 14473,
+          "uses": 20642,
           "pctOfClears": 6.9,
-          "floors": 1218,
-          "avgPower": "2.2M",
+          "floors": 1306,
+          "avgPower": "2.4M",
           "lowestPower": "35.7K"
         },
         {
@@ -364,10 +368,10 @@
             "Ein",
             "Laplace"
           ],
-          "uses": 14111,
-          "pctOfClears": 6.7,
-          "floors": 1227,
-          "avgPower": "1.5M",
+          "uses": 14828,
+          "pctOfClears": 4.9,
+          "floors": 1280,
+          "avgPower": "1.6M",
           "lowestPower": "26.2K"
         },
         {
@@ -378,25 +382,11 @@
             "Liter",
             "Laplace"
           ],
-          "uses": 9314,
-          "pctOfClears": 4.4,
-          "floors": 1081,
-          "avgPower": "2.2M",
-          "lowestPower": "31.8K"
-        },
-        {
-          "members": [
-            "Tia",
-            "Liter",
-            "Naga",
-            "Laplace",
-            "Maxwell"
-          ],
-          "uses": 8952,
+          "uses": 12700,
           "pctOfClears": 4.2,
-          "floors": 1047,
-          "avgPower": "874.5K",
-          "lowestPower": "14.9K"
+          "floors": 1151,
+          "avgPower": "2.4M",
+          "lowestPower": "31.8K"
         },
         {
           "members": [
@@ -406,11 +396,25 @@
             "Mihara: Bonding Chain",
             "Naga"
           ],
-          "uses": 7998,
-          "pctOfClears": 3.8,
-          "floors": 854,
-          "avgPower": "3M",
+          "uses": 12493,
+          "pctOfClears": 4.2,
+          "floors": 970,
+          "avgPower": "3.4M",
           "lowestPower": "52.6K"
+        },
+        {
+          "members": [
+            "Tia",
+            "Liter",
+            "Naga",
+            "Laplace",
+            "Maxwell"
+          ],
+          "uses": 9415,
+          "pctOfClears": 3.1,
+          "floors": 1110,
+          "avgPower": "1M",
+          "lowestPower": "14.9K"
         },
         {
           "members": [
@@ -420,25 +424,25 @@
             "Liter",
             "Tia"
           ],
-          "uses": 7264,
-          "pctOfClears": 3.4,
-          "floors": 1106,
-          "avgPower": "1.6M",
+          "uses": 7919,
+          "pctOfClears": 2.6,
+          "floors": 1149,
+          "avgPower": "1.7M",
           "lowestPower": "31.8K"
         },
         {
           "members": [
-            "Maxwell",
-            "Naga",
-            "Liter",
             "Tia",
-            "Ein"
+            "Liter",
+            "Laplace: Ultimate Hero",
+            "Neon: Vision Eye",
+            "Naga"
           ],
-          "uses": 5540,
-          "pctOfClears": 2.6,
-          "floors": 1096,
-          "avgPower": "1.2M",
-          "lowestPower": "43.2K"
+          "uses": 7409,
+          "pctOfClears": 2.5,
+          "floors": 1224,
+          "avgPower": "1.8M",
+          "lowestPower": "58.8K"
         },
         {
           "members": [
@@ -448,19 +452,19 @@
             "Ein",
             "Naga"
           ],
-          "uses": 5285,
-          "pctOfClears": 2.5,
-          "floors": 985,
-          "avgPower": "1.6M",
+          "uses": 5805,
+          "pctOfClears": 1.9,
+          "floors": 1066,
+          "avgPower": "1.9M",
           "lowestPower": "31.7K"
         }
-      ],
-      "capturedOn": "2026-08-21"
+      ]
     },
     {
       "pool": "tetra",
       "tower": "tetra",
-      "poolTotal": 62,
+      "poolTotal": 61,
+      "capturedOn": "2026-10-12",
       "teams": [
         {
           "members": [
@@ -470,39 +474,39 @@
             "Alice",
             "Anis: Sparkling Summer"
           ],
-          "uses": 18949,
-          "pctOfClears": 8,
-          "floors": 1258,
-          "avgPower": "1.4M",
+          "uses": 30225,
+          "pctOfClears": 8.6,
+          "floors": 1325,
+          "avgPower": "1.5M",
           "lowestPower": "59.3K"
-        },
-        {
-          "members": [
-            "Prika",
-            "Milk: Blooming Bunny",
-            "Alice",
-            "Mint",
-            "Anis: Star"
-          ],
-          "uses": 17674,
-          "pctOfClears": 7.4,
-          "floors": 1230,
-          "avgPower": "1.2M",
-          "lowestPower": "60.9K"
         },
         {
           "members": [
             "Anis: Star",
             "Mint",
-            "Ludmilla: Winter Owner",
-            "Prika",
-            "Alice"
+            "Milk: Blooming Bunny",
+            "Alice",
+            "Prika"
           ],
-          "uses": 16062,
-          "pctOfClears": 6.8,
-          "floors": 1164,
-          "avgPower": "2.1M",
-          "lowestPower": "108.3K"
+          "uses": 28688,
+          "pctOfClears": 8.2,
+          "floors": 1295,
+          "avgPower": "1.3M",
+          "lowestPower": "49.7K"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Mint",
+            "Alice",
+            "Ludmilla: Winter Owner",
+            "Prika"
+          ],
+          "uses": 28380,
+          "pctOfClears": 8.1,
+          "floors": 1275,
+          "avgPower": "2.4M",
+          "lowestPower": "89.4K"
         },
         {
           "members": [
@@ -512,10 +516,10 @@
             "Ade: Agent Bunny",
             "Anis: Sparkling Summer"
           ],
-          "uses": 14563,
-          "pctOfClears": 6.1,
-          "floors": 1087,
-          "avgPower": "2.6M",
+          "uses": 20501,
+          "pctOfClears": 5.8,
+          "floors": 1202,
+          "avgPower": "2.9M",
           "lowestPower": "150.8K"
         },
         {
@@ -526,39 +530,25 @@
             "Alice",
             "Anis: Sparkling Summer"
           ],
-          "uses": 9785,
+          "uses": 14455,
           "pctOfClears": 4.1,
-          "floors": 1207,
+          "floors": 1275,
           "avgPower": "1.7M",
           "lowestPower": "39.9K"
         },
         {
           "members": [
-            "Anis: Sparkling Summer",
+            "Anis: Star",
             "Prika",
-            "Anis: Star",
             "Mint",
-            "Milk: Blooming Bunny"
+            "Milk: Blooming Bunny",
+            "Anis: Sparkling Summer"
           ],
-          "uses": 6668,
-          "pctOfClears": 2.8,
-          "floors": 1181,
-          "avgPower": "1.1M",
-          "lowestPower": "103.6K"
-        },
-        {
-          "members": [
-            "Anis: Star",
-            "Moran",
-            "Alice",
-            "Ade: Agent Bunny",
-            "Milk: Blooming Bunny"
-          ],
-          "uses": 6402,
-          "pctOfClears": 2.7,
-          "floors": 1165,
-          "avgPower": "1.4M",
-          "lowestPower": "117.9K"
+          "uses": 10991,
+          "pctOfClears": 3.1,
+          "floors": 1280,
+          "avgPower": "1.2M",
+          "lowestPower": "75.5K"
         },
         {
           "members": [
@@ -568,25 +558,39 @@
             "Ade: Agent Bunny",
             "Moran"
           ],
-          "uses": 6303,
-          "pctOfClears": 2.6,
-          "floors": 971,
-          "avgPower": "2.5M",
-          "lowestPower": "520.6K"
+          "uses": 9818,
+          "pctOfClears": 2.8,
+          "floors": 1050,
+          "avgPower": "2.6M",
+          "lowestPower": "501.5K"
         },
         {
           "members": [
+            "Milk: Blooming Bunny",
             "Mint",
             "Anis: Star",
             "Prika",
-            "Milk: Blooming Bunny",
             "Ludmilla: Winter Owner"
           ],
-          "uses": 5044,
-          "pctOfClears": 2.1,
-          "floors": 1037,
-          "avgPower": "1.8M",
-          "lowestPower": "147.4K"
+          "uses": 9059,
+          "pctOfClears": 2.6,
+          "floors": 1199,
+          "avgPower": "1.9M",
+          "lowestPower": "71.5K"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Moran",
+            "Alice",
+            "Ade: Agent Bunny",
+            "Milk: Blooming Bunny"
+          ],
+          "uses": 8667,
+          "pctOfClears": 2.5,
+          "floors": 1238,
+          "avgPower": "1.5M",
+          "lowestPower": "117.9K"
         },
         {
           "members": [
@@ -596,19 +600,19 @@
             "Blanc",
             "Noir"
           ],
-          "uses": 4993,
-          "pctOfClears": 2.1,
-          "floors": 1026,
-          "avgPower": "2.6M",
+          "uses": 8249,
+          "pctOfClears": 2.3,
+          "floors": 1168,
+          "avgPower": "2.9M",
           "lowestPower": "78.6K"
         }
-      ],
-      "capturedOn": "2026-08-21"
+      ]
     },
     {
       "pool": "overspec",
       "tower": "pilgrim",
-      "poolTotal": 91,
+      "poolTotal": 84,
+      "capturedOn": "2026-10-12",
       "teams": [
         {
           "members": [
@@ -618,10 +622,10 @@
             "Crown",
             "Snow White: Heavy Arms"
           ],
-          "uses": 12556,
-          "pctOfClears": 6.9,
-          "floors": 1984,
-          "avgPower": "1.4M",
+          "uses": 19129,
+          "pctOfClears": 7.1,
+          "floors": 2100,
+          "avgPower": "1.5M",
           "lowestPower": "55.8K"
         },
         {
@@ -632,11 +636,25 @@
             "Snow White: Heavy Arms",
             "Anis: Star"
           ],
-          "uses": 5678,
+          "uses": 8286,
           "pctOfClears": 3.1,
-          "floors": 1345,
-          "avgPower": "1.5M",
+          "floors": 1384,
+          "avgPower": "1.8M",
           "lowestPower": "78.5K"
+        },
+        {
+          "members": [
+            "Anis: Star",
+            "Crown",
+            "Rapi: Red Hood",
+            "Scarlet: Black Shadow",
+            "Snow White: Heavy Arms"
+          ],
+          "uses": 6715,
+          "pctOfClears": 2.5,
+          "floors": 1439,
+          "avgPower": "3.1M",
+          "lowestPower": "38.6K"
         },
         {
           "members": [
@@ -646,10 +664,10 @@
             "Snow White: Heavy Arms",
             "Crown"
           ],
-          "uses": 5427,
-          "pctOfClears": 3,
-          "floors": 1064,
-          "avgPower": "1.4M",
+          "uses": 6252,
+          "pctOfClears": 2.3,
+          "floors": 1106,
+          "avgPower": "1.7M",
           "lowestPower": "55.1K"
         },
         {
@@ -660,10 +678,10 @@
             "Snow White: Heavy Arms",
             "Rapi: Red Hood"
           ],
-          "uses": 3928,
-          "pctOfClears": 2.1,
-          "floors": 1513,
-          "avgPower": "1.3M",
+          "uses": 5778,
+          "pctOfClears": 2.2,
+          "floors": 1583,
+          "avgPower": "1.5M",
           "lowestPower": "7.4K"
         },
         {
@@ -671,14 +689,14 @@
             "Anis: Star",
             "Crown",
             "Rapi: Red Hood",
-            "Scarlet: Black Shadow",
+            "Cinderella: Crystal Wave",
             "Snow White: Heavy Arms"
           ],
-          "uses": 3698,
-          "pctOfClears": 2,
-          "floors": 1321,
-          "avgPower": "2.8M",
-          "lowestPower": "38.6K"
+          "uses": 5354,
+          "pctOfClears": 2.0,
+          "floors": 1563,
+          "avgPower": "1.7M",
+          "lowestPower": "73.5K"
         },
         {
           "members": [
@@ -688,10 +706,10 @@
             "Rapi: Red Hood",
             "Liberalio"
           ],
-          "uses": 3111,
-          "pctOfClears": 1.7,
-          "floors": 1184,
-          "avgPower": "2M",
+          "uses": 5012,
+          "pctOfClears": 1.9,
+          "floors": 1262,
+          "avgPower": "2.2M",
           "lowestPower": "58.2K"
         },
         {
@@ -702,10 +720,10 @@
             "Snow White: Heavy Arms",
             "Mihara: Bonding Chain"
           ],
-          "uses": 2679,
-          "pctOfClears": 1.5,
-          "floors": 940,
-          "avgPower": "2.7M",
+          "uses": 4179,
+          "pctOfClears": 1.6,
+          "floors": 1070,
+          "avgPower": "3.1M",
           "lowestPower": "40.8K"
         },
         {
@@ -716,42 +734,27 @@
             "Scarlet: Black Shadow",
             "Crown"
           ],
-          "uses": 2616,
+          "uses": 3736,
           "pctOfClears": 1.4,
-          "floors": 779,
-          "avgPower": "1.9M",
+          "floors": 838,
+          "avgPower": "2.2M",
           "lowestPower": "66.5K"
         },
         {
           "members": [
             "Anis: Star",
+            "Nayuta",
             "Cinderella: Crystal Wave",
-            "Snow White: Heavy Arms",
-            "Rapi: Red Hood",
-            "Crown"
-          ],
-          "uses": 2494,
-          "pctOfClears": 1.4,
-          "floors": 1264,
-          "avgPower": "1.7M",
-          "lowestPower": "92.7K"
-        },
-        {
-          "members": [
             "Crown",
-            "Scarlet: Black Shadow",
-            "Red Hood",
-            "Modernia",
-            "Rapunzel"
+            "Rapi: Red Hood"
           ],
-          "uses": 1989,
-          "pctOfClears": 1.1,
-          "floors": 359,
-          "avgPower": "425.4K",
-          "lowestPower": "33.2K"
+          "uses": 3709,
+          "pctOfClears": 1.4,
+          "floors": 1262,
+          "avgPower": "1.5M",
+          "lowestPower": "56K"
         }
-      ],
-      "capturedOn": "2026-08-21"
+      ]
     }
   ]
 }

@@ -32,7 +32,7 @@
     "staleAfterDays": 60
   },
   "towerCompositions": {
-    "asOf": "2026-08-21",
+    "asOf": "2026-10-12",
     "source": "enikk.app 타워 > Compositions 탭(전 서버). 풀 5종(Tribe·Elysion·Missilis·Tetra·Over-Spec) 각 상위 10팀. 사람이 브라우저로 열어 화면 값을 옮겼다",
     "refreshMethod": "docs/data.md \"타워 실사용 조합\" 절 참고",
     "staleAfterDays": 45
@@ -44,7 +44,7 @@
     "staleAfterDays": 21
   },
   "usageTier": {
-    "asOf": "2026-09-13",
+    "asOf": "2026-10-12",
     "source": "enikk.app /meta 슬라이스 4종(캠페인·솔로레이드·챔피언아레나·종합). 등급도 enikk이 직접 매긴 값이다",
     "refreshMethod": "docs/data.md \"enikk 실사용 조합\" 절 참고 — /meta?slice=campaign|soloraid|arena|overall",
     "staleAfterDays": 21
