@@ -39,6 +39,15 @@ for (const [a, b, k] of PAIRS) {
   const top = R.companionsFor(byTitle.get(a)).list.slice(0, k).map((x) => x.title);
   if (!top.includes(b)) problems.push(`[함께 쓸 니케] ${a}의 상위 ${k}에 ${b}가 없다 — 지금 ${top.join(', ')}`);
 }
+// ①-b 스킬 연결 짝(2026-10-13, 유저: "그래야 홍련흑영과의 조합이 설명되니까") — 리버렐리오 "공격력이 가장 낮은 3버스트 아군 1명에게 차지 속도 ▲"
+//   예전 해석기는 이 대상절('all' 없음)을 못 읽었고, 읽더라도 티어순 4명 안에 홍련 : 흑영이 없었다(28명 중).
+{
+  const lib = R.skillLinksFor(byTitle.get('Liberalio'));
+  const g = lib.gives.find((x) => x.cond.burst === '3' && x.cond.charge);
+  if (!g) problems.push('[스킬 연결 짝] 리버렐리오의 3버스트 차지 속도 버프를 못 읽는다');
+  else if (!g.top.some((x) => x.title === 'Scarlet: Black Shadow')) problems.push(`[스킬 연결 짝] 리버렐리오 → 홍련 : 흑영이 상위에 없다 — 지금 ${g.top.map((x) => x.title).join(', ')}`);
+  if (!R.skillLinksFor(byTitle.get('Scarlet: Black Shadow')).receives.some((x) => x.title === 'Liberalio')) problems.push('[스킬 연결 짝] 홍련 : 흑영이 받는 목록에 리버렐리오가 없다');
+}
 // ② 전원 사실 검사
 const TR = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 const KEY = { campaign: 'story', bossing: 'bossing', pvp: 'pvp' };
@@ -64,6 +73,8 @@ for (const c of CH) {
     if (g.cond.element && xc.element !== g.cond.element) problems.push(`[스킬 연결] ${c.title} → ${x.title}: 속성 조건(${g.cond.element}) 불일치`);
     if (g.cond.weapon && xc.weapon !== g.cond.weapon) problems.push(`[스킬 연결] ${c.title} → ${x.title}: 무기 조건(${g.cond.weapon}) 불일치`);
     if (g.cond.squad && xc.squad !== c.squad) problems.push(`[스킬 연결] ${c.title} → ${x.title}: 부대 조건 불일치`);
+    if (g.cond.burst && !stages(xc).includes(g.cond.burst) && !(xc.burstStages || []).map(String).includes(g.cond.burst)) problems.push(`[스킬 연결] ${c.title} → ${x.title}: 버스트 조건(${g.cond.burst}) 불일치`);
+    if (g.cond.charge && !['rl', 'sr'].includes(xc.weapon)) problems.push(`[스킬 연결] ${c.title} → ${x.title}: 차지 속도 효과인데 차지 무기가 아니다(${xc.weapon})`);
   }
   if (sk.receives.some((x) => x.title === c.title)) problems.push(`[스킬 연결] ${c.title}: 자기 자신이 버프 주는 쪽에`);
   // 받는 쪽은 공격형 또는 3버스트만(엔진 isBuffReceiver와 같은 기준) — 지원형 페이지에 "공격 버프를 주는 니케"가 나오면 안 된다

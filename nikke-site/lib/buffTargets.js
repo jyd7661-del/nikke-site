@@ -30,27 +30,46 @@ const WEAPON_WORDS = [
   ['assault rifle', 'ar'], ['machine gun', 'mg'], ['shotgun-wielding', 'sg'], ['shotgun', 'sg'], ['rifle', 'ar'],
 ];
 
+// 버스트 단계로 대상을 고르는 절(2026-10-13, 유저: "해야지. 그래야 홍련흑영과의 조합이 설명되니까").
+//   리버렐리오 "1 Burst Stage 3 ally unit(s) with the lowest final ATK" — 'all'이 없어 예전엔 조건부 범위로 안 읽혔다.
+//   같은 꼴: 에이다 "all Burst Stage 3 allies who previously cast…" · 퀸·유키코 "all standard Burst 3 allies…" ·
+//   아르카나 "all Burst 3 Electric Code allies…". 'self if there are Burst Stage 1 allies'(라피 : 레드 후드)는 자기 대상이라 뺀다.
+const BURST_STAGE = /\bburst (?:stage )?([123])\b/;
+// 차지 속도·차지 대미지 ▲만 거는 절은 차지 무기(RL·SR)에게만 든다(게임 규칙 — 다른 무기는 차지가 없다).
+// 효과절은 대상절 다음 절이다. 넘기지 않으면(엔진 경로) 이 제한은 안 건다.
+const CHARGE_ONLY_EFFECT = /^(?:Charge Speed|Charge Damage)\b[^.]*▲/i;
+const CHARGE_WEAPONS = ['rl', 'sr'];
+const elementOf = (s) => ELEMENTS.find((e) => new RegExp(`all (?:burst (?:stage )?[123] )?${e} (code|type) all(y|ies)`).test(s) || new RegExp(`allies with ${e} element`).test(s)) || null;
+
 // 대상절 → 팀에서 그 버프를 받는 멤버(시전자 포함). 조건부 아군 범위가 아니거나 해석 못 하면 null.
-export function resolveAllyScope(scope, caster, team) {
+export function resolveAllyScope(scope, caster, team, effect) {
   const s = lc(scope);
-  if (!/all\b/.test(s) || /enem/.test(s)) return null;
-  const el = ELEMENTS.find((e) => new RegExp(`all ${e} (code|type) all(y|ies)`).test(s) || new RegExp(`allies with ${e} element`).test(s));
+  if (/enem/.test(s) || /^self\b/.test(s)) return null;
+  const st = s.match(BURST_STAGE)?.[1] || null;
+  if (!/all\b/.test(s) && !(st && /\ball(y|ies)\b/.test(s))) return null;
+  const el = elementOf(s);
   const wp = WEAPON_WORDS.find(([w]) => s.includes(w));
   const squad = /from the same squad/.test(s);
-  if (!el && !wp && !squad) return null;
+  if (!el && !wp && !squad && !st) return null;
   let out = team;
   if (el) out = out.filter((m) => lc(m.element) === el);
   if (wp) out = out.filter((m) => lc(m.weapon) === wp[1]);
   if (squad) { if (!caster.squad) return null; out = out.filter((m) => m.squad === caster.squad); }
+  if (st) out = out.filter((m) => stagesOfMember(m).includes(st));
+  if (effect && CHARGE_ONLY_EFFECT.test(String(effect).trim())) out = out.filter((m) => CHARGE_WEAPONS.includes(lc(m.weapon)));
   return out;
 }
 
 // 대상절이 거는 조건(도감 "스킬로 이어지는 니케" 절이 화면 문구를 만들 때 쓴다, 2026-10-11). resolveAllyScope와 같은 해석.
-export function scopeCondition(scope) {
+export function scopeCondition(scope, effect) {
   const s = lc(scope);
-  const el = ELEMENTS.find((e) => new RegExp(`all ${e} (code|type) all(y|ies)`).test(s) || new RegExp(`allies with ${e} element`).test(s)) || null;
   const wp = WEAPON_WORDS.find(([w]) => s.includes(w));
-  return { element: el, weapon: wp ? wp[1] : null, squad: /from the same squad/.test(s) };
+  return {
+    element: elementOf(s), weapon: wp ? wp[1] : null, squad: /from the same squad/.test(s),
+    burst: s.match(BURST_STAGE)?.[1] || null,
+    lowestAtk: /lowest final atk/.test(s),
+    charge: Boolean(effect && CHARGE_ONLY_EFFECT.test(String(effect).trim())),
+  };
 }
 // 캐릭터마다 조건부 아군 범위 목록을 한 번만 뽑는다(엔진은 후보 수천 팀에 이걸 부른다).
 const scopeCache = new Map();

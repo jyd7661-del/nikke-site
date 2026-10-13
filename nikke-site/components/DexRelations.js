@@ -30,6 +30,9 @@ export default function DexRelations({ self, alternatives, companions, skill }) 
     cond.element && t('dex_cond_element')(elementLabel(cond.element, lang)),
     cond.weapon && t('dex_cond_weapon')(weaponLabel(cond.weapon)),
     cond.squad && t('dex_cond_squad')(squadLabel(squad, lang) || ''),
+    cond.burst && t('dex_cond_burst')(cond.burst),
+    cond.charge && t('dex_cond_charge'),
+    cond.lowestAtk && t('dex_cond_lowest_atk'),
   ].filter(Boolean).join(' · ');
 
   return (
