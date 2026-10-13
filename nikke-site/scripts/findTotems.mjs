@@ -71,6 +71,19 @@ function burstCd(c) {
   return Number.isFinite(n) ? n : null;
 }
 
+// 엔진 totemConditionMet과 같은 규칙(속성 한정 토템은 그 속성 아군이 있어야 토템).
+const noteByName = new Map(notes.characters.map((n) => [n.name, n]));
+function restsAsTotem(m, members) {
+  const n = noteByName.get(m.title);
+  if (!n?.totemRole) return 0;
+  const cond = n.totemCondition;
+  if (cond?.element) {
+    const have = members.filter((x) => x.id !== m.id && String(x.element).toLowerCase() === cond.element).length;
+    if (have < (cond.minAllies || 1)) return 0;
+  }
+  return 1;
+}
+
 // 이 조합에서 '버스트 순번에 들지 못하는' 인원을 돌려준다. totemRole 면제는 적용하지 않는다
 // — 지금 찾으려는 것이 바로 '면제됐어야 하는데 목록에 없는 사람'이기 때문이다.
 function surplusMembers(members, mode) {
@@ -81,8 +94,12 @@ function surplusMembers(members, mode) {
     if (group.length <= 1) return;
     const withCd = group.map((m) => ({ m, cd: burstCd(m) }));
     if (withCd.some((x) => x.cd === null)) return;
+    // 2026-10-13 — 엔진의 "같은 쿨타임이면 등록 토템이 쉰다"(2026-10-01, restsAsTotem)를 옮겼다.
+    // 빠져 있어서 루주(등록 토템)·토브(1버스트 본체) 팀에서 기본 티어가 높은 루주가 버스트하고 토브가 쉬는 것으로 세어,
+    // 토브가 1군에 올라왔다. 인벤 샷건덱 정리(2025, news=314884)는 그 팀을 "루주가 토템, 토브가 1버스트"로 쓴다.
+    // 등록 토템을 쉬게 하는 것은 면제가 아니다 — 같은 단계의 다른 멤버가 잉여로 잡히지 않게 할 뿐이고, 토템 자신은 여전히 잉여로 센다.
     const sorted = [...withCd].sort(
-      (a, b) => (a.cd - b.cd) ||
+      (a, b) => (a.cd - b.cd) || (restsAsTotem(a.m, members) - restsAsTotem(b.m, members)) ||
         ((TIER_SCORE[b.m.tiers?.[key]] || 0) - (TIER_SCORE[a.m.tiers?.[key]] || 0))
     );
     let needed;
