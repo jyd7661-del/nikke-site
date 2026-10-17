@@ -38,8 +38,8 @@ Node는 WSL의 nvm(v24)이라 셸마다 `export NVM_DIR=$HOME/.nvm; . $NVM_DIR/n
 
 ```bash
 cd nikke-site-git/nikke-site
-npm run verify                    # 검사 19종 — 하나라도 실패하면 멈춘다
-node scripts/findTotems.mjs       # 20번째(verify 밖) — 1군 0명
+npm run verify                    # 검사 20종 — 하나라도 실패하면 멈춘다
+node scripts/findTotems.mjs       # 21번째(verify 밖) — 1군 0명
 node scripts/testJudgmentMatch.mjs  # 사이트 추천 ↔ 내 판정 일치율(판정 정답지는 probe-data/, git 밖)
 ```
 
