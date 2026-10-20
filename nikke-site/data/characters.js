@@ -89,6 +89,7 @@ export const CHARACTERS = [
   { id: 'eunhwa-tactical-upgrade', name: '은화: 택티컬 업', burst: 2, tier: 'T2', role: ['딜러'], img: 'd/dc/Eunhwa_Tactical_Upgrade_MI.png' },
   { id: 'delta-ninja-thief', name: '델타: 닌자 시프', burst: 2, tier: 'T2', role: ['탱커'], img: '5/52/Delta_Ninja_Thief_MI.png' },
   { id: 'snow-crane', name: '백학', burst: 2, tier: 'T2', role: ['탱커'], img: 'f/f7/Snow_Crane_MI.png' },
+  { id: 'belorta-pumpkin-witch', name: '벨로타 : 펌킨 위치', burst: 2, tier: 'T2', role: ['버퍼'], img: '2/23/Belorta_Pumpkin_Witch_MI.png' },
   { id: 'viper', hasTreasure: true, name: '바이퍼', burst: 2, tier: 'T3', role: ['탱커'], img: 'a/a4/Viper_MI.png' },
   { id: 'diesel-2', cdbId: 'diesel', hasTreasure: true, name: '디젤', burst: 2, tier: 'T3', role: ['탱커'], img: 'c/c9/Diesel_MI.png' },
   { id: 'signal', name: '시그널', burst: 2, tier: 'T3', role: ['딜러'], img: 'f/f3/Signal_MI.png' },

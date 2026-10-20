@@ -1,6 +1,6 @@
 {
   "_doc": "버스트를 못 쓸 때 남는 자체 딜 비율(시뮬레이터, 스킬 원문). 엔진 낭비 인원 = 티어 × 이 비율. 생성: scripts/buildOffBurstShare.mjs — 손으로 고치지 말 것",
-  "generatedOn": "2026-10-12",
+  "generatedOn": "2026-10-19",
   "byTitle": {
     "Rapi": 0.72,
     "Neon": 0.88,
@@ -203,6 +203,7 @@
     "Aigis": 0.89,
     "Drake: Great Villain": 0.64,
     "Guilty: Mighty Bunny": 0.81,
-    "Sin: Swift Bunny": 0.43
+    "Sin: Swift Bunny": 0.43,
+    "Belorta: Pumpkin Witch": 0.93
   }
 }

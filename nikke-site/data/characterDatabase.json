@@ -10774,5 +10774,60 @@
         "desc_ja": "自分に「攻撃ダメージ110%▲」「5秒間維持」。 敵全体に「最終攻撃力の516.6%のバーストスキルダメージ」。 自分がバニーモード：スタンス状態なら、同じ敵に「最終攻撃力の958.9%の追加ダメージ」。 自分がバニーモード：エンゲージ状態なら、同じ敵に「最終攻撃力の854.6%の防御力無視ダメージ」。"
       }
     ]
+  },
+  {
+    "id": "belorta-pumpkin-witch",
+    "title": "Belorta: Pumpkin Witch",
+    "name_kr": "벨로타 : 펌킨 위치",
+    "name_ja": "ベロータ：パンプキンウィッチ",
+    "class": "supporter",
+    "burst": "2",
+    "element": "water",
+    "weapon": "rl",
+    "manufacturer": "tetra",
+    "rarity": "SSR",
+    "squad": "The Carronades",
+    "releaseDate": "2026-10-08",
+    "img": "2/23/Belorta_Pumpkin_Witch_MI.png",
+    "tiers": {
+      "story": "B",
+      "bossing": "A",
+      "pvp": "B"
+    },
+    "prydwenTags": [
+      "partner"
+    ],
+    "skills": [
+      {
+        "name": "Playful Little Witch",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates when entering Full Burst. Affects self. Ghost Costume: Prevents being targeted by single-target attacks for 10 sec. This effect is removed upon taking a direct hit. Prank Preparation: Max HP ▲ 15.84% for 10 sec. Activates when entering Full Burst. Affects the ally to the right of this unit. ATK ▲ 44.88% of the skill user's ATK for 10 sec.",
+        "name_kr": "플레이풀 리틀 위치",
+        "desc_kr": "풀 버스트 타임 시작 시 자신에게 [유령 분장 : 1인 공격 대상에서 제외 직접 피격 시 해제] [10초 유지] [장난 준비 : 최대 체력 15.84% ▲] [10초 유지] 풀 버스트 타임 시작 시 자신의 우측 자리 아군 1기에게 [시전자 기준 공격력 44.88% ▲] [10초 유지]",
+        "name_ja": "プレイフル・リトル・ウィッチ",
+        "desc_ja": "フルバーストタイムが発動した時、自分に「おばけの仮装：単一攻撃の対象から除外 直接攻撃を受けると解除」「10秒間維持」「イタズラ準備：最大HP15.84%▲」「10秒間維持」 フルバーストタイムが発動した時、自分の右隣の味方1機に「スキル発動者基準で攻撃力44.88%▲」「10秒間維持」"
+      },
+      {
+        "name": "Trick or Treat!",
+        "type": "Passive",
+        "cd": "N/A",
+        "desc": "Activates when landing a Full Charge attack while in the Ghost Costume state. Affects the target. Ghostly Prank: Damage Taken ▲ 10.56% for 10 sec. Activates when performing a Full Charge attack. Affects the ally to the right of this unit. Sustained Damage ▲ 19.97% for 5 sec.",
+        "name_kr": "트릭 오어 트릿!",
+        "desc_kr": "풀 차지 공격 명중 시 자신이 유령 분장 상태라면 대상에게 [유령의 장난 : 받는 대미지 10.56% ▲] [10초 유지] 풀 차지 공격 시 자신의 우측 자리 아군 1기에게 [지속 대미지 19.97% ▲] [5초 유지]",
+        "name_ja": "トリック・オア・トリート！",
+        "desc_ja": "フルチャージ攻撃が命中した時、自分がおばけの仮装状態なら、対象に「おばけのイタズラ：受けるダメージ10.56%▲」「10秒間維持」 フルチャージして攻撃した時、自分の右隣の味方1機に「持続ダメージ19.97%▲」「5秒間維持」"
+      },
+      {
+        "name": "Happy Halloween!",
+        "type": "Active",
+        "cd": "40",
+        "desc": "Affects the ally to the right of this unit. ATK ▲ 47.52% of the skill user's ATK for 10 sec. Sustained Damage ▲ 27.23% for 10 sec.",
+        "name_kr": "해피 할로윈!",
+        "desc_kr": "자신의 우측 자리 아군 1기에게 [시전자 기준 공격력 47.52% ▲] [10초 유지] [지속 대미지 27.23% ▲] [10초 유지]",
+        "name_ja": "ハッピーハロウィン！",
+        "desc_ja": "自分の右隣の味方1機に「スキル発動者基準で攻撃力47.52%▲」「10秒間維持」「持続ダメージ27.23%▲」「10秒間維持」"
+      }
+    ]
   }
 ]
