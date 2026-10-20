@@ -3,6 +3,7 @@
  * **엔진 추천 ↔ 내 조합 일치율 — 블라인드 기준 표본.** (2026-10-01, 유저 지시: "95% 이상 일치할 때까지")
  *
  *   node scripts/judgmentBench.mjs --gen --seed=11          # 로스터 20건(엔진 답 없이) → probe-data/bench-s11.jsonl
+ *   node scripts/judgmentBench.mjs --gen --seed=21 --size=40 --with-sr   # 2026-10-21 유저: "SSR 랜덤 40명에 상시보유 SR까지" — 실사용자 로스터(셰도우 평균 34명)에 맞춘 표본
  *   node scripts/judgmentBench.mjs --sheet --seed=11        # 판정지(로스터 + 캐릭터 근거, 엔진 답 없음) → probe-data/bench-s11-sheet.md
  *   (probe-data/bench-picks-s11.txt 에 내 조합을 적는다: "B01 이름|이름|이름|이름|이름" — 같은 가치 대안은 " / "로 여럿)
  *   node scripts/judgmentBench.mjs --score --seeds=11,12,13 # 지금 엔진 답과 대조 → 일치율 + "판정 필요" 목록
@@ -57,7 +58,10 @@ if (has('gen')) {
     ...Array(5).fill({ mode: 'campaign' }),
     ...Array(5).fill({ mode: 'pvp' }),
   ];
-  const SIZES = [12, 15, 18, 25];
+  // --size=N 이면 모든 건을 N명으로. --with-sr 이면 상시 모집 SR(콜라보 아님 — lib/rosterBridge STANDARD_SR_IDS와 같은 판정)을 전부 더한다 —
+  // 홈 화면이 처음부터 보유로 골라 두므로 실제 사용자 로스터에 늘 들어 있다.
+  const SIZES = arg('size', null) ? [Number(arg('size'))] : [12, 15, 18, 25];
+  const STD_SR = has('with-sr') ? cdb.filter((c) => c.rarity === 'SR' && c.manufacturer !== 'abnormal' && (c.skills || []).length) : [];
   const { E, tmp } = await loadEngine();
   const out = plan.map((p, i) => {
     const size = SIZES[i % SIZES.length];
@@ -66,9 +70,10 @@ if (has('gen')) {
     do {
       const pool = [...ssr]; roster = [];
       while (roster.length < size) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
+      roster.push(...STD_SR);
       tries += 1;
     } while (E.pickSiteTeam(roster, p.mode, { bossElement: p.boss || null, tower: p.tower || null }).path === 'error' && tries < 50);
-    return { id: `B${String(i + 1).padStart(2, '0')}`, seed, mode: p.mode, boss: p.boss || null, tower: p.tower || null, roster: roster.map((c) => c.title).sort() };
+    return { id: `B${String(i + 1).padStart(2, '0')}`, seed, mode: p.mode, boss: p.boss || null, tower: p.tower || null, ...(STD_SR.length ? { withSr: true } : {}), roster: roster.map((c) => c.title).sort() };
   });
   fs.rmSync(tmp, { recursive: true, force: true });
   fs.writeFileSync(casesPath(seed), out.map((c) => JSON.stringify(c)).join('\n') + '\n');
@@ -92,7 +97,10 @@ if (has('sheet')) {
   for (const c of readCases(seed)) {
     const ctx = c.mode === 'bossing' ? `약점 ${c.boss}` : c.mode === 'tribe_tower' ? `타워 ${c.tower || '트라이브(전체)'}` : '';
     md.push(`## ${c.id} — ${c.mode}${ctx ? ' · ' + ctx : ''} · ${c.roster.length}명`, '');
-    for (const t of c.roster) {
+    // 상시 SR은 모든 건에 같은 11명이라 한 줄로 접는다(판정지 분량). 티어·채용은 그 모드 값.
+    const srs = c.withSr ? c.roster.filter((t) => byT.get(t).rarity === 'SR') : [];
+    if (srs.length) md.push(`- **상시 SR ${srs.length}명:** ${srs.map((t) => { const x = byT.get(t); const u = ms.usageTier?.[SLICE[c.mode]]?.[t]; return `${x.name_kr}(B${x.burst} ${x.element} ${x.class} · ${x.tiers?.[TIERKEY[c.mode]] || '-'}${u ? ` · 채용 ${u.tier} ${u.usage}%` : ''}${c.tower ? ` · ${x.manufacturer}` : ''})`; }).join(', ')}`);
+    for (const t of c.roster.filter((x) => !srs.includes(x))) {
       const x = byT.get(t); const u = ms.usageTier?.[SLICE[c.mode]]?.[t];
       const top = ms.soloRaidSeasonUsage?.[c.boss]?.usage?.[t];
       const sh = c.mode === 'bossing' ? ` · 속성시즌 등록팀 ${Math.round(share[c.boss]?.get(t) || 0)}% · 시즌 상위50 ${top ?? '-'}` : '';

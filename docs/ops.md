@@ -26,6 +26,12 @@
 | `traffic_migration.sql` | 자체 방문 계측 `page_views`·`daily_visitors` (아래 절) |
 | `traffic_sources_migration.sql` | 유입 경로·국가 `traffic_sources` — 랜딩마다 (날짜·유입처·국가·첫 페이지) (2026-10-21, 아래 절) |
 
+> ⚠️ **2026-10-30부터 새 테이블은 GRANT를 직접 줘야 한다**(Supabase 공지, 메일 2026-10-21). 그 전에는 public 스키마에 표를 만들면
+> anon·authenticated·service_role에 권한이 자동으로 붙었다. 이후 만든 표는 권한 없이 생겨 supabase-js가 `permission denied`를 낸다 —
+> **우리 서버 라우트(service_role)도 마찬가지다.** 새 표 마이그레이션에는 같은 파일에 최소 `grant select, insert, update, delete on public.<표> to service_role;`를,
+> 브라우저(anon 키)가 RLS 정책으로 읽고 쓰는 표면 anon·authenticated에도 필요한 만큼 넣는다. 기존 표(10-21 `traffic_sources`까지)는 영향 없음.
+> 같은 Supabase 프로젝트를 배당달력(`div_*` 표)도 쓴다 — 그쪽 새 표도 같은 규칙.
+
 ### Vercel 환경변수
 
 ```
