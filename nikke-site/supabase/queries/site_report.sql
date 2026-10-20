@@ -40,6 +40,13 @@ select
      'month_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget where usage_date >= date_trunc('month', current_date)),
      'week_calls', (select coalesce(sum(count),0) from ai_daily_budget, b where usage_date between s and e)
   )) as ai_cost,
+  -- 5b. 가입 (auth.users — 커넥터는 읽을 수 있다. 운영자 계정 제외)
+  (select json_build_object(
+     'total', (select count(*) from auth.users where id <> 'c16d0c32-19b3-478e-9620-27f6f5dc5153'),
+     'new_this', (select count(*) from auth.users, b where created_at::date between s and e),
+     'new_prev', (select count(*) from auth.users, b where created_at::date between ps and pe),
+     'signin_this', (select count(*) from auth.users, b where last_sign_in_at::date between s and e and id <> 'c16d0c32-19b3-478e-9620-27f6f5dc5153')
+  )) as signups,
   -- 6. 커뮤니티
   (select json_build_object(
      'posts', (select count(*) from posts, b where created_at::date between s and e),
