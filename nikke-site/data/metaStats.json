@@ -838,108 +838,108 @@
           "Anis: Star",
           "Biscuit"
         ],
-        "wr": 69.3,
-        "n": 1005,
-        "adoption": 81.1
+        "wr": 70.2,
+        "n": 1079,
+        "adoption": 83.3
       },
       {
         "members": [
           "Helm",
           "Nayuta"
         ],
-        "wr": 55.3,
-        "n": 899,
-        "adoption": 73.7
+        "wr": 52.0,
+        "n": 922,
+        "adoption": 72.6
       },
       {
         "members": [
           "Blanc",
           "Biscuit"
         ],
-        "wr": 67.7,
-        "n": 789,
-        "adoption": 65.8
+        "wr": 69.9,
+        "n": 810,
+        "adoption": 64.3
       },
       {
         "members": [
           "Anis: Star",
           "Blanc"
         ],
-        "wr": 68.3,
-        "n": 733,
-        "adoption": 61.5
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Red Hood"
-        ],
-        "wr": 53.3,
-        "n": 660,
-        "adoption": 54.9
+        "wr": 69.8,
+        "n": 778,
+        "adoption": 61.9
       },
       {
         "members": [
           "Moran",
           "Noah"
         ],
-        "wr": 58.4,
-        "n": 705,
-        "adoption": 54.6
-      },
-      {
-        "members": [
-          "Helm",
-          "Red Hood"
-        ],
-        "wr": 53.4,
-        "n": 656,
-        "adoption": 54.3
+        "wr": 59.1,
+        "n": 760,
+        "adoption": 58.3
       },
       {
         "members": [
           "Neon: Vision Eye",
           "Noah"
         ],
-        "wr": 58.4,
-        "n": 697,
-        "adoption": 52.1
+        "wr": 58.7,
+        "n": 758,
+        "adoption": 55.7
       },
       {
         "members": [
-          "Centi",
-          "Trina"
+          "Nayuta",
+          "Red Hood"
         ],
-        "wr": 55.3,
-        "n": 631,
-        "adoption": 47.3
+        "wr": 47.7,
+        "n": 685,
+        "adoption": 55.7
+      },
+      {
+        "members": [
+          "Helm",
+          "Red Hood"
+        ],
+        "wr": 48.1,
+        "n": 672,
+        "adoption": 54.6
       },
       {
         "members": [
           "Neon: Vision Eye",
           "Moran"
         ],
-        "wr": 58.3,
-        "n": 623,
-        "adoption": 47.3
+        "wr": 59.5,
+        "n": 702,
+        "adoption": 51.9
       },
       {
         "members": [
           "Centi",
           "Laplace: Ultimate Hero"
         ],
-        "wr": 59.9,
-        "n": 656,
-        "adoption": 47.0
+        "wr": 58.4,
+        "n": 704,
+        "adoption": 51.1
       },
       {
         "members": [
-          "Nayuta",
-          "Emilia"
+          "Centi",
+          "Trina"
         ],
-        "wr": 54.5,
-        "n": 589,
-        "adoption": 45.0
+        "wr": 52.9,
+        "n": 701,
+        "adoption": 49.7
+      },
+      {
+        "members": [
+          "Vesti: Tactical Upgrade",
+          "Rosanna"
+        ],
+        "wr": 39.0,
+        "n": 646,
+        "adoption": 43.9
       }
     ],
     "trios": [
@@ -949,9 +949,9 @@
           "Blanc",
           "Biscuit"
         ],
-        "wr": 69.0,
-        "n": 715,
-        "adoption": 59.8
+        "wr": 71.1,
+        "n": 751,
+        "adoption": 59.3
       },
       {
         "members": [
@@ -959,9 +959,9 @@
           "Nayuta",
           "Red Hood"
         ],
-        "wr": 53.7,
-        "n": 643,
-        "adoption": 52.7
+        "wr": 48.6,
+        "n": 660,
+        "adoption": 53.0
       },
       {
         "members": [
@@ -969,9 +969,9 @@
           "Moran",
           "Noah"
         ],
-        "wr": 60.0,
-        "n": 532,
-        "adoption": 39.1
+        "wr": 59.5,
+        "n": 595,
+        "adoption": 43.2
       },
       {
         "members": [
@@ -979,49 +979,9 @@
           "Nayuta",
           "Emilia"
         ],
-        "wr": 54.1,
-        "n": 479,
-        "adoption": 38.0
-      },
-      {
-        "members": [
-          "Helm",
-          "Nayuta",
-          "Snow White: Heavy Arms"
-        ],
-        "wr": 62.1,
-        "n": 457,
-        "adoption": 36.1
-      },
-      {
-        "members": [
-          "Centi",
-          "Laplace: Ultimate Hero",
-          "Trina"
-        ],
-        "wr": 60.0,
-        "n": 475,
-        "adoption": 33.9
-      },
-      {
-        "members": [
-          "Emma: Tactical Upgrade",
-          "Vesti: Tactical Upgrade",
-          "Eunhwa: Tactical Upgrade"
-        ],
-        "wr": 37.3,
-        "n": 448,
-        "adoption": 33.3
-      },
-      {
-        "members": [
-          "Laplace",
-          "Helm",
-          "Nayuta"
-        ],
-        "wr": 54.9,
-        "n": 417,
-        "adoption": 33.3
+        "wr": 53.7,
+        "n": 492,
+        "adoption": 36.3
       },
       {
         "members": [
@@ -1029,19 +989,69 @@
           "Laplace: Ultimate Hero",
           "Soda"
         ],
-        "wr": 59.8,
-        "n": 450,
-        "adoption": 31.9
+        "wr": 57.9,
+        "n": 487,
+        "adoption": 35.5
       },
       {
         "members": [
-          "Maiden: Ice Rose",
-          "Anis: Star",
-          "Biscuit"
+          "Centi",
+          "Laplace: Ultimate Hero",
+          "Trina"
         ],
-        "wr": 67.2,
-        "n": 345,
-        "adoption": 28.2
+        "wr": 57.9,
+        "n": 494,
+        "adoption": 34.3
+      },
+      {
+        "members": [
+          "Helm",
+          "Nayuta",
+          "Snow White: Heavy Arms"
+        ],
+        "wr": 61.1,
+        "n": 471,
+        "adoption": 34.1
+      },
+      {
+        "members": [
+          "Laplace",
+          "Helm",
+          "Nayuta"
+        ],
+        "wr": 50.3,
+        "n": 431,
+        "adoption": 34.1
+      },
+      {
+        "members": [
+          "Flora",
+          "Vesti: Tactical Upgrade",
+          "Rosanna"
+        ],
+        "wr": 42.6,
+        "n": 505,
+        "adoption": 31.6
+      },
+      {
+        "members": [
+          "Emma: Tactical Upgrade",
+          "Vesti: Tactical Upgrade",
+          "Eunhwa: Tactical Upgrade"
+        ],
+        "wr": 37.5,
+        "n": 448,
+        "adoption": 31.3
+      },
+      {
+        "members": [
+          "Centi",
+          "Trina",
+          "Soda"
+        ],
+        "wr": 54.8,
+        "n": 407,
+        "adoption": 28.9
       },
       {
         "members": [
@@ -1049,19 +1059,9 @@
           "Nayuta",
           "Red Hood"
         ],
-        "wr": 54.2,
+        "wr": 47.5,
         "n": 345,
-        "adoption": 28.1
-      },
-      {
-        "members": [
-          "Laplace",
-          "Helm",
-          "Red Hood"
-        ],
-        "wr": 54.3,
-        "n": 341,
-        "adoption": 27.8
+        "adoption": 28.9
       }
     ],
     "quads": [
@@ -1072,9 +1072,9 @@
           "Nayuta",
           "Red Hood"
         ],
-        "wr": 54.4,
-        "n": 340,
-        "adoption": 27.6
+        "wr": 48.4,
+        "n": 335,
+        "adoption": 27.7
       },
       {
         "members": [
@@ -1083,20 +1083,9 @@
           "Red Hood",
           "Emilia"
         ],
-        "wr": 54.0,
-        "n": 339,
-        "adoption": 26.5
-      },
-      {
-        "members": [
-          "Emma: Tactical Upgrade",
-          "Vesti: Tactical Upgrade",
-          "Eunhwa: Tactical Upgrade",
-          "Rosanna"
-        ],
-        "wr": 37.2,
-        "n": 328,
-        "adoption": 24.4
+        "wr": 50.3,
+        "n": 356,
+        "adoption": 27.0
       },
       {
         "members": [
@@ -1105,9 +1094,20 @@
           "Trina",
           "Soda"
         ],
-        "wr": 60.7,
-        "n": 341,
-        "adoption": 23.3
+        "wr": 57.2,
+        "n": 367,
+        "adoption": 25.3
+      },
+      {
+        "members": [
+          "Emma: Tactical Upgrade",
+          "Vesti: Tactical Upgrade",
+          "Eunhwa: Tactical Upgrade",
+          "Rosanna"
+        ],
+        "wr": 40.9,
+        "n": 359,
+        "adoption": 24.1
       },
       {
         "members": [
@@ -1116,42 +1116,9 @@
           "Red Hood",
           "Snow White: Heavy Arms"
         ],
-        "wr": 62.3,
-        "n": 284,
-        "adoption": 22.9
-      },
-      {
-        "members": [
-          "Maiden: Ice Rose",
-          "Anis: Star",
-          "Blanc",
-          "Biscuit"
-        ],
-        "wr": 69.3,
-        "n": 274,
-        "adoption": 22.9
-      },
-      {
-        "members": [
-          "Anis: Star",
-          "Blanc",
-          "Biscuit",
-          "Cinderella"
-        ],
-        "wr": 66.4,
-        "n": 262,
-        "adoption": 22.6
-      },
-      {
-        "members": [
-          "Privaty",
-          "Anis: Star",
-          "Blanc",
-          "Biscuit"
-        ],
-        "wr": 66.7,
-        "n": 246,
-        "adoption": 20.3
+        "wr": 58.0,
+        "n": 307,
+        "adoption": 22.3
       },
       {
         "members": [
@@ -1160,9 +1127,9 @@
           "Vesti: Tactical Upgrade",
           "Eunhwa: Tactical Upgrade"
         ],
-        "wr": 42.1,
-        "n": 290,
-        "adoption": 19.9
+        "wr": 42.4,
+        "n": 347,
+        "adoption": 22.0
       },
       {
         "members": [
@@ -1171,9 +1138,42 @@
           "Moran",
           "Noah"
         ],
-        "wr": 48.2,
-        "n": 247,
-        "adoption": 19.7
+        "wr": 55.8,
+        "n": 308,
+        "adoption": 22.0
+      },
+      {
+        "members": [
+          "Maiden: Ice Rose",
+          "Anis: Star",
+          "Blanc",
+          "Biscuit"
+        ],
+        "wr": 70.5,
+        "n": 295,
+        "adoption": 21.9
+      },
+      {
+        "members": [
+          "Anis: Star",
+          "Blanc",
+          "Biscuit",
+          "Cinderella"
+        ],
+        "wr": 69.3,
+        "n": 257,
+        "adoption": 20.9
+      },
+      {
+        "members": [
+          "Privaty",
+          "Anis: Star",
+          "Blanc",
+          "Biscuit"
+        ],
+        "wr": 69.8,
+        "n": 281,
+        "adoption": 20.3
       },
       {
         "members": [
@@ -1182,20 +1182,20 @@
           "Anis",
           "Soda"
         ],
-        "wr": 60.5,
-        "n": 266,
-        "adoption": 18.1
+        "wr": 56.4,
+        "n": 264,
+        "adoption": 19.0
       },
       {
         "members": [
-          "Helm",
-          "Nayuta",
-          "Snow White: Heavy Arms",
-          "Emilia"
+          "Neon: Vision Eye",
+          "Moran",
+          "Noise",
+          "Noah"
         ],
-        "wr": 63.0,
-        "n": 235,
-        "adoption": 18.0
+        "wr": 54.2,
+        "n": 262,
+        "adoption": 18.7
       }
     ],
     "topTeams": [
@@ -1207,9 +1207,9 @@
           "Biscuit",
           "Maiden: Ice Rose"
         ],
-        "wr": 68.8,
-        "n": 176,
-        "adoption": 14.4
+        "wr": 72.1,
+        "n": 204,
+        "adoption": 13.7
       },
       {
         "members": [
@@ -1219,9 +1219,9 @@
           "Noah",
           "Jackal"
         ],
-        "wr": 47.4,
-        "n": 152,
-        "adoption": 11.7
+        "wr": 52.6,
+        "n": 171,
+        "adoption": 12.9
       },
       {
         "members": [
@@ -1231,59 +1231,9 @@
           "Rosanna",
           "Emma: Tactical Upgrade"
         ],
-        "wr": 51.2,
-        "n": 125,
-        "adoption": 8.8,
-        "mergedOrderings": 2
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Helm",
-          "Laplace",
-          "Red Hood",
-          "Snow White: Heavy Arms"
-        ],
-        "wr": 65.9,
-        "n": 85,
-        "adoption": 7.6
-      },
-      {
-        "members": [
-          "Mihara: Bonding Chain",
-          "Anis: Star",
-          "Blanc",
-          "Biscuit",
-          "Cinderella"
-        ],
-        "wr": 70.3,
-        "n": 91,
-        "adoption": 6.8
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Helm",
-          "Emilia",
-          "Red Hood",
-          "Snow White: Heavy Arms"
-        ],
-        "wr": 69.8,
-        "n": 86,
-        "adoption": 6.2,
-        "mergedOrderings": 2
-      },
-      {
-        "members": [
-          "Trina",
-          "Soda",
-          "Centi",
-          "Laplace: Ultimate Hero",
-          "Anis"
-        ],
-        "wr": 63.7,
-        "n": 91,
-        "adoption": 5.5,
+        "wr": 50.5,
+        "n": 204,
+        "adoption": 11.8,
         "mergedOrderings": 2
       },
       {
@@ -1294,9 +1244,59 @@
           "Blanc",
           "Jackal"
         ],
-        "wr": 71.4,
-        "n": 98,
-        "adoption": 4.9
+        "wr": 70.0,
+        "n": 150,
+        "adoption": 8.5
+      },
+      {
+        "members": [
+          "Nayuta",
+          "Helm",
+          "Laplace",
+          "Red Hood",
+          "Snow White: Heavy Arms"
+        ],
+        "wr": 57.8,
+        "n": 109,
+        "adoption": 8.0
+      },
+      {
+        "members": [
+          "Mihara: Bonding Chain",
+          "Anis: Star",
+          "Blanc",
+          "Biscuit",
+          "Cinderella"
+        ],
+        "wr": 65.7,
+        "n": 108,
+        "adoption": 7.5
+      },
+      {
+        "members": [
+          "Nayuta",
+          "Helm",
+          "Emilia",
+          "Red Hood",
+          "Snow White: Heavy Arms"
+        ],
+        "wr": 61.4,
+        "n": 101,
+        "adoption": 7.4,
+        "mergedOrderings": 2
+      },
+      {
+        "members": [
+          "Trina",
+          "Soda",
+          "Centi",
+          "Laplace: Ultimate Hero",
+          "Anis"
+        ],
+        "wr": 55.8,
+        "n": 77,
+        "adoption": 4.9,
+        "mergedOrderings": 2
       },
       {
         "members": [
@@ -1306,8 +1306,8 @@
           "Red Hood",
           "Emilia"
         ],
-        "wr": 52.4,
-        "n": 63,
+        "wr": 46.3,
+        "n": 67,
         "adoption": 4.7,
         "mergedOrderings": 2
       },
@@ -1319,21 +1319,9 @@
           "Biscuit",
           "Cinderella"
         ],
-        "wr": 61.2,
-        "n": 49,
-        "adoption": 4.4
-      },
-      {
-        "members": [
-          "Anis: Star",
-          "Blanc",
-          "Anis: Sparkling Summer",
-          "Biscuit",
-          "Maiden: Ice Rose"
-        ],
-        "wr": 75.0,
-        "n": 44,
-        "adoption": 3.2
+        "wr": 70.8,
+        "n": 48,
+        "adoption": 4.6
       },
       {
         "members": [
@@ -1343,34 +1331,9 @@
           "Biscuit",
           "Cinderella"
         ],
-        "wr": 57.9,
-        "n": 38,
-        "adoption": 3.0
-      },
-      {
-        "members": [
-          "Mast",
-          "Eunhwa: Tactical Upgrade",
-          "Vesti: Tactical Upgrade",
-          "Rosanna",
-          "Emma: Tactical Upgrade"
-        ],
-        "wr": 28.9,
-        "n": 38,
-        "adoption": 3.0,
-        "mergedOrderings": 3
-      },
-      {
-        "members": [
-          "Blanc",
-          "Vesti: Tactical Upgrade",
-          "Biscuit",
-          "Emilia",
-          "Anis: Star"
-        ],
-        "wr": 69.0,
-        "n": 29,
-        "adoption": 2.8
+        "wr": 66.7,
+        "n": 42,
+        "adoption": 3.6
       },
       {
         "members": [
@@ -1380,33 +1343,21 @@
           "Red Hood",
           "Rumani"
         ],
-        "wr": 44.4,
-        "n": 36,
-        "adoption": 2.7
+        "wr": 42.4,
+        "n": 33,
+        "adoption": 3.5
       },
       {
         "members": [
-          "Nayuta",
-          "Helm",
+          "Blanc",
+          "Vesti: Tactical Upgrade",
+          "Biscuit",
           "Emilia",
-          "Red Hood",
-          "Centi"
+          "Anis: Star"
         ],
-        "wr": 50.0,
-        "n": 26,
-        "adoption": 2.4
-      },
-      {
-        "members": [
-          "Nayuta",
-          "Helm",
-          "Emilia",
-          "Snow White: Heavy Arms",
-          "Moran"
-        ],
-        "wr": 62.1,
-        "n": 29,
-        "adoption": 2.2
+        "wr": 81.6,
+        "n": 38,
+        "adoption": 3.3
       },
       {
         "members": [
@@ -1416,35 +1367,107 @@
           "Snow White: Heavy Arms",
           "Centi"
         ],
-        "wr": 77.8,
-        "n": 18,
-        "adoption": 2.1
+        "wr": 84.8,
+        "n": 33,
+        "adoption": 3.0
       },
       {
         "members": [
-          "Blanc",
-          "Snow White: Heavy Arms",
-          "Cinderella",
-          "Biscuit",
-          "Label"
+          "Scarlet",
+          "Moran",
+          "Trina",
+          "Anis",
+          "Jackal"
         ],
-        "wr": 79.2,
-        "n": 24,
-        "adoption": 1.9
+        "wr": 39.4,
+        "n": 33,
+        "adoption": 2.8
+      },
+      {
+        "members": [
+          "Nayuta",
+          "Vesti: Tactical Upgrade",
+          "Flora",
+          "Rosanna",
+          "Mast"
+        ],
+        "wr": 48.1,
+        "n": 54,
+        "adoption": 2.5
+      },
+      {
+        "members": [
+          "Moran",
+          "Bay",
+          "Biscuit",
+          "Anis: Star",
+          "Neon: Vision Eye"
+        ],
+        "wr": 70.0,
+        "n": 40,
+        "adoption": 2.5
+      },
+      {
+        "members": [
+          "Bay",
+          "Anis: Star",
+          "Biscuit",
+          "Laplace: Ultimate Hero",
+          "Anis"
+        ],
+        "wr": 66.0,
+        "n": 47,
+        "adoption": 2.2
+      },
+      {
+        "members": [
+          "Moran",
+          "Noah",
+          "Neon: Vision Eye",
+          "Helm",
+          "Trina"
+        ],
+        "wr": 78.0,
+        "n": 41,
+        "adoption": 2.2
+      },
+      {
+        "members": [
+          "Mast",
+          "Vesti: Tactical Upgrade",
+          "Eunhwa: Tactical Upgrade",
+          "Rosanna",
+          "Emma: Tactical Upgrade"
+        ],
+        "wr": 15.4,
+        "n": 26,
+        "adoption": 2.2
+      },
+      {
+        "members": [
+          "Anis: Star",
+          "Blanc",
+          "Anis: Sparkling Summer",
+          "Biscuit",
+          "Maiden: Ice Rose"
+        ],
+        "wr": 60.0,
+        "n": 25,
+        "adoption": 2.2
       }
     ],
     "meta": {
       "source": "enikk.app/champion-arena#teams (Teams 탭 · Exact Ordered Teams)",
       "server": "All servers",
-      "season": "Season 39",
-      "asOf": "2026-10-03",
-      "sourceLastUpdated": "2026-10-02",
+      "season": "Season 40",
+      "asOf": "2026-10-20",
+      "sourceLastUpdated": "2026-10-20",
       "sort": "Adoption 내림차순 · Minimum samples 3 · 1페이지 25행",
-      "limitedDataNotice": "화면 고지 그대로: \"Coverage is limited to collected Champion Arena shards and does not include every shard on a server.\" 10 brackets pooled · 4 AI matches excluded. 즉 전수가 아니라 수집된 shard 표본이다.",
-      "orderingNote": "화면은 슬롯 순서까지 구분해 나열한다(Exact Ordered Teams). 우리 엔진은 5인 구성을 집합으로 매칭하므로 같은 구성의 순서 변형은 접고 채택률이 가장 높은 행만 남겼다(25행 → 19조합, mergedOrderings에 접힌 개수를 남김).",
+      "limitedDataNotice": "화면 고지 그대로: \"Coverage is limited to collected Champion Arena shards and does not include every shard on a server.\" 10 brackets pooled · 2 AI matches excluded. 즉 전수가 아니라 수집된 shard 표본이다.",
+      "orderingNote": "화면은 슬롯 순서까지 구분해 나열한다(Exact Ordered Teams). 우리 엔진은 5인 구성을 집합으로 매칭하므로 같은 구성의 순서 변형은 접고 채택률이 가장 높은 행만 남겼다(25행 → 21조합, mergedOrderings에 접힌 개수를 남김).",
       "staleAfterDays": 21,
-      "combosNote": "pairs·trios·quads = Advanced Statistics 탭 맨 아래 \"Unit Combination Records\"(Unit Pairs·Unit Trios·Four-unit Cores) 상위 12씩, 같은 시즌 39. 2026-10-03 헤드리스 크롬으로 화면 값을 옮김.",
-      "previousSeasonHoldout": "시즌 38 topTeams는 probe-data/pvpHoldout-s38.json(검증 전용)으로 보관"
+      "combosNote": "pairs·trios·quads = Advanced Statistics 탭 맨 아래 \"Unit Combination Records\"(Unit Pairs·Unit Trios·Four-unit Cores) 상위 12씩, 같은 시즌 40. 2026-10-20 헤드리스 크롬으로 화면 값을 옮김.",
+      "previousSeasonHoldout": "시즌 39 topTeams는 probe-data/pvpHoldout-s39.json, 시즌 38은 pvpHoldout-s38.json(검증 전용)으로 보관"
     }
   },
   "soloRaidByElement": {
