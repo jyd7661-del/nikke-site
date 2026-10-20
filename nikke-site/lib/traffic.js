@@ -64,3 +64,73 @@ export function allTrackablePaths() {
     ...TRACKED_PREFIXES.flatMap((l) => bare.map((p) => (p === '/' ? `/${l}` : `/${l}${p}`))),
   ];
 }
+
+// ---------------------------------------------------------------------------
+// 유입 경로 · 국가 (2026-10-21)
+//
+// 유저 질문에서 출발했다: "네이버 쪽에서 유입이 있는 편이야?" — page_views에는 경로만 있어
+// 답할 수 없었다. 그래서 **사이트에 처음 들어온 순간(랜딩)** 마다 어디서 왔는지와 국가를 센다.
+//
+// ⚠️ 랜딩만 센다. Next.js의 화면 전환은 문서를 새로 열지 않아 document.referrer가 처음 값 그대로
+//    남는다 — 페이지마다 보내면 네이버에서 와서 5쪽을 본 사람이 "네이버 유입 5"가 된다.
+//    그래서 비콘은 첫 전송에만 referrer를 싣는다(components/TrafficBeacon.js).
+// ⚠️ 주소 전체가 아니라 **도메인만** 남긴다. 검색 주소에는 검색어가, 커뮤니티 주소에는 글 번호가
+//    실려 오는데 집계 단위도 아니고 남길 이유도 없다.
+
+// 도메인 → 집계 이름. 같은 곳의 하위 도메인(m.search.naver.com 등)을 하나로 접는다.
+// 위에서부터 처음 맞는 것을 쓴다.
+const SOURCE_RULES = [
+  [/(^|\.)google\.[a-z.]+$/, 'google'],
+  [/(^|\.)naver\.(com|net)$/, 'naver'],
+  [/(^|\.)(daum\.net|kakao\.com)$/, 'daum'],
+  [/(^|\.)bing\.com$/, 'bing'],
+  [/(^|\.)yahoo\.(com|co\.jp)$/, 'yahoo'],
+  [/(^|\.)duckduckgo\.com$/, 'duckduckgo'],
+  [/(^|\.)arca\.live$/, 'arca'],
+  [/(^|\.)ruliweb\.com$/, 'ruliweb'],
+  [/(^|\.)dcinside\.com$/, 'dcinside'],
+  [/(^|\.)inven\.co\.kr$/, 'inven'],
+  [/(^|\.)namu\.wiki$/, 'namuwiki'],
+  [/(^|\.)(youtube\.com|youtu\.be)$/, 'youtube'],
+  [/(^|\.)(twitter\.com|x\.com|t\.co)$/, 'x'],
+  [/(^|\.)reddit\.com$/, 'reddit'],
+  [/(^|\.)(discord\.com|discordapp\.com)$/, 'discord'],
+  [/(^|\.)(chatgpt\.com|openai\.com)$/, 'chatgpt'],
+  [/(^|\.)perplexity\.ai$/, 'perplexity'],
+];
+
+// 우리 사이트 주소. 여기서 온 것은 랜딩이 아니다(언어 전환 등으로 문서를 새로 연 경우).
+const OWN_HOST = /(^|\.)(nikketeamguide\.com|nikke-site\.vercel\.app)$|^localhost$|^127\.0\.0\.1$/;
+
+/**
+ * referrer → 집계 이름. 'direct'(없음) · 알려진 이름 · 그 밖의 도메인 그대로. 우리 사이트면 null(세지 않음).
+ * 알려지지 않은 도메인도 남기는 이유: 어디서 링크가 걸렸는지가 이 계측의 쓸모다.
+ * 대신 도메인 모양이 아니거나 길면 'other'로 접는다(공개 엔드포인트라 아무 문자열이나 온다).
+ */
+export function normalizeSource(referrer) {
+  if (referrer == null || referrer === '') return 'direct';
+  if (typeof referrer !== 'string' || referrer.length > 2000) return 'other';
+  let u;
+  try { u = new URL(referrer); } catch { return 'other'; }
+  // 안드로이드 앱이 보내는 referrer는 android-app://<패키지>/ 꼴이다 — hostname이 패키지라
+  // 도메인 규칙에 넣으면 지메일(com.google.android.gm)이 'google'이 된다. 검색 앱만 따로 접는다.
+  if (u.protocol === 'android-app:') {
+    const pkg = u.hostname.toLowerCase();
+    if (pkg === 'com.google.android.googlequicksearchbox') return 'google';
+    if (pkg === 'com.nhn.android.search') return 'naver';
+    if (pkg === 'net.daum.android.daum') return 'daum';
+    return 'android-app';
+  }
+  let host = u.hostname.toLowerCase();
+  if (!host) return 'direct';
+  if (OWN_HOST.test(host)) return null;
+  for (const [re, name] of SOURCE_RULES) if (re.test(host)) return name;
+  host = host.replace(/^www\./, '');
+  return /^[a-z0-9.-]{1,60}$/.test(host) && host.includes('.') ? host : 'other';
+}
+
+// Vercel이 붙여 주는 x-vercel-ip-country(ISO 3166-1 알파2). 없거나 모양이 틀리면 'XX'.
+export function normalizeCountry(raw) {
+  const c = String(raw || '').trim().toUpperCase();
+  return /^[A-Z]{2}$/.test(c) ? c : 'XX';
+}

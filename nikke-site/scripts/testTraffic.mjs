@@ -25,7 +25,7 @@ const fixed = fs.readFileSync(path.join(ROOT, 'lib', 'traffic.js'), 'utf8')
   .replace(/from '(?:@\/|\.\.\/)data\/([\w.]+)\.json';/g, (_, name) =>
     `from ${JSON.stringify(pathToFileURL(path.join(ROOT, 'data', `${name}.json`)).href)} with { type: 'json' };`);
 fs.writeFileSync(path.join(tmp, 'traffic.mjs'), fixed);
-const { normalizePath, isBot, allTrackablePaths } = await import(pathToFileURL(path.join(tmp, 'traffic.mjs')).href);
+const { normalizePath, isBot, allTrackablePaths, normalizeSource, normalizeCountry } = await import(pathToFileURL(path.join(tmp, 'traffic.mjs')).href);
 
 const db = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'characterDatabase.json'), 'utf8'));
 
@@ -89,6 +89,33 @@ const botMiss = BOTS.filter((ua) => !isBot(ua));
 const humanHit = HUMANS.filter((ua) => isBot(ua));
 check('봇을 거른다', botMiss.length === 0, botMiss.join(' / '));
 check('사람을 거르지 않는다', humanHit.length === 0, humanHit.join(' / '));
+
+// 7. 유입 경로(2026-10-21) — 하위 도메인을 접고, 우리 사이트는 세지 않고, 주소 내용(검색어)은 남기지 않는다.
+const SRC = [
+  ['https://m.search.naver.com/search.naver?query=니케+조합', 'naver'],
+  ['https://search.naver.com/search.naver?query=x', 'naver'],
+  ['https://www.google.com/', 'google'],
+  ['https://www.google.co.kr/', 'google'],
+  ['https://search.daum.net/search?q=x', 'daum'],
+  ['https://arca.live/b/nikke/123', 'arca'],
+  ['https://m.ruliweb.com/game/1', 'ruliweb'],
+  ['https://t.co/abc', 'x'],
+  ['https://www.somefan.blog/post/1', 'somefan.blog'],
+  ['', 'direct'],
+  [undefined, 'direct'],
+  ['android-app://com.google.android.gm/', 'android-app'],
+  ['android-app://com.google.android.googlequicksearchbox/', 'google'],
+  ['android-app://com.nhn.android.search/', 'naver'],
+  ['not a url', 'other'],
+  ['https://' + 'a'.repeat(70) + '.com/', 'other'],
+];
+const srcBad = SRC.filter(([r, want]) => normalizeSource(r) !== want).map(([r, want]) => `${String(r).slice(0, 40)} → ${normalizeSource(r)} (기대 ${want})`);
+check('유입처 판정', srcBad.length === 0, srcBad.join(' / '));
+// 우리 사이트에서 온 것은 랜딩이 아니다. 이걸 세면 언어 전환마다 유입이 하나씩 부푼다.
+check('우리 사이트는 세지 않는다', ['https://nikketeamguide.com/nikke', 'https://www.nikketeamguide.com/', 'https://nikke-site.vercel.app/', 'http://localhost:3000/'].every((r) => normalizeSource(r) === null));
+// 검색어가 실려 와도 저장값에 남으면 안 된다.
+check('검색어가 유입처에 남지 않는다', !String(normalizeSource('https://search.naver.com/search.naver?query=secret')).includes('secret'));
+check('국가 정규화', normalizeCountry('kr') === 'KR' && normalizeCountry('') === 'XX' && normalizeCountry(null) === 'XX' && normalizeCountry('KOR') === 'XX');
 
 // ---------------------------------------------------------------------------
 const line = '─'.repeat(72);

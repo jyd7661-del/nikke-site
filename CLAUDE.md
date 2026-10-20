@@ -158,6 +158,7 @@ node scripts/testJudgmentMatch.mjs  # 사이트 추천 ↔ 내 판정 일치율(
 | `docs/weekly-research.md` | 주간 두 실행기(코드 점검·AI 조사) — 보고서 처리 절차 |
 | `docs/weekly-research-prompt.md` | AI 조사(무인 `claude -p`)의 **지시서 본문** — 규칙을 고치면 여기 |
 | `docs/ai-teams-plan.md` | AI 조합 추천 운영 전환 설계(2026-09-15, 소넷 기준) — **09-26 유저 결정으로 하이쿠·엔진 우선으로 바뀜**(머리말) |
+| `docs/site-report.md` | **사이트 현황 보고 양식**(2026-10-21) — 고정 기간(7일 대 7일)·항목·순서, 조회문 `supabase/queries/site_report.sql` |
 | `docs/open-items.md` | **지금 열린 항목 · 현재 기준선 · 성장 계획 3축(단일 출처)** — 짧게 유지 |
 | `docs/log/YYYY-MM.md` | 작업 경위·실측·함정 기록(새것이 위). 옛 `open-items.md` 본문이 여기 있다 |
 | `docs/new-game-playbook.md` | **다른 게임 확장 플레이북**(2026-10-11) — 니케에서 효과가 확인된 방법·함정·필요한 것, 출시 일정표, 새 게임 착수 질문 30개. 1순위 시프트업 차기작 |

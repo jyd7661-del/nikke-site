@@ -24,6 +24,7 @@
 | `content_translations_migration.sql` | 커뮤니티 번역 `content_translations`·`source_lang` (`docs/i18n.md`) |
 | `translate_budget_migration.sql` | 번역 일일 상한 `translate_daily_budget` |
 | `traffic_migration.sql` | 자체 방문 계측 `page_views`·`daily_visitors` (아래 절) |
+| `traffic_sources_migration.sql` | 유입 경로·국가 `traffic_sources` — 랜딩마다 (날짜·유입처·국가·첫 페이지) (2026-10-21, 아래 절) |
 
 ### Vercel 환경변수
 
@@ -349,6 +350,13 @@ JS로 만든다.** 브라우저로 열면 광고가 정상으로 보이므로 �
 남은 항목: **동의 메시지(CMP)** — EEA·영국·스위스 방문자용 쿠키 동의 배너. 미설정 시 그 지역
 광고 수익이 빠집니다. 3가지 선택형(동의/동의하지 않음/옵션 관리)이 GDPR 요건에 가장 안전.
 **법적 성격이 있어 사용자 결정이 필요합니다.**
+
+### 유입 경로 · 국가 (2026-10-21)
+
+`traffic_sources(view_date, source, country, landing, landings)` — 사이트에 **처음 들어온 순간(랜딩)**마다 1.
+유입처는 referrer 도메인을 접은 이름(`naver`·`google`·`direct`·`arca`…, 판정은 `lib/traffic.js` `normalizeSource`), 국가는 `x-vercel-ip-country`.
+랜딩만 세는 이유와 함정은 `lib/traffic.js` 주석, 검사는 `scripts/testTraffic.mjs` 7번. 보고 양식은 `docs/site-report.md`.
+⚠️ 같은 날 계측 함수 3개가 **authenticated(로그인 사용자)에게 실행 권한이 열려 있던 것**을 발견해 회수했다 — Supabase는 anon·authenticated에 따로 준다.
 
 ### 자체 방문 계측 (2026-08-26 신설) — ⚠️ **마이그레이션을 적용해야 켜진다**
 

@@ -73,6 +73,7 @@ $$;
 --    권한이 필요 없고, 열어두면 누구나 카운터를 부풀릴 수 있다.
 revoke all on function bump_page_view(text, date) from public, anon;
 revoke all on function record_visitor(text, date) from public, anon;
+-- ⚠️ 이것만으로는 authenticated(로그인 사용자)에 실행 권한이 남는다 — 2026-10-21 traffic_sources_migration.sql에서 회수.
 
 -- 조회용 인덱스 — 날짜로 훑는 질의가 대부분이다.
 create index if not exists page_views_date_idx on page_views (view_date);

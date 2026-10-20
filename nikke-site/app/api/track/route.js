@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { isBot, normalizePath } from '@/lib/traffic';
+import { isBot, normalizePath, normalizeSource, normalizeCountry } from '@/lib/traffic';
 
 // 자체 방문 계측 수집기. (2026-08-26)
 //
@@ -48,12 +48,20 @@ export async function POST(req) {
 
     const date = new Date().toISOString().slice(0, 10);
     // 로딩 수와 인원수는 서로 독립이다. 하나가 실패해도 다른 하나는 남긴다.
-    const [pv, dv] = await Promise.allSettled([
+    // 랜딩(사이트에 처음 들어온 순간)이면 유입 경로·국가도 센다. 우리 사이트에서 온 것은 null이라 안 센다.
+    const source = body?.landing === true ? normalizeSource(body?.ref) : null;
+    const [pv, dv, ts] = await Promise.allSettled([
       supabase.rpc('bump_page_view', { p_path: path, p_date: date }),
       supabase.rpc('record_visitor', { p_hash: visitorHash(clientIp(req), ua, date), p_date: date }),
+      source
+        ? supabase.rpc('bump_traffic_source', {
+          p_date: date, p_source: source, p_country: normalizeCountry(req.headers.get('x-vercel-ip-country')), p_landing: path,
+        })
+        : Promise.resolve(null),
     ]);
     if (pv.status === 'rejected' || pv.value?.error) console.error('[TRACK] page_views 실패', pv.value?.error || pv.reason);
     if (dv.status === 'rejected' || dv.value?.error) console.error('[TRACK] daily_visitors 실패', dv.value?.error || dv.reason);
+    if (ts.status === 'rejected' || ts.value?.error) console.error('[TRACK] traffic_sources 실패', ts.value?.error || ts.reason);
   } catch (e) {
     // 계측 실패가 사용자 화면에 영향을 주면 안 된다. 삼키고 204.
     console.error('[TRACK] 예외', e);
