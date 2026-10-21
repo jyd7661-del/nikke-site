@@ -962,6 +962,57 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
 }
 // 풀버스트 주기 관문을 거는 모드. 근거(등록 실사용 조합, testRealTeams "20초 순환 아님"): 캠페인 0/20 · 타워 7/50.
 // PvP(19/22)·솔로레이드(40/122)는 20초 주기를 전제하지 않는 판이라 걸지 않는다.
+// 2026-10-21 **아니스 : 스타는 다른 1버스트 아군이 있으면 "나만의 별"을 잃는다** — 스킬 원문 "If there are any other Burst 1 allies:
+//   Cancels My Own Star". 잃는 것: 본인 ATK ▲40.01% · 풀버스트 때 전 아군 ATK ▲(시전자 공격력의 35.01%) · 전 아군 버스트 쿨 ▼7.48초.
+//   남는 것은 회복·최대 HP 같은 생존 몫뿐이라 지원형 자리로서의 가치(티어가 매긴 몫)가 사라진다.
+//   그동안 엔진은 쿨감만 주기 계산에서 뺐고(burstCdr noOtherB1) 티어 점수는 그대로 줘서, 리타·리틀 머메이드·로산나와 같이 넣었다.
+//   실측: 실사용형 로스터 벤치(SSR 40 + 상시 SR) 40건 중 엔진이 진 8건의 4건이 이 모양. 랭커 등록 조합은 88개 중 6개만 이렇게 쓴다.
+//   그래서 점수는 "버프가 빈 지원형"(emptyBuffMembers)과 같은 처리 — 그 칸 0점. 새 숫자는 없다(원칙 2).
+//   대상은 burstCdr.json에서 cond noOtherB1인 **고정 1버스트** 멤버(라피 : 레드 후드는 유연이라 3단계로 가면 그만이다).
+//   "다른 1버스트"도 고정 1버스트만 센다 — 유연 멤버는 다른 단계로 갈 수 있다. `__NIKKE_STAR_SPLIT_OFF`면 옛 동작.
+//   ⚠️ 예외 둘 — 처음 판(전 모드)을 이전 엔진과 비교하니 PvP와 타워에서 나빠졌다:
+//   ① **PvP는 안 건다.** 스타의 '버스트 게이지 충전 ▲6%'는 조건이 없어 남는다. 걸었더니 스타(SSS)나 자칼(SSS) 대신
+//      소다·라피 : 레드 후드(PvP C) 같은 걸 넣었다(바뀐 PvP 답 18건 다수가 나빠짐).
+//   ② **등록 조합에서 스타와 같이 쓰이는 1버스트는 예외** — 같은 모드 등록 조합(레이드 soloRaidTeams · 캠페인 metaStats ·
+//      타워 towerCompositions)에서 스타와 한 팀에 나온 고정 1버스트. 실측: 레이드 29팀·캠페인 20팀은 0명,
+//      타워 28팀에선 목단 4·리틀 머메이드 1(애장품 목단은 20초 버스트 — "스타 + 애장품 목단 + 3버스트 둘"이 투자 노트의 정석).
+const STAR_SPLIT_SKIP_MODES = new Set(['pvp']);
+const STAR_PARTNERS_BY_MODE = (() => {
+  const byTitle = new Map(characterDatabase.map((c) => [c.title, c]));
+  const fixedB1 = (t) => { const c = byTitle.get(t); return !!c && !c.burstFlex && String(c.burst) === '1'; };
+  const hosts = new Set((burstCdr.characters || []).filter((e) => e.cond === 'noOtherB1' && fixedB1(e.title)).map((e) => e.title));
+  const teamsOf = (root) => {
+    const out = [];
+    (function walk(o) {
+      if (Array.isArray(o)) {
+        if (o.length === 5 && o.every((x) => typeof x === 'string' && byTitle.has(x))) { out.push(o); return; }
+        o.forEach(walk);
+      } else if (o && typeof o === 'object') Object.values(o).forEach(walk);
+    })(root);
+    return out;
+  };
+  const partners = (teams) => {
+    const set = new Set();
+    for (const t of teams) if (t.some((x) => hosts.has(x))) for (const x of t) if (!hosts.has(x) && fixedB1(x)) set.add(x);
+    return set;
+  };
+  const campaign = partners(teamsOf(metaStats.campaignCompositions));
+  return {
+    bossing: partners(teamsOf(soloRaidTeams)), raid: partners(teamsOf(soloRaidTeams)),
+    campaign, story: campaign, tribe_tower: partners(teamsOf(towerCompositions)),
+  };
+})();
+export function ownStarLostMembers(members, mode) {
+  if (globalThis.__NIKKE_STAR_SPLIT_OFF || STAR_SPLIT_SKIP_MODES.has(mode)) return [];
+  const registered = STAR_PARTNERS_BY_MODE[mode] || new Set();
+  const fixedB1 = (m) => !m.burstFlex && String(m.burst) === '1';
+  return members.filter((m) =>
+    fixedB1(m) &&
+    (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => e.cond === 'noOtherB1') &&
+    members.some((o) => o.id !== m.id && fixedB1(o) && !registered.has(o.title))
+  );
+}
+
 const CYCLE_GATE_MODES = new Set(['campaign', 'tribe_tower']);
 
 // 2026-08-07 추가: 토템 역할에 조건이 붙는 경우 처리.
@@ -1275,6 +1326,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 실측(얇은 로스터 40건): 답이 바뀐 4건 전부 **이전 엔진보다 나아졌다**(나빠짐 0).
   // 일치율 53.8% → 57.9%. 가드는 그대로 — 랭커 백분위 중앙 70.5%, 실사용 조합 0건.
   const emptyTitles = new Set(emptyBuffMembers(members).map((x) => x.title));
+  // 2026-10-21: 다른 1버스트와 같이 넣은 아니스 : 스타도 같은 처리(ownStarLostMembers 주석).
+  const ownStarLost = ownStarLostMembers(members, mode);
+  for (const m of ownStarLost) emptyTitles.add(m.title);
   // 2026-10-01: 낭비 인원은 0점이 아니라 **티어 × 버스트 없이 남는 딜 비율**(wastedTierScore 주석).
   const tierTotal = members.reduce(
     (sum, m) => sum + (emptyTitles.has(m.title) ? 0 : wastedIds.has(m.id) ? wastedTierScore(m, mode, treasureIds) : tierScore(m, mode, treasureIds)),
@@ -1283,6 +1337,9 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   score += tierTotal * WEIGHTS.TIER_SUM;
   if (wastedMembers.length > 0) {
     reasons.push(R.wasted({ names: wastedMembers.map((m) => rName(m, lang)) }));
+  }
+  if (ownStarLost.length > 0) {
+    reasons.push(R.own_star_lost({ names: ownStarLost.map((m) => rName(m, lang)) }));
   }
 
   // --- 실사용 픽률 등급 합산 (enikk.app) ---
@@ -2394,8 +2451,9 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   const teamTierTotal = (members) => {
     const { wasted } = findWastedBurstMembers(members, mode, treasureIds);
     const wastedIds = new Set(wasted.map((m) => m.id));
+    const starLostIds = new Set(ownStarLostMembers(members, mode).map((m) => m.id));
     return members.reduce(
-      (sum, m) => sum + (wastedIds.has(m.id) ? wastedTierScore(m, mode, treasureIds) : tierScore(m, mode, treasureIds)),
+      (sum, m) => sum + (starLostIds.has(m.id) ? 0 : wastedIds.has(m.id) ? wastedTierScore(m, mode, treasureIds) : tierScore(m, mode, treasureIds)),
       0
     );
   };

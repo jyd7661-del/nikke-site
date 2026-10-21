@@ -62,6 +62,9 @@ const KO = {
     'enikk.app에 등록된 실사용 조합에서는 드뭅니다 — 캠페인 19건 중 0건, 타워 50건 중 0건, ' +
     '솔로레이드 124건 중 6건(5%)만 그렇습니다(무작위 5인은 27%). 보유 인원이 얇으면 어쩔 수 없지만, ' +
     '버퍼를 한 명 넣을 수 있는지 확인해 보세요.',
+  own_star_lost: ({ names }) =>
+    `⚠️ ${join(names)}는(은) 다른 1버스트 아군이 있으면 '나만의 별'이 꺼져 본인 공격력 ▲40%, 전 아군 공격력 버프, ` +
+    `전 아군 버스트 쿨타임 ▼7.48초를 잃습니다(스킬 원문). 1버스트를 혼자 맡길 때 제 역할을 합니다.`,
   skill_mechanic: ({ caster, label, receivers }) =>
     `[스킬 근거] ${caster}의 스킬에 '${label} ▲' 버프 효과가 있고, ${join(receivers)}의 ` +
     `공격은 스킬 문구상 ${label}로 분류되어 있어 이 버프를 그대로 받습니다.`,
@@ -239,6 +242,9 @@ const EN = {
     'That is rare among the real teams recorded on enikk.app — 0 of 19 campaign teams, 0 of 50 tower teams, ' +
     'and 6 of 124 solo raid teams (5%), against 27% for a random five. With a thin roster it may be ' +
     'unavoidable, but check whether you can fit one buffer in.',
+  own_star_lost: ({ names }) =>
+    `⚠️ ${join(names)} loses 'My Own Star' when another Burst 1 ally is present — her own ATK up 40%, the all-ally ATK buff ` +
+    `and the all-ally burst cooldown reduction of 7.48 sec are all gone (skill text). She works as the sole Burst 1.`,
   skill_mechanic: ({ caster, label, receivers }) =>
     `[Skill evidence] ${caster}'s skill carries a '${label} up' buff, and the attacks of ${join(receivers)} ` +
     `are classified as ${label} in their own skill text, so they receive that buff directly.`,
@@ -407,6 +413,9 @@ const JA = {
     'enikk.appに登録された実使用の編成では珍しく、キャンペーンは19件中0件、タワーは50件中0件、' +
     'ソロレイドは124件中6件（5%）だけです（ランダムな5人なら27%）。手持ちが薄ければ仕方ありませんが、' +
     'バッファーを一人入れられないか確認してみてください。',
+  own_star_lost: ({ names }) =>
+    `⚠️ ${join(names)}は、他のバースト1の味方がいると「私だけの星」が解除され、自身の攻撃力▲40%、味方全体の攻撃力バフ、` +
+    `味方全体のバーストクールタイム▼7.48秒を失います（スキル原文）。バースト1を一人で担うときに本来の役割を果たします。`,
   skill_mechanic: ({ caster, label, receivers }) =>
     `［スキル根拠］${caster}のスキルに「${label}▲」のバフ効果があり、${join(receivers)}の` +
     `攻撃はスキル文面上${label}に分類されているため、このバフをそのまま受けられます。`,

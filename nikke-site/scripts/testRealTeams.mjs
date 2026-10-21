@@ -180,7 +180,9 @@ for (const t of teams) {
   // 같은 로스터를 관문 없이 돌리면 단독이 1위여야 한다 — 아니면 이 시험은 아무것도 재지 않는다(빈 시험 방지).
   // 2026-10-12: 두 번째 3버스트를 퀀시 : 이스케이프 퀸 → 아인. enikk 솔로레이드 채용 등급 갱신(퀀시 C → B)으로 관문 없이도 3버스트 둘이 1위가 돼
   //   이 시험이 고장을 재현하지 못했다("빈 시험 방지"가 잡았다). 후보 6명 중 두 조건(관문 없으면 단독 1위 · 관문 있으면 아님)을 다 만드는 건 아인.
-  const roster = T(['Anis: Star', 'Rouge', 'Prika', 'Helm: Aquamarine', 'Snow White: Heavy Arms', 'Ein']);
+  // 2026-10-21: 루주(고정 1버스트) → 크라운. 아니스 : 스타 + 다른 1버스트를 깎는 규칙(ownStarLostMembers)이 들어와 스타 + 루주 팀이
+  //   1위에서 내려갔고, 이 시험이 고장을 재현하지 못했다(빈 시험 방지가 다시 잡았다). 루주 자리를 바꿔 두 조건을 다 만드는 2버스트 7명 중 크라운.
+  const roster = T(['Anis: Star', 'Crown', 'Prika', 'Helm: Aquamarine', 'Snow White: Heavy Arms', 'Ein']);
   if (roster.some((c) => !c)) problems.push('[버스트 3 단독 관문] 시험용 이름이 DB에 없다');
   else {
     const gated = engine.recommendTeams(roster, 'bossing', {}).teams?.[0];
@@ -547,6 +549,27 @@ for (const t of teams) {
   const noB3 = cdb.filter((c) => String(c.rarity).toUpperCase() === 'SSR' && String(c.burst) !== '3' && !c.burstFlex).slice(0, 40);
   const r0 = engine.pickRaidSquads(noB3, { bossElement: 'Water' });
   if (r0.squads.length !== 0 || !r0.error) problems.push('[레이드 5팀] 버스트 3이 없는 로스터에서 팀이 나오거나 이유 문장이 없다');
+}
+
+// --- 아니스 : 스타 "나만의 별" (2026-10-21, lib/synergyEngine.js ownStarLostMembers) ---
+// 고장: 엔진이 스타를 다른 고정 1버스트(리타·리틀 머메이드·로산나)와 같이 넣어 나만의 별(공40%·아군 공35%·쿨감 7.48초)을 껐다.
+// ① 고치려던 고장 — 레이드·캠페인에서 스타 + 다른 고정 1버스트면 스타가 걸리고 이유 문장이 나온다
+// ② 예외가 살아 있다 — PvP는 안 걸고, 타워의 등록 짝(목단)은 안 걸고, 라피 : 레드 후드(유연)는 대상이 아니다
+// ③ 등록 실사용 조합은 하나도 안 걸린다(규칙이 랭커 조합을 깎지 않는다)
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const lost = (names, mode) => engine.ownStarLostMembers(T(names), mode).map((m) => m.title);
+  const raidTeam = ['Anis: Star', 'Liter', 'Mint', 'Snow White: Heavy Arms', 'Rapi: Red Hood'];
+  const campTeam = ['Anis: Star', 'Little Mermaid', 'Crown', 'Laplace: Ultimate Hero', 'Scarlet: Black Shadow'];
+  if (String(lost(raidTeam, 'bossing')) !== 'Anis: Star') problems.push('[스타 나만의 별] 레이드에서 스타 + 리타를 못 잡는다');
+  if (String(lost(campTeam, 'campaign')) !== 'Anis: Star') problems.push('[스타 나만의 별] 캠페인에서 스타 + 리틀 머메이드를 못 잡는다');
+  const reasons = engine.scoreTeam(T(raidTeam), 'bossing', { lang: 'ko' }).reasons || [];
+  if (!reasons.some((r) => String(r).includes('나만의 별'))) problems.push('[스타 나만의 별] 걸렸는데 이유 문장이 없다');
+  if (lost(raidTeam, 'pvp').length) problems.push('[스타 나만의 별] PvP에서 걸렸다 — PvP는 예외(게이지 충전 ▲6%가 남는다)');
+  if (lost(['Anis: Star', 'Moran', 'Mint', 'Snow White: Heavy Arms', 'Rapi: Red Hood'], 'tribe_tower').length) problems.push('[스타 나만의 별] 타워 등록 짝(목단)을 깎았다');
+  if (lost(['Rapi: Red Hood', 'Little Mermaid', 'Crown', 'Snow White: Heavy Arms', 'Scarlet: Black Shadow'], 'bossing').length) problems.push('[스타 나만의 별] 유연 멤버 라피 : 레드 후드를 대상으로 잡았다');
+  const hit = teams.filter((t) => t.members.every((n) => byTitle.get(n)) && engine.ownStarLostMembers(T(t.members), t.mode).length);
+  hit.forEach((t) => problems.push(`[스타 나만의 별] 등록 조합을 깎는다 — ${t.src} ${t.label}: ${t.members.join(', ')}`));
 }
 
 const line = '─'.repeat(88);
