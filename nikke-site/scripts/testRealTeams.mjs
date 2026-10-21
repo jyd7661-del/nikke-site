@@ -572,6 +572,21 @@ for (const t of teams) {
   hit.forEach((t) => problems.push(`[스타 나만의 별] 등록 조합을 깎는다 — ${t.src} ${t.label}: ${t.members.join(', ')}`));
 }
 
+// --- 보스전 약점 속성 시즌 가중 (2026-10-21, lib/synergyEngine.js SEASON_USAGE_TIER_SUM · emptyReal) ---
+// 고장 ① prydwen 보스전 티어는 속성을 안 봐서 전격 보스에 홍련 : 흑영(풍 SS·전격 시즌 0%)이 홍련(전격 시즌 51.7%)을 이겼다.
+// 고장 ② 빈 자리(나만의 별 상실)의 채용률이 남아, 시즌 가중 아래서 "스타 + 목단" 팀이 스타 채용률로 올라왔다.
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const sc = (names, el) => engine.scoreTeam(T(names), 'bossing', { lang: 'ko', bossElement: el });
+  const base = ['Liter', 'Crown', 'Mint', 'Snow White: Heavy Arms'];
+  const own = sc([...base, 'Scarlet'], 'Electronic').totalScore;
+  const off = sc([...base, 'Scarlet: Black Shadow'], 'Electronic').totalScore;
+  if (!(own > off)) problems.push(`[시즌 가중] 전격 보스에서 홍련 : 흑영(${off.toFixed(1)})이 홍련(${own.toFixed(1)})을 이긴다`);
+  const withStar = sc(['Anis: Star', 'Moran', 'Mint', 'Rapi: Red Hood', 'Scarlet: Black Shadow'], 'Fire').realTierTotal;
+  const without = sc(['Moran', 'Mint', 'Rapi: Red Hood', 'Scarlet: Black Shadow'], 'Fire').realTierTotal;
+  if (withStar !== without) problems.push(`[시즌 가중] 나만의 별을 잃은 스타가 실사용 몫을 받는다(${without} → ${withStar})`);
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

@@ -337,6 +337,15 @@ function realUsageTierScore(character, mode, bossElement = null, treasureIds = n
   return REAL_TIER_SCORE[entry.tier] || 0;
 }
 
+// 실사용 등급 합의 무게. 약점 속성 시즌 표가 있는 보스전은 SEASON_USAGE_TIER_SUM(근거는 WEIGHTS 주석).
+// 비교용 `__NIKKE_SEASON_W_OFF`(옛 0.5), 재측정용 `__NIKKE_SEASON_W`(숫자).
+function usageWeight(mode, bossElement) {
+  const seasonal = (mode === 'bossing' || mode === 'raid') && bossElement && metaStats.soloRaidSeasonUsage?.[bossElement]?.usage;
+  if (!seasonal || globalThis.__NIKKE_SEASON_W_OFF) return WEIGHTS.REAL_USAGE_TIER_SUM;
+  const w = globalThis.__NIKKE_SEASON_W;
+  return w != null ? Number(w) : WEIGHTS.SEASON_USAGE_TIER_SUM;
+}
+
 // 그 약점 속성 시즌 상위 50인 사용률(metaStats.soloRaidSeasonUsage) → enikk 등급 글자.
 // **경계를 새로 정하지 않는다** — enikk가 레이드 전체 채용에 매긴 등급(usageTier.soloraid)에서 등급별 최솟값을 읽어 쓴다
 // (지금 S ≥ 98.9 · A ≥ 43.8 · B ≥ 16.5 · C ≥ 6.5). 경계 사이 값은 낮은 등급, 가장 낮은 경계 아래·표에 없음은 등급 없음.
@@ -759,6 +768,13 @@ const WEIGHTS = {
   // enikk.app 실사용 픽률 등급 합산 — characterDatabase 티어(커뮤니티 공략, 갱신 느림)를
   // 실제 플레이어 채택 데이터로 보정하는 2차 신호. 스케일을 작게 잡아 "참고용 보정"에 그치게 함.
   REAL_USAGE_TIER_SUM: 0.5,
+  // 2026-10-21: 약점 속성 시즌 표(soloRaidSeasonUsage)가 있는 보스전에서만 쓰는 무게. prydwen 보스전 티어는
+  //   속성을 안 봐서 0.5로는 "SS 타속성 딜러"가 "그 시즌 B등급 같은 속성"을 이겼다(라플라스 UH > 볼륨).
+  //   손으로 정하지 않고 잰 값 — 학습에 안 쓴 과거 시즌 랭커 125팀(soloRaidHoldout.json)에서 0.5~4를 훑어
+  //   3이 0·1·2명 뺀 로스터 모두에서 0.5보다 같거나 낫고(4명+ 복원 90.4→91.2 · 68.8→72.0 · 86.4→87.2) 그 위로는 평평했다.
+  //   차이는 125팀 중 1~4팀이고 다른 시즌 홀드아웃(soloRaidHoldout2)에선 섞였다(1명 뺌 ↓) — 근거의 크기는 작다.
+  //   채택 근거는 이전 엔진 대비 판정(27건 나아짐 18·나빠짐 4)과 실사용형 벤치 82.5→90.0%. docs/log/2026-10.md.
+  SEASON_USAGE_TIER_SUM: 3,
   // 솔로 레이드 보스의 약점 속성(bossElement)이 지정됐을 때, 그 속성 안에서의 실사용률(%) 자체를
   // 가산점으로 사용. 원소 밖 캐릭터에는 영향이 없고(값이 null), 같은 원소 캐릭터끼리의 우선순위를
   // 결정하는 신호라 TIER_SUM/REAL_USAGE_TIER_SUM보다 이 상황(그 보스 상대)에서는 더 구체적인 증거.
@@ -1343,8 +1359,12 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   }
 
   // --- 실사용 픽률 등급 합산 (enikk.app) ---
-  const realTierTotal = members.reduce((sum, m) => sum + realUsageTierScore(m, mode, bossElement, treasureIds), 0);
-  score += realTierTotal * WEIGHTS.REAL_USAGE_TIER_SUM;
+  // 2026-10-21: 빈 자리(버프 대상 없음·나만의 별 상실)는 실사용 몫도 0이다 — 티어만 지우고 채용률을 남기면
+  //   보스전 시즌 가중(SEASON_USAGE_TIER_SUM) 아래서 "스타+모란"처럼 스타가 꺼진 팀이 스타 채용률로 1위가 됐다.
+  //   비교용 `__NIKKE_EMPTY_REAL_OFF`.
+  const emptyReal = !globalThis.__NIKKE_EMPTY_REAL_OFF;
+  const realTierTotal = members.reduce((sum, m) => sum + (emptyReal && emptyTitles.has(m.title) ? 0 : realUsageTierScore(m, mode, bossElement, treasureIds)), 0);
+  score += realTierTotal * usageWeight(mode, bossElement);
   const sTierRealMembers = members.filter((m) => realUsageTierScore(m, mode, null, treasureIds) >= REAL_TIER_SCORE.S);
   if (sTierRealMembers.length > 0) {
     reasons.push(R.real_s_tier({ names: sTierRealMembers.map((m) => rName(m, lang)) }));
@@ -2017,9 +2037,9 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
             // 켜 보니 답이 7건 바뀌었고 **전부 이전 엔진보다 나아졌다**(나빠짐 0). 그중 3건은 내 판정 팀과
             // 완전히 같아졌다. 예: 네로(티어E·등록 0건) → 민트(티어SS·채용 A 81.1%·등록 18건).
             //
-            // 가중치는 새로 만들지 않았다 — `WEIGHTS.REAL_USAGE_TIER_SUM`(0.5)은 `score`가 쓰던 값 그대로다.
+            // 가중치는 새로 만들지 않았다 — `usageWeight`(0.5, 보스전 시즌 표가 있으면 3)는 `score`가 쓰는 값 그대로다.
             // 티어 척도가 둘이라는 문제(prydwen 9단계 vs enikk 6단계)는 `REAL_TIER_SCORE` 별도 표가 이미 막고 있다.
-            totalScore: result.tierTotal + (result.realTierTotal || 0) * WEIGHTS.REAL_USAGE_TIER_SUM,
+            totalScore: result.tierTotal + (result.realTierTotal || 0) * usageWeight(mode, bossElement),
             // 조건부 아군 버프가 자기 말고 아무에게도 안 닿는 멤버 수(lib/buffTargets.js). 정렬의 동점 처리에만 쓴다.
             deadBuffCount: deadBuffCount(members),
           });
@@ -2679,7 +2699,7 @@ export function fallbackBeatsFlexArchetype(exact, fallbackTop, mode, opts = {}) 
   if (!exact || !exact.flexSlotCount || !fallbackTop) return false;
   const byTitle = new Map(characterDatabase.map((c) => [c.title, c]));
   const s = scoreTeam(exact.members.map((m) => byTitle.get(m.title)).filter(Boolean), mode, opts);
-  const archRank = s.tierTotal + (s.realTierTotal || 0) * WEIGHTS.REAL_USAGE_TIER_SUM;
+  const archRank = s.tierTotal + (s.realTierTotal || 0) * usageWeight(mode, opts.bossElement);
   return fallbackTop.totalScore > archRank + 1e-9;
 }
 
