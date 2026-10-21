@@ -2699,6 +2699,10 @@ export function fallbackBeatsFlexArchetype(exact, fallbackTop, mode, opts = {}) 
   if (!exact || !exact.flexSlotCount || !fallbackTop) return false;
   const byTitle = new Map(characterDatabase.map((c) => [c.title, c]));
   const s = scoreTeam(exact.members.map((m) => byTitle.get(m.title)).filter(Boolean), mode, opts);
+  // 2026-10-22: 폴백 정렬은 점수보다 **20초 주기 관문(slowCycle)**을 먼저 본다(recommendTeams 정렬). 여기는 점수만 봐서
+  //   주기가 느린 아키타입(앵커 IM이 유일한 B2 ≈32초)이 20초 폴백을 티어 1점 차로 이겼다(실사용형 벤치 s21-B15). 같은 관문을 먼저 건다.
+  //   비교용 `__NIKKE_FLEX_CYCLE_OFF`.
+  if (!globalThis.__NIKKE_FLEX_CYCLE_OFF && !globalThis.__NIKKE_CYCLE_GATE_OFF && !!s.slowCycle !== !!fallbackTop.slowCycle) return !!s.slowCycle;
   const archRank = s.tierTotal + (s.realTierTotal || 0) * usageWeight(mode, opts.bossElement);
   return fallbackTop.totalScore > archRank + 1e-9;
 }

@@ -587,6 +587,22 @@ for (const t of teams) {
   if (withStar !== without) problems.push(`[시즌 가중] 나만의 별을 잃은 스타가 실사용 몫을 받는다(${without} → ${withStar})`);
 }
 
+// --- 빈 자리 아키타입 vs 폴백에도 20초 주기 관문 (2026-10-22, lib/synergyEngine.js fallbackBeatsFlexArchetype) ---
+// 고장: 폴백 정렬은 주기 관문을 먼저 보는데 이 비교는 점수만 봐서, 앵커 IM이 유일한 B2(≈32초)인 아키타입이
+//       그레이브(20초) 폴백을 티어 1점 차로 이겼다(실사용형 벤치 s21-B15).
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const slow = ['Liter', 'Anchor: Innocent Maid', 'Cinderella: Crystal Wave', 'Snow White: Heavy Arms', 'Vesti: Tactical Upgrade'];
+  const fast = ['Liter', 'Grave', 'Cinderella: Crystal Wave', 'Snow White: Heavy Arms', 'Vesti: Tactical Upgrade'];
+  const fs_ = engine.scoreTeam(T(fast), 'campaign', { lang: 'ko' });
+  const ss = engine.scoreTeam(T(slow), 'campaign', { lang: 'ko' });
+  if (!ss.slowCycle || fs_.slowCycle) problems.push('[아키타입 주기] 시험 조합의 주기 판정이 바뀌었다 — 시험 로스터를 다시 고를 것');
+  const fbTop = { ...fs_, totalScore: fs_.tierTotal + (fs_.realTierTotal || 0) * 0.5 };
+  if (!engine.fallbackBeatsFlexArchetype({ members: T(slow), flexSlotCount: 4 }, fbTop, 'campaign', {})) {
+    problems.push('[아키타입 주기] 20초보다 느린 빈 자리 아키타입이 20초 폴백을 이긴다');
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);
