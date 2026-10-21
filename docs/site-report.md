@@ -6,7 +6,7 @@
 ## 언제
 
 - **자동: 매일 09:05 · 21:05(2026-10-22~, 유저 "오전 9시랑 오후 9시에 … 필요한 개선점 나열")** — WSL cron이 `nikke-site/scripts/site-report.sh am|pm`을 부르고,
-  무인 `claude -p`(소넷)가 `docs/site-report-prompt.md`대로 보고서를 `nikke-site/probe-data/site-reports/<날짜>-<am|pm>.md`(git 밖)에 쓰고 jyd7661@gmail.com으로 메일을 보낸다.
+  무인 `claude -p`(소넷)가 `docs/site-report-prompt.md`대로 보고서를 `nikke-site/probe-data/site-reports/<날짜>-<am|pm>.md`(git 밖)에 쓴다. 메일은 안 보낸다 — **대화 세션의 예약(CronCreate, 09:17·21:17)이 그 파일을 읽어 대화창에 올린다**(유저 10-22 "메일로 하지말고 여기다가"). 세션 예약은 7일마다 다시 걸어야 하고 세션이 꺼지면 사라진다 — 파일은 그래도 쌓인다.
   오전 = 아래 양식(7일 vs 7일, 한국 09시 = UTC 하루가 막 끝난 때). 오후 = UTC 오늘 12시간치(`site_report_today.sql`), 이상 신호만. 로그 `~/nikke-site-report.log`.
 - 유저가 현황을 물을 때, 그리고 `/weekly-review`를 끝낸 뒤 덧붙여서.
 - 기간은 **항상 같은 두 창**: 이번 = 어제까지 7일, 지난 = 그 전 7일(UTC 날짜). 오늘은 하루가 안 끝나 넣지 않는다.

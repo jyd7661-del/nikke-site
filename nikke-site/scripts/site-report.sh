@@ -3,7 +3,8 @@
 # 지시서 본문은 docs/site-report-prompt.md. 규칙은 거기서 고친다.
 #
 # 인자: am | pm  (생략하면 시각으로 정한다 — 15시 전이면 am)
-# 결과: nikke-site/probe-data/site-reports/<날짜>-<am|pm>.md (git 밖) + jyd7661@gmail.com 메일
+# 결과: nikke-site/probe-data/site-reports/<날짜>-<am|pm>.md (git 밖). 메일은 안 보낸다(2026-10-22 유저: "메일로 하지말고 여기다가") —
+#       대화 세션의 예약 작업이 09:17·21:17에 이 파일을 읽어 대화창에 올린다.
 # DB는 claude.ai Supabase 커넥터로 읽는다 — .env.local에 service_role 키가 없어 로컬 스크립트로는 못 읽는다.
 #
 # ⚠️ 이 폴더는 클로드 코드의 "신뢰된 작업 폴더"가 아니라 .claude/settings.json의 allow·deny가 무시된다.
@@ -31,7 +32,6 @@ ALLOW=(
   Read Glob Grep
   "Write(nikke-site/probe-data/site-reports/**)" "Edit(nikke-site/probe-data/site-reports/**)"
   "mcp__claude_ai_Supabase__execute_sql"
-  "mcp__claude_ai_Gmail__send_message"
 )
 DENY=(
   "Read(./.env)" "Read(./.env.*)" "Read(./nikke-site/.env)" "Read(./nikke-site/.env.*)"
