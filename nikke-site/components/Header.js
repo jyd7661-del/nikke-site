@@ -83,15 +83,18 @@ export default function Header() {
             <span className="text-nikke-accent">{t('site_name_brand')}</span> {t('site_name_suffix')}
           </span>
         </Link>
-        {/* 메뉴 링크: 좁은 화면에서는 w-full + order-last 로 둘째 줄을 통째로 차지한다 */}
-        <nav className="order-last w-full flex items-center gap-1 text-sm text-slate-300 sm:order-none sm:w-auto sm:gap-2">
+        {/* 메뉴 링크: 좁은 화면에서는 w-full + order-last 로 둘째 줄을 통째로 차지한다.
+            메뉴 이름은 한 덩어리(whitespace-nowrap)로 두고 모자라면 **메뉴 단위로** 다음 줄로 넘긴다(flex-wrap) —
+            2026-10-22 실측: 360·390px에서 "추/천"·"おすす/め"처럼 글자 중간에서 줄이 바뀌었고,
+            영어는 Boards가 화면 밖으로 밀려 320px에서 페이지 폭이 467px까지 늘었다. */}
+        <nav className="order-last w-full flex flex-wrap items-center gap-x-1 gap-y-1 text-sm text-slate-300 sm:order-none sm:w-auto sm:gap-2">
           {NAV_LINKS.map((link) => {
             const active = barePath === link.href;
             return (
               <Link
                 key={link.href}
                 href={lp(link.href)}
-                className={`px-2.5 py-1.5 rounded-md transition-colors ${
+                className={`px-2 sm:px-2.5 py-1.5 rounded-md whitespace-nowrap transition-colors ${
                   active ? 'text-nikke-accent bg-nikke-accent/10' : 'hover:text-white hover:bg-white/5'
                 }`}
               >

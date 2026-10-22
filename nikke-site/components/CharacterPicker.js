@@ -219,11 +219,12 @@ export default function CharacterPicker({ ownedIds, treasureIds, onToggle, onTog
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder={t('character_search_placeholder')}
-            className="bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-nikke-accent transition-colors w-48"
+            className="bg-slate-800/70 border border-slate-700 rounded-lg px-3 py-1.5 text-sm outline-none focus:border-nikke-accent transition-colors min-w-0 flex-1 sm:flex-none sm:w-48"
           />
+          {/* 좁은 화면: 검색칸이 남는 폭을 쓰고 버튼은 한 줄 유지(2026-10-22 — 고정 w-48이라 320px 영어에서 버튼이 화면 밖, 일본어는 두 줄) */}
           <button
             onClick={onClear}
-            className="px-3 py-1.5 rounded-lg text-sm border border-slate-700 text-slate-300 hover:border-rose-400 hover:text-rose-300 transition-colors"
+            className="shrink-0 whitespace-nowrap px-3 py-1.5 rounded-lg text-sm border border-slate-700 text-slate-300 hover:border-rose-400 hover:text-rose-300 transition-colors"
           >
             {t('clear_selection')}
           </button>
