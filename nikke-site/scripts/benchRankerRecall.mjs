@@ -13,6 +13,7 @@
  *   node scripts/benchRankerRecall.mjs --holdout=probe-data/soloRaidHoldout.json   # 엔진 데이터에 없는 지난 레이드 시즌으로만(검증)
  *   node scripts/benchRankerRecall.mjs --loo --role=healer              # 캠페인·타워 중 정답 팀에 힐러가 있는 팀만, "힐러 포함"(requireRole)을 켜고 잰다
  *   node scripts/benchRankerRecall.mjs --loo --role=healer --role-off   # 같은 팀들을 조건 없이 — 위와 비교한다(2026-10-23)
+ *   node scripts/benchRankerRecall.mjs --loo --role=healer --role-swap  # 정답 팀에 힐러가 **없는** 스테이지 팀 + 힐러 3명을 섞고 "힐러 포함" — 4명을 지키나
  *
  * ■ 왜 필요한가
  *   judgmentBench(엔진 = 내 조합)는 99%까지 올랐지만 정답지가 **내 판정**이다. 2026-10-01 하루에만 내 판정이 여러 번 틀렸다
@@ -46,6 +47,10 @@ const COMPETE = has('partial-compete');
 //   "역할 니케 일치" = 엔진 답의 그 역할 니케가 랭커 팀의 그 역할 니케와 하나라도 같다(조건 없는 판에서 역할이 빠지면 불일치).
 const ROLE = arg('role', null);
 const ROLE_OFF = has('role-off');
+// --role-swap: 반대쪽 — 정답 팀에 그 역할이 **없는** 팀에, 그 역할 니케 3명(그 타워에 나갈 수 있는 SSR, 씨앗 고정)을 로스터에 더 섞고 조건을 켠다.
+//   랭커 캠페인 힐러 조합 6개가 전부 "힐러 없는 핵심 4명 + 헬름/플로라" 꼴이라(2026-10-23 확인), 좋은 답 = 4명을 지키고 한 자리만 바꾼 것.
+//   지표는 4명+ 칸(완전 복원은 구조상 0). "바꾼 자리"를 --verbose로 본다.
+const ROLE_SWAP = has('role-swap');
 for (const sw of (arg('off', '') || '').split(',').filter(Boolean)) globalThis['__NIKKE_' + sw] = true;
 
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
@@ -64,6 +69,7 @@ const cdb = j('characterDatabase.json');
 const byTitle = new Map(cdb.map((c) => [c.title, c]));
 const ssr = cdb.filter((c) => String(c.rarity).toUpperCase() === 'SSR');
 const TREASURE = new Set(j('treasureEffects.json').characters.map((t) => t.characterId));
+const ROLE_POOL = ROLE ? ssr.filter((x) => E.teamRoleMembers([x])[ROLE]?.length) : [];
 function mulberry32(a) { return function () { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 
 const cases = [];
@@ -94,7 +100,7 @@ const misses = [];
 for (const c of cases) {
   const team = c.members.map((n) => byTitle.get(n));
   if (team.length !== 5 || team.some((x) => !x)) continue;
-  if (ROLE && !((c.mode === 'campaign' || c.mode === 'tribe_tower') && E.teamHasRole(team, ROLE))) continue;
+  if (ROLE && !((c.mode === 'campaign' || c.mode === 'tribe_tower') && E.teamHasRole(team, ROLE) !== ROLE_SWAP)) continue;
   const pool = ssr.filter((x) => !c.members.includes(x.title));
   // --drop=k: 정답 5명 중 k명을 로스터에서 뺀다(불완전 로스터 — 그 자리는 무작위로 채워 크기는 같게). 지표는 **남은 정답 멤버를 몇 명 살렸나**.
   const DROP = Number(arg('drop', 0));
@@ -111,6 +117,10 @@ for (const c of cases) {
   if (TOP) for (let i = pool.length - 1; i >= 0; i--) if ((TS[pool[i].tiers?.[TK]] || 0) >= TS.S) pool.splice(i, 1);
   const roster = [...kept];
   while (roster.length < 5 + EXTRA && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
+  if (ROLE_SWAP) {
+    const rp = ROLE_POOL.filter((x) => !roster.includes(x) && (c.mode !== 'tribe_tower' || !c.ctx.tower || E.isTowerEligible(x, c.ctx.tower)));
+    for (let k = 0; k < 3 && rp.length; k++) roster.push(rp.splice(Math.floor(rnd() * rp.length), 1)[0]);
+  }
   // --no-treasure: 로스터의 애장품 캐릭터를 전부 **애장품 없음**으로 본다(초보 로스터 흉내 — 기본은 전부 보유로 본다).
   const treasureIds = has('no-treasure') ? new Set() : new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
   const opts = HOLDOUT

@@ -1487,6 +1487,28 @@ if (glossarySrc) {
 // **화면의 '% of clears'는 totalUses / analyzedClears와 정확히 일치한다**(19행 전수 확인).
 // 그래서 이 관계를 검사로 걸면 두 열 중 하나만 잘못 옮겨도 걸린다 — 전사 오류 탐지기다.
 // ---------------------------------------------------------------------------
+// 2026-10-23: 캠페인 600조합·보스 904조합(data/campaignRosters.json)과 거기서 뽑은 스타 짝 예외(metaStats.campaignCompositions.starB1Partners).
+// 예외는 엔진이 읽고, 원본은 엔진이 안 읽는다 — 둘이 어긋나면(원본만 새로 받음 등) 엔진이 옛 예외로 돈다. scripts/importCampaignRosters.mjs가 만든다.
+{
+  const file = path.join(DATA, 'campaignRosters.json');
+  if (fs.existsSync(file)) {
+    const rosters = JSON.parse(fs.readFileSync(file, 'utf8'));
+    for (const key of ['most', 'boss']) {
+      (rosters[key] || []).forEach((r, i) => {
+        const unknown = (r.m || []).filter((t) => !TITLES.has(t));
+        if (!Array.isArray(r.m) || r.m.length !== 5 || new Set(r.m).size !== 5) err('CAMPROSTER_SHAPE', `campaignRosters.${key} #${i + 1}: 5인 조합이 아니거나 중복`);
+        else if (unknown.length) err('CAMPROSTER_UNKNOWN_MEMBER', `campaignRosters.${key} #${i + 1}: DB에 없는 이름 ${unknown.join(', ')}`);
+      });
+    }
+    const { deriveStarB1Partners } = await import('./importCampaignRosters.mjs');
+    const want = deriveStarB1Partners(rosters, cdb, read('burstCdr.json'));
+    const have = meta.campaignCompositions?.starB1Partners;
+    if (!have || JSON.stringify({ barPct: have.barPct, bossBarPct: have.bossBarPct, list: have.list }) !== JSON.stringify(want)) {
+      err('CAMPROSTER_STAR_PAIRS_STALE', `metaStats.campaignCompositions.starB1Partners가 campaignRosters.json과 안 맞는다(원본 기준 ${want.list.map((e) => e.title).join(', ') || '없음'}) — node scripts/importCampaignRosters.mjs로 다시 만들 것`);
+    }
+  }
+}
+
 {
   const cc = meta.campaignCompositions || {};
   const analyzed = cc.meta?.analyzedClears;

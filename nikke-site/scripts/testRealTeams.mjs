@@ -568,6 +568,13 @@ for (const t of teams) {
   if (lost(raidTeam, 'pvp').length) problems.push('[스타 나만의 별] PvP에서 걸렸다 — PvP는 예외(게이지 충전 ▲6%가 남는다)');
   if (lost(['Anis: Star', 'Moran', 'Mint', 'Snow White: Heavy Arms', 'Rapi: Red Hood'], 'tribe_tower').length) problems.push('[스타 나만의 별] 타워 등록 짝(목단)을 깎았다');
   if (lost(['Rapi: Red Hood', 'Little Mermaid', 'Crown', 'Snow White: Heavy Arms', 'Scarlet: Black Shadow'], 'bossing').length) problems.push('[스타 나만의 별] 유연 멤버 라피 : 레드 후드를 대상으로 잡았다');
+  // 2026-10-23: 캠페인 스타 + 목단은 enikk 600조합에서 26조합 5,994회(starB1Partners) — 깎으면 "탱커 포함"이 스타를 빼고 목단을 넣는다.
+  const starMoran = ['Anis: Star', 'Moran', 'Rapi: Red Hood', 'Crown', 'Snow White: Heavy Arms'];
+  if (lost(starMoran, 'campaign').length) problems.push('[스타 나만의 별] 캠페인 짝(목단, enikk 5,994회)을 깎았다');
+  const tankPick = engine.pickSiteTeam(T([...starMoran, 'Mast: Romantic Maid']), 'campaign', { treasureIds: new Set([byTitle.get('Moran').id]), requireRole: 'tank' });
+  if (!(tankPick.team?.members || []).some((m) => m.title === 'Anis: Star')) {
+    problems.push(`[스타 나만의 별] 캠페인 "탱커 포함"이 스타를 뺐다: ${(tankPick.team?.members || []).map((m) => m.title).join(', ')}`);
+  }
   const hit = teams.filter((t) => t.members.every((n) => byTitle.get(n)) && engine.ownStarLostMembers(T(t.members), t.mode).length);
   hit.forEach((t) => problems.push(`[스타 나만의 별] 등록 조합을 깎는다 — ${t.src} ${t.label}: ${t.members.join(', ')}`));
 }

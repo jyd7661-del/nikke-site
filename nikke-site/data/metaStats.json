@@ -1872,6 +1872,24 @@
     }
   },
   "campaignCompositions": {
+    "starB1Partners": {
+      "note": "아니스 : 스타(burstCdr noOtherB1 고정 1버스트)와 같이 쓴 고정 1버스트 중, 같이 쓴 조합 클리어 합이 상위 20행 마지막 행의 몫(barPct) 이상인 것 — 보스 목록은 bossBarPct. 엔진 STAR_PARTNERS_BY_MODE.campaign 예외. data/campaignRosters.json에서 scripts/importCampaignRosters.mjs가 만든다(checkData가 맞는지 본다).",
+      "asOf": "2026-10-23",
+      "barPct": 0.953,
+      "bossBarPct": 1.054,
+      "list": [
+        {
+          "title": "Moran",
+          "host": "Anis: Star",
+          "uses": 5994,
+          "pct": 1.83,
+          "rosters": 26,
+          "bossUses": 350,
+          "bossPct": 4.44,
+          "bossRosters": 35
+        }
+      ]
+    },
     "meta": {
       "note": "enikk.app 캠페인 > Compositions 탭의 'Most Used Compositions' 1~2쪽(20행)입니다. 각 항목은 실제로 관측된 '정확히 5인 로스터'이며, totalUses는 그 로스터가 클리어에 쓰인 횟수입니다. ⚠️ 2026-09-29판부터 화면에 '% of clears' 열이 없다 — pctOfClears는 totalUses/analyzedClears로 **계산한 값**이다(화면 값이 아님). 대신 전사 교차검증은 행마다 화면의 버스트 배지(bursts)를 DB 버스트와 대는 것으로 한다(20행 100명 전부 일치). 원소별 정보는 같은 페이지의 별도 'Boss Compositions' 절에 있다(싣지 않음).",
       "source": "enikk.app/campaign#compositions",

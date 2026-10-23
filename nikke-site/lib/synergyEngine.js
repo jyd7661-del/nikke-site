@@ -1013,7 +1013,11 @@ const STAR_PARTNERS_BY_MODE = (() => {
     for (const t of teams) if (t.some((x) => hosts.has(x))) for (const x of t) if (!hosts.has(x) && fixedB1(x)) set.add(x);
     return set;
   };
+  // 2026-10-23: 캠페인 등록 20행엔 스타 + 1버스트가 0개였지만 600조합을 더 받아 보니 스타 + 목단이 26조합 5,994회(클리어 1.8% —
+  //   20행 마지막 0.95%보다 많다). 그 문턱을 넘은 짝을 starB1Partners로 싣는다(scripts/importCampaignRosters.mjs).
+  //   이 예외가 없을 때 "탱커 포함"이 스타를 빼고 목단을 넣었다 — enikk 사람들의 탱커 판과 완전 일치 32건 중 1건(benchStageRoles).
   const campaign = partners(teamsOf(metaStats.campaignCompositions));
+  if (!globalThis.__NIKKE_STAR_CAMPAIGN_PAIRS_OFF) (metaStats.campaignCompositions?.starB1Partners?.list || []).forEach((e) => campaign.add(e.title));
   return {
     bossing: partners(teamsOf(soloRaidTeams)), raid: partners(teamsOf(soloRaidTeams)),
     campaign, story: campaign, tribe_tower: partners(teamsOf(towerCompositions)),
