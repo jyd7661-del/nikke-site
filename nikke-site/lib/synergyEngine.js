@@ -36,6 +36,7 @@ import pvpBurstGen from '../data/pvpBurstGen.json';
 import offBurstShare from '../data/offBurstShare.json';
 import burstCdr from '../data/burstCdr.json';
 import treasureSkills from '../data/treasureSkills.json';
+import survivalRoles from '../data/survivalRoles.json';
 import { engineText } from './engineReasons';
 import { teamBurstSpeed } from './pvpBurst';
 import { deadBuffCount, emptyBuffMembers } from './buffTargets';
@@ -1947,6 +1948,34 @@ function buildBurstCountDistributions() {
 }
 const BURST_COUNT_DISTRIBUTIONS = buildBurstCountDistributions();
 
+// ---------------------------------------------------------------------------
+// 생존 역할(힐러·탱커) 포함 조건 (2026-10-23)
+//
+// 유저: "딜 몰빵조합이라 힐러나 탱커가 없는 조합이야. 스테이지의 경우에는 힐러가 있는조합. 탱커가 있는 조합 이렇게 나눠서 추천도 가능할까?"
+// 역할 표와 기준은 data/survivalRoles.json(스킬 원문 근거). opts.requireRole = 'healer' | 'tank'이면 세 경로(실사용·아키타입·폴백)
+// 모두 그 역할이 하나 이상 든 조합만 고른다. **점수에는 넣지 않는다** — BOSS_DEFENSE 주석과 같은 이유(생존은 제약이지 점수가 아니다).
+// 지정이 없으면 아무것도 바뀌지 않는다.
+const SURVIVAL_ROLES = Object.fromEntries(
+  ['healer', 'tank'].map((r) => [r, new Map((survivalRoles[r] || []).map((e) => [e.title, e]))]),
+);
+export const SURVIVAL_ROLE_KEYS = Object.keys(SURVIVAL_ROLES);
+// 그 멤버가 이 팀에서 역할을 하는가. cond는 원문에 적힌 팀 조건(델타: 닌자 시프 — 다른 방어형이 없을 때만 도발).
+function memberHasRole(m, role, members) {
+  const e = SURVIVAL_ROLES[role]?.get(m.title);
+  if (!e) return false;
+  if (e.cond === 'noOtherDefender') return !members.some((x) => x !== m && x.title !== m.title && x.class === 'defender');
+  return true;
+}
+export function teamHasRole(members, role) {
+  return members.some((m) => memberHasRole(m, role, members));
+}
+// 팀 안에서 역할을 하는 멤버 title — 화면의 "힐러: ○○ · 탱커: 없음" 한 줄(라우트 team.roleMembers).
+export function teamRoleMembers(members) {
+  return Object.fromEntries(SURVIVAL_ROLE_KEYS.map((r) => [r, members.filter((m) => memberHasRole(m, r, members)).map((m) => m.title)]));
+}
+// 버킷 상한(BUCKET_CAP)에 잘린 역할 니케를 단계마다 몇 명까지 되돌려 넣을지 — 티어 상위부터.
+const ROLE_BUCKET_EXTRA = 1;
+
 // ownedCharacters: characterDatabase.json 항목 배열(보유한 캐릭터만)
 export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
   const lang = opts.lang || 'ko';
@@ -2016,6 +2045,18 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       stages.forEach((b) => { if (buckets[b] && !buckets[b].includes(c)) buckets[b].push(c); });
     });
   }
+  // 생존 역할(opts.requireRole, SURVIVAL_ROLES 주석) — 상한에 잘린 역할 니케를 단계마다 티어 상위 ROLE_BUCKET_EXTRA명까지 되돌려 넣는다.
+  const requireRole = SURVIVAL_ROLE_KEYS.includes(opts.requireRole) ? opts.requireRole : null;
+  if (requireRole) {
+    ['1', '2', '3'].forEach((b) => {
+      ownedCharacters
+        .filter((c) => SURVIVAL_ROLES[requireRole].has(c.title) && !buckets[b].includes(c) &&
+          (c.burstFlex ? flexStagesOf(c) : [c.burst]).map(String).includes(b))
+        .sort((a, z) => (tierScore(z, mode, treasureIds) - tierScore(a, mode, treasureIds)) || String(a.id).localeCompare(String(z.id)))
+        .slice(0, ROLE_BUCKET_EXTRA)
+        .forEach((c) => buckets[b].push(c));
+    });
+  }
 
   const candidateTeams = [];
   BURST_COUNT_DISTRIBUTIONS.forEach((counts) => {
@@ -2033,6 +2074,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           // 유연 멤버가 두 버킷에서 동시에 뽑히면 같은 사람이 두 번 들어간다. 걸러낸다.
           if (new Set(members.map((m) => m.id)).size !== members.length) return;
           if (requireTitles.length && !requireTitles.every((t) => members.some((m) => m.title === t))) return;
+          if (requireRole && !teamHasRole(members, requireRole)) return;
           const result = scoreTeam(members, mode, { treasureIds, bossElement, lang });
           candidateTeams.push({
             members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
@@ -2216,6 +2258,8 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   const excludeTitles = new Set(opts.excludeTitles || []);
   // 포함 니케(2026-10-23, recommendTeams 주석) — 완전일치는 그 니케가 든 기록만, 4/5 부분일치는 그 니케가 기록에 있거나 채우는 자리일 때만.
   const requireTitles = (opts.requireTitles || []).filter(Boolean);
+  // 생존 역할(opts.requireRole, SURVIVAL_ROLES 주석) — 완전일치는 역할이 든 기록만, 4/5는 채운 뒤의 5명에 역할이 있을 때만.
+  const requireRole = SURVIVAL_ROLE_KEYS.includes(opts.requireRole) ? opts.requireRole : null;
   ownedCharacters = filterRosterByTower(ownedCharacters, opts.tower || null);
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
   const ownedTitles = new Set(ownedCharacters.map((c) => c.title));
@@ -2271,6 +2315,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     if (requireTitles.length && !requireTitles.every((t) => titles.includes(t))) return;
 
     const members = titles.map((t) => byTitle.get(t));
+    if (requireRole && !teamHasRole(members, requireRole)) return;
     // **애장품이 그 모드 티어를 올리는 멤버를 애장품 없이 가졌으면 그 기록은 이 사용자의 조합이 아니다** (2026-10-01).
     // 유저: "완성된 조합을 보통 쓰는 사람들은 애장품이 거의 있다고 봐야 해." 예전엔 출처에 애장품 정보가 없어
     // "모른다"고만 밝히고 그대로 추천했다(아래 treasureGaps). 아키타입의 requiresTreasure와 같은 관문이다.
@@ -2317,6 +2362,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         if (!cs.some((x) => stages.includes(x))) return;
         // 채우는 멤버는 랭커 기록이 아니라 우리 선택이라 애장품 관문을 걸지 않는다 — 애장품이 없으면 기본 티어로 채점될 뿐이다.
         const members = [...base, c];
+        if (requireRole && !teamHasRole(members, requireRole)) return;
         const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
         if (!scored.valid) return;
         if (!pick || scored.tierTotal > pick.scored.tierTotal ||
@@ -2450,6 +2496,8 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   const excludeTitles = new Set(opts.excludeTitles || []);
   // 포함 니케(2026-10-23, recommendTeams 주석) — 고정 멤버이거나 빈 자리 하나를 그 니케로 채울 수 있는 조합만.
   const requireTitles = (opts.requireTitles || []).filter(Boolean);
+  // 생존 역할(opts.requireRole, SURVIVAL_ROLES 주석) — 채운 뒤의 5명에 역할이 있는 구성만.
+  const requireRole = SURVIVAL_ROLE_KEYS.includes(opts.requireRole) ? opts.requireRole : null;
   ownedCharacters = filterRosterByTower(ownedCharacters, opts.tower || null);
   const compatModes = MODE_COMPAT[mode] || [mode];
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
@@ -2594,6 +2642,7 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
       const acc = [];
       const rec = (i) => {
         if (i === pools.length) {
+          if (requireRole && !teamHasRole([...base, ...acc], requireRole)) return;
           const t = acc.reduce((s2, c) => s2 + tierScore(c, mode, treasureIds), 0);
           const v = teamTierTotal([...base, ...acc]);
           const s = synergyOf(acc);
@@ -2630,6 +2679,23 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
           bestKey = key; picked = got;
         }
       });
+    } else if (requireRole) {
+      // 역할이 상위 CAP 안에서 안 나오면 자리마다 그 자리를 역할 니케 전원으로 두고 찾아 위와 같은 비교로 가장 나은 쪽.
+      // 전체 탐색(search(ranked))은 자리 4개 × 수십 명이라 쓰지 않는다.
+      picked = search(ranked.map((p) => p.slice(0, CAP)));
+      if (!picked) {
+        let bestKey = null;
+        ranked.forEach((pool, i) => {
+          const rp = pool.filter((c) => SURVIVAL_ROLES[requireRole].has(c.title));
+          if (!rp.length) return;
+          const got = search(ranked.map((p, j) => (j === i ? rp : p.slice(0, CAP))));
+          if (!got) return;
+          const key = [got.reduce((s2, c) => s2 + tierScore(c, mode, treasureIds), 0), teamTierTotal([...base, ...got]), synergyOf(got)];
+          if (!bestKey || key[0] > bestKey[0] || (key[0] === bestKey[0] && (key[1] > bestKey[1] || (key[1] === bestKey[1] && key[2] > bestKey[2])))) {
+            bestKey = key; picked = got;
+          }
+        });
+      }
     } else {
       // 상위 CAP명끼리 서로 겹쳐 5인을 못 채우는 드문 경우에는 제한을 풀고 다시 찾는다.
       picked = search(ranked.map((p) => p.slice(0, CAP)));

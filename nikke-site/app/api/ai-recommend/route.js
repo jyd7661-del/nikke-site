@@ -1,7 +1,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch, scoreTeam, orderMembersForDisplay, fallbackBeatsFlexArchetype } from '@/lib/synergyEngine';
+import { recommendTeams, findExactTeamMatch, findRealUsageTeamMatch, scoreTeam, orderMembersForDisplay, fallbackBeatsFlexArchetype, SURVIVAL_ROLE_KEYS, teamRoleMembers } from '@/lib/synergyEngine';
 import characterInvestmentNotes from '@/data/characterInvestmentNotes.json';
 import metaStats from '@/data/metaStats.json';
 import synergyNotes from '@/data/synergyNotes.json';
@@ -473,7 +473,7 @@ export async function POST(req) {
     return Response.json({ error: '요청 형식이 올바르지 않습니다.', errorKey: 'api_err_bad_request' }, { status: 400 });
   }
 
-  const { characters, treasureIds, mode, bossElement, tower, excludeTitles, requireTitles, lang } = body || {};
+  const { characters, treasureIds, mode, bossElement, tower, excludeTitles, requireTitles, requireRole, lang } = body || {};
   // 기업 타워는 tribe_tower 모드에서만 의미가 있다. 다른 모드에 딸려오면 무시한다.
   const towerKey = mode === 'tribe_tower' && TOWER_CORP_SET.has(tower) ? tower : null;
 
@@ -551,6 +551,10 @@ export async function POST(req) {
       .slice(0, 1);
     requireList.forEach((x) => excludeSet.delete(x));
     let requireDropped = false;
+    // 2026-10-23: 스테이지(캠페인·타워) "힐러 포함 / 탱커 포함" — 세 경로 모두 그 역할이 든 조합만(synergyEngine opts.requireRole, data/survivalRoles.json).
+    // 보유 니케로 그 역할을 못 넣으면(역할 니케가 없거나 그 타워에 못 나간다) 조건 없이 다시 찾고 화면에 밝힌다(roleDropped).
+    const roleKey = (mode === 'campaign' || mode === 'tribe_tower') && SURVIVAL_ROLE_KEYS.includes(requireRole) ? requireRole : null;
+    let roleDropped = false;
 
     // 조합 "구성"은 전부 여기서 결정된다 — AI는 관여하지 않는다.
     //
@@ -594,6 +598,7 @@ export async function POST(req) {
       tower: towerKey,
       excludeTitles: Array.from(excludeSet),
       requireTitles: requireList,
+      requireRole: roleKey,
       // 근거 문장을 사용자 언어로 조립한다(2026-08-25). 이 문장은 AI 프롬프트의 입력이자
       // 대체 조합 헤드라인·폴백 문장으로 화면에도 그대로 나간다.
       lang: langKey,
@@ -608,7 +613,7 @@ export async function POST(req) {
     let flexLoser = null;
     if (exactMatch?.flexSlotCount && !(realUsageMatch && realUsageMatch.totalScore >= exactMatch.totalScore)) {
       const probe = recommendTeams(characters, mode, {
-        treasureIds: treasureIdSet, bossElement: bossElement || null, tower: towerKey, topN: 20, lang: langKey, requireTitles: requireList,
+        treasureIds: treasureIdSet, bossElement: bossElement || null, tower: towerKey, topN: 20, lang: langKey, requireTitles: requireList, requireRole: roleKey,
       }).teams || [];
       const top = probe.find((t) => !t.members.some((m) => excludeSet.has(m.title))) || probe[0];
       if (fallbackBeatsFlexArchetype(exactMatch, top, mode, matchOpts)) flexLoser = exactMatch;
@@ -656,11 +661,18 @@ export async function POST(req) {
         topN: 20,
         lang: langKey,
       };
-      let rec = recommendTeams(characters, mode, { ...recOpts, requireTitles: requireList });
+      let rec = recommendTeams(characters, mode, { ...recOpts, requireTitles: requireList, requireRole: roleKey });
       // 포함 니케로는 유효한 5인을 못 만들면(기업 타워에 못 나가는 니케 등) 조건 없이 다시 찾고 화면에 밝힌다.
-      if (requireList.length && !(rec.teams && rec.teams.length)) {
-        rec = recommendTeams(characters, mode, recOpts);
-        requireDropped = true;
+      // 생존 역할도 같다 — 포함 니케를 먼저 지키고 역할을 푼다(둘 다 안 되면 둘 다 푼다).
+      if ((requireList.length || roleKey) && !(rec.teams && rec.teams.length)) {
+        if (roleKey) {
+          rec = recommendTeams(characters, mode, { ...recOpts, requireTitles: requireList });
+          roleDropped = true;
+        }
+        if (requireList.length && !(rec.teams && rec.teams.length)) {
+          rec = recommendTeams(characters, mode, recOpts);
+          requireDropped = true;
+        }
       }
 
       if (!rec.teams || rec.teams.length === 0) {
@@ -689,8 +701,8 @@ export async function POST(req) {
 
       // 2026-09-15: 폴백 구간에서만 AI 조합 구성(docs/ai-teams-plan.md §1). "다른 조합 보기"(excludeTitles)는
       // 엔진 후보 순환이라 AI를 건너뛴다. Supabase가 없으면 캐시도 예산도 없으니 켜지 않는다.
-      // 포함 니케 조건이 있으면 AI 구성도 건너뛴다 — AI 프롬프트는 포함 조건을 모른다.
-      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0 && !flexLoser && requireList.length === 0) {
+      // 포함 니케·생존 역할 조건이 있으면 AI 구성도 건너뛴다 — AI 프롬프트는 그 조건을 모른다.
+      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0 && !flexLoser && requireList.length === 0 && !roleKey) {
         const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
         const ai = await tryAiTeam({
           client, supabase, characters, mode, boss: bossElement || null, tower: towerKey,
@@ -789,6 +801,8 @@ export async function POST(req) {
         bossDefenseNote: chosen.bossDefenseNote || null,
         // PvP 버스트 속도 한 줄(PvP가 아니거나 값이 없는 멤버가 있으면 null). 2026-09-29
         pvpBurstNote: chosen.pvpBurstNote || null,
+        // 스테이지(캠페인·타워)에서만 — 이 조합의 힐러·탱커(data/survivalRoles.json). 화면이 "힐러: ○○ · 탱커: 없음"으로 보여준다(2026-10-23).
+        roleMembers: mode === 'campaign' || mode === 'tribe_tower' ? teamRoleMembers(fullMembers) : null,
       },
       aiReasoning,
       // 'enikk-real-usage' | 'enikk-real-usage-partial'(2026-10-03, 4/5 + 한 자리) | 'prydwen-exact-match' | 'skill-synergy-fallback' | 'ai-composed'(2026-09-15, AI_TEAMS_MODE=on)
@@ -805,6 +819,8 @@ export async function POST(req) {
       budgetExhausted,
       // 포함 니케(requireTitles)로는 조합을 못 만들어 조건 없이 추천했는지(2026-10-23). 화면이 안내를 띄운다.
       requireDropped,
+      // 생존 역할(requireRole)로는 조합을 못 만들어 역할 조건 없이 추천했는지(2026-10-23).
+      roleDropped,
     });
   } catch (err) {
     console.error('ai-recommend error', err);

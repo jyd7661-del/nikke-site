@@ -629,6 +629,46 @@ for (const t of teams) {
   if (unconstrainedMiss === 0) problems.push('[포함 니케] 조건 없이도 시험 니케가 항상 뽑힌다 — 저티어 시험 니케를 다시 고를 것');
 }
 
+// --- 생존 역할 (2026-10-23, opts.requireRole — 스테이지 "힐러 포함 / 탱커 포함") ---
+// 고장: 유저가 "딜 몰빵조합이라 힐러나 탱커가 없는 조합"을 받았다. 역할을 고르면 세 경로 모두 그 역할이 든 답만 내야 한다.
+// 역할 표(data/survivalRoles.json)는 스킬 원문 근거라, 근거 스킬이 사라지거나 원문에서 회복·도발이 빠지면 여기서 걸린다.
+{
+  const roles = j('survivalRoles.json');
+  for (const [role, kw] of [['healer', /회복/], ['tank', /도발/]]) {
+    for (const e of roles[role] || []) {
+      const c = byTitle.get(e.title);
+      const sk = c && (c.skills || []).find((s) => s.name_kr === e.skill);
+      if (!sk) problems.push(`[생존 역할] ${role} ${e.title}: 근거 스킬 "${e.skill}"이 데이터에 없다`);
+      else if (!kw.test(sk.desc_kr || '')) problems.push(`[생존 역할] ${role} ${e.title}: "${e.skill}" 원문에 ${kw.source}이 없다`);
+    }
+  }
+  // 원문 조건: 델타: 닌자 시프는 다른 방어형이 없을 때만 도발한다.
+  const T = (...ts) => ts.map((t) => byTitle.get(t));
+  if (!engine.teamHasRole(T('Delta: Ninja Thief', 'Liter', 'Vesti: Tactical Upgrade'), 'tank')) problems.push('[생존 역할] 델타: 닌자 시프 혼자 방어형인데 탱커로 안 센다');
+  if (engine.teamHasRole(T('Delta: Ninja Thief', 'Crown', 'Vesti: Tactical Upgrade'), 'tank')) problems.push('[생존 역할] 델타: 닌자 시프 + 다른 방어형인데 탱커로 센다(원문: 다른 방어형이 없을 때만 도발)');
+
+  const roster = cdb.filter((c) => c.tiers);
+  const full = (team) => team.members.map((m) => byTitle.get(m.title));
+  const ok = (team, role) => !!team && engine.teamHasRole(full(team), role);
+  let unconstrainedMiss = 0;
+  for (const role of ['healer', 'tank']) {
+    const opts = { lang: 'ko', requireRole: role };
+    for (const mode of ['campaign', 'tribe_tower']) {
+      const site = engine.pickSiteTeam(roster, mode, opts);
+      if (!ok(site.team, role)) problems.push(`[생존 역할] ${mode} ${role}: 사이트 답(${site.path})에 역할이 없다`);
+      if (!ok(engine.pickSiteTeam(roster, mode, { lang: 'ko' }).team, role)) unconstrainedMiss++;
+    }
+    const real = engine.findRealUsageTeamMatch(roster, 'campaign', opts);
+    if (real && !ok(real, role)) problems.push(`[생존 역할] campaign ${role}: 실사용 경로 답에 역할이 없다`);
+    const exact = engine.findExactTeamMatch(roster, 'campaign', opts);
+    if (exact && !ok(exact, role)) problems.push(`[생존 역할] campaign ${role}: 아키타입 경로 답에 역할이 없다`);
+    const rec = engine.recommendTeams(roster, 'campaign', { ...opts, topN: 3 });
+    if (!rec.teams?.length || rec.teams.some((x) => !ok(x, role))) problems.push(`[생존 역할] campaign ${role}: 폴백 후보에 역할이 없는 팀이 있다`);
+  }
+  // 조건 없이도 늘 역할이 들어 있으면 위 검사는 아무것도 재지 않는다(역테스트의 전제).
+  if (unconstrainedMiss === 0) problems.push('[생존 역할] 조건 없이도 늘 힐러·탱커가 든다 — 시험 로스터를 다시 고를 것');
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

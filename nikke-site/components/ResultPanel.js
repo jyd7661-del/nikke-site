@@ -150,6 +150,11 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
   // 포함 니케(도감에서 온 경우)를 넣은 조합이 없어 조건 없이 추천했는지(2026-10-23).
   const [requireDropped, setRequireDropped] = useState(false);
   const requireTitle = roster?.requireTitle || null;
+  // 2026-10-23: 스테이지(캠페인·타워) "힐러 포함 / 탱커 포함"(유저: "힐러가 있는조합. 탱커가 있는 조합 이렇게 나눠서 추천").
+  // 다른 모드에서는 고르는 칸을 숨기고 보내지도 않는다(서버도 무시한다).
+  const stageMode = mode === 'campaign' || mode === 'tribe_tower';
+  const [role, setRole] = useState(null); // null | 'healer' | 'tank'
+  const [roleDropped, setRoleDropped] = useState(false);
 
   // 애장품(Treasure) 체크 목록을 문자열로 직렬화해 useEffect 의존성 비교에 사용한다.
   // roster.treasureIds는 부모(app/page.js)에서 treasureIds가 바뀔 때마다 새 배열로 만들어지므로,
@@ -169,10 +174,11 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
     setSource(null);
     setBudgetExhausted(false);
     setRequireDropped(false);
+    setRoleDropped(false);
     setPhase('idle');
   }, [mode, bossElement, tower, treasureKey, requireTitle]);
 
-  const requestTeam = async (exclude) => {
+  const requestTeam = async (exclude, roleArg = role) => {
     setPhase('loading');
     setErrorMsg('');
     try {
@@ -187,6 +193,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           tower,
           excludeTitles: exclude,
           requireTitles: requireTitle ? [requireTitle] : undefined,
+          requireRole: stageMode && roleArg ? roleArg : undefined,
           lang,
         }),
       });
@@ -209,6 +216,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       setSource(data.model || null);
       setBudgetExhausted(Boolean(data.budgetExhausted));
       setRequireDropped(Boolean(data.requireDropped));
+      setRoleDropped(Boolean(data.roleDropped));
       setPhase('idle');
       setFeedback(null);
       setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
@@ -242,9 +250,42 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
     }
   };
 
+  // 역할을 바꾸면 "다른 조합 보기" 순환을 처음부터 다시 한다. 조합이 이미 떠 있으면 바로 새로 받는다(탭을 바꾼 것과 같은 취급).
+  const pickRole = (r) => {
+    if (r === role || phase === 'loading') return;
+    setRole(r);
+    setExcludeTitles([]);
+    setRoleDropped(false);
+    if (team) requestTeam([], r);
+  };
+  const rolePicker = stageMode && (
+    <div className="mb-3">
+      <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('role_label')}>
+        {[null, 'healer', 'tank'].map((r) => (
+          <button
+            key={r || 'any'}
+            type="button"
+            onClick={() => pickRole(r)}
+            aria-pressed={role === r}
+            disabled={phase === 'loading'}
+            className={`text-xs px-3 py-1.5 rounded-full border whitespace-nowrap transition disabled:opacity-50 ${
+              role === r
+                ? 'bg-nikke-accent/20 border-nikke-accent text-nikke-accent font-semibold'
+                : 'bg-slate-800/60 border-slate-700 text-slate-300 hover:border-slate-500'
+            }`}
+          >
+            {t(r ? `role_${r}` : 'role_any')}
+          </button>
+        ))}
+      </div>
+      <p className="text-[11px] text-slate-500 mt-1.5 leading-snug">{t('role_hint')}</p>
+    </div>
+  );
+
   if (!team) {
     return (
       <div className="mb-2">
+        {rolePicker}
         <button
           onClick={() => requestTeam([])}
           disabled={phase === 'loading'}
@@ -264,6 +305,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
 
   return (
     <div className="bg-slate-900/40 rounded-lg p-4 border border-nikke-accent/30">
+      {rolePicker}
       <div className="flex items-center justify-between flex-wrap gap-2 mb-2">
         <h3 className="font-semibold text-slate-100">{t('ai_team_heading')}</h3>
         <div className="flex items-center gap-1.5">
@@ -278,6 +320,23 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
         </div>
       </div>
       <TeamMemberCards members={team.members} treasureIds={roster.treasureIds} />
+      {/* 이 조합의 힐러·탱커(서버가 data/survivalRoles.json으로 센다). 없으면 "없음"이라고 그대로 적는다 — 그게 이 줄의 쓸모다. */}
+      {team.roleMembers && (
+        <p className="text-xs text-slate-300 mb-3">
+          {['healer', 'tank'].map((r) => {
+            const names = (team.roleMembers[r] || [])
+              .map((title) => team.members.find((m) => m.title === title))
+              .filter(Boolean)
+              .map((m) => memberName(m, lang));
+            return `${t(`role_line_${r}`)}: ${names.length ? names.join(', ') : t('role_none')}`;
+          }).join(' · ')}
+        </p>
+      )}
+      {roleDropped && (
+        <p className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3">
+          {t(`role_dropped_${role}`)}
+        </p>
+      )}
       {requireDropped && (
         <p className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3">
           {t('include_dropped')}

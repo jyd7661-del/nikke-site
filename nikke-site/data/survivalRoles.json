@@ -1,0 +1,190 @@
+{
+  "_doc": [
+    "스테이지(캠페인·타워) 조합의 \"힐러 포함 / 탱커 포함\" 선택에 쓰는 역할 표. 2026-10-23 유저: \"힐러가 있는 조합, 탱커가 있는 조합 이렇게 나눠서 추천\". 유저 기준 예: 범용 힐러 = 헬름(애장품), 탱커 = 목단(애장품).",
+    "근거는 characterDatabase.json 스킬 원문(desc_kr)뿐이다. skill = 그 역할의 근거 스킬 이름(name_kr). scripts/testRealTeams.mjs가 그 스킬이 아직 있고 원문에 회복/도발이 있는지 확인한다.",
+    "healer: 아군 체력 회복이 그 스킬의 주된 효과 — 버스트 스킬로 아군을 회복하거나, 반복되는 스킬로 아군 전체·체력 낮은 아군을 회복한다. 자기 회복뿐인 니케와 곁가지 소량 회복(아니스: 스타 1.26%·다른 버스트1이 있을 때만, 민트 1.8%, 마나 2.04%, 유니·에이다 웡 공격 대미지 비례)은 넣지 않는다.",
+    "tank: 적을 도발(주목 포함)해 공격을 자기에게 끄는 것이 주된 역할인 방어형·지원형. 화력형의 도발(라피·메이든·레드 후드)은 공격 스킬의 곁가지라 넣지 않는다. 모리는 발버둥 상태에서만 도발해 뺐다. 크라운도 뺀다 — 도발이 일반 공격 43회×20중첩(수십 초)마다 5초뿐이고 주 역할은 버퍼다(유저가 크라운 조합을 \"탱커 없는 조합\"으로 봤고, 탱커가 필요할 때는 목단(애장품)을 쓴다고 했다. 2026-10-23). 크라운의 버스트 보호막은 역할 표 밖이다.",
+    "cond noOtherDefender: 자기 말고 방어형 아군이 없을 때만 성립(델타: 닌자 시프 원문)."
+  ],
+  "healer": [
+    {
+      "title": "Emma",
+      "skill": "알트루이즘"
+    },
+    {
+      "title": "Mary",
+      "skill": "백의의 천사"
+    },
+    {
+      "title": "Helm",
+      "skill": "이지스 캐논"
+    },
+    {
+      "title": "Folkwang",
+      "skill": "스플린트"
+    },
+    {
+      "title": "Anne: Miracle Fairy",
+      "skill": "파란 나비의 꿈"
+    },
+    {
+      "title": "Rapunzel",
+      "skill": "가든 오브 샹그릴라"
+    },
+    {
+      "title": "Milk",
+      "skill": "투 더 빅토리"
+    },
+    {
+      "title": "Noise",
+      "skill": "에너제틱 노이즈"
+    },
+    {
+      "title": "Pepper",
+      "skill": "페퍼 테라피"
+    },
+    {
+      "title": "Biscuit",
+      "skill": "산책 훈련"
+    },
+    {
+      "title": "Blanc",
+      "skill": "쇼타임"
+    },
+    {
+      "title": "Pascal",
+      "skill": "다들 다치지 말아요!"
+    },
+    {
+      "title": "Quiry",
+      "skill": "꿰뚫어보기"
+    },
+    {
+      "title": "Flora",
+      "skill": "시크릿 가든"
+    },
+    {
+      "title": "Alice: Wonderland Bunny",
+      "skill": "소중한 큰 당근"
+    },
+    {
+      "title": "Misato Katsuragi",
+      "skill": "휴식 명령"
+    },
+    {
+      "title": "Anchor: Innocent Maid",
+      "skill": "바다 산책"
+    },
+    {
+      "title": "Sakura Suzuhara",
+      "skill": "응급 치료"
+    },
+    {
+      "title": "Claire Redfield",
+      "skill": "R + G + B"
+    },
+    {
+      "title": "Soline: Frost Ticket",
+      "skill": "안전하게 모실게!"
+    },
+    {
+      "title": "Snow Crane",
+      "skill": "특약 효력"
+    },
+    {
+      "title": "Naga",
+      "skill": "우정의 서포트"
+    },
+    {
+      "title": "Trina",
+      "skill": "네이처 그레이스"
+    },
+    {
+      "title": "Marciana",
+      "skill": "양호 선생님"
+    },
+    {
+      "title": "Yukiko",
+      "skill": "페르소나 : 코노하나사쿠야"
+    },
+    {
+      "title": "Mary: Bay Goddess",
+      "skill": "해변의 햇살"
+    },
+    {
+      "title": "Soda",
+      "skill": "바닥 청소 메이드"
+    },
+    {
+      "title": "IDoll Ocean",
+      "skill": "오션 클렌징"
+    }
+  ],
+  "tank": [
+    {
+      "title": "Delta",
+      "skill": "리멤버 미"
+    },
+    {
+      "title": "Diesel",
+      "skill": "스트로베리 쇼크"
+    },
+    {
+      "title": "Noah",
+      "skill": "약오르죠?"
+    },
+    {
+      "title": "Ludmilla",
+      "skill": "여왕의 품격"
+    },
+    {
+      "title": "Folkwang",
+      "skill": "페이스 다운"
+    },
+    {
+      "title": "Rupee: Winter Shopper",
+      "skill": "유지"
+    },
+    {
+      "title": "Noise",
+      "skill": "싱잉 투게더"
+    },
+    {
+      "title": "Sin",
+      "skill": "센텐스 엔딩스"
+    },
+    {
+      "title": "Rumani",
+      "skill": "머슬 업"
+    },
+    {
+      "title": "Makima",
+      "skill": "발각된 모양이네"
+    },
+    {
+      "title": "Moran",
+      "skill": "정정당당 승부다!"
+    },
+    {
+      "title": "Anchor",
+      "skill": "GS"
+    },
+    {
+      "title": "Nero",
+      "skill": "크고 난폭한 고양이"
+    },
+    {
+      "title": "Tia",
+      "skill": "카멜레온 은신술"
+    },
+    {
+      "title": "Emma: Tactical Upgrade",
+      "skill": "환경 조성"
+    },
+    {
+      "title": "Delta: Ninja Thief",
+      "skill": "인법 카모플라쥬",
+      "cond": "noOtherDefender"
+    }
+  ]
+}
