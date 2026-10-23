@@ -34,6 +34,8 @@ select
      'feedback', (select json_agg(json_build_object('d', created_at::date, 'mode', mode, 'rating', rating)) from ai_recommend_feedback, b where created_at::date between s and e),
      'roster_savers_new', (select count(distinct user_id) from owned_nikke, b where created_at::date between s and e)
   )) as usage,
+  -- 4b. 추천 선택지(recommend_usage, 2026-10-23~) — 조합을 내보낸 횟수. 캐시 적중 포함이라 위 AI 설명 호출보다 크다
+  (select json_agg(t) from (select mode, role, with_nikke, dropped, sum(n) n from recommend_usage, b where usage_date between s and e group by 1,2,3,4 order by 5 desc) t) as recommend,
   -- 5. AI 비용 (원, 우리 DB 기준 — 청구서와는 기간·환율이 다를 수 있다)
   (select json_build_object(
      'week_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget, b where usage_date between s and e),

@@ -21,6 +21,8 @@ select
      'yday_calls',  (select coalesce(sum(count),0) from ai_explain_usage, b where usage_date = y),
      'feedback_today', (select json_agg(json_build_object('mode', mode, 'rating', rating)) from ai_recommend_feedback, b where created_at::date = t)
   )) as usage,
+  -- 추천 선택지(recommend_usage, 2026-10-23~): 모드 · 역할(any/healer/tank, 스테이지 밖은 -) · 포함 니케 · 조건 못 지킴
+  (select json_agg(t) from (select mode, role, with_nikke, dropped, sum(n) n from recommend_usage, b where usage_date = b.t group by 1,2,3,4 order by 5 desc) t) as recommend_today,
   (select json_build_object(
      'today_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget, b where usage_date = t),
      'month_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget where usage_date >= date_trunc('month', current_date))

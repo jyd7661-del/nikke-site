@@ -791,6 +791,20 @@ export async function POST(req) {
       }
     }
 
+    // 2026-10-23: 선택지 사용 횟수(supabase/recommend_usage_migration.sql) — 사이트 현황 보고가 "힐러/탱커 포함"·"이 니케 포함"이
+    // 실제로 쓰이는지 보게. 캐시 적중도 센다(ai_explain_usage는 돈 쓴 호출만 센다). 니케·IP는 남기지 않는다. 실패해도 응답은 그대로.
+    if (supabase) {
+      const isStage = mode === 'campaign' || mode === 'tribe_tower';
+      const { error: ruErr } = await supabase.rpc('bump_recommend_usage', {
+        p_date: new Date().toISOString().slice(0, 10),
+        p_mode: Object.hasOwn(MODE_LABEL, mode) ? mode : 'other',
+        p_role: isStage ? (roleKey || 'any') : '-',
+        p_with: requireList.length > 0,
+        p_dropped: roleDropped || requireDropped,
+      }).then((r) => r, (e) => ({ error: e }));
+      if (ruErr) console.error('[RECOMMEND_USAGE] 기록 실패', ruErr);
+    }
+
     return Response.json({
       team: {
         members: chosen.members,
