@@ -9,6 +9,7 @@ import { characterName, localizedCharacter } from '@/lib/characterNames';
 import { isSupabaseConfigured } from '@/lib/supabaseClient';
 import AdSlot from '@/components/AdSlot';
 import CharacterAvatar from '@/components/CharacterAvatar';
+import CommunityTabs from '@/components/CommunityTabs';
 import { scoreTeam } from '@/lib/synergyEngine';
 import { resolveRosterIdsToCdb } from '@/lib/rosterBridge';
 import { fetchTranslations } from '@/lib/translate';
@@ -125,6 +126,7 @@ export default function CombosPage() {
 
   return (
     <main className="max-w-3xl mx-auto px-4 py-8">
+      <CommunityTabs current="/combos" />
       <div className="flex items-center justify-between mb-2">
         <h1 className="text-xl font-bold">{t('nav_combos')}</h1>
         <Link

@@ -21,8 +21,9 @@ export default function Header() {
     { href: '/', label: t('nav_recommend') },
     { href: '/nikke', label: t('nav_dex') },
     { href: '/guide', label: t('nav_guide') },
-    { href: '/combos', label: t('nav_combos') },
-    { href: '/board', label: t('nav_board') },
+    // 커뮤니티 조합 + 게시판을 메뉴 하나로(2026-10-23 유저 "개선점 진행해" — 열린 뒤 실사용 글·조합 0건이라
+    // 빈 방 두 개가 메뉴 5칸 중 2칸을 차지했다). 두 페이지는 components/CommunityTabs.js로 서로 오간다.
+    { href: '/combos', label: t('nav_community'), match: ['/combos', '/board'] },
   ];
 
   // 구글 로그인 (2026-08-09 도입).
@@ -89,7 +90,9 @@ export default function Header() {
             영어는 Boards가 화면 밖으로 밀려 320px에서 페이지 폭이 467px까지 늘었다. */}
         <nav className="order-last w-full flex flex-wrap items-center gap-x-1 gap-y-1 text-sm text-slate-300 sm:order-none sm:w-auto sm:gap-2">
           {NAV_LINKS.map((link) => {
-            const active = barePath === link.href;
+            const active = link.match
+              ? link.match.some((p) => barePath === p || barePath.startsWith(`${p}/`))
+              : barePath === link.href;
             return (
               <Link
                 key={link.href}
