@@ -6,7 +6,8 @@ import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import NicknamePrompt from '@/components/NicknamePrompt';
 import { recommend } from '@/lib/recommend';
-import { resolveRosterIdsToCdb, STANDARD_SR_IDS } from '@/lib/rosterBridge';
+import { resolveRosterIdsToCdb, STANDARD_SR_IDS, rosterIdForCdbId, cdbForRosterId } from '@/lib/rosterBridge';
+import { memberName } from '@/lib/memberName';
 import { getDataFreshnessMeta } from '@/lib/synergyEngine';
 import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -21,7 +22,7 @@ const TREASURE_AVAILABLE_IDS = new Set(CHARACTERS.filter((c) => c.hasTreasure).m
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
-  const { t, lp } = useLanguage();
+  const { lang, t, lp } = useLanguage();
   // 2026-10-08: 상시 모집 SR(lib/rosterBridge STANDARD_SR_IDS)은 처음부터 보유로 골라 둔다(유저 요청 — 사실상 누구나 가졌다). 해제 가능.
   const [ownedIds, setOwnedIds] = useState(() => new Set(STANDARD_SR_IDS));
   const [treasureIds, setTreasureIds] = useState(new Set());
@@ -34,6 +35,27 @@ export default function Home() {
   // 기업 타워 모드에서 어느 타워를 도는지. null이면 일반 트라이브 타워(제조사 제한 없음).
   // lib/synergyEngine.js의 TOWER_CORPS 값('elysion'|'missilis'|'tetra'|'pilgrim')과 일치해야 한다.
   const [tower, setTower] = useState(null);
+  // 도감 "이 니케 포함 조합" 버튼으로 왔을 때(`?with=<도감 id>`, 2026-10-23) 반드시 넣을 니케의 UI id.
+  // 보유 목록에 없어도 이번 추천에만 넣는다 — 뽑을지 고민하며 도감을 보는 사람도 있어서 보유 목록(저장)은 건드리지 않는다.
+  // 애장품: 보유 목록에 있으면 그 💎 상태를 그대로 쓰고, 없으면 **없음이 기본**이다. 애장품 전제 조합(랭커 기록·prydwen requiresTreasure)은
+  //   애장품이 있어야만 후보가 되므로, 있다고 가정하면 못 쓰는 조합을 추천하게 된다. 대신 배너에 토글을 바로 보인다.
+  const [includeId, setIncludeId] = useState(null);
+  const [includeTreasure, setIncludeTreasure] = useState(false);
+  useEffect(() => {
+    try {
+      const w = new URLSearchParams(window.location.search).get('with');
+      const id = w ? rosterIdForCdbId(w) : null;
+      if (id) setIncludeId(id);
+    } catch { /* 주소를 못 읽으면 포함 조건 없이 */ }
+  }, []);
+  const includeChar = includeId ? cdbForRosterId(includeId) : null;
+  const includeOwned = includeId ? ownedIds.has(includeId) : false;
+  const includeHasTreasure = includeOwned ? treasureIds.has(includeId) : includeTreasure;
+  const clearInclude = () => {
+    setIncludeId(null);
+    setIncludeTreasure(false);
+    try { window.history.replaceState(null, '', window.location.pathname); } catch { /* 주소만 못 고칠 뿐 */ }
+  };
 
   // 로그인 상태면 저장된 보유 니케(+애장품 여부)를 불러옵니다.
   useEffect(() => {
@@ -111,9 +133,19 @@ export default function Home() {
   // (app/api/ai-recommend, components/ResultPanel.js 참고).
   const roster = useMemo(() => {
     if (!showResult) return null;
-    const { resolved, unresolved, treasureCdbIds } = resolveRosterIdsToCdb(ownedIds, treasureIds);
-    return { resolved, unresolvedCount: unresolved.length, treasureIds: Array.from(treasureCdbIds) };
-  }, [showResult, ownedIds, treasureIds]);
+    // 포함 니케가 보유 목록에 없으면 이번 계산에만 더한다(애장품은 배너 토글 값).
+    const extra = includeId && !ownedIds.has(includeId);
+    const ids = extra ? new Set([...ownedIds, includeId]) : ownedIds;
+    const tIds = extra && includeTreasure && TREASURE_AVAILABLE_IDS.has(includeId) ? new Set([...treasureIds, includeId]) : treasureIds;
+    const { resolved, unresolved, treasureCdbIds } = resolveRosterIdsToCdb(ids, tIds);
+    return {
+      resolved,
+      unresolvedCount: unresolved.length,
+      treasureIds: Array.from(treasureCdbIds),
+      // 엔진이 이 니케가 든 후보만 고른다(app/api/ai-recommend requireTitles).
+      requireTitle: includeId ? cdbForRosterId(includeId)?.title || null : null,
+    };
+  }, [showResult, ownedIds, treasureIds, includeId, includeTreasure]);
 
   const dataFreshness = useMemo(() => getDataFreshnessMeta(), []);
 
@@ -150,6 +182,31 @@ export default function Home() {
       {!user && !authLoading && isSupabaseConfigured && (
         <div className="mb-6 text-xs text-slate-500 bg-nikke-panel/40 border border-slate-800/70 rounded-lg px-3 py-2 w-fit">
           {t('login_hint')}
+        </div>
+      )}
+
+      {includeChar && (
+        <div className="mb-4 rounded-lg border border-nikke-accent/40 bg-nikke-accent/10 px-3 py-2.5 text-sm">
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-2">
+            <span className="text-slate-100 font-semibold">{t('include_banner')(memberName(includeChar, lang))}</span>
+            {TREASURE_AVAILABLE_IDS.has(includeId) && (
+              <label className="flex items-center gap-1.5 text-xs text-slate-300 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={includeHasTreasure}
+                  onChange={() => (includeOwned ? toggleTreasure(includeId) : setIncludeTreasure((v) => !v))}
+                  className="accent-nikke-accent"
+                />
+                💎 {t('include_treasure')}
+              </label>
+            )}
+            <button onClick={clearInclude} className="text-xs text-slate-400 underline decoration-dotted hover:text-slate-200">
+              {t('include_clear')}
+            </button>
+          </div>
+          <p className="text-xs text-slate-400 mt-1">
+            {includeOwned ? t('include_hint') : t('include_not_owned')}
+          </p>
         </div>
       )}
 

@@ -473,7 +473,7 @@ export async function POST(req) {
     return Response.json({ error: '요청 형식이 올바르지 않습니다.', errorKey: 'api_err_bad_request' }, { status: 400 });
   }
 
-  const { characters, treasureIds, mode, bossElement, tower, excludeTitles, lang } = body || {};
+  const { characters, treasureIds, mode, bossElement, tower, excludeTitles, requireTitles, lang } = body || {};
   // 기업 타워는 tribe_tower 모드에서만 의미가 있다. 다른 모드에 딸려오면 무시한다.
   const towerKey = mode === 'tribe_tower' && TOWER_CORP_SET.has(tower) ? tower : null;
 
@@ -543,6 +543,14 @@ export async function POST(req) {
     const langKey = LANG_NAMES[lang] ? lang : 'ko';
     const langName = LANG_NAMES[langKey];
     const excludeSet = new Set(Array.isArray(excludeTitles) ? excludeTitles : []);
+    // 2026-10-23: 도감 "이 니케 포함 조합"(`/?with=`) — 엔진 세 경로 모두 이 니케가 든 후보만 고른다(synergyEngine opts.requireTitles).
+    // 로스터에 있는 title만, 1명까지. "다른 조합 보기"가 보낸 제외 목록에 들어 있어도 포함이 이긴다(매번 같이 나오니 당연히 들어 있다).
+    const rosterTitles = new Set(characters.map((c) => c.title));
+    const requireList = (Array.isArray(requireTitles) ? requireTitles : [])
+      .filter((x) => typeof x === 'string' && rosterTitles.has(x))
+      .slice(0, 1);
+    requireList.forEach((x) => excludeSet.delete(x));
+    let requireDropped = false;
 
     // 조합 "구성"은 전부 여기서 결정된다 — AI는 관여하지 않는다.
     //
@@ -585,6 +593,7 @@ export async function POST(req) {
       bossElement: bossElement || null,
       tower: towerKey,
       excludeTitles: Array.from(excludeSet),
+      requireTitles: requireList,
       // 근거 문장을 사용자 언어로 조립한다(2026-08-25). 이 문장은 AI 프롬프트의 입력이자
       // 대체 조합 헤드라인·폴백 문장으로 화면에도 그대로 나간다.
       lang: langKey,
@@ -599,7 +608,7 @@ export async function POST(req) {
     let flexLoser = null;
     if (exactMatch?.flexSlotCount && !(realUsageMatch && realUsageMatch.totalScore >= exactMatch.totalScore)) {
       const probe = recommendTeams(characters, mode, {
-        treasureIds: treasureIdSet, bossElement: bossElement || null, tower: towerKey, topN: 20, lang: langKey,
+        treasureIds: treasureIdSet, bossElement: bossElement || null, tower: towerKey, topN: 20, lang: langKey, requireTitles: requireList,
       }).teams || [];
       const top = probe.find((t) => !t.members.some((m) => excludeSet.has(m.title))) || probe[0];
       if (fallbackBeatsFlexArchetype(exactMatch, top, mode, matchOpts)) flexLoser = exactMatch;
@@ -640,13 +649,19 @@ export async function POST(req) {
       // 3순위(폴백): 등록된 실전 조합도 아키타입도 없을 만큼 로스터가 한정적인 경우.
       // 순위 1차 기준은 여전히 티어 합이고, 티어 합이 같은 후보들 사이에서만 스킬 시너지와
       // 전 아군 버퍼 수로 방향을 잡는다(recommendTeams의 정렬 주석 참고).
-      const rec = recommendTeams(characters, mode, {
+      const recOpts = {
         treasureIds: treasureIdSet,
         bossElement: bossElement || null,
         tower: towerKey,
         topN: 20,
         lang: langKey,
-      });
+      };
+      let rec = recommendTeams(characters, mode, { ...recOpts, requireTitles: requireList });
+      // 포함 니케로는 유효한 5인을 못 만들면(기업 타워에 못 나가는 니케 등) 조건 없이 다시 찾고 화면에 밝힌다.
+      if (requireList.length && !(rec.teams && rec.teams.length)) {
+        rec = recommendTeams(characters, mode, recOpts);
+        requireDropped = true;
+      }
 
       if (!rec.teams || rec.teams.length === 0) {
         return Response.json(
@@ -674,7 +689,8 @@ export async function POST(req) {
 
       // 2026-09-15: 폴백 구간에서만 AI 조합 구성(docs/ai-teams-plan.md §1). "다른 조합 보기"(excludeTitles)는
       // 엔진 후보 순환이라 AI를 건너뛴다. Supabase가 없으면 캐시도 예산도 없으니 켜지 않는다.
-      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0 && !flexLoser) {
+      // 포함 니케 조건이 있으면 AI 구성도 건너뛴다 — AI 프롬프트는 포함 조건을 모른다.
+      if (AI_TEAMS_MODE !== 'off' && supabase && excludeSet.size === 0 && !flexLoser && requireList.length === 0) {
         const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
         const ai = await tryAiTeam({
           client, supabase, characters, mode, boss: bossElement || null, tower: towerKey,
@@ -787,6 +803,8 @@ export async function POST(req) {
       // 일일 총 상한에 걸려 AI 문장 없이 근거 문장으로 대체된 경우. 화면에서 안내를 띄운다 —
       // 아무 표시 없이 설명 품질만 떨어지면 사용자는 "왜 갑자기 설명이 딱딱해졌지"만 느낀다.
       budgetExhausted,
+      // 포함 니케(requireTitles)로는 조합을 못 만들어 조건 없이 추천했는지(2026-10-23). 화면이 안내를 띄운다.
+      requireDropped,
     });
   } catch (err) {
     console.error('ai-recommend error', err);

@@ -2007,6 +2007,16 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       .slice(0, BUCKET_CAP);
   });
 
+  // 2026-10-23: **포함 니케**(opts.requireTitles) — 도감 "이 니케 포함 조합" 버튼. 그 니케가 든 후보만 남긴다.
+  // 티어가 낮아 위 상한(BUCKET_CAP)에서 잘렸으면 그 단계 버킷에 되돌려 넣는다. 지정이 없으면 아무것도 바뀌지 않는다.
+  const requireTitles = (opts.requireTitles || []).filter(Boolean);
+  if (requireTitles.length) {
+    ownedCharacters.filter((c) => requireTitles.includes(c.title)).forEach((c) => {
+      const stages = c.burstFlex ? flexStagesOf(c) : [c.burst];
+      stages.forEach((b) => { if (buckets[b] && !buckets[b].includes(c)) buckets[b].push(c); });
+    });
+  }
+
   const candidateTeams = [];
   BURST_COUNT_DISTRIBUTIONS.forEach((counts) => {
     if (buckets[1].length < counts[1] || buckets[2].length < counts[2] || buckets[3].length < counts[3]) {
@@ -2022,6 +2032,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
           const members = [...c1, ...c2, ...c3];
           // 유연 멤버가 두 버킷에서 동시에 뽑히면 같은 사람이 두 번 들어간다. 걸러낸다.
           if (new Set(members.map((m) => m.id)).size !== members.length) return;
+          if (requireTitles.length && !requireTitles.every((t) => members.some((m) => m.title === t))) return;
           const result = scoreTeam(members, mode, { treasureIds, bossElement, lang });
           candidateTeams.push({
             members: orderMembersForDisplay(members, mode, treasureIds).map((m) => ({ id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, burst: m.burst, img: m.img || null })),
@@ -2203,6 +2214,8 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
   const excludeTitles = new Set(opts.excludeTitles || []);
+  // 포함 니케(2026-10-23, recommendTeams 주석) — 완전일치는 그 니케가 든 기록만, 4/5 부분일치는 그 니케가 기록에 있거나 채우는 자리일 때만.
+  const requireTitles = (opts.requireTitles || []).filter(Boolean);
   ownedCharacters = filterRosterByTower(ownedCharacters, opts.tower || null);
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
   const ownedTitles = new Set(ownedCharacters.map((c) => c.title));
@@ -2255,6 +2268,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     if (skipSig && sigOf(titles) === skipSig) return;
     if (!titles.every((t) => ownedTitles.has(t))) return;
     if (titles.some((t) => excludeTitles.has(t))) return;
+    if (requireTitles.length && !requireTitles.every((t) => titles.includes(t))) return;
 
     const members = titles.map((t) => byTitle.get(t));
     // **애장품이 그 모드 티어를 올리는 멤버를 애장품 없이 가졌으면 그 기록은 이 사용자의 조합이 아니다** (2026-10-01).
@@ -2285,6 +2299,9 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
       if (titles.some((t) => excludeTitles.has(t))) return;
       const missing = titles.filter((t) => !ownedTitles.has(t));
       if (missing.length !== 1) return;
+      // 포함 니케가 기록에 없으면 채우는 자리가 그 니케여야 한다(2명 이상 빠지면 불가).
+      const need = requireTitles.filter((t) => !titles.includes(t));
+      if (need.length > 1) return;
       const gone = characterDatabase.find((c) => c.title === missing[0]);
       if (!gone) return;
       const stages = gone.burstFlex ? flexStagesOf(gone) : [String(gone.burst)];
@@ -2295,6 +2312,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
       let pick = null;
       ownedCharacters.forEach((c) => {
         if (titles.includes(c.title) || excludeTitles.has(c.title)) return;
+        if (need.length && c.title !== need[0]) return;
         const cs = c.burstFlex ? flexStagesOf(c) : [String(c.burst)];
         if (!cs.some((x) => stages.includes(x))) return;
         // 채우는 멤버는 랭커 기록이 아니라 우리 선택이라 애장품 관문을 걸지 않는다 — 애장품이 없으면 기본 티어로 채점될 뿐이다.
@@ -2430,6 +2448,8 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
   const treasureIds = opts.treasureIds || new Set();
   const bossElement = opts.bossElement || null;
   const excludeTitles = new Set(opts.excludeTitles || []);
+  // 포함 니케(2026-10-23, recommendTeams 주석) — 고정 멤버이거나 빈 자리 하나를 그 니케로 채울 수 있는 조합만.
+  const requireTitles = (opts.requireTitles || []).filter(Boolean);
   ownedCharacters = filterRosterByTower(ownedCharacters, opts.tower || null);
   const compatModes = MODE_COMPAT[mode] || [mode];
   const byTitle = new Map(ownedCharacters.map((c) => [c.title, c]));
@@ -2500,6 +2520,8 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     if (fixed.length + slots.length !== 5) return null;
     if (!fixed.every((t) => ownedTitleSet.has(t))) return null;
     if (fixed.some((t) => excludeTitles.has(t))) return null;
+    const need = requireTitles.filter((t) => !fixed.includes(t));
+    if (need.length > Math.min(1, slots.length)) return null;
 
     const base = fixed.map((t) => byTitle.get(t));
     const used0 = new Set(fixed);
@@ -2593,9 +2615,26 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
       return best;
     };
 
-    // 상위 CAP명끼리 서로 겹쳐 5인을 못 채우는 드문 경우에는 제한을 풀고 다시 찾는다.
-    let picked = search(ranked.map((p) => p.slice(0, CAP)));
-    if (!picked) picked = search(ranked);
+    let picked;
+    if (need.length) {
+      // 포함 니케를 빈 자리 하나에 고정하고 나머지 자리만 위와 같은 기준으로 찾는다. 그 니케가 들어갈 수 있는 자리마다 시도해
+      // search()와 같은 비교(채운 티어 합 → 팀 tierTotal → 상호작용 수)로 가장 나은 쪽. 그 니케가 CAP 밖이어도 탐색량은 그대로다.
+      const req = byTitle.get(need[0]);
+      let bestKey = null;
+      ranked.forEach((pool, i) => {
+        if (!pool.includes(req)) return;
+        const got = search(ranked.map((p, j) => (j === i ? [req] : p.slice(0, CAP))));
+        if (!got) return;
+        const key = [got.reduce((s2, c) => s2 + tierScore(c, mode, treasureIds), 0), teamTierTotal([...base, ...got]), synergyOf(got)];
+        if (!bestKey || key[0] > bestKey[0] || (key[0] === bestKey[0] && (key[1] > bestKey[1] || (key[1] === bestKey[1] && key[2] > bestKey[2])))) {
+          bestKey = key; picked = got;
+        }
+      });
+    } else {
+      // 상위 CAP명끼리 서로 겹쳐 5인을 못 채우는 드문 경우에는 제한을 풀고 다시 찾는다.
+      picked = search(ranked.map((p) => p.slice(0, CAP)));
+      if (!picked) picked = search(ranked);
+    }
     if (!picked) return null;
 
     return {

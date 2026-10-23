@@ -603,6 +603,32 @@ for (const t of teams) {
   }
 }
 
+// --- 포함 니케 (2026-10-23, opts.requireTitles — 도감 "이 니케 포함 조합" 버튼) ---
+// 고장: 버튼 문구는 "○○ 포함 최적 5인"인데 일반 추천이 나왔다. 세 경로(실사용·아키타입·폴백) 모두 그 니케가 든 답만 내야 한다.
+// 고티어(크라운)·저티어(네온 — 조건 없이는 안 뽑힌다)·유연 버스트(레드 후드)를 모드 3개에서 본다.
+{
+  const roster = cdb.filter((c) => c.tiers);
+  const has = (team, t) => !!team && team.members.some((m) => m.title === t);
+  let unconstrainedMiss = 0;
+  for (const mode of ['campaign', 'bossing', 'pvp']) {
+    for (const t of ['Crown', 'Neon', 'Red Hood']) {
+      if (!byTitle.get(t)) { problems.push(`[포함 니케] 시험 니케 ${t}가 데이터에 없다 — 시험 니케를 다시 고를 것`); continue; }
+      const opts = { lang: 'ko', requireTitles: [t] };
+      const site = engine.pickSiteTeam(roster, mode, opts);
+      if (!has(site.team, t)) problems.push(`[포함 니케] ${mode} ${t}: 사이트 답(${site.path})에 ${t}가 없다`);
+      const real = engine.findRealUsageTeamMatch(roster, mode, opts);
+      if (real && !has(real, t)) problems.push(`[포함 니케] ${mode} ${t}: 실사용 경로 답에 ${t}가 없다`);
+      const exact = engine.findExactTeamMatch(roster, mode, opts);
+      if (exact && !has(exact, t)) problems.push(`[포함 니케] ${mode} ${t}: 아키타입 경로 답에 ${t}가 없다`);
+      const rec = engine.recommendTeams(roster, mode, { ...opts, topN: 3 });
+      if (!rec.teams?.length || rec.teams.some((x) => !has(x, t))) problems.push(`[포함 니케] ${mode} ${t}: 폴백 후보에 ${t}가 없는 팀이 있다`);
+      if (!has(engine.pickSiteTeam(roster, mode, { lang: 'ko' }).team, t)) unconstrainedMiss++;
+    }
+  }
+  // 조건 없이도 전부 들어가면 이 검사는 아무것도 재지 않는다(역테스트의 전제).
+  if (unconstrainedMiss === 0) problems.push('[포함 니케] 조건 없이도 시험 니케가 항상 뽑힌다 — 저티어 시험 니케를 다시 고를 것');
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

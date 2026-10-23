@@ -41,6 +41,12 @@ export function cdbForRosterId(id) {
   return rosterIdToCdb.get(id) || null;
 }
 
+// 거꾸로: characterDatabase id → UI id. 도감의 "이 니케 포함 조합" 버튼(`/?with=<도감 id>`)이 쓴다(2026-10-23).
+const cdbIdToRosterId = new Map([...rosterIdToCdb].map(([uiId, cdbChar]) => [cdbChar.id, uiId]));
+export function rosterIdForCdbId(cdbId) {
+  return cdbIdToRosterId.get(cdbId) || null;
+}
+
 // 보유 캐릭터 id 배열(+선택적으로 애장품 장착한 id 목록)을 받아
 // { resolved, unresolved, treasureCdbIds } 반환.
 export function resolveRosterIdsToCdb(ownedIds, treasureIds = new Set()) {

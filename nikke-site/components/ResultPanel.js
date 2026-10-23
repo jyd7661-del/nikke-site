@@ -147,6 +147,9 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
   // 일일 총 상한(서킷 브레이커)에 걸려 AI 문장 없이 근거 문장으로 나온 경우.
   // 표시가 없으면 사용자는 "왜 갑자기 설명이 딱딱해졌지"만 느끼고 원인을 알 수 없다.
   const [budgetExhausted, setBudgetExhausted] = useState(false);
+  // 포함 니케(도감에서 온 경우)를 넣은 조합이 없어 조건 없이 추천했는지(2026-10-23).
+  const [requireDropped, setRequireDropped] = useState(false);
+  const requireTitle = roster?.requireTitle || null;
 
   // 애장품(Treasure) 체크 목록을 문자열로 직렬화해 useEffect 의존성 비교에 사용한다.
   // roster.treasureIds는 부모(app/page.js)에서 treasureIds가 바뀔 때마다 새 배열로 만들어지므로,
@@ -165,8 +168,9 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
     setAlternative(null);
     setSource(null);
     setBudgetExhausted(false);
+    setRequireDropped(false);
     setPhase('idle');
-  }, [mode, bossElement, tower, treasureKey]);
+  }, [mode, bossElement, tower, treasureKey, requireTitle]);
 
   const requestTeam = async (exclude) => {
     setPhase('loading');
@@ -182,6 +186,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           bossElement,
           tower,
           excludeTitles: exclude,
+          requireTitles: requireTitle ? [requireTitle] : undefined,
           lang,
         }),
       });
@@ -203,6 +208,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       setAlternative(data.alternative || null);
       setSource(data.model || null);
       setBudgetExhausted(Boolean(data.budgetExhausted));
+      setRequireDropped(Boolean(data.requireDropped));
       setPhase('idle');
       setFeedback(null);
       setExcludeTitles((prev) => [...prev, ...data.team.members.map((m) => m.title)]);
@@ -272,6 +278,11 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
         </div>
       </div>
       <TeamMemberCards members={team.members} treasureIds={roster.treasureIds} />
+      {requireDropped && (
+        <p className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3">
+          {t('include_dropped')}
+        </p>
+      )}
       {/* 보스별 방어 구성 — 랭커 과반과 반대로 간 조합에만 온다(2026-09-13).
           문장은 엔진이 요청 언어(lang)로 이미 조립해 보낸 **데이터**라 i18n 키를 거치지 않는다.
           reasons 배열은 이 화면에 그리지 않으므로(AI 프롬프트 재료) 따로 받은 필드를 쓴다. */}
