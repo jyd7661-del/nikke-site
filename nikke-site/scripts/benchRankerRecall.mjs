@@ -11,6 +11,8 @@
  *   node scripts/benchRankerRecall.mjs --loo           # 실사용 경로를 켜되 정답 팀 자신만 뺀다(leave-one-out)
  *   node scripts/benchRankerRecall.mjs --loo --off=REAL_PARTIAL_OFF   # 실사용 4/5 부분 일치를 끈 판(2026-10-03 이전)
  *   node scripts/benchRankerRecall.mjs --holdout=probe-data/soloRaidHoldout.json   # 엔진 데이터에 없는 지난 레이드 시즌으로만(검증)
+ *   node scripts/benchRankerRecall.mjs --loo --role=healer              # 캠페인·타워 중 정답 팀에 힐러가 있는 팀만, "힐러 포함"(requireRole)을 켜고 잰다
+ *   node scripts/benchRankerRecall.mjs --loo --role=healer --role-off   # 같은 팀들을 조건 없이 — 위와 비교한다(2026-10-23)
  *
  * ■ 왜 필요한가
  *   judgmentBench(엔진 = 내 조합)는 99%까지 올랐지만 정답지가 **내 판정**이다. 2026-10-01 하루에만 내 판정이 여러 번 틀렸다
@@ -39,6 +41,11 @@ const VERBOSE = has('verbose');
 //   --off=REAL_PARTIAL_OFF로 부분 일치를 끈 판과 비교한다. --partial-compete는 부분 일치를 폴백과 겨루게 하는 비교용(기본 엔진은 안 겨룸).
 const LOO = has('loo');
 const COMPETE = has('partial-compete');
+// --role=healer|tank: 스테이지 "힐러/탱커 포함"(2026-10-23) 평가. 정답 팀에 그 역할(data/survivalRoles.json)이 있는 캠페인·타워 팀만 남기고
+//   requireRole을 켠다. --role-off면 같은 팀을 조건 없이 잰다. 둘의 차이 = 그 선택지가 랭커가 실제로 넣은 역할 쪽으로 데려가는가.
+//   "역할 니케 일치" = 엔진 답의 그 역할 니케가 랭커 팀의 그 역할 니케와 하나라도 같다(조건 없는 판에서 역할이 빠지면 불일치).
+const ROLE = arg('role', null);
+const ROLE_OFF = has('role-off');
 for (const sw of (arg('off', '') || '').split(',').filter(Boolean)) globalThis['__NIKKE_' + sw] = true;
 
 const j = (f) => JSON.parse(fs.readFileSync(path.join(ROOT, 'data', f), 'utf8'));
@@ -87,6 +94,7 @@ const misses = [];
 for (const c of cases) {
   const team = c.members.map((n) => byTitle.get(n));
   if (team.length !== 5 || team.some((x) => !x)) continue;
+  if (ROLE && !((c.mode === 'campaign' || c.mode === 'tribe_tower') && E.teamHasRole(team, ROLE))) continue;
   const pool = ssr.filter((x) => !c.members.includes(x.title));
   // --drop=k: 정답 5명 중 k명을 로스터에서 뺀다(불완전 로스터 — 그 자리는 무작위로 채워 크기는 같게). 지표는 **남은 정답 멤버를 몇 명 살렸나**.
   const DROP = Number(arg('drop', 0));
@@ -105,11 +113,12 @@ for (const c of cases) {
   while (roster.length < 5 + EXTRA && pool.length) roster.push(pool.splice(Math.floor(rnd() * pool.length), 1)[0]);
   // --no-treasure: 로스터의 애장품 캐릭터를 전부 **애장품 없음**으로 본다(초보 로스터 흉내 — 기본은 전부 보유로 본다).
   const treasureIds = has('no-treasure') ? new Set() : new Set(roster.filter((x) => TREASURE.has(x.id)).map((x) => x.id));
-  const r = E.pickSiteTeam(roster, c.mode, HOLDOUT
+  const opts = HOLDOUT
     ? { ...c.ctx, treasureIds, skipArchetype: NO_ARCH }
     : LOO
     ? { ...c.ctx, treasureIds, skipArchetype: NO_ARCH, excludeRealSig: [...c.members].sort().join('|'), realPartialCompete: COMPETE }
-    : { ...c.ctx, treasureIds, skipRealUsage: true, skipArchetype: NO_ARCH });
+    : { ...c.ctx, treasureIds, skipRealUsage: true, skipArchetype: NO_ARCH };
+  const r = E.pickSiteTeam(roster, c.mode, ROLE && !ROLE_OFF ? { ...opts, requireRole: ROLE } : opts);
   const got = (r.team?.members || []).map((m) => m.title);
   const ov = got.filter((t) => c.members.includes(t) && roster.some((x) => x.title === t)).length;
   const keptN = kept.length;
@@ -117,15 +126,22 @@ for (const c of cases) {
   // drop이면 '완전' = 남은 정답 멤버 전원 유지, '4명+' 자리는 남은 멤버의 (keptN-1)명 이상 유지
   s.n++; s.ov += ov; if (ov === keptN) s.exact++; if (ov >= keptN - 1) s.four++;
   s.paths[r.path] = (s.paths[r.path] || 0) + 1;
+  if (ROLE) {
+    const want = E.teamRoleMembers(team)[ROLE];
+    const gotRole = r.team ? E.teamRoleMembers(r.team.members)[ROLE] : [];
+    s.roleN = (s.roleN || 0) + (gotRole.length ? 1 : 0);
+    s.roleHit = (s.roleHit || 0) + (gotRole.some((t) => want.includes(t)) ? 1 : 0);
+  }
   if (ov < keptN) misses.push({ key: c.key, mode: c.mode, ov, want: c.members, got, path: r.path, roster: roster.map((x) => x.title),
     dropped: c.members.filter((t) => !kept.some((x) => x.title === t)), lost: kept.map((x) => x.title).filter((t) => !got.includes(t)), added: got.filter((t) => !c.members.includes(t)), ...(r.path === 'error' ? { ctx: c.ctx, error: r.error || null } : {}) });
 }
 
 const NAME = { campaign: '캠페인', tribe_tower: '타워', bossing: '솔로레이드', pvp: 'PvP' };
-console.log(`랭커 조합 복원${has('drop-top') ? ' [초보형: 고티어부터 뺌 · 섞는 니케는 S 미만만]' : ''}${has('no-treasure') ? ' [애장품 없음]' : ''}${arg('drop', 0) > 0 ? ` [불완전 로스터: 정답 ${arg('drop')}명 뺌 — 완전 = 남은 ${5 - arg('drop')}명 전원 유지 · 4명+ 칸 = ${4 - arg('drop')}명 이상 유지]` : ''}${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}`);
+console.log(`랭커 조합 복원${has('drop-top') ? ' [초보형: 고티어부터 뺌 · 섞는 니케는 S 미만만]' : ''}${has('no-treasure') ? ' [애장품 없음]' : ''}${arg('drop', 0) > 0 ? ` [불완전 로스터: 정답 ${arg('drop')}명 뺌 — 완전 = 남은 ${5 - arg('drop')}명 전원 유지 · 4명+ 칸 = ${4 - arg('drop')}명 이상 유지]` : ''}${HOLDOUT ? ` [검증 전용 ${HOLDOUT}]` : ''} — 섞은 니케 ${EXTRA}명 · ${HOLDOUT ? '실사용 경로 그대로' : LOO ? `실사용은 자기 팀만 빼고 켬${COMPETE ? '(부분 일치는 폴백과 겨룸)' : ''}` : '실사용 경로 끔'}${NO_ARCH ? ' · 아키타입도 끔' : ''}${arg('off', '') ? ` · 스위치 ${arg('off')}` : ''}${RAID_TEAMS ? ` · 레이드 표 ${RAID_TEAMS}` : ''}${ROLE ? ` · 정답 팀에 ${ROLE} 있는 스테이지 팀만, ${ROLE_OFF ? '조건 없이' : `requireRole=${ROLE}`}` : ''}`);
 let T = { n: 0, exact: 0, four: 0, ov: 0 };
 for (const [m, s] of Object.entries(stats)) {
   console.log(`  ${NAME[m].padEnd(6)} ${String(s.n).padStart(3)}팀 · 완전 복원 ${(s.exact / s.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(s.four / s.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(s.ov / s.n).toFixed(2)} · 경로 ${JSON.stringify(s.paths)}`);
+  if (ROLE) console.log(`         ${ROLE} 든 답 ${s.roleN || 0}/${s.n} · 랭커와 같은 ${ROLE} ${s.roleHit || 0}/${s.n}`);
   T = { n: T.n + s.n, exact: T.exact + s.exact, four: T.four + s.four, ov: T.ov + s.ov };
 }
 console.log(`  전체   ${String(T.n).padStart(3)}팀 · 완전 복원 ${(T.exact / T.n * 100).toFixed(1).padStart(5)}% · 4명+ ${(T.four / T.n * 100).toFixed(1).padStart(5)}% · 평균 겹침 ${(T.ov / T.n).toFixed(2)}`);
