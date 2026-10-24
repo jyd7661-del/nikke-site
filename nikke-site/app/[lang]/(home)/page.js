@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import CharacterPicker from '@/components/CharacterPicker';
 import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
@@ -149,6 +149,28 @@ export default function Home() {
 
   const dataFreshness = useMemo(() => getDataFreshnessMeta(), []);
 
+  // 추천 버튼은 카드 200장 아래(모바일 약 9,800px)에 있어 처음 온 사람은 버튼이 있는 줄도 모른다(2026-10-24 실측).
+  // 버튼 줄이 화면 아래쪽에 가려져 있는 동안만 하단 고정 바를 띄운다 — 이미 지나 결과를 보는 중이면 숨긴다.
+  const actionRowRef = useRef(null);
+  const [actionRowBelow, setActionRowBelow] = useState(false);
+  useEffect(() => {
+    const el = actionRowRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver(([e]) => {
+      setActionRowBelow(!e.isIntersecting && e.boundingClientRect.top > 0);
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const recommendFromBar = () => {
+    setShowResult(true);
+    // 상단 고정 헤더가 모바일에선 두 줄(약 165px)이라 그 높이만큼 비켜 세운다.
+    const el = actionRowRef.current;
+    if (!el) return;
+    const head = document.querySelector('header.sticky')?.getBoundingClientRect().height || 0;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - head - 12, behavior: 'smooth' });
+  };
+
   const shareUrl = user && typeof window !== 'undefined' ? `${window.location.origin}/u/${user.id}` : null;
 
   return (
@@ -221,7 +243,7 @@ export default function Home() {
         aiMode={aiMode}
       />
 
-      <div className="flex items-center justify-between mt-5 mb-6">
+      <div ref={actionRowRef} className="flex items-center justify-between mt-5 mb-6">
         <p className="text-sm text-slate-400">
           {t('selected_count')(ownedIds.size)}{rosterLoading ? t('loading_suffix') : ''}
         </p>
@@ -233,6 +255,20 @@ export default function Home() {
           {t('get_recommendation')}
         </button>
       </div>
+
+      {actionRowBelow && ownedIds.size > 0 && (
+        <div className="fixed inset-x-0 bottom-0 z-30 border-t border-slate-700 bg-nikke-bg/95 backdrop-blur px-4 py-3">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-3">
+            <p className="text-sm text-slate-300">{t('selected_count')(ownedIds.size)}</p>
+            <button
+              onClick={recommendFromBar}
+              className="bg-nikke-accent text-slate-900 font-bold px-5 py-2.5 rounded-lg hover:brightness-110 transition"
+            >
+              {t('get_recommendation')}
+            </button>
+          </div>
+        </div>
+      )}
 
       <ResultPanel
         result={result}
