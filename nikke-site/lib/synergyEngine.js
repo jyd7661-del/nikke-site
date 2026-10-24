@@ -716,8 +716,39 @@ const REAL_TRIO_INDEX = buildRealComboIndex(metaStats.pvp?.trios);
 const REAL_QUAD_INDEX = buildRealComboIndex(metaStats.pvp?.quads);
 const REAL_TEAM_INDEX = buildRealComboIndex(metaStats.pvp?.topTeams);
 
+// 캠페인 실사용 표. 시험용 `__NIKKE_CAMP_TABLE`(scripts/benchPeopleChoice.mjs --camp-table)로 넓은 표(data/campaignRosters.json)를 끼워 본다 — 화면에서는 쓰지 않는다.
+const CAMP_LIST = globalThis.__NIKKE_CAMP_TABLE || metaStats.campaignCompositions?.list || [];
+
+// **같이 쓰는 짝**(2026-10-24, metaStats.campaignCompositions.coUsePairs) — 캠페인 사람들이 우연보다 자주 한 조합에 같이 넣는 두 니케.
+//   유저: "엔닉 조합을 많이 받아보는게 효과가 크네? … 왜 이 조합이 나왔는가 찾고 적용을 계속 시도". enikk 캠페인 600조합을 보니
+//   엔진이 사람들과 갈리는 이유 하나가 "짝을 모른다"였다 — 홍련 : 흑영 + 리버렐리오(우연의 7.6배, 클리어의 8%)인데 리버렐리오 자리에
+//   티어가 한 칸 높은 베스티 : 택티컬 업을 넣었다(사람들은 그 판을 85회, 원래 판을 13,714회 썼다). 레드 후드 + 나가·앨리스, 모더니아 + 티아·나가도 같은 꼴.
+//   PvP는 예전부터 짝·트리오(metaStats.pvp.pairs)를 썼고, 캠페인엔 그 층이 없었다.
+//   폴백 순위(티어 합 + 실사용 등급)와 4/5 채우기(티어 합)에 WEIGHTS.CAMP_COUSE_PAIR × ln(lift)를 더한다.
+//   잰 값: scripts/benchPeopleChoice.mjs — 시험 조합(홀수 순위)과 짝을 세는 조합(짝수 순위)을 엇갈려 자기 자신을 안 보게 했다.
+//     완전 일치 43.3 → 47.5% · 사용 수 가중 54.3 → 57.5% · 반대로 엇갈려도 34.2 → 37.5%. 가중치 0.5·2, lift 하한 1.5·3은 전부 그보다 낮거나 같았다.
+//   스위치 `__NIKKE_CAMP_PAIRS_OFF`(이전 엔진 비교). 시험용 `__NIKKE_CAMP_PAIRS`([{ a, b, lift }]) · `__NIKKE_CAMP_PAIR_W`로 다른 짝 표·무게를 끼운다.
+const CAMP_PAIR_LIST = globalThis.__NIKKE_CAMP_PAIRS || (globalThis.__NIKKE_CAMP_PAIRS_OFF ? [] : metaStats.campaignCompositions?.coUsePairs?.list || []);
+const CAMP_PAIR_LIFT = new Map(CAMP_PAIR_LIST.map((p) => [[p.a, p.b].sort().join('|'), p.lift]));
+// 팀 안의 짝들 — [{ a, b, lift }], lift 큰 순
+function campPairsIn(titles, mode) {
+  if (!CAMP_PAIR_LIFT.size || !CAMPAIGN_COMBO_MODES.has(mode)) return [];
+  const out = [];
+  for (let i = 0; i < titles.length; i += 1) for (let k = i + 1; k < titles.length; k += 1) {
+    const lift = CAMP_PAIR_LIFT.get([titles[i], titles[k]].sort().join('|'));
+    if (lift) out.push({ a: titles[i], b: titles[k], lift });
+  }
+  return out.sort((x, y) => y.lift - x.lift);
+}
+// lift는 WEIGHTS.CAMP_COUSE_PAIR_CAP에서 자른다 — 상한이 없으면 저가 묶음(티아·DKW·나가·앨리스·모더니아, 서로 lift 10~52)이
+//   짝을 대여섯 개 겹쳐 +20점 넘게 받아, 스타·민트·신데렐라 CW·아인 조합(rnd-campaign-50-12)을 통째로 밀어냈다.
+//   상한 8은 벤치 수치를 그대로 두고(47.5% · 사용 수 비 82.6%) 그 교체를 막았다. "센 짝 1~2개만 센다"는 44.2%로 떨어지고 그 사례도 못 막았다.
+//   시험용 `__NIKKE_CAMP_PAIR_CAP`로 다른 상한을 끼운다.
+const campPairBonus = (pairs) => pairs.reduce((s, p) => s + (globalThis.__NIKKE_CAMP_PAIR_W ?? WEIGHTS.CAMP_COUSE_PAIR)
+  * Math.log(Math.min(p.lift, globalThis.__NIKKE_CAMP_PAIR_CAP ?? WEIGHTS.CAMP_COUSE_PAIR_CAP)), 0);
+
 // 캠페인 "가장 많이 쓴 5인 조합" 완전 일치 인덱스.
-const REAL_CAMPAIGN_TEAM_INDEX = buildRealComboIndex(metaStats.campaignCompositions?.list);
+const REAL_CAMPAIGN_TEAM_INDEX = buildRealComboIndex(CAMP_LIST);
 
 // 캠페인 조합의 4인 부분집합 → "그 4인을 포함하는 조합 중 totalUses가 가장 큰 것" 인덱스.
 // 유저가 코어 4인만 보유하고 5번째가 없을 때 "이 캐릭터를 더 넣으면 실전에서 가장 많이 쓰인
@@ -737,7 +768,7 @@ function buildCampaignPartialIndex(list) {
   });
   return map;
 }
-const REAL_CAMPAIGN_PARTIAL_INDEX = buildCampaignPartialIndex(metaStats.campaignCompositions?.list);
+const REAL_CAMPAIGN_PARTIAL_INDEX = buildCampaignPartialIndex(CAMP_LIST);
 
 function combinationsOfTitles(titles, k) {
   const results = [];
@@ -817,6 +848,11 @@ const WEIGHTS = {
   // 비슷한 스케일), 부분 일치(4/5)는 그 절반 비중으로 낮춘다.
   REAL_CAMPAIGN_FULL_SCALE: 0.6,
   REAL_CAMPAIGN_PARTIAL_SCALE: 0.3,
+  // 캠페인 같이 쓰는 짝(coUsePairs) 하나당 × ln(lift) — 폴백 순위·4/5 채우기에만(점수 totalScore엔 안 넣는다). 잰 값, campPairsIn 주석.
+  // lift 7.6(홍련 : 흑영 + 리버렐리오)이면 +2.0 — 티어 한 칸(S→SSS 2점)을 뒤집는 크기다.
+  CAMP_COUSE_PAIR: 1,
+  // 짝 하나의 lift 상한(짝 하나 최대 +2.1). 짝이 여럿 겹친 저가 묶음이 강한 조합을 밀어내지 않게 — campPairBonus 주석.
+  CAMP_COUSE_PAIR_CAP: 8,
 };
 
 // 아키타입 부분일치의 점수 = **완전일치 점수 × 완성도**.
@@ -1704,6 +1740,11 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 정확히 5인 로스터가 실전 기록과 완전히 일치하면 그 조합의 pctOfClears(전체 클리어 중 비중)를
   // 그대로 가산점으로 쓰고, 4인만 일치하면 "이 캐릭터를 더 넣으면 실전 최다 사용 조합이 완성된다"는
   // 절반 비중의 힌트를 준다.
+  // 캠페인 같이 쓰는 짝(campPairsIn 주석) — 순위엔 campPairBonus로만 쓰고, 근거는 lift 큰 두 짝까지 문장으로 밝힌다.
+  const campPairs = campPairsIn(titles, mode);
+  const memberOf = (t) => members.find((m) => m.title === t);
+  campPairs.slice(0, 2).forEach((p) => reasons.push(R.real_campaign_pair({ a: rName(memberOf(p.a), lang), b: rName(memberOf(p.b), lang), lift: Number(p.lift.toFixed(1)) })));
+
   if (CAMPAIGN_COMBO_MODES.has(mode) && titles.length >= 4) {
     let exactMatched = false;
     if (titles.length === 5) {
@@ -1873,6 +1914,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     totalScore: Math.round(score * 10) / 10,
     valid: validBurstChain,
     tierTotal,
+    campPairBonus: campPairBonus(campPairs),
     // enikk.app 실사용 픽률 등급의 합(REAL_TIER_SCORE). 폴백 탐색의 순위에 쓰려고 밖으로 낸다.
     realTierTotal,
     // 스킬 원문에서 "A가 주는 [데미지 타입] 버프를 B가 실제로 받는다"가 확인된 쌍의 개수.
@@ -2096,7 +2138,7 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
             //
             // 가중치는 새로 만들지 않았다 — `usageWeight`(0.5, 보스전 시즌 표가 있으면 3)는 `score`가 쓰는 값 그대로다.
             // 티어 척도가 둘이라는 문제(prydwen 9단계 vs enikk 6단계)는 `REAL_TIER_SCORE` 별도 표가 이미 막고 있다.
-            totalScore: result.tierTotal + (result.realTierTotal || 0) * usageWeight(mode, bossElement),
+            totalScore: result.tierTotal + (result.realTierTotal || 0) * usageWeight(mode, bossElement) + (result.campPairBonus || 0),
             // 조건부 아군 버프가 자기 말고 아무에게도 안 닿는 멤버 수(lib/buffTargets.js). 정렬의 동점 처리에만 쓴다.
             deadBuffCount: deadBuffCount(members),
           });
@@ -2299,7 +2341,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
   };
   const entries =
     source === 'campaign'
-      ? (metaStats.campaignCompositions?.list || []).map((e) => ({ e, rank: e.pctOfClears || 0 }))
+      ? CAMP_LIST.map((e) => ({ e, rank: e.pctOfClears || 0 }))
       : source === 'soloraid'
         ? soloRaidEntries()
         : source === 'tower'
@@ -2369,8 +2411,9 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         if (requireRole && !teamHasRole(members, requireRole)) return;
         const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
         if (!scored.valid) return;
-        if (!pick || scored.tierTotal > pick.scored.tierTotal ||
-          (scored.tierTotal === pick.scored.tierTotal && String(c.id) < String(pick.filler.id))) pick = { members, scored, filler: c };
+        const v = scored.tierTotal + (scored.campPairBonus || 0);
+        const pv = pick ? pick.scored.tierTotal + (pick.scored.campPairBonus || 0) : 0;
+        if (!pick || v > pv || (v === pv && String(c.id) < String(pick.filler.id))) pick = { members, scored, filler: c };
       });
       if (!pick) return;
       if (!best || rank > best.rank) best = { entry: e, rank, members: pick.members, scored: pick.scored, partial: { missing: gone, filler: pick.filler } };

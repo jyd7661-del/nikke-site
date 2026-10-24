@@ -1500,7 +1500,12 @@ if (glossarySrc) {
         else if (unknown.length) err('CAMPROSTER_UNKNOWN_MEMBER', `campaignRosters.${key} #${i + 1}: DB에 없는 이름 ${unknown.join(', ')}`);
       });
     }
-    const { deriveStarB1Partners } = await import('./importCampaignRosters.mjs');
+    const { deriveStarB1Partners, deriveCoUsePairs } = await import('./importCampaignRosters.mjs');
+    // 같이 쓰는 짝(엔진 campPairBonus)도 원본에서 다시 세어 맞는지 본다 — 손으로 고치면 여기서 걸린다.
+    const pairs = deriveCoUsePairs(rosters.most);
+    if (JSON.stringify(meta.campaignCompositions?.coUsePairs?.list) !== JSON.stringify(pairs)) {
+      err('CAMPROSTER_COUSE_PAIRS_STALE', `metaStats.campaignCompositions.coUsePairs가 campaignRosters.json과 안 맞는다(원본 기준 ${pairs.length}쌍) — node scripts/importCampaignRosters.mjs로 다시 만들 것`);
+    }
     const want = deriveStarB1Partners(rosters, cdb, read('burstCdr.json'));
     const have = meta.campaignCompositions?.starB1Partners;
     if (!have || JSON.stringify({ barPct: have.barPct, bossBarPct: have.bossBarPct, list: have.list }) !== JSON.stringify(want)) {

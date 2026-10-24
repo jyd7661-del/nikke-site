@@ -579,6 +579,35 @@ for (const t of teams) {
   hit.forEach((t) => problems.push(`[스타 나만의 별] 등록 조합을 깎는다 — ${t.src} ${t.label}: ${t.members.join(', ')}`));
 }
 
+// --- 캠페인 같이 쓰는 짝 (2026-10-24, lib/synergyEngine.js campPairsIn · metaStats.campaignCompositions.coUsePairs) ---
+// 고장: 홍련 : 흑영 + 리버렐리오(enikk 우연의 7.6배)를 모르고 티어 높은 라플라스 : 얼티밋 히어로를 넣었다(탐침 rnd-campaign-50-0 로스터).
+// ① 그 로스터에서 짝이 든 답이 나오고 이유 문장이 붙는다 ② PvP엔 안 붙는다 ③ lift 상한(CAMP_COUSE_PAIR_CAP) — 저가 묶음이 짝을 겹쳐 스타 팀을 밀어내던 것
+// 역테스트: `node --import 'data:text/javascript,globalThis.__NIKKE_CAMP_PAIRS_OFF=1' scripts/testRealTeams.mjs` → ① 실패
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const roster = ['Moran', 'Helm', 'Arcana', 'Julia', 'Dolla', 'Mihara: Bonding Chain', 'Cinderella', 'Frima', 'Sin', 'Asuka Shikinami Langley',
+    'Scarlet: Black Shadow', 'Rei', 'Chisato Nishikigi', 'Signal', 'Aria', 'Exia', 'Raven', 'Grave', 'Marciana', 'Guilty: Mighty Bunny', 'Soda',
+    'Drake: Great Villain', 'Neon: Blue Ocean', 'Brid: Silent Track', 'Liberalio', 'Kilo', 'Belorta: Pumpkin Witch', 'Anne: Miracle Fairy', 'Rupee',
+    'Laplace: Ultimate Hero', 'Jackal', 'Blanc', 'Jill Valentine', 'Sakura: Bloom in Summer', 'Red Hood', 'Anis: Star', 'Leona', 'E.H.', 'Pepper',
+    'Soline: Frost Ticket', 'Brid', 'Privaty: Unkind Maid', 'Guilty', 'Ade: Agent Bunny', 'Emilia', 'Makima', 'Epinel', 'Noise', 'Quency: Escape Queen',
+    'Vesti: Tactical Upgrade'];
+  const got = (engine.pickSiteTeam(T(roster), 'campaign', {}).team?.members || []).map((m) => m.title);
+  if (!['Scarlet: Black Shadow', 'Liberalio'].every((t) => got.includes(t))) problems.push(`[캠페인 짝] 홍련 : 흑영 + 리버렐리오 짝을 못 살렸다: ${got.join(', ')}`);
+  const pairTeam = T(['Anis: Star', 'Ade: Agent Bunny', 'Vesti: Tactical Upgrade', 'Liberalio', 'Scarlet: Black Shadow']);
+  const camp = engine.scoreTeam(pairTeam, 'campaign', { lang: 'ko' });
+  // 한국어 이유 문장도 이름은 title(rName) — 화면이 이름을 바꿔 끼운다
+  if (!(camp.campPairBonus > 0) || !(camp.reasons || []).some((r) => /Liberalio.*7\.6/.test(String(r)))) problems.push('[캠페인 짝] 짝 가산 또는 이유 문장이 없다');
+  if (engine.scoreTeam(pairTeam, 'pvp', { lang: 'ko' }).campPairBonus) problems.push('[캠페인 짝] PvP에도 캠페인 짝 가산이 붙었다');
+  // 티아·나가·모더니아·앨리스·크라운 — 짝 표에서 직접 센 값과 맞춰 본다(짝마다 ln(min(lift, 8)))
+  const tiaTeam = ['Tia', 'Naga', 'Modernia', 'Alice', 'Crown'];
+  const inTeam = (ms.campaignCompositions?.coUsePairs?.list || []).filter((p) => tiaTeam.includes(p.a) && tiaTeam.includes(p.b));
+  const capped = inTeam.reduce((a, p) => a + Math.log(Math.min(p.lift, 8)), 0);
+  const raw = inTeam.reduce((a, p) => a + Math.log(p.lift), 0);
+  const tia = engine.scoreTeam(T(tiaTeam), 'campaign', {});
+  if (!inTeam.some((p) => p.lift > 8)) problems.push('[캠페인 짝] 시험 묶음에 lift 8 넘는 짝이 없다 — 상한 시험이 아무것도 재지 않는다');
+  else if (Math.abs(tia.campPairBonus - capped) > 1e-9) problems.push(`[캠페인 짝] lift 상한이 안 걸린다: 가산 ${tia.campPairBonus.toFixed(2)} (상한 ${capped.toFixed(2)} · 없으면 ${raw.toFixed(2)})`);
+}
+
 // --- 보스전 약점 속성 시즌 가중 (2026-10-21, lib/synergyEngine.js SEASON_USAGE_TIER_SUM · emptyReal) ---
 // 고장 ① prydwen 보스전 티어는 속성을 안 봐서 전격 보스에 홍련 : 흑영(풍 SS·전격 시즌 0%)이 홍련(전격 시즌 51.7%)을 이겼다.
 // 고장 ② 빈 자리(나만의 별 상실)의 채용률이 남아, 시즌 가중 아래서 "스타 + 목단" 팀이 스타 채용률로 올라왔다.

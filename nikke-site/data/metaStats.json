@@ -1890,6 +1890,182 @@
         }
       ]
     },
+    "coUsePairs": {
+      "note": "캠페인 사람들이 우연보다 자주 같이 쓰는 두 니케(lift = 같이 쓴 몫 / 각자 몫의 곱, 같이 쓴 몫 0.5% 이상 · lift 2 이상). data/campaignRosters.json의 most에서 scripts/importCampaignRosters.mjs가 만든다(checkData가 맞는지 본다). 엔진 campPairBonus.",
+      "asOf": "2026-10-23",
+      "minPct": 0.5,
+      "minLift": 2,
+      "list": [
+        {
+          "a": "Modernia",
+          "b": "Tia",
+          "lift": 52.07,
+          "pct": 0.7
+        },
+        {
+          "a": "Alice",
+          "b": "D: Killer Wife",
+          "lift": 26.99,
+          "pct": 0.75
+        },
+        {
+          "a": "Naga",
+          "b": "Tia",
+          "lift": 25.23,
+          "pct": 0.82
+        },
+        {
+          "a": "Modernia",
+          "b": "Naga",
+          "lift": 24.68,
+          "pct": 1.59
+        },
+        {
+          "a": "D: Killer Wife",
+          "b": "Naga",
+          "lift": 24.3,
+          "pct": 1.18
+        },
+        {
+          "a": "Liter",
+          "b": "Modernia",
+          "lift": 24.09,
+          "pct": 0.73
+        },
+        {
+          "a": "Alice",
+          "b": "Naga",
+          "lift": 19.75,
+          "pct": 1.76
+        },
+        {
+          "a": "Liter",
+          "b": "Naga",
+          "lift": 16.74,
+          "pct": 1.24
+        },
+        {
+          "a": "Alice",
+          "b": "Modernia",
+          "lift": 16.55,
+          "pct": 0.6
+        },
+        {
+          "a": "D: Killer Wife",
+          "b": "Red Hood",
+          "lift": 12.92,
+          "pct": 1.21
+        },
+        {
+          "a": "Modernia",
+          "b": "Red Hood",
+          "lift": 12.33,
+          "pct": 1.53
+        },
+        {
+          "a": "Red Hood",
+          "b": "Tia",
+          "lift": 12.22,
+          "pct": 0.77
+        },
+        {
+          "a": "Naga",
+          "b": "Red Hood",
+          "lift": 11.06,
+          "pct": 3.35
+        },
+        {
+          "a": "Alice",
+          "b": "Red Hood",
+          "lift": 9.75,
+          "pct": 1.67
+        },
+        {
+          "a": "Liter",
+          "b": "Red Hood",
+          "lift": 9.72,
+          "pct": 1.39
+        },
+        {
+          "a": "Liberalio",
+          "b": "Scarlet: Black Shadow",
+          "lift": 7.6,
+          "pct": 8.21
+        },
+        {
+          "a": "Ada Wong",
+          "b": "Takina Inoue",
+          "lift": 6.79,
+          "pct": 1.48
+        },
+        {
+          "a": "Takina Inoue",
+          "b": "Vesti: Tactical Upgrade",
+          "lift": 6.32,
+          "pct": 1.07
+        },
+        {
+          "a": "Ada Wong",
+          "b": "Ein",
+          "lift": 4.62,
+          "pct": 1.77
+        },
+        {
+          "a": "Little Mermaid",
+          "b": "Red Hood",
+          "lift": 4.52,
+          "pct": 1.83
+        },
+        {
+          "a": "Liberalio",
+          "b": "Nayuta",
+          "lift": 4.39,
+          "pct": 1.99
+        },
+        {
+          "a": "Nayuta",
+          "b": "Scarlet: Black Shadow",
+          "lift": 3.91,
+          "pct": 2.13
+        },
+        {
+          "a": "Anis: Sparkling Summer",
+          "b": "Neon: Vision Eye",
+          "lift": 3.48,
+          "pct": 1.04
+        },
+        {
+          "a": "Cinderella",
+          "b": "Neon: Vision Eye",
+          "lift": 3.37,
+          "pct": 2.48
+        },
+        {
+          "a": "Ein",
+          "b": "Flora",
+          "lift": 2.62,
+          "pct": 1.05
+        },
+        {
+          "a": "Dorothy: Serendipity",
+          "b": "Snow White: Heavy Arms",
+          "lift": 2.35,
+          "pct": 0.61
+        },
+        {
+          "a": "Little Mermaid",
+          "b": "Vesti: Tactical Upgrade",
+          "lift": 2.24,
+          "pct": 1.13
+        },
+        {
+          "a": "Ada Wong",
+          "b": "Flora",
+          "lift": 2.04,
+          "pct": 3.23
+        }
+      ]
+    },
     "meta": {
       "note": "enikk.app 캠페인 > Compositions 탭의 'Most Used Compositions' 1~2쪽(20행)입니다. 각 항목은 실제로 관측된 '정확히 5인 로스터'이며, totalUses는 그 로스터가 클리어에 쓰인 횟수입니다. ⚠️ 2026-09-29판부터 화면에 '% of clears' 열이 없다 — pctOfClears는 totalUses/analyzedClears로 **계산한 값**이다(화면 값이 아님). 대신 전사 교차검증은 행마다 화면의 버스트 배지(bursts)를 DB 버스트와 대는 것으로 한다(20행 100명 전부 일치). 원소별 정보는 같은 페이지의 별도 'Boss Compositions' 절에 있다(싣지 않음).",
       "source": "enikk.app/campaign#compositions",

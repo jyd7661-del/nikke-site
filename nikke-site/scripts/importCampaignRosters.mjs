@@ -61,8 +61,50 @@ export function deriveStarB1Partners(rosters, db, burstCdr) {
   return { barPct: bars[0], bossBarPct: bars[1], list };
 }
 
+// **같이 쓰는 짝**(2026-10-24): 사람들이 우연보다 자주 한 조합에 같이 넣는 두 니케. lift = 같이 쓴 몫 / (각자 몫의 곱).
+//   같이 쓴 몫이 0.5% 미만인 짝은 뺀다(표본이 얇은 짝의 lift는 튄다). lift 2 이상만 싣는다.
+//   엔진은 캠페인 폴백 순위·4/5 채우기에 WEIGHTS.CAMP_COUSE_PAIR × ln(lift)를 더한다(synergyEngine campPairBonus).
+//   기준값(0.5% · 2)은 scripts/benchPeopleChoice.mjs --camp-pairs로 홀짝 순위를 엇갈려 잰 것 — docs/log/2026-10.md.
+export const COUSE_MIN_SHARE = 0.005;
+export const COUSE_MIN_LIFT = 2;
+export function deriveCoUsePairs(rows, minShare = COUSE_MIN_SHARE, minLift = COUSE_MIN_LIFT) {
+  const tot = rows.reduce((a, r) => a + r.u, 0);
+  const one = {}; const two = {};
+  for (const r of rows) {
+    r.m.forEach((t) => { one[t] = (one[t] || 0) + r.u; });
+    for (let i = 0; i < r.m.length; i++) for (let k = i + 1; k < r.m.length; k++) {
+      const key = [r.m[i], r.m[k]].sort().join('|'); two[key] = (two[key] || 0) + r.u;
+    }
+  }
+  return Object.entries(two).filter(([, v]) => v / tot >= minShare).map(([key, v]) => {
+    const [a, b] = key.split('|');
+    return { a, b, lift: Number(((v / tot) / ((one[a] / tot) * (one[b] / tot))).toFixed(2)), pct: Number((v / tot * 100).toFixed(2)) };
+  }).filter((p) => p.lift >= minLift).sort((x, y) => y.lift - x.lift || x.a.localeCompare(y.a) || x.b.localeCompare(y.b));
+}
+
 // checkData가 deriveStarB1Partners만 불러 쓴다 — 직접 실행할 때만 아래가 돈다.
 if (process.argv[1] && import.meta.url === pathToFileURL(path.resolve(process.argv[1])).href) await main();
+
+// metaStats.campaignCompositions 안의 `"key": {…}` 블록을 지우고 campaignCompositions 여는 줄 바로 뒤에 새로 넣는다.
+function spliceBlock(text, key, obj) {
+  const KEY = `"${key}": `;
+  const at = text.indexOf(KEY);
+  if (at >= 0) { // 옛 블록 지우기: 여는 중괄호부터 짝 맞는 닫는 중괄호 + 뒤따르는 쉼표·줄바꿈까지
+    let i = text.indexOf('{', at), depth = 0, inStr = false;
+    for (; i < text.length; i++) {
+      const ch = text[i];
+      if (inStr) { if (ch === '\\') i++; else if (ch === '"') inStr = false; continue; }
+      if (ch === '"') inStr = true; else if (ch === '{') depth++; else if (ch === '}' && --depth === 0) break;
+    }
+    const lineStart = text.lastIndexOf('\n', at) + 1;
+    text = text.slice(0, lineStart) + text.slice(i + 1).replace(/^,\r?\n/, '');
+  }
+  const anchor = '"campaignCompositions": {';
+  const ai = text.indexOf(anchor);
+  if (ai < 0) { console.error('metaStats.json에 campaignCompositions가 없다'); process.exit(1); }
+  const nl = text.indexOf('\n', ai) + 1;
+  return text.slice(0, nl) + '    ' + KEY + JSON.stringify(obj, null, 2).replace(/\n/g, '\n    ') + ',\n' + text.slice(nl);
+}
 
 async function main() {
 const db = readJson('characterDatabase.json');
@@ -75,7 +117,9 @@ if (process.argv.includes('--check')) {
   const have = ms.campaignCompositions?.starB1Partners;
   const same = have && JSON.stringify({ barPct: have.barPct, bossBarPct: have.bossBarPct, list: have.list }) === JSON.stringify(want);
   if (!same) { console.log(`MISMATCH ${JSON.stringify(want.list.map((e) => e.title))} ≠ ${JSON.stringify(have?.list?.map((e) => e.title))}`); process.exit(1); }
-  console.log(`OK ${want.list.map((e) => e.title).join(',')}`);
+  const pairs = deriveCoUsePairs(rosters.most);
+  if (JSON.stringify(ms.campaignCompositions?.coUsePairs?.list) !== JSON.stringify(pairs)) { console.log(`MISMATCH 짝 ${pairs.length} ≠ ${ms.campaignCompositions?.coUsePairs?.list?.length}`); process.exit(1); }
+  console.log(`OK ${want.list.map((e) => e.title).join(',')} · 짝 ${pairs.length}`);
   process.exit(0);
 }
 
@@ -131,27 +175,15 @@ ms.campaignCompositions.starB1Partners = {
   note: '아니스 : 스타(burstCdr noOtherB1 고정 1버스트)와 같이 쓴 고정 1버스트 중, 같이 쓴 조합 클리어 합이 상위 20행 마지막 행의 몫(barPct) 이상인 것 — 보스 목록은 bossBarPct. 엔진 STAR_PARTNERS_BY_MODE.campaign 예외. data/campaignRosters.json에서 scripts/importCampaignRosters.mjs가 만든다(checkData가 맞는지 본다).',
   asOf: raw.asOf, ...partners,
 };
-// metaStats.json은 손으로 다듬은 표기(9.0 같은 소수점)가 있어 통째로 다시 쓰면 무관한 줄이 수백 개 바뀐다 — 이 블록만 글자로 갈아 끼운다.
+// metaStats.json은 손으로 다듬은 표기(9.0 같은 소수점)가 있어 통째로 다시 쓰면 무관한 줄이 수백 개 바뀐다 — 이 블록들만 글자로 갈아 끼운다.
+const coUsePairs = {
+  note: '캠페인 사람들이 우연보다 자주 같이 쓰는 두 니케(lift = 같이 쓴 몫 / 각자 몫의 곱, 같이 쓴 몫 0.5% 이상 · lift 2 이상). data/campaignRosters.json의 most에서 scripts/importCampaignRosters.mjs가 만든다(checkData가 맞는지 본다). 엔진 campPairBonus.',
+  asOf: raw.asOf, minPct: COUSE_MIN_SHARE * 100, minLift: COUSE_MIN_LIFT, list: deriveCoUsePairs(rosters.most),
+};
 let text = fs.readFileSync(dataPath('metaStats.json'), 'utf8');
-const KEY = '"starB1Partners": ';
-const at = text.indexOf(KEY);
-if (at >= 0) { // 옛 블록 지우기: 여는 중괄호부터 짝 맞는 닫는 중괄호 + 뒤따르는 쉼표·줄바꿈까지
-  let i = text.indexOf('{', at), depth = 0, inStr = false;
-  for (; i < text.length; i++) {
-    const ch = text[i];
-    if (inStr) { if (ch === '\\') i++; else if (ch === '"') inStr = false; continue; }
-    if (ch === '"') inStr = true; else if (ch === '{') depth++; else if (ch === '}' && --depth === 0) break;
-  }
-  const lineStart = text.lastIndexOf('\n', at) + 1;
-  text = text.slice(0, lineStart) + text.slice(i + 1).replace(/^,\r?\n/, '');
-}
-const anchor = '"campaignCompositions": {';
-const ai = text.indexOf(anchor);
-if (ai < 0) { console.error('metaStats.json에 campaignCompositions가 없다'); process.exit(1); }
-const nl = text.indexOf('\n', ai) + 1;
-const block = '    ' + KEY + JSON.stringify(ms.campaignCompositions.starB1Partners, null, 2).replace(/\n/g, '\n    ') + ',\n';
-text = text.slice(0, nl) + block + text.slice(nl);
+text = spliceBlock(text, 'coUsePairs', coUsePairs);
+text = spliceBlock(text, 'starB1Partners', ms.campaignCompositions.starB1Partners);
 JSON.parse(text);
 fs.writeFileSync(dataPath('metaStats.json'), text);
-console.log(`most ${most.length} · boss ${boss.length} · 클리어 ${rosters.meta.analyzedClears} · 보스 ${rosters.meta.bossClears} · 예외 ${JSON.stringify(partners)}`);
+console.log(`most ${most.length} · boss ${boss.length} · 클리어 ${rosters.meta.analyzedClears} · 보스 ${rosters.meta.bossClears} · 예외 ${JSON.stringify(partners)} · 짝 ${coUsePairs.list.length}`);
 }

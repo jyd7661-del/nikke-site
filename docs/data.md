@@ -17,6 +17,9 @@
 | `metaStats.json` | enikk.app 실사용 데이터 — 캐릭터별 채용률(`usageTier`), PvP 조합, **캠페인 조합** | 캠페인 조합 19 / PvP 상위 22 |
 | `soloRaidTeams.json` | enikk 솔로레이드 **실사용 5인 조합** (시즌=원소별) | 5시즌 × 25팀 − DB에 없는 캐릭터 든 3팀 = 122 (2026-09-29, 뺀 팀은 `meta.excludedForUnknownMember`) |
 | `towerCompositions.json` | enikk 타워 **실사용 5인 조합** (타워 풀별) | 5풀 × 10팀 = 50 |
+| `campaignRosters.json` | enikk 캠페인 **넓은 조합 표** — 많이 쓴 600 + 보스 스테이지 900(시험·데이터 전용, 엔진은 안 읽는다). 같이 쓰는 짝(`metaStats.campaignCompositions.coUsePairs`)은 여기서 뽑는다(`scripts/importCampaignRosters.mjs`) | 598 · 900 (2026-10-23) |
+| `towerRosters.json` | enikk 타워 **넓은 조합 표** — 풀마다 화면의 조합 전부(시험 전용, `scripts/importEnikkWide.mjs tower`) | 362 (2026-10-24) |
+| `soloRaidRosters.json` | enikk 솔로레이드 **넓은 조합 표** — 시즌 30~42, 시즌마다 Parse Count 상위(서버별 행 합침, 시험 전용, `scripts/importEnikkWide.mjs solo`) | 13시즌 × 76~100 (2026-10-24) |
 | `enikkAlias.json` | enikk 화면 표기 → 우리 `title` 별칭 + **이름 충돌 근거** | 별칭 8 / 충돌 1 |
 | `tierJudgments.json` | prydwen 티어 불일치를 사람이 판정한 기록 | 8건 (유지 7 / 보류 1) |
 | `game8PageMap.json` · `game8Alias.json` | 일본어 스킬 수집용 game8 페이지 주소·별칭 | 매핑 205 / 별칭 24 |

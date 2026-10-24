@@ -153,6 +153,8 @@ const KO = {
     `[실전 기록] ${join(combo)}는(은) enikk.app에서 ${missing}와(과) 함께 쓰였을 때 ` +
     `가장 많이 기록된 캠페인 조합(${num(uses, lang)}회, 전체의 ${pct}%)의 ` +
     `핵심 4인입니다. ${missing}를(을) 보유하면 이 실전 검증 조합을 완성할 수 있습니다. (출처: enikk.app)`,
+  real_campaign_pair: ({ a, b, lift }) =>
+    `[실전 기록] ${a} + ${b}는(은) enikk.app 캠페인 클리어 조합에서 우연보다 ${lift}배 자주 같이 쓰이는 짝입니다. (출처: enikk.app)`,
   treasure_equipped: ({ title, effect }) =>
     `${title}는(은) 애장품을 장착한 상태입니다(가정이 아니라 현재 보유). ` +
     `장착 효과: ${effect}`,
@@ -331,6 +333,8 @@ const EN = {
     `[Field record] ${join(combo)} are the core four of the most-recorded campaign team when paired with ` +
     `${missing} on enikk.app (${num(uses, lang)} uses, ${pct}% of all clears). ` +
     `Getting ${missing} would complete that field-proven team. (Source: enikk.app)`,
+  real_campaign_pair: ({ a, b, lift }) =>
+    `[Field record] ${a} + ${b} appear together in enikk.app campaign clears ${lift}x more often than chance would predict. (Source: enikk.app)`,
   treasure_equipped: ({ title, effect }) =>
     `${title} has her Treasure equipped (this is your current roster, not an assumption). ` +
     `Equipped effect: ${effect}`,
@@ -502,6 +506,8 @@ const JA = {
     `［実戦記録］${join(combo)}は、enikk.appで${missing}と一緒に使われたときに最も多く記録された` +
     `キャンペーン編成（${num(uses, lang)}回、全体の${pct}%）の中核4人です。` +
     `${missing}を所持すれば、この実戦で検証された編成を完成させられます。（出典：enikk.app）`,
+  real_campaign_pair: ({ a, b, lift }) =>
+    `［実戦記録］${a} + ${b}は、enikk.appのキャンペーン攻略編成で偶然の${lift}倍よく一緒に使われるペアです。（出典：enikk.app）`,
   treasure_equipped: ({ title, effect }) =>
     `${title}は宝ものを装備した状態です（仮定ではなく現在の所持状況）。` +
     `装備効果：${effect}`,
