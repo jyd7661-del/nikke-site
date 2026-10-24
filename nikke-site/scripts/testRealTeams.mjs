@@ -195,6 +195,27 @@ for (const t of teams) {
   }
 }
 
+// --- 실사용 4/5 채우기는 그 기록에서 빠진 멤버가 맡은 단계로 (2026-10-24 유저 제보 "3버가 1명밖에 없는거 아닌가?") ---
+// 캠페인 기록 스타 · 크라운 · 마스트 : 로망틱 메이드 · 스노우 화이트 : 헤비암즈 · 레드 후드 : 라피(3버스트로 씀)에서 라피가 없고 "탱커 포함"이면,
+// 라피의 유연 단계(1·3)를 다 받아 1버스트 목단이 채워 3버스트가 한 명만 남았다. 이제 기록의 단계(bursts)로만 채우고, 채운 결과가 3버스트 단독이면 버린다.
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const roster = T(['Anis: Star', 'Crown', 'Mast: Romantic Maid', 'Snow White: Heavy Arms', 'Moran']);
+  if (roster.some((c) => !c)) problems.push('[실사용 4/5 단계] 시험용 이름이 DB에 없다');
+  else {
+    const opt = { treasureIds: new Set([byTitle.get('Moran').id]), requireRole: 'tank', lang: 'ko' };
+    globalThis.__NIKKE_PARTIAL_STAGE_OFF = true;
+    const old = engine.findRealUsageTeamMatch(roster, 'campaign', opt);
+    globalThis.__NIKKE_PARTIAL_STAGE_OFF = false;
+    const now = engine.findRealUsageTeamMatch(roster, 'campaign', opt);
+    if (!(old?.partial?.filler === 'Moran' && old?.partial?.missing === 'Rapi: Red Hood')) problems.push('[실사용 4/5 단계] 스위치를 꺼도 라피 자리에 목단이 안 들어간다 — 시험이 더는 이 고장을 재현하지 못한다');
+    if (now?.partial) {
+      const b3 = now.members.filter((m) => String(m.burst) === '3' || m.burstFlex).length;
+      if (now.partial.filler === 'Moran' || b3 < 2) problems.push(`[실사용 4/5 단계] 3버스트로 쓰인 자리를 다른 단계로 채웠다 — ${now.members.map((m) => m.title).join(', ')}`);
+    }
+  }
+}
+
 // --- PvP 버스트 속도 관문 (2026-09-29) — lib/pvpBurst.js · recommendTeams ---
 // ① 1위가 4RL보다 느리면 4RL 이내로 **확인된** 후보로 바꾼다. 이 로스터는 관문 없이는 느린 팀(99)이 1위이고,
 //    첫 설계(정렬 비교에 "느림이면 뒤로")에서는 값이 없는 퀸이 든 팀으로 빠져나갔다 — 그 고장까지 잡는다.

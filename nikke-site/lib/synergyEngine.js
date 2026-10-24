@@ -2395,7 +2395,11 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
       if (need.length > 1) return;
       const gone = characterDatabase.find((c) => c.title === missing[0]);
       if (!gone) return;
-      const stages = gone.burstFlex ? flexStagesOf(gone) : [String(gone.burst)];
+      // 빠진 멤버가 유연 버스트면 **그 기록에서 맡은 단계**로 채운다(2026-10-24, 유저 제보 "3버가 1명밖에 없는거 아닌가?").
+      //   캠페인 기록은 멤버마다 단계(bursts)가 있다 — 레드 후드 : 라피는 그 조합에서 3버스트였는데, 유연 단계 전부(1·3)를 받아 주면
+      //   1버스트 목단이 그 자리에 들어가 3버스트가 스노우 화이트 : 헤비암즈 한 명만 남았다. 단계 기록이 없는 표(타워·레이드·PvP)는 옛 그대로.
+      const recStage = !globalThis.__NIKKE_PARTIAL_STAGE_OFF && Array.isArray(e.bursts) ? e.bursts[titles.indexOf(missing[0])] : null;
+      const stages = recStage ? [String(recStage)] : gone.burstFlex ? flexStagesOf(gone) : [String(gone.burst)];
       const base = titles.filter((t) => t !== missing[0]).map((t) => byTitle.get(t));
       // 완전일치와 같은 애장품 관문 — 남는 4명 중 애장품이 필요한 멤버를 애장품 없이 가졌으면 그 기록은 이 사용자의 조합이 아니다
       // (처음엔 빠뜨려서 testRealTeams "실사용 애장품"이 걸렸다: 애장품 없는 목단·헬름 조합을 4/5로 가져왔다).
@@ -2411,6 +2415,9 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         if (requireRole && !teamHasRole(members, requireRole)) return;
         const scored = scoreTeam(members, mode, { treasureIds, bossElement, lang });
         if (!scored.valid) return;
+        // 채운 결과가 버스트 3 혼자면 그 기록의 조합이 아니다 — 등록 PvE 실사용 조합 194건 중 0건(scoreTeam의 solo_burst3 주석).
+        //   폴백의 같은 관문은 순위만 뒤로 미는데, 여기는 랭커 기록을 내세우는 경로라 아예 채우지 않는다(다른 기록·폴백으로 넘어간다).
+        if (scored.soloBurst3 && !globalThis.__NIKKE_PARTIAL_STAGE_OFF) return;
         const v = scored.tierTotal + (scored.campPairBonus || 0);
         const pv = pick ? pick.scored.tierTotal + (pick.scored.campPairBonus || 0) : 0;
         if (!pick || v > pv || (v === pv && String(c.id) < String(pick.filler.id))) pick = { members, scored, filler: c };
