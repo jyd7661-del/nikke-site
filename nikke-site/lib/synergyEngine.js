@@ -3000,3 +3000,29 @@ export function pickRaidSquads(roster, opts = {}) {
   }
   return { squads, error: null };
 }
+
+// --- 싱크로 우선순위 (2026-10-25 유저: "캠페인 아레나 보스 3개 티어 중 가장 높은 티어 1개씩만 뽑아서 순차정렬") ---
+// 보유 니케마다 세 모드(story·bossing·pvp) 티어 중 가장 높은 것 하나로 줄 세운다. 애장품 티어는 effectiveTier 그대로(💎 표시한 니케만).
+// 같은 티어가 많아서(SSR 최고 티어 SSS 12 · SS 23 · S 31명) 동점은 세 티어를 높은 순으로 늘어놓은 줄을 앞에서부터 비교해 가른다 —
+// 둘째 칸이 최고 티어와 같으면 "그 티어를 받은 모드가 더 많다"는 뜻이라 ① 최고 티어 모드 수 ② 두 번째 티어가 한 번에 된다.
+// 그래도 같으면 ③ enikk 전체 채용률(usageTier.overall), 마지막은 title(같은 로스터면 늘 같은 순서). 레벨·한계돌파는 모른다 — 티어만 본다.
+// 모드는 고르지 않는다(유저 결정 — 아레나에서만 SSS인 노아·자칼·비스킷·에밀리아·블랑도 위로 온다).
+export const SYNCHRO_MODES = ['campaign', 'bossing', 'pvp'];
+export function rankSynchroPriority(roster, opts = {}) {
+  const treasureIds = opts.treasureIds || new Set();
+  const usage = metaStats.usageTier?.overall || {};
+  const rows = (roster || []).map((c) => {
+    const tiers = SYNCHRO_MODES.map((mode) => ({ mode, tier: effectiveTier(c, mode, treasureIds) }));
+    const scores = tiers.map((x) => TIER_SCORE[x.tier] || 0).sort((a, b) => b - a);
+    const bestModes = scores[0] > 0 ? tiers.filter((x) => (TIER_SCORE[x.tier] || 0) === scores[0]) : [];
+    return {
+      id: c.id, title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null, img: c.img || null,
+      tier: bestModes[0]?.tier || null, modes: bestModes.map((x) => x.mode), scores, usage: usage[c.title]?.usage || 0,
+    };
+  });
+  const cmp = (a, b) => {
+    for (let i = 0; i < SYNCHRO_MODES.length; i++) if (a.scores[i] !== b.scores[i]) return b.scores[i] - a.scores[i];
+    return b.usage - a.usage || (a.title < b.title ? -1 : a.title > b.title ? 1 : 0);
+  };
+  return rows.sort(cmp).map(({ scores, ...r }) => r);
+}

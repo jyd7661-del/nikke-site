@@ -545,6 +545,29 @@ for (const t of teams) {
   }
 }
 
+// --- 싱크로 우선순위 (2026-10-25) — rankSynchroPriority ---
+// ① 세 모드 중 최고 티어 하나로 줄 세운다(목단 PvP SS > 헬름 B·B·C). ② 같은 최고 티어면 그 티어 모드가 많은 쪽이 앞(아니스 : 스타 SSS×3 > 크라운 SSS×2).
+// ③ 💎를 표시한 니케만 애장품 티어(헬름 PvP C → SSS, 크라운 뒤 · 목단 앞). ④ 보유 전원이 한 번씩, 순서가 늘 같다.
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const titles = ['Moran', 'Helm', 'Crown', 'Anis: Star', 'Rapi'];
+  const order = (tre) => engine.rankSynchroPriority(T(titles), { treasureIds: new Set(tre) }).map((r) => r.title).join(' > ');
+  const want = 'Anis: Star > Crown > Moran > Helm > Rapi';
+  const wantTre = 'Anis: Star > Crown > Helm > Moran > Rapi';
+  if (order([]) !== want) problems.push(`[싱크로 우선순위] ${order([])} — 기대 ${want}`);
+  if (order(['helm']) !== wantTre) problems.push(`[싱크로 우선순위 💎] ${order(['helm'])} — 기대 ${wantTre}`);
+  const rev = engine.rankSynchroPriority(T([...titles].reverse()), {}).map((r) => r.title).join(' > ');
+  if (rev !== want) problems.push(`[싱크로 우선순위] 입력 순서에 따라 결과가 바뀐다: ${rev}`);
+  // 노아·자칼은 둘 다 PvP SSS 하나에 채용률은 자칼이 조금 높다(14.8 vs 14.6) — 두 번째 티어를 안 보면 자칼이 앞선다
+  const nj = engine.rankSynchroPriority(T(['Jackal', 'Noah']), {}).map((r) => r.title).join(' > ');
+  if (nj !== 'Noah > Jackal') problems.push(`[싱크로 우선순위] 두 번째 티어로 가르지 않았다: ${nj}`);
+  // 블랑(SSS 하나, 17.5) vs 베스티 : 택티컬 업(SSS 둘, 17.4) — SSS 모드 수를 안 보면 블랑이 앞선다
+  const vb = engine.rankSynchroPriority(T(['Blanc', 'Vesti: Tactical Upgrade']), {}).map((r) => r.title).join(' > ');
+  if (vb !== 'Vesti: Tactical Upgrade > Blanc') problems.push(`[싱크로 우선순위] 최고 티어 모드 수로 가르지 않았다: ${vb}`);
+  const top = engine.rankSynchroPriority(T(['Crown']), {})[0];
+  if (top?.tier !== 'SSS' || top.modes.join('/') !== 'campaign/bossing') problems.push(`[싱크로 우선순위] 티어 출처 표시가 틀렸다: ${JSON.stringify(top)}`);
+}
+
 // --- 솔로레이드 5팀 분배 (2026-10-06) — pickRaidSquads ---
 // ① 5팀은 서로 니케가 안 겹쳐야 한다(게임 규칙). ② 시즌마다 그 시즌 등록 팀에 나온 니케(랭커 풀)를 주면 등록 팀 5개를 서로 안 겹치게
 //    꺼내야 한다 — 시즌마다 그런 5팀이 있다(작열 40은 사용 횟수 1~5위). 탐욕 방식(algo greedy)은 원소와 무관한 아키타입이 1팀을 먼저 가져가

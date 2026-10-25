@@ -19,7 +19,8 @@ import { effectiveTier } from '@/lib/synergyEngine';
 //
 // 이제 **지금 고른 용도의 characterDatabase 티어**를 그대로 보여준다. prydwen 출처가 붙은
 // A등급 값이고, 추천 점수를 매길 때 엔진이 쓰는 것과 같은 값이라 화면과 결과가 어긋나지 않는다.
-const TIER_COLOR = {
+// 싱크로 우선순위 목록(ResultPanel)도 같은 색을 쓴다.
+export const TIER_COLOR = {
   SSS: 'bg-amber-300 text-amber-950',
   SS: 'bg-amber-400 text-amber-950',
   S: 'bg-orange-400 text-orange-950',

@@ -6,7 +6,8 @@ import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
 import { memberName } from '@/lib/characterNames';
-import { treasureRaisesTierUnowned, pickRaidSquads } from '@/lib/synergyEngine';
+import { treasureRaisesTierUnowned, pickRaidSquads, rankSynchroPriority } from '@/lib/synergyEngine';
+import { TIER_COLOR } from '@/components/CharacterPicker';
 
 // 모듈 스코프라 t()를 부를 수 없다. 문구 대신 **키**만 들고 있다가 화면에서 t()로 푼다.
 // (여기에 한국어를 그대로 적으면 언어를 바꿔도 이 목록만 한국어로 남는다 — A단계에서 겪은 그 문제)
@@ -515,6 +516,64 @@ function RaidSquadsPanel({ roster, bossElement }) {
   );
 }
 
+// 싱크로 우선순위(2026-10-25) — 모드와 상관없이 보유 니케 전원을 세 모드 최고 티어로 줄 세운다(lib/synergyEngine rankSynchroPriority).
+// 보유가 100명을 넘기도 해서 처음엔 앞 20명만 보인다.
+const SYNCHRO_PREVIEW = 20;
+const MODE_LABEL_KEY = { campaign: 'mode_campaign', bossing: 'mode_bossing', pvp: 'mode_pvp' };
+function SynchroPriorityPanel({ roster }) {
+  const { lang, t } = useLanguage();
+  const [rows, setRows] = useState(null);
+  const [all, setAll] = useState(false);
+  const treasureKey = (roster?.treasureIds || []).join(',');
+  const rosterKey = (roster?.resolved || []).map((c) => c.id).join(',');
+  useEffect(() => { setRows(null); setAll(false); }, [treasureKey, rosterKey]);
+  if (!roster) return null;
+  const shown = rows && (all ? rows : rows.slice(0, SYNCHRO_PREVIEW));
+  return (
+    <section className="bg-nikke-panel rounded-xl p-5 border border-slate-800">
+      <h2 className="font-semibold text-slate-100 mb-1">{t('synchro_heading')}</h2>
+      <p className="text-xs text-slate-400 mb-3">{t('synchro_desc')}</p>
+      {!rows && (
+        <button
+          onClick={() => setRows(rankSynchroPriority(roster.resolved || [], { treasureIds: new Set(roster.treasureIds || []) }))}
+          className="text-sm bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-4 py-2 rounded-lg hover:bg-nikke-accent/20 transition"
+        >
+          {t('synchro_cta')}
+        </button>
+      )}
+      {shown && (
+        <ol className="space-y-1">
+          {shown.map((r, i) => (
+            <li key={r.id} className="flex items-center gap-2.5 text-sm py-1 border-b border-slate-800/70 last:border-0">
+              <span className="w-7 text-right text-xs text-slate-500 tabular-nums">{i + 1}</span>
+              <CharacterAvatar character={{ id: r.id, img: r.img, name: memberName(r, lang) }} />
+              <a
+                href={localePath(lang, `/nikke/${r.id}`)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 min-w-0 truncate text-slate-200 hover:text-nikke-accent"
+              >
+                {memberName(r, lang)}{roster.treasureIds?.includes(r.id) ? ` ${t('treasure_suffix')}` : ''}
+              </a>
+              <span className={`text-[11px] font-bold rounded px-1.5 py-0.5 ${TIER_COLOR[r.tier] || 'bg-slate-700 text-slate-300'}`}>
+                {r.tier || '-'}
+              </span>
+              <span className="w-28 sm:w-40 text-[11px] text-slate-400 truncate">
+                {r.modes.length ? r.modes.map((m) => t(MODE_LABEL_KEY[m])).join(' · ') : t('synchro_no_tier')}
+              </span>
+            </li>
+          ))}
+        </ol>
+      )}
+      {rows && !all && rows.length > SYNCHRO_PREVIEW && (
+        <button onClick={() => setAll(true)} className="mt-3 text-xs text-slate-400 underline decoration-dotted hover:text-slate-200">
+          {t('synchro_show_all')(rows.length)}
+        </button>
+      )}
+    </section>
+  );
+}
+
 function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
   const { lang, t } = useLanguage();
   if (!roster) return null;
@@ -665,7 +724,7 @@ export default function ResultPanel({ result, roster, aiMode, onAiModeChange, bo
         dataFreshness={dataFreshness}
       />
 
-
+      <SynchroPriorityPanel roster={roster} />
     </div>
   );
 }
