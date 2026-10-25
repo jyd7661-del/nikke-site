@@ -584,6 +584,26 @@ for (const t of teams) {
   if (top?.tier !== 'SSS' || top.modes.join('/') !== 'campaign/bossing') problems.push(`[싱크로 우선순위] 티어 출처 표시가 틀렸다: ${JSON.stringify(top)}`);
 }
 
+// --- PvP 3팀 나누기 (2026-10-25) — pickPvpSquads ---
+// 유저가 정한 순서 그대로인가: 1팀 = 사이트 PvP 답, 2팀 = 1팀 5명을 뺀 로스터의 사이트 답, 3팀 = 1·2팀 10명을 뺀 로스터의 사이트 답. 서로 안 겹친다.
+// 로스터가 모자라면 만든 만큼만(오류 없이) 돌려준다.
+{
+  const pool = cdb.filter((c) => c.rarity === 'SSR');
+  const { squads } = engine.pickPvpSquads(pool, {});
+  const sig = (team) => team.members.map((m) => m.title).sort().join('|');
+  let left = pool;
+  squads.forEach((q, i) => {
+    const want = engine.pickSiteTeam(left, 'pvp', {}).team;
+    if (!want || sig(q.team) !== sig(want)) problems.push(`[PvP 3팀] ${i + 1}팀이 남은 니케의 사이트 답과 다르다: ${sig(q.team)} / ${want && sig(want)}`);
+    const used = new Set(q.team.members.map((m) => m.title));
+    left = left.filter((c) => !used.has(c.title));
+  });
+  const all = squads.flatMap((q) => q.team.members.map((m) => m.title));
+  if (squads.length !== 3 || new Set(all).size !== all.length) problems.push(`[PvP 3팀] 3팀이 아니거나 니케가 겹친다: ${squads.length}팀 · ${all.length - new Set(all).size}명 중복`);
+  const few = engine.pickPvpSquads(squads[0].team.members.map((m) => byTitle.get(m.title)), {});
+  if (few.squads.length !== 1 || few.error) problems.push(`[PvP 3팀] 5명 로스터면 1팀만 오류 없이: ${few.squads.length}팀 · ${few.error}`);
+}
+
 // --- 솔로레이드 5팀 분배 (2026-10-06) — pickRaidSquads ---
 // ① 5팀은 서로 니케가 안 겹쳐야 한다(게임 규칙). ② 시즌마다 그 시즌 등록 팀에 나온 니케(랭커 풀)를 주면 등록 팀 5개를 서로 안 겹치게
 //    꺼내야 한다 — 시즌마다 그런 5팀이 있다(작열 40은 사용 횟수 1~5위). 탐욕 방식(algo greedy)은 원소와 무관한 아키타입이 1팀을 먼저 가져가

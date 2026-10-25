@@ -3022,6 +3022,23 @@ export function pickRaidSquads(roster, opts = {}) {
   return { squads, error: null };
 }
 
+// **PvP 3팀 나누기** (2026-10-25 유저: "1번은 베스트 조합 2번은 1번 조합에서 안 쓴 니케 중 베스트 조합 3번은 1번 2번 조합에서 선택된 니케 제외 후 베스트 조합").
+// 유저가 정한 순서 그대로 — 사이트 경로(pickSiteTeam)로 1팀 → 그 5명을 빼고 다시 → 3번. 레이드처럼 묶음 최적화(pack)는 하지 않는다:
+// 1팀을 가장 강하게 두는 것이 이 요청의 뜻이다.
+export const PVP_SQUADS = 3;
+export function pickPvpSquads(roster, opts = {}) {
+  const squads = [];
+  let left = roster.slice();
+  while (squads.length < PVP_SQUADS) {
+    const r = pickSiteTeam(left, 'pvp', opts);
+    if (!r.team) return { squads, error: squads.length ? null : (r.error || null) };
+    squads.push({ path: r.path, team: r.team });
+    const used = new Set(r.team.members.map((m) => m.title));
+    left = left.filter((c) => !used.has(c.title));
+  }
+  return { squads, error: null };
+}
+
 // --- 싱크로 우선순위 (2026-10-25 유저: "캠페인 아레나 보스 3개 티어 중 가장 높은 티어 1개씩만 뽑아서 순차정렬") ---
 // 보유 니케마다 세 모드(story·bossing·pvp) 티어 중 가장 높은 것 하나로 줄 세운다. 애장품 티어는 effectiveTier 그대로(💎 표시한 니케만).
 // 같은 티어가 많아서(SSR 최고 티어 SSS 12 · SS 23 · S 31명) 동점은 세 티어를 높은 순으로 늘어놓은 줄을 앞에서부터 비교해 가른다 —
