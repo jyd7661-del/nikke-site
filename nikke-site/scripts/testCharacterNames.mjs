@@ -111,6 +111,30 @@ for (const c of CHARACTERS) {
 eq(`로스터 ${CHARACTERS.length}명 3개국어 전수`, broken.length, 0);
 if (broken.length) fails.push(`  깨진 항목: ${broken.slice(0, 15).join(', ')}`);
 
+// ── 화면에 나오는 한국어 글의 이름·속성 표기(2026-10-25) ───────────
+// 도감 「이사벨」에 "이자벨+아르카나 전기/철 보스전 코어", "안니스: 스타"가 그대로 떠 있었다(현황 보고 랜딩 점검).
+// 손으로 옮긴 글이라 공식 표기("아니스 : 스타", 전격·철갑)와 어긋나도 에러가 안 난다. _en·_ja·aliases(다른 출처 이름 대조용)는 안 본다.
+{
+  const official = cdb.map((c) => c.name_kr).filter((n) => n?.includes(' : '));
+  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const variants = official.map((o) => {
+    const [a, b] = o.split(' : ');
+    return [new RegExp(`${esc(a)}\\s*:\\s*${b.split(' ').map(esc).join('\\s*')}`, 'g'), o];
+  });
+  const banned = [/안니스\s*:/, /이자벨/, /에스케이프\s*퀸/, /택티컬\s*업그레이드/, /전기\s*(코드|아군|약점|\/)|\(전기\)/, /철\s*약점/];
+  const bad = [];
+  const walk = (o, where) => {
+    if (typeof o === 'string') {
+      for (const [re, name] of variants) for (const m of o.matchAll(re)) if (m[0] !== name) bad.push(`${where}: "${m[0]}" → "${name}"`);
+      for (const re of banned) { const m = o.match(re); if (m) bad.push(`${where}: "${m[0]}"`); }
+    } else if (Array.isArray(o)) o.forEach((v, i) => walk(v, where));
+    else if (o && typeof o === 'object') for (const [k, v] of Object.entries(o)) if (k !== 'aliases' && !/_(en|ja)$/.test(k)) walk(v, where);
+  };
+  for (const f of ['synergyNotes', 'characterInvestmentNotes', 'survivalRoles']) walk(JSON.parse(fs.readFileSync(path.join(ROOT, 'data', `${f}.json`), 'utf8')), f);
+  eq('한국어 글의 니케 이름·속성 공식 표기', bad.length, 0);
+  if (bad.length) fails.push(`  어긋난 표기 ${bad.length}건: ${bad.slice(0, 8).join(' · ')}`);
+}
+
 // ── 결과 ────────────────────────────────────────────────────────
 console.log(`\n니케 이름 로케일 테스트 — 통과 ${pass} / 실패 ${fails.length}`);
 if (fails.length) {

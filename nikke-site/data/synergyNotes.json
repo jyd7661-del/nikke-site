@@ -2,7 +2,7 @@
   "meta": {
     "source": "Prydwen.gg NIKKE 가이드(Team Building, Meta Teams - Story/Tribe Tower, Teams Database, Tier List 변경 이력) 및 니케 위키를 참고해 정리한 2차 자료. 원문을 그대로 인용하지 않고 우리말로 재구성/요약함. 캐릭터 이름은 데이터베이스(characterDatabase.json)의 title/name_kr 기준. 2026-07-31부터는 사용자가 지정한 니케 유튜버 4인(고뇨/스페란도/에펜바움/김진서)의 최근 영상 내용도 1순위 자료로 반영.",
     "lastUpdated": "2026-09-30",
-    "updateNote": "새 공략/패치 정보를 확인할 때마다 archetypes, synergyPairs, counters 배열에 계속 항목을 추가해 나갈 것. 이 파일은 조합 추천 스코어링 엔진의 '근거 자료'로 쓰인다. 2026-07-31: 7/23 패치(신규 유닛 라플라스: 얼티밋 히어로, 맥스웰: 오디너리 미케닉 출시)와 관련해 스페란도(유튜버) 영상들에서 반복적으로 소개된 PVP 조합을 1건 추가함(archetypes 'laplace-maxwell-pip-deck', synergyPairs 마지막 항목). 국내 유튜버 1개 채널 기준 정보라 추가 확인 필요. 2026-08-04: 주간 조사 결과 반영 — archetypes에 'wind-laplace-maxwell'(풍라플/풍맥덱, 스페란도 출처, 맥스웰 기여도에 대한 이견 있음), 'swha-alt-marciana'(마르차나: 마린 스터디를 스노우화이트: 헤비암즈 대체픽으로 활용, 김진서 출처) 2건 추가. 기존 'laplace-maxwell-pip-deck'(피뻥덱)과는 별개의 조합임. (2026-08-07: prydwen 개별 캐릭터 Team 탭 447개 임포트 중 실제로는 5인 팀 시너지를 설명하지 않고 캐릭터 1명에 대한 일반 조언이거나 내용 없는 플레이스홀더였던 항목 72개를 품질 검수 후 제거함.) 2026-09-30: prydwen 캐릭터 페이지에 새로 생긴 조합 66건 임포트(이상 모드 22건·DB에 없는 캐릭터 포함 2건·빈 자리 표시가 엔진에 없는 것(ClipSG 등) 3건 제외). 이름·설명은 원문을 우리말·일본어로 옮겼고 외부 링크는 뺐다. importedOn·prydwenTeamId로 표시.",
+    "updateNote": "새 공략/패치 정보를 확인할 때마다 archetypes, synergyPairs, counters 배열에 계속 항목을 추가해 나갈 것. 이 파일은 조합 추천 스코어링 엔진의 '근거 자료'로 쓰인다. 2026-07-31: 7/23 패치(신규 유닛 라플라스 : 얼티밋 히어로, 맥스웰 : 오디너리 미케닉 출시)와 관련해 스페란도(유튜버) 영상들에서 반복적으로 소개된 PVP 조합을 1건 추가함(archetypes 'laplace-maxwell-pip-deck', synergyPairs 마지막 항목). 국내 유튜버 1개 채널 기준 정보라 추가 확인 필요. 2026-08-04: 주간 조사 결과 반영 — archetypes에 'wind-laplace-maxwell'(풍라플/풍맥덱, 스페란도 출처, 맥스웰 기여도에 대한 이견 있음), 'swha-alt-marciana'(마르차나 : 마린 스터디를 스노우화이트: 헤비암즈 대체픽으로 활용, 김진서 출처) 2건 추가. 기존 'laplace-maxwell-pip-deck'(피뻥덱)과는 별개의 조합임. (2026-08-07: prydwen 개별 캐릭터 Team 탭 447개 임포트 중 실제로는 5인 팀 시너지를 설명하지 않고 캐릭터 1명에 대한 일반 조언이거나 내용 없는 플레이스홀더였던 항목 72개를 품질 검수 후 제거함.) 2026-09-30: prydwen 캐릭터 페이지에 새로 생긴 조합 66건 임포트(이상 모드 22건·DB에 없는 캐릭터 포함 2건·빈 자리 표시가 엔진에 없는 것(ClipSG 등) 3건 제외). 이름·설명은 원문을 우리말·일본어로 옮겼고 외부 링크는 뺐다. importedOn·prydwenTeamId로 표시.",
     "lastCleanup": "2026-08-08",
     "cleanupNote": "2026-08-08: 같은 조합이 출처마다 다른 이름으로 중복 등록돼 있어 33건을 병합했다(516 -> 483). 이름은 aliases로, 설명은 note 뒤에 출처를 밝혀 이어 붙여 정보를 버리지 않았다. 내역: (1) 모드·멤버·슬롯이 완전히 같은 순수 중복 26건, (2) 멤버는 같은데 한쪽에만 자유 슬롯이 있어 슬롯 없는 쪽이 완전일치 후보가 될 수 없던 반쪽 기록 7건. 슬롯 구성 자체가 다른 변형(El-Macho의 B1-CDR vs El Ma-chor의 B1)은 서로 다른 조합이라 남겼다. 2026-09-30: prydwen 캐릭터 페이지 팀(pwc-) 임포트 때 버려진 정보 복원 — 빈 자리 표시(B3·flex·B1-CDR 등) 89건을 flexSlots로(그전엔 5인이 안 돼 완전일치 후보가 될 수 없었다), 애장품 표시(helm-treasure 등) 78건을 requiresTreasure로(그전엔 애장품이 없는 유저에게도 추천될 수 있었다). 대조: 지금 prydwen 캐릭터 페이지의 같은 이름 팀, 고정 멤버가 우리 것과 같을 때만. 같은 날 prydwen 팀의 element(그 조합이 겨냥한 약점 속성) 143건을 element 필드로 옮겼다 — 전에는 설명문 '(속성: 수냉)'에만 있어 엔진이 못 읽었다. 'All'은 적지 않는다."
   },
@@ -20,7 +20,7 @@
       "implication": "버스트 I/II 캐릭터는 쿨타임 20초 여부가 '풀버스트 안정성' 점수의 핵심 요소. characterDatabase.json의 skills[].cd 값을 그대로 활용 가능."
     },
     "cdr": {
-      "concept": "CDR(Cooldown Reduction, 쿨타임 감소)은 아군 버스트/스킬 쿨타임을 줄여주는 효과로, 풀버스트 사이클 속도를 좌우하는 핵심 자원. 기본공격 트리거형(D: 킬러 와이프, 루주), 버스트 트리거형(솔린: 프로스트 티켓, 도로시) 등 발동 조건이 캐릭터마다 다름.",
+      "concept": "CDR(Cooldown Reduction, 쿨타임 감소)은 아군 버스트/스킬 쿨타임을 줄여주는 효과로, 풀버스트 사이클 속도를 좌우하는 핵심 자원. 기본공격 트리거형(D : 킬러 와이프, 루주), 버스트 트리거형(솔린 : 프로스트 티켓, 도로시) 등 발동 조건이 캐릭터마다 다름.",
       "implication": "팀에 CDR 제공 캐릭터가 최소 1명 있는지가 고티어 조합의 필수 조건 중 하나로 자주 언급됨. 스코어링에서 CDR 보유 여부를 가산 요소로 넣을 것."
     },
     "formations": {
@@ -35,14 +35,14 @@
         "iron",
         "electric"
       ],
-      "rule": "물이 불에게, 불이 바람에게, 바람이 철에게, 철이 전기에게, 전기가 물에게 상성 우위(피해량 +10%)를 가지는 순환 구조. 상성 보너스는 10%로 비교적 작아서 버스트 궁합/CDR/역할 구성보다 우선순위가 낮음.",
+      "rule": "수냉이 작열에게, 작열이 풍압에게, 풍압이 철갑에게, 철갑이 전격에게, 전격이 수냉에게 상성 우위(피해량 +10%)를 가지는 순환 구조. 상성 보너스는 10%로 비교적 작아서 버스트 궁합/CDR/역할 구성보다 우선순위가 낮음.",
       "implication": "스코어링에서 원소 상성은 가벼운 보너스 가중치로만 반영하고, 절대적 기준으로 삼지 않을 것."
     }
   },
   "archetypes": [
     {
       "id": "sbs-solo",
-      "name": "홍련: 흑영(SBS) 원맨아미",
+      "name": "홍련 : 흑영(SBS) 원맨아미",
       "members": [
         "Scarlet: Black Shadow"
       ],
@@ -71,13 +71,13 @@
     },
     {
       "id": "isabel-arcana-bossing",
-      "name": "이자벨+아르카나 전기/철 보스전 코어",
+      "name": "이사벨+아르카나 전격/철갑 보스전 코어",
       "members": [
         "Isabel",
         "Arcana"
       ],
       "mode": "bossing",
-      "note": "안니스: 스타, 신데렐라/신데렐라: 크리스탈웨이브와 함께 전기 약점/철 약점 보스전에서 핵심 조합으로 꼽히는 페어.",
+      "note": "아니스 : 스타, 신데렐라/신데렐라 : 크리스탈 웨이브와 함께 전격 약점/철갑 약점 보스전에서 핵심 조합으로 꼽히는 페어.",
       "name_en": "Isabel + Arcana Electric/Iron Bossing Core",
       "name_ja": "イサベル＋アルカナ 電撃／鉄甲ボス戦コア",
       "note_en": "A pair counted as a core combination for Electric-weak and Iron-weak boss fights, together with Anis: Star and Cinderella / Cinderella: Crystal Wave.",
@@ -85,13 +85,13 @@
     },
     {
       "id": "naga-cindy",
-      "name": "나가는 신데렐라: 크리스탈웨이브 전용",
+      "name": "나가는 신데렐라 : 크리스탈 웨이브 전용",
       "members": [
         "Naga",
         "Cinderella: Crystal Wave"
       ],
       "mode": "bossing",
-      "note": "나가는 코어 데미지 증뎁이라 스킬뎀 위주인 스노우화이트/SBS 등과는 궁합이 나쁘고, 코어뎀 스케일링하는 신데렐라: 크리스탈웨이브와 조합했을 때만 진가를 발휘함.",
+      "note": "나가는 코어 데미지 증뎁이라 스킬뎀 위주인 스노우화이트/SBS 등과는 궁합이 나쁘고, 코어뎀 스케일링하는 신데렐라 : 크리스탈 웨이브와 조합했을 때만 진가를 발휘함.",
       "name_en": "Naga is exclusively for Cinderella: Crystal Wave",
       "name_ja": "ナガはシンデレラ：クリスタルウェーブ専用",
       "note_en": "Naga's debuff increases core damage taken, so she has poor synergy with skill-damage-focused units such as Snow White and SBS, and only shows her true worth when paired with Cinderella: Crystal Wave, who scales off core damage.",
@@ -116,7 +116,7 @@
     },
     {
       "id": "delta-crown",
-      "name": "델타: 닌자시프+크라운",
+      "name": "델타 : 닌자 시프+크라운",
       "members": [
         "Delta: Ninja Thief",
         "Crown"
@@ -136,7 +136,7 @@
         "Eunhwa: Tactical Upgrade"
       ],
       "mode": "pvp",
-      "note": "고정 데미지(참데미지) 버프를 주고받는 듀오. 혼자서는 약하지만 둘이 묶이면 베스티: 택티컬 업그레이드와 함께 PvP에서 순간 폭딜을 낼 수 있음.",
+      "note": "고정 데미지(참데미지) 버프를 주고받는 듀오. 혼자서는 약하지만 둘이 묶이면 베스티 : 택티컬 업과 함께 PvP에서 순간 폭딜을 낼 수 있음.",
       "name_en": "Emma: Tactical Upgrade + Eunhwa: Tactical Upgrade",
       "name_ja": "エマ：タクティカル・アップ＋ウンファ：タクティカル・アップ",
       "note_en": "A duo that trades fixed-damage (true damage) buffs with each other. Weak alone, but bound together they can put out burst damage in PvP alongside Vesti: Tactical Upgrade.",
@@ -191,7 +191,7 @@
     },
     {
       "id": "laplace-maxwell-pip-deck",
-      "name": "피뻥덱(라플라스: 얼티밋 히어로+맥스웰: 오디너리 미케닉+루주+트리나)",
+      "name": "피뻥덱(라플라스 : 얼티밋 히어로+맥스웰 : 오디너리 미케닉+루주+트리나)",
       "members": [
         "Laplace: Ultimate Hero",
         "Maxwell: Ordinary Mechanic",
@@ -199,7 +199,7 @@
         "Trina"
       ],
       "mode": "pvp",
-      "note": "2026년 7월 23일 신규 유닛 라플라스: 얼티밋 히어로/맥스웰: 오디너리 미케닉 출시 직후, 국내 니케 유튜버(스페란도)가 여러 영상에서 반복 소개한 PVP 즉발 폭딜 조합. 라플라스가 순간 폭딜을 내고 맥스웰의 최대체력 버프가 생존력을 보강하는 형태로 추정. 국내 유튜버 1개 채널 기준 정보라 스킬작/오버로드 세부 구성은 추가 확인이 필요함(2026-07-31 기준).",
+      "note": "2026년 7월 23일 신규 유닛 라플라스 : 얼티밋 히어로/맥스웰 : 오디너리 미케닉 출시 직후, 국내 니케 유튜버(스페란도)가 여러 영상에서 반복 소개한 PVP 즉발 폭딜 조합. 라플라스가 순간 폭딜을 내고 맥스웰의 최대체력 버프가 생존력을 보강하는 형태로 추정. 국내 유튜버 1개 채널 기준 정보라 스킬작/오버로드 세부 구성은 추가 확인이 필요함(2026-07-31 기준).",
       "name_en": "Pi-ppeong deck (Laplace: Ultimate Hero + Maxwell: Ordinary Mechanic + Rouge + Trina)",
       "name_ja": "ピポンデッキ（ラプラス：アルティメットヒーロー＋マクスウェル：オーディナリーメカニック＋ルージュ＋トリナ）",
       "note_en": "A PvP instant-burst team that a Korean NIKKE YouTuber (Sperando) introduced repeatedly across several videos right after the new units Laplace: Ultimate Hero and Maxwell: Ordinary Mechanic released on 23 July 2026. The shape is presumed to be Laplace putting out instant burst damage while Maxwell's max-HP buff shores up survivability. As this comes from a single Korean YouTube channel, the detailed skill-level and Overload setup needs further checking (as of 2026-07-31).",
@@ -207,14 +207,14 @@
     },
     {
       "id": "wind-laplace-maxwell",
-      "name": "풍라플/풍맥덱(라플라스: 얼티밋 히어로+맥스웰: 오디너리 미케닉+트리나)",
+      "name": "풍라플/풍맥덱(라플라스 : 얼티밋 히어로+맥스웰 : 오디너리 미케닉+트리나)",
       "members": [
         "Laplace: Ultimate Hero",
         "Maxwell: Ordinary Mechanic",
         "Trina"
       ],
       "mode": "bossing",
-      "note": "2026년 8월 시점 조사. 라플라스: 얼티밋 히어로를 축으로 맥스웰: 오디너리 미케닉을 서브 파츠로 넣는 풍압 속성 보스전 조합. 다만 맥스웰의 실제 기여도(엄폐물 회복 버프가 나가+티아 조합과 상충한다는 지적 있음)에 대한 평가가 유튜버 간에 갈려 필수픽으로 단정하기는 이름. 이사카나로 맥스웰을 대체하는 조합도 대안으로 거론됨(출처: 스페란도).",
+      "note": "2026년 8월 시점 조사. 라플라스 : 얼티밋 히어로를 축으로 맥스웰 : 오디너리 미케닉을 서브 파츠로 넣는 풍압 속성 보스전 조합. 다만 맥스웰의 실제 기여도(엄폐물 회복 버프가 나가+티아 조합과 상충한다는 지적 있음)에 대한 평가가 유튜버 간에 갈려 필수픽으로 단정하기는 이름. 이사카나로 맥스웰을 대체하는 조합도 대안으로 거론됨(출처: 스페란도).",
       "name_en": "Wind Laplace / Wind Maxwell deck (Laplace: Ultimate Hero + Maxwell: Ordinary Mechanic + Trina)",
       "name_ja": "風ラプラス／風マクスウェルデッキ（ラプラス：アルティメットヒーロー＋マクスウェル：オーディナリーメカニック＋トリナ）",
       "note_en": "Researched as of August 2026. A Wind element boss-fight team built around Laplace: Ultimate Hero with Maxwell: Ordinary Mechanic as a sub part. That said, YouTubers disagree on Maxwell's actual contribution (some point out that her cover-restore buff conflicts with the Naga + Tia pairing), so it is too early to call her a mandatory pick. Replacing Maxwell with the Isabel + Arcana pair is also raised as an alternative (source: Sperando).",
@@ -222,12 +222,12 @@
     },
     {
       "id": "swha-alt-marciana",
-      "name": "스노우 화이트: 헤비암즈 대체 조합(마르차나: 마린 스터디)",
+      "name": "스노우 화이트 : 헤비암즈 대체 조합(마르차나 : 마린 스터디)",
       "members": [
         "Marciana: Marine Study"
       ],
       "mode": "campaign",
-      "note": "2026년 7월 출시 신캐 마르차나: 마린 스터디를 기존 스노우 화이트: 헤비암즈 자리의 대체픽으로 활용하는 조합(출처: 김진서). 재장전 시 탄환 2배 + 공격력 대폭 증가 스킬 구조가 핵심으로 언급됨(출처: 고뇨).",
+      "note": "2026년 7월 출시 신캐 마르차나 : 마린 스터디를 기존 스노우 화이트 : 헤비암즈 자리의 대체픽으로 활용하는 조합(출처: 김진서). 재장전 시 탄환 2배 + 공격력 대폭 증가 스킬 구조가 핵심으로 언급됨(출처: 고뇨).",
       "name_en": "Snow White: Heavy Arms replacement team (Marciana: Marine Study)",
       "name_ja": "スノーホワイト：ヘビーアームズの代替編成（マルチャーナ：マリンスタディ）",
       "note_en": "A team that uses Marciana: Marine Study, a new character released in July 2026, as a replacement pick in Snow White: Heavy Arms' slot (source: Kim Jinseo). The key point cited is her skill structure of doubling her ammo on reload plus a sharp ATK increase (source: Gonyo).",
@@ -242,7 +242,7 @@
         "Liter"
       ],
       "mode": "campaign",
-      "note": "힐/공격버프/쿨감이 고루 섞인 무난한 자동전투용 조합. 베스티/라피 대신 신데렐라나 홍련: 흑영, 모더니아로 대체 가능하고 리터 대신 페퍼(쿨감은 없지만 강한 힐)나 D:킬러와이프/루주(기본공격 트리거 쿨감)로 대체 가능.",
+      "note": "힐/공격버프/쿨감이 고루 섞인 무난한 자동전투용 조합. 베스티/라피 대신 신데렐라나 홍련 : 흑영, 모더니아로 대체 가능하고 리터 대신 페퍼(쿨감은 없지만 강한 힐)나 D : 킬러 와이프/루주(기본공격 트리거 쿨감)로 대체 가능.",
       "name_en": "Auto team (balanced beginner composition)",
       "name_ja": "オート編成（初心者向けバランス編成）",
       "note_en": "A safe auto-battle team with healing, ATK buffs and cooldown reduction evenly mixed. Vesti and Rapi can be swapped for Cinderella, Scarlet: Black Shadow or Modernia, and Liter can be swapped for Pepper (no cooldown reduction but strong healing) or D: Killer Wife / Rouge (normal-attack-triggered cooldown reduction).",
@@ -272,7 +272,7 @@
         "Naga"
       ],
       "mode": "tribe_tower",
-      "note": "리터-티아-나가 '삼위일체' 코어에 나머지 2딜러는 스테이지별로 교체(아인/라플라스, 혹은 드레이크 트레저/퀀시: 에스케이프 퀸). 참고: 2026-07-31 기준 국내 유튜버(김진서)는 신규 유닛 맥스웰: 오디너리 미케닉이 미시리스 타워 콘텐츠 정상화의 핵심이라고 평가함 - 구성 개편 여부는 추가 확인 필요.",
+      "note": "리터-티아-나가 '삼위일체' 코어에 나머지 2딜러는 스테이지별로 교체(아인/라플라스, 혹은 드레이크 트레저/퀀시 : 이스케이프 퀸). 참고: 2026-07-31 기준 국내 유튜버(김진서)는 신규 유닛 맥스웰 : 오디너리 미케닉이 미시리스 타워 콘텐츠 정상화의 핵심이라고 평가함 - 구성 개편 여부는 추가 확인 필요.",
       "name_en": "Missilis Tower recommended team",
       "name_ja": "ミシリスタワーおすすめ編成",
       "note_en": "The Liter-Tia-Naga \"trinity\" core, with the remaining two dealers swapped per stage (Ein / Laplace, or Treasure Drake / Quency: Escape Queen). Note: as of 2026-07-31 a Korean YouTuber (Kim Jinseo) rates the new unit Maxwell: Ordinary Mechanic as the key to making Missilis Tower content workable — whether the composition should be reworked needs further checking.",
@@ -280,7 +280,7 @@
     },
     {
       "id": "mirror-container-cindy",
-      "name": "미러 컨테이너(전기) 신데렐라 하이퍼캐리",
+      "name": "미러 컨테이너(전격) 신데렐라 하이퍼캐리",
       "members": [
         "Cinderella: Crystal Wave"
       ],
@@ -1532,7 +1532,7 @@
         "Vesti: Tactical Upgrade"
       ],
       "mode": "campaign",
-      "note": "[출처: prydwen.gg Team Database] 처음 출시됐을 때는 보스전(니케에서 가장 인기 있는 모드인 솔로 레이드) 성능에 다들 실망하는 분위기였다. 그러나 곧 시프트업이 어떤 괴물을 풀어놓았는지 알게 됐다. 베스티 : 택티컬 업은 그야말로 혼자서 한 부대다. 버스트 중이든 아니든, 버퍼가 있든 없든 상관없다. 당신을 사랑하는 것이 신의 일이라면, 베스티의 일은 당신을 그분께 돌려보내는 것이다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"베스갓(베스티: 택티컬 업그레이드 원맨아미)\"] 버스트/논버스트, 버퍼 유무와 상관없이 혼자서 캠페인을 밀어붙일 수 있는 원맨아미형 캐릭터. 방어력 무시 데미지가 핵심이라 고디시트(페널티) 구간에서 특히 강력.",
+      "note": "[출처: prydwen.gg Team Database] 처음 출시됐을 때는 보스전(니케에서 가장 인기 있는 모드인 솔로 레이드) 성능에 다들 실망하는 분위기였다. 그러나 곧 시프트업이 어떤 괴물을 풀어놓았는지 알게 됐다. 베스티 : 택티컬 업은 그야말로 혼자서 한 부대다. 버스트 중이든 아니든, 버퍼가 있든 없든 상관없다. 당신을 사랑하는 것이 신의 일이라면, 베스티의 일은 당신을 그분께 돌려보내는 것이다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"베스갓(베스티 : 택티컬 업 원맨아미)\"] 버스트/논버스트, 버퍼 유무와 상관없이 혼자서 캠페인을 밀어붙일 수 있는 원맨아미형 캐릭터. 방어력 무시 데미지가 핵심이라 고디시트(페널티) 구간에서 특히 강력.",
       "flexSlots": [
         "B1",
         "B2",
@@ -1554,7 +1554,7 @@
         "Rapi: Red Hood"
       ],
       "mode": "campaign",
-      "note": "[출처: prydwen.gg Team Database] 우리 주인공의 SSR 버전은 현존하는 모든 니케를 부끄럽게 만든다. 아래 홍련 : 흑영과 마찬가지로 단일 대상과 광역 청소 모두에 뛰어나면서, 피해 분산이라는 부작용도 없다. 제대로 된 조합이 없어 그녀와 아래의 다른 원 니케 아미 하나만 있는 상황이라면 준수한 B1 쿨감 역할까지 해준다. 단점이라면? 기기가 60FPS를 꾸준히 유지해야 한다는 것이다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"라피: 레드 후드 원맨아미\"] 단일 타겟/광역 모두 강력한 원맨아미형 딜러. 버스트I 쿨감 역할도 겸할 수 있음. 프레임 드랍 시 성능이 급락하는 단점.",
+      "note": "[출처: prydwen.gg Team Database] 우리 주인공의 SSR 버전은 현존하는 모든 니케를 부끄럽게 만든다. 아래 홍련 : 흑영과 마찬가지로 단일 대상과 광역 청소 모두에 뛰어나면서, 피해 분산이라는 부작용도 없다. 제대로 된 조합이 없어 그녀와 아래의 다른 원 니케 아미 하나만 있는 상황이라면 준수한 B1 쿨감 역할까지 해준다. 단점이라면? 기기가 60FPS를 꾸준히 유지해야 한다는 것이다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"라피 : 레드 후드 원맨아미\"] 단일 타겟/광역 모두 강력한 원맨아미형 딜러. 버스트I 쿨감 역할도 겸할 수 있음. 프레임 드랍 시 성능이 급락하는 단점.",
       "flexSlots": [
         "B1",
         "B2",
@@ -1577,7 +1577,7 @@
         "Mint"
       ],
       "mode": "campaign",
-      "note": "[출처: prydwen.gg Team Database] 가장 최근의 듀오로, 메타 딜러와도 잘 맞물리는 버프를 잔뜩 갖춰 말도 안 되게 강하다. B1이 아니스 : 스파클링 서머라면 더 볼 것도 없다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"민트카(민트+프리카)\"] 강력한 버프 듀오. 다만 실드/1차 풀버스트 화력이 약해 두 캐릭터가 세트로 묶여야만 제 성능이 나오는 경직적인 조합. 버스트I로 안니스: 스파클링 서머를 쓰면 시너지가 배가됨.",
+      "note": "[출처: prydwen.gg Team Database] 가장 최근의 듀오로, 메타 딜러와도 잘 맞물리는 버프를 잔뜩 갖춰 말도 안 되게 강하다. B1이 아니스 : 스파클링 서머라면 더 볼 것도 없다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"민트카(민트+프리카)\"] 강력한 버프 듀오. 다만 실드/1차 풀버스트 화력이 약해 두 캐릭터가 세트로 묶여야만 제 성능이 나오는 경직적인 조합. 버스트I로 아니스 : 스파클링 서머를 쓰면 시너지가 배가됨.",
       "flexSlots": [
         "B1-CDR",
         "B3",
@@ -1599,7 +1599,7 @@
         "Anchor: Innocent Maid"
       ],
       "mode": "campaign",
-      "note": "[출처: prydwen.gg Team Database] 한때는 블랑과 누아르의 자리였지만, 솔직히 말해 이 듀오에게 크게 밀린다. 엘 마초는 조건 없이 훨씬 강한 버프를 주고, 강력한 회복에 더해 말도 안 되는 재장전 속도까지 얹어줘서 장탄수 오버로드를 아예 무시할 수 있게 해준다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"엘마초(마스트: 로망틱 메이드+앵커: 이노센트 메이드)\"] 무조건적인 강력한 버프 + 튼튼한 힐 + 재장전 속도 증가로 구 메타였던 블랑+누아르 조합을 완전히 대체함. 캠페인 보스 상대로 앵커의 HP 저장(스토리지) 효과와 궁합이 좋음.",
+      "note": "[출처: prydwen.gg Team Database] 한때는 블랑과 누아르의 자리였지만, 솔직히 말해 이 듀오에게 크게 밀린다. 엘 마초는 조건 없이 훨씬 강한 버프를 주고, 강력한 회복에 더해 말도 안 되는 재장전 속도까지 얹어줘서 장탄수 오버로드를 아예 무시할 수 있게 해준다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"엘마초(마스트 : 로망틱 메이드+앵커 : 이노센트 메이드)\"] 무조건적인 강력한 버프 + 튼튼한 힐 + 재장전 속도 증가로 구 메타였던 블랑+누아르 조합을 완전히 대체함. 캠페인 보스 상대로 앵커의 HP 저장(스토리지) 효과와 궁합이 좋음.",
       "flexSlots": [
         "B1",
         "B3",
@@ -1725,7 +1725,7 @@
         "Anis: Star"
       ],
       "mode": "campaign",
-      "note": "[출처: prydwen.gg Team Database] 아니스는 그만큼 강해서 단독 B1으로 혼자 캐리할 수 있고, 쿨감까지 주기 때문에 B2나 B3가 무엇이든 상관하지 않는다. 피해량·버프·쿨감·버스트 게이지까지, 사실상 강화판 리틀 머메이드다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"안니스: 스타 솔로캐리\"] 버스트I 혼자서 딜/버프/쿨감/버스트 게이지 생성을 모두 담당해 버스트II·III 티어에 구애받지 않고 캐리 가능.",
+      "note": "[출처: prydwen.gg Team Database] 아니스는 그만큼 강해서 단독 B1으로 혼자 캐리할 수 있고, 쿨감까지 주기 때문에 B2나 B3가 무엇이든 상관하지 않는다. 피해량·버프·쿨감·버스트 게이지까지, 사실상 강화판 리틀 머메이드다. 대체: 이 조합은 Meta Teams - Story 가이드에 포함돼 있다. 자세한 내용과 쓸 만한 대체 후보는 원문을 참고할 것. [다른 출처의 같은 조합 설명 — \"아니스 : 스타 솔로캐리\"] 버스트I 혼자서 딜/버프/쿨감/버스트 게이지 생성을 모두 담당해 버스트II·III 티어에 구애받지 않고 캐리 가능.",
       "flexSlots": [
         "B2",
         "B3",
@@ -8583,7 +8583,7 @@
         "Snow White: Heavy Arms"
       ],
       "mode": "campaign",
-      "note": "[출처: prydwen.gg 캐릭터 페이지] 여기서는 스노우 화이트가 버스트 밖 B3로 애장품 헬름을 대신할 수 있다. 버스트 수급이 말도 안 되게 좋고 버스트 밖 화력도 헬름보다 확실히 낫기 때문이다. 다만 크라운의 2스킬에서 오는 추가 공격 피해는 조금 잃게 된다. [다른 출처의 같은 조합 설명 — \"스노우 화이트: 헤비암즈 원맨아미\"] 60프레임 안정적으로 유지 가능하면 어떤 버스트I/II를 데려가도 스토리를 밀 수 있는 화력형 캐릭터.",
+      "note": "[출처: prydwen.gg 캐릭터 페이지] 여기서는 스노우 화이트가 버스트 밖 B3로 애장품 헬름을 대신할 수 있다. 버스트 수급이 말도 안 되게 좋고 버스트 밖 화력도 헬름보다 확실히 낫기 때문이다. 다만 크라운의 2스킬에서 오는 추가 공격 피해는 조금 잃게 된다. [다른 출처의 같은 조합 설명 — \"스노우 화이트 : 헤비암즈 원맨아미\"] 60프레임 안정적으로 유지 가능하면 어떤 버스트I/II를 데려가도 스토리를 밀 수 있는 화력형 캐릭터.",
       "aliases": [
         "스노우 화이트: 헤비암즈 원맨아미"
       ],
@@ -10559,7 +10559,7 @@
         "Arcana"
       ],
       "type": "elemental-bossing-core",
-      "reason": "전기/철 속성 보스전 핵심 지원 페어.",
+      "reason": "전격/철갑 속성 보스전 핵심 지원 페어.",
       "reason_en": "The core support pair for Electric and Iron boss fights.",
       "reason_ja": "電撃・鉄甲のボス戦における中核の支援ペア。"
     },
@@ -10569,7 +10569,7 @@
         "Cinderella: Crystal Wave"
       ],
       "type": "core-damage-scaling",
-      "reason": "나가의 코어뎀 버프는 코어뎀 스케일링 딜러(신데렐라: 크리스탈웨이브)에만 유의미.",
+      "reason": "나가의 코어뎀 버프는 코어뎀 스케일링 딜러(신데렐라 : 크리스탈 웨이브)에만 유의미.",
       "reason_en": "Naga's core-damage buff is only meaningful for damage dealers that scale on core damage (Cinderella: Crystal Wave).",
       "reason_ja": "ナガのコアダメージバフは、コアダメージを参照するアタッカー（シンデレラ：クリスタルウェーブ）にしか意味がない。"
     },
@@ -10626,7 +10626,7 @@
         "Maxwell: Ordinary Mechanic"
       ],
       "type": "pvp-burst-nuke",
-      "reason": "맥스웰: 오디너리 미케닉의 최대체력 버프가 라플라스: 얼티밋 히어로의 생존력을 보강해 PVP 폭딜 타이밍을 확보해주는 조합. 국내 유튜버(스페란도)가 루주·트리나와 함께 반복 소개(2026-07-31 기준, 후속 확인 필요).",
+      "reason": "맥스웰 : 오디너리 미케닉의 최대체력 버프가 라플라스 : 얼티밋 히어로의 생존력을 보강해 PVP 폭딜 타이밍을 확보해주는 조합. 국내 유튜버(스페란도)가 루주·트리나와 함께 반복 소개(2026-07-31 기준, 후속 확인 필요).",
       "reason_en": "Maxwell: Ordinary Mechanic's Max HP buff shores up Laplace: Ultimate Hero's survivability and secures her burst-damage window in PvP. A Korean YouTuber (Sperando) has covered this repeatedly alongside Rouge and Trina (as of 2026-07-31; needs follow-up confirmation).",
       "reason_ja": "マクスウェル：オーディナリーメカニックの最大HPバフがラプラス：アルティメットヒーローの生存力を補強し、PvPでの瞬間火力のタイミングを確保する組み合わせ。韓国のYouTuber（スペランド）がルージュ・トリナと併せて繰り返し紹介している（2026-07-31時点、追跡確認が必要）。"
     }
