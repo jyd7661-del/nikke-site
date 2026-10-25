@@ -56,11 +56,17 @@ const localized = (obj, field, lang) => {
 
 // 근거 문장에 넣는 캐릭터 이름.
 //
-// ⚠️ ko/en은 지금까지처럼 영문 title을 쓴다. 이 문장은 화면뿐 아니라 **AI 프롬프트로도**
-//    들어가는데, 프롬프트의 멤버 목록이 title로 캐릭터를 식별하기 때문에 여기만 한국어
-//    이름으로 바꾸면 같은 캐릭터가 두 이름으로 등장한다. 일본어는 영문이 섞이면 AI가
-//    그대로 받아써서 문장이 튀므로 name_ja를 쓴다.
-const rName = (m, lang) => (lang === 'ja' ? (m?.name_ja || m?.title || '') : (m?.title || m?.name_kr || ''));
+// 화면 언어의 이름을 쓴다 — ko는 name_kr, ja는 name_ja, en은 title.
+//   (2026-10-25까지 ko도 영문 title이었다. 프롬프트 멤버 목록이 title로만 캐릭터를 식별해서 두 이름이 섞일까 봐서였는데,
+//    10-08부터 멤버 목록이 "title(사용자 언어 이름)"이라 그 걱정은 없어졌고, 남은 건 한국어 화면의 영문 이름과
+//    하이쿠가 그걸 받아써 한국어 설명에 "Anis: Star"가 섞이는 것(10-09~10-24 한국어 설명 94건 중 3건)이었다.)
+//   스위치 __NIKKE_RNAME_TITLE = 옛 동작(ko도 title) — 설명 비교용.
+const rName = (m, lang) => (lang === 'ja' ? (m?.name_ja || m?.title || '')
+  : lang === 'en' || globalThis.__NIKKE_RNAME_TITLE ? (m?.title || m?.name_kr || '') : (m?.name_kr || m?.title || ''));
+// 데이터(아키타입·페어·실사용 기록)가 들고 있는 title 문자열을 근거 문장 이름으로. 없는 title은 그대로 둔다.
+const CDB_BY_TITLE = new Map(characterDatabase.map((c) => [c.title, c]));
+const tName = (t, lang) => rName(CDB_BY_TITLE.get(t) || { title: t }, lang);
+const tNames = (list, lang) => list.map((t) => tName(t, lang));
 
 // characterId(=characterDatabase.json id) → 애장품 효과 데이터 조회용 맵.
 const TREASURE_EFFECT_BY_ID = new Map(treasureEffects.characters.map((t) => [t.characterId, t]));
@@ -1474,8 +1480,6 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   const idByTitle = new Map(members.map((m) => [m.title, m.id]));
   const treasureSatisfied = (need) =>
     !need || need.every((t) => treasureIds.has(idByTitle.get(t)));
-  const withTreasureMark = (list, need) =>
-    list.map((n) => ((need || []).includes(n) ? n + R.treasure_suffix : n));
 
   // --- 아키타입 매칭 ---
   // 2026-08-07 수정: 매칭되는 아키타입을 전부 더하지 않고, 일단 후보로만 모아뒀다가
@@ -1563,7 +1567,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
               })
             : R.archetype_core({
                 name: localized(a, 'name', lang),
-                have,
+                have: tNames(have, lang),
                 count: need.length,
                 rest: 5 - need.length,
                 note: localized(a, 'note', lang),
@@ -1585,8 +1589,8 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
           full: false,
           reasons: [R.archetype_partial({
             name: localized(a, 'name', lang),
-            have,
-            missing,
+            have: tNames(have, lang),
+            missing: tNames(missing, lang),
           })],
         });
       }
@@ -1612,7 +1616,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     if (!treasureSatisfied(p.requiresTreasure)) return;
     score += WEIGHTS.SYNERGY_PAIR;
     reasons.push(R.synergy_pair({
-      members: [withTreasureMark(p.members, p.requiresTreasure).join(' + ')],
+      members: [p.members.map((n) => tName(n, lang) + ((p.requiresTreasure || []).includes(n) ? R.treasure_suffix : '')).join(' + ')],
       reason: localized(p, 'reason', lang),
     }));
   });
@@ -1664,7 +1668,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       reasons.push(R.partner_present({
         title: rName(m, lang),
         partners: present.map((p) => R.partner_ratio({
-          name: p.title,
+          name: tName(p.title, lang),
           pct: Math.round(p.ratio * 100),
         })),
       }));
@@ -1672,7 +1676,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
       reasons.push(R.partner_missing({
         title: rName(m, lang),
         teams: req.teams,
-        partners: req.partners.map((p) => p.title),
+        partners: req.partners.map((p) => tName(p.title, lang)),
       }));
     }
   });
@@ -1699,7 +1703,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   if (mode === 'pvp') {
     synergyNotes.counters.forEach((c) => {
       if (titles.includes(c.unit)) {
-        reasons.push(R.counter_info({ unit: c.unit, reason: localized(c, 'reason', lang) }));
+        reasons.push(R.counter_info({ unit: tName(c.unit, lang), reason: localized(c, 'reason', lang) }));
       }
     });
   }
@@ -1719,7 +1723,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         score += wrBonus(entry.wr, scale);
         if (entry.wr >= 60 || entry.wr <= 40) {
           reasons.push(R.real_pvp_subset({
-            combo, sourceLabel, wr: entry.wr, n: entry.n, adoption: entry.adoption,
+            combo: tNames(combo, lang), sourceLabel, wr: entry.wr, n: entry.n, adoption: entry.adoption,
           }));
         }
       });
@@ -1767,8 +1771,8 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
         seenComp.add(compKey);
         score += (hit.comp.pctOfClears || 0) * WEIGHTS.REAL_CAMPAIGN_PARTIAL_SCALE;
         reasons.push(R.real_campaign_partial({
-          combo,
-          missing: hit.missing,
+          combo: tNames(combo, lang),
+          missing: tName(hit.missing, lang),
           uses: hit.comp.totalUses,
           pct: hit.comp.pctOfClears,
           lang,
@@ -2473,7 +2477,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     const withTreasure = INVESTMENT_NOTE_BY_NAME.get(m.title)?.treasureTiers?.[tierKey];
     const base = m.tiers?.[tierKey];
     if (!withTreasure || !base || withTreasure === base) return null;
-    return lang === 'ko' ? (m.name_kr || m.title) : rName(m, lang);
+    return rName(m, lang);
   }).filter(Boolean);
   const treasureReasons = [];
   if (treasureGaps.length) {
@@ -2490,7 +2494,7 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
     // 표시 점수는 다른 경로와 동일하게 티어 합을 쓴다(경로마다 점수 의미가 달라지면 혼란).
     totalScore: best.scored.tierTotal,
     // 4/5 일치 + 한 자리 채움이면 { missing, filler }(title) — 화면 꼬리표를 "실사용 핵심 + 한 자리"로 바꾼다
-    // missingMember·fillerMember(2026-10-06): 화면이 사용자 언어 이름(memberName)으로 쓰도록 이름 필드를 함께 — 근거 문장(reasons)은 ko도 영문 title이다(rName 주석).
+    // missingMember·fillerMember(2026-10-06): 화면이 사용자 언어 이름(memberName)으로 쓰도록 이름 필드를 함께.
     partial: best.partial ? {
       missing: best.partial.missing.title, filler: best.partial.filler.title,
       missingMember: { title: best.partial.missing.title, name_kr: best.partial.missing.name_kr, name_ja: best.partial.missing.name_ja || null },

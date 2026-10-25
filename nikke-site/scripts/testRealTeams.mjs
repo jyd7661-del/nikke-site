@@ -616,8 +616,8 @@ for (const t of teams) {
   if (!['Scarlet: Black Shadow', 'Liberalio'].every((t) => got.includes(t))) problems.push(`[캠페인 짝] 홍련 : 흑영 + 리버렐리오 짝을 못 살렸다: ${got.join(', ')}`);
   const pairTeam = T(['Anis: Star', 'Ade: Agent Bunny', 'Vesti: Tactical Upgrade', 'Liberalio', 'Scarlet: Black Shadow']);
   const camp = engine.scoreTeam(pairTeam, 'campaign', { lang: 'ko' });
-  // 한국어 이유 문장도 이름은 title(rName) — 화면이 이름을 바꿔 끼운다
-  if (!(camp.campPairBonus > 0) || !(camp.reasons || []).some((r) => /Liberalio.*7\.6/.test(String(r)))) problems.push('[캠페인 짝] 짝 가산 또는 이유 문장이 없다');
+  // 한국어 이유 문장의 이름은 name_kr(rName·tName, 2026-10-25) — 예전엔 영문 title이 그대로 나갔다
+  if (!(camp.campPairBonus > 0) || !(camp.reasons || []).some((r) => /리버렐리오.*7\.6/.test(String(r)))) problems.push('[캠페인 짝] 짝 가산 또는 이유 문장이 없다');
   if (engine.scoreTeam(pairTeam, 'pvp', { lang: 'ko' }).campPairBonus) problems.push('[캠페인 짝] PvP에도 캠페인 짝 가산이 붙었다');
   // 티아·나가·모더니아·앨리스·크라운 — 짝 표에서 직접 센 값과 맞춰 본다(짝마다 ln(min(lift, 8)))
   const tiaTeam = ['Tia', 'Naga', 'Modernia', 'Alice', 'Crown'];

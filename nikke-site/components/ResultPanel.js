@@ -500,7 +500,7 @@ function RaidSquadsPanel({ roster, bossElement }) {
             </div>
             {/* 버스트 순서 캡션은 다섯 번 되풀이하지 않고 패널 위에 한 번만 */}
             <TeamMemberCards members={q.team.members} treasureIds={roster.treasureIds} caption={false} />
-            {/* 랭커 기록 한 줄. 엔진 근거 문장(reasons)은 AI 프롬프트 재료라 ko에서도 영문 이름이 섞여(rName) 여기선 쓰지 않고,
+            {/* 랭커 기록 한 줄. 엔진 근거 문장(reasons)은 AI 프롬프트 재료라 여기선 쓰지 않고,
                 시즌·보스·기록 수와 채운 자리를 사용자 언어 이름으로 조립한다. */}
             {q.path === 'real' && q.team.realUsage?.kind === 'soloraid' && (
               <p className="text-xs text-slate-500 leading-relaxed">
