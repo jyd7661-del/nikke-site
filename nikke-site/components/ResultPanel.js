@@ -4,9 +4,10 @@ import { localePath } from '@/lib/locale';
 
 import { useState, useEffect } from 'react';
 import CharacterAvatar from '@/components/CharacterAvatar';
+import { trackFeature } from '@/components/TrafficBeacon';
 import { useLanguage } from '@/components/LanguageProvider';
 import { memberName } from '@/lib/characterNames';
-import { treasureRaisesTierUnowned, pickRaidSquads, rankSynchroPriority } from '@/lib/synergyEngine';
+import { treasureRaisesTierUnowned, pickRaidSquads, rankSynchroPriority, roleGapInfo } from '@/lib/synergyEngine';
 import { TIER_COLOR } from '@/components/CharacterPicker';
 
 // 모듈 스코프라 t()를 부를 수 없다. 문구 대신 **키**만 들고 있다가 화면에서 t()로 푼다.
@@ -334,9 +335,24 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
         </p>
       )}
       {roleDropped && (
-        <p className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3">
-          {t(`role_dropped_${role}`)}
-        </p>
+        <div className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3 space-y-1">
+          <p>{t(`role_dropped_${role}`)}</p>
+          {/* 다음에 무엇을 하면 되는지(2026-10-25) — 가진 역할 니케가 왜 못 들어갔는지, 없으면 얻을 만한 니케 */}
+          {(() => {
+            const gap = roleGapInfo(roster.resolved || [], role, mode, { tower: mode === 'tribe_tower' ? tower : null });
+            if (!gap) return null;
+            const names = (list) => list.map((c) => memberName(c, lang)).join(', ');
+            return (
+              <>
+                {gap.blocked.length > 0 && <p className="text-amber-200/90">{t('role_owned_not_eligible')(names(gap.blocked))}</p>}
+                {gap.owned.length > 0 && <p className="text-amber-200/90">{t('role_owned_no_team')(names(gap.owned))}</p>}
+                {gap.suggest.length > 0 && (
+                  <p className="text-amber-200/90">{t(`role_suggest_${role}`)(names(gap.suggest), t(mode === 'tribe_tower' ? 'mode_tribe_tower' : 'mode_campaign'))}</p>
+                )}
+              </>
+            );
+          })()}
+        </div>
       )}
       {requireDropped && (
         <p className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3">
@@ -535,7 +551,10 @@ function SynchroPriorityPanel({ roster }) {
       <p className="text-xs text-slate-400 mb-3">{t('synchro_desc')}</p>
       {!rows && (
         <button
-          onClick={() => setRows(rankSynchroPriority(roster.resolved || [], { treasureIds: new Set(roster.treasureIds || []) }))}
+          onClick={() => {
+            setRows(rankSynchroPriority(roster.resolved || [], { treasureIds: new Set(roster.treasureIds || []) }));
+            trackFeature('synchro_rank', lang);
+          }}
           className="text-sm bg-nikke-accent/10 text-nikke-accent border border-nikke-accent/40 font-semibold px-4 py-2 rounded-lg hover:bg-nikke-accent/20 transition"
         >
           {t('synchro_cta')}

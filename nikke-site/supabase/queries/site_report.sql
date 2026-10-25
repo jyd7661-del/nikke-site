@@ -36,6 +36,8 @@ select
   )) as usage,
   -- 4b. 추천 선택지(recommend_usage, 2026-10-23~) — 조합을 내보낸 횟수. 캐시 적중 포함이라 위 AI 설명 호출보다 크다
   (select json_agg(t) from (select mode, role, with_nikke, dropped, sum(n) n from recommend_usage, b where usage_date between s and e group by 1,2,3,4 order by 5 desc) t) as recommend,
+  -- 4c. 화면 기능 사용(feature_usage, 2026-10-25~) — 서버를 안 거치는 화면 계산(싱크로 우선순위 등). 기능 · 언어별
+  (select json_agg(t) from (select feature, lang, sum(n) n from feature_usage, b where usage_date between s and e group by 1,2 order by 3 desc) t) as features,
   -- 5. AI 비용 (원, 우리 DB 기준 — 청구서와는 기간·환율이 다를 수 있다)
   (select json_build_object(
      'week_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget, b where usage_date between s and e),

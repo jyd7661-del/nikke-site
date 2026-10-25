@@ -23,6 +23,8 @@ select
   )) as usage,
   -- 추천 선택지(recommend_usage, 2026-10-23~): 모드 · 역할(any/healer/tank, 스테이지 밖은 -) · 포함 니케 · 조건 못 지킴
   (select json_agg(t) from (select mode, role, with_nikke, dropped, sum(n) n from recommend_usage, b where usage_date = b.t group by 1,2,3,4 order by 5 desc) t) as recommend_today,
+  -- 화면 기능 사용(feature_usage, 2026-10-25~): 싱크로 우선순위 등 서버를 안 거치는 화면 계산 · 언어별
+  (select json_agg(t) from (select feature, lang, sum(n) n from feature_usage, b where usage_date = b.t group by 1,2 order by 3 desc) t) as features_today,
   (select json_build_object(
      'today_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget, b where usage_date = t),
      'month_krw', (select round(coalesce(sum(krw),0)) from ai_daily_budget where usage_date >= date_trunc('month', current_date))

@@ -545,6 +545,22 @@ for (const t of teams) {
   }
 }
 
+// --- 역할 조건을 못 지켰을 때의 안내 (2026-10-25) — roleGapInfo ---
+// ① 가진 역할 니케는 owned로, 후보에서 빠진다. ② 후보는 그 모드 티어 높은 순(캠페인 힐러 1위 = 앵커 : 이노센트 메이드 S).
+// ③ 기업 타워면 그 타워에 나갈 수 있는 니케만 후보, 가진 역할 니케는 출전 가능(owned)·불가(blocked)로 나눈다.
+{
+  const T = (names) => names.map((n) => byTitle.get(n));
+  const g = engine.roleGapInfo(T(['Rapi', 'Anis: Star', 'Helm']), 'healer', 'campaign');
+  if (g.owned.map((c) => c.title).join() !== 'Helm') problems.push(`[역할 안내] 가진 힐러를 못 셌다: ${g.owned.map((c) => c.title)}`);
+  if (g.suggest[0]?.title !== 'Anchor: Innocent Maid' || g.suggest.some((c) => c.title === 'Helm')) problems.push(`[역할 안내] 후보 순서가 틀렸다: ${g.suggest.map((c) => c.title)}`);
+  const gt = engine.roleGapInfo(T(['Rapi']), 'healer', 'tribe_tower', { tower: 'elysion' });
+  if (!gt.suggest.length || gt.suggest.some((c) => !engine.isTowerEligible(c, 'elysion'))) problems.push(`[역할 안내] 타워에 못 나가는 니케를 권했다: ${gt.suggest.map((c) => c.title)}`);
+  // 헬름은 엘리시온 — 엘리시온 타워에선 "나갈 수 없다"가 아니고, 미실리스 타워에선 그렇다
+  const ge = engine.roleGapInfo(T(['Helm']), 'healer', 'tribe_tower', { tower: 'elysion' });
+  const gm = engine.roleGapInfo(T(['Helm']), 'healer', 'tribe_tower', { tower: 'missilis' });
+  if (ge.blocked.length || ge.owned.length !== 1 || gm.blocked.length !== 1 || gm.owned.length) problems.push('[역할 안내] 타워 출전 가능·불가를 잘못 나눴다');
+}
+
 // --- 싱크로 우선순위 (2026-10-25) — rankSynchroPriority ---
 // ① 세 모드 중 최고 티어 하나로 줄 세운다(목단 PvP SS > 헬름 B·B·C). ② 같은 최고 티어면 그 티어 모드가 많은 쪽이 앞(아니스 : 스타 SSS×3 > 크라운 SSS×2).
 // ③ 💎를 표시한 니케만 애장품 티어(헬름 PvP C → SSS, 크라운 뒤 · 목단 앞). ④ 보유 전원이 한 번씩, 순서가 늘 같다.

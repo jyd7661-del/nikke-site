@@ -2023,6 +2023,27 @@ export function teamHasRole(members, role) {
 export function teamRoleMembers(members) {
   return Object.fromEntries(SURVIVAL_ROLE_KEYS.map((r) => [r, members.filter((m) => memberHasRole(m, r, members)).map((m) => m.title)]));
 }
+// 역할 조건을 못 지켜 조건 없이 추천했을 때(roleDropped) 화면에 붙일 사실(2026-10-25 현황 보고 — 캠페인 힐러 조건이 풀린 1건).
+// "만들 수 없어 조건 없이 추천했습니다"만으로는 다음에 무엇을 하면 되는지 모른다.
+//   owned: 가진 역할 니케 중 그 판에 나갈 수 있는 것(그런데도 못 넣었다 = 버스트 구성이 안 맞았다)
+//   blocked: 가진 역할 니케 중 그 기업 타워에 못 나가는 것(그래서 못 넣었다)
+//   suggest: 안 가진 역할 니케 중 이 모드 기본 티어가 높은 순 3명(그 타워에 나갈 수 있는 니케만). 동점은 enikk 캠페인 채용률, 그다음 title.
+export function roleGapInfo(roster, role, mode, opts = {}) {
+  const table = SURVIVAL_ROLES[role];
+  if (!table) return null;
+  const tierKey = MODE_TO_TIER_KEY[mode] || 'story';
+  const usage = metaStats.usageTier?.campaign || {};
+  const ownedTitles = new Set((roster || []).map((c) => c.title));
+  const mine = (roster || []).filter((c) => table.has(c.title));
+  const owned = mine.filter((c) => isTowerEligible(c, opts.tower));
+  const blocked = mine.filter((c) => !isTowerEligible(c, opts.tower));
+  const suggest = characterDatabase
+    .filter((c) => table.has(c.title) && !ownedTitles.has(c.title) && isTowerEligible(c, opts.tower))
+    .sort((a, b) => (TIER_SCORE[b.tiers?.[tierKey]] || 0) - (TIER_SCORE[a.tiers?.[tierKey]] || 0)
+      || (usage[b.title]?.usage || 0) - (usage[a.title]?.usage || 0) || (a.title < b.title ? -1 : 1))
+    .slice(0, 3);
+  return { owned, blocked, suggest };
+}
 // 버킷 상한(BUCKET_CAP)에 잘린 역할 니케를 단계마다 몇 명까지 되돌려 넣을지 — 티어 상위부터.
 const ROLE_BUCKET_EXTRA = 1;
 

@@ -134,3 +134,10 @@ export function normalizeCountry(raw) {
   const c = String(raw || '').trim().toUpperCase();
   return /^[A-Z]{2}$/.test(c) ? c : 'XX';
 }
+
+// 화면 기능 사용 이벤트(2026-10-25, supabase/feature_usage_migration.sql). 공개 엔드포인트라 **화이트리스트만** 센다 —
+// 아무 이름이나 받으면 표에 행이 무한히 는다. 새 기능을 세려면 여기에 이름을 더한다.
+//   synchro_rank: 싱크로 우선순위 "순서 보기"를 누름(components/ResultPanel.js)
+export const FEATURE_EVENTS = new Set(['synchro_rank']);
+export const normalizeFeature = (raw) => (typeof raw === 'string' && FEATURE_EVENTS.has(raw) ? raw : null);
+export const normalizeLang = (raw) => (raw === 'en' || raw === 'ja' ? raw : 'ko');

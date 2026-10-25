@@ -1,6 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
-import { isBot, normalizePath, normalizeSource, normalizeCountry } from '@/lib/traffic';
+import { isBot, normalizePath, normalizeSource, normalizeCountry, normalizeFeature, normalizeLang } from '@/lib/traffic';
 
 // 자체 방문 계측 수집기. (2026-08-26)
 //
@@ -35,8 +35,10 @@ export async function POST(req) {
 
     let body;
     try { body = await req.json(); } catch { return new Response(null, { status: 204 }); }
-    const path = normalizePath(body?.path);
-    if (!path) return new Response(null, { status: 204 });
+    // 화면 기능 사용(2026-10-25) — { event, lang }. 페이지 로딩·방문자와 섞지 않고 feature_usage에만 1 센다.
+    const feature = normalizeFeature(body?.event);
+    const path = feature ? null : normalizePath(body?.path);
+    if (!feature && !path) return new Response(null, { status: 204 });
 
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       // 키가 없으면 계측만 꺼진다. 화면은 영향받지 않는다.
@@ -47,6 +49,11 @@ export async function POST(req) {
     });
 
     const date = new Date().toISOString().slice(0, 10);
+    if (feature) {
+      const { error } = await supabase.rpc('bump_feature_usage', { p_date: date, p_feature: feature, p_lang: normalizeLang(body?.lang) });
+      if (error) console.error('[TRACK] feature_usage 실패', error);
+      return new Response(null, { status: 204 });
+    }
     // 로딩 수와 인원수는 서로 독립이다. 하나가 실패해도 다른 하나는 남긴다.
     // 랜딩(사이트에 처음 들어온 순간)이면 유입 경로·국가도 센다. 우리 사이트에서 온 것은 null이라 안 센다.
     const source = body?.landing === true ? normalizeSource(body?.ref) : null;

@@ -15,6 +15,17 @@ import { useEffect, useRef } from 'react';
 // 다시 마운트돼 ref가 초기화되는데, 문서는 그대로라 같은 referrer로 랜딩이 한 번 더 잡힌다.
 let landingSent = false;
 
+// 화면 기능 사용 1회(2026-10-25) — 이름은 lib/traffic.js FEATURE_EVENTS에 있는 것만 서버가 센다.
+export function trackFeature(event, lang) {
+  try {
+    const body = JSON.stringify({ event, lang });
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));
+    else fetch('/api/track', { method: 'POST', body, headers: { 'Content-Type': 'application/json' }, keepalive: true }).catch(() => {});
+  } catch {
+    // 계측 실패가 화면에 영향을 주면 안 된다.
+  }
+}
+
 export default function TrafficBeacon() {
   const pathname = usePathname();
   const lastSent = useRef(null);
