@@ -64,7 +64,7 @@ const ms = j('metaStats.json');
 (ms.campaignCompositions?.list || []).forEach((t) =>
   teams.push({ src: '캠페인', mode: 'campaign', members: t.members, w: t.totalUses, label: `${t.pctOfClears}% of clears` }));
 (ms.pvp?.topTeams || []).forEach((t) =>
-  teams.push({ src: 'PvP', mode: 'pvp', members: t.members, w: t.n, label: `승률 ${t.wr}% · 채택 ${t.adoption}%` }));
+  teams.push({ src: 'PvP', mode: 'pvp', members: t.members, w: t.n, label: `승률 ${t.wr}% · 채택 ${t.adoption}%`, losing: t.wr < 50 }));
 
 const problems = [];
 const stats = new Map();
@@ -127,7 +127,14 @@ for (const t of teams) {
   // 2026-10-01: 실사용 경로는 애장품이 필요한 멤버를 애장품 없이 가진 사용자에게 그 기록을 안 낸다(유저: 완성 조합 사용자는 애장품이 거의 있다).
   // 기록은 보유자의 것이므로 여기서는 전원 애장품 보유로 찾는다 — 도달성(어휘·맥락)만 본다.
   const found = engine.findRealUsageTeamMatch(members, t.mode, { ...(t.ctx || {}), treasureIds: new Set(members.map((m) => m.id)) });
-  if (!found) {
+  // 2026-10-25: 승률 50% 미만 PvP 기록은 실사용 경로가 **내지 않아야** 한다(지는 쪽이 더 많은 팀을 "실사용 검증"으로 내던 것 — 유저 제보).
+  // 그 기록 그대로 돌려주면 실패. 같은 5명이 다른 기록의 4/5 채움으로 나오는 것은 괜찮다(그 기록의 승률을 단다).
+  if (t.losing) {
+    if (found && !found.partial && t.members.every((x) => found.members.some((m) => m.title === x))) {
+      s.unreachable += 1;
+      problems.push(`[${t.src}] ${t.label}: 승률 50% 미만 기록을 실사용 조합으로 냈다 — ${t.members.join(', ')}`);
+    }
+  } else if (!found) {
     s.unreachable += 1;
     problems.push(
       `[${t.src}] ${t.label}: 실사용 경로가 이 조합을 못 찾는다 ` +

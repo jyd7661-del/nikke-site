@@ -2371,7 +2371,10 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         ? soloRaidEntries()
         : source === 'tower'
           ? towerEntries()
-          : (metaStats.pvp?.topTeams || []).map((e) => ({ e, rank: e.wr || 0 }));
+          // PvP 기록은 **승률 50% 미만이면 쓰지 않는다**(2026-10-25 유저 제보: PvP 3팀의 2팀이 홍련·목단·트리나·아니스·자칼 —
+          // 승률 39.4% 기록이 "실사용 검증"으로 나갔다). 랭커끼리 지는 쪽이 더 많은 팀을 검증된 조합이라 부를 수 없다. 21건 중 5건(15.4~48.1%).
+          // 기준 50%는 이기고 지는 것이 반반인 선 — 새 숫자가 아니다. 스위치 `__NIKKE_PVP_LOSING_OFF`로 옛 동작.
+          : (metaStats.pvp?.topTeams || []).filter((e) => globalThis.__NIKKE_PVP_LOSING_OFF || !(e.wr < 50)).map((e) => ({ e, rank: e.wr || 0 }));
 
   let best = null;
   // 시험용(scripts/benchRankerRecall.mjs): 정답 팀 자신을 실사용 표에서 뺀다(leave-one-out). 화면에서는 쓰지 않는다.

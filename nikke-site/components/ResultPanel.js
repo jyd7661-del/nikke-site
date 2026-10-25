@@ -559,6 +559,13 @@ function SquadCard({ q, i, roster }) {
           {q.team.partial?.missingMember && ` ${t('raid_squads_partial')(memberName(q.team.partial.missingMember, lang), memberName(q.team.partial.fillerMember, lang))}`}
         </p>
       )}
+      {/* PvP 랭커 기록 한 줄(2026-10-25) — 승률이 안 보이면 "실사용 검증" 꼬리표만으로 판단하게 된다 */}
+      {q.path === 'real' && q.team.realUsage?.kind === 'pvp' && (
+        <p className="text-xs text-slate-500 leading-relaxed">
+          {t('pvp_squads_record')(q.team.realUsage.wr, q.team.realUsage.n)}
+          {q.team.partial?.missingMember && ` ${t('raid_squads_partial')(memberName(q.team.partial.missingMember, lang), memberName(q.team.partial.fillerMember, lang))}`}
+        </p>
+      )}
       {/* PvP 버스트 속도 경고(엔진이 요청 언어로 만든 한 줄 — 위 AI 조합 화면과 같은 것) */}
       {q.team.pvpBurstNote && <p className="text-xs text-amber-300 leading-relaxed">{q.team.pvpBurstNote}</p>}
     </div>
