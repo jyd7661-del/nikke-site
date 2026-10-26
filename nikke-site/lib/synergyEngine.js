@@ -461,7 +461,21 @@ function splitSkillClauses(desc) {
 // 캐릭터가 스킬로 부여하는 [데미지 타입 버프] 목록. { type, label, scope } 배열.
 // scope는 그 버프 직전에 나온 "Affects ..." 문구 원문(예: "all allies",
 // "self and all allies with lower final DEF than self")을 그대로 담는다.
+// 스킬 원문 파싱 결과는 캐릭터마다 고정이라 skills 배열 단위로 캐시한다(2026-10-26).
+// PvP 후보 채점 한 번(recommendTeams)에 약 10초 중 3초 넘게가 같은 원문을 정규식으로 다시 쪼개는 데 들었다.
+// 키를 id가 아니라 skills 배열로 두는 것은, 같은 id라도 원문이 다른 객체가 들어오면 따로 계산하게 하려는 것이다.
+const SKILL_PARSE_CACHE = new WeakMap();
+function skillParseCache(character) {
+  const skills = character?.skills;
+  if (!skills || typeof skills !== 'object') return null;
+  let c = SKILL_PARSE_CACHE.get(skills);
+  if (!c) { c = {}; SKILL_PARSE_CACHE.set(skills, c); }
+  return c;
+}
+
 function extractDamageTypeGrants(character) {
+  const cache = skillParseCache(character);
+  if (cache?.grants) return cache.grants;
   const grants = [];
   (character.skills || []).forEach((s) => {
     let scope = null;
@@ -478,6 +492,7 @@ function extractDamageTypeGrants(character) {
       });
     });
   });
+  if (cache) cache.grants = grants;
   return grants;
 }
 
@@ -486,6 +501,14 @@ function extractDamageTypeGrants(character) {
 // 2) 자기 자신에게 같은 타입 버프를 주는 경우(자기 타입이 아니면 자기 버프가 의미 없으므로
 // 실제로 그 타입 공격을 한다는 정황 근거로 취급)
 function dealsDamageType(character, typeKey) {
+  const cache = skillParseCache(character);
+  const ck = `deals:${typeKey}`;
+  if (cache && ck in cache) return cache[ck];
+  const r = dealsDamageTypeUncached(character, typeKey);
+  if (cache) cache[ck] = r;
+  return r;
+}
+function dealsDamageTypeUncached(character, typeKey) {
   const dt = DAMAGE_TYPES.find((d) => d.key === typeKey);
   if (!dt) return false;
   const hasExplicitDeal = (character.skills || []).some((s) => {
@@ -530,6 +553,8 @@ function grantAppliesToAlly(caster, grant, allyMember) {
 const ALLY_BUFF_STATS = /^(ATK(?: damage)?|Attack Damage|Critical Rate(?: of normal attack)?|Critical Damage|Charge Damage|Pierce Damage|Attack Speed|Reload Speed|Reloading Speed|Hit Rate|Max Ammunition Capacity)$/i;
 
 function allyBuffStrength(character) {
+  const cache = skillParseCache(character);
+  if (cache && 'allyBuff' in cache) return cache.allyBuff;
   let best = 0;
   (character?.skills || []).slice(0, 2).forEach((s) => {
     let scope = null;
@@ -541,6 +566,7 @@ function allyBuffStrength(character) {
       if (m && ALLY_BUFF_STATS.test(m[1].trim())) best = Math.max(best, parseFloat(m[2]));
     });
   });
+  if (cache) cache.allyBuff = best;
   return best;
 }
 
