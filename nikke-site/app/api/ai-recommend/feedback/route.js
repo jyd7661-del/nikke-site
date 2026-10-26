@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import crypto from 'crypto';
+import { cleanFeedbackContext } from '@/lib/feedbackContext';
 
 // AI가 구성해준 조합에 대해 유저가 👍/👎로 평가한 결과를 저장하는 엔드포인트.
 //
@@ -33,7 +34,7 @@ export async function POST(req) {
     return Response.json({ error: '요청 형식이 올바르지 않습니다.' }, { status: 400 });
   }
 
-  const { members, mode, bossElement, formation, rating } = body || {};
+  const { members, mode, bossElement, formation, rating, context } = body || {};
 
   if (!Array.isArray(members) || members.length === 0) {
     return Response.json({ error: '조합 정보가 없습니다.' }, { status: 400 });
@@ -71,6 +72,8 @@ export async function POST(req) {
       members: cleanMembers,
       formation: formation || null,
       rating,
+      // 👎일 때만 그때의 보유 니케·조건을 같이 남긴다(lib/feedbackContext.js). 👍이면 null.
+      context: cleanFeedbackContext(rating, context),
     });
 
     if (error) {

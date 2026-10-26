@@ -240,6 +240,16 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           mode,
           bossElement,
           rating,
+          // 👎이면 같은 요청을 다시 돌릴 수 있게 그때 조건을 같이 보낸다(서버가 👍이면 버린다).
+          // 제외 목록은 이 조합을 받기 "전" 것 — 받은 직후 이 조합 5명이 더해지므로 뺀다.
+          context: rating === 'down' ? {
+            titles: (roster?.resolved || []).map((c) => c.title),
+            treasureIds: roster?.treasureIds,
+            tower,
+            role: stageMode ? role : null,
+            requireTitle,
+            excludeTitles: excludeTitles.filter((x) => !team.members.some((m) => m.title === x)),
+          } : undefined,
         }),
       });
       if (!res.ok) {

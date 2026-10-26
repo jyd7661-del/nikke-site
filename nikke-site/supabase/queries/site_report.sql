@@ -31,7 +31,7 @@ select
      'explain_users', (select count(distinct ip_hash) from ai_explain_usage, b where usage_date between s and e),
      'prev_calls',    (select coalesce(sum(count),0) from ai_explain_usage, b where usage_date between ps and pe),
      'prev_users',    (select count(distinct ip_hash) from ai_explain_usage, b where usage_date between ps and pe),
-     'feedback', (select json_agg(json_build_object('d', created_at::date, 'mode', mode, 'rating', rating)) from ai_recommend_feedback, b where created_at::date between s and e),
+     'feedback', (select json_agg(json_build_object('d', created_at::date, 'mode', mode, 'rating', rating, 'roster_n', jsonb_array_length(context->'titles'))) from ai_recommend_feedback, b where created_at::date between s and e),
      'roster_savers_new', (select count(distinct user_id) from owned_nikke, b where created_at::date between s and e)
   )) as usage,
   -- 4b. 추천 선택지(recommend_usage, 2026-10-23~) — 조합을 내보낸 횟수. 캐시 적중 포함이라 위 AI 설명 호출보다 크다
