@@ -85,7 +85,9 @@ for (const [el, e] of Object.entries(expect)) {
 
   // ② 두 파일이 같은 시즌을 가리키는가
   const m = meta.soloRaidByElement?.[el];
-  if (m && Number(m.season) !== Number(e.season)) {
+  // 2026-10-27: 전격은 두 시즌(42·36)을 섞은 표라 seasons 목록에 현재 시즌이 들어 있으면 같은 시즌으로 본다.
+  const mSeasons = (m?.seasons || [m?.season]).map(Number);
+  if (m && !mSeasons.includes(Number(e.season))) {
     problems.push(`'${el}': metaStats.soloRaidByElement는 시즌 ${m.season}('${m.boss}'), soloRaidTeams는 시즌 ${e.season}('${e.boss}') — `
       + '한 화면에 서로 다른 보스 이야기가 섞인다. 둘 중 하나가 갱신되지 않았다');
   }

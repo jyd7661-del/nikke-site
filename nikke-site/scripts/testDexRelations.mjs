@@ -34,7 +34,9 @@ if (show) {
 const problems = [];
 // ① 유저 정답 짝
 const PAIRS = [['Mint', 'Prika', 1], ['Prika', 'Mint', 1], ['Mast: Romantic Maid', 'Crown', 3], ['Mast: Romantic Maid', 'Anchor: Innocent Maid', 3],
-  ['Scarlet: Black Shadow', 'Liberalio', 3], ['Liberalio', 'Scarlet: Black Shadow', 3]];
+  ['Scarlet: Black Shadow', 'Liberalio', 3], ['Liberalio', 'Scarlet: Black Shadow', 6]];
+// 2026-10-27: 리버렐리오 → 홍련 : 흑영은 3 → 6(도감 화면에 보이는 수). 레이드 시즌 42(전격)에서 리버렐리오가 상위 50인 100%라
+//   그 시즌 팀의 마스트·크라운·스타·네온 VE가 같이 센다. 반대 방향(홍련 : 흑영 → 리버렐리오)은 그대로 상위 3. 짝은 캠페인 enikk에서 우연의 7.6배(coUsePairs).
 for (const [a, b, k] of PAIRS) {
   const top = R.companionsFor(byTitle.get(a)).list.slice(0, k).map((x) => x.title);
   if (!top.includes(b)) problems.push(`[함께 쓸 니케] ${a}의 상위 ${k}에 ${b}가 없다 — 지금 ${top.join(', ')}`);

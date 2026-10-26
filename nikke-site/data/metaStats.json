@@ -1715,8 +1715,8 @@
       ]
     },
     "Electronic": {
-      "season": 36,
-      "boss": "Egovista",
+      "season": "42·36",
+      "boss": "Altruia · Egovista",
       "entries": [
         {
           "title": "Neon: Vision Eye",
@@ -1724,6 +1724,10 @@
         },
         {
           "title": "Anis: Star",
+          "usage": 100
+        },
+        {
+          "title": "Arcana",
           "usage": 100
         },
         {
@@ -1743,20 +1747,24 @@
           "usage": 100
         },
         {
-          "title": "Arcana",
-          "usage": 99
-        },
-        {
           "title": "Isabel",
-          "usage": 99
+          "usage": 100
         },
         {
           "title": "Ada Wong",
-          "usage": 98.3
+          "usage": 99.7
         },
         {
           "title": "Ein",
           "usage": 98
+        },
+        {
+          "title": "Flora",
+          "usage": 97
+        },
+        {
+          "title": "Rosanna",
+          "usage": 97
         },
         {
           "title": "Rouge",
@@ -1787,6 +1795,10 @@
           "usage": 2
         },
         {
+          "title": "Privaty: Unkind Maid",
+          "usage": 1.7
+        },
+        {
           "title": "Guillotine",
           "usage": 0.7
         },
@@ -1798,7 +1810,12 @@
           "title": "Exia",
           "usage": 0.3
         }
-      ]
+      ],
+      "seasons": [
+        42,
+        36
+      ],
+      "note": "전격은 시즌마다 보스가 달라(42 알트루이아 · 36 에고비스타) 한 보스의 판이 속성 전체를 덮지 않게 두 시즌 중 높은 값을 쓴다(2026-10-27). 42만 쓰면 홍련 51.7 → 3.3%처럼 그 보스에서만 안 쓴 전격 딜러가 빠졌다."
     },
     "Fire": {
       "season": 40,
@@ -2527,58 +2544,73 @@
       "staleAfterDays": 45
     },
     "Electronic": {
-      "season": 36,
-      "boss": "Egovista",
+      "season": "42·36",
+      "boss": "Altruia · Egovista",
+      "seasons": [
+        42,
+        36
+      ],
+      "note": "전격은 시즌마다 보스가 달라(42 알트루이아 · 36 에고비스타) 한 보스의 판이 속성 전체를 덮지 않게 두 시즌 중 높은 값을 쓴다(2026-10-27). 42만 쓰면 홍련 51.7 → 3.3%처럼 그 보스에서만 안 쓴 전격 딜러가 빠졌다.",
       "usage": {
-        "Neon: Vision Eye": 100.0,
-        "Anis: Star": 100.0,
-        "Liberalio": 100.0,
-        "Little Mermaid": 100.0,
-        "Maiden: Ice Rose": 100.0,
-        "Cinderella": 100.0,
-        "Anis: Sparkling Summer": 100.0,
-        "Crown": 100.0,
-        "Moran": 100.0,
-        "Privaty": 100.0,
-        "Snow White: Heavy Arms": 99.0,
-        "Arcana": 99.0,
-        "Isabel": 99.0,
-        "Ada Wong": 98.3,
-        "Ein": 98.0,
+        "Neon: Vision Eye": 100,
+        "Anis: Star": 100,
+        "Liberalio": 100,
+        "Arcana": 100,
+        "Little Mermaid": 100,
+        "Maiden: Ice Rose": 100,
+        "Cinderella": 100,
+        "Anis: Sparkling Summer": 100,
+        "Crown": 100,
+        "Moran": 100,
+        "Isabel": 100,
+        "Privaty": 100,
+        "Ada Wong": 99.7,
+        "Snow White: Heavy Arms": 99,
+        "Ein": 98,
         "Mast: Romantic Maid": 97.7,
-        "Nayuta": 96.0,
+        "Flora": 97,
+        "Rosanna": 97,
+        "Nayuta": 96,
         "Rapi: Red Hood": 95.3,
-        "Miranda": 94.0,
+        "Miranda": 94,
+        "Liter": 92,
         "Ade: Agent Bunny": 90.3,
+        "Cinderella: Crystal Wave": 89.7,
         "Anchor: Innocent Maid": 88.9,
         "Takina Inoue": 81.5,
         "Rouge": 74.5,
         "Mihara: Bonding Chain": 64.1,
+        "Mint": 56.7,
+        "Prika": 55,
         "Scarlet": 51.7,
-        "Liter": 32.2,
         "Helm": 27.9,
         "Trina": 23.2,
         "Jill Valentine": 21.8,
         "Diesel: Winter Sweets": 19.5,
-        "Grave": 9.4,
+        "Soline: Frost Ticket": 11.3,
         "Mari Makinami Illustrious": 9.4,
-        "Soline: Frost Ticket": 7.0,
-        "Velvet": 6.0,
+        "Grave": 9.4,
+        "Velvet": 6,
+        "Maxwell: Ordinary Mechanic": 4.3,
         "Ludmilla: Winter Owner": 3.4,
         "Naga": 2.7,
-        "Zwei": 2.0,
+        "Zwei": 2,
+        "Arcana: Fortune Mate": 1.7,
+        "Privaty: Unkind Maid": 1.7,
+        "Tove": 1.7,
+        "Drake": 1.7,
         "D: Killer Wife": 1.3,
         "Snow White": 1.3,
         "Blanc": 1.3,
-        "Dorothy: Serendipity": 0.7,
         "Volume": 0.7,
+        "Dorothy: Serendipity": 0.7,
         "Guillotine": 0.7,
-        "Arcana: Fortune Mate": 0.3,
+        "Drake: Great Villain": 0.3,
+        "Laplace: Ultimate Hero": 0.3,
         "K": 0.3,
+        "Scarlet: Black Shadow": 0.3,
         "Red Hood": 0.3,
         "Tia": 0.3,
-        "Tove": 0.3,
-        "Drake": 0.3,
         "Exia": 0.3
       }
     },
