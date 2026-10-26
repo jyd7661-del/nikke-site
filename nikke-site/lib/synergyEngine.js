@@ -1077,6 +1077,8 @@ export function ownStarLostMembers(members, mode) {
 }
 
 const CYCLE_GATE_MODES = new Set(['campaign', 'tribe_tower']);
+// 고정 2버스트 관문(scoreTeam noFixedB2 주석)을 거는 모드.
+const B2_GATE_MODES = new Set(['bossing', 'raid']);
 
 // 2026-08-07 추가: 토템 역할에 조건이 붙는 경우 처리.
 //
@@ -1358,6 +1360,15 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   // 한 바퀴당 양을 못 정하는 쿨감(풀차지 8회마다 등)이 있으면 느리다고 단정하지 않는다(모름 ≠ 느림).
   const cycle = CYCLE_GATE_MODES.has(mode) && validBurstChain ? fullBurstCycleSeconds(members, treasureIds) : null;
   const slowCycle = !!cycle && cycle.sec !== null && cycle.sec > FAST_BURST_CD + 1e-6 && !cycle.unknownCdr;
+  // 2026-10-26 **보스전: 고정 2버스트가 없는 팀**(유연 멤버가 2단계를 메움)은 폴백 순위에서 뒤로 민다 — 관문이지 점수가 아니다.
+  // 첫 👎(보스전 철갑, 유저: "제대로 된 2버도 없어 … 심각한 문제인데?"): 리타 · 레드 후드 · 신데렐라 : 크리스탈 웨이브 · 네온 : 비전 아이 · 이브.
+  // 보유 2버스트가 SR(아니스 E · 벨로타 F · 델타 F)뿐이라 티어 합으로는 레드 후드(쿨 40초)에게 2단계를 맡기고 3버스트 DPS를 셋 넣는 쪽이 높았다.
+  // 근거: 등록 솔로레이드 250팀 중 고정 2버스트 없는 팀 **0**(고정 1버스트 없는 팀은 29 — 라피 : 레드 후드 1단계 — 그래서 1단계는 안 건다).
+  // 처음엔 "2단계 쿨 20초 초과"로 걸었다가 이전 엔진 대비 14건 중 다수가 나빠져 버렸다 — 프리카(40초)·벨로타 : 펌킨 위치 혼자 2단계도 걸려
+  // 니힐리스타(E) 같은 공격형을 2단계에 넣었다. 랭커는 목단 혼자 1단계(40초)도 37팀이 써서 레이드는 40초 주기를 받아들인다.
+  // 스위치 `__NIKKE_B2_GATE_OFF`로 옛 동작.
+  const noFixedB2 = B2_GATE_MODES.has(mode) && validBurstChain && !globalThis.__NIKKE_B2_GATE_OFF
+    && !members.some((m) => !m.burstFlex && String(m.burst) === '2');
 
   // --- 스킬 메커니즘 기반 데미지 타입 시너지 (가장 먼저 배치: "왜 강한지"의 핵심 근거) ---
   const skillSynergies = findSkillMechanicSynergies(members);
@@ -1932,6 +1943,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
     wastedCount: burstAnalysis.wasted.length,
     soloBurst3,
     slowCycle,
+    noFixedB2,
     // PvP만: { tier: '2RL'…'4RL' | 'slower' | null(모름), missing: 값 없는 멤버 }. 폴백 순위와 화면 표시에 쓴다.
     pvpBurst,
     reasons,
@@ -2230,6 +2242,8 @@ export function recommendTeams(ownedCharacters, mode = 'campaign', opts = {}) {
       // 근거: 등록 실사용 조합 캠페인 0/20 · 타워 7/50이 20초보다 느리다(scoreTeam의 slowCycle 주석). 가중치가 아니라 관문이다.
       // `__NIKKE_CYCLE_GATE_OFF`는 이전 엔진 대비 비교용 스위치.
       (globalThis.__NIKKE_CYCLE_GATE_OFF ? 0 : (Number(!!a.slowCycle) - Number(!!z.slowCycle))) ||
+      // 2026-10-26 보스전 고정 2버스트 관문(scoreTeam noFixedB2) — 같은 자리, 대안이 없으면 그대로 나간다.
+      (Number(!!a.noFixedB2) - Number(!!z.noFixedB2)) ||
       (z.totalScore - a.totalScore) ||
       ((a.wastedCount || 0) - (z.wastedCount || 0)) ||
       // 2026-09-18: 동점이면 **버프 대상이 없는 멤버가 적은 쪽**(D1).

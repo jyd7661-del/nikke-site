@@ -78,7 +78,9 @@ const KO = {
     `기록에서도 이 모드 S등급 픽률을 보이는 검증된 채용 캐릭터입니다.`,
   element_usage_high: ({ entries, element, season, boss }) =>
     `[실전 기록] ${join(entries)}는(은) ${element} ` +
-    `약점 보스(시즌${season} '${boss}' 기준) 상대 실사용률이 매우 높은 픽입니다. (출처: enikk.app)`,
+    `약점 보스(시즌${season} '${boss}' 기준) 상위 50명이 5팀 중 어딘가에 넣은 비율이 매우 높은 픽입니다. ` +
+    // 2026-10-26: 이 %는 "5팀 어딘가에 썼다"는 뜻이다(솔로레이드는 서로 다른 니케로 5팀) — 한 팀 추천의 근거로 읽히지 않게 밝힌다(유저: "리타를 실제로 많이 써?").
+    `한 팀에 넣은 비율은 아닙니다. (출처: enikk.app)`,
   element_usage_low: ({ entries, element }) =>
     `[실전 기록] ${join(entries)}는(은) ${element} ` +
     `속성이지만 실제로는 이 약점 보스전에 잘 채용되지 않는 편입니다. (출처: enikk.app)`,
@@ -259,8 +261,8 @@ const EN = {
     `[Real usage data] ${join(names)} also show S-grade pick rates for this mode in enikk.app's actual ` +
     `player records — proven picks that people really field.`,
   element_usage_high: ({ entries, element, season, boss }) =>
-    `[Field record] ${join(entries)} are very heavily used against ${element}-weak bosses ` +
-    `(as of season ${season}, '${boss}'). (Source: enikk.app)`,
+    `[Field record] ${join(entries)} appear in one of the 5 squads of nearly every top-50 player against ${element}-weak bosses ` +
+    `(as of season ${season}, '${boss}'). That is not the rate for a single squad. (Source: enikk.app)`,
   element_usage_low: ({ entries, element }) =>
     `[Field record] ${join(entries)} are ${element} element, but in practice they are rarely fielded ` +
     `against this weakness boss. (Source: enikk.app)`,
@@ -433,7 +435,7 @@ const JA = {
     `実績のある採用キャラクターです。`,
   element_usage_high: ({ entries, element, season, boss }) =>
     `［実戦記録］${join(entries)}は、${element}弱点のボス（シーズン${season}「${boss}」基準）に対する` +
-    `実使用率が非常に高いピックです。（出典：enikk.app）`,
+    `上位50人が5編成のどこかに入れた割合が非常に高いピックです。1編成に入れた割合ではありません。（出典：enikk.app）`,
   element_usage_low: ({ entries, element }) =>
     `［実戦記録］${join(entries)}は${element}属性ですが、実際にはこの弱点ボス戦であまり採用されていません。` +
     `（出典：enikk.app）`,

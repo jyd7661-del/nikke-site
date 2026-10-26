@@ -591,6 +591,25 @@ for (const t of teams) {
   if (top?.tier !== 'SSS' || top.modes.join('/') !== 'campaign/bossing') problems.push(`[싱크로 우선순위] 티어 출처 표시가 틀렸다: ${JSON.stringify(top)}`);
 }
 
+// --- 보스전 고정 2버스트 관문 (2026-10-26, 첫 👎) ---
+// 제보 5명 + 상시 SR(2버스트는 아니스 E · 벨로타 F · 델타 F뿐)로 철갑 보스전 → 고정 2버스트가 든 조합이 나와야 한다(유연한 레드 후드에게 2단계를 맡기지 않는다).
+// 등록 솔로레이드 팀은 이 관문에 하나도 걸리지 않아야 한다(랭커가 실제로 쓰는 구성에 걸면 오탐).
+{
+  const byName = (n) => cdb.find((c) => c.name_kr === n);
+  const SR = ['아니스', '네온', 'N102', '네베', '앵커', '벨로타', '델타', '에테르', '미카', '미하라', '라피'].map(byName);
+  const five = ['Liter', 'Red Hood', 'Cinderella: Crystal Wave', 'Neon: Vision Eye', 'EVE'].map((t) => byTitle.get(t));
+  const got = engine.pickSiteTeam([...five, ...SR], 'bossing', { bossElement: 'Iron' }).team;
+  const fixedB2 = (got?.members || []).filter((m) => String(m.burst) === '2' && !byTitle.get(m.title)?.burstFlex);
+  if (!fixedB2.length) problems.push(`[보스전 고정 2버스트 관문] 제보 로스터가 또 고정 2버스트 없이 나왔다: ${(got?.members || []).map((m) => m.title).join(', ')}`);
+  let flagged = 0;
+  for (const s of j('soloRaidTeams.json').seasons) for (const t of s.teams) {
+    const ms = t.members.map((x) => byTitle.get(x));
+    if (ms.some((m) => !m)) continue;
+    if (engine.scoreTeam(ms, 'bossing', { treasureIds: new Set(ms.map((m) => m.id)) }).noFixedB2) flagged++;
+  }
+  if (flagged) problems.push(`[보스전 고정 2버스트 관문] 등록 솔로레이드 팀 ${flagged}개가 관문에 걸린다(오탐)`);
+}
+
 // --- PvP 3팀 나누기 (2026-10-25) — pickPvpSquads ---
 // 유저가 정한 순서 그대로인가: 1팀 = 사이트 PvP 답, 2팀 = 1팀 5명을 뺀 로스터의 사이트 답, 3팀 = 1·2팀 10명을 뺀 로스터의 사이트 답. 서로 안 겹친다.
 // 로스터가 모자라면 만든 만큼만(오류 없이) 돌려준다.
