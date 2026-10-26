@@ -435,3 +435,5 @@ IP도 UA도 저장하지 않는다. `visitor_hash = sha256(ip|ua|날짜)`이고 
 - 권한: Search Console → 설정 → 사용자 및 권한에 서비스 계정 이메일을 **"제한됨"**으로. 스크립트는 `webmasters.readonly` 범위만 쓴다
 - 조회: `node scripts/gscReport.mjs --sites | --summary | --daily | --query="…" | --inspect=/nikke/phantom` (머리 주석 참고)
 - 외부 라이브러리 없이 node:crypto로 JWT 서명 — 사이트 의존성을 늘리지 않는다
+- **연결됨(2026-10-26)**: Google Cloud 프로젝트 `nikke-gsc`(배당달력 프로젝트와 분리) · Search Console API 켬 · 서비스 계정 `gsc-reader@nikke-gsc.iam.gserviceaccount.com`(GCP 역할 없음) · Search Console 권한 "제한적". `--sites` → `sc-domain:nikketeamguide.com (siteRestrictedUser)`.
+  - 키 만들기는 자동 모드 안전장치에 막혀 유저가 만들어 대화로 올렸다. 그래서 키 내용이 그 대화 기록에 남았다. 키를 바꾸려면 GCP → 서비스 계정 → 키에서 옛 키를 지우고 새로 만든다.

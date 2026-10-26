@@ -17,7 +17,7 @@
 
 1. **DB 6개 절** — `nikke-site/supabase/queries/site_report.sql`을 claude.ai Supabase 커넥터 `execute_sql`로 **통째로** 보낸다(1행 JSON).
    `scripts/trafficReport.mjs`는 `.env.local`에 service_role 키가 없어 로컬에서 안 돈다.
-2. **구글** — Search Console 실적 28일(노출·클릭·평균 게재순위·상위 검색어 3). 저장 프로필 `~/.pw-profiles/nikke-google`, xvfb + headless=False.
+2. **구글** — Search Console 실적 28일(노출·클릭·평균 게재순위·상위 검색어 3). `node nikke-site/scripts/gscReport.mjs --summary`(서비스 계정 키 `~/.config/nikke/gsc-sa.json`, 2026-10-26 연결 — 브라우저 불필요). 키가 안 되면 예전처럼 저장 프로필 `~/.pw-profiles/nikke-google`, xvfb + headless=False.
    매주 할 필요는 없다 — `open-items.md`의 "구글 노출" 확인일에만. 안 봤으면 "이번엔 안 봄"이라고 쓴다.
 
 ## 양식
