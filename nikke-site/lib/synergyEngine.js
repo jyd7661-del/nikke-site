@@ -311,8 +311,17 @@ function wastedTierScore(character, mode, treasureIds) {
 // 목단(보스전 기본 D · 애장품 SS)이 전격 시즌 상위 50인 100%로 S 가산을 받고 있었다. 기준은 데이터의 두 티어 비교뿐, 새 숫자 없음.
 // `TREASURE_USAGE_GATE_OFF` 스위치(테스트용)로 옛 동작을 재현한다.
 // 화면(ResultPanel)도 같은 함수를 쓴다 — "💎를 표시하면 추천이 달라지는 니케" 안내(2026-10-01). 엔진 관문과 기준이 어긋날 수 없게.
+//
+// 2026-10-27 유저: "애장품 설정이 가능한 니케의 경우에 랭커 조합에 포함된게 있다면 그건 거의 다 애장품 상태일꺼야. 원래 애장품 있는 니케들은
+// 애장품 없이는 쓰기 좀 어려워" → **티어 비교 없이, 애장품이 있는 니케면** 관문을 건다. 티어 비교만으로는 빠지는 곳이 있었다:
+// 드레이크·바이퍼·로산나 PvP(애장품 티어 = 기본 티어), 센티·베이 캠페인, 플로라 PvP(애장품 티어 없음), 팬텀·슈가(애장품 티어 자료 자체가 없음).
+// "애장품이 있는 니케" = 애장품 원문(treasureSkills) 또는 애장품 티어(characterInvestmentNotes.treasureTiers)가 있는 니케.
+// 옛 기준(애장품 티어 > 기본 티어일 때만)은 `__NIKKE_TREASURE_GATE_TIER_ONLY` 스위치로 재현한다. 이름은 화면·테스트가 쓰는 그대로 둔다.
+const HAS_TREASURE_IDS = new Set((treasureSkills.characters || []).map((c) => c.characterId));
+const HAS_TREASURE_TITLES = new Set(characterInvestmentNotes.characters.filter((c) => c.treasureTiers).map((c) => c.name));
 export function treasureRaisesTierUnowned(character, mode, treasureIds) {
   if (treasureIds?.has(character?.id)) return false;
+  if (!globalThis.__NIKKE_TREASURE_GATE_TIER_ONLY) return HAS_TREASURE_IDS.has(character?.id) || HAS_TREASURE_TITLES.has(character?.title);
   const key = MODE_TO_TIER_KEY[mode] || 'story';
   const boosted = INVESTMENT_NOTE_BY_NAME.get(character?.title)?.treasureTiers?.[key];
   return !!boosted && (TIER_SCORE[boosted] || 0) > (TIER_SCORE[character?.tiers?.[key]] || 0);

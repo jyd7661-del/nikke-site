@@ -341,6 +341,30 @@ for (const t of teams) {
   }
 }
 
+// --- 애장품 관문은 티어 비교 없이 "애장품이 있는 니케" 전부 (2026-10-27 유저: "애장품 설정이 가능한 니케가 랭커 조합에 있다면 거의 다 애장품 상태") ---
+// 로산나는 PvP 애장품 티어 = 기본 티어(SS)라 옛 관문(티어가 오를 때만)에서 빠졌고, 애장품을 낀 랭커의 PvP 사용률 81%로 가산을 받았다.
+// 슈가·팬텀은 애장품 티어 자료가 없어 아예 빠졌다. 애장품이 없으면 실사용 점수가 줄어야 하고, 옛 기준 스위치를 켜면 그대로여야 한다.
+{
+  const team = ['Rosanna', 'Trina', 'Biscuit', 'Blanc', 'Vesti: Tactical Upgrade'].map((n) => byTitle.get(n));
+  if (team.some((c) => !c)) problems.push('[애장품 관문 범위] 시험용 이름이 DB에 없다');
+  else {
+    const ros = new Set([byTitle.get('Rosanna').id]);
+    const realOf = (ids) => engine.scoreTeam(team, 'pvp', { treasureIds: ids }).realTierTotal;
+    const without = realOf(new Set()), withT = realOf(ros);
+    globalThis.__NIKKE_TREASURE_GATE_TIER_ONLY = true;
+    const oldWithout = realOf(new Set());
+    globalThis.__NIKKE_TREASURE_GATE_TIER_ONLY = false;
+    if (!(without < withT)) problems.push(`[애장품 관문 범위] 애장품 없는 로산나가 PvP 실사용 점수를 그대로 받는다(없음 ${without} · 있음 ${withT})`);
+    if (oldWithout !== withT) problems.push('[애장품 관문 범위] 옛 기준 스위치에서 로산나 점수가 달라졌다 — 시험이 이 경우를 더는 재현하지 못한다');
+    for (const t of ['Sugar', 'Phantom']) {
+      const c = byTitle.get(t);
+      if (!c) { problems.push(`[애장품 관문 범위] ${t}가 DB에 없다`); continue; }
+      if (!engine.treasureRaisesTierUnowned(c, 'bossing', new Set())) problems.push(`[애장품 관문 범위] 애장품 니케 ${t}에 관문이 안 걸린다(애장품 티어 자료가 없는 니케)`);
+      if (engine.treasureRaisesTierUnowned(c, 'bossing', new Set([c.id]))) problems.push(`[애장품 관문 범위] 애장품을 가진 ${t}까지 막는다`);
+    }
+  }
+}
+
 // --- 애장품이 없으면 그 캐릭터의 실사용 수치를 안 쓴다 (2026-10-01 유저: "목단은 애장품이 있을 때만 랭크가 높아져") ---
 // 블라인드 판정 표본(씨앗 15 B03, 수냉 보스): 프리바티(보스전 기본 B · 애장품 SS)가 수냉 시즌 상위 50인 100%로 S 가산을 받아
 // 네온:VE(SS) 자리를 차지했다. 애장품이 없으면 빠져야 하고, 스위치를 끄면 다시 들어와야 하며, 애장품을 가지면 쓰여야 한다.

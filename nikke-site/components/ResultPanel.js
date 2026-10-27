@@ -676,7 +676,7 @@ function SynchroPriorityPanel({ roster }) {
 function AiRecommendSection({ roster, aiMode, onAiModeChange, bossElement, onBossElementChange, tower, onTowerChange, dataFreshness }) {
   const { lang, t } = useLanguage();
   if (!roster) return null;
-  // 2026-10-01: 💎(애장품)를 안 누른 니케 중 **애장품이 이 모드 티어를 올리는** 니케. 엔진은 그 니케를 애장품 없이 계산하고
+  // 2026-10-01: 💎(애장품)를 안 누른 니케 중 **애장품이 이 모드 티어를 올리는** 니케. 2026-10-27부터는 **애장품이 있는 니케 전부**(엔진 관문 주석). 엔진은 그 니케를 애장품 없이 계산하고
   // (실사용 가산 제외), 그 니케가 든 랭커 조합도 내지 않는다 — 가졌는데 표시만 안 한 사용자는 이유를 모른 채 약한 추천을 받는다.
   // 기준은 엔진 관문과 같은 함수(treasureRaisesTierUnowned)라 어긋나지 않는다. 새 판정이 아니라 사실 안내다.
   const treasureSet = new Set(roster.treasureIds || []);
