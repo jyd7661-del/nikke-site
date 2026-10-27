@@ -164,7 +164,19 @@ function allyScopes(c) {
   return v;
 }
 
-export function emptyBuffMembers(team) {
+// 이 팀에서 c의 조건부 아군 절이 받는 쪽(시전자 말고)에게 닿는가. 조건부 절이 없으면 null.
+export function condBuffLands(c, team) {
+  const { cond } = allyScopes(c);
+  if (!cond.length) return null;
+  return cond.some((sc) => {
+    const t = resolveAllyScope(sc, c, team);
+    return t !== null && t.some((m) => m.id !== c.id && isBuffReceiver(m));
+  });
+}
+
+// coreCond: 조건 없는 아군 절이 있어도 **조건부 절이 본업**인 지원형 이름(Set). 엔진이 등록 조합으로 정해 넘긴다
+//   (synergyEngine CORE_COND_SUPPORTERS 주석). 이 사람들은 uncond가 있어도 조건부 절이 비면 빈 것으로 센다.
+export function emptyBuffMembers(team, coreCond = null) {
   const out = [];
   for (const c of team) {
     // 2026-10-01: **지원형만 센다.** 이 판정은 "버퍼 자리에 버프가 빈다 → 그 칸은 0점"인데, 방어형은 버퍼가 아니다 —
@@ -174,12 +186,9 @@ export function emptyBuffMembers(team) {
     if (lc(c.class) !== 'supporter' && !globalThis.__NIKKE_D3_ALL_CLASSES) continue;
     if (lc(c.class) === 'attacker') continue;   // D1 ①과 같은 이유 — 공격형의 몫은 본인 딜이다
     const { uncond, cond } = allyScopes(c);
-    if (uncond || cond.length === 0) continue;  // 조건 없는 아군 절이 있거나, 아군 절 자체가 없으면 세지 않는다
-    const lands = cond.some((sc) => {
-      const t = resolveAllyScope(sc, c, team);
-      return t !== null && t.some((m) => m.id !== c.id && isBuffReceiver(m));
-    });
-    if (!lands) out.push({ title: c.title, id: c.id, scopes: cond });
+    if (cond.length === 0) continue;            // 아군 절 자체가 없으면 세지 않는다
+    if (uncond && !coreCond?.has(c.title)) continue; // 조건 없는 아군 절이 있으면 세지 않는다(본업이 조건부인 사람 빼고)
+    if (!condBuffLands(c, team)) out.push({ title: c.title, id: c.id, scopes: cond });
   }
   return out;
 }

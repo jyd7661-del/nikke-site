@@ -39,7 +39,7 @@ import treasureSkills from '../data/treasureSkills.json';
 import survivalRoles from '../data/survivalRoles.json';
 import { engineText } from './engineReasons';
 import { teamBurstSpeed } from './pvpBurst';
-import { deadBuffCount, emptyBuffMembers } from './buffTargets';
+import { condBuffLands, deadBuffCount, emptyBuffMembers } from './buffTargets';
 
 // --- 근거 문장의 언어 처리 (2026-08-25) ---
 //
@@ -1111,6 +1111,39 @@ export function ownStarLostMembers(members, mode) {
   );
 }
 
+// 2026-10-27 **조건부 절이 본업인 지원형** — 조건 없는 아군 절이 있어도 조건부 절이 비면 "버프가 빈 지원형"과 같이 0점.
+//   D3(emptyBuffMembers)는 전 아군 절이 하나라도 있으면 세지 않아서, 3버스트가 신데렐라 : 크리스탈 웨이브(철갑)·
+//   미하라 : 본딩 체인(작열)뿐인 팀에 아르카나를 넣었다(실사용형 벤치 s22-B04, 남은 나쁨 2건 중 하나).
+//   명단은 스킬 원문을 읽고 정했다 — 조건부 절과 전 아군 절의 크기가 한눈에 갈리는 사람만:
+//     · 아르카나: "직전에 버스트한 3버스트 전격 아군"에게 힘·마법사 카드(시전자 공격력 180% ▲ · 공격 대미지 180% ▲, 15초).
+//       전 아군 절은 공격력 5% ▲ · 공격 대미지 7.5% ▲ · 죽음 카드(시전자 공격력 50% ▲ 5초).
+//     · 토브: 샷건 아군에게 공격 속도 42.24% ▲ · 시전자 공격력 24.21% ▲(중첩 반영).
+//       전 아군 절은 치명타 확률 3.32% ▲ · 치명타 대미지 5.24% ▲ · 시전자 공격력 2.32% ▲.
+//   처음엔 "등록 팀 전부에서 조건부 절이 닿는 지원형"으로 자동으로 뽑았는데 엠마 : 택티컬 업그레이드(등록 2/2 — 같은 스쿼드)·
+//   레오나(1/1 — 샷건)까지 걸렸다. 둘은 전 아군 절이 본업이다(엠마 TU 버스트 공격력 40.07% ▲, 레오나 버스트 치명타 대미지 34.64% ▲).
+//   그래서 등록 조합은 **확인**으로만 쓴다 — 명단의 사람이 등록 팀 전부에서 대상과 같이 나와야 남긴다
+//   (실측: 아르카나 4/4 · 토브 18/18). 비교용 `__NIKKE_CORE_COND_OFF`.
+const CORE_COND_CANDIDATES = ['Arcana', 'Tove'];
+const CORE_COND_SUPPORTERS = (() => {
+  const byTitle = new Map(characterDatabase.map((c) => [c.title, c]));
+  const seen = new Map();
+  (function walk(o) {
+    if (Array.isArray(o)) {
+      if (o.length === 5 && o.every((x) => typeof x === 'string' && byTitle.has(x))) {
+        const team = o.map((x) => byTitle.get(x));
+        for (const c of team) {
+          if (!CORE_COND_CANDIDATES.includes(c.title)) continue;
+          seen.set(c.title, (seen.get(c.title) ?? true) && !!condBuffLands(c, team));
+        }
+        return;
+      }
+      o.forEach(walk);
+    } else if (o && typeof o === 'object') Object.values(o).forEach(walk);
+  })([soloRaidTeams, metaStats, towerCompositions]);
+  return new Set([...seen].filter(([, all]) => all).map(([t]) => t));
+})();
+export const coreCondSupporters = () => CORE_COND_SUPPORTERS;
+
 const CYCLE_GATE_MODES = new Set(['campaign', 'tribe_tower']);
 // 고정 2버스트 관문(scoreTeam noFixedB2 주석)을 거는 모드.
 const B2_GATE_MODES = new Set(['bossing', 'raid']);
@@ -1434,7 +1467,7 @@ export function scoreTeam(members, mode = 'campaign', opts = {}) {
   //
   // 실측(얇은 로스터 40건): 답이 바뀐 4건 전부 **이전 엔진보다 나아졌다**(나빠짐 0).
   // 일치율 53.8% → 57.9%. 가드는 그대로 — 랭커 백분위 중앙 70.5%, 실사용 조합 0건.
-  const emptyTitles = new Set(emptyBuffMembers(members).map((x) => x.title));
+  const emptyTitles = new Set(emptyBuffMembers(members, globalThis.__NIKKE_CORE_COND_OFF ? null : CORE_COND_SUPPORTERS).map((x) => x.title));
   // 2026-10-21: 다른 1버스트와 같이 넣은 아니스 : 스타도 같은 처리(ownStarLostMembers 주석).
   const ownStarLost = ownStarLostMembers(members, mode);
   for (const m of ownStarLost) emptyTitles.add(m.title);

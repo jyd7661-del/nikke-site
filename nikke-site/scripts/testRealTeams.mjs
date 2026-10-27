@@ -330,12 +330,15 @@ for (const t of teams) {
   else {
     const hasTove = (r) => (r.team?.members || []).some((m) => m.title === 'Tove');
     // 토브는 애장품 캐릭터라 애장품 실사용 게이트(아래 절)도 토브를 뺀다 — 시즌 등급 효과만 보려고 그 게이트는 양쪽 다 끈다.
+    // 2026-10-27: 본업 조건부 지원형(토브 = 샷건 버프)도 같은 이유로 양쪽 다 끈다 — 이 로스터의 토브 팀엔 샷건이 없다.
     globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF = true;
+    globalThis.__NIKKE_CORE_COND_OFF = true;
     const now = engine.pickSiteTeam(roster, 'bossing', { bossElement: 'Electronic' });
     globalThis.__NIKKE_SEASON_USAGE_OFF = true;
     const old = engine.pickSiteTeam(roster, 'bossing', { bossElement: 'Electronic' });
     globalThis.__NIKKE_SEASON_USAGE_OFF = false;
     globalThis.__NIKKE_TREASURE_USAGE_GATE_OFF = false;
+    globalThis.__NIKKE_CORE_COND_OFF = false;
     if (!hasTove(old)) problems.push('[시즌 실사용 등급] 옛 전체 등급에서도 토브가 안 나온다 — 시험 로스터가 더는 이 경우를 재현하지 못한다');
     if (hasTove(now)) problems.push('[시즌 실사용 등급] 전격 시즌 상위 50인 0.3%인 토브가 전격 보스 추천에 들어갔다 — 시즌 등급을 안 쓰고 있다');
   }
@@ -362,6 +365,33 @@ for (const t of teams) {
       if (!engine.treasureRaisesTierUnowned(c, 'bossing', new Set())) problems.push(`[애장품 관문 범위] 애장품 니케 ${t}에 관문이 안 걸린다(애장품 티어 자료가 없는 니케)`);
       if (engine.treasureRaisesTierUnowned(c, 'bossing', new Set([c.id]))) problems.push(`[애장품 관문 범위] 애장품을 가진 ${t}까지 막는다`);
     }
+  }
+}
+
+// --- 조건부 절이 본업인 지원형 (2026-10-27, lib/synergyEngine.js CORE_COND_SUPPORTERS) ---
+// 실사용형 벤치 s22-B04: 3버스트가 신데렐라 : 크리스탈 웨이브(철갑)·미하라 : 본딩 체인(작열)뿐인 팀에 아르카나를 넣었다.
+// 아르카나의 힘·마법사 카드는 3버스트 전격 아군만 받는다. 그 팀에선 아르카나 칸이 0점이어야 하고, 전격 3버스트가 있으면 살아야 한다.
+// 명단(아르카나·토브)은 등록 팀 전부에서 대상과 같이 나와야 남는다 — 등록 자료가 바뀌어 빠지면 여기서 알린다.
+{
+  const cc = engine.coreCondSupporters();
+  for (const t of ['Arcana', 'Tove']) if (!cc.has(t)) problems.push(`[본업 조건부] ${t}가 명단에서 빠졌다 — 등록 팀 중 대상 없이 쓴 팀이 생겼다`);
+  const names = ['Anis: Star', 'Arcana', 'Cinderella: Crystal Wave', 'Mihara: Bonding Chain', 'Prika'];
+  const team = names.map((n) => byTitle.get(n));
+  const fixed = [...names.slice(0, 3), 'Privaty: Unkind Maid', 'Prika'].map((n) => byTitle.get(n));
+  if ([...team, ...fixed].some((c) => !c)) problems.push('[본업 조건부] 시험용 이름이 DB에 없다');
+  else {
+    const tierOf = (tm) => engine.scoreTeam(tm, 'bossing', { bossElement: 'Electronic' }).tierTotal;
+    const now = tierOf(team);
+    globalThis.__NIKKE_CORE_COND_OFF = true;
+    const old = tierOf(team);
+    globalThis.__NIKKE_CORE_COND_OFF = false;
+    if (!(now < old)) problems.push(`[본업 조건부] 전격 3버스트 없는 팀의 아르카나가 티어 점수를 그대로 받는다(지금 ${now} · 옛 ${old})`);
+    // 대상(프리바티 : 언카인드 메이드, 전격 3버스트)이 있으면 아르카나 칸이 살아 있어야 한다 — 미하라 자리를 바꾼 팀과 비교한다.
+    const arcanaAlive = engine.scoreTeam(fixed, 'bossing', { bossElement: 'Electronic' }).tierTotal;
+    globalThis.__NIKKE_CORE_COND_OFF = true;
+    const arcanaAliveOld = engine.scoreTeam(fixed, 'bossing', { bossElement: 'Electronic' }).tierTotal;
+    globalThis.__NIKKE_CORE_COND_OFF = false;
+    if (arcanaAlive !== arcanaAliveOld) problems.push('[본업 조건부] 전격 3버스트가 있는데도 아르카나 점수가 바뀐다');
   }
 }
 
