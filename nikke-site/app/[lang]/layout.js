@@ -2,6 +2,8 @@ import '../globals.css';
 import { notFound } from 'next/navigation';
 import { Analytics } from '@vercel/analytics/next';
 import TrafficBeacon from '@/components/TrafficBeacon';
+import GoogleAnalytics, { isGaEnabled } from '@/components/GoogleAnalytics';
+import ConsentBanner from '@/components/ConsentBanner';
 import { AuthProvider } from '@/components/AuthProvider';
 import { LanguageProvider } from '@/components/LanguageProvider';
 import Header from '@/components/Header';
@@ -70,6 +72,8 @@ export default function RootLayout({ children, params }) {
             <Header />
             {children}
             <Footer />
+            {/* 분석 쿠키 동의(2026-10-28) — 유럽 시간대에만 뜬다. GA4가 실릴 때만 켠다(lib/consent.js). */}
+            <ConsentBanner enabled={isGaEnabled()} />
           </AuthProvider>
         </LanguageProvider>
         {/* Vercel Web Analytics — 방문·페이지뷰 계측 (2026-08-12, Phase 0).
@@ -81,6 +85,8 @@ export default function RootLayout({ children, params }) {
             남겨 주간 리포트 자동화가 읽게 한다. 쿠키를 쓰지 않고 IP·UA도 저장하지 않는다
             (날짜가 섞인 해시라 하루를 넘겨 추적되지 않는다). supabase/traffic_migration.sql 참고. */}
         <TrafficBeacon />
+        {/* Google Analytics 4 (2026-10-27) — 주인의 앱에서 다른 앱·사이트와 같이 보려고. 유럽 등은 동의 모드로 쿠키 없이(components/GoogleAnalytics.js). */}
+        <GoogleAnalytics />
       </body>
     </html>
   );

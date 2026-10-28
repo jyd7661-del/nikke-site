@@ -7,25 +7,34 @@
 //      · 게시글 본문이 번역을 위해 Anthropic으로 전송되는데 그 사실이 빠져 있었음
 //      · 닉네임을 저장·공개 표시하는데 수집 항목에 없었음
 //
-// 이 페이지는 서버 컴포넌트라 클라이언트 i18n(lib/i18n.js)을 쓸 수 없습니다.
-// 번역본을 올릴지는 별도 판단 사항입니다(어느 언어본이 기준인지 명시가 필요).
+// 번역본(2026-10-28, 유저 "해" — CMP·번역 판단 대기를 닫음): 영어 PrivacyEn.js · 일본어 PrivacyJa.js.
+// ⚠️ 기준은 한국어판이다(번역본 첫 문단에 적어 둠). 여기를 고치면 두 번역본도 같은 날 고친다 — 시행일자도 같이.
 import { localeMeta } from '@/lib/locale';
+import { isGaEnabled } from '@/components/GoogleAnalytics';
+import { ConsentSettingsButton } from '@/components/ConsentBanner';
+import PrivacyEn from './PrivacyEn';
+import PrivacyJa from './PrivacyJa';
 
-// 언어별 주소(2026-09-19): 본문이 한국어뿐이라 **한국어판만 색인**한다. /en·/ja 주소로도 열리지만
-// noindex + canonical을 한국어판으로 둔다(lib/locale.js localeMeta). 영어 주소에 한국어 본문을 색인시키면 해가 된다.
+const META = {
+  ko: { title: '개인정보처리방침 | 니케 조합 추천', description: '니케 조합 추천 사이트의 개인정보처리방침입니다.' },
+  en: { title: 'Privacy Policy | Nikke Team Guide', description: 'Privacy policy of Nikke Team Guide.' },
+  ja: { title: 'プライバシーポリシー | ニケ編成ガイド', description: 'ニケ編成ガイドのプライバシーポリシーです。' },
+};
+
+// 검색 색인은 한국어판만 그대로 둔다(/en·/ja는 noindex + canonical 한국어판 — lib/locale.js, sitemap·checkCanonical KO_ONLY).
+// 번역본은 읽으러 온 사람을 위한 것이지 검색용이 아니다.
 export function generateMetadata({ params }) {
-  return {
-    title: '개인정보처리방침 | 니케 조합 추천',
-    description: '니케 조합 추천 사이트의 개인정보처리방침입니다.',
-    ...localeMeta(params.lang, '/privacy'),
-  };
+  return { ...(META[params.lang] || META.ko), ...localeMeta(params.lang, '/privacy') };
 }
 
-export default function PrivacyPage() {
+export default function PrivacyPage({ params }) {
+  const consent = isGaEnabled() ? <ConsentSettingsButton /> : null;
+  if (params.lang === 'en') return <PrivacyEn consent={consent} />;
+  if (params.lang === 'ja') return <PrivacyJa consent={consent} />;
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">개인정보처리방침</h1>
-      <p className="text-slate-500 mb-8">시행일자: 2026년 8월 11일 (최초 시행: 2026년 8월 4일)</p>
+      <p className="text-slate-500 mb-8">시행일자: 2026년 10월 28일 (최초 시행: 2026년 8월 4일)</p>
 
       <p className="mb-8">
         '니케 조합 추천'(이하 '사이트')은 승리의 여신: 니케 플레이어를 위한 비공식 팬 사이트로,
@@ -59,6 +68,21 @@ export default function PrivacyPage() {
             <strong>이 값은 매일 달라져 날짜를 넘겨 같은 이용자인지 확인할 수 없습니다.</strong>{' '}
             IP 주소 원본과 브라우저 정보 원본은 저장하지 않고, 쿠키도 사용하지 않습니다.
             집계된 수치는 사이트 운영자만 열람합니다.
+          </li>
+          <li>
+            Google Analytics: 방문 통계를 보기 위해 Google Analytics 4를 사용합니다. Google이 쿠키로 방문
+            페이지·체류 시간·기기·대략적인 지역 등을 수집하며, 운영자는 개인을 알아볼 수 없는 집계만 봅니다.
+            유럽경제지역·영국·스위스에서 접속하면 동의하기 전에는 분석 쿠키를 쓰지 않습니다(동의 여부는 언제든 바꿀 수
+            있습니다{consent && <> — {consent}</>}).{' '}
+            <a
+              href="https://tools.google.com/dlpage/gaoptout"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-nikke-accent underline"
+            >
+              Google Analytics 차단 부가 기능
+            </a>
+            으로 수집을 거부할 수 있습니다.
           </li>
         </ul>
       </section>
@@ -98,7 +122,7 @@ export default function PrivacyPage() {
         <p className="mb-2">사이트 운영을 위해 아래 서비스를 이용합니다.</p>
         <ul className="list-disc pl-5 space-y-1">
           <li>Supabase — 회원 인증 및 데이터베이스</li>
-          <li>Google — 로그인(OAuth) 및 AdSense 광고 게재</li>
+          <li>Google — 로그인(OAuth), AdSense 광고 게재, Google Analytics 방문 통계</li>
           <li>
             Anthropic API(Claude) — AI 조합 추천 생성, 그리고{' '}
             <strong>커뮤니티 글 자동 번역</strong>

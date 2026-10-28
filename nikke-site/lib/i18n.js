@@ -336,6 +336,11 @@ const dict = {
     footer_disclaimer_2: '조합 정보는 커뮤니티 공략을 참고해 정리한 자료로 실제 게임 밸런스와 다를 수 있습니다.',
     footer_fan_site: '니케 조합 추천은 승리의 여신: 니케(시프트업) 비공식 팬 사이트입니다.',
     privacy_policy: '개인정보처리방침',
+    consent_title: '분석 쿠키 동의',
+    consent_body: '방문 통계(Google Analytics)에 쿠키를 써도 될까요? 거부해도 사이트는 똑같이 쓸 수 있습니다.',
+    consent_accept: '동의',
+    consent_decline: '거부',
+    consent_settings: '쿠키 설정 다시 고르기',
   },
   en: {
     site_name_brand: 'NIKKE',
@@ -655,6 +660,11 @@ const dict = {
     footer_disclaimer_2: 'Team info is compiled from community guides and may differ from actual in-game balance.',
     footer_fan_site: '"Nikke Team Guide" is an unofficial fan site for Goddess of Victory: NIKKE (SHIFT UP).',
     privacy_policy: 'Privacy Policy',
+    consent_title: 'Analytics cookie consent',
+    consent_body: 'May we use cookies for visit statistics (Google Analytics)? The site works the same if you decline.',
+    consent_accept: 'Accept',
+    consent_decline: 'Decline',
+    consent_settings: 'Change cookie settings',
   },
   ja: {
     site_name_brand: 'ニケ',
@@ -974,6 +984,11 @@ const dict = {
     footer_disclaimer_2: '編成情報はコミュニティ攻略を参考にまとめたものであり、実際のゲームバランスと異なる場合があります。',
     footer_fan_site: '「ニケ編成ガイド」は『勝利の女神:NIKKE』(Shift Up)の非公式ファンサイトです。',
     privacy_policy: 'プライバシーポリシー',
+    consent_title: '分析Cookieへの同意',
+    consent_body: 'アクセス解析(Google Analytics)にCookieを使ってもよろしいですか?拒否してもサイトは同じように使えます。',
+    consent_accept: '同意する',
+    consent_decline: '拒否する',
+    consent_settings: 'Cookie設定を変更',
   },
 };
 
