@@ -49,7 +49,8 @@ for (const id of ids) {
   // "Skill 1 <이름> Passive|Active Cooldown: <cd> Unlocks at: [Phase ]N ■ ..." — 원문 안에 "Burst Skill"이 나와도 끊기지 않게
   // 칸 머리말(이름 + Cooldown + Unlocks at)이 붙은 곳에서만 자른다. ⚠️ 이름에 '.'·'■'를 허용하면 "Fills Burst Gauge by 14.31%. Skill 2 …"가
   // 통째로 '이름'이 되어 앞 칸 끝이 잘렸다(헬름 게이지 14.31%·목단 7.48초가 원문에서 빠짐 — checkData TREASURE_NUM_UNSOURCED가 잡았다).
-  const head = /(Skill 1|Skill 2|Burst) ([^■.]{1,60}?) (Passive|Active) Cooldown: (\S+(?: s)?) Unlocks at: (?:Phase )?(\d)/g;
+  // 이름 맨 앞의 말줄임표 "..."만 따로 허용한다(프림 "... I Want To Sleep" — 2026-10-27 이것 때문에 칸 1개로 실패).
+  const head = /(Skill 1|Skill 2|Burst) ((?:\.\.\. )?[^■.]{1,60}?) (Passive|Active) Cooldown: (\S+(?: s)?) Unlocks at: (?:Phase )?(\d)/g;
   const marks = [...seg.matchAll(head)];
   if (marks.length !== 3) { console.error(`✗ ${id}: 스킬 칸 ${marks.length}개(3이어야 한다)`); failed++; continue; }
   const skills = marks.map((m, i) => ({

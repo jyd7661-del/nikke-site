@@ -508,6 +508,12 @@ for (const t of teams) {
   globalThis.__NIKKE_CDR_ALONE_OFF = true;
   if (S(arc)) problems.push('[주기 관문·쿨감] CDR_ALONE_OFF를 켜도 아르카나 팀이 느림이다 — 시험이 더는 옛 구멍을 재현하지 못한다');
   globalThis.__NIKKE_CDR_ALONE_OFF = false;
+  // ⑦ 2026-10-27 애장품 밀크: 1스킬 본인 버스트 ▼20초 상시(selfFlat) + 2스킬 풀차지 10회마다 전 아군 ▼2.83초(양 모름, unmodeled) — 둘 다 cond treasure.
+  //    밀크 혼자 1버스트인 팀은 애장품이 있으면 빠름, 없으면 느림이어야 한다. '모름'이 애장품 조건을 안 보면 없어도 느림에서 빠진다.
+  const milkTeam = ['Milk', 'Crown', 'Mast: Romantic Maid', 'Alice', 'Maxwell'];
+  const milkSlow = (ids) => engine.scoreTeam(milkTeam.map((n) => byTitle.get(n)), 'campaign', { treasureIds: ids }).slowCycle;
+  if (milkSlow(new Set([byTitle.get('Milk').id]))) problems.push('[주기 관문·쿨감] 애장품 밀크(본인 버스트 ▼20초 상시) 단독 1버스트 팀을 느리다고 판정했다');
+  if (!milkSlow(new Set())) problems.push('[주기 관문·쿨감] 애장품 없는 밀크(40초) 단독 1버스트 팀이 느림에서 빠졌다 — 애장품 쿨감(모름)에 애장품 조건이 안 걸린다');
 }
 
 // --- 애장품 쿨감도 "쿨감 제공 캐릭터"로 센다 (2026-10-11) — 애장품 목단 팀에 "쿨타임 감소 제공 캐릭터가 없다"가 붙어 AI 설명이 그대로 옮겼다 ---

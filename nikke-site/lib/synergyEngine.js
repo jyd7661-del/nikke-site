@@ -422,7 +422,8 @@ function realElementUsage(character, bossElement, mode = 'bossing', treasureIds 
 function providesCDR(character, treasureIds = null) {
   if ((character.skills || []).some((s) => /cooldown of burst skill\s*▼/i.test(s.desc || ''))) return true;
   if (globalThis.__NIKKE_TREASURE_CDR_PROVIDER_OFF || !treasureIds?.has(character.id)) return false;
-  return (BURST_CDR_BY_TITLE.get(character.title) || []).some((e) => e.kind === 'ally' && e.cond === 'treasure');
+  // 횟수에 달린 전 아군 쿨감(unmodeled ally — 애장품 밀크 풀차지 10회마다 ▼2.83초)도 제공은 제공이다. 기본 스킬 쪽 판정(루주·D:KW)과 같다.
+  return (BURST_CDR_BY_TITLE.get(character.title) || []).some((e) => (e.kind === 'ally' || (e.kind === 'unmodeled' && e.target === 'ally')) && e.cond === 'treasure');
 }
 
 // 버스트 스킬(항상 skills 배열의 마지막 원소)의 쿨타임이 20초인지.
@@ -999,7 +1000,9 @@ function fullBurstCycleSeconds(members, treasureIds = null) {
   };
   // 2026-10-06 `__NIKKE_CDR_ALONE_OFF`(비교용): 아르카나 죽음 카드를 옛 데이터처럼 '모르는 전 아군 쿨감'으로 본다(아래 aloneInStage 주석).
   const aloneOff = !!globalThis.__NIKKE_CDR_ALONE_OFF;
-  const unmodeled = (m, target) => (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => (e.kind === 'unmodeled' && e.target === target) || (aloneOff && target === 'ally' && e.cond === 'aloneInStage'));
+  // 2026-10-27 '모름'도 애장품 조건을 본다(애장품 밀크: 풀차지 10회마다 전 아군 ▼2.83초). 안 보면 애장품 없는 밀크가 팀에 있기만 해도 20초 관문을 빠져나간다.
+  const hasTreasureCdr = (m) => !globalThis.__NIKKE_TREASURE_CDR_OFF && !!treasureIds?.has(m.id);
+  const unmodeled = (m, target) => (BURST_CDR_BY_TITLE.get(m.title) || []).some((e) => (e.kind === 'unmodeled' && e.target === target && (e.cond !== 'treasure' || hasTreasureCdr(m))) || (aloneOff && target === 'ally' && e.cond === 'aloneInStage'));
   const unknownAlly = useCdr && members.some((m) => unmodeled(m, 'ally'));
   const flex = members.filter((m) => m.burstFlex);
   const evaluate = (stageOf) => {

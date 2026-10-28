@@ -1,7 +1,7 @@
 {
   "meta": {
     "note": "애장품(Treasure)을 장착하면 스킬 자체가 바뀌거나 강화되어, 애장품이 없을 때와는 다른 캐릭터와 궁합이 좋아지는 경우가 있습니다. 이 파일은 그 효과를 사람이 읽을 수 있게 정리한 자료로, 추천 근거 문장 생성에 쓰입니다. 조합 순위 자체에는 영향을 주지 않습니다 — 애장품의 점수 반영은 characterInvestmentNotes.json의 treasureTiers(애장품 보유 시 실제 티어)로 처리됩니다. 효과 설명은 data/treasureSkills.json(prydwen \"<id>-treasure\" 원문, scripts/refreshTreasureSkills.mjs)과 characterDatabase 기본 스킬의 **차이**로 단계별로 쓴다 — 애장품은 기존 스킬에 효과가 하나 더 붙거나 스킬이 강화되는 방식이다(유저 2026-10-01). 2026-08-07 판은 원문 없이 요약해 목단 버스트 쿨감 −20초를 빠뜨리고 츠바이를 반대로 적었다 — 2026-10-01 17명 전부 다시 씀. 설명 속 숫자는 원문에 있어야 한다(checkData TREASURE_NUM_UNSOURCED).",
-    "lastUpdated": "2026-10-01",
+    "lastUpdated": "2026-10-27",
     "schema": "characterId는 data/characterDatabase.json의 id 기준. synergyWith[].target은 상대 캐릭터의 title(영문) 기준.",
     "scoreBonusNote": "기존 helm/zwei 항목의 scoreBonus와 synergyWith[].bonus 값은 근거가 약한 임의 가중치이며, 엔진이 최종 점수를 tierTotal로 덮어쓰기 때문에 실제로 순위에 반영되지 않습니다. 신규 항목에는 넣지 않았습니다."
   },
@@ -144,6 +144,34 @@
       "treasureEffect": "1단계(2스킬): 해킹 코드 수집의 조건이 마지막 탄 명중 → 풀차지 명중으로 바뀌고 공격력 ▲16.8% → ▲28%(최대 5중첩, 지속 15초 → 5초)로 강화되며, 해킹 코드 상태로 마지막 탄이 맞으면 전격 코드 아군에게 시전자 공격력 기준 공격력 ▲5.8%(최대 5중첩, 15초)가 새로 붙습니다. 2단계(버스트): 해킹 코드가 최대 중첩이면 같은 대상 받는 피해 ▲18.04%(10초)가 새로 붙습니다. 3단계(1스킬): 풀버스트 시작 시 본인 재장전 속도 ▲95%(10초)가 새로 붙습니다.",
       "treasureEffect_en": "Phase 1 (Skill 2): Collect Hacking Code now triggers on Full Charge hits instead of the last bullet and rises from ATK ▲16.8% to ▲28% (up to 5 stacks, duration 15 → 5 sec), and the last bullet while in Collect Hacking Code gives Electric Code allies ATK ▲5.8% of her ATK (up to 5 stacks, 15 sec). Phase 2 (Burst): adds Damage Taken ▲18.04% (10 sec) on the same targets when Collect Hacking Code is fully stacked. Phase 3 (Skill 1): adds a fixed Reloading Speed ▲95% for herself at the start of Full Burst (10 sec).",
       "treasureEffect_ja": "フェーズ1（スキル2）：ハッキングコード収集の条件が最後の弾命中→フルチャージ命中に変わり、攻撃力上昇が16.8%→28%（最大5重複、持続15秒→5秒）に強化され、ハッキングコード状態で最後の弾が当たると電撃コードの味方に使用者の攻撃力を基準とした攻撃力5.8%上昇（最大5重複、15秒）が追加される。フェーズ2（バースト）：ハッキングコードが最大重複なら同じ対象の被ダメージ18.04%上昇（10秒）が追加される。フェーズ3（スキル1）：フルバースト開始時に自身のリロード速度95%上昇（10秒）が追加される。"
+    },
+    {
+      "characterId": "frima",
+      "title": "Frima",
+      "treasureEffect": "1단계(1스킬): 일반 공격 4회 명중 시 대상 방어력 ▼15.84%가 풀차지 명중 시 「졸림: 방어력 ▼4%(최대 5중첩, 10초)」로 바뀌고, 졸림이 최대 중첩일 때 풀차지를 6회 명중하면 본인이 「기상: 일반 공격이 진실 대미지로 들어감(10초)」 상태가 되는 효과가 새로 붙습니다. 2단계(버스트): 기상 상태면 전 아군 진실 대미지 ▲49.97%(10초)가 새로 붙습니다. 3단계(2스킬): 전 아군 최대 체력 ▲6.09%의 지속이 4초 → 5초로 늘고, 기상 상태로 풀차지 공격하면 전 아군 진실 대미지 ▲28.16%(5초)가 새로 붙습니다.",
+      "treasureEffect_en": "Phase 1 (Skill 1): the DEF ▼15.84% on the target after 4 normal attacks becomes Sleepy on Full Charge hits (DEF ▼4%, up to 5 stacks, 10 sec), and adds Wake Up: after 6 Full Charge hits while Sleepy is fully stacked, her normal attacks deal true damage (10 sec). Phase 2 (Burst): adds True Damage ▲49.97% for all allies (10 sec) while in Wake Up. Phase 3 (Skill 2): the all-ally Max HP ▲6.09% lasts 5 sec instead of 4, and Full Charge attacks in Wake Up add True Damage ▲28.16% for all allies (5 sec).",
+      "treasureEffect_ja": "フェーズ1（スキル1）：通常攻撃4回命中時の対象の防御力15.84%低下が、フルチャージ命中時の「眠気：防御力4%低下（最大5重複、10秒）」に変わり、眠気が最大重複の状態でフルチャージを6回命中させると自身が「起床：通常攻撃が真実ダメージになる（10秒）」状態になる効果が追加される。フェーズ2（バースト）：起床状態なら味方全体の真実ダメージ49.97%上昇（10秒）が追加される。フェーズ3（スキル2）：味方全体の最大HP6.09%上昇の持続が4秒→5秒に延び、起床状態でフルチャージ攻撃すると味方全体の真実ダメージ28.16%上昇（5秒）が追加される。"
+    },
+    {
+      "characterId": "milk",
+      "title": "Milk",
+      "treasureEffect": "1단계(1스킬): 공격력 ▲31.83%(10초)를 받는 아군이 공격력 상위 2기 → 3기로 늘고, 전투 시작 시 본인 버스트 쿨타임 ▼20초(상시)가 새로 붙어 버스트 쿨타임이 40초 → 20초가 됩니다. 2단계(2스킬): 풀차지 공격 10회마다 전 아군 버스트 쿨타임 ▼2.83초가 새로 붙습니다. 3단계(버스트): 전 아군 회복량 ▲75.5%(10초)가 새로 붙습니다.",
+      "treasureEffect_en": "Phase 1 (Skill 1): the ATK ▲31.83% buff (10 sec) now reaches the 3 highest-ATK allies instead of 2, and adds a permanent Burst cooldown ▼20 sec for herself from the start of battle, so her Burst cooldown goes from 40 to 20 sec. Phase 2 (Skill 2): adds Burst cooldown ▼2.83 sec for all allies every 10 Full Charge attacks. Phase 3 (Burst): adds Potency of HP restored ▲75.5% for all allies (10 sec).",
+      "treasureEffect_ja": "フェーズ1（スキル1）：攻撃力31.83%上昇（10秒）の対象が攻撃力上位の味方2機→3機に増え、戦闘開始時に自身のバーストスキルクールタイム20秒減少（持続）が追加され、バーストのクールタイムが40秒→20秒になる。フェーズ2（スキル2）：フルチャージ攻撃10回ごとに味方全体のバーストスキルクールタイム2.83秒減少が追加される。フェーズ3（バースト）：味方全体の回復量75.5%上昇（10秒）が追加される。"
+    },
+    {
+      "characterId": "poli",
+      "title": "Poli",
+      "treasureEffect": "1단계(1스킬): 전투 진입 시 본인에게 「폴리스 배지: 시전자 최종 최대 체력 100% 보호막(10초)」이 새로 붙습니다. 2단계(버스트): 아군 공용 보호막이 최종 최대 체력의 22.27% → 40%로 커지고, 폴리스 배지 상태면 본인이 불굴(5초)을 얻고 배지가 지워지는 효과가 새로 붙습니다. 3단계(2스킬): 폴리스 배지가 끝나면 본인이 1초마다 최종 최대 체력의 5%를 5초 동안 회복하는 효과가 새로 붙습니다.",
+      "treasureEffect_en": "Phase 1 (Skill 1): adds Police Badge on entering battle, a shield for herself equal to 100% of her final Max HP (10 sec). Phase 2 (Burst): the shared all-ally shield grows from 22.27% to 40% of her final Max HP, and while in Police Badge she gains Indomitability (5 sec) and the badge is removed. Phase 3 (Skill 2): adds self-healing of 5% of her final Max HP every 1 sec for 5 sec when Police Badge ends.",
+      "treasureEffect_ja": "フェーズ1（スキル1）：戦闘開始時に自身に「ポリスバッジ：最終最大HPの100%のバリア（10秒）」が追加される。フェーズ2（バースト）：味方共用バリアが最終最大HPの22.27%→40%に強化され、ポリスバッジ状態なら自身が不屈（5秒）を得てバッジが解除される効果が追加される。フェーズ3（スキル2）：ポリスバッジ終了時に自身が1秒ごとに最終最大HPの5%を5秒間回復する効果が追加される。"
+    },
+    {
+      "characterId": "diesel",
+      "title": "Diesel",
+      "treasureEffect": "1단계(2스킬): 딸기 사탕 조건이 일반 공격 100회 → 70회 명중으로 줄고, 최대 중첩을 해제할 때 전 아군 관통 대미지 ▲30%(10초)가 새로 붙습니다. 2단계(버스트): 공격력 상위 적 5기에게 거는 도발 5.06초가 「유인: 적 전체 도발(10초)」로 바뀌고, 본인 최대 체력 ▲100.05%(체력 회복 없음, 10초)가 새로 붙습니다(대미지 299.66% → 299.98%). 3단계(1스킬): 피격 시 회복(최종 최대 체력의 12.96%) 조건이 풀버스트 중 → 유인 상태 중으로 바뀌고, 유인 상태로 일반 공격 150회를 명중하면 본인 중첩형 버프의 중첩 수가 1 늘어나는 효과가 새로 붙습니다.",
+      "treasureEffect_en": "Phase 1 (Skill 2): Strawberry Candy now needs 70 normal attack hits instead of 100, and clearing max stacks adds Pierce Damage ▲30% for all allies (10 sec). Phase 2 (Burst): the 5.06 sec Taunt on the 5 highest-ATK enemies becomes Attract, a Taunt on all enemies (10 sec), and adds Max HP ▲100.05% for herself without restoring HP (10 sec); damage goes from 299.66% to 299.98%. Phase 3 (Skill 1): the heal when attacked (12.96% of her final Max HP) now works in Attract status instead of during Full Burst, and landing 150 normal attacks in Attract adds 1 to the stack count of her stackable buffs.",
+      "treasureEffect_ja": "フェーズ1（スキル2）：イチゴキャンディの条件が通常攻撃100回→70回命中に減り、最大重複を解除した時に味方全体の貫通ダメージ30%上昇（10秒）が追加される。フェーズ2（バースト）：攻撃力上位の敵5機への挑発5.06秒が「誘引：敵全体を挑発（10秒）」に変わり、自身の最大HP100.05%上昇（HP回復なし、10秒）が追加される（ダメージ299.66%→299.98%）。フェーズ3（スキル1）：被弾時の回復（最終最大HPの12.96%）の条件がフルバースト中→誘引状態中に変わり、誘引状態で通常攻撃を150回命中させると自身の重複型バフの重複数が1増える効果が追加される。"
     }
   ]
 }

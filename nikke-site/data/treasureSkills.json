@@ -1,6 +1,6 @@
 {
   "_doc": "애장품 스킬 원문(prydwen \"<id>-treasure\" 페이지, A등급). scripts/refreshTreasureSkills.mjs가 만든다 — 손으로 고치지 말 것. phase = 그 칸이 바뀌는 애장품 단계. treasureEffects.json의 설명은 이 원문과 characterDatabase 기본 스킬의 차이로 쓴다(checkData TREASURE_NUM_UNSOURCED).",
-  "fetchedOn": "2026-10-02",
+  "fetchedOn": "2026-10-27",
   "characters": [
     {
       "characterId": "bay",
@@ -59,6 +59,36 @@
           "cooldown": 20,
           "phase": 3,
           "text": "Affects the 5 enemy unit(s) with the lowest remaining HP. Deals 145.46% of final ATK as damage. DEF ▼ 14.54% for 10 sec. ■ Affects all allies. Restores HP equal to 30.2% of the skill user's final max HP."
+        }
+      ]
+    },
+    {
+      "characterId": "diesel",
+      "source": "https://www.prydwen.gg/nikke/characters/diesel-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Strawberry Fields",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates when entering Full Burst. Affects self. DEF ▲ 25.92% for 10 sec. ■ Activates when attacked in Attract Status. Affects self. Recovers HP by 12.96% of the caster's final Max HP. ■ Activates after landing 150 normal attacks in Attract Status. Affects self. ▲ Stack count of stackable buffs by 1."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Sweet Strawberry Goodness",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates after landing 70 normal attack(s). Affects self. Strawberry Candy: Max Ammunition Capacity ▲ 56.7% for 10 time(s) and lasts for 10 sec. ■ Affects all allies when the caster reaches max stacks of Strawberry Candy. Activates after clearing stacks effect. Reload 86.62% magazine(s). Pierce Damage ▲ 30% for 10 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Strawberry Shock",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 2,
+          "text": "Affects 5 enemy unit(s) with the highest ATK. Deals 299.98% final ATK as damage. ■ Affects self. Max HP ▲ 100.05% without restoring HP for 10 sec. Attract: Taunt all enemies for 10 sec."
         }
       ]
     },
@@ -153,6 +183,36 @@
       ]
     },
     {
+      "characterId": "frima",
+      "source": "https://www.prydwen.gg/nikke/characters/frima-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "... I Want To Sleep",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when hitting a target with Full Charge. Sleepy: DEF ▼ 4%, stacks up to 5 times for 10 sec. ■ Activates when hitting a target with Full Charge for 6 times. Affects self when Sleepy is fully stacked. Wake up: Normal attacks deal true damage for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "... Ah",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Activates when attacking with Full Charge. Affects all allies. Max HP ▲ 6.09% for 5 sec. ■ Activates when attacking with Full Charge. Affects all allies when in Wake Up status. True Damage ▲ 28.16% for 5 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "… Annoying",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 2,
+          "text": "Affects 10 enemy targets with the highest DEF. Deals 101.66% of final ATK as damage. DEF ▼ 9.86% for 10 sec. ■ Affects all allies. Max HP ▲ 30.26% for 4 sec. ■ Activates when in Wake Up status. Affects all allies. True Damage ▲ 49.97% for 10 sec."
+        }
+      ]
+    },
+    {
       "characterId": "helm",
       "source": "https://www.prydwen.gg/nikke/characters/helm-treasure",
       "skills": [
@@ -243,6 +303,36 @@
       ]
     },
     {
+      "characterId": "milk",
+      "source": "https://www.prydwen.gg/nikke/characters/milk-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "In it to Win It",
+          "type": "Active",
+          "cooldown": 20,
+          "phase": 1,
+          "text": "Activates every 20 sec. Affects 3 ally unit(s) with the highest ATK. ATK ▲ 31.83% for 10 sec. ■ Activates at the start of the battle. Affects self. Cooldown of Burst Skill ▼ 20 sec continuously."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "Sugar Rush",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 2,
+          "text": "Activates when above 80% HP. Affects all allies. Critical Damage ▲ 11.13% continuously. ■ Activates when attacking with Full Charge for 10 time(s). Affects all allies. Cooldown of Burst Skill ▼ 2.83 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Victory is Mine",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 3,
+          "text": "Affects 1 enemy unit(s) with the highest DEF. Deals 367.34% of final ATK as damage. ■ Affects all allies. Recovers 16.16% of attack damage as HP over 10 sec. Potency of HP restored ▲ 75.5% for 10 sec."
+        }
+      ]
+    },
+    {
       "characterId": "miranda",
       "source": "https://www.prydwen.gg/nikke/characters/miranda-treasure",
       "skills": [
@@ -329,6 +419,36 @@
           "cooldown": 40,
           "phase": 3,
           "text": "Affects all enemies. Deals 1457.28% of final ATK as distributed damage. ■ Affects the enemy if the enemy is a Fire Code stage target. Damage Taken ▲ 18% for 30 sec. ■ Affects self. Max Ammunition Capacity ▲ 50% for 10 sec."
+        }
+      ]
+    },
+    {
+      "characterId": "poli",
+      "source": "https://www.prydwen.gg/nikke/characters/poli-treasure",
+      "skills": [
+        {
+          "slot": "Skill 1",
+          "name": "Brave Call",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 1,
+          "text": "Activates when performing 5 normal attack(s). Affects all allies. ATK ▲ 5.46% for 10 sec. ■ Activates when entering battle. Affects self. Police Badge: Creates a shield equal to 100% of the caster's final max HP for 10 sec."
+        },
+        {
+          "slot": "Skill 2",
+          "name": "That's a Good Boy",
+          "type": "Passive",
+          "cooldown": null,
+          "phase": 3,
+          "text": "Affects self and 2 other ally unit(s) with the lowest HP every 20 sec. DEF ▲ 23.51% for 10 sec. Equally shares damage taken for 10 sec. ■ Activates when Police Badge ends. Affects self. Continuously recovers 5% of caster's final Max HP every 1 sec for 5 sec."
+        },
+        {
+          "slot": "Burst",
+          "name": "Poli's Defense Line",
+          "type": "Active",
+          "cooldown": 40,
+          "phase": 2,
+          "text": "Affects self if in Police Badge status. Gains Indomitability for 5 sec. Removes Police Badge. ■ Affects self. Creates a shield equal to 40% of the caster’s final Max HP, which protects all allies from damage. Lasts for 10 sec. ■ Affects all allies. ATK ▲ 44.55% for 10 sec."
         }
       ]
     },
