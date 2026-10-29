@@ -876,6 +876,32 @@ for (const t of teams) {
   if (unconstrainedMiss === 0) problems.push('[생존 역할] 조건 없이도 늘 힐러·탱커가 든다 — 시험 로스터를 다시 고를 것');
 }
 
+// 원맨아미 제외(2026-10-29, lib/synergyEngine.js fillTeam 주석). 재측정에서 원맨아미가 이긴 실제 5인을 그대로 로스터로 준다.
+// 막는 고장: 제외 조건이 풀려 "1명 + 티어 순 4명"이 다시 "prydwen 등록 조합" 꼬리표로 나가는 것.
+// 역테스트 전제: 제외를 끄면(__NIKKE_ONEMAN_OFF) 이 로스터들에서 원맨아미가 실제로 뽑혀야 한다 — 아니면 이 검사는 아무것도 재지 않는다.
+{
+  const oneMan = new Set((JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'synergyNotes.json'), 'utf8')).archetypes || [])
+    .filter((a) => (a.members || []).length === 1 && (a.flexSlots || []).length >= 4).map((a) => a.name));
+  const ROSTERS = [
+    ['Anis: Star', 'Liberalio', 'Neon: Vision Eye', 'Rapi: Red Hood', 'Takina Inoue'],
+    ['Ade: Agent Bunny', 'Alice', 'Rei Ayanami (Tentative Name)', 'Rouge', 'Scarlet'],
+    ['Dorothy', 'Drake: Great Villain', 'Maxwell: Ordinary Mechanic', 'Scarlet: Black Shadow', 'Snow White: Heavy Arms'],
+    ['Cinderella: Crystal Wave', 'Emma: Tactical Upgrade', 'Eunhwa: Tactical Upgrade', 'Sakura: Bloom in Summer', 'Vesti: Tactical Upgrade'],
+  ];
+  let pickedWhenOff = 0;
+  for (const names of ROSTERS) {
+    const r = names.map((n) => byTitle.get(n)).filter(Boolean);
+    const on = engine.findExactTeamMatch(r, 'campaign', { lang: 'ko' });
+    if (on && oneMan.has(on.archetypeName)) problems.push(`[원맨아미] 제외했는데 ${on.archetypeName}가 뽑혔다 — ${names.join(', ')}`);
+    globalThis.__NIKKE_ONEMAN_OFF = true;
+    const off = engine.findExactTeamMatch(r, 'campaign', { lang: 'ko' });
+    delete globalThis.__NIKKE_ONEMAN_OFF;
+    if (off && oneMan.has(off.archetypeName)) pickedWhenOff++;
+  }
+  if (oneMan.size === 0) problems.push('[원맨아미] 고정 1명 + 빈칸 4칸 아키타입이 0개 — 데이터가 바뀌었으면 이 검사를 다시 볼 것');
+  if (pickedWhenOff < ROSTERS.length) problems.push(`[원맨아미] 제외를 꺼도 ${ROSTERS.length}건 중 ${pickedWhenOff}건만 원맨아미 — 시험 로스터를 다시 고를 것`);
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

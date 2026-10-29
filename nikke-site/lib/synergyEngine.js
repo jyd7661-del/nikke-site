@@ -2733,6 +2733,11 @@ export function findExactTeamMatch(ownedCharacters, mode = 'campaign', opts = {}
     const fixed = a.members || [];
     const slots = a.flexSlots || [];
     if (fixed.length + slots.length !== 5) return null;
+    // 원맨아미(고정 1명 + 빈칸 4칸)는 후보에서 뺀다(2026-10-29, 유저 "그래" — 판단 대기 "추천 화면 개선 ③").
+    //   prydwen이 "얘는 혼자 캐리한다"고 쓴 서술을 조합처럼 등록한 것이라(docs/engine.md 4-4), 이기면 1명 + 티어 순 4명인데
+    //   화면엔 "prydwen 등록 조합"으로 나간다. 재측정(캠페인 무작위 SSR 10~120명 × 200회): 이긴 67건 중 56건은 빼도 같은 5명,
+    //   티어 차 평균 0 — 달라지는 건 꼬리표뿐이라 꼬리표를 사실대로 맞춘다. 비교용 `__NIKKE_ONEMAN_OFF`.
+    if (fixed.length === 1 && slots.length >= 4 && !globalThis.__NIKKE_ONEMAN_OFF) return null;
     if (!fixed.every((t) => ownedTitleSet.has(t))) return null;
     if (fixed.some((t) => excludeTitles.has(t))) return null;
     const need = requireTitles.filter((t) => !fixed.includes(t));
