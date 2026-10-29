@@ -5,7 +5,7 @@ export default function PrivacyEn({ consent }) {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">Privacy Policy</h1>
-      <p className="text-slate-500 mb-2">Effective date: October 28, 2026 (first effective: August 4, 2026)</p>
+      <p className="text-slate-500 mb-2">Effective date: October 29, 2026 (first effective: August 4, 2026)</p>
       <p className="text-slate-500 mb-8">
         This is a translation provided for convenience. If it differs from the Korean original, the Korean version prevails.
       </p>
@@ -38,7 +38,10 @@ export default function PrivacyEn({ consent }) {
             visitors, we store your IP address and browser information{' '}
             <strong>combined with the date in an irreversible form (SHA-256 hash)</strong>;{' '}
             <strong>this value changes every day, so it cannot be used to recognize the same visitor across days.</strong>{' '}
-            We do not store the original IP address or browser information, and this does not use cookies. Only the Site
+            We do not store the original IP address or browser information, and this does not use cookies. To count returning
+            visitors, your browser keeps only the date of your last visit in local storage (localStorage), and we receive only
+            whether you visited on an earlier date (in European Economic Area, UK and Swiss time zones, only after you accept
+            analytics cookies). Only the Site
             operator can see the totals.
           </li>
           <li>

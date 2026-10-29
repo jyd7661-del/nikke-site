@@ -27,6 +27,9 @@ const fixed = fs.readFileSync(path.join(ROOT, 'lib', 'traffic.js'), 'utf8')
 fs.writeFileSync(path.join(tmp, 'traffic.mjs'), fixed);
 const { normalizePath, isBot, allTrackablePaths, normalizeSource, normalizeCountry, normalizeFeature, normalizeLang } = await import(pathToFileURL(path.join(tmp, 'traffic.mjs')).href);
 
+// 재방문 판정은 브라우저 번들에 실리므로 캐릭터 DB를 끌고 오는 traffic.js와 따로 둔다(lib/returnVisit.js).
+const { isReturningVisit } = await import(pathToFileURL(path.join(ROOT, 'lib', 'returnVisit.js')).href);
+
 const db = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'characterDatabase.json'), 'utf8'));
 
 const fails = [];
@@ -118,6 +121,11 @@ check('검색어가 유입처에 남지 않는다', !String(normalizeSource('htt
 // 기능 이벤트는 화이트리스트만(공개 엔드포인트 — 아무 이름이나 받으면 행이 무한히 는다). 언어는 셋 중 하나로.
 check('기능 이벤트 화이트리스트', normalizeFeature('synchro_rank') === 'synchro_rank' && normalizeFeature('x'.repeat(30)) === null && normalizeFeature(undefined) === null && normalizeFeature({}) === null);
 check('기능 이벤트 언어', normalizeLang('ja') === 'ja' && normalizeLang('en') === 'en' && normalizeLang('ko') === 'ko' && normalizeLang('zz') === 'ko' && normalizeLang(null) === 'ko');
+// 재방문(2026-10-29): 앞선 날만 참. 같은 날을 참으로 세면 하루 안에 페이지만 옮겨도 재방문이 되고,
+// 미래 날짜를 참으로 세면 시계가 틀린 기기가 매일 재방문으로 잡힌다.
+check('재방문 판정', isReturningVisit('2026-10-28', '2026-10-29') && isReturningVisit('2025-12-31', '2026-01-01')
+  && !isReturningVisit('2026-10-29', '2026-10-29') && !isReturningVisit('2026-10-30', '2026-10-29')
+  && !isReturningVisit(null, '2026-10-29') && !isReturningVisit('garbage', '2026-10-29') && !isReturningVisit('2026-10-28T00', '2026-10-29'));
 check('국가 정규화', normalizeCountry('kr') === 'KR' && normalizeCountry('') === 'XX' && normalizeCountry(null) === 'XX' && normalizeCountry('KOR') === 'XX');
 
 // ---------------------------------------------------------------------------

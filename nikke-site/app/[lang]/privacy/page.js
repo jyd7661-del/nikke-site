@@ -34,7 +34,7 @@ export default function PrivacyPage({ params }) {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">개인정보처리방침</h1>
-      <p className="text-slate-500 mb-8">시행일자: 2026년 10월 28일 (최초 시행: 2026년 8월 4일)</p>
+      <p className="text-slate-500 mb-8">시행일자: 2026년 10월 29일 (최초 시행: 2026년 8월 4일)</p>
 
       <p className="mb-8">
         '니케 조합 추천'(이하 '사이트')은 승리의 여신: 니케 플레이어를 위한 비공식 팬 사이트로,
@@ -66,7 +66,9 @@ export default function PrivacyPage({ params }) {
             수를 세기 위해 접속 IP 주소와 브라우저 정보를{' '}
             <strong>날짜와 함께 되돌릴 수 없는 형태로 변환(SHA-256 해시)</strong>해 저장하며,{' '}
             <strong>이 값은 매일 달라져 날짜를 넘겨 같은 이용자인지 확인할 수 없습니다.</strong>{' '}
-            IP 주소 원본과 브라우저 정보 원본은 저장하지 않고, 쿠키도 사용하지 않습니다.
+            IP 주소 원본과 브라우저 정보 원본은 저장하지 않고, 쿠키도 사용하지 않습니다. 다시 찾아온 방문자 수를 세기 위해
+            브라우저 저장소(localStorage)에 마지막 방문 날짜 하나만 남기고, 서버에는 &quot;이전 날짜에 온 적 있음&quot; 여부만
+            보냅니다(유럽경제지역·영국·스위스 시간대에서는 분석 쿠키에 동의한 뒤에만).
             집계된 수치는 사이트 운영자만 열람합니다.
           </li>
           <li>

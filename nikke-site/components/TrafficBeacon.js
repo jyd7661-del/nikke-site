@@ -2,6 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
+import { inConsentRegion, readConsent } from '@/lib/consent';
+import { isReturningVisit } from '@/lib/returnVisit';
 
 // 자체 방문 계측 비콘. (2026-08-26)
 //
@@ -14,6 +16,22 @@ import { useEffect, useRef } from 'react';
 // 이 문서에서 랜딩을 이미 보냈는가. useRef가 아니라 모듈 변수인 이유: 언어를 바꾸면 [lang] 레이아웃이
 // 다시 마운트돼 ref가 초기화되는데, 문서는 그대로라 같은 referrer로 랜딩이 한 번 더 잡힌다.
 let landingSent = false;
+
+// 재방문 표시(2026-10-29, 유저 "2일 이상 온 사람 접속수도 세줘"). 이 브라우저에 지난 방문 날짜(UTC) 하나만 남기고,
+// 랜딩 때 "앞선 날에 온 적 있음"만 서버로 보낸다 — 서버는 날짜를 넘는 식별자를 여전히 모른다(lib/returnVisit.js).
+// 유럽 시간대는 분석 동의(lib/consent.js)를 받은 뒤에만 읽고 쓴다. 저장이 막힌 브라우저는 그냥 첫 방문으로 센다.
+const LAST_VISIT_KEY = 'nikke-last-visit';
+function returningFlag() {
+  try {
+    if (inConsentRegion() && readConsent() !== 'granted') return false;
+    const today = new Date().toISOString().slice(0, 10);
+    const ret = isReturningVisit(localStorage.getItem(LAST_VISIT_KEY), today);
+    localStorage.setItem(LAST_VISIT_KEY, today);
+    return ret;
+  } catch {
+    return false;
+  }
+}
 
 // 화면 기능 사용 1회(2026-10-25) — 이름은 lib/traffic.js FEATURE_EVENTS에 있는 것만 서버가 센다.
 export function trackFeature(event, lang) {
@@ -41,7 +59,7 @@ export default function TrafficBeacon() {
     landingSent = true;
     lastSent.current = pathname;
 
-    const body = JSON.stringify(landing ? { path: pathname, landing: true, ref: document.referrer || '' } : { path: pathname });
+    const body = JSON.stringify(landing ? { path: pathname, landing: true, ref: document.referrer || '', ret: returningFlag() } : { path: pathname });
     try {
       if (navigator.sendBeacon) {
         navigator.sendBeacon('/api/track', new Blob([body], { type: 'application/json' }));

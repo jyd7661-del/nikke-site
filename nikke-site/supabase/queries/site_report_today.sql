@@ -8,6 +8,9 @@ select
      'today_people', (select count(*) from daily_visitors, b where view_date = t),
      'yday_people',  (select count(*) from daily_visitors, b where view_date = y),
      'avg7_people',  (select round(count(*) / 7.0, 1) from daily_visitors, b where view_date between s and y),
+     -- 재방문(2026-10-29~): 그날 첫 화면에서 "앞선 날에 온 적 있음"이 실려 온 방문자(TrafficBeacon · returning_visitor_migration.sql)
+     'today_returning', (select count(*) from daily_visitors, b where view_date = t and is_returning),
+     'yday_returning',  (select count(*) from daily_visitors, b where view_date = y and is_returning),
      'today_loads',  (select coalesce(sum(views),0) from page_views, b where view_date = t),
      'yday_loads',   (select coalesce(sum(views),0) from page_views, b where view_date = y),
      'avg7_loads',   (select round(coalesce(sum(views),0) / 7.0, 1) from page_views, b where view_date between s and y)

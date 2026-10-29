@@ -5,7 +5,7 @@ export default function PrivacyJa({ consent }) {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">プライバシーポリシー</h1>
-      <p className="text-slate-500 mb-2">施行日:2026年10月28日(初回施行:2026年8月4日)</p>
+      <p className="text-slate-500 mb-2">施行日:2026年10月29日(初回施行:2026年8月4日)</p>
       <p className="text-slate-500 mb-8">
         この文書は便宜のための翻訳です。韓国語の原文と内容が異なる場合は、韓国語版が優先されます。
       </p>
@@ -37,7 +37,9 @@ export default function PrivacyJa({ consent }) {
             と接続国を集計します。訪問者数を数えるため、IPアドレスとブラウザ情報を
             <strong>日付と合わせて元に戻せない形(SHA-256ハッシュ)に変換</strong>して保存します。
             <strong>この値は毎日変わるため、日をまたいで同じ利用者かどうかを確認することはできません。</strong>
-            IPアドレスとブラウザ情報そのものは保存せず、Cookieも使いません。集計値はサイト運営者だけが閲覧します。
+            IPアドレスとブラウザ情報そのものは保存せず、Cookieも使いません。再訪問者数を数えるため、ブラウザの保存領域(localStorage)に
+            最後の訪問日だけを残し、サーバーには「以前の日付に訪れたことがあるか」だけを送ります(欧州経済領域・英国・スイスのタイムゾーンでは、
+            分析用Cookieに同意した後のみ)。集計値はサイト運営者だけが閲覧します。
           </li>
           <li>
             Google Analytics:アクセス統計のためにGoogle Analytics 4を利用しています。GoogleがCookieで閲覧ページ・滞在時間・端末・おおよその地域などを収集し、

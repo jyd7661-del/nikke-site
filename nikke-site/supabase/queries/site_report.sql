@@ -7,6 +7,8 @@ select
   (select json_build_object(
      'this_people', (select count(*) from daily_visitors, b where view_date between s and e),
      'prev_people', (select count(*) from daily_visitors, b where view_date between ps and pe),
+     -- 재방문(2026-10-29~): 그날 첫 화면에서 "앞선 날에 온 적 있음"이 실려 온 방문자. 날짜별 합이라 같은 사람이 3일 오면 2로 센다.
+     'this_returning', (select count(*) from daily_visitors, b where view_date between s and e and is_returning),
      'this_loads',  (select coalesce(sum(views),0) from page_views, b where view_date between s and e),
      'prev_loads',  (select coalesce(sum(views),0) from page_views, b where view_date between ps and pe),
      'daily', (select json_agg(json_build_object('d', d, 'people', p, 'loads', l) order by d) from (

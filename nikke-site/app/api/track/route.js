@@ -59,7 +59,8 @@ export async function POST(req) {
     const source = body?.landing === true ? normalizeSource(body?.ref) : null;
     const [pv, dv, ts] = await Promise.allSettled([
       supabase.rpc('bump_page_view', { p_path: path, p_date: date }),
-      supabase.rpc('record_visitor', { p_hash: visitorHash(clientIp(req), ua, date), p_date: date }),
+      // 재방문(2026-10-29)은 랜딩 때만 실려 온다 — 참/거짓 한 비트, 그날 행에 표시만 한다(supabase/returning_visitor_migration.sql).
+      supabase.rpc('record_visitor_ret', { p_hash: visitorHash(clientIp(req), ua, date), p_date: date, p_returning: body?.landing === true && body?.ret === true }),
       source
         ? supabase.rpc('bump_traffic_source', {
           p_date: date, p_source: source, p_country: normalizeCountry(req.headers.get('x-vercel-ip-country')), p_landing: path,
