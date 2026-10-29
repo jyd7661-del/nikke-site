@@ -11,6 +11,7 @@ import {
 } from '@/lib/board';
 import { fetchTranslations } from '@/lib/translate';
 import { useLanguage } from '@/components/LanguageProvider';
+import LoginButton from '@/components/LoginButton';
 import { dateLocale } from '@/lib/i18n';
 import TranslationToggle from '@/components/TranslationToggle';
 
@@ -313,12 +314,17 @@ export default function PostDetailPage() {
           disabled={!user}
           className="flex-1 bg-slate-900 border border-slate-700 rounded px-3 py-2 text-sm outline-none focus:border-nikke-accent disabled:opacity-50"
         />
-        <button
-          disabled={!user || submitting}
-          className="bg-nikke-accent text-slate-900 font-semibold text-sm px-4 py-2 rounded disabled:opacity-50"
-        >
-          {t('submit_short')}
-        </button>
+        {/* 로그인 전에는 눌리지 않는 등록 버튼 대신 로그인 버튼(2026-10-29). 로그인 뒤 이 글로 돌아온다. */}
+        {user ? (
+          <button
+            disabled={submitting}
+            className="bg-nikke-accent text-slate-900 font-semibold text-sm px-4 py-2 rounded disabled:opacity-50"
+          >
+            {t('submit_short')}
+          </button>
+        ) : (
+          <LoginButton className="shrink-0" />
+        )}
       </form>
     </main>
   );

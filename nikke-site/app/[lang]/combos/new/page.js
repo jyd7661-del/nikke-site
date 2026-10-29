@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
 import MemberSelect from '@/components/MemberSelect';
 import { useLanguage } from '@/components/LanguageProvider';
+import LoginButton from '@/components/LoginButton';
 import { createCombo } from '@/lib/combos';
 
 export default function NewComboPage() {
@@ -26,7 +27,8 @@ export default function NewComboPage() {
   if (!user) {
     return (
       <main className="max-w-2xl mx-auto px-4 py-8">
-        <p className="text-sm text-slate-400">{t('login_required_combo')}</p>
+        <p className="text-sm text-slate-400 mb-3">{t('login_required_combo')}</p>
+        <LoginButton />
       </main>
     );
   }

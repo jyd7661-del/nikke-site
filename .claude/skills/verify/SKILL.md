@@ -1,5 +1,5 @@
 ---
-description: 니케 사이트의 자동 검사 21종(`npm run verify` 20종 + `findTotems`)을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
+description: 니케 사이트의 자동 검사 22종(`npm run verify` 21종 + `findTotems`)을 실행하고 기준선과 대조한다. 데이터·i18n·엔진·도감·광고 배치를 고친 뒤에는 항상 실행할 것.
 ---
 
 # 검사 실행 (`/verify`)
@@ -24,6 +24,7 @@ node scripts/testGuides.mjs
 node scripts/testSkillSources.mjs
 node scripts/testDataI18n.mjs
 node scripts/testTraffic.mjs
+node scripts/testLoginReturn.mjs
 node scripts/testAiTeamSchema.mjs
 node scripts/findTotems.mjs
 node scripts/checkAdPlacement.mjs
@@ -51,6 +52,7 @@ node scripts/checkWeeklyReport.mjs
 | `testSkillSources.mjs` | **문제 0건 · 세 언어 582개 · 숫자 불일치 0건 · 표기 오타 0건** | 스킬 원문 `desc`/`desc_kr`/`desc_ja`를 대조한다. 개수가 같고 KR·JA가 일치하는데 EN만 다른 값만 센다(2:1). 2026-09-07에 11건을 KR·JA 다수결로 고쳐 기준선이 0이 됐다 |
 | `testDataI18n.mjs` | **퇴행 없음** (남은 backlog: desc_ja 12 · desc_kr 6 · 보스명 5 · squad 일본어 1. 아키타입 name·note 완료) | 화면에 나가는 **데이터**가 사이트 언어와 맞는가. `testI18n`은 UI 라벨만 봐서 "한국어 화면인데 조합 이름·설명이 영어"를 24건 통과하는 동안 놓쳤다. **래칫이다 — EXPECTED보다 늘면 ERROR, 줄면 숫자를 낮추라고 알린다** |
 | `testTraffic.mjs` | **전부 통과 · 계측 대상 경로 633개**(3개 언어 × 211) | 자체 방문 계측의 경로·봇 판정. 계측은 **조용히 안 쌓인다** — 경로 판정이 막으면 표가 비고, 봇을 못 거르면 크롤러가 203페이지를 훑어 "인원 대비 로딩" 비율이 무의미해진다. DB 없이 검사할 수 있게 `lib/traffic.js`로 순수 로직을 뗐다 |
+| `testLoginReturn.mjs` | **17건 통과**(사이트 안 경로 5 · 막을 값 12) | 로그인 뒤 보던 페이지로 돌아가는 경로 판정(`lib/loginReturn.js`, 2026-10-29). 느슨하면 남의 사이트로 튕기는 통로(`//evil`), 과하면 조용히 첫 화면으로 떨어진다. 역테스트: `//` 판정 삭제 2건 · 시간 제한 삭제 3건 실패 |
 | `testAiTeamSchema.mjs` | **문제 0건** | AI 조합 호출이 API에 거부당하지 않는가(구조화 출력 스키마 제약·temperature). 2026-09-21 둘 다 조용히 엔진 답으로 넘어가던 실패 |
 | `findTotems.mjs` | **1군 1명(토브 — 판단 대기, 2026-10-12) · 검토 후 기각 1명**(아르카나) | 토템 후보 누락. 2026-09-01에 솔로레이드 125건 + 타워 50건을 붙였다 — 그전까지 실사용 214건 중 **175건(82%)을 안 보고 있어** 1군이 계속 0명이었다. `totemRole` 등록은 언제나 B등급이라 사람이 판단한다 |
 | `checkAdPlacement.mjs` | **ERROR 0** (판정 대상 `app/[lang]/combos/page.js` 1개) | 콘텐츠 없는 화면에 광고를 그리는 페이지. 2026-08-13 애드센스 반려 재발 방지 |

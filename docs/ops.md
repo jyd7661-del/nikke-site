@@ -186,7 +186,7 @@ sitemap 201개 URL 중 `<ins class="adsbygoogle">`가 실제로 들어가는 곳
 | 5 | ~~구 주소 → 새 주소 **301 리다이렉트**~~ | ✅ **코드에 이미 넣어뒀다**(`next.config.js`). 3번에서 환경변수를 새 주소로 바꾸는 순간 자동으로 켜진다 |
 | 6 | ✅ Search Console **새 속성 등록**(도메인 속성 `sc-domain:nikketeamguide.com`, DNS TXT 인증) + sitemap 제출(상태 성공 · 발견 201) | ⚠️ `app/[lang]/layout.js`의 인증 토큰은 **옛 속성용**이다. 새 속성은 토큰이 다르니 DNS TXT(도메인 속성) 인증이 편하다. **기존 태그를 지우면 옛 속성 소유권이 풀린다** |
 | 7 | ⏳ 애드센스에 **새 사이트 추가** → 검토 요청 | `public/ads.txt`는 정적 파일이라 새 도메인에서 자동으로 서빙된다 |
-| 8 | ✅ Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`components/Header.js:45`) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
+| 8 | ✅ Supabase Auth → **Site URL / Redirect URLs에 새 도메인 추가** | ⚠️ 로그인이 `redirectTo: window.location.origin`이라(`lib/login.js` — 2026-10-29부터 보던 페이지로 돌아가는 건 sessionStorage로 하고 redirectTo는 그대로 origin) 새 도메인이 허용 목록에 없으면 **구글 로그인이 깨진다.** 구글 클라우드 쪽 리디렉션 URI는 `...supabase.co/auth/v1/callback`이라 손댈 필요 없다 |
 
 #### ⚠️ 정식 주소는 **apex**다 — www로 잡았다가 같은 날 되돌렸다 (2026-08-24)
 

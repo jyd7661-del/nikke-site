@@ -9,6 +9,7 @@ import { useAuth } from '@/components/AuthProvider';
 import { useLanguage } from '@/components/LanguageProvider';
 import { dateLocale } from '@/lib/i18n';
 import CommunityTabs from '@/components/CommunityTabs';
+import LoginButton from '@/components/LoginButton';
 
 const TABS = [{ key: 'all', labelKey: 'filter_all' }, ...BOARD_CATEGORIES];
 const CATEGORY_LABEL_KEY = Object.fromEntries(BOARD_CATEGORIES.map((c) => [c.key, c.labelKey]));
@@ -63,7 +64,8 @@ export default function BoardPage() {
             {t('board_write')}
           </Link>
         ) : (
-          <span className="text-xs text-slate-500">{t('board_write_login_required')}</span>
+          // 회색 안내 글자만 있던 자리(2026-10-29) — 누를 곳이 없어 헤더 로그인을 찾아야 했다. 로그인 뒤 이 게시판으로 돌아온다.
+          <LoginButton label={t('login_to_write')} />
         )}
       </div>
       <p className="text-sm text-slate-500 mb-4">
