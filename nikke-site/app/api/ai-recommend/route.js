@@ -817,6 +817,11 @@ export async function POST(req) {
         pvpBurstNote: chosen.pvpBurstNote || null,
         // 스테이지(캠페인·타워)에서만 — 이 조합의 힐러·탱커(data/survivalRoles.json). 화면이 "힐러: ○○ · 탱커: 없음"으로 보여준다(2026-10-23).
         roleMembers: mode === 'campaign' || mode === 'tribe_tower' ? teamRoleMembers(fullMembers) : null,
+        // 실사용 4/5 + 한 자리(2026-10-29) — 누가 없어서 누구로 채웠는지. 근거 문장(reasons)엔 있었지만 화면에 안 그려져
+        // "실사용 핵심 + 한 자리" 배지만 보였다. 화면이 "○○를 얻으면 원래 조합 그대로"로 앞에 보여준다(판단 대기 "추천 화면 개선" ②).
+        partial: matchSource === 'enikk-real-usage-partial' && chosen.partial?.missingMember
+          ? { missing: chosen.partial.missingMember, filler: chosen.partial.fillerMember }
+          : null,
       },
       aiReasoning,
       // 'enikk-real-usage' | 'enikk-real-usage-partial'(2026-10-03, 4/5 + 한 자리) | 'prydwen-exact-match' | 'skill-synergy-fallback' | 'ai-composed'(2026-09-15, AI_TEAMS_MODE=on)

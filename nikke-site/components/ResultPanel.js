@@ -344,6 +344,12 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           }).join(' · ')}
         </p>
       )}
+      {/* 실사용 4/5 + 한 자리(2026-10-29) — 무엇을 얻으면 랭커 원래 조합이 열리는지. 적은 로스터에 가장 쓸모 있는 정보인데 근거 목록에 묻혀 있었다. */}
+      {team.partial?.missing && (
+        <p className="text-xs text-sky-200 bg-sky-950/30 border border-sky-800/50 rounded-lg px-3 py-2 mb-3">
+          🔓 {t('real_partial_unlock')(memberName(team.partial.missing, lang), memberName(team.partial.filler, lang))}
+        </p>
+      )}
       {roleDropped && (
         <div className="text-xs text-amber-300 bg-amber-950/30 border border-amber-700/50 rounded-lg px-3 py-2 mb-3 space-y-1">
           <p>{t(`role_dropped_${role}`)}</p>

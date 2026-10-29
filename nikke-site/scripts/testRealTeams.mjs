@@ -574,6 +574,11 @@ for (const t of teams) {
       problems.push(`[실사용 부분 일치] 랭커 조합 4명(${core.join('/')}) + ${sub.title}를 못 냈다 — ${now ? [...got].join('/') : '결과 없음'}`);
     }
     if (now && !(now.reasons || []).some((r) => String(r).startsWith('[실사용 핵심 + 한 자리]'))) problems.push('[실사용 부분 일치] 한 자리를 바꿨다는 문장(real_partial)이 없다');
+    // 화면의 "○○를 얻으면 원래 조합 그대로" 줄(2026-10-29)이 쓰는 값 — 근거 문장은 화면에 안 그려져서 이 두 이름이 유일한 통로다.
+    const pm = now?.partial;
+    if (now?.partial && !(pm.missingMember?.title === out.title && pm.fillerMember?.title === sub.title && pm.missingMember?.name_kr && pm.fillerMember?.name_kr)) {
+      problems.push(`[실사용 부분 일치] 빠진 니케·채운 니케 이름이 화면용으로 안 나온다 — missing ${pm.missingMember?.title}(기대 ${out.title}) · filler ${pm.fillerMember?.title}(기대 ${sub.title})`);
+    }
   }
 }
 
