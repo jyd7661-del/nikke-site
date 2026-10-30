@@ -29,6 +29,8 @@ const { normalizePath, isBot, allTrackablePaths, normalizeSource, normalizeCount
 
 // 재방문 판정은 브라우저 번들에 실리므로 캐릭터 DB를 끌고 오는 traffic.js와 따로 둔다(lib/returnVisit.js).
 const { isReturningVisit } = await import(pathToFileURL(path.join(ROOT, 'lib', 'returnVisit.js')).href);
+// 배포 전용 주소 판정(middleware.js). 진짜 주소를 막으면 사이트가 통째로 안내 페이지가 된다.
+const { isDeploymentHost } = await import(pathToFileURL(path.join(ROOT, 'lib', 'deployHost.js')).href);
 
 const db = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'characterDatabase.json'), 'utf8'));
 
@@ -126,6 +128,8 @@ check('기능 이벤트 언어', normalizeLang('ja') === 'ja' && normalizeLang('
 check('재방문 판정', isReturningVisit('2026-10-28', '2026-10-29') && isReturningVisit('2025-12-31', '2026-01-01')
   && !isReturningVisit('2026-10-29', '2026-10-29') && !isReturningVisit('2026-10-30', '2026-10-29')
   && !isReturningVisit(null, '2026-10-29') && !isReturningVisit('garbage', '2026-10-29') && !isReturningVisit('2026-10-28T00', '2026-10-29'));
+check('배포 전용 주소만 막는다', ['nikke-site-2hvi5z1my-the-j1.vercel.app', 'NIKKE-SITE-GIT-MAIN-THE-J1.VERCEL.APP', 'nikke-site-abc-the-j1.vercel.app:443'].every(isDeploymentHost)
+  && !['nikketeamguide.com', 'www.nikketeamguide.com', 'localhost:3000', 'vercel.app.nikketeamguide.com', '', null].some(isDeploymentHost));
 check('국가 정규화', normalizeCountry('kr') === 'KR' && normalizeCountry('') === 'XX' && normalizeCountry(null) === 'XX' && normalizeCountry('KOR') === 'XX');
 
 // ---------------------------------------------------------------------------
