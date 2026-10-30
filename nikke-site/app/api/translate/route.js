@@ -87,10 +87,11 @@ async function bumpDailyUsage(sb) {
 const SYSTEM = `You translate posts from a Korean game community site for the mobile game NIKKE.
 
 CRITICAL RULES about the placeholder tokens:
-- The text contains tokens shaped like ⟦0⟧, ⟦1⟧, ⟦2⟧.
+- The text may contain tokens shaped like ⟦0⟧, ⟦1⟧, ⟦2⟧.
 - Each token stands for a proper noun (a character name or a game term).
 - Reproduce every token EXACTLY as it appears. Never translate, renumber, reorder into a different meaning, split, or drop a token.
 - The set of tokens in your output must be exactly the set in the input — same numbers, same count.
+- If the input has no tokens, your output must have none. Never invent a token for a word (not even for the game name).
 - Grammar particles around a token (Korean 은/는/이/가, Japanese は/が/を) SHOULD be translated normally.
 
 Other rules:
@@ -111,6 +112,11 @@ function buildUserPrompt({ sourceLang, targets, maskedFields, hintsByLang }) {
     JSON.stringify(maskedFields, null, 2),
     '',
   ];
+  // 2026-10-30: 토큰이 하나도 없는 글(사이트 소개글)에서 모델이 "니케" 자리에 ⟦0⟧을 지어내 영·일 번역이 둘 다 버려졌다.
+  // "토큰이 들어 있다"는 지시만 보고 만들어 낸 것이라, 없을 때는 없다고 한 줄 더 말한다.
+  if (!Object.values(maskedFields).some((v) => /⟦\d+⟧/.test(v))) {
+    lines.push('This text has NO placeholder tokens. Do not output any ⟦n⟧ token.', '');
+  }
   for (const lang of targets) {
     const hints = hintsByLang[lang] || [];
     if (!hints.length) continue;
