@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/components/AuthProvider';
-import { createPost, BOARD_CATEGORIES, defaultPrivateFor } from '@/lib/board';
+import { createPost, BOARD_CATEGORIES, defaultPrivateFor, fetchIsBoardAdmin } from '@/lib/board';
 import { useLanguage } from '@/components/LanguageProvider';
 import LoginButton from '@/components/LoginButton';
 
@@ -21,6 +21,13 @@ export default function NewPostPage() {
   // 사용자가 직접 체크박스를 건드렸는지. 건드린 뒤에는 카테고리를 바꿔도 그 선택을 존중한다.
   const [privateTouched, setPrivateTouched] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  // 운영자 전용 분류(업데이트)는 운영자에게만 보인다. 막는 것은 DB 정책이고 이건 화면만이다.
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    if (!user) return;
+    fetchIsBoardAdmin().then(setIsAdmin);
+  }, [user]);
+  const categories = BOARD_CATEGORIES.filter((c) => !c.adminOnly || isAdmin);
 
   // 목록에서 넘어온 ?category= 를 초기값으로 쓴다.
   //
@@ -31,7 +38,7 @@ export default function NewPostPage() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const q = new URLSearchParams(window.location.search).get('category');
-    if (!q || !BOARD_CATEGORIES.some((c) => c.key === q)) return;
+    if (!q || !BOARD_CATEGORIES.some((c) => c.key === q && !c.adminOnly)) return;
     setCategory(q);
     setIsPrivate(defaultPrivateFor(q));
   }, []);
@@ -69,7 +76,7 @@ export default function NewPostPage() {
       <h1 className="text-xl font-bold mb-6">{t('board_write_heading')}</h1>
       <form onSubmit={submit} className="space-y-4">
         <div className="flex gap-1.5">
-          {BOARD_CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <button
               key={c.key}
               type="button"

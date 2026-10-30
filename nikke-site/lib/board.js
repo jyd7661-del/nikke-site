@@ -4,7 +4,9 @@ import { requestTranslation } from './translate';
 
 // 문구가 아니라 i18n 키를 들고 있다. 여기에 한국어를 적으면 언어를 바꿔도
 // 게시판 카테고리만 한국어로 남는다(2026-08-10, B단계).
+// update: 운영자만 쓰는 업데이트 소식(2026-10-30). DB 정책도 운영자만 허용한다(supabase/board_update_category_migration.sql).
 export const BOARD_CATEGORIES = [
+  { key: 'update', labelKey: 'board_cat_update', adminOnly: true },
   { key: 'free', labelKey: 'board_cat_free' },
   { key: 'bug', labelKey: 'board_cat_bug' },
   { key: 'suggestion', labelKey: 'board_cat_suggestion' },
@@ -21,7 +23,22 @@ export async function fetchPosts(category) {
     console.error('fetchPosts error', error);
     return [];
   }
-  return data;
+  return (category && category !== 'all') ? data : pinLatestUpdate(data);
+}
+
+// 전체 목록에서는 가장 최근 업데이트 글 하나만 맨 위에 둔다. 나머지 업데이트 글은 날짜 순서 그대로다.
+export function pinLatestUpdate(list) {
+  const i = list.findIndex((p) => p.category === 'update');
+  if (i <= 0) return list;
+  return [list[i], ...list.slice(0, i), ...list.slice(i + 1)];
+}
+
+// 글쓰기 화면에서 운영자 전용 분류를 보일지. 판정은 DB 함수(is_board_admin)가 한다.
+export async function fetchIsBoardAdmin() {
+  if (!supabase) return false;
+  const { data, error } = await supabase.rpc('is_board_admin');
+  if (error) return false;
+  return data === true;
 }
 
 export async function fetchPost(id) {

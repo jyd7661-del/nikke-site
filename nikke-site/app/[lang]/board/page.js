@@ -17,6 +17,7 @@ const CATEGORY_BADGE_STYLE = {
   bug: 'text-rose-300 bg-rose-500/10 border-rose-500/40',
   suggestion: 'text-sky-300 bg-sky-500/10 border-sky-500/40',
   free: 'text-slate-400 bg-slate-500/10 border-slate-500/40',
+  update: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/40',
 };
 
 export default function BoardPage() {
