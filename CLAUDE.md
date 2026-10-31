@@ -179,6 +179,7 @@ node scripts/testJudgmentMatch.mjs  # 사이트 추천 ↔ 내 판정 일치율(
   지금 거기 뭔가 떠 있다면 진짜 변경이고, **월요일 AI 조사(`weekly-research.sh`)가 남긴 것일 수 있다**
   (그 작업은 파일만 고치고 커밋하지 않는다). `/weekly-review` · `docs/weekly-research.md` 참고.
 - 커밋 메시지는 **무엇을 왜 고쳤는지**를 적는다. 특히 실측·역테스트 결과를 남긴다.
+- **유저가 체감하는 수정을 커밋하면 `docs/updates-pending.md`에 한 줄 적는다**(2026-11-01 유저: "주요한 수정은 잘 기록했다가 업데이트 내역에 적어놔"). 매주 금요일 업데이트 글(`/updates`)은 그 파일로 쓴다. 엔진 내부·계측·문서는 적지 않는다.
 - `.env.local`에 Supabase 키와 `ANTHROPIC_API_KEY`가 있다. **절대 커밋하지 말 것.**
 
 ### 비밀키
