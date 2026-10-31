@@ -8,12 +8,9 @@ import { dateLocale } from '@/lib/i18n';
 import { fetchUpdate, fetchUpdateTranslations, localizeUpdate, lab } from '@/lib/updates';
 
 export const revalidate = 600;
-// 빌드 때는 아무것도 미리 만들지 않고, 첫 방문 때 만든 뒤 10분 동안 캐시한다(방문마다 DB를 부르지 않게).
-export async function generateStaticParams() {
-  return [];
-}
-// ⚠️ app/[lang]/layout.js가 dynamicParams = false(언어 셋만 허용)라 그대로 물려받으면 글 주소가 전부 404다(10-31 첫 배포에서 실제로 났다).
-export const dynamicParams = true;
+// ⚠️ generateStaticParams·dynamicParams를 두지 않는다. app/[lang]/layout.js가 dynamicParams = false(언어 셋만 허용)라
+//    여기서 generateStaticParams로 []를 주면 글 주소가 전부 404였고(9b2218e), dynamicParams = true로 덮어도 404가 남았다(651c540).
+//    게시판 상세(/board/[id])처럼 요청 때 그린다. DB 조회는 Next fetch 캐시(revalidate 600)에 걸려 방문마다 부르지 않는다.
 
 async function load(id, lang) {
   const post = await fetchUpdate(id);
