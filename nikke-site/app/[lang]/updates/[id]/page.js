@@ -12,6 +12,8 @@ export const revalidate = 600;
 export async function generateStaticParams() {
   return [];
 }
+// ⚠️ app/[lang]/layout.js가 dynamicParams = false(언어 셋만 허용)라 그대로 물려받으면 글 주소가 전부 404다(10-31 첫 배포에서 실제로 났다).
+export const dynamicParams = true;
 
 async function load(id, lang) {
   const post = await fetchUpdate(id);
