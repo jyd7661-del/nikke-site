@@ -46,7 +46,9 @@ export const swapLocale = (pathname, next) => localePath(next, splitLocale(pathn
 //   그 페이지들도 /en·/ja 주소로 **열리기는** 한다(화면 틀은 번역돼 있고 언어를 바꿔도 길을 잃지 않게).
 //   다만 noindex + canonical을 한국어판으로 둔다.
 export function isLocalizedForSearch(path) {
-  return path === '/' || path === '/nikke' || /^\/nikke\/[a-z0-9-]+$/.test(path);
+  // 업데이트 소식(2026-10-31)은 게시판 자동 번역이 있다. 번역 안 끝난 글은 그 페이지가 직접 noindex로 바꾼다(app/[lang]/updates/[id]).
+  return path === '/' || path === '/nikke' || /^\/nikke\/[a-z0-9-]+$/.test(path)
+    || path === '/updates' || /^\/updates\/[0-9a-f-]{36}$/.test(path);
 }
 
 // 페이지 메타데이터의 alternates·robots를 만든다. path는 언어 없는 경로.

@@ -2,6 +2,7 @@ import { SITE_URL } from '@/lib/site';
 import { CHARACTERS } from '@/lib/dex';
 import { GUIDES } from '@/lib/guides';
 import { LOCALES, DEFAULT_LOCALE, localePath } from '@/lib/locale';
+import { fetchUpdates, fetchUpdateTranslations } from '@/lib/updates';
 
 // /sitemap.xml 을 만들어 준다 (Next.js App Router의 메타데이터 파일 규약).
 //
@@ -30,7 +31,26 @@ function localized(path, extra) {
   return LOCALES.map((l) => ({ url: abs(localePath(l, path)), alternates: { languages }, ...extra }));
 }
 
-export default function sitemap() {
+// 업데이트 소식(2026-10-31)은 DB에서 읽으므로 사이트맵도 한 시간마다 다시 만든다(배포 없이 새 글이 실린다).
+export const revalidate = 3600;
+
+// 업데이트 글: 한국어는 늘, 영어·일본어는 번역이 끝난 글만(번역 없으면 그 주소는 noindex — app/[lang]/updates/[id]).
+async function updateEntries() {
+  const posts = await fetchUpdates();
+  if (!posts.length) return [];
+  const ids = posts.map((p) => p.id);
+  const done = {};
+  for (const l of LOCALES) if (l !== DEFAULT_LOCALE) done[l] = await fetchUpdateTranslations(ids, l);
+  return posts.flatMap((p) => {
+    const path = `/updates/${p.id}`;
+    const langs = LOCALES.filter((l) => l === DEFAULT_LOCALE || done[l]?.[p.id]);
+    const languages = Object.fromEntries(langs.map((l) => [l, abs(localePath(l, path))]));
+    if (langs.length > 1) languages['x-default'] = abs(localePath(DEFAULT_LOCALE, path));
+    return langs.map((l) => ({ url: abs(localePath(l, path)), lastModified: new Date(p.created_at), changeFrequency: 'monthly', priority: 0.7, ...(langs.length > 1 ? { alternates: { languages } } : {}) }));
+  });
+}
+
+export default async function sitemap() {
   const now = new Date();
   return [
     ...localized('/', { lastModified: now, changeFrequency: 'weekly', priority: 1 }),
@@ -47,6 +67,8 @@ export default function sitemap() {
       priority: 0.8,
     })),
     ...CHARACTERS.flatMap((c) => localized(`/nikke/${c.id}`, { lastModified: now, changeFrequency: 'weekly', priority: 0.7 })),
+    ...localized('/updates', { lastModified: now, changeFrequency: 'weekly', priority: 0.8 }),
+    ...(await updateEntries()),
     { url: `${SITE_URL}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
   ];
 }
