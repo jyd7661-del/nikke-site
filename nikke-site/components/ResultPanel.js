@@ -270,6 +270,11 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
     setRoleDropped(false);
     if (team) requestTeam([], r);
   };
+  // 가진 역할 니케 중 이 판에 나갈 수 있는 수(2026-10-31). "조건 못 지킴"의 대부분은 애초에 힐러·탱커가 없는 로스터였다
+  // (10-30 탐침 · 10-31 오후 보고: 캠페인 힐러 3건 중 2건). 누르기 전에 숫자로 보여 헛걸음을 줄인다. 버튼은 막지 않는다 — 누르면 얻을 만한 니케를 알려 준다.
+  const roleOwned = stageMode
+    ? Object.fromEntries(['healer', 'tank'].map((r) => [r, roleGapInfo(roster.resolved || [], r, mode, { tower: mode === 'tribe_tower' ? tower : null })?.owned.length ?? 0]))
+    : {};
   const rolePicker = stageMode && (
     <div className="mb-3">
       <div className="flex flex-wrap gap-1.5" role="group" aria-label={t('role_label')}>
@@ -287,10 +292,14 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
             }`}
           >
             {t(r ? `role_${r}` : 'role_any')}
+            {r && <span className={`ml-1 ${roleOwned[r] ? 'text-slate-400' : 'text-amber-400'}`}>· {roleOwned[r]}</span>}
           </button>
         ))}
       </div>
       <p className="text-[11px] text-slate-500 mt-1.5 leading-snug">{t('role_hint')}</p>
+      {role && roleOwned[role] === 0 && (
+        <p className="text-[11px] text-amber-300/90 mt-1 leading-snug">{t(`role_zero_owned_${role}`)}</p>
+      )}
     </div>
   );
 
