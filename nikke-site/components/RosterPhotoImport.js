@@ -247,13 +247,17 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
 
             {/* 붙여넣기 — PC는 Ctrl+V(창 어디서든), 휴대폰은 이 칸을 길게 눌러 「붙여넣기」. 버튼은 클립보드 읽기를 허용하는 브라우저용 */}
             <div className="mt-3 flex items-stretch gap-2">
-              <textarea
-                rows={1}
-                value=""
-                onChange={() => {}}
-                placeholder={t('photo_import_paste_box')}
+              {/* 글자 칸(textarea)은 휴대폰에서 길게 눌러도 글자 붙여넣기만 된다(11-02 유저 "휴대폰으로는 안되나?").
+                  이미지를 받는 편집 칸(contentEditable)이라야 아이폰·안드로이드 크롬이 이미지 붙여넣기를 띄운다. 내용은 남기지 않는다 —
+                  paste 이벤트는 문서 리스너가 받고, 혹시 들어간 것은 바로 지운다. */}
+              <div
+                contentEditable
+                suppressContentEditableWarning
+                role="textbox"
                 aria-label={t('photo_import_paste_box')}
-                className="min-w-0 flex-1 resize-none rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-xs text-slate-300 placeholder:text-slate-500 outline-none focus:border-nikke-accent"
+                data-placeholder={t('photo_import_paste_box')}
+                onInput={(e) => { e.currentTarget.innerHTML = ''; }}
+                className="min-w-0 flex-1 max-h-20 overflow-hidden rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-xs text-slate-300 outline-none focus:border-nikke-accent empty:before:content-[attr(data-placeholder)] empty:before:text-slate-500"
               />
               <button
                 onClick={pasteFromClipboard}
