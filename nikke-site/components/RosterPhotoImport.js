@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -18,6 +18,9 @@ const BY_ID = new Map(CHARACTERS.map((c) => [c.id, c]));
 const MAX_FILES = 10;
 // 한꺼번에 다 보낸다(배당달력과 같다). 3장씩이면 10장에 1분 가까이 걸렸다(11-02 운영 첫 시험, 유저 "시간이 생각보다 너무 느리네") — 한 장 10~15초라 다 같이 보내면 그만큼에 끝난다.
 const CONCURRENCY = MAX_FILES;
+// 진행 막대(11-02 유저 "로딩바도 보였으면 좋겠는데? 되고있는지 모르겠어"). 한꺼번에 보내 끝난 장 수는 마지막에 몰려 오른다 —
+// 그래서 걸린 시간으로 예상치를 채운다(한 장 7~17초 실측 → 15초에 90%까지, 그 뒤로는 천천히 97%까지). 끝난 장 수가 더 크면 그쪽을 쓴다.
+const EXPECTED_MS = 15000;
 
 async function authHeader() {
   try {
@@ -30,7 +33,20 @@ async function authHeader() {
 export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
   const { lang, t, lp } = useLanguage();
   const [open, setOpen] = useState(false);
-  const [busy, setBusy] = useState(null); // { done, total }
+  const [busy, setBusy] = useState(null); // { done, total, start }
+  const [now, setNow] = useState(0);
+  useEffect(() => {
+    if (!busy) return undefined;
+    const id = setInterval(() => setNow(Date.now()), 250);
+    return () => clearInterval(id);
+  }, [busy]);
+  const progress = (() => {
+    if (!busy) return 0;
+    const el = Math.max(0, now - busy.start);
+    const byTime = el < EXPECTED_MS ? 0.9 * (el / EXPECTED_MS) : 0.9 + 0.07 * (1 - Math.exp(-(el - EXPECTED_MS) / 15000));
+    return Math.max(byTime, busy.done / busy.total);
+  })();
+  const elapsedSec = busy ? Math.max(0, Math.floor((now - busy.start) / 1000)) : 0;
   const [scans, setScans] = useState([]); // [{ scanId, found: [{id, treasure, sure}], unknown }]
   const [errors, setErrors] = useState([]);
   const [checked, setChecked] = useState(new Set());
@@ -57,7 +73,8 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
     const files = [...(fileList || [])].filter((f) => f.type.startsWith('image/')).slice(0, MAX_FILES);
     if (!files.length) return;
     setApplied(null);
-    setBusy({ done: 0, total: files.length });
+    setBusy({ done: 0, total: files.length, start: Date.now() });
+    setNow(Date.now());
     const headers = { 'Content-Type': 'application/json', ...(await authHeader()) };
     const results = [];
     const errs = [];
@@ -155,7 +172,22 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
                 onChange={(e) => { onFiles(e.target.files); e.target.value = ''; }}
               />
               {busy ? (
-                <span className="text-sm text-slate-200">{t('photo_import_reading')(busy.done, busy.total)}</span>
+                <div className="w-full max-w-sm">
+                  <div className="flex items-center justify-center gap-2 text-sm text-slate-200">
+                    <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-nikke-accent border-t-transparent" />
+                    {t('photo_import_reading')(busy.done, busy.total)}
+                  </div>
+                  <div
+                    className="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-slate-800"
+                    role="progressbar"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={Math.round(progress * 100)}
+                  >
+                    <div className="h-full rounded-full bg-nikke-accent transition-[width] duration-300 ease-out" style={{ width: `${Math.round(progress * 100)}%` }} />
+                  </div>
+                  <p className="mt-1.5 text-xs text-slate-500">{Math.round(progress * 100)}% · {t('photo_import_elapsed')(elapsedSec)}</p>
+                </div>
               ) : (
                 <>
                   <span className="text-sm font-semibold text-slate-100">{t('photo_import_pick')}</span>
