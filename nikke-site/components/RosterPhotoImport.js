@@ -16,7 +16,8 @@ import { supabase } from '@/lib/supabaseClient';
 
 const BY_ID = new Map(CHARACTERS.map((c) => [c.id, c]));
 const MAX_FILES = 10;
-const CONCURRENCY = 3;
+// 한꺼번에 다 보낸다(배당달력과 같다). 3장씩이면 10장에 1분 가까이 걸렸다(11-02 운영 첫 시험, 유저 "시간이 생각보다 너무 느리네") — 한 장 10~15초라 다 같이 보내면 그만큼에 끝난다.
+const CONCURRENCY = MAX_FILES;
 
 async function authHeader() {
   try {

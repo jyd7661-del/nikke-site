@@ -30,7 +30,7 @@ export const maxDuration = 60;
 
 const PHOTO_DAILY_LIMIT = Number(process.env.ROSTER_PHOTO_DAILY_LIMIT || 20);
 const AI_DAILY_BUDGET_KRW = Number(process.env.AI_DAILY_BUDGET_KRW || 10000);
-// 조각 하나의 base64 길이 상한(≈1.9MB 파일). 화면이 긴 변 1568·JPEG 0.7로 줄이면 300KB 안팎이다.
+// 조각 하나의 base64 길이 상한(≈1.9MB 파일). 화면이 긴 변 2400·2.6MP·JPEG 0.8로 맞추면 폰 세로 캡처가 400KB 안팎이다.
 const MAX_PART_B64 = 2_600_000;
 const MAX_PARTS = 3;
 // 하이쿠 5.5 단가(USD/1M) — app/api/ai-recommend/route.js PRICE_USD_PER_M과 같은 값. $1 = 1,400원
@@ -87,7 +87,8 @@ export async function POST(req) {
   const orientation = body?.orientation === 'landscape' ? 'landscape' : 'portrait';
   const parts = Array.isArray(body?.parts) ? body.parts : [];
   if (!parts.length || parts.length > MAX_PARTS || !parts.every(isB64)) return json({ error: 'bad_image' }, 400);
-  const photo = isB64(body?.photo) ? body.photo : null;
+  // 세로는 화면이 photo를 따로 안 보낸다 — 읽은 그 사진을 보관한다
+  const photo = isB64(body?.photo) ? body.photo : orientation === 'portrait' ? parts[0] : null;
 
   const sb = serviceClient();
   if (!sb || !process.env.ANTHROPIC_API_KEY) return json({ error: 'unavailable' }, 503);
