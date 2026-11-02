@@ -72,7 +72,7 @@ for (const r of rows) {
   console.log(`\n## ${r.created_at.slice(0, 16)} · ${r.lang} · ${r.orientation}(${r.parts}) · ${r.krw}원 · ${Math.round((r.ms || 0) / 100) / 10}초 · ${photo}`);
   console.log(`  AI: 카드 ${cards.length} · 니케 ${allIds.size}(확신 ${sureIds.size}) · 못 읽음 ${unknown}`);
   const unsure = known.filter((c) => c.sure === false || c.rescued);
-  if (unsure.length) console.log(`  확신 없음: ${unsure.map((c) => `"${c.seen}"→${nm(c.id)}${c.rescued ? '(조각)' : ''}`).join(' · ')}`);
+  if (unsure.length) console.log(`  확신 없음: ${unsure.map((c) => `"${c.seen}"→${nm(c.id)}${c.rescued ? '(조각)' : ''}${c.how ? ` [${c.el}/${c.bu}·${c.how}]` : ''}`).join(' · ')}`);
   const none = cards.filter((c) => !known.includes(c));
   if (none.length) console.log(`  못 읽음: ${none.map((c) => `"${c.seen}"`).join(' · ')}`);
   if (!r.confirmed_at) { console.log('  (사용자 확인 없음)'); continue; }

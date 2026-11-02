@@ -111,3 +111,101 @@ export function mergeScanCards(cards, validIds) {
   }
   return { found: [...byId.values()], unknown };
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// 아이콘 먼저 방식 (2026-11-02 실험, 유저 "무기타입 속성 버스트 타입이 동일한 니케 먼저 선별하면 이름 겹치는게 많이 없겠어")
+// AI는 카드에서 **본 것만** 적고(속성·무기·버스트·하트·이름 글자 + 참고용 추측), 고르기는 코드(matchObserved)가 한다:
+//   아이콘으로 195명을 좁히고 그 안에서 이름 글자로 한 명. 경우의 수(195명 전수, 한 명으로 정해지는 비율):
+//     보이는 이름   이름만   속성·버스트+이름   속성·무기·버스트+이름
+//     1글자         10.0%    53.6%              87.5%
+//     2글자         50.8%    90.2%              96.9%
+//   무기까지 쓰면 좋지만 AI가 무기 아이콘을 못 읽어(26/105) 속성·버스트만 쓴다.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export function buildRosterObservePrompt(candidates, withAltNames = false) {
+  const cols = withAltNames ? 'id | 이름 | 영어 / 일본어 이름 | 속성 | 무기 | 버스트 | 클래스' : 'id | 이름 | 속성 | 무기 | 버스트 | 클래스';
+  return `승리의 여신: 니케 게임의 「니케」 목록 화면 캡처 한 장이다. 카드마다 니케 한 명이다.
+
+할 일: 카드마다 **보이는 것을 그대로** 적는다. 해석하지 말고 보이는 대로.
+
+카드에서 읽을 것 (왼쪽 위 아이콘 세로줄, 위에서부터)
+- element: 맨 위 육각형 속성 아이콘. 빨강 불꽃=fire, 파랑 물방울=water, 초록 바람=wind, 보라 번개=electric, 주황 벌집=iron. 모르겠으면 "?".
+- weapon: 둘째 흰 육각형 무기 아이콘. ar / smg / sg / sr / rl / mg 중 하나. 모르겠으면 "?".
+- burst: 셋째 검은 육각형의 로마 숫자. I=1, II=2, III=3. 모르겠으면 "?".
+- treasure: 넷째 하트가 **주황색**이면 true. 파랑·하늘색·보라 하트나 하트 없음은 false.
+- name: 카드 아래쪽 이름에서 **보이는 글자만** 그대로(잘린 글자는 빼고, 덧붙여 짐작하지 않는다). 안 보이면 "".
+- guess: 위 정보와 그림으로 짐작한 후보 id(아래 목록). 목록에 없을 것 같으면(R 등급 — 솔져·프로덕트·iDoll 등) "none".
+- 사진 가장자리에 걸려 일부가 잘린 카드는 적지 않는다.
+
+후보 목록 (${cols})
+${candidates}
+
+JSON 하나로만 답한다:
+{"cards":[{"name":"","element":"fire","weapon":"ar","burst":1,"treasure":false,"guess":"id 또는 none"}]}`;
+}
+
+const ICON_ELEMENTS = new Set(['fire', 'water', 'wind', 'electric', 'iron']);
+const ICON_WEAPONS = new Set(['ar', 'smg', 'sg', 'sr', 'rl', 'mg']);
+const nameKey = (s) => String(s || '').toLowerCase().replace(/[\s:：()（）·.\-…]/g, '').replace(/[ㄱ-ㅣ]/g, '');
+
+// AI가 본 것(card) → { seen, id, treasure, sure, how } — rescueByFragment와 같은 모양이라 mergeScanCards에 그대로 넣는다.
+//   how: exact-name(이름 전체가 한 명과 같음) · icon-name(속성·버스트 안에서 이름으로 한 명) · icon-only(아이콘 조합이 한 명뿐, 이름 없음) · icon-guess(여럿 남아 AI 짐작)
+//        · name-only(아이콘이 어긋나 이름으로만) · none
+export function matchObserved(card, characters, cdbById, altNames = null) {
+  const el = ICON_ELEMENTS.has(card.element) ? card.element : null;
+  const wp = ICON_WEAPONS.has(String(card.weapon).toLowerCase()) ? String(card.weapon).toLowerCase() : null;
+  const bu = [1, 2, 3].includes(Number(card.burst)) ? Number(card.burst) : null;
+  const seen = String(card.name || '');
+  const key = nameKey(seen);
+  const frags = seen.toLowerCase().split(/[\s:：()（）·.\-…]+/).map(nameKey).filter(Boolean);
+  const hay = (c) => `${c.name}|${altNames ? altNames(c) : ''}`.replace(/\s/g, '').toLowerCase();
+  // "스 : 스타"처럼 콜론이 보이면 앞은 기본 이름의 **끝**, 뒤는 변형 이름의 **시작**이다(이름은 앞뒤로만 잘린다).
+  const colon = seen.match(/^(.*?)\s*[:：]\s*(.*)$/);
+  const left = colon ? nameKey(colon[1]) : '';
+  const right = colon ? nameKey(colon[2]) : '';
+  const nameHit = (c) => {
+    if (!frags.length) return true;
+    if (colon) {
+      const names = [c.name, ...(altNames ? altNames(c).split(' / ') : [])];
+      return names.some((n) => {
+        const m = n.match(/^(.*?)\s*[:：]\s*(.*)$/);
+        return m && nameKey(m[1]).endsWith(left) && nameKey(m[2]).startsWith(right);
+      });
+    }
+    const h = hay(c);
+    return frags.every((f) => h.includes(f));
+  };
+  const out = (id, sure, how) => ({ seen, id, treasure: !!card.treasure, sure, how });
+  const iconOf = (c) => cdbById.get(c.cdbId || c.id) || {};
+  // 이름이 **다** 보이고 정확히 한 명과 같으면 그 이름이 먼저다 — 아이콘을 하나 잘못 읽어도(11-02: 루드밀라 버스트 I을 III으로)
+  // 이름 전체가 맞는 쪽이 더 믿을 만하다. 속성까지 맞으면 확실, 아니면 확인 필요. "엠마"·"엠마: 택티컬 업"처럼 아이콘이 같은 짝도 여기서 갈린다.
+  const isExact = (c) => nameKey(c.name) === key || (altNames && altNames(c).split(' / ').some((n) => nameKey(n) === key));
+  const exactAll = key ? characters.filter(isExact) : [];
+  if (exactAll.length === 1) {
+    const d = iconOf(exactAll[0]);
+    return out(exactAll[0].id, !el || d.element === el, 'exact-name');
+  }
+  // ⚠️ 무기는 거르지 않는다 — 11-02 시험에서 AI가 무기 아이콘을 105번 중 26번만 맞혔다(속성 105/105 · 버스트 104/105).
+  const iconPool = characters.filter((c) => {
+    const d = iconOf(c);
+    return (!el || d.element === el) && (!bu || Number(d.burst) === bu);
+  });
+  const hits = iconPool.filter(nameHit);
+  if (hits.length === 1) {
+    // 이름 없이 아이콘만으로 한 명이면 R 등급일 수도 있어 확인 필요로 둔다
+    return frags.length ? out(hits[0].id, true, 'icon-name') : out(hits[0].id, false, 'icon-only');
+  }
+  if (hits.length > 1) {
+    const g = hits.find((c) => c.id === card.guess);
+    return out(g ? g.id : 'none', false, 'icon-guess');
+  }
+  // 아이콘 안에 이름이 맞는 후보가 없는데 AI 짐작이 아이콘 후보 안에 있으면 그것(확인 필요) — 표기 차이("포춘"·데이터 "포츈") 같은 경우
+  const g = iconPool.find((c) => c.id === card.guess);
+  if (g) return out(g.id, false, 'icon-guess');
+  // 아이콘 안에 이름이 맞는 후보가 없다: 이름이 2글자 이상 보이면 아이콘을 잘못 읽었을 수 있어 이름만으로 한 번 더(확인 필요)
+  if (key.length >= 2) {
+    const byName = characters.filter(nameHit);
+    if (byName.length === 1) return out(byName[0].id, false, 'name-only');
+  }
+  return out('none', false, 'none');
+}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { CHARACTERS } from '@/data/characters';
 import CharacterAvatar from '@/components/CharacterAvatar';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -69,39 +69,74 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
   const reset = () => { setScans([]); setErrors([]); setChecked(new Set()); setTreasure(new Set()); setApplied(null); };
   const close = () => { if (!busy) { setOpen(false); reset(); } };
 
+  // 사진마다 따로 보내고, 끝나는 대로 결과에 더한다. 붙여넣기(Ctrl+V)로 읽는 중에 또 넣어도 된다 — 진행 막대는 전체 장 수로 센다.
+  const readOne = async (file, headers) => {
+    let result = null;
+    let err = null;
+    try {
+      const img = await prepareRosterPhoto(file);
+      const res = await fetch('/api/roster-photo', { method: 'POST', headers, body: JSON.stringify({ lang, ...img }) });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) err = j.error || 'failed';
+      else result = j;
+    } catch {
+      err = 'bad_image';
+    }
+    if (result) {
+      setScans((prev) => [...prev, result]);
+      // 확실한 것만 미리 체크(이미 보유한 니케도 체크해 둔다 — 넣어도 변화 없음)
+      const sure = result.found.filter((f) => f.sure && BY_ID.has(f.id));
+      setChecked((c) => new Set([...c, ...sure.map((f) => f.id)]));
+      setTreasure((c) => new Set([...c, ...sure.filter((f) => f.treasure && BY_ID.get(f.id).hasTreasure).map((f) => f.id)]));
+    }
+    if (err) setErrors((prev) => [...prev, err]);
+    setBusy((b) => (!b ? b : b.done + 1 >= b.total ? null : { ...b, done: b.done + 1 }));
+  };
+
   const onFiles = async (fileList) => {
     const files = [...(fileList || [])].filter((f) => f.type.startsWith('image/')).slice(0, MAX_FILES);
     if (!files.length) return;
     setApplied(null);
-    setBusy({ done: 0, total: files.length, start: Date.now() });
+    setBusy((b) => (b ? { ...b, total: b.total + files.length } : { done: 0, total: files.length, start: Date.now() }));
     setNow(Date.now());
     const headers = { 'Content-Type': 'application/json', ...(await authHeader()) };
-    const results = [];
-    const errs = [];
-    let next = 0;
-    const worker = async () => {
-      while (next < files.length) {
-        const file = files[next++];
-        try {
-          const img = await prepareRosterPhoto(file);
-          const res = await fetch('/api/roster-photo', { method: 'POST', headers, body: JSON.stringify({ lang, ...img }) });
-          const j = await res.json().catch(() => ({}));
-          if (!res.ok) errs.push(j.error || 'failed');
-          else results.push(j);
-        } catch {
-          errs.push('bad_image');
-        }
-        setBusy((b) => (b ? { ...b, done: b.done + 1 } : b));
-      }
+    await Promise.all(files.slice(0, CONCURRENCY).map((f) => readOne(f, headers)));
+  };
+
+  // 붙여넣기(2026-11-02 유저: "스크린샷 버튼 눌러서 바로 붙여넣고 … 컨트롤V만 눌러서. 파일로 추출해서 넣는 과정이 귀찮거든").
+  // 창이 열려 있는 동안 어디서든 Ctrl+V(휴대폰은 아래 칸을 길게 눌러 붙여넣기)로 클립보드 이미지를 받는다.
+  const onFilesRef = useRef(onFiles);
+  onFilesRef.current = onFiles;
+  useEffect(() => {
+    if (!open) return undefined;
+    const onPaste = (e) => {
+      const files = [...(e.clipboardData?.items || [])]
+        .filter((it) => it.kind === 'file' && it.type.startsWith('image/'))
+        .map((it) => it.getAsFile())
+        .filter(Boolean);
+      if (!files.length) return;
+      e.preventDefault();
+      onFilesRef.current(files);
     };
-    await Promise.all(Array.from({ length: Math.min(CONCURRENCY, files.length) }, worker));
-    setScans((prev) => [...prev, ...results]);
-    // 새로 읽은 것 중 확실한 것만 미리 체크(이미 보유한 니케도 체크해 둔다 — 넣어도 변화 없음)
-    const sure = results.flatMap((r) => r.found.filter((f) => f.sure && BY_ID.has(f.id)));
-    setChecked((c) => new Set([...c, ...sure.map((f) => f.id)]));
-    setTreasure((c) => new Set([...c, ...sure.filter((f) => f.treasure && BY_ID.get(f.id).hasTreasure).map((f) => f.id)]));
-    setErrors((prev) => [...prev, ...errs]);
-    setBusy(null);
+    document.addEventListener('paste', onPaste);
+    return () => document.removeEventListener('paste', onPaste);
+  }, [open]);
+  // 붙여넣기 버튼 — 클립보드 읽기 권한을 묻는 브라우저(크롬 등)에서 Ctrl+V 없이 누르기만 해도 되게
+  const [pasteMsg, setPasteMsg] = useState(null);
+  const pasteFromClipboard = async () => {
+    setPasteMsg(null);
+    try {
+      const items = await navigator.clipboard.read();
+      const files = [];
+      for (const it of items) {
+        const type = it.types.find((t2) => t2.startsWith('image/'));
+        if (type) files.push(new File([await it.getType(type)], `paste.${type.split('/')[1]}`, { type }));
+      }
+      if (files.length) onFiles(files);
+      else setPasteMsg('empty');
+    } catch {
+      setPasteMsg('denied');
+    }
   };
 
   const toggle = (id) => setChecked((c) => { const n = new Set(c); if (n.has(id)) n.delete(id); else n.add(id); return n; });
@@ -209,6 +244,25 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
                 {t('photo_import_pick_one')}
               </label>
             )}
+
+            {/* 붙여넣기 — PC는 Ctrl+V(창 어디서든), 휴대폰은 이 칸을 길게 눌러 「붙여넣기」. 버튼은 클립보드 읽기를 허용하는 브라우저용 */}
+            <div className="mt-3 flex items-stretch gap-2">
+              <textarea
+                rows={1}
+                value=""
+                onChange={() => {}}
+                placeholder={t('photo_import_paste_box')}
+                aria-label={t('photo_import_paste_box')}
+                className="min-w-0 flex-1 resize-none rounded-lg border border-slate-700 bg-slate-800/60 px-3 py-2 text-xs text-slate-300 placeholder:text-slate-500 outline-none focus:border-nikke-accent"
+              />
+              <button
+                onClick={pasteFromClipboard}
+                className="shrink-0 rounded-lg border border-slate-600 px-3 py-2 text-xs font-semibold text-slate-200 hover:border-nikke-accent"
+              >
+                📋 {t('photo_import_paste_button')}
+              </button>
+            </div>
+            {pasteMsg && <p className="mt-1.5 text-xs text-amber-200/90">{t(`photo_import_paste_${pasteMsg}`)}</p>}
 
             {errors.length > 0 && (
               <p className="mt-3 text-xs text-rose-300">

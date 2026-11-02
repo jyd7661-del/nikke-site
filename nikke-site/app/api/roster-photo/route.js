@@ -5,7 +5,7 @@ import { CHARACTERS } from '@/data/characters';
 import characterDatabase from '@/data/characterDatabase.json';
 import { LOCALES } from '@/lib/i18n';
 import {
-  candidateLines, buildRosterPhotoPrompt, rosterPhotoRequest, parseRosterPhoto, rescueByFragment,
+  candidateLines, buildRosterObservePrompt, matchObserved, rosterPhotoRequest, parseRosterPhoto,
   mergeScanCards, altNamesFromCdb, ROSTER_PHOTO_MODEL,
 } from '@/lib/rosterPhotoPrompt';
 
@@ -44,9 +44,12 @@ const VALID_IDS = new Set(CHARACTERS.map((c) => c.id));
 const ALT_NAMES = altNamesFromCdb(cdbById);
 // 한국어 화면이면 한국어 이름만(11-02 시험 조건 그대로 — 영어·일본어 칸을 넣자 메이든을 아이스 로즈로 읽었다),
 // 영어·일본어 화면이면 게임도 그 언어일 가능성이 커서 두 이름 칸을 더한다.
+// 11-02 오후부터 **아이콘 먼저** 방식: AI는 카드에서 본 것(속성·버스트·이름 글자·하트 + 짐작)만 적고 고르기는 matchObserved.
+// 같은 캡처 10장(정답 110명) 비교 — 이전(AI가 바로 id): 확실·맞음 103 · 확실·틀림 1 · 놓침 3 /
+// 아이콘 먼저: 확실·맞음 107 · 확실·틀림 0 · 놓침 2. 비용은 10장 30 → 36원.
 const PROMPTS = {
-  ko: buildRosterPhotoPrompt(candidateLines(CHARACTERS, cdbById), false),
-  alt: buildRosterPhotoPrompt(candidateLines(CHARACTERS, cdbById, ALT_NAMES), true),
+  ko: buildRosterObservePrompt(candidateLines(CHARACTERS, cdbById), false),
+  alt: buildRosterObservePrompt(candidateLines(CHARACTERS, cdbById, ALT_NAMES), true),
 };
 
 function serviceClient() {
@@ -137,8 +140,11 @@ export async function POST(req) {
   }
   if (reads.every((r) => !r.parsed)) return json({ error: 'read_failed' }, 502);
 
+  // AI가 본 것(아이콘·짐작)도 같이 남긴다 — 틀렸을 때 아이콘을 잘못 읽었는지 이름을 잘못 읽었는지 가린다
   const aiCards = reads.flatMap((r) => (r.parsed?.cards || []).map((c) => ({
-    ...rescueByFragment({ seen: String(c.seen || '').slice(0, 60), id: String(c.id || 'none'), treasure: !!c.treasure, sure: c.sure !== false }, CHARACTERS, altNames),
+    ...matchObserved({ ...c, name: String(c.name || '').slice(0, 60) }, CHARACTERS, cdbById, altNames),
+    el: String(c.element || '').slice(0, 10), wp: String(c.weapon || '').slice(0, 5), bu: String(c.burst ?? '').slice(0, 2),
+    guess: String(c.guess || '').slice(0, 60),
     part: r.part,
   })));
   const { found, unknown } = mergeScanCards(aiCards, VALID_IDS);
