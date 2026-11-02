@@ -119,7 +119,7 @@ export function mergeScanCards(cards, validIds) {
 //     보이는 이름   이름만   속성·버스트+이름   속성·무기·버스트+이름
 //     1글자         10.0%    53.6%              87.5%
 //     2글자         50.8%    90.2%              96.9%
-//   무기까지 쓰면 좋지만 AI가 무기 아이콘을 못 읽어(26/105) 속성·버스트만 쓴다.
+//   무기 기호를 설명하자 AI 무기 읽기 27 → 93/108. 무기는 맞는 후보가 있을 때만 쓴다(matchObserved).
 // ─────────────────────────────────────────────────────────────────────────────
 
 export function buildRosterObservePrompt(candidates, withAltNames = false) {
@@ -130,7 +130,14 @@ export function buildRosterObservePrompt(candidates, withAltNames = false) {
 
 카드에서 읽을 것 (왼쪽 위 아이콘 세로줄, 위에서부터)
 - element: 맨 위 육각형 속성 아이콘. 빨강 불꽃=fire, 파랑 물방울=water, 초록 바람=wind, 보라 번개=electric, 주황 벌집=iron. 모르겠으면 "?".
-- weapon: 둘째 흰 육각형 무기 아이콘. ar / smg / sg / sr / rl / mg 중 하나. 모르겠으면 "?".
+- weapon: 둘째 흰 육각형 무기 아이콘 안의 기호(11-02 캡처에서 무기별로 잘라 확인한 모양):
+    ar  = 군데군데 끊긴 원 + 십자선 + 가운데 점(조준경 모양)
+    mg  = 끊기지 않은 원 하나 + 가운데 점
+    sg  = 네 토막으로 끊긴 점선 원 + 가운데 점
+    rl  = 원 없이 안쪽을 향한 괄호 한 쌍과 가운데 점 ")·("
+    smg = 아래가 트인 원 안에 세로 막대와 점("ⓘ" 모양)
+    sr  = 양옆 괄호 안에 원과 십자 "(⊕)"
+  모르겠으면 "?".
 - burst: 셋째 검은 육각형의 로마 숫자. I=1, II=2, III=3. 모르겠으면 "?".
 - treasure: 넷째 하트가 **주황색**이면 true. 파랑·하늘색·보라 하트나 하트 없음은 false.
 - name: 카드 아래쪽 이름에서 **보이는 글자만** 그대로(잘린 글자는 빼고, 덧붙여 짐작하지 않는다). 안 보이면 "".
@@ -185,12 +192,16 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
     const d = iconOf(exactAll[0]);
     return out(exactAll[0].id, !el || d.element === el, 'exact-name');
   }
-  // ⚠️ 무기는 거르지 않는다 — 11-02 시험에서 AI가 무기 아이콘을 105번 중 26번만 맞혔다(속성 105/105 · 버스트 104/105).
-  const iconPool = characters.filter((c) => {
+  // 무기는 **약하게** 쓴다: 무기 기호 설명을 넣은 뒤 93/108(전엔 27/108 — AI가 기호가 무슨 무기인지 몰랐다)이라
+  // 틀릴 때가 있다. 무기까지 맞는 후보 안에서 이름이 맞으면 그것, 없으면 속성·버스트만으로 다시 찾는다.
+  const ebPool = characters.filter((c) => {
     const d = iconOf(c);
     return (!el || d.element === el) && (!bu || Number(d.burst) === bu);
   });
-  const hits = iconPool.filter(nameHit);
+  const wPool = wp ? ebPool.filter((c) => iconOf(c).weapon === wp) : ebPool;
+  const wHits = wPool.filter(nameHit);
+  const iconPool = wHits.length ? wPool : ebPool;
+  const hits = wHits.length ? wHits : ebPool.filter(nameHit);
   if (hits.length === 1) {
     // 이름 없이 아이콘만으로 한 명이면 R 등급일 수도 있어 확인 필요로 둔다
     return frags.length ? out(hits[0].id, true, 'icon-name') : out(hits[0].id, false, 'icon-only');
