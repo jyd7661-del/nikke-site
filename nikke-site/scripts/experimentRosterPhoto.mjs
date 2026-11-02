@@ -30,7 +30,11 @@ const cdbById = new Map(cdb.map((c) => [c.id, c]));
 const altNames = args.includes('--ko-only') ? null : altNamesFromCdb(cdbById);
 // --observe: 아이콘 먼저 방식(AI는 본 것만, 고르기는 matchObserved). 기본은 지금 운영 방식
 const observe = args.includes('--observe');
-const prompt = (observe ? buildRosterObservePrompt : buildRosterPhotoPrompt)(candidateLines(CHARACTERS, cdbById, altNames), !!altNames);
+// --legend: 운영과 같은 무기 견본(lib/rosterWeaponLegend.js) · --legend=<png>: 다른 견본 시험 · --no-legend: 견본 없이
+const legendArg = args.find((a) => a.startsWith('--legend='));
+const legend = legendArg ? { type: 'image/png', data: fs.readFileSync(legendArg.split('=')[1]).toString('base64') }
+  : args.includes('--no-legend') ? null : (await import('../lib/rosterWeaponLegend.js')).ROSTER_WEAPON_LEGEND;
+const prompt = (observe ? buildRosterObservePrompt : buildRosterPhotoPrompt)(candidateLines(CHARACTERS, cdbById, altNames), !!altNames, !!legend);
 // --truth=<json>: 파일 이름 → { ids, treasure, unknownNikke } 정답표(probe-data/roster-photo-truth.json — 운영 확인 기록으로 만든 것)
 const truthArg = args.find((a) => a.startsWith('--truth='));
 const truth = truthArg ? JSON.parse(fs.readFileSync(truthArg.split('=')[1], 'utf8')) : null;
@@ -47,7 +51,7 @@ const reads = fromArg ? JSON.parse(fs.readFileSync(fromArg.split('=')[1], 'utf8'
   const ext = path.extname(f).toLowerCase();
   const image = { type: ext === '.png' ? 'image/png' : 'image/jpeg', data: fs.readFileSync(f).toString('base64') };
   const s = Date.now();
-  const msg = await client.messages.create(rosterPhotoRequest(prompt, image, ROSTER_PHOTO_MODEL, effort));
+  const msg = await client.messages.create(rosterPhotoRequest(prompt, image, ROSTER_PHOTO_MODEL, effort, legend));
   const text = msg.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
   return { file: path.basename(f), sec: (Date.now() - s) / 1000, usage: msg.usage, parsed: parseRosterPhoto(text), raw: text };
 }));

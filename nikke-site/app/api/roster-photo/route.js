@@ -8,6 +8,7 @@ import {
   candidateLines, buildRosterObservePrompt, matchObserved, rosterPhotoRequest, parseRosterPhoto,
   mergeScanCards, altNamesFromCdb, ROSTER_PHOTO_MODEL,
 } from '@/lib/rosterPhotoPrompt';
+import { ROSTER_WEAPON_LEGEND } from '@/lib/rosterWeaponLegend';
 
 // =============================================================================
 // 사진으로 보유 니케 넣기 — 베타 (2026-11-02)
@@ -47,9 +48,10 @@ const ALT_NAMES = altNamesFromCdb(cdbById);
 // 11-02 오후부터 **아이콘 먼저** 방식: AI는 카드에서 본 것(속성·버스트·이름 글자·하트 + 짐작)만 적고 고르기는 matchObserved.
 // 같은 캡처 10장(정답 110명) 비교 — 이전(AI가 바로 id): 확실·맞음 103 · 확실·틀림 1 · 놓침 3 /
 // 아이콘 먼저: 확실·맞음 107 · 확실·틀림 0 · 놓침 2. 비용은 10장 30 → 36원.
+// 11-02 저녁: 무기 견본 그림(lib/rosterWeaponLegend.js)을 캡처 앞에 붙인다 — 같은 10장 무기 판독 평균 약 83% → 91%, 장당 +0.1원.
 const PROMPTS = {
-  ko: buildRosterObservePrompt(candidateLines(CHARACTERS, cdbById), false),
-  alt: buildRosterObservePrompt(candidateLines(CHARACTERS, cdbById, ALT_NAMES), true),
+  ko: buildRosterObservePrompt(candidateLines(CHARACTERS, cdbById), false, true),
+  alt: buildRosterObservePrompt(candidateLines(CHARACTERS, cdbById, ALT_NAMES), true, true),
 };
 
 function serviceClient() {
@@ -125,7 +127,7 @@ export async function POST(req) {
 
   const reads = await Promise.all(parts.map(async (data, part) => {
     try {
-      const msg = await client.messages.create(rosterPhotoRequest(prompt, { type: 'image/jpeg', data }));
+      const msg = await client.messages.create(rosterPhotoRequest(prompt, { type: 'image/jpeg', data }, undefined, undefined, ROSTER_WEAPON_LEGEND));
       const text = msg.content.filter((b) => b.type === 'text').map((b) => b.text).join('');
       return { usage: msg.usage, parsed: parseRosterPhoto(text), part };
     } catch (e) {

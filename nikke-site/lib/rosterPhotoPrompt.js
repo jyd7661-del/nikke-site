@@ -59,7 +59,8 @@ JSON 하나로만 답한다:
 export const ROSTER_PHOTO_MODEL = 'claude-haiku-5-5';
 export const ROSTER_PHOTO_EFFORT = 'low';
 
-export function rosterPhotoRequest(prompt, image, model = ROSTER_PHOTO_MODEL, effort = ROSTER_PHOTO_EFFORT) {
+// legend({type,data}) — 무기 기호 견본 그림(카드 아님). 있으면 캡처 앞에 붙인다.
+export function rosterPhotoRequest(prompt, image, model = ROSTER_PHOTO_MODEL, effort = ROSTER_PHOTO_EFFORT, legend = null) {
   return {
     model,
     max_tokens: 8000,   // 4000이면 가로 캡처(카드 28~42장)에서 답이 끊겼다(11-02 시험)
@@ -67,6 +68,11 @@ export function rosterPhotoRequest(prompt, image, model = ROSTER_PHOTO_MODEL, ef
     messages: [{
       role: 'user',
       content: [
+        ...(legend ? [
+          { type: 'text', text: '[견본] 무기 아이콘 6종 — 아래 글자가 무기 이름이다. 카드가 아니니 적지 않는다.' },
+          { type: 'image', source: { type: 'base64', media_type: legend.type, data: legend.data } },
+          { type: 'text', text: '[캡처] 읽을 사진:' },
+        ] : []),
         { type: 'image', source: { type: 'base64', media_type: image.type, data: image.data } },
         { type: 'text', text: prompt },
       ],
@@ -123,7 +129,7 @@ export function mergeScanCards(cards, validIds) {
 //   무기 기호를 설명하자 AI 무기 읽기 27 → 93/108. 무기는 맞는 후보가 있을 때만 쓴다(matchObserved).
 // ─────────────────────────────────────────────────────────────────────────────
 
-export function buildRosterObservePrompt(candidates, withAltNames = false) {
+export function buildRosterObservePrompt(candidates, withAltNames = false, withLegend = false) {
   const cols = withAltNames ? 'id | 이름 | 영어 / 일본어 이름 | 속성 | 무기 | 버스트 | 클래스' : 'id | 이름 | 속성 | 무기 | 버스트 | 클래스';
   return `승리의 여신: 니케 게임의 「니케」 목록 화면 캡처 한 장이다. 카드마다 니케 한 명이다.
 
@@ -138,7 +144,7 @@ export function buildRosterObservePrompt(candidates, withAltNames = false) {
     rl  = 원 없이 안쪽을 향한 괄호 한 쌍과 가운데 점 ")·("
     smg = 아래가 트인 원 안에 세로 막대와 점("ⓘ" 모양)
     sr  = 양옆 괄호 안에 원과 십자 "(⊕)"
-  모르겠으면 "?".
+${withLegend ? '  **[견본] 그림(세로 한 칸이 같은 무기)과 하나씩 견줘 가장 닮은 것을 고른다.** 헷갈리는 짝: 원 양옆에 괄호 "(( ))"가 붙어 있으면 무조건 SR — AR은 괄호가 없고 십자선 네 가닥이 원 밖으로 튀어나온다. SG는 원이 네 토막, MG는 끊기지 않은 원.\n' : ''}  모르겠으면 "?".
 - burst: 셋째 검은 육각형의 로마 숫자. I=1, II=2, III=3. 로마 숫자가 아니라 **Λ(뒤집힌 V)** 모양이면 "all"(버스트 단계를 고르는 니케). 모르겠으면 "?".
 - treasure: 넷째 하트가 **주황색**이면 true. 파랑·하늘색·보라 하트나 하트 없음은 false.
 - name: 카드 아래쪽 이름에서 **보이는 글자만** 그대로(잘린 글자는 빼고, 덧붙여 짐작하지 않는다). 안 보이면 "".
@@ -154,7 +160,8 @@ JSON 하나로만 답한다:
 
 const ICON_ELEMENTS = new Set(['fire', 'water', 'wind', 'electric', 'iron']);
 const ICON_WEAPONS = new Set(['ar', 'smg', 'sg', 'sr', 'rl', 'mg']);
-const nameKey = (s) => String(s || '').toLowerCase().replace(/[\s:：()（）·.\-…]/g, '').replace(/[ㄱ-ㅣ]/g, '');
+// 츈→춘: 게임 화면 「포춘」 · 데이터 「포츈」(11-02 무기를 잘못 읽은 판에서 이름으로도 못 찾아 놓쳤다)
+const nameKey = (s) => String(s || '').toLowerCase().replace(/[\s:：()（）·.\-…]/g, '').replace(/[ㄱ-ㅣ]/g, '').replace(/츈/g, '춘');
 
 // AI가 본 것(card) → { seen, id, treasure, sure, how } — rescueByFragment와 같은 모양이라 mergeScanCards에 그대로 넣는다.
 //   how: exact-name(이름 전체가 한 명과 같음) · icon-name(속성·버스트 안에서 이름으로 한 명) · icon-only(아이콘 조합이 한 명뿐, 이름 없음) · icon-guess(여럿 남아 AI 짐작)
@@ -166,7 +173,7 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
   const seen = String(card.name || '');
   const key = nameKey(seen);
   const frags = seen.toLowerCase().split(/[\s:：()（）·.\-…]+/).map(nameKey).filter(Boolean);
-  const hay = (c) => `${c.name}|${altNames ? altNames(c) : ''}`.replace(/\s/g, '').toLowerCase();
+  const hay = (c) => `${c.name}|${altNames ? altNames(c) : ''}`.replace(/\s/g, '').toLowerCase().replace(/츈/g, '춘');
   // "스 : 스타"처럼 콜론이 보이면 앞은 기본 이름의 **끝**, 뒤는 변형 이름의 **시작**이다(이름은 앞뒤로만 잘린다).
   const colon = seen.match(/^(.*?)\s*[:：]\s*(.*)$/);
   const left = colon ? nameKey(colon[1]) : '';
@@ -197,7 +204,9 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
   // 무기는 **약하게** 쓴다: 무기 기호 설명을 넣은 뒤 93/108(전엔 27/108 — AI가 기호가 무슨 무기인지 몰랐다)이라
   // 틀릴 때가 있다. 무기까지 맞는 후보 안에서 이름이 맞으면 그것, 없으면 속성·버스트만으로 다시 찾는다.
   // 버스트 Λ(burstFlex)는 그 니케들만. 거꾸로 Λ를 숫자로 잘못 읽어도(11-02 레드 후드를 III으로) 빠지지 않게 단계 선택 니케는 어느 숫자든 통과시킨다.
-  const burstOk = (d) => !bu || (bu === 'all' ? !!d.burstFlex : !!d.burstFlex || Number(d.burst) === bu);
+  // 단, 그 니케가 쓸 수 있는 단계(burstStages)만 — 11-02 「라」·II가 라피: 레드 후드(I·III만)로 확실 처리됐다
+  const flexHas = (d) => !!d.burstFlex && (!Array.isArray(d.burstStages) || d.burstStages.map(Number).includes(bu));
+  const burstOk = (d) => !bu || (bu === 'all' ? !!d.burstFlex : flexHas(d) || Number(d.burst) === bu);
   const ebPool = characters.filter((c) => {
     const d = iconOf(c);
     return (!el || d.element === el) && burstOk(d);
