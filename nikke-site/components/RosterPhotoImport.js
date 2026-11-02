@@ -162,6 +162,33 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
   };
 
   const nChecked = rows.filter((r) => checked.has(r.id)).length;
+  const rowView = (r) => {
+    const c = BY_ID.get(r.id);
+    const on = checked.has(r.id);
+    const owned = ownedIds.has(r.id);
+    return (
+      <div key={r.id} className={`flex items-center gap-2 rounded-lg border px-2 py-1.5 ${on ? 'border-nikke-accent/60 bg-nikke-accent/5' : 'border-slate-700'}`}>
+        <label className="flex flex-1 min-w-0 items-center gap-2 cursor-pointer">
+          <input type="checkbox" checked={on} onChange={() => toggle(r.id)} className="accent-nikke-accent" />
+          <CharacterAvatar character={localizedCharacter(c, lang)} size="sm" />
+          <span className="truncate text-sm text-slate-100">{characterName(c, lang)}</span>
+        </label>
+        {!r.sure && <span className="shrink-0 rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-200">{t('photo_import_check')}</span>}
+        {owned && <span className="shrink-0 text-[10px] text-slate-500">{t('photo_import_owned')}</span>}
+        {c.hasTreasure && (
+          <button
+            onClick={() => toggleTreasure(r.id)}
+            title={t('treasure_toggle_title')}
+            className={`shrink-0 text-sm ${treasure.has(r.id) || treasureIds.has(r.id) ? '' : 'opacity-25 grayscale'}`}
+          >
+            💎
+          </button>
+        )}
+      </div>
+    );
+  };
+  const unsureRows = rows.filter((r) => !r.sure);
+  const sureRows = rows.filter((r) => r.sure);
 
   return (
     <>
@@ -281,33 +308,20 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
             {rows.length > 0 && (
               <div className="mt-4">
                 <p className="text-sm text-slate-300 mb-2">{t('photo_import_found')(rows.length)}</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                  {rows.map((r) => {
-                    const c = BY_ID.get(r.id);
-                    const on = checked.has(r.id);
-                    const owned = ownedIds.has(r.id);
-                    return (
-                      <div key={r.id} className={`flex items-center gap-2 rounded-lg border px-2 py-1.5 ${on ? 'border-nikke-accent/60 bg-nikke-accent/5' : 'border-slate-700'}`}>
-                        <label className="flex flex-1 min-w-0 items-center gap-2 cursor-pointer">
-                          <input type="checkbox" checked={on} onChange={() => toggle(r.id)} className="accent-nikke-accent" />
-                          <CharacterAvatar character={localizedCharacter(c, lang)} size="sm" />
-                          <span className="truncate text-sm text-slate-100">{characterName(c, lang)}</span>
-                        </label>
-                        {!r.sure && <span className="shrink-0 rounded bg-amber-500/20 px-1.5 py-0.5 text-[10px] text-amber-200">{t('photo_import_check')}</span>}
-                        {owned && <span className="shrink-0 text-[10px] text-slate-500">{t('photo_import_owned')}</span>}
-                        {c.hasTreasure && (
-                          <button
-                            onClick={() => toggleTreasure(r.id)}
-                            title={t('treasure_toggle_title')}
-                            className={`shrink-0 text-sm ${treasure.has(r.id) || treasureIds.has(r.id) ? '' : 'opacity-25 grayscale'}`}
-                          >
-                            💎
-                          </button>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
+                {/* 11-02 유저 "니케 목록이 너무 많아서 맞겠지 하고 그냥 넘겼거든" — 긴 목록은 아무도 안 본다.
+                    확인이 필요한 니케만 펼쳐 두고, 확실한 니케(이미 체크됨)는 접어 둔다. */}
+                {unsureRows.length > 0 && (
+                  <>
+                    <p className="text-xs text-amber-200 mb-1.5">{t('photo_import_unsure_head')(unsureRows.length)}</p>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">{unsureRows.map(rowView)}</div>
+                  </>
+                )}
+                {sureRows.length > 0 && (
+                  <details className={unsureRows.length > 0 ? 'mt-3' : ''}>
+                    <summary className="cursor-pointer text-xs text-slate-400 hover:text-slate-200">{t('photo_import_sure_head')(sureRows.length)}</summary>
+                    <div className="mt-1.5 grid grid-cols-1 sm:grid-cols-2 gap-1.5">{sureRows.map(rowView)}</div>
+                  </details>
+                )}
                 {unknown > 0 && <p className="mt-2 text-xs text-slate-500">{t('photo_import_unknown')(unknown)}</p>}
                 <div className="mt-4 flex justify-end gap-2">
                   <button onClick={reset} className="px-4 py-2 rounded-lg text-sm border border-slate-700 text-slate-300 hover:border-slate-500">{t('photo_import_discard')}</button>
