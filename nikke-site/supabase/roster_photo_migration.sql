@@ -37,3 +37,7 @@ grant select, insert, update on roster_photo_scans to service_role;
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('roster-photos', 'roster-photos', false, 3145728, array['image/jpeg'])
 on conflict (id) do nothing;
+
+-- 2026-11-03 운영자(profiles.is_admin)만 캡처 사진을 읽는다 — 서비스 키 없이 올라온 사진을 결과와 대조하려고(유저 허락, MCP로 적용함)
+create policy "roster photos admin read" on storage.objects for select to authenticated
+  using (bucket_id = 'roster-photos' and public.is_board_admin());

@@ -217,7 +217,11 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
   const hits = wHits.length ? wHits : ebPool.filter(nameHit);
   if (hits.length === 1) {
     // 이름 없이 아이콘만으로 한 명이면 R 등급일 수도 있어 확인 필요로 둔다
-    return frags.length ? out(hits[0].id, true, 'icon-name') : out(hits[0].id, false, 'icon-only');
+    if (!frags.length) return out(hits[0].id, false, 'icon-only');
+    // 무기가 어긋나 속성·버스트만으로 찾았는데 이름 조각이 다른 니케에도 들어 있으면 확인 필요 — 11-02 PC 캡처:
+    // 리틀 머메이드의 "이드"가 버스트를 잘못 읽어 에이드로 확실 처리됐다(무기도 SG로 어긋났다)
+    const sure = wHits.length > 0 || characters.filter(nameHit).length === 1;
+    return out(hits[0].id, sure, 'icon-name');
   }
   if (hits.length > 1) {
     const g = hits.find((c) => c.id === card.guess);
@@ -230,6 +234,16 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
   if (key.length >= 2) {
     const byName = characters.filter(nameHit);
     if (byName.length === 1) return out(byName[0].id, false, 'name-only');
+    // 한 글자만 잘못 읽은 이름(11-02 PC 캡처 "시큐널"·"길로"·"트루나") — 속성·버스트가 맞는 니케 중 글자 수가 같고
+    // 한 글자만 다른 이름이 하나뿐이면 그것(확인 필요)
+    const near = ebPool.filter((c) => {
+      const n = nameKey(c.name);
+      if (n.length !== key.length) return false;
+      let diff = 0;
+      for (let i = 0; i < n.length; i++) if (n[i] !== key[i]) diff++;
+      return diff === 1;
+    });
+    if (near.length === 1) return out(near[0].id, false, 'near-name');
   }
   return out('none', false, 'none');
 }
