@@ -53,7 +53,7 @@ select
      'unsure_kept', coalesce(sum((select count(distinct c->>'id') from jsonb_array_elements(ai_cards) c
         where confirmed_at is not null and ((c->>'sure')::boolean is false or c->>'rescued' is not null) and confirmed_ids ? (c->>'id'))),0),
      'krw', round(coalesce(sum(krw),0)),
-     'by', (select json_agg(t) from (select lang, orientation, count(*) n from roster_photo_scans r2, b where r2.usage_date between s and e group by 1,2) t)
+     'by', (select json_agg(x) from (select lang, orientation, count(*) n from roster_photo_scans r2, b where r2.usage_date between s and e group by 1,2) x)
   ) from roster_photo_scans, b where usage_date between s and e) as roster_photo,
   -- 5. AI 비용 (원, 우리 DB 기준 — 청구서와는 기간·환율이 다를 수 있다)
   (select json_build_object(

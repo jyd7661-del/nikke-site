@@ -83,7 +83,8 @@ const EXPLAIN_EFFORT = ['low', 'medium', 'high', 'none'].includes(process.env.AI
 //
 //   AI_TEAMS_MODE   off(코드 기본) | shadow(호출하고 기록만, 화면은 엔진 답 — 운영은 2026-09-21부터 이것) | on(폴백을 AI 답으로)
 //   AI_TEAM_MODEL   기본 claude-sonnet-5. ⚠️ 2026-09-26 유저 결정: 소넷 건당 약 67원은 광고로 못 덮는다 → 엔진 개선 우선,
-//                   AI는 하이쿠로 되는지 실험 중(scripts/experimentHaikuPick.mjs — 자유 구성이 아니라 엔진 후보 고르기). docs/open-items.md
+//                   하이쿠 "엔진 후보 고르기"(scripts/experimentHaikuPick.mjs)는 10-04 랭커 복원 재시험에서 기각(바꾼 93건 중 가까워짐 18 · 멀어짐 51,
+//                   docs/log/2026-10.md "엔진 개선 4종 중 ③④"). AI 조합의 다음 시도는 엔진이 더 좋아진 뒤 그 지표로.
 //   AI_DAILY_BUDGET_KRW  하루 원 단위 천장(기본 10,000원). 지출이 아니라 차단선 — 실제로 쓴 만큼만 나간다.
 //       조합 구성 1건 실측 ≈ 67원(소넷, 28명, 2026-09-25 — 설계 추정 19~52원보다 높았다). 설명 1건 ≈ 4.9원. 둘 다 여기 합산한다.
 //       닿으면 그날은 엔진 폴백 답 + budgetExhausted 표시. 되돌리기 = 환경변수 하나.
