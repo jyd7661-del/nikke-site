@@ -34,7 +34,7 @@ export default function PrivacyPage({ params }) {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">개인정보처리방침</h1>
-      <p className="text-slate-500 mb-8">시행일자: 2026년 10월 29일 (최초 시행: 2026년 8월 4일)</p>
+      <p className="text-slate-500 mb-8">시행일자: 2026년 11월 2일 (최초 시행: 2026년 8월 4일)</p>
 
       <p className="mb-8">
         '니케 조합 추천'(이하 '사이트')은 승리의 여신: 니케 플레이어를 위한 비공식 팬 사이트로,
@@ -53,6 +53,10 @@ export default function PrivacyPage({ params }) {
           <li>
             서비스 이용 시: 보유 캐릭터 선택 정보, AI 추천 요청에 포함되는 로스터 정보, 작성한
             커뮤니티 조합·게시판 게시글과 댓글, 조합에 대한 👍/👎 피드백 및 추천/비추천 투표
+          </li>
+          <li>
+            캡처로 보유 니케 고르기(시험 기능)를 쓸 때: 올린 게임 캡처 사진, AI가 읽은 결과, 이용자가 확인해 넣은 니케 목록.
+            사진은 <strong>인식 정확도를 높이려고 보관하며 운영자만 확인</strong>합니다. 사진은 판독을 위해 Anthropic API(Claude)에 전송됩니다.
           </li>
           <li>자동 수집 정보: 방문 통계, 기기·브라우저 정보, 쿠키(아래 2번 항목 참고)</li>
           <li>
@@ -126,7 +130,7 @@ export default function PrivacyPage({ params }) {
           <li>Supabase — 회원 인증 및 데이터베이스</li>
           <li>Google — 로그인(OAuth), AdSense 광고 게재, Google Analytics 방문 통계</li>
           <li>
-            Anthropic API(Claude) — AI 조합 추천 생성, 그리고{' '}
+            Anthropic API(Claude) — AI 조합 추천 생성, 캡처 사진 판독, 그리고{' '}
             <strong>커뮤니티 글 자동 번역</strong>
           </li>
           <li>Vercel — 사이트 호스팅</li>

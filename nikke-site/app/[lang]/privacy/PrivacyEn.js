@@ -5,7 +5,7 @@ export default function PrivacyEn({ consent }) {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">Privacy Policy</h1>
-      <p className="text-slate-500 mb-2">Effective date: October 29, 2026 (first effective: August 4, 2026)</p>
+      <p className="text-slate-500 mb-2">Effective date: November 2, 2026 (first effective: August 4, 2026)</p>
       <p className="text-slate-500 mb-8">
         This is a translation provided for convenience. If it differs from the Korean original, the Korean version prevails.
       </p>
@@ -26,6 +26,11 @@ export default function PrivacyEn({ consent }) {
           <li>
             When you use the service: the characters you mark as owned, the roster included in AI recommendation requests,
             community teams, board posts and comments you write, and 👍/👎 feedback and up/down votes on teams
+          </li>
+          <li>
+            When you use &quot;pick owned Nikkes from screenshots&quot; (a test feature): the game screenshots you upload, what the AI read,
+            and the list of Nikkes you confirmed. Photos are <strong>kept to improve recognition and are seen only by the site operator</strong>.
+            Photos are sent to the Anthropic API (Claude) to be read.
           </li>
           <li>Automatically collected: visit statistics, device and browser information, cookies (see section 2)</li>
           <li>
@@ -84,7 +89,7 @@ export default function PrivacyEn({ consent }) {
           <li>Supabase — authentication and database</li>
           <li>Google — sign-in (OAuth), AdSense ads, Google Analytics visit statistics</li>
           <li>
-            Anthropic API (Claude) — AI team recommendations and <strong>automatic translation of community posts</strong>
+            Anthropic API (Claude) — AI team recommendations, reading uploaded screenshots, and <strong>automatic translation of community posts</strong>
           </li>
           <li>Vercel — site hosting</li>
         </ul>

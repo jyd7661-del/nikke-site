@@ -5,7 +5,7 @@ export default function PrivacyJa({ consent }) {
   return (
     <main className="max-w-3xl mx-auto px-4 py-12 text-sm leading-relaxed text-slate-300">
       <h1 className="text-2xl font-extrabold text-white mb-2">プライバシーポリシー</h1>
-      <p className="text-slate-500 mb-2">施行日:2026年10月29日(初回施行:2026年8月4日)</p>
+      <p className="text-slate-500 mb-2">施行日:2026年11月2日(初回施行:2026年8月4日)</p>
       <p className="text-slate-500 mb-8">
         この文書は便宜のための翻訳です。韓国語の原文と内容が異なる場合は、韓国語版が優先されます。
       </p>
@@ -26,6 +26,10 @@ export default function PrivacyJa({ consent }) {
           <li>
             サービス利用時:所持キャラクターの選択情報、AI推薦リクエストに含まれる編成情報、投稿したコミュニティ編成・掲示板の投稿とコメント、
             編成への👍/👎フィードバックおよび高評価/低評価の投票
+          </li>
+          <li>
+            スクショで所持ニケを選ぶ機能(テスト中)を使う場合:アップロードしたゲームのスクリーンショット、AIの読み取り結果、利用者が確認して追加したニケの一覧。
+            画像は<strong>認識精度の改善のために保管し、運営者のみが確認</strong>します。画像は読み取りのためにAnthropic API(Claude)へ送信されます。
           </li>
           <li>自動的に収集する情報:アクセス統計、端末・ブラウザ情報、Cookie(下記2を参照)</li>
           <li>
@@ -79,7 +83,7 @@ export default function PrivacyJa({ consent }) {
           <li>Supabase — 会員認証およびデータベース</li>
           <li>Google — ログイン(OAuth)、AdSense広告の掲載、Google Analyticsアクセス統計</li>
           <li>
-            Anthropic API(Claude) — AI編成推薦の生成、および<strong>コミュニティ投稿の自動翻訳</strong>
+            Anthropic API(Claude) — AI編成推薦の生成、スクリーンショットの読み取り、および<strong>コミュニティ投稿の自動翻訳</strong>
           </li>
           <li>Vercel — サイトのホスティング</li>
         </ul>

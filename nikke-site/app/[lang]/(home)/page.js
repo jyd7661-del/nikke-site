@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import CharacterPicker from '@/components/CharacterPicker';
+import RosterPhotoImport from '@/components/RosterPhotoImport';
 import ResultPanel from '@/components/ResultPanel';
 import AdSlot from '@/components/AdSlot';
 import NicknamePrompt from '@/components/NicknamePrompt';
@@ -113,6 +114,18 @@ export default function Home() {
       if (user) setTreasure(user.id, id, !has);
       return next;
     });
+  };
+
+  // 사진으로 넣기(components/RosterPhotoImport, 베타) — 더하기만 한다. 이미 보유한 니케·💎는 그대로 둔다.
+  const applyPhoto = async (ids, tIds) => {
+    const newIds = ids.filter((id) => !ownedIds.has(id));
+    const newTreasure = tIds.filter((id) => TREASURE_AVAILABLE_IDS.has(id) && !treasureIds.has(id));
+    setOwnedIds((prev) => new Set([...prev, ...ids]));
+    setTreasureIds((prev) => new Set([...prev, ...newTreasure]));
+    if (!user) return;
+    // 같은 행을 두 번 upsert하므로 니케마다 보유 → 💎 순서를 지킨다
+    await Promise.all(newIds.map((id) => addToRoster(user.id, id)));
+    await Promise.all(newTreasure.map((id) => setTreasure(user.id, id, true)));
   };
 
   const clear = () => {
@@ -231,6 +244,8 @@ export default function Home() {
           </p>
         </div>
       )}
+
+      <RosterPhotoImport ownedIds={ownedIds} treasureIds={treasureIds} onApply={applyPhoto} />
 
       <CharacterPicker
         ownedIds={ownedIds}
