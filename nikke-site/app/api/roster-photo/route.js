@@ -95,17 +95,26 @@ export async function POST(req) {
 
   const ipHash = hashIp(getClientIp(req));
   const today = new Date().toISOString().slice(0, 10);
+  const userId = await callerUserId(req);
+  // 운영자(profiles.is_admin — 게시판 is_board_admin과 같은 표시)는 장수 한도를 받지 않는다(11-02 유저 "난 한도가 없어야할 것 같아" —
+  // 같은 캡처로 시험을 되풀이하다 24장째에 걸렸다). 사이트 전체 원 단위 천장은 운영자도 그대로 받는다.
+  let isAdmin = false;
+  if (userId) {
+    const { data: prof } = await sb.from('profiles').select('is_admin').eq('id', userId).maybeSingle();
+    isAdmin = !!prof?.is_admin;
+  }
   // 한도 조회가 실패하면 **닫는다** — ai-recommend 설명과 달리 이 기능은 꺼져도 손으로 고르면 된다.
-  const { count, error: cntErr } = await sb
-    .from('roster_photo_scans').select('id', { count: 'exact', head: true })
-    .eq('ip_hash', ipHash).eq('usage_date', today);
-  if (cntErr) { console.error('[ROSTER_PHOTO] 한도 조회 실패', cntErr); return json({ error: 'unavailable' }, 503); }
-  if ((count || 0) >= PHOTO_DAILY_LIMIT) return json({ error: 'daily_limit', limit: PHOTO_DAILY_LIMIT }, 429);
+  if (!isAdmin) {
+    const { count, error: cntErr } = await sb
+      .from('roster_photo_scans').select('id', { count: 'exact', head: true })
+      .eq('ip_hash', ipHash).eq('usage_date', today);
+    if (cntErr) { console.error('[ROSTER_PHOTO] 한도 조회 실패', cntErr); return json({ error: 'unavailable' }, 503); }
+    if ((count || 0) >= PHOTO_DAILY_LIMIT) return json({ error: 'daily_limit', limit: PHOTO_DAILY_LIMIT }, 429);
+  }
   const { data: budget, error: bErr } = await sb.from('ai_daily_budget').select('krw').eq('usage_date', today).maybeSingle();
   if (bErr) { console.error('[ROSTER_PHOTO] 예산 조회 실패', bErr); return json({ error: 'unavailable' }, 503); }
   if (Number(budget?.krw || 0) >= AI_DAILY_BUDGET_KRW) return json({ error: 'budget' }, 503);
 
-  const userId = await callerUserId(req);
   const prompt = lang === 'ko' ? PROMPTS.ko : PROMPTS.alt;
   const altNames = lang === 'ko' ? null : ALT_NAMES;
   const client = new Anthropic();
