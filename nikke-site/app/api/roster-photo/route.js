@@ -143,7 +143,7 @@ export async function POST(req) {
   // AI가 본 것(아이콘·짐작)도 같이 남긴다 — 틀렸을 때 아이콘을 잘못 읽었는지 이름을 잘못 읽었는지 가린다
   const aiCards = reads.flatMap((r) => (r.parsed?.cards || []).map((c) => ({
     ...matchObserved({ ...c, name: String(c.name || '').slice(0, 60) }, CHARACTERS, cdbById, altNames),
-    el: String(c.element || '').slice(0, 10), wp: String(c.weapon || '').slice(0, 5), bu: String(c.burst ?? '').slice(0, 2),
+    el: String(c.element || '').slice(0, 10), wp: String(c.weapon || '').slice(0, 5), bu: String(c.burst ?? '').slice(0, 3),
     guess: String(c.guess || '').slice(0, 60),
     part: r.part,
   })));

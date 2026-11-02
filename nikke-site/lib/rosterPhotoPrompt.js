@@ -17,7 +17,8 @@ const BURST_KO = { 1: 'I', 2: 'II', 3: 'III' };
 export function candidateLines(characters, cdbById, altNames = null) {
   return characters.map((c) => {
     const d = cdbById.get(c.cdbId || c.id) || {};
-    const burst = BURST_KO[d.burst] || (d.burst === 'flex' || d.burst === 'all' ? '모두(Λ)' : BURST_KO[c.burst] || '?');
+    // 단계를 고르는 니케(burstFlex — 레드 후드·라피: 레드 후드)는 카드에 로마 숫자 대신 Λ가 찍힌다(11-02 캡처 확인)
+    const burst = d.burstFlex ? 'Λ(단계 선택)' : BURST_KO[d.burst] || BURST_KO[c.burst] || '?';
     const alt = altNames ? ` | ${altNames(c)}` : '';
     return `${c.id} | ${c.name}${alt} | ${ELEMENT_KO[d.element] || '?'} | ${WEAPON_KO[d.weapon] || '?'} | 버스트 ${burst} | ${CLASS_KO[d.class] || '?'}`;
   }).join('\n');
@@ -138,7 +139,7 @@ export function buildRosterObservePrompt(candidates, withAltNames = false) {
     smg = 아래가 트인 원 안에 세로 막대와 점("ⓘ" 모양)
     sr  = 양옆 괄호 안에 원과 십자 "(⊕)"
   모르겠으면 "?".
-- burst: 셋째 검은 육각형의 로마 숫자. I=1, II=2, III=3. 모르겠으면 "?".
+- burst: 셋째 검은 육각형의 로마 숫자. I=1, II=2, III=3. 로마 숫자가 아니라 **Λ(뒤집힌 V)** 모양이면 "all"(버스트 단계를 고르는 니케). 모르겠으면 "?".
 - treasure: 넷째 하트가 **주황색**이면 true. 파랑·하늘색·보라 하트나 하트 없음은 false.
 - name: 카드 아래쪽 이름에서 **보이는 글자만** 그대로(잘린 글자는 빼고, 덧붙여 짐작하지 않는다). 안 보이면 "".
 - guess: 위 정보와 그림으로 짐작한 후보 id(아래 목록). 목록에 없을 것 같으면(R 등급 — 솔져·프로덕트·iDoll 등) "none".
@@ -161,7 +162,7 @@ const nameKey = (s) => String(s || '').toLowerCase().replace(/[\s:：()（）·.
 export function matchObserved(card, characters, cdbById, altNames = null) {
   const el = ICON_ELEMENTS.has(card.element) ? card.element : null;
   const wp = ICON_WEAPONS.has(String(card.weapon).toLowerCase()) ? String(card.weapon).toLowerCase() : null;
-  const bu = [1, 2, 3].includes(Number(card.burst)) ? Number(card.burst) : null;
+  const bu = String(card.burst).toLowerCase() === 'all' ? 'all' : [1, 2, 3].includes(Number(card.burst)) ? Number(card.burst) : null;
   const seen = String(card.name || '');
   const key = nameKey(seen);
   const frags = seen.toLowerCase().split(/[\s:：()（）·.\-…]+/).map(nameKey).filter(Boolean);
@@ -188,15 +189,18 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
   // 이름 전체가 맞는 쪽이 더 믿을 만하다. 속성까지 맞으면 확실, 아니면 확인 필요. "엠마"·"엠마: 택티컬 업"처럼 아이콘이 같은 짝도 여기서 갈린다.
   const isExact = (c) => nameKey(c.name) === key || (altNames && altNames(c).split(' / ').some((n) => nameKey(n) === key));
   const exactAll = key ? characters.filter(isExact) : [];
-  if (exactAll.length === 1) {
+  // 단, 버스트 Λ인데 그 이름이 단계 선택 니케가 아니면 건너뛴다 — "라피"까지만 보이는 라피: 레드 후드는 아래 아이콘 거르기로 간다
+  if (exactAll.length === 1 && (bu !== 'all' || iconOf(exactAll[0]).burstFlex)) {
     const d = iconOf(exactAll[0]);
     return out(exactAll[0].id, !el || d.element === el, 'exact-name');
   }
   // 무기는 **약하게** 쓴다: 무기 기호 설명을 넣은 뒤 93/108(전엔 27/108 — AI가 기호가 무슨 무기인지 몰랐다)이라
   // 틀릴 때가 있다. 무기까지 맞는 후보 안에서 이름이 맞으면 그것, 없으면 속성·버스트만으로 다시 찾는다.
+  // 버스트 Λ(burstFlex)는 그 니케들만. 거꾸로 Λ를 숫자로 잘못 읽어도(11-02 레드 후드를 III으로) 빠지지 않게 단계 선택 니케는 어느 숫자든 통과시킨다.
+  const burstOk = (d) => !bu || (bu === 'all' ? !!d.burstFlex : !!d.burstFlex || Number(d.burst) === bu);
   const ebPool = characters.filter((c) => {
     const d = iconOf(c);
-    return (!el || d.element === el) && (!bu || Number(d.burst) === bu);
+    return (!el || d.element === el) && burstOk(d);
   });
   const wPool = wp ? ebPool.filter((c) => iconOf(c).weapon === wp) : ebPool;
   const wHits = wPool.filter(nameHit);
