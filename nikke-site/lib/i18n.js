@@ -157,6 +157,9 @@ const dict = {
     dex_tier_base: '기본',
     dex_tier_treasure: '애장품 장착',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
+    dex_filter_label: '도감 필터',
+    dex_filter_count: (n) => `${n}명`,
+    dex_filter_clear: '필터 지우기',
     dex_breadcrumb: "니케 도감",
     dex_rarity: "등급",
     dex_burst: "버스트",
@@ -488,6 +491,9 @@ const dict = {
     dex_tier_base: 'Base',
     dex_tier_treasure: 'With Treasure',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
+    dex_filter_label: 'Character filter',
+    dex_filter_count: (n) => `${n} shown`,
+    dex_filter_clear: 'Clear filters',
     dex_breadcrumb: "NIKKE Characters",
     dex_rarity: "Rarity",
     dex_burst: "Burst",
@@ -818,6 +824,9 @@ const dict = {
     dex_tier_base: '通常',
     dex_tier_treasure: '愛用品装着',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
+    dex_filter_label: '図鑑フィルター',
+    dex_filter_count: (n) => `${n}体`,
+    dex_filter_clear: 'フィルターを解除',
     dex_breadcrumb: "ニケ図鑑",
     dex_rarity: "レアリティ",
     dex_burst: "バースト",
