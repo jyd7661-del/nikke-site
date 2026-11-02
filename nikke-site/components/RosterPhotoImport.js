@@ -162,6 +162,20 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
                 </>
               )}
             </label>
+            {/* 한 장 고르기(2026-11-02 유저 "앱 고르는거에서 갤러리는 못고르게하나?"): multiple이 붙으면 여러 장 고르기를
+                지원하지 않는 갤러리 앱(일부 안드로이드 기본 갤러리)이 앱 고르기 창에서 빠진다. multiple 없는 입력을 따로 둔다 —
+                결과는 올릴 때마다 쌓이니 한 장씩 여러 번 올려도 된다. */}
+            {!busy && (
+              <label className="mt-2 block text-center text-xs text-slate-400 underline decoration-dotted cursor-pointer hover:text-slate-200">
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => { onFiles(e.target.files); e.target.value = ''; }}
+                />
+                {t('photo_import_pick_one')}
+              </label>
+            )}
 
             {errors.length > 0 && (
               <p className="mt-3 text-xs text-rose-300">
