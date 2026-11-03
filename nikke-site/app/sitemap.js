@@ -35,8 +35,7 @@ function localized(path, extra) {
 export const revalidate = 3600;
 
 // 업데이트 글: 한국어는 늘, 영어·일본어는 번역이 끝난 글만(번역 없으면 그 주소는 noindex — app/[lang]/updates/[id]).
-async function updateEntries() {
-  const posts = await fetchUpdates();
+async function updateEntries(posts) {
   if (!posts.length) return [];
   const ids = posts.map((p) => p.id);
   const done = {};
@@ -50,25 +49,33 @@ async function updateEntries() {
   });
 }
 
+// ■ lastModified는 **실제로 고친 날짜를 아는 주소에만** 붙인다(2026-11-03).
+//   전에는 홈·도감 625개 주소에 `now`를 찍었고, 위 revalidate 때문에 한 시간마다 "전부 방금 바뀜"이 됐다.
+//   구글은 lastmod가 꾸준히 정확할 때만 쓰고, 아니면 사이트 전체의 lastmod를 무시한다 — 진짜 날짜가 있는 가이드·업데이트 글까지
+//   신호를 잃는다. 11-03 확인: /en · /en/nikke · /nikke가 9월에 한 번 크롤링된 뒤 6주째 「크롤링됨 - 색인 안 됨」 그대로였다.
+//   도감·홈은 페이지별 수정일을 모른다(dataFreshness.asOf도 실제 수정과 어긋난다 — 10-31 마리안 추가가 10-19로 남아 있었다) → 뺀다.
+//   날짜가 없으면 구글은 자기 크롤링 주기로 돈다. 거짓 날짜보다 낫다.
 export default async function sitemap() {
-  const now = new Date();
+  const posts = await fetchUpdates();
+  const latestPost = posts.length ? new Date(Math.max(...posts.map((p) => +new Date(p.created_at)))) : undefined;
+  const latestGuide = new Date(Math.max(...GUIDES.map((g) => +new Date(g.updated))));
   return [
-    ...localized('/', { lastModified: now, changeFrequency: 'weekly', priority: 1 }),
-    { url: `${SITE_URL}/combos`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
-    { url: `${SITE_URL}/board`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
-    ...localized('/nikke', { lastModified: now, changeFrequency: 'weekly', priority: 0.9 }),
-    // 가이드(2026-09-04). 글마다 lastModified가 실제 갱신일이라 now를 쓰지 않는다 —
-    // 안 고친 글에 오늘 날짜를 찍으면 크롤러에게 거짓말이 된다.
-    { url: `${SITE_URL}/guide`, lastModified: now, changeFrequency: 'weekly', priority: 0.9 },
+    ...localized('/', { changeFrequency: 'weekly', priority: 1 }),
+    { url: `${SITE_URL}/combos`, changeFrequency: 'daily', priority: 0.8 },
+    { url: `${SITE_URL}/board`, changeFrequency: 'daily', priority: 0.8 },
+    ...localized('/nikke', { changeFrequency: 'weekly', priority: 0.9 }),
+    // 가이드(2026-09-04). 글마다 lastModified가 실제 갱신일이다. 목록은 가장 최근 글의 갱신일.
+    { url: `${SITE_URL}/guide`, lastModified: latestGuide, changeFrequency: 'weekly', priority: 0.9 },
     ...GUIDES.map((g) => ({
       url: `${SITE_URL}/guide/${g.slug}`,
       lastModified: new Date(g.updated),
       changeFrequency: 'monthly',
       priority: 0.8,
     })),
-    ...CHARACTERS.flatMap((c) => localized(`/nikke/${c.id}`, { lastModified: now, changeFrequency: 'weekly', priority: 0.7 })),
-    ...localized('/updates', { lastModified: now, changeFrequency: 'weekly', priority: 0.8 }),
-    ...(await updateEntries()),
-    { url: `${SITE_URL}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.3 },
+    ...CHARACTERS.flatMap((c) => localized(`/nikke/${c.id}`, { changeFrequency: 'weekly', priority: 0.7 })),
+    // 업데이트 목록은 가장 최근 글 날짜(글이 올라오면 목록이 바뀐다)
+    ...localized('/updates', { ...(latestPost ? { lastModified: latestPost } : {}), changeFrequency: 'weekly', priority: 0.8 }),
+    ...(await updateEntries(posts)),
+    { url: `${SITE_URL}/privacy`, changeFrequency: 'yearly', priority: 0.3 },
   ];
 }

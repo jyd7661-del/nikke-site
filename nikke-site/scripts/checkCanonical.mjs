@@ -85,6 +85,17 @@ for (const bare of KO_ONLY) {
   for (const l of ['en', 'ja']) inspect(l, bare, { wantCanonical: bare, wantNoindex: true, wantAlternates: false });
 }
 
+// sitemap lastmod(2026-11-03): 같은 수정일이 수십 개 주소에 한꺼번에 찍히면 빌드·요청 시각을 넣은 것이다(진짜로 고친 날짜가 아니다).
+// 전에는 홈·도감 625개에 `now`가 들어가 한 시간마다 "전부 방금 바뀜"이었다 — 구글은 그러면 사이트의 lastmod를 통째로 무시한다(app/sitemap.js 주석).
+// 실제 날짜끼리 겹치는 것은 가이드 몇 편 · 업데이트 글 하나의 세 언어 정도라 10개를 넘지 않는다.
+const smFile = path.join(OUT, 'sitemap.xml.body');
+if (!fs.existsSync(smFile)) err('sitemap.xml 산출물 없음 — lastmod 검사를 못 했다');
+else {
+  const counts = {};
+  for (const m of fs.readFileSync(smFile, 'utf8').matchAll(/<lastmod>([^<]+)<\/lastmod>/g)) counts[m[1]] = (counts[m[1]] || 0) + 1;
+  for (const [d, n] of Object.entries(counts)) if (n > 10) err(`sitemap — lastmod ${d}가 주소 ${n}개에 똑같이 찍힘(실제 수정일이 아니라 빌드 시각으로 보인다)`);
+}
+
 console.log(errors === 0
   ? `ERROR 0 — ${checked}개 주소(번역 ${LOCALIZED.length}×3 · 한국어 전용 ${KO_ONLY.length}×3) canonical·noindex·hreflang 정상`
   : `ERROR ${errors} — canonical 문제`);
