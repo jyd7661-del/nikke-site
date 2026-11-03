@@ -199,7 +199,13 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
   // 단, 버스트 Λ인데 그 이름이 단계 선택 니케가 아니면 건너뛴다 — "라피"까지만 보이는 라피: 레드 후드는 아래 아이콘 거르기로 간다
   if (exactAll.length === 1 && (bu !== 'all' || iconOf(exactAll[0]).burstFlex)) {
     const d = iconOf(exactAll[0]);
-    return out(exactAll[0].id, !el || d.element === el, 'exact-name');
+    // 무기가 어긋나고 같은 속성·버스트에 「그 이름 : …」 변형이 있으면 확인 필요 — 11-03 PC 캡처: 「라푼젤 : 퓨어 그레이스」(SR)의
+    // 뒷부분을 AI가 빼고 「라푼젤」만 적어 기본 라푼젤(RL)로 확실 처리됐다. 무기는 틀릴 때가 있어 변형이 있을 때만 의심한다
+    const variant = wp && d.weapon !== wp && characters.some((c) => {
+      const v = iconOf(c);
+      return c !== exactAll[0] && nameKey(c.name).startsWith(key) && /[:：]/.test(c.name) && v.element === d.element && Number(v.burst) === Number(d.burst);
+    });
+    return out(exactAll[0].id, (!el || d.element === el) && !variant, 'exact-name');
   }
   // 무기는 **약하게** 쓴다: 무기 기호 설명을 넣은 뒤 93/108(전엔 27/108 — AI가 기호가 무슨 무기인지 몰랐다)이라
   // 틀릴 때가 있다. 무기까지 맞는 후보 안에서 이름이 맞으면 그것, 없으면 속성·버스트만으로 다시 찾는다.
@@ -244,6 +250,21 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
       return diff === 1;
     });
     if (near.length === 1) return out(near[0].id, false, 'near-name');
+    // 이름 **일부**에서 한 글자만 잘못 읽은 경우(11-03 PC 캡처: 「스파클링 서머」의 끝을 「쿨링서머」로) — 속성·버스트가 맞는 니케 이름 안에
+    // 같은 길이로 한 글자만 다른 토막이 있는 니케가 하나뿐이면 그것(확인 필요). 짧은 조각은 우연히 겹친다 — 3글자 「레이블」이
+    // 「라푼젤 : 퓨어 그레이스」의 「레이스」에 붙었다(지난 사진 카드 다시 돌림) → 4글자 이상만
+    if (key.length >= 4) {
+      const within = ebPool.filter((c) => {
+        const n = nameKey(c.name);
+        for (let i = 0; i + key.length <= n.length; i++) {
+          let diff = 0;
+          for (let j = 0; j < key.length && diff < 2; j++) if (n[i + j] !== key[j]) diff++;
+          if (diff === 1) return true;
+        }
+        return false;
+      });
+      if (within.length === 1) return out(within[0].id, false, 'near-name');
+    }
   }
   return out('none', false, 'none');
 }
