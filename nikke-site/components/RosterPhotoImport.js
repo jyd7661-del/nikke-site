@@ -70,12 +70,12 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
   const close = () => { if (!busy) { setOpen(false); reset(); } };
 
   // 사진마다 따로 보내고, 끝나는 대로 결과에 더한다. 붙여넣기(Ctrl+V)로 읽는 중에 또 넣어도 된다 — 진행 막대는 전체 장 수로 센다.
-  const readOne = async (file, headers) => {
+  const readOne = async (file, headers, source) => {
     let result = null;
     let err = null;
     try {
       const img = await prepareRosterPhoto(file);
-      const res = await fetch('/api/roster-photo', { method: 'POST', headers, body: JSON.stringify({ lang, ...img }) });
+      const res = await fetch('/api/roster-photo', { method: 'POST', headers, body: JSON.stringify({ lang, source, ...img }) });
       const j = await res.json().catch(() => ({}));
       if (!res.ok) err = j.error || 'failed';
       else result = j;
@@ -93,14 +93,15 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
     setBusy((b) => (!b ? b : b.done + 1 >= b.total ? null : { ...b, done: b.done + 1 }));
   };
 
-  const onFiles = async (fileList) => {
+  // source: 입력 방식(file · paste · button) — 기록용(roster_photo_scans.source, 11-03 유저 "복붙? 파일?")
+  const onFiles = async (fileList, source = 'file') => {
     const files = [...(fileList || [])].filter((f) => f.type.startsWith('image/')).slice(0, MAX_FILES);
     if (!files.length) return;
     setApplied(null);
     setBusy((b) => (b ? { ...b, total: b.total + files.length } : { done: 0, total: files.length, start: Date.now() }));
     setNow(Date.now());
     const headers = { 'Content-Type': 'application/json', ...(await authHeader()) };
-    await Promise.all(files.slice(0, CONCURRENCY).map((f) => readOne(f, headers)));
+    await Promise.all(files.slice(0, CONCURRENCY).map((f) => readOne(f, headers, source)));
   };
 
   // 붙여넣기(2026-11-02 유저: "스크린샷 버튼 눌러서 바로 붙여넣고 … 컨트롤V만 눌러서. 파일로 추출해서 넣는 과정이 귀찮거든").
@@ -116,7 +117,7 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
         .filter(Boolean);
       if (!files.length) return;
       e.preventDefault();
-      onFilesRef.current(files);
+      onFilesRef.current(files, 'paste');
     };
     document.addEventListener('paste', onPaste);
     return () => document.removeEventListener('paste', onPaste);
@@ -132,7 +133,7 @@ export default function RosterPhotoImport({ ownedIds, treasureIds, onApply }) {
         const type = it.types.find((t2) => t2.startsWith('image/'));
         if (type) files.push(new File([await it.getType(type)], `paste.${type.split('/')[1]}`, { type }));
       }
-      if (files.length) onFiles(files);
+      if (files.length) onFiles(files, 'button');
       else setPasteMsg('empty');
     } catch {
       setPasteMsg('denied');

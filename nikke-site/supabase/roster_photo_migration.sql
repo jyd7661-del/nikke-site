@@ -41,3 +41,6 @@ on conflict (id) do nothing;
 -- 2026-11-03 운영자(profiles.is_admin)만 캡처 사진을 읽는다 — 서비스 키 없이 올라온 사진을 결과와 대조하려고(유저 허락, MCP로 적용함)
 create policy "roster photos admin read" on storage.objects for select to authenticated
   using (bucket_id = 'roster-photos' and public.is_board_admin());
+
+-- 2026-11-03 입력 방식 — 파일 고르기(file) · Ctrl+V 붙여넣기(paste) · 붙여넣기 버튼(button). 유저 "복붙? 파일?"에 답할 기록이 없었다(MCP로 적용함)
+alter table roster_photo_scans add column if not exists source text;

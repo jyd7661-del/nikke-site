@@ -42,7 +42,7 @@ select
   (select json_agg(t) from (select feature, lang, sum(n) n from feature_usage, b where usage_date between s and e group by 1,2 order by 3 desc) t) as features,
   -- 4d. 캡처로 보유 니케 고르기(베타, roster_photo_scans, 2026-11-02~) — 유저 지시 11-02 "매일 현황보고 할 때 같이 보고".
   --     scans 사진 수 · ips 올린 IP 수 · confirmed 「넣기」까지 간 사진 · cards AI가 읽은 카드 · unknown 목록 밖 · removed AI가 확신했는데 사용자가 뺀 니케(오인식 후보)
-  --     · unsure_kept 확신 없음이었는데 사용자가 넣은 니케 · krw 비용 · by 언어/방향. 사진별 비교는 scripts/reviewRosterPhotos.mjs
+  --     · unsure_kept 확신 없음이었는데 사용자가 넣은 니케 · krw 비용 · by 언어/방향/입력 방식(source: file·paste·button, 11-03~ — 그 전은 null). 사진별 비교는 scripts/reviewRosterPhotos.mjs
   (select json_build_object(
      'scans', count(*), 'ips', count(distinct ip_hash), 'confirmed', count(confirmed_at),
      'cards', coalesce(sum(jsonb_array_length(ai_cards)),0),
@@ -53,7 +53,7 @@ select
      'unsure_kept', coalesce(sum((select count(distinct c->>'id') from jsonb_array_elements(ai_cards) c
         where confirmed_at is not null and ((c->>'sure')::boolean is false or c->>'rescued' is not null) and confirmed_ids ? (c->>'id'))),0),
      'krw', round(coalesce(sum(krw),0)),
-     'by', (select json_agg(x) from (select lang, orientation, count(*) n from roster_photo_scans r2, b where r2.usage_date between s and e group by 1,2) x)
+     'by', (select json_agg(x) from (select lang, orientation, source, count(*) n from roster_photo_scans r2, b where r2.usage_date between s and e group by 1,2,3) x)
   ) from roster_photo_scans, b where usage_date between s and e) as roster_photo,
   -- 5. AI 비용 (원, 우리 DB 기준 — 청구서와는 기간·환율이 다를 수 있다)
   (select json_build_object(

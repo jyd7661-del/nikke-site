@@ -90,6 +90,8 @@ export async function POST(req) {
   try { body = await req.json(); } catch { return json({ error: 'bad_request' }, 400); }
   const lang = LOCALES.includes(body?.lang) ? body.lang : 'ko';
   const orientation = body?.orientation === 'landscape' ? 'landscape' : 'portrait';
+  // 입력 방식(2026-11-03 추가 — 파일 고르기와 붙여넣기 중 어느 쪽을 쓰는지). 모르는 값은 null
+  const source = ['file', 'paste', 'button'].includes(body?.source) ? body.source : null;
   const parts = Array.isArray(body?.parts) ? body.parts : [];
   if (!parts.length || parts.length > MAX_PARTS || !parts.every(isB64)) return json({ error: 'bad_image' }, 400);
   // 세로는 화면이 photo를 따로 안 보낸다 — 읽은 그 사진을 보관한다
@@ -161,7 +163,7 @@ export async function POST(req) {
     else photoPath = path;
   }
   const { error: insErr } = await sb.from('roster_photo_scans').insert({
-    id: scanId, usage_date: today, ip_hash: ipHash, user_id: userId, lang, orientation,
+    id: scanId, usage_date: today, ip_hash: ipHash, user_id: userId, lang, orientation, source,
     parts: parts.length, photo_path: photoPath, model: ROSTER_PHOTO_MODEL, krw, ms: Date.now() - t0, ai_cards: aiCards,
   });
   if (insErr) console.error('[ROSTER_PHOTO] 기록 실패', insErr);
