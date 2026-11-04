@@ -305,9 +305,15 @@ for (const c of targets) {
     }
   }
 
-  const before = JSON.stringify(c.skills || []);
-  const after = JSON.stringify(skills);
+  // prydwen이 주는 것은 영문 4칸(name/type/cd/desc)뿐이다. 스킬 객체에는 name_kr/desc_kr/
+  // name_ja/desc_ja가 함께 있어서, 통째로 바꾸면 202명의 한·일 스킬 문구가 지워진다
+  // (2026-10-26 주간 조사가 미리보기 "변경 202"로 발견). 비교도 영문 4칸만, 쓸 때는 나머지 칸을 남긴다.
+  const EN = ['name', 'type', 'cd', 'desc'];
+  const pickEn = (arr) => (arr || []).map((s) => Object.fromEntries(EN.map((k) => [k, s?.[k]])));
+  const before = JSON.stringify(pickEn(c.skills));
+  const after = JSON.stringify(pickEn(skills));
   if (before === after) { same.push(c.id); continue; }
+  skills = skills.map((s, i) => ({ ...((c.skills || [])[i] || {}), ...s }));
 
   // 이름·개수가 통째로 달라지면 다른 캐릭터를 긁었을 수 있다. 사람이 봐야 한다.
   const nameDrift = (c.skills || []).some((s, i) => skills[i] && s.name !== skills[i].name);
