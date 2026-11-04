@@ -84,7 +84,7 @@ export default function NikkeDetailPage({ params }) {
     members: (a.members || []).map((title) => {
       const m = byTitle(title);
       return m
-        ? { id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null }
+        ? { id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, img: m.img || null }
         : { title };
     }),
   }));
@@ -98,7 +98,7 @@ export default function NikkeDetailPage({ params }) {
   const u = usageFor(c.title);
   const asMember = (title) => {
     const m = byTitle(title);
-    return m ? { id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null } : { title };
+    return m ? { id: m.id, title: m.title, name_kr: m.name_kr, name_ja: m.name_ja || null, img: m.img || null } : { title };
   };
   // 모드별로 표본이 가장 큰 조합 하나씩만 싣는다(크라운은 61건에 등장한다 — 전부 실으면
   // 페이지가 조합 목록으로 뒤덮인다). lib/usage.js가 이미 표본 내림차순으로 준다.

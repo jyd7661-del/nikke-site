@@ -1,11 +1,8 @@
 'use client';
 
-import { localePath } from '@/lib/locale';
-
-import Link from 'next/link';
 import { useLanguage } from '@/components/LanguageProvider';
 import { termLabel } from '@/lib/dexLabels';
-import { memberName } from '@/lib/memberName';
+import DexMemberFaces from '@/components/DexMemberFaces';
 
 // 도감 상세의 "실사용 데이터" 절 — enikk.app에서 옮긴 실사용 조합(2026-09 기준 216건)을 이 캐릭터 기준으로 뒤집은 것.
 // 집계 규칙과 "무엇은 세면 안 되는가"는 lib/usage.js 주석에 있다.
@@ -30,28 +27,6 @@ const POOL_TERM = {
   tribe: 'tribe_tower', elysion: 'corp_elysion', missilis: 'corp_missilis',
   tetra: 'corp_tetra', overspec: 'overspec',
 };
-
-function MemberChip({ member, lang }) {
-  if (!member?.id) return <span className="text-slate-400">{member?.title}</span>;
-  return (
-    <Link href={localePath(lang, `/nikke/${member.id}`)} className="text-sky-400 hover:underline">
-      {memberName(member, lang)}
-    </Link>
-  );
-}
-
-function MemberLine({ members, lang }) {
-  return (
-    <p className="text-sm mt-2 space-x-2">
-      {(members || []).map((m, i) => (
-        <span key={m.id || m.title || i}>
-          {i > 0 && <span className="text-slate-600">· </span>}
-          <MemberChip member={m} lang={lang} />
-        </span>
-      ))}
-    </p>
-  );
-}
 
 // 모드별 대표 조합의 멤버가 같으면 한 칸에 모은다(2026-11-04) — 크라운은 타워·캠페인 대표가 같은 5명이라 같은 줄이 두 번 나왔다.
 // 수치는 각 모드 줄에 그대로 둔다(서로 더하지 않는다).
@@ -146,7 +121,7 @@ export default function DexUsage({ usage }) {
                     </div>
                   );
                 })}
-                <MemberLine members={g.members} lang={lang} />
+                <DexMemberFaces members={g.members} lang={lang} />
               </div>
             ))}
           </div>
@@ -166,7 +141,7 @@ export default function DexUsage({ usage }) {
                       .filter(Boolean).join(' · ')}
                   </span>
                 </div>
-                <MemberLine members={s.members} lang={lang} />
+                <DexMemberFaces members={s.members} lang={lang} />
               </div>
             ))}
           </div>

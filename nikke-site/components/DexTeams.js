@@ -1,11 +1,8 @@
 'use client';
 
-import { localePath } from '@/lib/locale';
-
-import Link from 'next/link';
 import { useLanguage } from '@/components/LanguageProvider';
 import { MODE_I18N_KEY } from '@/lib/dexLabels';
-import { memberName } from '@/lib/memberName';
+import DexMemberFaces from '@/components/DexMemberFaces';
 
 // 도감 상세의 "등장 조합" 절.
 //
@@ -18,15 +15,6 @@ import { memberName } from '@/lib/memberName';
 //    여기서 lib/dex.js의 byTitle을 부르면 characterDatabase.json(약 700KB)가 브라우저 번들에
 //    실린다 — 실제로 그렇게 만들었다가 /nikke의 First Load JS가 94kB -> 347kB로 뛰었다.
 //    자세한 경위는 lib/dexLabels.js 주석.
-function MemberChip({ member, lang }) {
-  if (!member?.id) return <span className="text-slate-400">{member?.title}</span>;
-  return (
-    <Link href={localePath(lang, `/nikke/${member.id}`)} className="text-sky-400 hover:underline">
-      {memberName(member, lang)}
-    </Link>
-  );
-}
-
 export default function DexTeams({ teams, totalCount }) {
   const { lang, t } = useLanguage();
   const shown = teams || [];
@@ -56,14 +44,7 @@ export default function DexTeams({ teams, totalCount }) {
                 {MODE_I18N_KEY[a.mode] ? t(MODE_I18N_KEY[a.mode]) : a.mode}
               </span>
             </div>
-            <p className="text-sm mt-2 space-x-2">
-              {(a.members || []).map((m, i) => (
-                <span key={m.id || m.title || i}>
-                  {i > 0 && <span className="text-slate-600">· </span>}
-                  <MemberChip member={m} lang={lang} />
-                </span>
-              ))}
-            </p>
+            <DexMemberFaces members={a.members} lang={lang} />
             {/* 2026-11-04: 설명은 접어 둔다 — 크라운 쪽 6개 조합 설명이 2,700자였다(유저: "글이 좀 많은데 의미가 큰 글은 많이 없는 것 같아").
                 조합 이름·멤버만으로 훑고, 대체 멤버 같은 설명이 필요한 사람만 연다 */}
             {pick(a, 'note') && (
