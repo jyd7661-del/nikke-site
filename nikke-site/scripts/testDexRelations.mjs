@@ -1,4 +1,4 @@
-// 도감 "대신 쓸 니케 · 함께 쓸 니케 · 스킬 연결"(lib/dexRelations.js) 검사 (2026-10-11)
+// 도감 "함께 쓸 니케 · 스킬 연결"(lib/dexRelations.js) 검사 (2026-10-11)
 //
 //   node scripts/testDexRelations.mjs            # 검사
 //   node scripts/testDexRelations.mjs --show=Aria # 한 캐릭터의 결과를 그대로 출력
@@ -27,7 +27,7 @@ const byTitle = new Map(CH.map((c) => [c.title, c]));
 const show = process.argv.find((a) => a.startsWith('--show='));
 if (show) {
   const c = byTitle.get(show.slice(7));
-  console.log(JSON.stringify({ alternatives: R.alternativesFor(c), companions: R.companionsFor(c), skill: R.skillLinksFor(c) }, null, 1));
+  console.log(JSON.stringify({ companions: R.companionsFor(c), skill: R.skillLinksFor(c) }, null, 1));
   process.exit(0);
 }
 
@@ -54,16 +54,8 @@ for (const [a, b, k] of PAIRS) {
 const TR = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 const KEY = { campaign: 'story', bossing: 'bossing', pvp: 'pvp' };
 const stages = (c) => (c.burstFlex && c.burstStages?.length ? c.burstStages.map(String) : [String(c.burst)]);
-let withComp = 0, withAlt = 0, withSkill = 0;
+let withComp = 0, withSkill = 0;
 for (const c of CH) {
-  const alts = R.alternativesFor(c);
-  if (alts.some((m) => m.higher.length)) withAlt++;
-  for (const m of alts) for (const x of m.higher) {
-    const xc = byTitle.get(x.title);
-    if (xc.id === c.id) problems.push(`[대신 쓸 니케] ${c.title}: 자기 자신`);
-    if (xc.class !== c.class || !stages(xc).some((b) => stages(c).includes(b))) problems.push(`[대신 쓸 니케] ${c.title}: ${x.title} 클래스·버스트가 다르다`);
-    if (!((TR[xc.tiers?.[KEY[m.mode]]] || 0) > (TR[c.tiers?.[KEY[m.mode]]] || 0))) problems.push(`[대신 쓸 니케] ${c.title} ${m.mode}: ${x.title} 티어가 더 높지 않다`);
-  }
   const comp = R.companionsFor(c);
   if (comp.list.length) withComp++;
   if (comp.list.some((x) => x.title === c.title)) problems.push(`[함께 쓸 니케] ${c.title}: 자기 자신`);
@@ -85,6 +77,6 @@ for (const c of CH) {
   for (const g of sk.gives) for (const x of g.top) if (!receiver(byTitle.get(x.title))) problems.push(`[스킬 연결] ${c.title} → ${x.title}: 받는 쪽이 아니다`);
 }
 
-console.log(`도감 관계 절 — ${CH.length}명 · 대신 쓸 니케 있음 ${withAlt} · 함께 쓸 니케 있음 ${withComp} · 스킬 연결 있음 ${withSkill}`);
+console.log(`도감 관계 절 — ${CH.length}명 · 함께 쓸 니케 있음 ${withComp} · 스킬 연결 있음 ${withSkill}`);
 if (problems.length) { console.log(`문제 ${problems.length}건`); problems.slice(0, 30).forEach((p, i) => console.log(`  ${i + 1}. ${p}`)); process.exit(1); }
 console.log('문제 0건 — 유저 정답 짝 6개가 상위에 있고, 전원 사실 검사 통과');

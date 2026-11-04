@@ -1,11 +1,12 @@
-// 도감 상세의 "대신 쓸 수 있는 니케" · "함께 쓰면 좋은 니케" · "스킬로 이어지는 니케" (2026-10-11)
+// 도감 상세의 "함께 쓰면 좋은 니케" · "스킬로 이어지는 니케" (2026-10-11)
+// 2026-11-04 「대신 쓸 수 있는 니케」를 뺐다 — 유저: "그냥 티어로 나눠서 말해주는 것 같고, 무기 특성에 따라서 버프받기 좋아서라던지
+//   속성이 같아서 대체가 가능하다는게 아닌 것 같아서 별로 의미 없어보여". 같은 버스트·클래스 중 티어가 높은 니케일 뿐, 대체 근거가 아니었다.
 //
 // 유저: "정보를 얻는 사람에게 유용한 정보면 괜찮은데" — 도감에 오는 사람이 묻는 것: 이 니케 대신 누구를 쓰나, 누구와 같이 쓰나.
 // 이 파일은 **서버 전용**이다(characterDatabase.json·synergyNotes.json을 읽는다 — 클라이언트가 import하면 번들에 약 700KB가 실린다).
 // 화면 컴포넌트(components/DexRelations.js)에는 계산 결과(순수 데이터)만 넘긴다.
 //
 // ⚠️ 여기서 새 판정·점수를 만들지 않는다(도감 원칙). 전부 데이터에서 그대로 따라 나오는 사실이다:
-//   대신 쓸 니케   — 같은 버스트 단계·같은 클래스 중 그 모드 prydwen 티어가 더 높은 니케(티어 값 그대로)
 //   함께 쓸 니케   — 랭커 실사용 조합(lib/usage.js partners — 같은 5인 안에 같이 나온 횟수)과 prydwen 추천 조합에서 같은 팀에 든 횟수
 //                    유저 예시(10-11): 민트 ↔ 프리카, 마스트 : 로망틱 메이드 ↔ 크라운·앵커, 홍련 : 흑영 ↔ 리버렐리오 — scripts/testDexRelations.mjs가 지킨다
 //   스킬 연결      — 스킬 원문의 조건부 아군 대상절("Affects all Water Code allies" 등, lib/buffTargets.js와 같은 해석)
@@ -19,27 +20,9 @@ import { scopeOf, resolveAllyScope, scopeCondition, isBuffReceiver } from '@/lib
 const CHARACTERS = Array.isArray(db) ? db : db.characters;
 const BY_TITLE = new Map(CHARACTERS.map((c) => [c.title, c]));
 const TIER_RANK = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
-const MODES = [['campaign', 'story'], ['bossing', 'bossing'], ['pvp', 'pvp']];
 
 const slim = (c) => ({ id: c.id, title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null });
-const stagesOf = (c) => (c.burstFlex && Array.isArray(c.burstStages) && c.burstStages.length ? c.burstStages.map(String) : [String(c.burst)]);
 const bestTier = (c) => Math.max(0, ...Object.values(c.tiers || {}).map((t) => TIER_RANK[t] || 0));
-
-// 모드마다 최대 3명. 이 니케의 그 모드 티어가 없으면 그 모드는 건너뛴다(비교 기준이 없다).
-// higher가 비면 "같은 역할 중 이 모드 최상위"라는 사실 자체가 정보다 — 화면이 그 문장을 낸다.
-export function alternativesFor(c, limit = 3) {
-  const mine = stagesOf(c);
-  return MODES.map(([mode, key]) => {
-    const myTier = c.tiers?.[key];
-    if (!TIER_RANK[myTier]) return null;
-    const higher = CHARACTERS
-      .filter((x) => x.id !== c.id && x.class === c.class && stagesOf(x).some((b) => mine.includes(b)) && (TIER_RANK[x.tiers?.[key]] || 0) > TIER_RANK[myTier])
-      .sort((a, b) => (TIER_RANK[b.tiers[key]] - TIER_RANK[a.tiers[key]]) || String(b.releaseDate || '').localeCompare(String(a.releaseDate || '')) || a.title.localeCompare(b.title))
-      .slice(0, limit)
-      .map((x) => ({ ...slim(x), tier: x.tiers[key] }));
-    return { mode, tier: myTier, higher };
-  }).filter(Boolean);
-}
 
 // 함께 쓸 니케 — 랭커 실사용 조합에서 같이 나온 횟수(그 니케가 든 조합 수 중) → prydwen 추천 조합에서 같은 팀 수 순.
 export function companionsFor(c, limit = 6) {

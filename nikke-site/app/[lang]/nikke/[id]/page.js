@@ -32,7 +32,7 @@ import DexTeams from '@/components/DexTeams';
 import DexUsage from '@/components/DexUsage';
 import DexCta from '@/components/DexCta';
 import DexRelations from '@/components/DexRelations';
-import { alternativesFor, companionsFor, skillLinksFor } from '@/lib/dexRelations';
+import { companionsFor, skillLinksFor } from '@/lib/dexRelations';
 import { localeMeta } from '@/lib/locale';
 import { seo, dexLabels } from '@/lib/seoText';
 
@@ -65,7 +65,9 @@ export default function NikkeDetailPage({ params }) {
 
   const invNote = investmentFor(c.title);
   const teams = teamsFor(c.title);
-  const shownTeams = teams.slice(0, 6);
+  // 멤버가 이 니케 한 명뿐인 항목은 조합이 아니라 엔진 규칙 메모다(예: 크라운 "크라운(+티아+나가 대체)") — 도감에서는 뺀다(2026-11-04, 유저: "있어도 그만 없어도 그만인 글은 없애서")
+  const realTeams = teams.filter((a) => (a.members || []).length >= 2);
+  const shownTeams = realTeams.slice(0, 6);
 
   // 조합 멤버를 **서버에서** 캐릭터 객체로 풀어 둔다. 클라이언트에서 byTitle을 부르면
   // lib/dex.js가 딸려 들어가 characterDatabase.json(약 700KB)가 브라우저 번들에 실린다
@@ -161,17 +163,16 @@ export default function NikkeDetailPage({ params }) {
       <DexInvestment note={invNote} />
 
       {/* 등장 조합 — prydwen 아키타입에서 이 캐릭터가 멤버인 것 */}
-      <DexTeams teams={teamsForClient} totalCount={teams.length} />
+      <DexTeams teams={teamsForClient} totalCount={realTeams.length} />
 
       {/* 실사용 데이터 — enikk에서 옮긴 실사용 조합(2026-09 기준 216건)을 우리가 집계한 것.
           위 '등장 조합'(prydwen의 추천 구성)과 성격이 다르다: 이쪽은 실제로 쓰인 기록이다. */}
       <DexUsage usage={usageForClient} />
 
-      {/* 대신 쓸 니케 · 함께 쓸 니케 · 스킬 연결 (2026-10-11) — 계산은 lib/dexRelations.js(서버), 데이터 그대로의 사실만.
+      {/* 함께 쓸 니케 · 스킬 연결 (2026-10-11 · 대신 쓸 니케는 2026-11-04 뺐다 — lib/dexRelations.js 머리말) — 계산은 lib/dexRelations.js(서버), 데이터 그대로의 사실만.
           "이 니케 대신 누구를, 누구와 같이 쓰나" — 도감에 오는 사람이 묻는 것(유저 기준: 정보를 얻는 사람에게 유용한가) */}
       <DexRelations
         self={{ title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null }}
-        alternatives={alternativesFor(c)}
         companions={companionsFor(c)}
         skill={skillLinksFor(c)}
       />

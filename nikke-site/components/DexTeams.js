@@ -46,9 +46,6 @@ export default function DexTeams({ teams, totalCount }) {
   return (
     <section className="mb-8">
       <h2 className="text-lg font-bold text-white mb-1">{t('dex_teams_heading')(total)}</h2>
-      {total > shown.length && (
-        <p className="text-xs text-slate-500 mb-3">{t('dex_teams_shown')(shown.length)}</p>
-      )}
       {anyFallback && <p className="text-xs text-slate-500 mb-2">{t('dex_body_ko_note')}</p>}
       <div className="space-y-3 mt-3">
         {shown.map((a) => (
@@ -67,8 +64,13 @@ export default function DexTeams({ teams, totalCount }) {
                 </span>
               ))}
             </p>
+            {/* 2026-11-04: 설명은 접어 둔다 — 크라운 쪽 6개 조합 설명이 2,700자였다(유저: "글이 좀 많은데 의미가 큰 글은 많이 없는 것 같아").
+                조합 이름·멤버만으로 훑고, 대체 멤버 같은 설명이 필요한 사람만 연다 */}
             {pick(a, 'note') && (
-              <p className="text-sm text-slate-400 mt-2 leading-relaxed">{pick(a, 'note').text}</p>
+              <details className="mt-2 group">
+                <summary className="text-xs text-slate-500 cursor-pointer hover:text-slate-300 select-none">{t('dex_teams_note_toggle')}</summary>
+                <p className="text-sm text-slate-400 mt-1.5 leading-relaxed">{pick(a, 'note').text}</p>
+              </details>
             )}
           </div>
         ))}

@@ -59,9 +59,8 @@ export default function DexSkillList({ skills }) {
           );
         })}
       </div>
-      <p className="text-xs text-slate-600 mt-2">
-        {anyFallback ? t('dex_skills_source_fallback') : t('dex_skills_source')}
-      </p>
+      {/* 2026-11-04: 평소의 "게임 내 공식 문구입니다"는 뺐다(있어도 그만인 글 — 유저). 영어로 폴백했을 때만 알린다 */}
+      {anyFallback && <p className="text-xs text-slate-600 mt-2">{t('dex_skills_source_fallback')}</p>}
     </section>
   );
 }

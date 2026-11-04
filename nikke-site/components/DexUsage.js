@@ -53,6 +53,20 @@ function MemberLine({ members, lang }) {
   );
 }
 
+// 모드별 대표 조합의 멤버가 같으면 한 칸에 모은다(2026-11-04) — 크라운은 타워·캠페인 대표가 같은 5명이라 같은 줄이 두 번 나왔다.
+// 수치는 각 모드 줄에 그대로 둔다(서로 더하지 않는다).
+function mergeSameMembers(teams) {
+  const out = [];
+  const byKey = new Map();
+  for (const e of teams) {
+    const key = (e.members || []).map((m) => m.title).sort().join('|');
+    const g = byKey.get(key);
+    if (g) g.entries.push(e);
+    else { const n = { members: e.members, entries: [e] }; byKey.set(key, n); out.push(n); }
+  }
+  return out;
+}
+
 export default function DexUsage({ usage }) {
   const { lang, t } = useLanguage();
   if (!usage) return null;
@@ -98,15 +112,6 @@ export default function DexUsage({ usage }) {
       <h2 className="text-lg font-bold text-white mb-1">{t('dex_usage_heading')}</h2>
       <p className="text-xs text-slate-500 mb-3">{t('dex_usage_source')(source.site, source.asOf)}</p>
 
-      {counts.all > 0 && (
-        <p className="text-sm text-slate-300">
-          {t('dex_usage_summary')(counts.all, totals.all)}{' '}
-          <span className="text-slate-500">
-            {t('dex_usage_breakdown')(counts.raid, counts.tower, counts.campaign, counts.pvp)}
-          </span>
-        </p>
-      )}
-
       {(tiers || []).length > 0 && (
         <div className="mt-4">
           <h3 className="text-sm font-bold text-slate-200 mb-2">{t('dex_usage_tier_heading')}</h3>
@@ -130,20 +135,21 @@ export default function DexUsage({ usage }) {
         <div className="mt-4">
           <h3 className="text-sm font-bold text-slate-200 mb-2">{t('dex_usage_teams_heading')}</h3>
           <div className="space-y-3">
-            {teams.map((e, i) => {
-              const [where, figure] = teamMeta(e);
-              return (
-                <div key={`${e.kind}-${i}`} className="rounded-lg bg-slate-800/40 p-4">
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h4 className="text-sm font-bold text-slate-100">{where}</h4>
-                    <span className="text-xs text-slate-500 shrink-0">{figure}</span>
-                  </div>
-                  <MemberLine members={e.members} lang={lang} />
-                </div>
-              );
-            })}
+            {mergeSameMembers(teams).map((g, i) => (
+              <div key={`team-${i}`} className="rounded-lg bg-slate-800/40 p-4">
+                {g.entries.map((e, k) => {
+                  const [where, figure] = teamMeta(e);
+                  return (
+                    <div key={k} className="flex items-baseline justify-between gap-3">
+                      <h4 className="text-sm font-bold text-slate-100">{where}</h4>
+                      <span className="text-xs text-slate-500 shrink-0">{figure}</span>
+                    </div>
+                  );
+                })}
+                <MemberLine members={g.members} lang={lang} />
+              </div>
+            ))}
           </div>
-          {counts.raid > 0 && <p className="text-xs text-slate-500 mt-2">{t('dex_usage_raid_caveat')}</p>}
         </div>
       )}
 

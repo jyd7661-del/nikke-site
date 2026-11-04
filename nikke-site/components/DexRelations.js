@@ -6,7 +6,7 @@ import { useLanguage } from '@/components/LanguageProvider';
 import { elementLabel, weaponLabel, squadLabel } from '@/lib/dexLabels';
 import { memberName } from '@/lib/memberName';
 
-// 도감 상세의 "대신 쓸 수 있는 니케" · "함께 쓰면 좋은 니케" · "스킬로 이어지는 니케" (2026-10-11).
+// 도감 상세의 "함께 쓰면 좋은 니케" · "스킬로 이어지는 니케" (2026-10-11. "대신 쓸 수 있는 니케"는 2026-11-04 뺐다 — lib/dexRelations.js 머리말).
 // 계산은 서버(lib/dexRelations.js)가 하고 여기는 그리기만 한다 — 여기서 lib/dex·dexRelations를 import하면
 // characterDatabase.json이 브라우저 번들에 실린다(DexTeams·DexUsage와 같은 이유).
 // 유저 기준: "정보를 얻는 사람에게 유용한 정보" — 이 니케 대신 누구를, 누구와 같이 쓰나.
@@ -20,10 +20,9 @@ function Chip({ m, lang, extra }) {
   );
 }
 
-const MODE_KEY = { campaign: 'mode_campaign', bossing: 'mode_bossing', pvp: 'mode_pvp' };
 const skillName = (s, lang) => (lang === 'ko' ? s.name_kr || s.name : lang === 'ja' ? s.name_ja || s.name : s.name);
 
-export default function DexRelations({ self, alternatives, companions, skill }) {
+export default function DexRelations({ self, companions, skill }) {
   const { lang, t } = useLanguage();
   const name = memberName(self, lang);
   const condText = (cond, squad) => [
@@ -37,26 +36,6 @@ export default function DexRelations({ self, alternatives, companions, skill }) 
 
   return (
     <>
-      {alternatives.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-1">{t('dex_alt_heading')}</h2>
-          <p className="text-xs text-slate-500 mb-3">{t('dex_alt_desc')}</p>
-          <div className="space-y-2">
-            {alternatives.map((m) => (
-              <div key={m.mode} className="rounded-lg bg-slate-800/40 px-4 py-3 text-sm">
-                <span className="text-slate-400">{t(MODE_KEY[m.mode])}</span>{' '}
-                <span className="text-slate-500 text-xs">({t('dex_alt_mine')(name, m.tier)})</span>
-                <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                  {m.higher.length
-                    ? m.higher.map((x) => <Chip key={x.id} m={x} lang={lang} extra={x.tier} />)
-                    : <span className="text-slate-400">{t('dex_alt_none')}</span>}
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
       {companions.list.length > 0 && (
         <section className="mb-8">
           <h2 className="text-lg font-bold text-white mb-1">{t('dex_comp_heading')}</h2>
