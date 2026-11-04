@@ -902,6 +902,25 @@ for (const t of teams) {
   if (pickedWhenOff < ROSTERS.length) problems.push(`[원맨아미] 제외를 꺼도 ${ROSTERS.length}건 중 ${pickedWhenOff}건만 원맨아미 — 시험 로스터를 다시 고를 것`);
 }
 
+// 캠페인 실사용 5/5 우선(2026-11-04, lib/synergyEngine.js pickSiteTeam · app/api/ai-recommend/route.js 같은 규칙).
+// 로스터는 11-04 캠페인 👎 피드백(id 13, 보유 47명) 그대로. 실사용 1위(6.05%) 43점이 아키타입 「순수악 #1」(2.53%) 44점에 졌다.
+// 역테스트 전제: 규칙을 끄면(__NIKKE_REAL_EXACT_FIRST_OFF) 아키타입이 뽑혀야 한다.
+{
+  const names = ['Rapi', 'Neon', 'Delta', 'Mica', 'Belorta', 'Anis', 'Mihara', 'N102', 'Ether', 'Neve', 'Anchor', 'Anis: Star', 'Little Mermaid',
+    'Emma: Tactical Upgrade', 'Liter', 'Rouge', 'D: Killer Wife', 'Rapunzel', 'Crown', 'Nayuta', 'Mast: Romantic Maid', 'Grave',
+    'Maxwell: Ordinary Mechanic', 'Eunhwa: Tactical Upgrade', 'Mari Makinami Illustrious', 'Helm: Aquamarine', 'Dolla', 'Rosanna: Chic Ocean',
+    'Belorta: Pumpkin Witch', 'Centi', 'Marian: Queen', 'Rapi: Red Hood', 'Vesti: Tactical Upgrade', 'Scarlet: Black Shadow',
+    'Cinderella: Crystal Wave', 'Laplace: Ultimate Hero', 'Milk: Blooming Bunny', 'Liberalio', 'Neon: Vision Eye', 'Ein', 'Cinderella',
+    'Red Hood', 'Alice', 'Dorothy: Serendipity', 'Scarlet', 'Anis: Sparkling Summer', 'Maxwell'];
+  const r = names.map((n) => byTitle.get(n)).filter(Boolean);
+  const on = engine.pickSiteTeam(r, 'campaign', {});
+  globalThis.__NIKKE_REAL_EXACT_FIRST_OFF = true;
+  const off = engine.pickSiteTeam(r, 'campaign', {});
+  delete globalThis.__NIKKE_REAL_EXACT_FIRST_OFF;
+  if (on.path !== 'real') problems.push(`[실사용 5/5 우선] 캠페인 47명 로스터에서 실사용 기록이 아니라 ${on.path} 경로가 나왔다`);
+  if (off.path === 'real') problems.push('[실사용 5/5 우선] 규칙을 꺼도 실사용이 이긴다 — 시험 로스터를 다시 고를 것');
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

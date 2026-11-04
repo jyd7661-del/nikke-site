@@ -612,7 +612,9 @@ export async function POST(req) {
     // 폴백이 이기면 폴백 답을 내고 그 아키타입은 대안으로 보여준다. 이 경우 AI 조합 구성(셰도우 포함)은 건너뛴다 —
     // 호출이 늘어 비용이 커지는 것을 막으려고(2026-09-26 유저: 소넷 비용은 광고로 못 덮는다).
     let flexLoser = null;
-    if (exactMatch?.flexSlotCount && !(realUsageMatch && realUsageMatch.totalScore >= exactMatch.totalScore)) {
+    // 캠페인: 5명이 다 맞는 실사용 기록은 아키타입보다 앞선다(lib/synergyEngine.js pickSiteTeam과 같은 규칙, 2026-11-04).
+    const realExactFirst = mode === 'campaign' && realUsageMatch && !realUsageMatch.partial;
+    if (exactMatch?.flexSlotCount && !(realUsageMatch && (realExactFirst || realUsageMatch.totalScore >= exactMatch.totalScore))) {
       const probe = recommendTeams(characters, mode, {
         treasureIds: treasureIdSet, bossElement: bossElement || null, tower: towerKey, topN: 20, lang: langKey, requireTitles: requireList, requireRole: roleKey,
       }).teams || [];
@@ -628,7 +630,7 @@ export async function POST(req) {
 
     if (candidates.length) {
       candidates.sort(
-        (a, b) => (b.match.totalScore - a.match.totalScore) || (a.rank - b.rank)
+        (a, b) => (realExactFirst ? a.rank - b.rank : 0) || (b.match.totalScore - a.match.totalScore) || (a.rank - b.rank)
       );
       const win = candidates[0];
       chosen = win.match;

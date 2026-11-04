@@ -3001,7 +3001,10 @@ export function pickSiteTeam(roster, mode, opts = {}) {
     const top = recommendTeams(roster, mode, { ...opts, topN: 1 }).teams?.[0];
     if (fallbackBeatsFlexArchetype({ ...real, flexSlotCount: 1 }, top, mode, opts)) real = null;
   }
-  const realWins = real && (real.totalScore ?? -1) >= (exact?.totalScore ?? -1);
+  // 캠페인: 5명이 다 맞는 실사용 기록(enikk 클리어 조합)은 prydwen 아키타입보다 앞선다 — 사람들이 실제로 깬 판이 근거라서.
+  // 11-04 👎 재현: 실사용 1위(6.05%) 43점이 아키타입 「순수악 #1」 44점에 1점 차로 졌다.
+  const realExactCampaign = mode === 'campaign' && real && !real.partial && !globalThis.__NIKKE_REAL_EXACT_FIRST_OFF;
+  const realWins = real && (realExactCampaign || (real.totalScore ?? -1) >= (exact?.totalScore ?? -1));
   if (!realWins && exact?.flexSlotCount && !opts.noFlexCompete) {
     const top = recommendTeams(roster, mode, { ...opts, topN: 1 }).teams?.[0];
     if (fallbackBeatsFlexArchetype(exact, top, mode, opts)) return { path: 'fallback', team: top, flexLoser: exact };
