@@ -42,3 +42,16 @@ body {
   transform: translateY(-1px);
   box-shadow: 0 8px 24px -12px rgba(94, 234, 212, 0.25);
 }
+
+/* 조합 추천 대기 막대(2026-11-04, 유저: "버튼이 비활성화되고 아무 움직임이 없어서 되는지 모르겠어").
+   진행률을 지어내지 않으려고 끝을 모르는 막대(왕복)로 둔다 — 얼마나 남았는지는 서버도 모른다. */
+@keyframes nikke-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+.nikke-indeterminate {
+  animation: nikke-indeterminate 1.3s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .nikke-indeterminate { animation: none; width: 100% !important; opacity: 0.5; }
+}

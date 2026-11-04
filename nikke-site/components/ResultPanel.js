@@ -133,6 +133,28 @@ function TeamMemberCards({ members, treasureIds, caption = true }) {
   );
 }
 
+// 조합을 기다리는 동안 움직이는 막대 + 경과 초(2026-11-04, 유저: "버튼이 비활성화되고 아무 움직임이 없어서 되는지 모르겠어. 지금도 10초정도 걸리는데").
+// 전에는 버튼 글자만 바뀌고 흐려져 멈춘 것처럼 보였다. 남은 시간은 서버도 모르니 진행률(%)은 만들지 않고 왕복 막대와 지난 초만 보인다.
+function AiWaitBar() {
+  const { t } = useLanguage();
+  const [sec, setSec] = useState(0);
+  useEffect(() => {
+    const started = Date.now();
+    const id = setInterval(() => setSec(Math.floor((Date.now() - started) / 1000)), 1000);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div className="mt-2" role="status" aria-live="polite">
+      <div className="flex items-center gap-2">
+        <div className="relative h-1.5 flex-1 sm:max-w-xs overflow-hidden rounded-full bg-slate-800">
+          <div className="nikke-indeterminate absolute inset-y-0 left-0 w-1/3 rounded-full bg-nikke-accent" />
+        </div>
+        <span className="text-xs text-slate-400 tabular-nums">{t('ai_elapsed')(sec)}</span>
+      </div>
+    </div>
+  );
+}
+
 function AiRecommendButton({ roster, mode, bossElement, tower }) {
   const { lang, t } = useLanguage();
   const [phase, setPhase] = useState('idle'); // idle | loading | error
@@ -315,9 +337,12 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
           {phase === 'loading' ? t('ai_building') : t('ai_build_cta')}
         </button>
         {phase === 'loading' && (
-          <p className="text-xs text-slate-500 mt-2">
-            {t('ai_wait_note')}
-          </p>
+          <>
+            <AiWaitBar />
+            <p className="text-xs text-slate-500 mt-2">
+              {t('ai_wait_note')}
+            </p>
+          </>
         )}
         {phase === 'error' && <p className="text-sm text-rose-300 mt-2">{errorMsg}</p>}
       </div>
@@ -471,6 +496,7 @@ function AiRecommendButton({ roster, mode, bossElement, tower }) {
       >
         {phase === 'loading' ? t('ai_rebuilding') : t('ai_another_team')}
       </button>
+      {phase === 'loading' && <AiWaitBar />}
     </div>
   );
 }
