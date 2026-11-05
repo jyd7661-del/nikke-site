@@ -32,7 +32,7 @@ import DexTeams from '@/components/DexTeams';
 import DexUsage from '@/components/DexUsage';
 import DexCta from '@/components/DexCta';
 import DexRelations from '@/components/DexRelations';
-import { companionsFor, skillLinksFor } from '@/lib/dexRelations';
+import { partnersFor } from '@/lib/dexRelations';
 import { localeMeta } from '@/lib/locale';
 import { seo, dexLabels } from '@/lib/seoText';
 
@@ -173,8 +173,7 @@ export default function NikkeDetailPage({ params }) {
           "이 니케 대신 누구를, 누구와 같이 쓰나" — 도감에 오는 사람이 묻는 것(유저 기준: 정보를 얻는 사람에게 유용한가) */}
       <DexRelations
         self={{ title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null }}
-        companions={companionsFor(c)}
-        skill={skillLinksFor(c)}
+        partners={partnersFor(c)}
       />
 
       {/* 도구로 보내는 퍼널 — 이 페이지의 최종 목적 */}

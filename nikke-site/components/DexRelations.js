@@ -40,7 +40,7 @@ function MoreList({ items, show, children }) {
 
 const skillName = (s, lang) => (lang === 'ko' ? s.name_kr || s.name : lang === 'ja' ? s.name_ja || s.name : s.name);
 
-export default function DexRelations({ self, companions, skill }) {
+export default function DexRelations({ self, partners }) {
   const { lang, t } = useLanguage();
   const name = memberName(self, lang);
   const condText = (cond, squad) => [
@@ -54,57 +54,40 @@ export default function DexRelations({ self, companions, skill }) {
     cond.dmgKind && t('dex_cond_dmg')(cond.dmgKind),
   ].filter(Boolean).join(' · ');
 
+  if (!partners.list.length) return null;
+  // 2026-11-05: 「함께 쓰면 좋은 니케」와 「스킬로 이어지는 니케」를 한 칸으로(유저 "한 칸으로 합치기"). 니케마다 같이 쓰인 수 + 스킬 연결.
   return (
-    <>
-      {companions.list.length > 0 && (
-        <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-1">{t('dex_comp_heading')}</h2>
-          <p className="text-xs text-slate-500 mb-3">{t('dex_comp_desc')(name, companions.rankerTeams, companions.archetypeTeams)}</p>
-          <ul className="space-y-1.5 text-sm">
-            {companions.list.map((x) => (
-              <li key={x.id} className="flex flex-wrap items-baseline gap-x-2">
-                <Chip m={x} lang={lang} />
-                <span className="text-slate-500 text-xs">
-                  {[x.ranker > 0 && t('dex_comp_ranker')(x.ranker, companions.rankerTeams), x.archetype > 0 && t('dex_comp_arch')(x.archetype)].filter(Boolean).join(' · ')}
-                </span>
+    <section className="mb-8">
+      <h2 className="text-lg font-bold text-white mb-1">{t('dex_comp_heading')}</h2>
+      <p className="text-xs text-slate-500 mb-3">{t('dex_comp_desc')(name, partners.rankerTeams, partners.archetypeTeams)}</p>
+      {partners.gives.length > 0 && (
+        <ul className="mb-3 space-y-1 text-xs text-slate-400">
+          {partners.gives.map((g, i) => <li key={i}>{t('dex_skill_gives')(skillName(g.skill, lang), condText(g.cond, g.squad), g.total)}</li>)}
+        </ul>
+      )}
+      <MoreList items={partners.list} show={8}>
+        {(list) => (
+          <ul className="space-y-2 text-sm">
+            {list.map((x) => (
+              <li key={x.id}>
+                <div className="flex flex-wrap items-baseline gap-x-2">
+                  <Chip m={x} lang={lang} />
+                  <span className="text-slate-500 text-xs">
+                    {[x.ranker > 0 && t('dex_comp_ranker')(x.ranker, partners.rankerTeams), x.archetype > 0 && t('dex_comp_arch')(x.archetype)].filter(Boolean).join(' · ')}
+                  </span>
+                </div>
+                {x.links.map((l, j) => (
+                  <p key={j} className="text-xs text-slate-500 pl-2">
+                    {l.dir === 'give'
+                      ? t('dex_link_give')(name, skillName(l.skill, lang), condText(l.cond, l.squad))
+                      : t('dex_link_recv')(name, skillName(l.skill, lang), condText(l.cond, l.squad))}
+                  </p>
+                ))}
               </li>
             ))}
           </ul>
-        </section>
-      )}
-
-      {(skill.gives.length > 0 || skill.receives.length > 0) && (
-        <section className="mb-8">
-          <h2 className="text-lg font-bold text-white mb-1">{t('dex_skill_heading')}</h2>
-          <p className="text-xs text-slate-500 mb-3">{t('dex_skill_desc')}</p>
-          {skill.gives.map((g, i) => (
-            <div key={`g${i}`} className="rounded-lg bg-slate-800/40 px-4 py-3 text-sm mb-2">
-              <p className="text-slate-300">{t('dex_skill_gives')(skillName(g.skill, lang), condText(g.cond, g.squad), g.total)}</p>
-              <MoreList items={g.top} show={4}>
-                {(list) => (
-                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                    {list.map((x) => <Chip key={x.id} m={x} lang={lang} />)}
-                  </div>
-                )}
-              </MoreList>
-            </div>
-          ))}
-          {skill.receives.length > 0 && (
-            <div className="rounded-lg bg-slate-800/40 px-4 py-3 text-sm">
-              <p className="text-slate-300">{t('dex_skill_receives')(name, skill.receivesTotal)}</p>
-              <MoreList items={skill.receives} show={6}>
-                {(list) => (
-                  <ul className="mt-1 space-y-1">
-                    {list.map((x) => (
-                      <li key={x.id}><Chip m={x} lang={lang} extra={`${skillName(x.skill, lang)} · ${condText(x.cond, x.squad)}`} /></li>
-                    ))}
-                  </ul>
-                )}
-              </MoreList>
-            </div>
-          )}
-        </section>
-      )}
-    </>
+        )}
+      </MoreList>
+    </section>
   );
 }

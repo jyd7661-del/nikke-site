@@ -75,6 +75,20 @@ for (const [a, b, k] of PAIRS) {
   if (R.skillLinksFor(byTitle.get('D: Killer Wife')).gives.some((x) => x.cond.dmgKind)) problems.push('[효과 종류] D : 킬러 와이프의 저격소총 한정 버프를 아군 전체로 읽었다');
 }
 
+// 한 칸으로 합친 목록(partnersFor, 2026-11-05 유저 "한 칸으로 합치기") — 같이 쓰인 짝과 스킬 연결 짝이 둘 다 들어야 한다.
+{
+  const has = (a, b, needLink) => {
+    const x = R.partnersFor(byTitle.get(a)).list.find((m) => m.title === b);
+    return x && (!needLink || x.links.length > 0);
+  };
+  if (!has('Mast: Romantic Maid', 'Crown', false)) problems.push('[합친 목록] 마스트 : 로망틱 메이드 목록에 크라운(같이 쓰인 짝)이 없다');
+  if (!has('Liberalio', 'Scarlet: Black Shadow', true)) problems.push('[합친 목록] 리버렐리오 목록에 홍련 : 흑영(스킬 연결)이 없다');
+  if (!has('Little Mermaid', 'Modernia', true)) problems.push('[합친 목록] 리틀 머메이드 목록에 모더니아(탄 수 발동 연결)가 없다');
+  if (!has('Red Hood', 'Grave', true)) problems.push('[합친 목록] 레드 후드 목록에 그레이브(관통 버프를 줌)가 없다');
+  const lm = R.partnersFor(byTitle.get('Little Mermaid')).list;
+  for (let i = 1; i < lm.length; i++) if (lm[i].ranker > lm[i - 1].ranker) { problems.push('[합친 목록] 같이 쓰인 수 순서가 아니다'); break; }
+}
+
 const TR = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 const KEY = { campaign: 'story', bossing: 'bossing', pvp: 'pvp' };
 const stages = (c) => (c.burstFlex && c.burstStages?.length ? c.burstStages.map(String) : [String(c.burst)]);

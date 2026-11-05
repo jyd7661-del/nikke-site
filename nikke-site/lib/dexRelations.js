@@ -127,3 +127,29 @@ export function skillLinksFor(c) {
   receives.sort(order);
   return { gives, receivesTotal: receives.length, receives: receives.map((r) => ({ ...slim(r), skill: r.skill, cond: r.cond, squad: r.squad })) };
 }
+
+// 「함께 쓰면 좋은 니케」 한 칸(2026-11-05 유저: "함께 쓰면 좋은 니케는 조합에 많이 쓰인 니케인데 많이 쓰인 수만큼 스킬로 이어지는 니케에 합하는게 좋아보이는데" → "한 칸으로 합치기").
+// 같이 쓰인 니케(companionsFor 전부)와 스킬로 이어지는 니케(skillLinksFor 전부)를 니케별로 한 줄에 모은다.
+// 순서: 랭커 조합에서 같이 나온 수 → prydwen 추천 조합 수 → 스킬 연결 있음 → 등급. 새 점수는 만들지 않는다(세는 값 그대로).
+export function partnersFor(c) {
+  const comp = companionsFor(c, Infinity);
+  const sk = skillLinksFor(c);
+  const map = new Map();
+  const get = (m) => {
+    if (!map.has(m.id)) map.set(m.id, { ...slim(m), ranker: 0, archetype: 0, links: [] });
+    return map.get(m.id);
+  };
+  comp.list.forEach((x) => Object.assign(get(x), { ranker: x.ranker, archetype: x.archetype }));
+  sk.gives.forEach((g) => g.top.forEach((x) => get(x).links.push({ dir: 'give', skill: g.skill, cond: g.cond, squad: g.squad })));
+  sk.receives.forEach((x) => get(x).links.push({ dir: 'recv', skill: x.skill, cond: x.cond, squad: x.squad }));
+  const tierOf = (x) => bestTier(BY_TITLE.get(x.title) || {});
+  const list = [...map.values()].sort((a, b) => (b.ranker - a.ranker) || (b.archetype - a.archetype)
+    || ((b.links.length > 0) - (a.links.length > 0)) || (tierOf(b) - tierOf(a)) || a.title.localeCompare(b.title));
+  return {
+    rankerTeams: comp.rankerTeams,
+    archetypeTeams: comp.archetypeTeams,
+    gives: sk.gives.map((g) => ({ skill: g.skill, cond: g.cond, squad: g.squad, total: g.total })),
+    receivesTotal: sk.receivesTotal,
+    list,
+  };
+}
