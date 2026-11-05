@@ -51,6 +51,16 @@ for (const [a, b, k] of PAIRS) {
   if (!R.skillLinksFor(byTitle.get('Scarlet: Black Shadow')).receives.some((x) => x.title === 'Liberalio')) problems.push('[스킬 연결 짝] 홍련 : 흑영이 받는 목록에 리버렐리오가 없다');
 }
 // ② 전원 사실 검사
+// 아군이 쏜 탄 수로 발동(2026-11-05 유저 — 리틀 머메이드 "연발이 빠른 총과 같이 쓰면 좋거든"). 대상절이 없어 예전엔 절이 통째로 비었다.
+{
+  for (const t of ['Little Mermaid', 'Cinderella: Crystal Wave']) {
+    const g = R.skillLinksFor(byTitle.get(t)).gives.find((x) => x.cond.ammo);
+    if (!g) problems.push(`[탄 수 발동] ${t}의 「아군이 소비한 탄」 스킬을 못 읽는다`);
+    else if (g.top.some((x) => !['mg', 'smg'].includes(String(byTitle.get(x.title).weapon).toLowerCase()))) problems.push(`[탄 수 발동] ${t} → MG·SMG가 아닌 니케가 들었다`);
+  }
+  if (!R.skillLinksFor(byTitle.get('Modernia')).receives.some((x) => x.title === 'Little Mermaid')) problems.push('[탄 수 발동] 모더니아(MG)가 받는 목록에 리틀 머메이드가 없다');
+}
+
 const TR = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 const KEY = { campaign: 'story', bossing: 'bossing', pvp: 'pvp' };
 const stages = (c) => (c.burstFlex && c.burstStages?.length ? c.burstStages.map(String) : [String(c.burst)]);

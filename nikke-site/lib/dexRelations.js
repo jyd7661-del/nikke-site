@@ -57,8 +57,16 @@ function conditionalScopes(c) {
       if (!out.some((o) => o.key === key)) out.push({ key, scope: sc, effect, cond, skill: { name: s.name, name_kr: s.name_kr || null, name_ja: s.name_ja || null } });
     });
   });
+  // 아군이 쏜 탄 수로 발동하는 절("Activates each time total ammo consumed by allies reaches 400") — 대상절이 아니라 발동 조건이라
+  // 위에서 안 잡힌다(2026-11-05 유저: "팀원 총 탄환별 효과니까 연발이 빠른 총과 같이 쓰면 좋거든" — 리틀 머메이드 · 신데렐라 : 크리스탈 웨이브).
+  // 탄을 많이 쓰는 무기 = data/weapons.json 장탄 수 중앙값 MG 300 · SMG 120 · AR 60 · SG 9 · SR/RL 6 → MG·SMG. 연사속도는 데이터에 없다.
+  const ammoSkill = (c.skills || []).find((s) => /ammo consumed by allies/i.test(String(s.desc || '')));
+  if (ammoSkill) out.push({ key: 'ammo', scope: null, effect: '', cond: { ammo: true }, skill: { name: ammoSkill.name, name_kr: ammoSkill.name_kr || null, name_ja: ammoSkill.name_ja || null } });
   return out;
 }
+
+const AMMO_HEAVY = ['mg', 'smg'];
+const targetsOf = (g, x, pool) => (g.cond.ammo ? pool.filter((m) => AMMO_HEAVY.includes(String(m.weapon).toLowerCase())) : (resolveAllyScope(g.scope, x, pool, g.effect) || []));
 
 // gives: 이 니케의 조건부 버프가 닿는 니케(조건마다 4명 + 전체 수)
 // receives: 조건부 버프로 이 니케를 대상에 넣는 니케(6명) — 둘 다 togetherOrder 순
@@ -78,7 +86,7 @@ function togetherOrder(c) {
 export function skillLinksFor(c) {
   const order = togetherOrder(c);
   const gives = conditionalScopes(c).map((g) => {
-    const targets = (resolveAllyScope(g.scope, c, CHARACTERS, g.effect) || []).filter((x) => x.id !== c.id && isBuffReceiver(x));
+    const targets = targetsOf(g, c, CHARACTERS).filter((x) => x.id !== c.id && isBuffReceiver(x));
     return {
       skill: g.skill, cond: g.cond, squad: g.cond.squad ? (c.squad || null) : null, total: targets.length,
       top: targets.sort(order).slice(0, 4).map(slim),
@@ -87,7 +95,7 @@ export function skillLinksFor(c) {
   const receives = [];
   if (isBuffReceiver(c)) CHARACTERS.forEach((x) => {
     if (x.id === c.id) return;
-    const hit = conditionalScopes(x).find((g) => (resolveAllyScope(g.scope, x, [c], g.effect) || []).length > 0);
+    const hit = conditionalScopes(x).find((g) => targetsOf(g, x, [c]).length > 0);
     if (hit) receives.push({ ...x, skill: hit.skill, cond: hit.cond, squad: hit.cond.squad ? (x.squad || null) : null });
   });
   receives.sort(order);
