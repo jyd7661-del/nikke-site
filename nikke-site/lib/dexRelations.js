@@ -115,7 +115,7 @@ export function skillLinksFor(c) {
     const targets = targetsOf(g, c, CHARACTERS).filter((x) => x.id !== c.id && isBuffReceiver(x));
     return {
       skill: g.skill, cond: g.cond, squad: g.cond.squad ? (c.squad || null) : null, total: targets.length,
-      top: targets.sort(order).slice(0, 4).map(slim),
+      top: targets.sort(order).map(slim),   // 전부 넘긴다 — 화면이 앞 4명만 보이고 나머지는 「더 보기」(11-05 유저: "목록은 왜 이거밖에 없지?")
     };
   }).filter((g) => g.total > 0);
   const receives = [];
@@ -125,5 +125,5 @@ export function skillLinksFor(c) {
     if (hit) receives.push({ ...x, skill: hit.skill, cond: hit.cond, squad: hit.cond.squad ? (x.squad || null) : null });
   });
   receives.sort(order);
-  return { gives, receivesTotal: receives.length, receives: receives.slice(0, 6).map((r) => ({ ...slim(r), skill: r.skill, cond: r.cond, squad: r.squad })) };
+  return { gives, receivesTotal: receives.length, receives: receives.map((r) => ({ ...slim(r), skill: r.skill, cond: r.cond, squad: r.squad })) };
 }

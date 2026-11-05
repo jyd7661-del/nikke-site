@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { localePath } from '@/lib/locale';
 import { useLanguage } from '@/components/LanguageProvider';
@@ -17,6 +18,23 @@ function Chip({ m, lang, extra }) {
       <Link href={localePath(lang, `/nikke/${m.id}`)} className="text-sky-400 hover:underline">{memberName(m, lang)}</Link>
       {extra && <span className="text-slate-500 text-xs">{extra}</span>}
     </span>
+  );
+}
+
+// 앞 몇 명만 보이고 나머지는 펼친다(11-05 유저: "목록은 왜 이거밖에 없지? 요약할꺼면 등 이라는 단어가 있어야할 것 같은데").
+function MoreList({ items, show, children }) {
+  const { t } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const rest = items.length - show;
+  return (
+    <>
+      {children(open ? items : items.slice(0, show))}
+      {rest > 0 && (
+        <button type="button" onClick={() => setOpen(!open)} className="mt-1.5 text-xs text-slate-400 hover:text-slate-200 underline underline-offset-2">
+          {open ? t('dex_less') : t('dex_more')(rest)}
+        </button>
+      )}
+    </>
   );
 }
 
@@ -62,19 +80,27 @@ export default function DexRelations({ self, companions, skill }) {
           {skill.gives.map((g, i) => (
             <div key={`g${i}`} className="rounded-lg bg-slate-800/40 px-4 py-3 text-sm mb-2">
               <p className="text-slate-300">{t('dex_skill_gives')(skillName(g.skill, lang), condText(g.cond, g.squad), g.total)}</p>
-              <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                {g.top.map((x) => <Chip key={x.id} m={x} lang={lang} />)}
-              </div>
+              <MoreList items={g.top} show={4}>
+                {(list) => (
+                  <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+                    {list.map((x) => <Chip key={x.id} m={x} lang={lang} />)}
+                  </div>
+                )}
+              </MoreList>
             </div>
           ))}
           {skill.receives.length > 0 && (
             <div className="rounded-lg bg-slate-800/40 px-4 py-3 text-sm">
               <p className="text-slate-300">{t('dex_skill_receives')(name, skill.receivesTotal)}</p>
-              <ul className="mt-1 space-y-1">
-                {skill.receives.map((x) => (
-                  <li key={x.id}><Chip m={x} lang={lang} extra={`${skillName(x.skill, lang)} · ${condText(x.cond, x.squad)}`} /></li>
-                ))}
-              </ul>
+              <MoreList items={skill.receives} show={6}>
+                {(list) => (
+                  <ul className="mt-1 space-y-1">
+                    {list.map((x) => (
+                      <li key={x.id}><Chip m={x} lang={lang} extra={`${skillName(x.skill, lang)} · ${condText(x.cond, x.squad)}`} /></li>
+                    ))}
+                  </ul>
+                )}
+              </MoreList>
             </div>
           )}
         </section>
