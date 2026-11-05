@@ -33,6 +33,7 @@ export default function DexRelations({ self, companions, skill }) {
     cond.charge && t('dex_cond_charge'),
     cond.lowestAtk && t('dex_cond_lowest_atk'),
     cond.ammo && t('dex_cond_ammo'),
+    cond.dmgKind && t('dex_cond_dmg')(cond.dmgKind),
   ].filter(Boolean).join(' · ');
 
   return (

@@ -62,11 +62,37 @@ function conditionalScopes(c) {
   // 탄을 많이 쓰는 무기 = data/weapons.json 장탄 수 중앙값 MG 300 · SMG 120 · AR 60 · SG 9 · SR/RL 6 → MG·SMG. 연사속도는 데이터에 없다.
   const ammoSkill = (c.skills || []).find((s) => /ammo consumed by allies/i.test(String(s.desc || '')));
   if (ammoSkill) out.push({ key: 'ammo', scope: null, effect: '', cond: { ammo: true }, skill: { name: ammoSkill.name, name_kr: ammoSkill.name_kr || null, name_ja: ammoSkill.name_ja || null } });
+  // 아군 전체 버프인데 **효과 종류**가 특정 니케에게만 드는 것(2026-11-05 유저 "비슷하게 소외받고 있는 캐릭터들은 없을까" → "그래").
+  // 「Affects all allies. Pierce Damage ▲」는 관통으로 때리는 니케에게만 의미가 있다. 받는 쪽은 스킬 원문에 그 피해를 내는 문장이 있는 니케
+  // (DMG_KINDS.deals — 11-05 받는 쪽 41명을 원문으로 대조했다). 차지 대미지는 무기(RL·SR)로 정한다(벨벳 · 얀 · 애드미).
+  for (const s of c.skills || []) {
+    let allAllies = false;
+    for (const x of String(s.desc || '').split(/(?<=\.)\s+/)) {
+      if (/\baffects\b/i.test(x)) allAllies = /affects all allies(?! with| of| from)/i.test(x);   // 「all allies with a Sniper Rifle」(D : 킬러 와이프)는 무기 조건이라 위 대상절이 맡는다
+      if (!allAllies) continue;
+      for (const [kind, d] of Object.entries(DMG_KINDS)) {
+        if (!d.buff.test(x) || out.some((o) => o.key === `dmg|${kind}`)) continue;
+        out.push({ key: `dmg|${kind}`, scope: null, effect: '', cond: { dmgKind: kind }, skill: { name: s.name, name_kr: s.name_kr || null, name_ja: s.name_ja || null } });
+      }
+    }
+  }
   return out;
 }
 
 const AMMO_HEAVY = ['mg', 'smg'];
-const targetsOf = (g, x, pool) => (g.cond.ammo ? pool.filter((m) => AMMO_HEAVY.includes(String(m.weapon).toLowerCase())) : (resolveAllyScope(g.scope, x, pool, g.effect) || []));
+const skillText = (c) => (c.skills || []).map((s) => String(s.desc || '')).join(' ');
+const DMG_KINDS = {
+  charge: { buff: /charge damage( multiplier)? ?▲/i, deals: (m) => ['rl', 'sr'].includes(String(m.weapon).toLowerCase()) },
+  pierce: { buff: /pierce damage ?▲/i, deals: (m) => /gains? (continuous )?pierce|additional effects?( \d)?: (gains )?pierce|deals for pierce/i.test(skillText(m)) },
+  distributed: { buff: /distributed damage( dealt)? ?▲/i, deals: (m) => /as distributed damage|deals distributed damage|dealing distributed damage/i.test(skillText(m)) },
+  sustained: { buff: /sustained damage ?▲/i, deals: (m) => /as sustained damage|deals sustained damage/i.test(skillText(m)) },
+  true: { buff: /true damage ?▲/i, deals: (m) => /as (burst skill )?true damage|deal true damage|deals true damage|into true damage/i.test(skillText(m)) },
+};
+// 검사용(scripts/testDexRelations.mjs) — 그 효과 종류를 받는 쪽인가
+export const dealsDamageKind = (kind, m) => Boolean(DMG_KINDS[kind]?.deals(m));
+const targetsOf = (g, x, pool) => (g.cond.ammo ? pool.filter((m) => AMMO_HEAVY.includes(String(m.weapon).toLowerCase()))
+  : g.cond.dmgKind ? pool.filter((m) => DMG_KINDS[g.cond.dmgKind].deals(m))
+  : (resolveAllyScope(g.scope, x, pool, g.effect) || []));
 
 // gives: 이 니케의 조건부 버프가 닿는 니케(조건마다 4명 + 전체 수)
 // receives: 조건부 버프로 이 니케를 대상에 넣는 니케(6명) — 둘 다 togetherOrder 순

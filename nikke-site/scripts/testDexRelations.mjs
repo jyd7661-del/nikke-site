@@ -61,6 +61,20 @@ for (const [a, b, k] of PAIRS) {
   if (!R.skillLinksFor(byTitle.get('Modernia')).receives.some((x) => x.title === 'Little Mermaid')) problems.push('[탄 수 발동] 모더니아(MG)가 받는 목록에 리틀 머메이드가 없다');
 }
 
+// 아군 전체 버프인데 효과 종류가 특정 니케에게만 드는 것(2026-11-05) — 짝은 스킬 원문으로 확인한 것.
+{
+  const PAIRS2 = [['Velvet', 'charge', 'Scarlet: Black Shadow'], ['Grave', 'pierce', 'Red Hood'], ['Mast: Romantic Maid', 'distributed', '2B'],
+    ['Rosanna: Chic Ocean', 'sustained', 'Mana'], ['Takina Inoue', 'true', 'Ada Wong']];
+  for (const [giver, kind, recv] of PAIRS2) {
+    const g = R.skillLinksFor(byTitle.get(giver)).gives.find((x) => x.cond.dmgKind === kind);
+    if (!g) { problems.push(`[효과 종류] ${giver}의 ${kind} 버프를 못 읽는다`); continue; }
+    if (!R.dealsDamageKind(kind, byTitle.get(recv))) problems.push(`[효과 종류] ${recv}가 ${kind} 버프를 받는 쪽으로 안 잡힌다`);
+    if (g.top.some((x) => !R.dealsDamageKind(kind, byTitle.get(x.title)))) problems.push(`[효과 종류] ${giver} → 받는 쪽이 아닌 니케가 들었다`);
+  }
+  // 「all allies with a Sniper Rifle」은 무기 조건 — 효과 종류로 따로 잡으면 안 된다
+  if (R.skillLinksFor(byTitle.get('D: Killer Wife')).gives.some((x) => x.cond.dmgKind)) problems.push('[효과 종류] D : 킬러 와이프의 저격소총 한정 버프를 아군 전체로 읽었다');
+}
+
 const TR = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 const KEY = { campaign: 'story', bossing: 'bossing', pvp: 'pvp' };
 const stages = (c) => (c.burstFlex && c.burstStages?.length ? c.burstStages.map(String) : [String(c.burst)]);
