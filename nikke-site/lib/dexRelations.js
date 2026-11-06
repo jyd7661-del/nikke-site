@@ -21,7 +21,7 @@ const CHARACTERS = Array.isArray(db) ? db : db.characters;
 const BY_TITLE = new Map(CHARACTERS.map((c) => [c.title, c]));
 const TIER_RANK = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
 
-const slim = (c) => ({ id: c.id, title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null });
+const slim = (c) => ({ id: c.id, title: c.title, name_kr: c.name_kr, name_ja: c.name_ja || null, img: c.img || null });   // img: 「함께 쓰면 좋은 니케」 얼굴(11-06 유저 "여기도 초상화가 있어야할 것 같아")
 const bestTier = (c) => Math.max(0, ...Object.values(c.tiers || {}).map((t) => TIER_RANK[t] || 0));
 
 // 함께 쓸 니케 — 랭커 실사용 조합에서 같이 나온 횟수(그 니케가 든 조합 수 중) → prydwen 추천 조합에서 같은 팀 수 순.

@@ -6,6 +6,7 @@ import { localePath } from '@/lib/locale';
 import { useLanguage } from '@/components/LanguageProvider';
 import { elementLabel, weaponLabel, squadLabel } from '@/lib/dexLabels';
 import { memberName } from '@/lib/memberName';
+import CharacterAvatar from '@/components/CharacterAvatar';
 
 // 도감 상세의 "함께 쓰면 좋은 니케" · "스킬로 이어지는 니케" (2026-10-11. "대신 쓸 수 있는 니케"는 2026-11-04 뺐다 — lib/dexRelations.js 머리말).
 // 계산은 서버(lib/dexRelations.js)가 하고 여기는 그리기만 한다 — 여기서 lib/dex·dexRelations를 import하면
@@ -67,9 +68,14 @@ export default function DexRelations({ self, partners }) {
       )}
       <MoreList items={partners.list} show={8}>
         {(list) => (
-          <ul className="space-y-2 text-sm">
+          <ul className="space-y-2.5 text-sm">
             {list.map((x) => (
-              <li key={x.id}>
+              <li key={x.id} className="flex items-start gap-2.5">
+                {/* 11-06 유저: "여기도 초상화가 있어야할 것 같아" — 조합 칸 얼굴(DexMemberFaces)과 같은 그림, 목록이라 작은 원형 */}
+                <Link href={localePath(lang, `/nikke/${x.id}`)} className="shrink-0" aria-hidden="true" tabIndex={-1}>
+                  <CharacterAvatar character={{ id: x.id, img: x.img, name: memberName(x, lang) }} size="sm" />
+                </Link>
+                <div className="min-w-0 pt-1">
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <Chip m={x} lang={lang} />
                   <span className="text-slate-500 text-xs">
@@ -77,12 +83,13 @@ export default function DexRelations({ self, partners }) {
                   </span>
                 </div>
                 {x.links.map((l, j) => (
-                  <p key={j} className="text-xs text-slate-500 pl-2">
+                  <p key={j} className="text-xs text-slate-500">
                     {l.dir === 'give'
                       ? t('dex_link_give')(name, skillName(l.skill, lang), condText(l.cond, l.squad))
                       : t('dex_link_recv')(name, skillName(l.skill, lang), condText(l.cond, l.squad))}
                   </p>
                 ))}
+                </div>
               </li>
             ))}
           </ul>
