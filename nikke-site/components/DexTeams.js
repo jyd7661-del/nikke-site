@@ -38,7 +38,7 @@ export default function DexTeams({ teams, totalCount }) {
       <div className="space-y-3 mt-3">
         {shown.map((a) => (
           <div key={a.id} className="rounded-lg bg-slate-800/40 p-4">
-            <div className="flex items-baseline justify-between gap-3">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
               <h3 className="font-bold text-slate-100">{pick(a, 'name')?.text}</h3>
               <span className="text-xs text-slate-500 shrink-0">
                 {MODE_I18N_KEY[a.mode] ? t(MODE_I18N_KEY[a.mode]) : a.mode}

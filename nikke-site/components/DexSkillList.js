@@ -48,7 +48,7 @@ export default function DexSkillList({ skills }) {
           const v = pick(s);
           return (
             <div key={i} className="rounded-lg bg-slate-800/40 p-4">
-              <div className="flex items-baseline justify-between gap-3">
+              <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
                 <h3 className="font-bold text-slate-100">{v.name}</h3>
                 <span className="text-xs text-slate-500 shrink-0">
                   {s.type}{s.cd && s.cd !== 'N/A' ? ` · ${t('dex_cooldown')} ${s.cd}${t('dex_seconds')}` : ''}

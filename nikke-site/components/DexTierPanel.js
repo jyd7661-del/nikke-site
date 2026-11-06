@@ -34,7 +34,7 @@ import { useLanguage } from '@/components/LanguageProvider';
 //    모양은 그 페이지의 TierBadge와 같게 유지한다.
 function TierBadge({ label, tier }) {
   return (
-    <div className="flex-1 rounded-lg bg-slate-800/60 px-3 py-2 text-center">
+    <div className="flex-1 min-w-0 rounded-lg bg-slate-800/60 px-2 py-2 text-center">
       <div className="text-xs text-slate-500">{label}</div>
       <div className="text-xl font-extrabold text-nikke-accent">{tier || '—'}</div>
     </div>
@@ -77,7 +77,7 @@ export default function DexTierPanel({ tiers, treasureTiers, treasureTiersNote }
         </div>
       )}
 
-      <div className="flex gap-3">
+      <div className="flex gap-2 sm:gap-3">
         <TierBadge label={t('mode_campaign')} tier={shown.story} />
         <TierBadge label={t('mode_bossing')} tier={shown.bossing} />
         <TierBadge label={t('mode_pvp')} tier={shown.pvp} />

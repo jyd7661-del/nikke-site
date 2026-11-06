@@ -72,10 +72,11 @@ export default function DexRelations({ self, partners }) {
             {list.map((x) => (
               <li key={x.id} className="flex items-start gap-2.5">
                 {/* 11-06 유저: "여기도 초상화가 있어야할 것 같아" — 조합 칸 얼굴(DexMemberFaces)과 같은 그림, 목록이라 작은 원형 */}
-                <Link href={localePath(lang, `/nikke/${x.id}`)} className="shrink-0" aria-hidden="true" tabIndex={-1}>
-                  <CharacterAvatar character={{ id: x.id, img: x.img, name: memberName(x, lang) }} size="sm" />
+                {/* 원형(object-top)은 그림마다 얼굴 위치가 달라 머리·모자만 보이는 니케가 많았다(11-06 유저 "위치가 잘 안맞는 경우가 많은 것 같아") → 조합 칸과 같은 3:4 세로 틀 */}
+                <Link href={localePath(lang, `/nikke/${x.id}`)} className="shrink-0 w-10 rounded-md overflow-hidden border border-slate-700 bg-slate-900/40" aria-hidden="true" tabIndex={-1}>
+                  <CharacterAvatar character={{ id: x.id, img: x.img, name: memberName(x, lang) }} shape="portrait" className="rounded-none" />
                 </Link>
-                <div className="min-w-0 pt-1">
+                <div className="min-w-0 flex-1 pt-0.5">
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <Chip m={x} lang={lang} />
                   <span className="text-slate-500 text-xs">

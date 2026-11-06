@@ -115,7 +115,7 @@ export default function DexUsage({ usage }) {
                 {g.entries.map((e, k) => {
                   const [where, figure] = teamMeta(e);
                   return (
-                    <div key={k} className="flex items-baseline justify-between gap-3">
+                    <div key={k} className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
                       <h4 className="text-sm font-bold text-slate-100">{where}</h4>
                       <span className="text-xs text-slate-500 shrink-0">{figure}</span>
                     </div>
@@ -134,7 +134,7 @@ export default function DexUsage({ usage }) {
           <div className="space-y-2">
             {subsets.map((s, i) => (
               <div key={`sub-${i}`} className="rounded-lg bg-slate-800/40 px-4 py-3">
-                <div className="flex items-baseline justify-between gap-3">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-0.5">
                   <span className="text-xs text-slate-500">{t('dex_usage_subset_size')(s.size)}</span>
                   <span className="text-xs text-slate-500 shrink-0">
                     {[s.wr != null && t('dex_usage_wr')(s.wr), s.adoption != null && t('dex_usage_adoption')(s.adoption)]
