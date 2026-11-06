@@ -62,9 +62,13 @@ export default function DexRelations({ self, partners }) {
       <h2 className="text-lg font-bold text-white mb-1">{t('dex_comp_heading')}</h2>
       <p className="text-xs text-slate-500 mb-3">{t('dex_comp_desc')(name, partners.rankerTeams, partners.archetypeTeams)}</p>
       {partners.gives.length > 0 && (
-        <ul className="mb-3 space-y-1 text-xs text-slate-400">
+        // 11-06 유저 "근데 목단이 관통공격맞아?" — 요약 줄이 목록 바로 위에 있어 아래 목록 전체가 그 버프 대상처럼 읽혔다. 상자로 떼고 「↳ 줄이 붙은 니케가 대상」이라고 밝힌다.
+        <div className="mb-3 rounded-lg bg-slate-800/40 px-3 py-2 text-xs text-slate-400">
+          <p className="text-slate-300 mb-1">{t('dex_gives_label')(name)}</p>
+          <ul className="space-y-1">
           {partners.gives.map((g, i) => <li key={i}>{t('dex_skill_gives')(skillName(g.skill, lang), condText(g.cond, g.squad), g.total)}</li>)}
         </ul>
+        </div>
       )}
       <MoreList items={partners.list} show={8}>
         {(list) => (
