@@ -18,6 +18,7 @@ import { usageFor } from '@/lib/usage';
 import soloRaid from '@/data/soloRaidTeams.json';
 import towerComps from '@/data/towerCompositions.json';
 import metaStats from '@/data/metaStats.json';
+import partnerNotes from '@/data/partnerNotes.json';
 import { scopeOf, resolveAllyScope, scopeCondition, isBuffReceiver } from '@/lib/buffTargets';
 
 const CHARACTERS = Array.isArray(db) ? db : db.characters;
@@ -169,6 +170,11 @@ export function coUse(a, b) {
 }
 const MIN_TOGETHER = 3;
 
+// 짝 해설(2026-11-06 유저: "우연보다 몇배 자주 쓰였다는 보는사람입장에서 아무 도움이 안돼. 내가 말한 서술은 어떤 부분때문에 스킬부분에서 이점이 있다"
+// → "너가 원문읽고 쓰면 되겠네"). 클로드가 두 니케 스킬 원문을 읽고 쓴 해설(B등급 — 해석). 숫자는 scripts/testPartnerNotes.mjs가 원문과 대조한다.
+const NOTE = new Map((partnerNotes.pairs || []).map((p) => [[p.a, p.b].sort().join('||'), p]));
+export const noteFor = (a, b) => NOTE.get([a, b].sort().join('||')) || null;
+
 export function partnersFor(c) {
   const sk = skillLinksFor(c);
   const arch = new Map();
@@ -183,7 +189,7 @@ export function partnersFor(c) {
   for (const m of CHARACTERS) {
     if (m.id === c.id) continue;
     const u = coUse(c.title, m.title);
-    if (u.obs >= MIN_TOGETHER && u.lift > 1) get(m).together = { n: u.obs, lift: Math.round(u.lift * 10) / 10, by: u.by };
+    if (u.obs >= MIN_TOGETHER && u.lift > 1) { const e = get(m); e.together = { n: u.obs, lift: Math.round(u.lift * 10) / 10, by: u.by }; const nt = noteFor(c.title, m.title); if (nt) e.note = { ko: nt.ko || null, en: nt.en || null, ja: nt.ja || null }; }
   }
   sk.gives.forEach((g) => g.top.forEach((x) => get(BY_TITLE.get(x.title)).links.push({ dir: 'give', skill: g.skill, cond: g.cond, squad: g.squad })));
   sk.receives.forEach((x) => get(BY_TITLE.get(x.title)).links.push({ dir: 'recv', skill: x.skill, cond: x.cond, squad: x.squad }));

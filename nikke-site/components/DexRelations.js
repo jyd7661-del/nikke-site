@@ -90,10 +90,12 @@ export default function DexRelations({ self, partners }) {
                 </div>
                 {/* 목록에 든 이유(11-06 유저 "목록에 있는 이유를 같이 서술해줘") — 전부 데이터에서 센 값 */}
                 <p className="text-xs text-slate-400">
-                  {x.together
-                    ? t('dex_reason_together')(x.together.lift, x.together.n, x.together.by.map((b) => `${whereText(b)} ${b.n}`).join(' · '))
-                    : t('dex_reason_skill_only')}
-                  {x.archetype > 0 && <> {t('dex_reason_arch')(x.archetype)}</>}
+                  {/* 11-06 유저: 「우연보다 N배」는 보는 사람에게 도움이 안 된다 → 스킬로 본 이점(짝 해설). 해설이 없거나 그 언어가 없으면 어디서 같이 쓰였는지만 */}
+                  {x.note?.[lang]
+                    ? x.note[lang]
+                    : x.together
+                      ? t('dex_reason_where')(x.together.by.map((b) => whereText(b)).join(' · '))
+                      : t('dex_reason_skill_only')}
                 </p>
                 {x.links.map((l, j) => (
                   <p key={j} className="text-xs text-slate-500">
