@@ -15,6 +15,9 @@
 import db from '@/data/characterDatabase.json';
 import syn from '@/data/synergyNotes.json';
 import { usageFor } from '@/lib/usage';
+import soloRaid from '@/data/soloRaidTeams.json';
+import towerComps from '@/data/towerCompositions.json';
+import metaStats from '@/data/metaStats.json';
 import { scopeOf, resolveAllyScope, scopeCondition, isBuffReceiver } from '@/lib/buffTargets';
 
 const CHARACTERS = Array.isArray(db) ? db : db.characters;
@@ -128,26 +131,70 @@ export function skillLinksFor(c) {
   return { gives, receivesTotal: receives.length, receives: receives.map((r) => ({ ...slim(r), skill: r.skill, cond: r.cond, squad: r.squad })) };
 }
 
-// 「함께 쓰면 좋은 니케」 한 칸(2026-11-05 유저: "함께 쓰면 좋은 니케는 조합에 많이 쓰인 니케인데 많이 쓰인 수만큼 스킬로 이어지는 니케에 합하는게 좋아보이는데" → "한 칸으로 합치기").
-// 같이 쓰인 니케(companionsFor 전부)와 스킬로 이어지는 니케(skillLinksFor 전부)를 니케별로 한 줄에 모은다.
-// 순서: 랭커 조합에서 같이 나온 수 → prydwen 추천 조합 수 → 스킬 연결 있음 → 등급. 새 점수는 만들지 않는다(세는 값 그대로).
+// 「함께 쓰면 좋은 니케」 — **우연보다 자주 같이 쓰인 니케**(2026-11-06 유저: "이렇게 되면 함께쓰기 좋은 니케가 아니라 쓰인이력이 많은 니케인데
+// 그건 별로 좋은 정보는 아닌 것 같아" → "그렇게 해보고 목록에 있는 이유를 같이 서술해줘").
+// 같이 쓰인 횟수는 인기와 판의 제약을 그대로 탄다 — 에이드 : 에이전트 바니 ↔ 아니스 : 스타 4건은 전부 테트라 타워(테트라만 나간다)였고,
+// 기업별로 나눠 재면 우연의 0.82배였다. 그래서 **같은 판끼리만** 기대 동시 등장(nA·nB/N)을 더해 실제와 비교한다(리프트).
+//   판 = 보스전 약점 속성 시즌 묶음(soloRaidTeams.weakness) · 타워 기업 풀(towerCompositions.pools) · 캠페인(metaStats.campaignCompositions).
+//   검증(11-06): 민트 ↔ 프리카 5.5배 · 리버렐리오 ↔ 홍련 : 흑영 7.6배 · 마스트 ↔ 앵커 : 이노센트 메이드 2.5배.
+//   마스트 ↔ 크라운은 1.2배 — 둘 다 거의 모든 캠페인 팀에 들어 "서로를 골라서"가 아니라 "각자 필수라서" 겹친다. 목록에서 빠지는 게 의도다(유저 "그렇게 해보고").
+// 넣는 기준: 같이 쓰인 게 **3번 이상**이고 우연보다 많을 때(리프트 > 1). 2번 이하는 우연일 수 있다. 스킬로 이어지는 니케는 기록이 적어도 넣는다(이유가 따로 있다).
+const POOLS = (() => {
+  const out = [];
+  const byWeak = new Map();
+  for (const s of soloRaid.seasons || []) for (const t of s.teams || []) {
+    const k = String(s.weakness || '');
+    if (!byWeak.has(k)) byWeak.set(k, []);
+    byWeak.get(k).push(new Set(t.members || []));
+  }
+  for (const [k, teams] of byWeak) out.push({ kind: 'raid', key: k, teams });
+  for (const p of towerComps.pools || []) out.push({ kind: 'tower', key: p.tower || 'normal', teams: (p.teams || []).map((t) => new Set(t.members || [])) });
+  out.push({ kind: 'campaign', key: '', teams: ((metaStats.campaignCompositions || {}).list || []).map((t) => new Set(t.members || [])) });
+  return out.map((p) => {
+    const n = new Map();
+    p.teams.forEach((t) => t.forEach((m) => n.set(m, (n.get(m) || 0) + 1)));
+    return { ...p, n };
+  });
+})();
+export function coUse(a, b) {
+  let obs = 0; let exp = 0; const by = [];
+  for (const p of POOLS) {
+    const N = p.teams.length; const na = p.n.get(a) || 0; const nb = p.n.get(b) || 0;
+    if (!N || !na || !nb) continue;
+    const ab = p.teams.reduce((k, t) => k + (t.has(a) && t.has(b) ? 1 : 0), 0);
+    obs += ab; exp += (na * nb) / N;
+    if (ab) by.push({ kind: p.kind, key: p.key, n: ab });
+  }
+  return { obs, exp, lift: exp > 0 ? obs / exp : null, by: by.sort((x, y) => y.n - x.n) };
+}
+const MIN_TOGETHER = 3;
+
 export function partnersFor(c) {
-  const comp = companionsFor(c, Infinity);
   const sk = skillLinksFor(c);
+  const arch = new Map();
+  (syn.archetypes || []).filter((a) => (a.members || []).includes(c.title))
+    .forEach((a) => (a.members || []).forEach((m) => { if (m !== c.title) arch.set(m, (arch.get(m) || 0) + 1); }));
   const map = new Map();
   const get = (m) => {
-    if (!map.has(m.id)) map.set(m.id, { ...slim(m), ranker: 0, archetype: 0, links: [] });
+    if (!map.has(m.id)) map.set(m.id, { ...slim(m), burst: m.burstFlex && Array.isArray(m.burstStages) && m.burstStages.length ? m.burstStages.join('·') : (m.burst ?? null),   // 단계 선택 니케(레드 후드 등)는 쓸 수 있는 단계를 「1·3」으로
+      burstFlex: !!m.burstFlex, cls: m.class || null, together: null, archetype: arch.get(m.title) || 0, links: [] });
     return map.get(m.id);
   };
-  comp.list.forEach((x) => Object.assign(get(x), { ranker: x.ranker, archetype: x.archetype }));
-  sk.gives.forEach((g) => g.top.forEach((x) => get(x).links.push({ dir: 'give', skill: g.skill, cond: g.cond, squad: g.squad })));
-  sk.receives.forEach((x) => get(x).links.push({ dir: 'recv', skill: x.skill, cond: x.cond, squad: x.squad }));
+  for (const m of CHARACTERS) {
+    if (m.id === c.id) continue;
+    const u = coUse(c.title, m.title);
+    if (u.obs >= MIN_TOGETHER && u.lift > 1) get(m).together = { n: u.obs, lift: Math.round(u.lift * 10) / 10, by: u.by };
+  }
+  sk.gives.forEach((g) => g.top.forEach((x) => get(BY_TITLE.get(x.title)).links.push({ dir: 'give', skill: g.skill, cond: g.cond, squad: g.squad })));
+  sk.receives.forEach((x) => get(BY_TITLE.get(x.title)).links.push({ dir: 'recv', skill: x.skill, cond: x.cond, squad: x.squad }));
+  // 스킬 연결만 있고 같이 쓰인 근거가 없는 니케가 수십 명이면(리틀 머메이드 MG·SMG 26명) 목록이 같이 쓰는 짝을 덮는다 —
+  // 그들은 같이 쓰인 짝 뒤에, 같이 쓰인 수 → 등급 순으로 둔다.
   const tierOf = (x) => bestTier(BY_TITLE.get(x.title) || {});
-  const list = [...map.values()].sort((a, b) => (b.ranker - a.ranker) || (b.archetype - a.archetype)
-    || ((b.links.length > 0) - (a.links.length > 0)) || (tierOf(b) - tierOf(a)) || a.title.localeCompare(b.title));
+  const sameUse = (x) => coUse(c.title, x.title).obs;
+  const list = [...map.values()].sort((a, b) => ((b.together ? 1 : 0) - (a.together ? 1 : 0))
+    || ((b.together?.lift || 0) - (a.together?.lift || 0)) || ((b.together?.n || 0) - (a.together?.n || 0))
+    || (sameUse(b) - sameUse(a)) || (tierOf(b) - tierOf(a)) || a.title.localeCompare(b.title));
   return {
-    rankerTeams: comp.rankerTeams,
-    archetypeTeams: comp.archetypeTeams,
     gives: sk.gives.map((g) => ({ skill: g.skill, cond: g.cond, squad: g.squad, total: g.total })),
     receivesTotal: sk.receivesTotal,
     list,

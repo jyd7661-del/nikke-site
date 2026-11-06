@@ -32,15 +32,14 @@ if (show) {
 }
 
 const problems = [];
-// ① 유저 정답 짝
-const PAIRS = [['Mint', 'Prika', 1], ['Prika', 'Mint', 1], ['Mast: Romantic Maid', 'Crown', 3], ['Mast: Romantic Maid', 'Anchor: Innocent Maid', 3],
-  ['Scarlet: Black Shadow', 'Liberalio', 3], ['Liberalio', 'Scarlet: Black Shadow', 6]];
-// 2026-10-27: 리버렐리오 → 홍련 : 흑영은 3 → 6(도감 화면에 보이는 수). 레이드 시즌 42(전격)에서 리버렐리오가 상위 50인 100%라
-//   그 시즌 팀의 마스트·크라운·스타·네온 VE가 같이 센다. 반대 방향(홍련 : 흑영 → 리버렐리오)은 그대로 상위 3. 짝은 캠페인 enikk에서 우연의 7.6배(coUsePairs).
-for (const [a, b, k] of PAIRS) {
-  const top = R.companionsFor(byTitle.get(a)).list.slice(0, k).map((x) => x.title);
-  if (!top.includes(b)) problems.push(`[함께 쓸 니케] ${a}의 상위 ${k}에 ${b}가 없다 — 지금 ${top.join(', ')}`);
-}
+// ① 짝(2026-11-06 개편 — 같이 쓰인 횟수 → 같은 판 안 리프트). 유저 정답 짝 중 민트 ↔ 프리카 · 리버렐리오 ↔ 홍련 : 흑영 · 마스트 ↔ 앵커 : 이노센트 메이드는
+//   리프트로도 상위에 남는다. 마스트 ↔ 크라운(1.2배)은 "둘 다 필수라 겹치는" 쌍이라 빠지는 게 의도(유저 "그렇게 해보고").
+const top = (a, k) => R.partnersFor(byTitle.get(a)).list.filter((x) => x.together).slice(0, k).map((x) => x.title);
+const PAIRS = [['Mint', 'Prika', 1], ['Prika', 'Mint', 1], ['Liberalio', 'Scarlet: Black Shadow', 3], ['Scarlet: Black Shadow', 'Liberalio', 3], ['Mast: Romantic Maid', 'Anchor: Innocent Maid', 12]];
+for (const [a, b, k] of PAIRS) if (!top(a, k).includes(b)) problems.push(`[함께 쓸 니케] ${a}의 상위 ${k}에 ${b}가 없다 — 지금 ${top(a, k).join(', ')}`);
+// 막는 고장: 같은 판 제약(테트라 타워엔 테트라만)이 짝으로 둔갑하는 것 — 11-06 에이드 ↔ 아니스 : 스타 4건은 전부 테트라 타워, 기업별로 나누면 0.82배
+if (R.partnersFor(byTitle.get('Ade: Agent Bunny')).list.some((x) => x.title === 'Anis: Star' && x.together)) problems.push('[함께 쓸 니케] 에이드 : 에이전트 바니 목록에 아니스 : 스타(테트라 타워 제약)가 짝으로 들었다');
+for (const x of R.partnersFor(byTitle.get('Ade: Agent Bunny')).list) if (x.together && (x.together.n < 3 || !(x.together.lift > 1))) { problems.push(`[함께 쓸 니케] 기준 밖 짝 ${x.title}`); break; }
 // ①-b 스킬 연결 짝(2026-10-13, 유저: "그래야 홍련흑영과의 조합이 설명되니까") — 리버렐리오 "공격력이 가장 낮은 3버스트 아군 1명에게 차지 속도 ▲"
 //   예전 해석기는 이 대상절('all' 없음)을 못 읽었고, 읽더라도 티어순 4명 안에 홍련 : 흑영이 없었다(28명 중).
 {
@@ -81,12 +80,12 @@ for (const [a, b, k] of PAIRS) {
     const x = R.partnersFor(byTitle.get(a)).list.find((m) => m.title === b);
     return x && (!needLink || x.links.length > 0);
   };
-  if (!has('Mast: Romantic Maid', 'Crown', false)) problems.push('[합친 목록] 마스트 : 로망틱 메이드 목록에 크라운(같이 쓰인 짝)이 없다');
+  if (!has('Mast: Romantic Maid', 'Anchor: Innocent Maid', false)) problems.push('[합친 목록] 마스트 : 로망틱 메이드 목록에 앵커 : 이노센트 메이드(같이 쓰인 짝)가 없다');
   if (!has('Liberalio', 'Scarlet: Black Shadow', true)) problems.push('[합친 목록] 리버렐리오 목록에 홍련 : 흑영(스킬 연결)이 없다');
   if (!has('Little Mermaid', 'Modernia', true)) problems.push('[합친 목록] 리틀 머메이드 목록에 모더니아(탄 수 발동 연결)가 없다');
   if (!has('Red Hood', 'Grave', true)) problems.push('[합친 목록] 레드 후드 목록에 그레이브(관통 버프를 줌)가 없다');
   const lm = R.partnersFor(byTitle.get('Little Mermaid')).list;
-  for (let i = 1; i < lm.length; i++) if (lm[i].ranker > lm[i - 1].ranker) { problems.push('[합친 목록] 같이 쓰인 수 순서가 아니다'); break; }
+  for (let i = 1; i < lm.length; i++) if ((lm[i].together?.lift || 0) > (lm[i - 1].together?.lift || 0) && lm[i - 1].together) { problems.push('[합친 목록] 리프트 순서가 아니다'); break; }
 }
 
 const TR = { SSS: 9, SS: 8, S: 7, A: 6, B: 5, C: 4, D: 3, E: 2, F: 1 };
@@ -117,4 +116,4 @@ for (const c of CH) {
 
 console.log(`도감 관계 절 — ${CH.length}명 · 함께 쓸 니케 있음 ${withComp} · 스킬 연결 있음 ${withSkill}`);
 if (problems.length) { console.log(`문제 ${problems.length}건`); problems.slice(0, 30).forEach((p, i) => console.log(`  ${i + 1}. ${p}`)); process.exit(1); }
-console.log('문제 0건 — 유저 정답 짝 6개가 상위에 있고, 전원 사실 검사 통과');
+console.log('문제 0건 — 짝(리프트) 5개가 상위에 있고 테트라 제약 착시 없음, 전원 사실 검사 통과');

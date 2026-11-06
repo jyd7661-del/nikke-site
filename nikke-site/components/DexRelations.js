@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import { localePath } from '@/lib/locale';
 import { useLanguage } from '@/components/LanguageProvider';
-import { elementLabel, weaponLabel, squadLabel } from '@/lib/dexLabels';
+import { elementLabel, weaponLabel, squadLabel, classLabel } from '@/lib/dexLabels';
 import { memberName } from '@/lib/memberName';
 import CharacterAvatar from '@/components/CharacterAvatar';
 
@@ -55,12 +55,15 @@ export default function DexRelations({ self, partners }) {
     cond.dmgKind && t('dex_cond_dmg')(cond.dmgKind),
   ].filter(Boolean).join(' · ');
 
+  const whereText = (b) => (b.kind === 'raid' ? `${t('mode_bossing')}(${elementLabel(b.key, lang)})`
+    : b.kind === 'tower' ? `${t('mode_tribe_tower')}(${t(`tower_${b.key}`)})` : t('mode_campaign'));
+
   if (!partners.list.length) return null;
   // 2026-11-05: 「함께 쓰면 좋은 니케」와 「스킬로 이어지는 니케」를 한 칸으로(유저 "한 칸으로 합치기"). 니케마다 같이 쓰인 수 + 스킬 연결.
   return (
     <section className="mb-8">
       <h2 className="text-lg font-bold text-white mb-1">{t('dex_comp_heading')}</h2>
-      <p className="text-xs text-slate-500 mb-3">{t('dex_comp_desc')(name, partners.rankerTeams, partners.archetypeTeams)}</p>
+      <p className="text-xs text-slate-500 mb-3">{t('dex_comp_desc')(name)}</p>
       {partners.gives.length > 0 && (
         // 11-06 유저 "근데 목단이 관통공격맞아?" — 요약 줄이 목록 바로 위에 있어 아래 목록 전체가 그 버프 대상처럼 읽혔다. 상자로 떼고 「↳ 줄이 붙은 니케가 대상」이라고 밝힌다.
         <div className="mb-3 rounded-lg bg-slate-800/40 px-3 py-2 text-xs text-slate-400">
@@ -83,10 +86,15 @@ export default function DexRelations({ self, partners }) {
                 <div className="min-w-0 flex-1 pt-0.5">
                 <div className="flex flex-wrap items-baseline gap-x-2">
                   <Chip m={x} lang={lang} />
-                  <span className="text-slate-500 text-xs">
-                    {[x.ranker > 0 && t('dex_comp_ranker')(x.ranker, partners.rankerTeams), x.archetype > 0 && t('dex_comp_arch')(x.archetype)].filter(Boolean).join(' · ')}
-                  </span>
+                  {x.cls && <span className="text-slate-500 text-xs">{t('dex_role')(x.burst, classLabel(x.cls, lang))}</span>}
                 </div>
+                {/* 목록에 든 이유(11-06 유저 "목록에 있는 이유를 같이 서술해줘") — 전부 데이터에서 센 값 */}
+                <p className="text-xs text-slate-400">
+                  {x.together
+                    ? t('dex_reason_together')(x.together.lift, x.together.n, x.together.by.map((b) => `${whereText(b)} ${b.n}`).join(' · '))
+                    : t('dex_reason_skill_only')}
+                  {x.archetype > 0 && <> {t('dex_reason_arch')(x.archetype)}</>}
+                </p>
                 {x.links.map((l, j) => (
                   <p key={j} className="text-xs text-slate-500">
                     {l.dir === 'give'
