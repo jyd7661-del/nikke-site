@@ -98,7 +98,7 @@
 | 항목 | 언제 | 무엇을 |
 |---|---|---|
 | **세션 예약 복구** | 새 세션을 열 때마다 | 현황 보고(09:01·21:01) · 신캐 매일 점검(13:07) · 주간 글(금 18:17) · 애드센스 요청 예약은 세션과 함께 사라진다. 프롬프트 원문과 cron은 `docs/session-schedules.md` — 그대로 다시 건다 |
-| **게시판 주간 업데이트 글** | 매주 금 18시경 — **🚨 11-06분 아직 안 올림** | 초안 `nikke-site/probe-data/update-posts/2026-11-06.md`(제목 「11월 1주차 업데이트」, git 밖) · 등록 `heavy -m 800 ~/.venvs/tistory/bin/python nikke-site/scripts/postUpdate.py <초안>`(nikke-google 프로필, 분류 업데이트 · 비밀글 체크 안 함 — 글쓰기 화면 구조는 11-06 확인, 실제 등록은 아직 한 번도 안 돌림). 올린 뒤 `/updates/<id>` 200·영어·일본어 번역 확인 → `docs/updates-pending.md`에서 올린 줄 지우고 「올린 글」 표에 한 줄. 11-06 18:03 세션 예약은 세션 종료로 사라졌다 |
+| **게시판 주간 업데이트 글** | 매주 금 18시경 (다음 11-13) | 2026-10-30 유저 지시 "일주일마다 한 번씩". `docs/updates-pending.md`에 쌓인 것(+ git log 대조)으로 초안 `probe-data/update-posts/<날짜>.md` → `heavy -m 800 ~/.venvs/tistory/bin/python nikke-site/scripts/postUpdate.py <초안>`. 11-06 「11월 1주차 업데이트」 등록(/updates/5952e2b5…) — 스크립트 첫 실제 사용 성공 |
 | **캡처로 보유 니케 고르기(베타)** | 사진이 쌓일 때마다 — 사이트 보고에서 올라온 수를 본다 | 2026-11-02 유저 지시 "올린 사진과 실제 결과를 비교해서 점점 개선". `node scripts/reviewRosterPhotos.mjs`로 사진·AI 결과·사용자가 넣은 목록을 비교 → 오답 유형을 `lib/rosterPhotoPrompt.js`에 반영 → 그 사진들로 `experimentRosterPhoto.mjs` 전후 비교. 영어·일본어 게임 캡처는 아직 시험 못 함 → 10 「캡처로 보유 니케 고르기」 |
 | **애드센스 재승인 요청** | 11-06 업데이트 글을 올린 직후 — **아직 안 함** | 2026-11-03 유저: "이번 주 업데이트 내역 올라가면 애드센스 재승인 요청하자". 계정 jyd7661@gmail.com, 프로필 `~/.pw-profiles/nikke-google`(11-06 로그인 유지 확인 · SingletonLock은 11-04 흔적만, 프로세스 없음) |
 | **구글 노출** | 2026-11-17 무렵 | 11-03 확인(API `scripts/gscReport.mjs`): 28일(10/06~11/03) 노출 약 76 · 클릭 0 · /en 노출 0 — 10-20(171 · 2)보다 더 줄었다. `/en` · `/en/nikke` · `/nikke`는 「크롤링됨 - 색인 안 됨」(마지막 크롤링 9월). → 10 「11-03 오전 보고 개선점 처리」 |
