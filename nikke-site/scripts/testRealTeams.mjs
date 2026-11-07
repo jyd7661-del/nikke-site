@@ -927,11 +927,26 @@ for (const t of teams) {
 {
   const r = ['Mast: Romantic Maid', 'Scarlet: Black Shadow', 'Liberalio', 'Crown', 'Red Hood', 'D: Killer Wife', 'Tia'].map((n) => byTitle.get(n));
   const on = engine.findRealUsageTeamMatch(r, 'campaign', {});
-  globalThis.__NIKKE_PARTIAL_CYCLE_OFF = true;
+  globalThis.__NIKKE_PARTIAL_CYCLE_OFF = true; globalThis.__NIKKE_B1_CDR_FIRST_OFF = true;   // 1버 쿨감 관문(아래)도 D : 킬러 와이프를 고르므로 같이 끈다
   const off = engine.findRealUsageTeamMatch(r, 'campaign', {});
-  delete globalThis.__NIKKE_PARTIAL_CYCLE_OFF;
+  delete globalThis.__NIKKE_PARTIAL_CYCLE_OFF; delete globalThis.__NIKKE_B1_CDR_FIRST_OFF;
   if (on?.partial?.filler !== 'D: Killer Wife') problems.push(`[4/5 주기] 스타 자리에 D : 킬러 와이프가 아니라 ${on?.partial?.filler}가 들어갔다`);
   if (off?.partial?.filler !== 'Red Hood') problems.push('[4/5 주기] 관문을 꺼도 레드 후드가 안 들어간다 — 시험 로스터를 다시 고를 것');
+}
+
+// 4/5 채우기의 1버 쿨감 관문(2026-11-07, docs/team-principles.md 2절 · 11-06 👎 보유 89명).
+// 기록 「아니스 : 스타 / 크라운 / 라피 : RH / 스노우 화이트 : HA / 마스트」에서 스타가 없을 때, 티어만 보면 레드 후드(S · 쿨감 없음)가 들어가
+// 라피 : RH가 1버로 밀린다. 관문을 켜면 D : 킬러 와이프(아군 쿨감)가 1버에 선다. 역테스트: `__NIKKE_B1_CDR_FIRST_OFF`면 레드 후드.
+// 두 번째: 남은 4명에 고정 1버(스타)가 있으면 관문을 걸지 않는다 — 스타 + 크라운 + 스노우 화이트 : HA + 프리바티에 라피 : RH가 빠지면 1버를 또 넣지 않는다.
+{
+  const names = ['Crown', 'Mast: Romantic Maid', 'Rapi: Red Hood', 'Snow White: Heavy Arms', 'Red Hood', 'D: Killer Wife', 'Emma: Tactical Upgrade', 'Tia'];
+  const r = names.map((n) => byTitle.get(n));
+  const on = engine.findRealUsageTeamMatch(r, 'campaign', {});
+  globalThis.__NIKKE_B1_CDR_FIRST_OFF = true;
+  const off = engine.findRealUsageTeamMatch(r, 'campaign', {});
+  delete globalThis.__NIKKE_B1_CDR_FIRST_OFF;
+  if (on?.partial?.filler !== 'D: Killer Wife') problems.push(`[1버 쿨감] 스타 자리에 D : 킬러 와이프가 아니라 ${on?.partial?.filler}가 들어갔다`);
+  if (off?.partial?.filler !== 'Red Hood') problems.push(`[1버 쿨감] 관문을 꺼도 레드 후드가 안 들어간다(${off?.partial?.filler}) — 시험 로스터를 다시 고를 것`);
 }
 
 const line = '─'.repeat(88);

@@ -2403,6 +2403,20 @@ const REAL_TEAM_SOURCE = {
   tribe_tower: 'tower',
 };
 
+// 아군 버스트 쿨감을 주는가(data/burstCdr.json) — 4/5 채우기의 1버 관문(2026-11-07). 애장품 조건 줄은 애장품을 가졌을 때만.
+const ALLY_CDR = (() => {
+  const m = new Map();
+  for (const e of burstCdr.characters || []) {
+    if (!['ally', 'unmodeled'].includes(e.kind)) continue;
+    if (!m.has(e.title)) m.set(e.title, []);
+    m.get(e.title).push(e);
+  }
+  return m;
+})();
+function givesAllyCdr(c, treasureIds) {
+  return (ALLY_CDR.get(c.title) || []).some((e) => e.cond !== 'treasure' || (treasureIds && treasureIds.has && treasureIds.has(c.id)));
+}
+
 export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts = {}) {
   const lang = opts.lang || 'ko';
   const R = engineText(lang);
@@ -2517,6 +2531,9 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
       // 완전일치와 같은 애장품 관문 — 남는 4명 중 애장품이 필요한 멤버를 애장품 없이 가졌으면 그 기록은 이 사용자의 조합이 아니다
       // (처음엔 빠뜨려서 testRealTeams "실사용 애장품"이 걸렸다: 애장품 없는 목단·헬름 조합을 4/5로 가져왔다).
       if (!globalThis.__NIKKE_REAL_TEAM_TREASURE_OFF && base.some((m) => treasureRaisesTierUnowned(m, mode, treasureIds))) return;
+      // 남은 4명에 고정 1버스트가 이미 있으면 채우는 자리는 1버가 아니다(단계 기록이 없는 타워·레이드 표에서 유연 멤버가 빠진 경우 —
+      //   11-07 타워 탐침: 스타가 있는데 라피 : RH 자리를 쿨감 1버로 채워 스타가 「나만의 별」을 잃었다).
+      const needsB1 = !base.some((m) => !m.burstFlex && String(m.burst) === '1');
       let pick = null;
       ownedCharacters.forEach((c) => {
         if (titles.includes(c.title) || excludeTitles.has(c.title)) return;
@@ -2538,7 +2555,14 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         //   1버스트가 40초 둘(라피 : 레드 후드 · 레드 후드)이 됐다. 폴백 정렬(recommendTeams)·빈 자리 아키타입(fallbackBeatsFlexArchetype)은
         //   이미 slowCycle을 먼저 보는데 4/5 채우기만 티어 합만 봤다. 관문이지 점수가 아니다. `__NIKKE_PARTIAL_CYCLE_OFF`면 옛 동작.
         const gate = globalThis.__NIKKE_PARTIAL_CYCLE_OFF ? 0 : (pick ? Number(!!pick.scored.slowCycle) - Number(!!scored.slowCycle) : 1);
-        if (!pick || gate > 0 || (gate === 0 && (v > pv || (v === pv && String(c.id) < String(pick.filler.id))))) pick = { members, scored, filler: c };
+        // 2026-11-07 **1버스트 자리는 아군 쿨감을 주는 니케 먼저**(docs/team-principles.md 2절 — "쿨감 니케는 팀마다 필수이고 대개 1버가 맡는다",
+        //   고뇨 · RenGod · 스페란도 · 김진서). 11-06 👎: 아니스 : 스타 자리에 레드 후드(S · 쿨감 없음 · 실제로는 3버로 가고 라피 : RH가 1버로 밀림)를
+        //   넣었다 — 자료는 "라피 : RH는 기본 3버, 1버 대행은 차선(−9.6%)". 쿨감 1버(D : 킬러 와이프 등)가 그 자리를 그대로 선다.
+        //   쿨감 여부는 data/burstCdr.json(아군 대상 kind ally · unmodeled, 애장품 조건이면 애장품 보유 시). 즉시형/예열형 구분은 데이터가 없다.
+        //   관문 순서: 20초 주기 → (1버 자리면) 아군 쿨감 → 티어 합. `__NIKKE_B1_CDR_FIRST_OFF`면 옛 동작.
+        const cdrGate = (gate === 0 && pick && stages.includes('1') && needsB1 && mode !== 'pvp' && !globalThis.__NIKKE_B1_CDR_FIRST_OFF)
+          ? Number(givesAllyCdr(c, treasureIds)) - Number(givesAllyCdr(pick.filler, treasureIds)) : 0;
+        if (!pick || gate > 0 || (gate === 0 && (cdrGate > 0 || (cdrGate === 0 && (v > pv || (v === pv && String(c.id) < String(pick.filler.id))))))) pick = { members, scored, filler: c };
       });
       if (!pick) return;
       if (!best || rank > best.rank) best = { entry: e, rank, members: pick.members, scored: pick.scored, partial: { missing: gone, filler: pick.filler } };
