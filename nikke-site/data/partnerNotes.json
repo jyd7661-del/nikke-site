@@ -5,613 +5,817 @@
    "a": "Maxwell",
    "b": "Snow White",
    "ko": "맥스웰의 「스트레이트 샷」은 공격력이 가장 높은 아군 2기에게 차지 속도 4.48%·공격력 43.1%를 주므로, 스노우 화이트가 그 2기에 들 때 차지 무기로 바뀌는 「세븐스 드워프 : I」를 더 빠르고 세게 쏜다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Maxwell's \"Straight Shot\" gives the 2 allies with the highest ATK 4.48% Charge Speed and 43.1% ATK, so when Snow White is one of those 2, she fires \"Seven Dwarves: I\", which turns her weapon into a Charge weapon, faster and harder.",
+   "ja": "マクスウェルの「ストレートショット」は攻撃力が最も高い味方2体にチャージ速度4.48%・攻撃力43.1%を付与するため、スノーホワイトがその2体に入るとチャージ武器に切り替わる「セブンスドワーフ：Ⅰ」をより速く、より強く撃てる。"
   },
   {
    "a": "Snow White",
    "b": "Zwei",
    "ko": "츠바이의 「관통 계산식」·「과충전 공식」은 관통 대미지를 올리고, 스노우 화이트는 버스트 무기 「세븐스 드워프 : I」가 관통 특화라 그 관통 피해를 그대로 키운다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Zwei's \"Pierce Equation\" and \"Overcharge Formula\" raise Pierce Damage, and Snow White's Burst weapon \"Seven Dwarves: I\" has Pierce, so it amplifies that Pierce damage directly.",
+   "ja": "ツバイの「貫通力計算式」・「過充電方程式」は貫通ダメージを上げ、スノーホワイトはバースト武器「セブンスドワーフ：Ⅰ」が貫通特化なので、その貫通ダメージをそのまま伸ばせる。"
   },
   {
    "a": "Miranda",
    "b": "Snow White",
    "ko": "미란다의 「파워 업!」은 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격력 40.4%·크리티컬 대미지 56.23%를 주므로, 화력형 스노우 화이트가 그 1기일 때 혼자 크게 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Miranda's \"Powering Up!\" gives the 1 ally with the highest ATK, excluding herself, 40.4% ATK and 56.23% Critical Damage, so the Attacker Snow White gets the full boost alone when she is that 1 ally.",
+   "ja": "ミランダの「パワーアップ！」は自身を除く攻撃力が最も高い味方1体に攻撃力40.4%・クリティカルダメージ56.23%を付与するため、火力型のスノーホワイトがその1体になると単独で大きく恩恵を受ける。"
   },
   {
    "a": "Marciana: Marine Study",
    "b": "Miranda",
    "ko": "미란다의 「파워 업!」은 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격력 40.4%·크리티컬 대미지 56.23%를 주므로, 화력형 마르차나 : 마린 스터디가 그 1기일 때 혼자 크게 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Miranda's \"Powering Up!\" gives the 1 ally with the highest ATK, excluding herself, 40.4% ATK and 56.23% Critical Damage, so the Attacker Marciana: Marine Study gets the full boost alone when she is that 1 ally.",
+   "ja": "ミランダの「パワーアップ！」は自身を除く攻撃力が最も高い味方1体に攻撃力40.4%・クリティカルダメージ56.23%を付与するため、火力型のマルチャーナ：マリンスタディがその1体になると単独で大きく恩恵を受ける。"
   },
   {
    "a": "Ein",
    "b": "Miranda",
    "ko": "미란다의 「파워 업!」은 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격력 40.4%·크리티컬 대미지 56.23%를 주므로, 화력형 아인이 그 1기일 때 혼자 크게 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Miranda's \"Powering Up!\" gives the 1 ally with the highest ATK, excluding herself, 40.4% ATK and 56.23% Critical Damage, so the Attacker Ein gets the full boost alone when she is that 1 ally.",
+   "ja": "ミランダの「パワーアップ！」は自身を除く攻撃力が最も高い味方1体に攻撃力40.4%・クリティカルダメージ56.23%を付与するため、火力型のアインがその1体になると単独で大きく恩恵を受ける。"
   },
   {
    "a": "Maxwell",
    "b": "Miranda",
    "ko": "미란다의 「파워 업!」은 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격력 40.4%·크리티컬 대미지 56.23%를 주므로, 화력형 맥스웰이 그 1기일 때 혼자 크게 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Miranda's \"Powering Up!\" gives the 1 ally with the highest ATK, excluding herself, 40.4% ATK and 56.23% Critical Damage, so the Attacker Maxwell gets the full boost alone when she is that 1 ally.",
+   "ja": "ミランダの「パワーアップ！」は自身を除く攻撃力が最も高い味方1体に攻撃力40.4%・クリティカルダメージ56.23%を付与するため、火力型のマクスウェルがその1体になると単独で大きく恩恵を受ける。"
   },
   {
    "a": "Helm: Aquamarine",
    "b": "Miranda",
    "ko": "미란다의 「파워 업!」은 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격력 40.4%·크리티컬 대미지 56.23%를 주므로, 화력형 헬름 : 아쿠아마린이 그 1기일 때 혼자 크게 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Miranda's \"Powering Up!\" gives the 1 ally with the highest ATK, excluding herself, 40.4% ATK and 56.23% Critical Damage, so the Attacker Helm: Aquamarine gets the full boost alone when she is that 1 ally.",
+   "ja": "ミランダの「パワーアップ！」は自身を除く攻撃力が最も高い味方1体に攻撃力40.4%・クリティカルダメージ56.23%を付与するため、火力型のヘルム：アクアマリンがその1体になると単独で大きく恩恵を受ける。"
   },
   {
    "a": "Little Mermaid",
    "b": "Privaty",
    "ko": "리틀 머메이드의 「버블 웨이브」는 거품 상태 적에게 일반 공격 50회 명중 시 기절을 걸고, 프리바티의 「LD 어설트」는 기절 상태 대상에게 마지막 탄환이 맞으면 최종 공격력 1089% 추가 대미지를 준다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Little Mermaid's \"Bubble Wave\" stuns a Bubbled enemy after 50 Normal Attack hits, and Privaty's \"LD Assault\" deals additional damage equal to 1089% of final ATK when her last bullet hits a stunned target.",
+   "ja": "リトルマーメイドの「バブルウェーブ」はバブル状態の敵に通常攻撃が50回命中するとスタンを付与し、プリバティの「LDアサルト」はスタン状態の対象に最後の弾が命中すると最終攻撃力の1089%の追加ダメージを与える。"
   },
   {
    "a": "Anis: Sparkling Summer",
    "b": "Privaty",
    "ko": "프리바티의 「EX 매거진」이 재장전 속도 51.16%를 올리고 최대 장탄 수를 줄여, 마지막 탄환 공격 때마다 발동하는 아니스 : 스파클링 서머의 「스파클링 미사일」이 더 자주 터진다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Privaty's \"Ex Magazine\" raises Reload Speed by 51.16% and reduces Max Ammo, so Anis: Sparkling Summer's \"Sparkling Missile\", which triggers on every last-bullet attack, fires more often.",
+   "ja": "プリバティの「EXマガジン」がリロード速度を51.16%上げて最大装弾数を減らすため、最後の弾の攻撃ごとに発動するアニス：スパークリングサマーの「スパークリングミサイル」がより頻繁に発動する。"
   },
   {
    "a": "Scarlet",
    "b": "Trina",
    "ko": "트리나의 「피스풀 트리」·「머덜리 포레스트」는 전격 코드 소총 아군에게 최대 체력·명중률·최대 장탄 수를 주고 가장 왼쪽이면 공격 대미지 94.15%까지 더하는데, 홍련이 전격 소총이라 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Trina's \"Peaceful Tree\" and \"Mother Forest\" give Electric AR allies Max HP, Hit Rate, and Max Ammo, plus up to 94.15% Attack Damage for the leftmost one, and Scarlet receives this as an Electric AR.",
+   "ja": "トリナの「ピースフルツリー」・「マザリーフォレスト」は電撃コードのAR装備の味方に最大HP・命中率・最大装弾数を付与し、最も左にいれば攻撃ダメージ94.15%まで加えるが、紅蓮は電撃コードのARなのでこれを受けられる。"
   },
   {
    "a": "Alice",
    "b": "Grave",
    "ko": "그레이브의 「방열」·「라이터즈」는 아군 관통 대미지를 올리고, 앨리스는 체력 80% 이상일 때 「건강한 당근」으로 관통 특화가 되어 그 관통 피해를 키운다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Grave's \"Heat Emission\" and \"Plot Spoiler\" raise allies' Pierce Damage, and Alice gains Pierce through \"Healthy Carrot\" while at 80% HP or more, amplifying that Pierce damage.",
+   "ja": "グレイブの「ヒートラジエーション」・「ライターズ・スポイラー」は味方の貫通ダメージを上げ、アリスはHP80%以上のとき「健康なニンジン」で貫通特化になるため、その貫通ダメージを伸ばせる。"
   },
   {
    "a": "Alice",
    "b": "Rei Ayanami",
    "ko": "아야나미 레이의 「공격 지원」·「섬멸용 고폭탄」은 작열 코드 아군에게만 공격력·공격 대미지 48.02%·보호막을 주는데, 앨리스가 작열 코드라 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Rei Ayanami's \"Attack Support\" and \"Annihilation: High Explosives\" give ATK, 48.02% Attack Damage, and a shield only to Fire allies, and Alice receives them as a Fire Nikke.",
+   "ja": "綾波レイの「攻撃支援」・「殲滅用榴弾」は灼熱コードの味方にのみ攻撃力・攻撃ダメージ48.02%・バリアを付与するが、アリスは灼熱コードなのでこれを受けられる。"
   },
   {
    "a": "Ade: Agent Bunny",
    "b": "Alice",
    "ko": "에이드 : 에이전트 바니의 「요원의 움직임」·「최첨단 요원 장비」는 관통 대미지를 올리고, 앨리스는 체력 80% 이상일 때 「건강한 당근」으로 관통 특화가 되어 그 관통 피해를 키운다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Ade: Agent Bunny's \"Agent's Movement\" and \"Cutting-Edge Agent Equipment\" raise Pierce Damage, and Alice gains Pierce through \"Healthy Carrot\" while at 80% HP or more, amplifying that Pierce damage.",
+   "ja": "エード：エージェントバニーの「エージェントの所作」・「エージェントの隠し道具」は貫通ダメージを上げ、アリスはHP80%以上のとき「健康なニンジン」で貫通特化になるため、その貫通ダメージを伸ばせる。"
   },
   {
    "a": "Helm: Aquamarine",
    "b": "Maxwell",
    "ko": "맥스웰의 「스트레이트 샷」은 공격력이 가장 높은 아군 2기에게 공격력 43.1%를 주므로, 화력형 헬름 : 아쿠아마린이 그 2기에 들 때 함께 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Maxwell's \"Straight Shot\" gives the 2 allies with the highest ATK 43.1% ATK, so the Attacker Helm: Aquamarine receives it when she is one of those 2.",
+   "ja": "マクスウェルの「ストレートショット」は攻撃力が最も高い味方2体に攻撃力43.1%を付与するため、火力型のヘルム：アクアマリンがその2体に入ると一緒に恩恵を受ける。"
   },
   {
    "a": "Drake",
    "b": "Soda: Twinkling Bunny",
    "ko": "소다 : 트윙클링 바니의 「럭키 골든 칩」은 풀 버스트 중 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격 대미지 10.51%를 주므로, 화력형 드레이크가 그 1기일 때 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Soda: Twinkling Bunny's \"Lucky Golden Chip\" gives 10.51% Attack Damage during Full Burst to the 1 ally with the highest ATK, excluding herself, so the Attacker Drake receives it when she is that 1 ally.",
+   "ja": "ソーダ：トゥインクルバニーの「ラッキーゴールデンチップ」はフルバースト中、自身を除く攻撃力が最も高い味方1体に攻撃ダメージ10.51%を付与するため、火力型のドレイクがその1体になると恩恵を受ける。"
   },
   {
    "a": "Drake",
    "b": "Tove",
    "ko": "토브의 「개조 성공」·「급조품의 기적」은 샷건 소지 아군에게만 공격 속도 42.24%·공격력 24.21%를 주는데, 드레이크가 샷건이라 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" and \"Miracle of Makeshifts\" give 42.24% Attack Speed and 24.21% ATK only to SG allies, and Drake receives them as an SG user.",
+   "ja": "トーブの「改造成功」・「その場しのぎの奇跡」はSG装備の味方にのみ攻撃速度42.24%・攻撃力24.21%を付与するが、ドレイクはSGなのでこれを受けられる。"
   },
   {
    "a": "Arcana: Fortune Mate",
    "b": "Drake",
    "ko": "아르카나 : 포츈 메이트의 「쌓여가는 사진첩」·「기억과 추억」은 샷건 소지 아군에게 공격력과 공격 대미지 55%를 주는데, 드레이크가 샷건이라 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Arcana: Fortune Mate's \"Keepsake Album\" and \"Memories and Moments\" give SG allies ATK and 55% Attack Damage, and Drake receives them as an SG user.",
+   "ja": "アルカナ：フォーチュンメイトの「重ねるアルバム」・「記憶と思い出」はSG装備の味方に攻撃力と攻撃ダメージ55%を付与するが、ドレイクはSGなのでこれを受けられる。"
   },
   {
    "a": "Elegg: Boom and Shock",
    "b": "Helm",
    "ko": "일레그 : 붐 앤 쇼크의 「헬로 고스트」는 유령 개수에 따라 수냉 코드 아군에게 공격력 16.2%와 우월 코드 공격 시 대미지 35%를 주는데, 헬름이 수냉 코드라 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Elegg: Boom and Shock's \"Hello Ghost\" gives Water allies 16.2% ATK and 35% damage on Elemental Advantage attacks depending on the number of ghosts, and Helm receives it as a Water Nikke.",
+   "ja": "エレグ：ブーム・アンド・ショックの「ハローゴースト」はゴーストの数に応じて水冷コードの味方に攻撃力16.2%と優越コード攻撃時のダメージ35%を付与するが、ヘルムは水冷コードなのでこれを受けられる。"
   },
   {
    "a": "Laplace",
    "b": "Takina Inoue",
    "ko": "이노우에 타키나의 「전장 통제」는 아군 방어력 무시 대미지를 140.49% 올리고, 라플라스는 히어로 비전 최대 중첩일 때 「라플라스 버스터」로 방어력 무시 대미지를 더한다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Takina Inoue's \"Battlefield Control\" raises allies' True Damage by 140.49%, and Laplace adds True Damage with \"Laplace Buster\" at max Hero Vision stacks.",
+   "ja": "井ノ上たきなの「戦場支配」は味方の防御無視ダメージを140.49%上げ、ラプラスはヒーロービジョンが最大スタックのとき「ラプラスバスター」で防御無視ダメージを与える。"
   },
   {
    "a": "Ada Wong",
    "b": "Laplace",
    "ko": "에이다 웡의 「은밀한 지원」은 직전에 버스트 스킬을 쓴 Step 3 아군에게 공격력 60%·방어력 무시 대미지 50%를 주므로, 라플라스가 3버스트를 쓴 차례일 때 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Ada Wong's \"Covert Support\" gives 60% ATK and 50% True Damage to the Burst 3 ally who just used a Burst Skill, so Laplace receives it on the rotation where she uses her Burst 3.",
+   "ja": "エイダ・ウォンの「隠密支援」は直前にバーストスキルを使用したバースト3の味方に攻撃力60%・防御無視ダメージ50%を付与するため、ラプラスがバースト3を使った番にこれを受けられる。"
   },
   {
    "a": "Modernia",
    "b": "Rei Ayanami",
    "ko": "아야나미 레이의 「공격 지원」·「섬멸용 고폭탄」은 작열 코드 아군에게만 공격력·공격 대미지 48.02%·보호막을 주는데, 모더니아가 작열 코드라 이를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Rei Ayanami's \"Attack Support\" and \"Annihilation: High Explosives\" give ATK, 48.02% Attack Damage, and a shield only to Fire allies, and Modernia receives them as a Fire Nikke.",
+   "ja": "綾波レイの「攻撃支援」・「殲滅用榴弾」は灼熱コードの味方にのみ攻撃力・攻撃ダメージ48.02%・バリアを付与するが、モダニアは灼熱コードなのでこれを受けられる。"
   },
   {
    "a": "Arcana",
    "b": "Isabel",
    "ko": "아르카나의 「깨어나는 운명」·「순환하는 운명」은 직전에 버스트를 쓴 Step 3 전격 코드 아군에게 공격 대미지 180%·공격력 180%를 주므로, 전격 3버스트 이사벨이 버스트를 쓴 차례일 때 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Arcana's \"Awakened Destiny\" and \"Cycle of Destiny\" give 180% Attack Damage and 180% ATK to the Burst 3 Electric ally who just used a Burst, so the Electric Burst 3 Isabel receives them on the rotation where she bursts.",
+   "ja": "アルカナの「目覚める運命」・「巡る運命」は直前にバーストを使用したバースト3の電撃コードの味方に攻撃ダメージ180%・攻撃力180%を付与するため、電撃のバースト3であるイサベルがバーストを使った番に恩恵を受ける。"
   },
   {
    "a": "Ade: Agent Bunny",
    "b": "Mana",
    "ko": "마나의 「매터 시그마」는 풀 버스트 시작 시 기본 차지 시간이 가장 긴 아군 1기의 차지 시간을 0.18초 줄이므로, 스나이퍼 에이드 : 에이전트 바니가 그 1기일 때 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Mana's \"Metal σ\" reduces the Charge Time of the 1 ally with the longest base Charge Time by 0.18 seconds at the start of Full Burst, so the SR Ade: Agent Bunny receives it when she is that 1 ally.",
+   "ja": "マナの「マターシグマ」はフルバースト開始時、基本チャージ時間が最も長い味方1体のチャージ時間を0.18秒短縮するため、SRのエード：エージェントバニーがその1体になると恩恵を受ける。"
   },
   {
    "a": "Cinderella",
    "b": "Mana",
    "ko": "마나의 「매터 시그마」는 풀 버스트 시작 시 기본 차지 시간이 가장 긴 아군 1기의 차지 시간을 0.18초 줄이므로, 런처 신데렐라가 그 1기일 때 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Mana's \"Metal σ\" reduces the Charge Time of the 1 ally with the longest base Charge Time by 0.18 seconds at the start of Full Burst, so the RL Cinderella receives it when she is that 1 ally.",
+   "ja": "マナの「マターシグマ」はフルバースト開始時、基本チャージ時間が最も長い味方1体のチャージ時間を0.18秒短縮するため、RLのシンデレラがその1体になると恩恵を受ける。"
   },
   {
    "a": "Liberalio",
    "b": "Scarlet: Black Shadow",
    "ko": "리버렐리오의 「차분한 수심」은 풀 버스트 시작 때 기본 버스트 3단계 아군 중 최종 공격력이 가장 낮은 1기에게 차지 속도를 12.74% 올려 준다. 3버스트 RL인 홍련 : 흑영이 그 대상일 때 풀 차지 공격 횟수를 더 빨리 채운다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Liberalio's \"Calm Depths\" raises Charge Speed by 12.74% at the start of Full Burst for the 1 base Burst 3 ally with the lowest final ATK. When the Burst 3 RL Scarlet: Black Shadow is that target, she builds up her Full Charge attack count faster.",
+   "ja": "リバーレリオの「静かな深淵」はフルバースト開始時、基本バースト3の味方のうち最終攻撃力が最も低い1体のチャージ速度を12.74%上げる。バースト3のRLである紅蓮：ブラックシャドウがその対象になると、フルチャージ攻撃の回数をより早く稼げる。"
   },
   {
    "a": "Liberalio",
    "b": "Neon: Vision Eye",
    "ko": "리버렐리오의 「차분한 수심」은 기본 버스트 3단계 아군 중 최종 공격력이 가장 낮은 1기에게 차지 속도를 12.74% 올린다. 3버스트 RL인 네온 : 비전 아이가 그 대상일 때 풀 차지 공격이 빨라진다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Liberalio's \"Calm Depths\" raises Charge Speed by 12.74% for the 1 base Burst 3 ally with the lowest final ATK. When the Burst 3 RL Neon: Vision Eye is that target, her Full Charge attacks come faster.",
+   "ja": "リバーレリオの「静かな深淵」は基本バースト3の味方のうち最終攻撃力が最も低い1体のチャージ速度を12.74%上げる。バースト3のRLであるネオン：ビジョン・アイがその対象になると、フルチャージ攻撃が速くなる。"
   },
   {
    "a": "Bready",
    "b": "Liberalio",
    "ko": "리버렐리오의 「차분한 수심」은 기본 버스트 3단계 아군 중 최종 공격력이 가장 낮은 1기에게 차지 속도를 12.74% 올린다. 3버스트 SR인 브래디가 그 대상일 때 「론리 구르메」로 깎인 차지 속도를 메워 준다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Liberalio's \"Calm Depths\" raises Charge Speed by 12.74% for the 1 base Burst 3 ally with the lowest final ATK. When the Burst 3 SR Bready is that target, it offsets the Charge Speed she loses from \"Lonely Gourmet\".",
+   "ja": "リバーレリオの「静かな深淵」は基本バースト3の味方のうち最終攻撃力が最も低い1体のチャージ速度を12.74%上げる。バースト3のSRであるブレッディがその対象になると、「ロンリーグルメ」で下がったチャージ速度を補ってくれる。"
   },
   {
    "a": "Cinderella: Crystal Wave",
    "b": "Rosanna",
    "ko": "신데렐라 : 크리스탈 웨이브의 「뷰티-풀」은 아군이 쓴 탄이 200발 모일 때마다 아군 전체 버스트 게이지를 12% 채운다. MG로 탄을 많이 쏘는 로산나가 그 탄 수를 빠르게 쌓는다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Cinderella: Crystal Wave's \"Beauty-Full\" fills the whole team's Burst Gauge by 12% every time allies fire 200 rounds in total. Rosanna, who fires many rounds with her MG, racks up that count quickly.",
+   "ja": "シンデレラ：クリスタルウェーブの「ビューティー・フル」は味方が消費した弾が200発たまるごとに味方全体のバーストゲージを12%チャージする。MGで弾を大量に撃つロザンナがその弾数を素早く稼ぐ。"
   },
   {
    "a": "Little Mermaid",
    "b": "Rosanna",
    "ko": "리틀 머메이드의 「버블 오더」·「버블 웨이브」는 아군이 쓴 탄이 400발·500발 모일 때마다 버스트 게이지 충전과 거품 난사를 일으킨다. MG로 탄을 많이 쏘는 로산나가 그 탄 수를 빠르게 쌓는다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Little Mermaid's \"Bubble Order\" and \"Bubble Wave\" trigger Burst Gauge charging and a bubble barrage every time allies fire 400 and 500 rounds in total. Rosanna, who fires many rounds with her MG, racks up that count quickly.",
+   "ja": "リトルマーメイドの「バブルオーダー」・「バブルウェーブ」は味方が消費した弾が400発・500発たまるごとにバーストゲージのチャージとバブルの乱射を起こす。MGで弾を大量に撃つロザンナがその弾数を素早く稼ぐ。"
   },
   {
    "a": "Anis: Sparkling Summer",
    "b": "Rosanna",
    "ko": "아니스 : 스파클링 서머의 「스파클링 부스트」는 풀 버스트 시작 때 전격 코드 아군에게만 공격력과 재장전 속도 49.28%를 올려 준다. 전격 코드인 로산나가 이 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Anis: Sparkling Summer's \"Sparkling Boost\" raises ATK and 49.28% Reload Speed only for Electric allies at the start of Full Burst. Rosanna, an Electric Nikke, receives this buff.",
+   "ja": "アニス：スパークリングサマーの「スパークリングブースト」はフルバースト開始時、電撃コードの味方にのみ攻撃力とリロード速度49.28%を上げる。電撃コードのロザンナがこのバフを受けられる。"
   },
   {
    "a": "Maiden: Ice Rose",
    "b": "Rosanna",
    "ko": "메이든 : 아이스 로즈의 「블레스 유」는 MP 충전 때 자신을 제외한 전격 코드 아군에게 우월 코드 공격 대미지 40.9%와 공격력을 올린다. 전격 코드인 로산나가 그 대상이다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Maiden: Ice Rose's \"Blessings Upon You\" raises 40.9% Elemental Advantage Attack Damage and ATK for Electric allies other than herself when MP is charged. Rosanna, an Electric Nikke, is one of its targets.",
+   "ja": "メイデン：アイスローズの「ブレス・ユー」はMPチャージ時、自身を除く電撃コードの味方に優越コード攻撃ダメージ40.9%と攻撃力を上げる。電撃コードのロザンナがその対象になる。"
   },
   {
    "a": "Ade: Agent Bunny",
    "b": "Red Hood",
    "ko": "에이드 : 에이전트 바니의 「요원의 움직임」·「최첨단 요원 장비」는 아군 전체 관통 대미지를 올린다. 「와일드 투스」로 관통 특화가 걸린 레드 후드가 이 관통 대미지 증가를 그대로 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Ade: Agent Bunny's \"Agent's Movement\" and \"Cutting-Edge Agent Equipment\" raise Pierce Damage for all allies. Red Hood, who gains Pierce from \"Wild Tooth\", receives this Pierce Damage increase in full.",
+   "ja": "エード：エージェントバニーの「エージェントの所作」・「エージェントの隠し道具」は味方全体の貫通ダメージを上げる。「ワイルドトゥース」で貫通特化になったレッドフードが、この貫通ダメージ増加をそのまま受けられる。"
   },
   {
    "a": "Prika",
    "b": "Red Hood",
    "ko": "프리카의 「무대, 시작할게.」는 관통 대미지를, 「최고의 무대를 보여줄게!」는 차지 대미지 25%를 올린다. 관통 특화를 지닌 SR 차지 공격수인 레드 후드가 두 효과를 모두 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Prika's \"Let’s Get the Show Started!\" raises Pierce Damage, and \"Get Ready for an Amazing Show!\" raises Charge Damage by 25%. Red Hood, an SR Charge attacker with Pierce, receives both effects.",
+   "ja": "プリカの「ステージを始めよう」は貫通ダメージを、「最高のステージを見せてやる！」はチャージダメージ25%を上げる。貫通特化を持つSRのチャージアタッカーであるレッドフードが両方の効果を受けられる。"
   },
   {
    "a": "Mint",
    "b": "Red Hood",
    "ko": "민트의 「멋진 무대였어요!」는 보컬 상태일 때 버스트 3단계 진입 시 아군 전체 관통 대미지를 32.72% 올린다. 「와일드 투스」로 관통 특화가 걸린 레드 후드가 이 효과를 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Mint's \"Fantastic Performance!\" raises all allies' Pierce Damage by 32.72% when entering Burst Stage 3 while she is in the Vocal state. Red Hood, who gains Pierce from \"Wild Tooth\", receives this effect.",
+   "ja": "ミントの「素敵なステージでした！」はボーカル状態のとき、バースト3段階突入時に味方全体の貫通ダメージを32.72%上げる。「ワイルドトゥース」で貫通特化になったレッドフードがこの効果を受けられる。"
   },
   {
    "a": "Blanc",
    "b": "Noir",
    "ko": "블랑의 「래빗 트윈즈 W」와 누아르의 「피날레」는 동일 스쿼드 아군이 있을 때 추가 효과가 붙는다. 「래빗 트윈즈」를 나눠 가진 둘이 함께 있으면 블랑의 버스트 재사용 시간 감소와 누아르의 명중률·저지 부위 공격 대미지 증가가 켜진다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Blanc's \"Rabbit Twins W\" and Noir's \"Finale\" gain extra effects when a squadmate is present. With both holders of \"Rabbit Twins\" together, Blanc's Burst cooldown reduction and Noir's Hit Rate and Parts Attack Damage boost are activated.",
+   "ja": "ブランの「ラビットツインズW」とノワールの「フィナーレ」は同じ部隊の味方がいると追加効果が付く。「ラビットツインズ」を分け持つ2人が一緒にいると、ブランのバーストクールタイム短縮とノワールの命中率・阻止部位への攻撃ダメージ増加が有効になる。"
   },
   {
    "a": "Dorothy: Serendipity",
    "b": "Noir",
    "ko": "누아르의 「피날레」는 샷건 소지 아군에게 명중률 13.93%와 저지 부위 공격 대미지 23.23%를 올린다. SG인 도로시 : 세렌디피티가 이 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Noir's \"Finale\" raises Hit Rate by 13.93% and Parts Attack Damage by 23.23% for SG allies. The SG Dorothy: Serendipity receives this buff.",
+   "ja": "ノワールの「フィナーレ」はSG装備の味方の命中率を13.93%、阻止部位への攻撃ダメージを23.23%上げる。SGのドロシー：セレンディピティがこのバフを受けられる。"
   },
   {
    "a": "Noir",
    "b": "Tove",
    "ko": "토브의 「개조 성공」·「급조품의 기적」은 샷건 소지 아군에게 공격 속도 42.24%와 공격력 24.21%를 따로 올린다. SG인 누아르가 이 샷건 전용 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" and \"Miracle of Makeshifts\" separately raise Attack Speed by 42.24% and ATK by 24.21% for SG allies. The SG Noir receives these SG-only buffs.",
+   "ja": "トーブの「改造成功」・「その場しのぎの奇跡」はSG装備の味方の攻撃速度42.24%と攻撃力24.21%をそれぞれ上げる。SGのノワールがこのSG専用バフを受けられる。"
   },
   {
    "a": "Maiden: Ice Rose",
    "b": "Rouge",
    "ko": "메이든 : 아이스 로즈의 「블레스 유」는 자신을 제외한 전격 코드 아군에게 우월 코드 공격 대미지와 공격력을 올리는데, 전격 코드인 루주가 그 대상이다. 루주가 아군 최대 체력을 올리면 최대 체력 비례로 공격력을 얻는 메이든 : 아이스 로즈의 화력도 커진다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Maiden: Ice Rose's \"Blessings Upon You\" raises Elemental Advantage Attack Damage and ATK for Electric allies other than herself, and Rouge, an Electric Nikke, is one of its targets. When Rouge raises allies' Max HP, Maiden: Ice Rose, who gains ATK in proportion to Max HP, also hits harder.",
+   "ja": "メイデン：アイスローズの「ブレス・ユー」は自身を除く電撃コードの味方の優越コード攻撃ダメージと攻撃力を上げ、電撃コードのルージュがその対象になる。ルージュが味方の最大HPを上げると、最大HPに比例して攻撃力を得るメイデン：アイスローズの火力も大きくなる。"
   },
   {
    "a": "Cinderella",
    "b": "Rouge",
    "ko": "루주의 「카드 스로우」·「더 게임 마스터」는 아군 최대 체력을 올린다. 신데렐라는 「무결한 유리」로 최종 최대 체력에 비례해 공격력을 얻고 디코이도 최대 체력 비례라, 이 증가가 화력과 생존으로 이어진다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Rouge's \"Card Throw\" and \"Game Master\" raise allies' Max HP. Cinderella gains ATK in proportion to her final Max HP through \"Flawless Glass\", and her decoy also scales with Max HP, so this increase translates into both damage and survivability.",
+   "ja": "ルージュの「カードスロー」・「ザ・ゲームマスター」は味方の最大HPを上げる。シンデレラは「汚れなきガラス」で最終最大HPに比例して攻撃力を得て、デコイも最大HP比例なので、この増加が火力と生存力につながる。"
   },
   {
    "a": "Anis: Sparkling Summer",
    "b": "Maiden: Ice Rose",
    "ko": "아니스 : 스파클링 서머의 「스파클링 부스트」는 전격 코드 아군 공격력·재장전 속도를, 메이든 : 아이스 로즈의 「블레스 유」는 자신 제외 전격 코드 아군 우월 코드 공격 대미지를 올린다. 둘 다 전격 코드라 서로의 버프를 주고받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Anis: Sparkling Summer's \"Sparkling Boost\" raises Electric allies' ATK and Reload Speed, and Maiden: Ice Rose's \"Blessings Upon You\" raises Elemental Advantage Attack Damage for Electric allies other than herself. Both are Electric, so they exchange buffs with each other.",
+   "ja": "アニス：スパークリングサマーの「スパークリングブースト」は電撃コードの味方の攻撃力・リロード速度を、メイデン：アイスローズの「ブレス・ユー」は自身を除く電撃コードの味方の優越コード攻撃ダメージを上げる。どちらも電撃コードなので互いのバフを受け合える。"
   },
   {
    "a": "Anis: Sparkling Summer",
    "b": "Rouge",
    "ko": "아니스 : 스파클링 서머의 「스파클링 부스트」는 풀 버스트 시작 때 전격 코드 아군에게만 공격력과 재장전 속도를 올려 준다. 전격 코드인 루주가 이 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Anis: Sparkling Summer's \"Sparkling Boost\" raises ATK and Reload Speed only for Electric allies at the start of Full Burst. Rouge, an Electric Nikke, receives this buff.",
+   "ja": "アニス：スパークリングサマーの「スパークリングブースト」はフルバースト開始時、電撃コードの味方にのみ攻撃力とリロード速度を上げる。電撃コードのルージュがこのバフを受けられる。"
   },
   {
    "a": "Crown",
    "b": "EVE",
    "ko": "크라운의 「원 포 올」은 풀 버스트 직전에 버스트 스킬을 쓴 아군에게 공격력 64.51%를 올려 준다. 3버스트인 이브가 버스트를 쓰고 풀 버스트에 들어가면 이 공격력 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Crown's \"One for All\" raises ATK by 64.51% for the ally who used a Burst Skill right before Full Burst. When the Burst 3 EVE bursts and the team enters Full Burst, she receives this ATK buff.",
+   "ja": "クラウンの「ワンフォーオール」はフルバースト直前にバーストスキルを使用した味方の攻撃力を64.51%上げる。バースト3のイヴがバーストを使ってフルバーストに入ると、この攻撃力バフを受けられる。"
   },
   {
    "a": "Asuka: WILLE",
    "b": "Crown",
    "ko": "크라운의 「원 포 올」은 풀 버스트 직전에 버스트 스킬을 쓴 아군에게 공격력 64.51%를 올려 준다. 3버스트인 시키나미 아스카 랑그레이 : WILLE가 버스트를 쓰면 이 공격력 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Crown's \"One for All\" raises ATK by 64.51% for the ally who used a Burst Skill right before Full Burst. When the Burst 3 Asuka: WILLE uses her Burst, she receives this ATK buff.",
+   "ja": "クラウンの「ワンフォーオール」はフルバースト直前にバーストスキルを使用した味方の攻撃力を64.51%上げる。バースト3の式波・アスカ・ラングレー：WILLEがバーストを使うと、この攻撃力バフを受けられる。"
   },
   {
    "a": "Crown",
    "b": "Rei Ayanami (Tentative Name)",
    "ko": "크라운의 「원 포 올」은 직전에 버스트를 쓴 아군에게 공격력을 올려 3버스트인 아야나미 레이 (가칭)가 받는다. 반대로 레이의 「정비 및 보급」은 직전에 버스트를 쓴 머신건 아군에게 예열 속도 100%를 올려, 크라운이 버스트를 썼을 때 MG인 크라운이 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Crown's \"One for All\" raises ATK for the ally who just used a Burst, so the Burst 3 Rei Ayanami (Tentative Name) receives it. In turn, Rei's \"Maintenance and Resupply\" raises Wind-up Speed by 100% for the MG ally who just used a Burst, so Crown, an MG, receives it when she bursts.",
+   "ja": "クラウンの「ワンフォーオール」は直前にバーストを使用した味方の攻撃力を上げ、バースト3のアヤナミレイ(仮称)がこれを受ける。逆にレイの「整備補給」は直前にバーストを使用したMG装備の味方のウォームアップ速度を100%上げるため、クラウンがバーストを使ったときMGのクラウンがこれを受ける。"
   },
   {
    "a": "Crown",
    "b": "Naga",
    "ko": "크라운의 「라스트 킹덤」이 아군 전체에 보호막을 걸면, 나가의 「우정의 가드」가 보호막 적용 시 코어 대미지 85.17%를 켜고 「친구들과 함께라면!」의 추가 공격력 31.02%도 보호막 상태에서 열린다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When Crown's \"Last Kingdom\" shields the whole team, Naga's \"Guardian of Friendship\" activates 85.17% Core Damage upon shield application, and the 31.02% extra ATK from \"As Long As We're With Friends\" also unlocks while shielded.",
+   "ja": "クラウンの「ラストキングダム」が味方全体にバリアを張ると、ナガの「友情のガード」がバリア適用時にコアダメージ85.17%を有効にし、「友だちと一緒なら！」の追加攻撃力31.02%もバリア状態で解放される。"
   },
   {
    "a": "Crown",
    "b": "Elegg: Boom and Shock",
    "ko": "크라운의 「원 포 올」은 풀 버스트 직전에 버스트 스킬을 쓴 아군에게 공격력 64.51%를 올려 준다. 3버스트인 일레그 : 붐 앤 쇼크가 버스트를 쓰면 이 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Crown's \"One for All\" raises ATK by 64.51% for the ally who used a Burst Skill right before Full Burst. When the Burst 3 Elegg: Boom and Shock uses her Burst, she receives this buff.",
+   "ja": "クラウンの「ワンフォーオール」はフルバースト直前にバーストスキルを使用した味方の攻撃力を64.51%上げる。バースト3のエレグ：ブーム・アンド・ショックがバーストを使うと、このバフを受けられる。"
   },
   {
    "a": "Naga",
    "b": "Rapi: Red Hood",
    "ko": "나가의 「우정의 서포트」는 공격력이 가장 높은 아군 2기에게 코어 대미지 40.07%를 준다. 화력형인 라피 : 레드 후드가 공격력 상위 2기에 들 때 이 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Naga's \"Support of Friendship\" gives 40.07% Core Damage to the 2 allies with the highest ATK. The Attacker Rapi: Red Hood receives this buff when she is among the top 2 in ATK.",
+   "ja": "ナガの「友情のサポート」は攻撃力が最も高い味方2体にコアダメージ40.07%を付与する。火力型のラピ：レッドフードが攻撃力上位2体に入ると、このバフを受けられる。"
   },
   {
    "a": "Ein",
    "b": "Takina Inoue",
    "ko": "이노우에 타키나의 「전장 통제」는 아군 전체 방어력 무시 대미지를 140.49% 올린다. 니어 페더 공격과 「페더 올레인지」가 방어력 무시 대미지인 아인이 이 증가를 그대로 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Takina Inoue's \"Battlefield Control\" raises True Damage for all allies by 140.49%. Ein, whose Near Feather attacks and \"Feather-All Range\" deal True Damage, receives this increase in full.",
+   "ja": "井ノ上たきなの「戦場支配」は味方全体の防御無視ダメージを140.49%上げる。ニアフェザー攻撃と「フェザーオールレンジ」が防御無視ダメージであるアインが、この増加をそのまま受けられる。"
   },
   {
    "a": "Ada Wong",
    "b": "Ein",
    "ko": "에이다 웡의 「은밀한 지원」은 직전에 버스트를 쓴 기본 버스트 3단계 아군에게 공격력 60%와 방어력 무시 대미지 50%를 준다. 3버스트이고 방어력 무시 대미지를 내는 아인이 조건과 효과 종류를 모두 맞춘다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Ada Wong's \"Covert Support\" gives 60% ATK and 50% True Damage to the base Burst 3 ally who just used a Burst. Ein, a Burst 3 who deals True Damage, matches both the condition and the effect type.",
+   "ja": "エイダ・ウォンの「隠密支援」は直前にバーストを使用した基本バースト3の味方に攻撃力60%と防御無視ダメージ50%を付与する。バースト3で防御無視ダメージを出すアインは、条件と効果の種類の両方に合致する。"
   },
   {
    "a": "Snow White: Heavy Arms",
    "b": "Zwei",
    "ko": "츠바이의 「관통 계산식」·「과충전 공식」은 아군 전체 관통 대미지를 올린다. 풀 차지 때 「어나더 화이트」로 관통 특화가 걸리는 스노우 화이트 : 헤비암즈가 이 증가를 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Zwei's \"Pierce Equation\" and \"Overcharge Formula\" raise Pierce Damage for all allies. Snow White: Heavy Arms, who gains Pierce from \"Shades of White\" on Full Charge, receives this increase.",
+   "ja": "ツバイの「貫通力計算式」・「過充電方程式」は味方全体の貫通ダメージを上げる。フルチャージ時に「アナザーホワイト」で貫通特化になるスノーホワイト：ヘビーアームズがこの増加を受けられる。"
   },
   {
    "a": "Arcana",
    "b": "Cinderella",
    "ko": "아르카나는 운명의 수레바퀴 카드 상태일 때 직전에 버스트를 쓴 기본 버스트 3단계 전격 코드 아군에게 공격 대미지 180%와 공격력 180%를 준다. 3버스트 전격 코드인 신데렐라가 그 대상이다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "While in the Wheel of Fortune card state, Arcana gives 180% Attack Damage and 180% ATK to the base Burst 3 Electric ally who just used a Burst. Cinderella, a Burst 3 Electric Nikke, is that target.",
+   "ja": "アルカナは運命の輪カード状態のとき、直前にバーストを使用した基本バースト3の電撃コードの味方に攻撃ダメージ180%と攻撃力180%を付与する。バースト3の電撃コードであるシンデレラがその対象になる。"
   },
   {
    "a": "Privaty: Unkind Maid",
    "b": "Tove",
    "ko": "토브의 「개조 성공」·「급조품의 기적」은 샷건 소지 아군에게 공격 속도 42.24%와 공격력 24.21%를 올린다. SG인 프리바티 : 언카인드 메이드가 이 샷건 전용 버프를 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" and \"Miracle of Makeshifts\" raise Attack Speed by 42.24% and ATK by 24.21% for SG allies. The SG Privaty: Unkind Maid receives these SG-only buffs.",
+   "ja": "トーブの「改造成功」・「その場しのぎの奇跡」はSG装備の味方の攻撃速度42.24%と攻撃力24.21%を上げる。SGのプリバティ：アンカインド・メイドがこのSG専用バフを受けられる。"
   },
   {
    "a": "Soda: Twinkling Bunny",
    "b": "Tove",
    "ko": "토브의 「개조 성공」·「급조품의 기적」은 샷건 소지 아군에게 공격 속도 42.24%▲, 시전자 기준 공격력 24.21%▲를 더 준다. 소다 : 트윙클링 바니가 샷건이라 둘 다 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" and \"Miracle of Makeshifts\" additionally give SG allies 42.24% Attack Speed up and 24.21% of caster's ATK up. Soda: Twinkling Bunny is an SG user, so she receives both.",
+   "ja": "トーブの「改造成功」・「その場しのぎの奇跡」はSG装備の味方に攻撃速度42.24%▲、使用者基準の攻撃力24.21%▲を追加で付与する。ソーダ：トゥインクルバニーはSGなので両方を受けられる。"
   },
   {
    "a": "Arcana: Fortune Mate",
    "b": "Tove",
    "ko": "토브의 「개조 성공」·「급조품의 기적」은 샷건 소지 아군에게 공격 속도 42.24%▲, 시전자 기준 공격력 24.21%▲를 더 준다. 아르카나 : 포츈 메이트가 샷건이라 둘 다 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" and \"Miracle of Makeshifts\" additionally give SG allies 42.24% Attack Speed up and 24.21% of caster's ATK up. Arcana: Fortune Mate is an SG user, so she receives both.",
+   "ja": "トーブの「改造成功」・「その場しのぎの奇跡」はSG装備の味方に攻撃速度42.24%▲、使用者基準の攻撃力24.21%▲を追加で付与する。アルカナ：フォーチュンメイトはSGなので両方を受けられる。"
   },
   {
    "a": "Dorothy: Serendipity",
    "b": "Tove",
    "ko": "토브의 「개조 성공」·「급조품의 기적」은 샷건 소지 아군에게 공격 속도 42.24%▲, 시전자 기준 공격력 24.21%▲를 더 준다. 도로시 : 세렌디피티가 샷건이라 둘 다 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" and \"Miracle of Makeshifts\" additionally give SG allies 42.24% Attack Speed up and 24.21% of caster's ATK up. Dorothy: Serendipity is an SG user, so she receives both.",
+   "ja": "トーブの「改造成功」・「その場しのぎの奇跡」はSG装備の味方に攻撃速度42.24%▲、使用者基準の攻撃力24.21%▲を追加で付与する。ドロシー：セレンディピティはSGなので両方を受けられる。"
   },
   {
    "a": "Elegg: Boom and Shock",
    "b": "Ludmilla: Winter Owner",
    "ko": "일레그 : 붐 앤 쇼크의 「헬로 고스트」는 수냉 코드 아군에게 유령 수에 따라 시전자 기준 공격력 16.2%▲, 우월 코드 공격 시 대미지 35%▲를 준다. 루드밀라 : 윈터 오너가 수냉 코드라 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Elegg: Boom and Shock's \"Hello Ghost\" gives Water allies 16.2% of caster's ATK up and 35% damage up on Elemental Advantage attacks, depending on the number of ghosts. Ludmilla: Winter Owner is a Water Nikke, so she receives it.",
+   "ja": "エレグ：ブーム・アンド・ショックの「ハローゴースト」は水冷コードの味方に、ゴーストの数に応じて使用者基準の攻撃力16.2%▲、優越コード攻撃時のダメージ35%▲を付与する。ルドミラ：ウィンターオーナーは水冷コードなのでこれを受けられる。"
   },
   {
    "a": "Crown",
    "b": "Ludmilla: Winter Owner",
    "ko": "크라운의 「원 포 올」은 풀 버스트 직전에 버스트 스킬을 쓴 아군에게 시전자 기준 공격력 64.51%▲를 준다. 3버스트인 루드밀라 : 윈터 오너가 그 자리를 맡아 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Crown's \"One for All\" gives 64.51% of caster's ATK up to the ally who used a Burst Skill right before Full Burst. The Burst 3 Ludmilla: Winter Owner fills that slot and receives it.",
+   "ja": "クラウンの「ワンフォーオール」はフルバースト直前にバーストスキルを使用した味方に使用者基準の攻撃力64.51%▲を付与する。バースト3のルドミラ：ウィンターオーナーがその役を担って受けられる。"
   },
   {
    "a": "Ludmilla: Winter Owner",
    "b": "Nayuta",
    "ko": "나유타의 「위선」이 거는 코어 대미지 25.15%▲는 코어 60회 명중마다 추가 대미지를 내는 루드밀라 : 윈터 오너의 「눈보라」와 맞는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The 25.15% Core Damage up from Nayuta's \"Hypocrisy\" pairs well with Ludmilla: Winter Owner's \"Snowstorm\", which deals additional damage every 60 Core hits.",
+   "ja": "ナユタの「雑毒之善」が付与するコアダメージ25.15%▲は、コアに60回命中するごとに追加ダメージを与えるルドミラ：ウィンターオーナーの「雪嵐」と噛み合う。"
   },
   {
    "a": "Anchor: Innocent Maid",
    "b": "Scarlet: Black Shadow",
    "ko": "앵커 : 이노센트 메이드의 「불가사리(모양) 오므라이스」 2회째 분배 대미지 30.4%▲는, 풀 차지 공격 횟수에 따라 분배 대미지를 내는 홍련 : 흑영의 「Fleetly Fading Breakthrough」에 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The 30.4% Distributed Damage up from the 2nd activation of Anchor: Innocent Maid's \"Starfish (Shaped) Omurice\" applies to Scarlet: Black Shadow's \"Fleetly Fading Breakthrough\", which deals Distributed Damage based on her Full Charge attack count.",
+   "ja": "アンカー：イノセントメイドの「ヒトデ（形）オムライス」2回目の分散ダメージ30.4%▲は、フルチャージ攻撃の回数に応じて分散ダメージを与える紅蓮：ブラックシャドウの「Fleetly Fading Breakthrough」に乗る。"
   },
   {
    "a": "Mast: Romantic Maid",
    "b": "Scarlet: Black Shadow",
    "ko": "마스트 : 로망틱 메이드의 「파이레츠 스피릿」 분배 대미지 15.03% X 취기 중첩 수▲는, 풀 차지 공격 횟수에 따라 분배 대미지를 내는 홍련 : 흑영의 「Fleetly Fading Breakthrough」에 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The Distributed Damage up of 15.03% x Drunk stacks from Mast: Romantic Maid's \"A Pirate's Spirit\" applies to Scarlet: Black Shadow's \"Fleetly Fading Breakthrough\", which deals Distributed Damage based on her Full Charge attack count.",
+   "ja": "マスト：ロマンチックメイドの「パイレーツスピリット」の分散ダメージ15.03% X 酔いのスタック数▲は、フルチャージ攻撃の回数に応じて分散ダメージを与える紅蓮：ブラックシャドウの「Fleetly Fading Breakthrough」に乗る。"
   },
   {
    "a": "Privaty: Unkind Maid",
    "b": "Soda: Twinkling Bunny",
    "ko": "소다 : 트윙클링 바니의 「럭키 골든 칩」은 풀 버스트 중 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격 대미지 10.51%▲를 준다. 프리바티 : 언카인드 메이드가 공격력이 가장 높을 때 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Soda: Twinkling Bunny's \"Lucky Golden Chip\" gives 10.51% Attack Damage up during Full Burst to the 1 ally with the highest ATK, excluding herself. Privaty: Unkind Maid receives it when she has the highest ATK.",
+   "ja": "ソーダ：トゥインクルバニーの「ラッキーゴールデンチップ」はフルバースト中、自身を除く攻撃力が最も高い味方1体に攻撃ダメージ10.51%▲を付与する。プリバティ：アンカインド・メイドが最も攻撃力が高いときに受けられる。"
   },
   {
    "a": "Flora",
    "b": "Guilty: Mighty Bunny",
    "ko": "플로라의 「시크릿 가든」·「아이리스」가 주는 방어력 무시 대미지▲는, 바니 모드 : 인게이지에서 공격을 방어력 무시 대미지로 바꾸는 길티 : 마이티 바니에게 그대로 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The True Damage up from Flora's \"Secret Garden\" and \"Iris\" applies directly to Guilty: Mighty Bunny, whose attacks turn into True Damage in Bunny Mode: Engage.",
+   "ja": "フローラの「秘密の花園」・「アイリス」が付与する防御無視ダメージ▲は、バニーモード：エンゲージで攻撃が防御無視ダメージに変わるギルティ：マイティバニーにそのまま乗る。"
   },
   {
    "a": "Flora",
    "b": "Sin: Swift Bunny",
    "ko": "플로라의 「시크릿 가든」·「아이리스」가 주는 방어력 무시 대미지▲는, 바니 모드 : 인게이지에서 공격을 방어력 무시 대미지로 바꾸는 신 : 스위프트 바니에게 그대로 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The True Damage up from Flora's \"Secret Garden\" and \"Iris\" applies directly to Sin: Swift Bunny, whose attacks turn into True Damage in Bunny Mode: Engage.",
+   "ja": "フローラの「秘密の花園」・「アイリス」が付与する防御無視ダメージ▲は、バニーモード：エンゲージで攻撃が防御無視ダメージに変わるシン：スウィフトバニーにそのまま乗る。"
   },
   {
    "a": "Flora",
    "b": "Takina Inoue",
    "ko": "플로라의 「시크릿 가든」·「아이리스」가 주는 방어력 무시 대미지▲는, 「제압 개시」로 일반 공격을 방어력 무시 대미지로 바꾸는 이노우에 타키나에게 그대로 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The True Damage up from Flora's \"Secret Garden\" and \"Iris\" applies directly to Takina Inoue, whose Normal Attacks turn into True Damage through \"Suppression Initiated\".",
+   "ja": "フローラの「秘密の花園」・「アイリス」が付与する防御無視ダメージ▲は、「制圧開始」で通常攻撃が防御無視ダメージに変わる井ノ上たきなにそのまま乗る。"
   },
   {
    "a": "Ada Wong",
    "b": "Flora",
    "ko": "플로라의 「시크릿 가든」·「아이리스」가 주는 방어력 무시 대미지▲는, 「섬광 수류탄」으로 방어력 무시 대미지를 넣는 에이다 웡에게 그대로 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The True Damage up from Flora's \"Secret Garden\" and \"Iris\" applies directly to Ada Wong, who deals True Damage through \"Flash Grenade\".",
+   "ja": "フローラの「秘密の花園」・「アイリス」が付与する防御無視ダメージ▲は、「閃光手榴弾」で防御無視ダメージを与えるエイダ・ウォンにそのまま乗る。"
   },
   {
    "a": "Flora",
    "b": "Moran",
    "ko": "목단을 플로라의 양 옆에 둘 때, 도발로 맞은 목단의 체력이 90% 이하가 되면 플로라의 「아이리스」가 아군 전체에게 시전자의 최종 최대 체력 비례 10.22% 보호막을 건다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "With Moran placed next to Flora, when Moran's HP drops to 90% or below from taking hits while Taunting, Flora's \"Iris\" gives all allies a shield equal to 10.22% of the caster's final Max HP.",
+   "ja": "モランをフローラの両隣に置くと、挑発で攻撃を受けたモランのHPが90%以下になったとき、フローラの「アイリス」が味方全体に使用者の最終最大HPの10.22%分のバリアを付与する。"
   },
   {
    "a": "Grave",
    "b": "Rei Ayanami",
    "ko": "아야나미 레이의 「공격 지원」·「섬멸용 고폭탄」은 작열 코드 아군에게 시전자 기준 공격력 25.03%▲, 공격 대미지 48.02%▲, 보호막을 준다. 그레이브가 작열 코드라 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Rei Ayanami's \"Attack Support\" and \"Annihilation: High Explosives\" give Fire allies 25.03% of caster's ATK up, 48.02% Attack Damage up, and a shield. Grave is a Fire Nikke, so she receives them.",
+   "ja": "綾波レイの「攻撃支援」・「殲滅用榴弾」は灼熱コードの味方に使用者基準の攻撃力25.03%▲、攻撃ダメージ48.02%▲、バリアを付与する。グレイブは灼熱コードなのでこれを受けられる。"
   },
   {
    "a": "D: Killer Wife",
    "b": "Nayuta",
    "ko": "D : 킬러 와이프의 「킬 더 타겟」이 적에게 타겟 섬멸을 걸면, 기억 연소 상태인 나유타의 풀 차지 공격이 「위선」으로 타겟인 대상에게 최종 공격력 380.46% 추가 대미지를 넣는다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When D: Killer Wife's \"Kill the Target\" applies Target Annihilation to an enemy, Nayuta's Full Charge attacks in the Memory Burn state deal additional damage equal to 380.46% of final ATK to that target through \"Hypocrisy\".",
+   "ja": "D：キラーワイフの「キル・ザ・ターゲット」が敵にターゲット殲滅を付与すると、記憶燃焼状態のナユタのフルチャージ攻撃が「雑毒之善」によってその対象に最終攻撃力の380.46%の追加ダメージを与える。"
   },
   {
    "a": "Ark Ranger Black",
    "b": "Rosanna: Chic Ocean",
    "ko": "로산나 : 시크 오션이 거는 파츠 대미지 24.26%▲로 파츠를 부수면 아크레인저 블랙이 「변신」하고, 로산나의 지속 대미지 20.32%▲도 아크레인저 블랙의 지속 대미지에 들어간다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When Rosanna: Chic Ocean's 24.26% Parts Damage up breaks Parts, Ark Ranger Black triggers \"Transform! Ark Ranger Black!\", and Rosanna's 20.32% Sustained Damage up also applies to Ark Ranger Black's Sustained Damage.",
+   "ja": "ロザンナ：シックオーシャンが付与するパーツダメージ24.26%▲でパーツを破壊するとアークレンジャー・ブラックが「変身！アークレンジャー・ブラック！」で変身し、ロザンナの持続ダメージ20.32%▲もアークレンジャー・ブラックの持続ダメージに乗る。"
   },
   {
    "a": "Ark Ranger Black",
    "b": "Snow White: Heavy Arms",
    "ko": "스노우 화이트 : 헤비암즈는 풀 차지 시 파츠 대미지 62.64%▲로 파츠를 부수는데, 아크레인저 블랙은 아군 누군가 파츠 파괴 시 「변신」해 공격력 156.19%▲를 얻는다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Snow White: Heavy Arms breaks Parts with 62.64% Parts Damage up on Full Charge, and Ark Ranger Black triggers \"Transform! Ark Ranger Black!\" whenever any ally destroys Parts, gaining 156.19% ATK up.",
+   "ja": "スノーホワイト：ヘビーアームズはフルチャージ時にパーツダメージ62.64%▲でパーツを破壊し、アークレンジャー・ブラックは味方の誰かがパーツを破壊すると「変身！アークレンジャー・ブラック！」で変身して攻撃力156.19%▲を得る。"
   },
   {
    "a": "Ark Ranger Black",
    "b": "Sakura: Bloom in Summer",
    "ko": "아크레인저 블랙의 「전율!」은 풍압 코드 소총 아군에게 지속 대미지 77.5%▲를 준다. 사쿠라 : 블룸 인 서머가 풍압 AR이고 지속 대미지를 내서 그대로 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Ark Ranger Black's \"Tremble! Ark Black Collider!\" gives Wind AR allies 77.5% Sustained Damage up. Sakura: Bloom in Summer is a Wind AR who deals Sustained Damage, so she benefits in full.",
+   "ja": "アークレンジャー・ブラックの「激震！アークブラックコレダー！」は風圧コードのAR装備の味方に持続ダメージ77.5%▲を付与する。サクラ：ブルーム・イン・サマーは風圧ARで持続ダメージを与えるため、そのまま受けられる。"
   },
   {
    "a": "Dorothy: Serendipity",
    "b": "Soda: Twinkling Bunny",
    "ko": "소다 : 트윙클링 바니의 「럭키 골든 칩」은 풀 버스트 중 자신을 제외한 공격력이 가장 높은 아군 1기에게 공격 대미지 10.51%▲를 준다. 도로시 : 세렌디피티가 공격력이 가장 높을 때 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Soda: Twinkling Bunny's \"Lucky Golden Chip\" gives 10.51% Attack Damage up during Full Burst to the 1 ally with the highest ATK, excluding herself. Dorothy: Serendipity receives it when she has the highest ATK.",
+   "ja": "ソーダ：トゥインクルバニーの「ラッキーゴールデンチップ」はフルバースト中、自身を除く攻撃力が最も高い味方1体に攻撃ダメージ10.51%▲を付与する。ドロシー：セレンディピティが最も攻撃力が高いときに受けられる。"
   },
   {
    "a": "Mast: Romantic Maid",
    "b": "Phantom",
    "ko": "마스트 : 로망틱 메이드의 「파이레츠 스피릿」 분배 대미지 15.03% X 취기 중첩 수▲는, 「비기 괴도 난무」와 「괴도의 시선」으로 분배 대미지를 내는 팬텀에게 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The Distributed Damage up of 15.03% x Drunk stacks from Mast: Romantic Maid's \"A Pirate's Spirit\" applies to Phantom, who deals Distributed Damage through \"Secret Trick: Rampages of Thieves\" and \"Thief's Vision\".",
+   "ja": "マスト：ロマンチックメイドの「パイレーツスピリット」の分散ダメージ15.03% X 酔いのスタック数▲は、「秘技・怪盗乱舞」と「怪盗の鑑定眼」で分散ダメージを与えるファントムに乗る。"
   },
   {
    "a": "Anchor: Innocent Maid",
    "b": "Phantom",
    "ko": "앵커 : 이노센트 메이드의 「불가사리(모양) 오므라이스」 2회째 분배 대미지 30.4%▲는, 「비기 괴도 난무」로 최종 공격력 1457.28% 분배 대미지를 내는 팬텀에게 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The 30.4% Distributed Damage up from the 2nd activation of Anchor: Innocent Maid's \"Starfish (Shaped) Omurice\" applies to Phantom, who deals Distributed Damage equal to 1457.28% of final ATK through \"Secret Trick: Rampages of Thieves\".",
+   "ja": "アンカー：イノセントメイドの「ヒトデ（形）オムライス」2回目の分散ダメージ30.4%▲は、「秘技・怪盗乱舞」で最終攻撃力の1457.28%の分散ダメージを与えるファントムに乗る。"
   },
   {
    "a": "Mast: Romantic Maid",
    "b": "Quency: Escape Queen",
    "ko": "마스트 : 로망틱 메이드의 「파이레츠 스피릿」 분배 대미지 15.03% X 취기 중첩 수▲는, 「위대한 도둑」으로 최종 공격력 1736.31% 분배 대미지를 내는 퀀시 : 이스케이프 퀸에게 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The Distributed Damage up of 15.03% x Drunk stacks from Mast: Romantic Maid's \"A Pirate's Spirit\" applies to Quency: Escape Queen, who deals Distributed Damage equal to 1736.31% of final ATK through \"The Great Thief\".",
+   "ja": "マスト：ロマンチックメイドの「パイレーツスピリット」の分散ダメージ15.03% X 酔いのスタック数▲は、「素晴らしき大泥棒」で最終攻撃力の1736.31%の分散ダメージを与えるクエンシー：エスケープクイーンに乗る。"
   },
   {
    "a": "Anchor: Innocent Maid",
    "b": "Quency: Escape Queen",
    "ko": "앵커 : 이노센트 메이드의 「불가사리(모양) 오므라이스」 2회째 분배 대미지 30.4%▲는, 「위대한 도둑」으로 분배 대미지를 내는 퀀시 : 이스케이프 퀸에게 들어간다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "The 30.4% Distributed Damage up from the 2nd activation of Anchor: Innocent Maid's \"Starfish (Shaped) Omurice\" applies to Quency: Escape Queen, who deals Distributed Damage through \"The Great Thief\".",
+   "ja": "アンカー：イノセントメイドの「ヒトデ（形）オムライス」2回目の分散ダメージ30.4%▲は、「素晴らしき大泥棒」で分散ダメージを与えるクエンシー：エスケープクイーンに乗る。"
   },
   {
    "a": "Cinderella",
    "b": "Maiden: Ice Rose",
    "ko": "메이든 : 아이스 로즈의 「블레스 유」는 MP 충전 시 자신을 제외한 전격 코드 아군에게 우월 코드 공격 대미지 40.9%▲, 시전자 기준 공격력 20.9%▲를 준다. 신데렐라가 전격 코드라 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Maiden: Ice Rose's \"Blessings Upon You\" gives Electric allies other than herself 40.9% Elemental Advantage Attack Damage up and 20.9% of caster's ATK up when MP is charged. Cinderella is an Electric Nikke, so she receives it.",
+   "ja": "メイデン：アイスローズの「ブレス・ユー」はMPチャージ時、自身を除く電撃コードの味方に優越コード攻撃ダメージ40.9%▲、使用者基準の攻撃力20.9%▲を付与する。シンデレラは電撃コードなのでこれを受けられる。"
   },
   {
    "a": "Maiden: Ice Rose",
    "b": "Moran",
    "ko": "메이든 : 아이스 로즈의 「블레스 유」는 MP 충전 시 자신을 제외한 전격 코드 아군에게 우월 코드 공격 대미지 40.9%▲, 시전자 기준 공격력 20.9%▲를 준다. 목단이 전격 코드라 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Maiden: Ice Rose's \"Blessings Upon You\" gives Electric allies other than herself 40.9% Elemental Advantage Attack Damage up and 20.9% of caster's ATK up when MP is charged. Moran is an Electric Nikke, so she receives it.",
+   "ja": "メイデン：アイスローズの「ブレス・ユー」はMPチャージ時、自身を除く電撃コードの味方に優越コード攻撃ダメージ40.9%▲、使用者基準の攻撃力20.9%▲を付与する。モランは電撃コードなのでこれを受けられる。"
   },
   {
    "a": "Bready",
    "b": "Mast: Romantic Maid",
    "ko": "마스트 : 로망틱 메이드의 「파이레츠 스피릿」 분배 대미지▲가 들어오면 브래디는 「론리 구르메」로 나누고 싶은 맛 상태가 되어, 풀 차지 명중마다 적 전체에 최종 공격력 265.07% 분배 대미지를 넣는다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When the Distributed Damage up from Mast: Romantic Maid's \"A Pirate's Spirit\" comes in, Bready enters the Flavor to Share state via \"Lonely Gourmet\" and deals Distributed Damage equal to 265.07% of final ATK to all enemies on each Full Charge hit.",
+   "ja": "マスト：ロマンチックメイドの「パイレーツスピリット」の分散ダメージ▲が入ると、ブレッディは「ロンリーグルメ」でおすそ分けしたい味状態になり、フルチャージ命中ごとに敵全体へ最終攻撃力の265.07%の分散ダメージを与える。"
   },
   {
    "a": "Anchor: Innocent Maid",
    "b": "Bready",
    "ko": "앵커 : 이노센트 메이드의 분배 대미지 30.4%▲가 들어오면 브래디는 「론리 구르메」로 나누고 싶은 맛 상태가 되어, 풀 차지 명중마다 적 전체에 최종 공격력 265.07% 분배 대미지를 넣는다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When Anchor: Innocent Maid's 30.4% Distributed Damage up comes in, Bready enters the Flavor to Share state via \"Lonely Gourmet\" and deals Distributed Damage equal to 265.07% of final ATK to all enemies on each Full Charge hit.",
+   "ja": "アンカー：イノセントメイドの分散ダメージ30.4%▲が入ると、ブレッディは「ロンリーグルメ」でおすそ分けしたい味状態になり、フルチャージ命中ごとに敵全体へ最終攻撃力の265.07%の分散ダメージを与える。"
   },
   {
    "a": "Asuka: WILLE",
    "b": "Rei Ayanami (Tentative Name)",
    "ko": "아야나미 레이 (가칭)의 「섬멸 지원」은 시키나미 아스카 랑그레이 : WILLE가 건 안티 AT 필드 대상에게 추가 대미지를 넣고 중첩을 10개 늘리며, 섬멸 태세인 아스카의 추가 효과 대상·범위도 넓힌다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Rei Ayanami (Tentative Name)'s \"Annihilation Support\" deals additional damage to targets affected by Asuka: WILLE's Anti A.T. Field and increases its stacks by 10, and also widens the targets and range of Asuka's extra effects in Annihilation State.",
+   "ja": "アヤナミレイ(仮称)の「殲滅支援」は式波・アスカ・ラングレー：WILLEがアンチA.T.フィールドを付与した対象に追加ダメージを与えてスタックを10増やし、殲滅態勢のアスカの追加効果の対象・範囲も広げる。"
   },
   {
    "a": "Mint",
    "b": "Prika",
    "ko": "민트의 「다 함께 불러주세요!」 떼창이 걸릴 때 프리카가 퍼포먼스 상태면 「한 곡 더!」 앵콜이 떠 민트에게 무대 파트 : 보컬을 주고 퍼포먼스 유지시간을 21초 늘린다. 보컬 상태의 민트는 풀 차지마다 아군 공격력을 올린다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When Mint's \"Let’s Sing Together!\" sing-along triggers while Prika is in the Performance state, the \"One More Song!\" encore activates, giving Mint the Stage Part: Vocal and extending Performance duration by 21 seconds. Mint in the Vocal state raises allies' ATK on every Full Charge.",
+   "ja": "ミントの「みんな一緒に～！」の合唱が発動したときプリカがパフォーマンス状態なら、「もう1曲！」のアンコールが発生してミントにステージパート：ボーカルを付与し、パフォーマンスの持続時間を21秒延ばす。ボーカル状態のミントはフルチャージごとに味方の攻撃力を上げる。"
   },
   {
    "a": "Cinderella: Crystal Wave",
    "b": "Mint",
    "ko": "민트가 보컬 상태로 버스트 3단계에 들어가면 주는 「멋진 무대였어요!」 관통 대미지 32.72% ▲를, 저격 모드에서 관통 특화가 붙는 신데렐라 : 크리스탈 웨이브가 살린다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Cinderella: Crystal Wave, who gains Pierce in Sniper mode, makes good use of the 32.72% Pierce Damage up from \"Fantastic Performance!\" that Mint grants when entering Burst Stage 3 in the Vocal state.",
+   "ja": "ミントがボーカル状態でバースト3段階に入ると付与する「素敵なステージでした！」の貫通ダメージ32.72% ▲を、狙撃モードで貫通特化が付くシンデレラ：クリスタルウェーブが活かせる。"
   },
   {
    "a": "Prika",
    "b": "Raven",
    "ko": "프리카의 「최고의 무대를 보여줄게!」 퍼포먼스가 주는 차지 대미지 25% ▲를 풀 차지 공격으로 「쇼크웨이브」를 거는 레이븐이 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Raven, who applies \"Shock Wave\" with Full Charge attacks, receives the 25% Charge Damage up granted by Prika's \"Get Ready for an Amazing Show!\" Performance.",
+   "ja": "プリカの「最高のステージを見せてやる！」のパフォーマンスが付与するチャージダメージ25% ▲を、フルチャージ攻撃で「ショックウェーブ」を付与するレイヴンが受けられる。"
   },
   {
    "a": "Neon: Vision Eye",
    "b": "Prika",
    "ko": "프리카의 「최고의 무대를 보여줄게!」 퍼포먼스가 주는 차지 대미지 25% ▲를, 풀 차지 공격 명중 때 「건강한 몸」 화력 폭발을 터뜨리는 네온 : 비전 아이가 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Neon: Vision Eye, who sets off her \"Healthy Body\" firepower explosion when a Full Charge attack hits, receives the 25% Charge Damage up granted by Prika's \"Get Ready for an Amazing Show!\" Performance.",
+   "ja": "プリカの「最高のステージを見せてやる！」のパフォーマンスが付与するチャージダメージ25% ▲を、フルチャージ攻撃命中時に「超健康体」の火力爆発を起こすネオン：ビジョン・アイが受けられる。"
   },
   {
    "a": "Cinderella: Crystal Wave",
    "b": "Prika",
    "ko": "프리카의 풀 차지 관통 대미지 ▲와 퍼포먼스 차지 대미지 25% ▲를, 저격 모드에서 관통 특화로 풀 차지 공격하는 신데렐라 : 크리스탈 웨이브가 둘 다 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Cinderella: Crystal Wave, who makes Full Charge attacks with Pierce in Sniper mode, receives both Prika's Full Charge Pierce Damage up and her 25% Performance Charge Damage up.",
+   "ja": "プリカのフルチャージ時の貫通ダメージ ▲とパフォーマンスのチャージダメージ25% ▲を、狙撃モードで貫通特化のフルチャージ攻撃を行うシンデレラ：クリスタルウェーブが両方とも受けられる。"
   },
   {
    "a": "Anis: Star",
    "b": "Arcana",
    "ko": "아르카나의 「운명의 굴레」 운명의 수레바퀴 카드(공격 대미지 10% ▲)는 전격 코드 아군에게만 걸리는데, 전격인 아니스 : 스타가 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "The Wheel of Fortune card from Arcana's \"Shackles of Destiny\" (10% Attack Damage up) applies only to Electric allies, and the Electric Anis: Star receives it.",
+   "ja": "アルカナの「運命の鎖」の運命の輪カード（攻撃ダメージ10% ▲）は電撃コードの味方にのみ付与されるが、電撃のアニス：スターが受けられる。"
   },
   {
    "a": "Arcana: Fortune Mate",
    "b": "Dorothy: Serendipity",
    "ko": "아르카나 : 포츈 메이트의 「기억과 추억」(버스트 스킬 사용 시 공격 대미지 55% ▲)과 「쌓여가는 사진첩」 공격력 ▲는 샷건 소지 아군에게만 걸리는데, 샷건인 도로시 : 세렌디피티가 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Arcana: Fortune Mate's \"Memories and Moments\" (55% Attack Damage up on Burst Skill use) and the ATK up from \"Keepsake Album\" apply only to SG allies, and the SG Dorothy: Serendipity receives them.",
+   "ja": "アルカナ：フォーチュンメイトの「記憶と思い出」（バーストスキル使用時に攻撃ダメージ55% ▲）と「重ねるアルバム」の攻撃力 ▲はSG装備の味方にのみ付与されるが、SGのドロシー：セレンディピティが受けられる。"
   },
   {
    "a": "Milk: Blooming Bunny",
    "b": "Mint",
    "ko": "민트가 보컬 상태로 버스트 3단계에 들어가면 주는 관통 대미지 32.72% ▲를, 풀 차지 때 관통 특화가 붙는 밀크 : 블루밍 바니가 살린다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Milk: Blooming Bunny, who gains Pierce on Full Charge, makes good use of the 32.72% Pierce Damage up Mint grants when entering Burst Stage 3 in the Vocal state.",
+   "ja": "ミントがボーカル状態でバースト3段階に入ると付与する貫通ダメージ32.72% ▲を、フルチャージ時に貫通特化が付くミルク：ブルーミングバニーが活かせる。"
   },
   {
    "a": "Milk: Blooming Bunny",
    "b": "Prika",
    "ko": "프리카의 풀 차지 관통 대미지 ▲와 퍼포먼스 차지 대미지 25% ▲를, 풀 차지로 관통 특화가 붙는 밀크 : 블루밍 바니가 둘 다 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Milk: Blooming Bunny, who gains Pierce on Full Charge, receives both Prika's Full Charge Pierce Damage up and her 25% Performance Charge Damage up.",
+   "ja": "プリカのフルチャージ時の貫通ダメージ ▲とパフォーマンスのチャージダメージ25% ▲を、フルチャージで貫通特化が付くミルク：ブルーミングバニーが両方とも受けられる。"
   },
   {
    "a": "Crown",
    "b": "Velvet",
    "ko": "크라운의 「원 포 올」은 직전에 버스트 스킬을 쓴 아군에게 공격력 64.51% ▲를 준다. 벨벳이 그 주기에 2버스트를 썼을 때 이 몫을 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Crown's \"One for All\" gives 64.51% ATK up to the ally who just used a Burst Skill. Velvet receives this share when she uses her Burst 2 in that rotation.",
+   "ja": "クラウンの「ワンフォーオール」は直前にバーストスキルを使用した味方に攻撃力64.51% ▲を付与する。ベルベットがそのサイクルでバースト2を使ったとき、この分を受けられる。"
   },
   {
    "a": "Ada Wong",
    "b": "Takina Inoue",
    "ko": "이노우에 타키나의 「전장 통제」 방어력 무시 대미지 140.49% ▲를, 「섬광 수류탄」으로 방어력 무시 대미지를 내는 에이다 웡이 그대로 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Ada Wong, who deals True Damage through \"Flash Grenade\", receives the 140.49% True Damage up from Takina Inoue's \"Battlefield Control\" in full.",
+   "ja": "井ノ上たきなの「戦場支配」の防御無視ダメージ140.49% ▲を、「閃光手榴弾」で防御無視ダメージを与えるエイダ・ウォンがそのまま受けられる。"
   },
   {
    "a": "Ada Wong",
    "b": "Chisato Nishikigi",
    "ko": "에이다 웡의 「은밀한 지원」은 직전에 버스트를 쓴 Step 3 아군에게 공격력 60%·방어력 무시 대미지 50% ▲를 준다. 니시키기 치사토가 3버스트를 썼을 때 받고, 방어력 무시 대미지도 살린다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Ada Wong's \"Covert Support\" gives 60% ATK and 50% True Damage up to the Burst 3 ally who just used a Burst. Chisato Nishikigi receives it when she uses her Burst 3, and she also makes use of the True Damage.",
+   "ja": "エイダ・ウォンの「隠密支援」は直前にバーストを使用したバースト3の味方に攻撃力60%・防御無視ダメージ50% ▲を付与する。錦木千束がバースト3を使ったときに受けられ、防御無視ダメージも活かせる。"
   },
   {
    "a": "Arcana: Fortune Mate",
    "b": "Soline: Frost Ticket",
    "ko": "아르카나 : 포츈 메이트의 「기억과 추억」(공격 대미지 55% ▲)과 「쌓여가는 사진첩」 공격력 ▲는 샷건 소지 아군에게만 걸리는데, 샷건인 솔린 : 프로스트 티켓이 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Arcana: Fortune Mate's \"Memories and Moments\" (55% Attack Damage up) and the ATK up from \"Keepsake Album\" apply only to SG allies, and the SG Soline: Frost Ticket receives them.",
+   "ja": "アルカナ：フォーチュンメイトの「記憶と思い出」（攻撃ダメージ55% ▲）と「重ねるアルバム」の攻撃力 ▲はSG装備の味方にのみ付与されるが、SGのソリン：フロストチケットが受けられる。"
   },
   {
    "a": "Soline: Frost Ticket",
    "b": "Tove",
    "ko": "토브의 「개조 성공」 공격 속도 42.24% ▲와 「급조품의 기적」 공격력 24.21% ▲는 샷건 소지 아군에게만 걸리는데, 샷건인 솔린 : 프로스트 티켓이 받는다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Tove's \"Modification Successful\" 42.24% Attack Speed up and \"Miracle of Makeshifts\" 24.21% ATK up apply only to SG allies, and the SG Soline: Frost Ticket receives them.",
+   "ja": "トーブの「改造成功」の攻撃速度42.24% ▲と「その場しのぎの奇跡」の攻撃力24.21% ▲はSG装備の味方にのみ付与されるが、SGのソリン：フロストチケットが受けられる。"
   },
   {
    "a": "Diesel: Winter Sweets",
    "b": "Snow White: Heavy Arms",
    "ko": "스노우 화이트 : 헤비암즈가 풀 차지 때 파츠 대미지 62.64% ▲로 파츠를 부수면, 디젤 : 윈터 스위츠의 「노래할게요!」가 디젤에게 지속 대미지 68.04% ▲를, 다른 아군에게 음소거(소음 공해 면역)를 준다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When Snow White: Heavy Arms breaks Parts with 62.64% Parts Damage up on Full Charge, Diesel: Winter Sweets' \"I’m Gonna Sing Now!\" gives Diesel 68.04% Sustained Damage up and gives other allies Mute (immunity to Noise Pollution).",
+   "ja": "スノーホワイト：ヘビーアームズがフルチャージ時にパーツダメージ62.64% ▲でパーツを破壊すると、ディーゼル：ウィンタースイーツの「歌います！」がディーゼルに持続ダメージ68.04% ▲を、ほかの味方にミュート（騒音公害無効）を付与する。"
   },
   {
    "a": "Chisato Nishikigi",
    "b": "Takina Inoue",
    "ko": "이노우에 타키나의 「전장 통제」 방어력 무시 대미지 140.49% ▲를, 버스트 후 일반 공격이 방어력 무시 대미지로 바뀌는 니시키기 치사토가 그대로 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "Chisato Nishikigi, whose Normal Attacks turn into True Damage after Burst, receives the 140.49% True Damage up from Takina Inoue's \"Battlefield Control\" in full.",
+   "ja": "井ノ上たきなの「戦場支配」の防御無視ダメージ140.49% ▲を、バースト後に通常攻撃が防御無視ダメージに変わる錦木千束がそのまま受けられる。"
   },
   {
    "a": "Guilty: Mighty Bunny",
    "b": "Takina Inoue",
    "ko": "길티 : 마이티 바니가 바니 모드 : 인게이지일 때는 공격이 방어력 무시 대미지로 바뀌어, 이노우에 타키나의 「전장 통제」 방어력 무시 대미지 140.49% ▲를 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "In Bunny Mode: Engage, Guilty: Mighty Bunny's attacks become True Damage, so she receives the 140.49% True Damage up from Takina Inoue's \"Battlefield Control\".",
+   "ja": "ギルティ：マイティバニーはバニーモード：エンゲージのとき攻撃が防御無視ダメージに変わるため、井ノ上たきなの「戦場支配」の防御無視ダメージ140.49% ▲を受けられる。"
   },
   {
    "a": "Sin: Swift Bunny",
    "b": "Takina Inoue",
    "ko": "신 : 스위프트 바니가 바니 모드 : 인게이지일 때는 「노이즈 불렛」으로 공격이 방어력 무시 대미지가 되어, 이노우에 타키나의 「전장 통제」 방어력 무시 대미지 140.49% ▲를 받는다.",
-   "basis": "효과종류"
+   "basis": "효과종류",
+   "en": "In Bunny Mode: Engage, Sin: Swift Bunny's attacks become True Damage through \"Noise Bullet\", so she receives the 140.49% True Damage up from Takina Inoue's \"Battlefield Control\".",
+   "ja": "シン：スウィフトバニーはバニーモード：エンゲージのとき「ノイズバレット」で攻撃が防御無視ダメージになるため、井ノ上たきなの「戦場支配」の防御無視ダメージ140.49% ▲を受けられる。"
   },
   {
    "a": "Anchor: Innocent Maid",
    "b": "Cinderella: Crystal Wave",
    "ko": "앵커 : 이노센트 메이드의 「말미잘(모양) 파스타」 재장전 속도 40.04% ▲는, 최대 장탄 재장전 완료 때 저격 모드로 바뀌는 신데렐라 : 크리스탈 웨이브의 「뷰티-풀」을 더 빨리 돌린다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "Anchor: Innocent Maid's \"Sea Anemone (Shaped) Pasta\" 40.04% Reload Speed up makes Cinderella: Crystal Wave's \"Beauty-Full\", which switches her to Sniper mode upon completing a full-magazine reload, cycle faster.",
+   "ja": "アンカー：イノセントメイドの「イソギンチャク（形）パスタ」のリロード速度40.04% ▲は、最大装弾のリロード完了時に狙撃モードへ切り替わるシンデレラ：クリスタルウェーブの「ビューティー・フル」をより速く回す。"
   },
   {
    "a": "Queen (Makoto Niijima)",
    "b": "Yukiko",
    "ko": "퀸(니지마 마코토)과 아마기 유키코는 둘 다 3버스트 페르소나 상태라, 풍압 코드 적이 있어 1more가 걸리면 퀸의 배턴 터치(공격력 35.2% ▲)와 유키코의 추격(공격력 80.25% ▲)을 서로 주고, 추격은 퀸의 분배 대미지도 일으킨다.",
-   "basis": "조건"
+   "basis": "조건",
+   "en": "Queen (Makoto Niijima) and Yukiko are both Burst 3 and in the Persona state, so when a Wind enemy is present and 1more triggers, they give each other Queen's Baton Pass (35.2% ATK up) and Yukiko's Follow-up (80.25% ATK up), and the Follow-up also triggers Queen's Distributed Damage.",
+   "ja": "クイーン（新島真）と天城雪子はどちらもバースト3のペルソナ状態なので、風圧コードの敵がいて1moreが発動すると、クイーンのバトンタッチ（攻撃力35.2% ▲）と雪子の追撃（攻撃力80.25% ▲）を互いに与え合い、追撃はクイーンの分散ダメージも発生させる。"
   },
   {
    "a": "Guilty: Mighty Bunny",
    "b": "Sin: Swift Bunny",
    "ko": "길티 : 마이티 바니와 신 : 스위프트 바니는 바니 모드가 바뀔 때 상대에게도 같은 모드를 걸어, 인게이지(방어력 무시 대미지)와 스탠스(공격 강화)를 함께 맞춘다.",
-   "basis": "맞물림"
+   "basis": "맞물림",
+   "en": "When Guilty: Mighty Bunny and Sin: Swift Bunny switch Bunny Mode, they apply the same mode to each other, syncing Engage (True Damage) and Stance (attack boost) together.",
+   "ja": "ギルティ：マイティバニーとシン：スウィフトバニーはバニーモードが切り替わると相手にも同じモードを付与し、エンゲージ（防御無視ダメージ）とスタンス（攻撃強化）を揃える。"
   }
  ],
  "writtenOn": "2026-11-06"

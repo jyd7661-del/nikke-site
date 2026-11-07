@@ -37,9 +37,10 @@ select
      'cards', coalesce(sum(jsonb_array_length(ai_cards)),0),
      'unknown', coalesce(sum((select count(*) from jsonb_array_elements(ai_cards) c where coalesce(c->>'id','none') = 'none')),0),
      -- unknown 중 R·SR 니케(솔저·프로덕트·iDoll — DB는 SSR만 둔다). 11-04: 못 읽음 31장 중 27장이 이것이었다(나머지는 DB에 아직 없는 신캐 3 · 이름 없는 카드 1).
+     -- 11-07: 중국어판 캡처의 R·SR(产品 · 士兵 · 偶像)도 센다 — 10-31~11-06 못 읽음 중 10장.
      -- 진짜 놓침 후보 = unknown − unknown_rsr. 신캐 카드도 unknown에 남으니 사진 대조 때 가른다.
      'unknown_rsr', coalesce(sum((select count(*) from jsonb_array_elements(ai_cards) c where coalesce(c->>'id','none') = 'none'
-        and c->>'seen' ~* '(솔[저져]|프로덕트|idoll|soldier|goldier|product|roduct|uct [0-9]|ict [0-9]|doll|ソルジャー|プロダクト|アイドール|^(flower|ocean|sun)$)')),0),
+        and c->>'seen' ~* '(솔[저져]|프로덕트|idoll|soldier|goldier|product|roduct|uct [0-9]|ict [0-9]|doll|ソルジャー|プロダクト|アイドール|^(flower|ocean|sun)$|产品|士兵|偶像)')),0),
      'removed', coalesce(sum((select count(distinct c->>'id') from jsonb_array_elements(ai_cards) c
         where confirmed_at is not null and c->>'id' <> 'none' and (c->>'sure')::boolean is not false and c->>'rescued' is null
           and not (confirmed_ids ? (c->>'id')))),0),

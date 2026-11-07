@@ -11,17 +11,19 @@ const db = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/characterDatabase.js
 const notes = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/partnerNotes.json'), 'utf8')).pairs || [];
 const by = new Map(db.map((c) => [c.title, c]));
 const problems = [];
-const nums = (s) => [...String(s).matchAll(/(\d+(?:\.\d+)?)\s*(?=%|초|회|기|발|중첩)/g)].map((m) => m[1]);
+const nums = (s) => [...String(s).matchAll(/(\d+(?:\.\d+)?)\s*(?=%|초|회|기|발|중첩|秒|回|体|発|sec|s\b|times|hits|units|rounds|stacks)/g)].map((m) => m[1]);
 for (const p of notes) {
   const a = by.get(p.a); const b = by.get(p.b);
   if (!a || !b) { problems.push(`이름 없음: ${p.a} / ${p.b}`); continue; }
-  for (const lang of ['ko']) {
+  for (const lang of ['ko', 'en', 'ja']) {
     const t = p[lang];
-    if (!t) { problems.push(`[${lang}] 해설 없음: ${a.name_kr} + ${b.name_kr}`); continue; }
+    if (!t) { if (lang === 'ko') problems.push(`[${lang}] 해설 없음: ${a.name_kr} + ${b.name_kr}`); continue; }   // 영어·일본어는 없으면 화면이 그 줄을 안 그린다(11-07)
     const src = [a, b].flatMap((c) => (c.skills || []).map((s) => `${s.desc_kr || ''} ${s.desc || ''}`)).join(' ');
     const srcNums = new Set([...src.matchAll(/\d+(?:\.\d+)?/g)].map((m) => m[0]));
     for (const n of nums(t)) if (!srcNums.has(n)) problems.push(`[숫자] ${a.name_kr} + ${b.name_kr}: 「${n}」이 원문에 없다 — ${t}`);
-    if (!t.includes(a.name_kr) || !t.includes(b.name_kr)) problems.push(`[이름] ${a.name_kr} + ${b.name_kr}: 해설에 두 이름이 다 있어야 한다 — ${t}`);
+    const nm = (c) => (lang === 'en' ? c.title : lang === 'ja' ? c.name_ja : c.name_kr);
+    if (!t.includes(nm(a)) || !t.includes(nm(b))) problems.push(`[이름·${lang}] ${a.name_kr} + ${b.name_kr}: 해설에 두 이름(${nm(a)} · ${nm(b)})이 다 있어야 한다 — ${t}`);
+    if (lang !== 'ko') for (const n of nums(p.ko)) if (!nums(t).includes(n) && !t.includes(n)) problems.push(`[숫자·${lang}] ${a.name_kr} + ${b.name_kr}: 한국어의 「${n}」이 번역에 없다 — ${t}`);
     if (/우연|\d\s*배|애장품/.test(t)) problems.push(`[금지어] ${a.name_kr} + ${b.name_kr}: ${t}`);
   }
 }
