@@ -243,7 +243,7 @@ const dict = {
     dex_reason_where: (where) => `스킬로 직접 맞물리는 부분은 없고, ${where} 팀에서 같이 쓰였습니다.`,
     dex_link_give: (name, skill, cond) => `↳ ${name}의 「${skill}」 버프 대상 — ${cond}`,
     dex_gives_label: (name) => `${name}의 조건부 버프 — 아래 목록에서 ↳ 줄이 붙은 니케가 대상입니다`,
-    dex_link_recv: (name, skill, cond) => `↳ 「${skill}」로 ${name}에게 버프 — ${cond}`,
+    dex_link_recv: (name, skill, cond) => `↳ ${name}에게 버프 · 「${skill}」 — ${cond}`,   // 11-07: 「은밀한 지원」로 — 받침 뒤 조사 오류라 조사를 뺐다
     dex_comp_ranker: (n, total) => `랭커 ${n}건`,
     dex_comp_arch: (n) => `추천 ${n}개`,
     dex_skill_heading: '스킬로 이어지는 니케',

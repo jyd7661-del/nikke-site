@@ -264,6 +264,20 @@ export function matchObserved(card, characters, cdbById, altNames = null) {
         return false;
       });
       if (within.length === 1) return out(within[0].id, false, 'near-name');
+      // 무기까지 맞는 후보(wPool) 안에서는 두 글자까지 봐 준다(11-07 「릴터 윈너」 = 루드밀라 : 윈터 오너, 수냉·MG·3버스트 후보 3명).
+      //   속성·버스트·무기가 다 맞아 후보가 작을 때만 — 무기가 어긋난 넓은 풀에서는 우연히 겹친다. 결과는 늘 「확인 필요」.
+      if (wp && wPool.length && wPool.length <= 5) {
+        const loose = wPool.filter((c) => {
+          const n = nameKey(c.name);
+          for (let i = 0; i + key.length <= n.length; i++) {
+            let diff = 0;
+            for (let j = 0; j < key.length && diff < 3; j++) if (n[i + j] !== key[j]) diff++;
+            if (diff <= 2) return true;
+          }
+          return false;
+        });
+        if (loose.length === 1) return out(loose[0].id, false, 'near-name');
+      }
     }
   }
   return out('none', false, 'none');

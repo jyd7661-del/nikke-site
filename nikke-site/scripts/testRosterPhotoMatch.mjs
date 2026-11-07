@@ -42,6 +42,8 @@ const CASES = [
     { name: '엘라 : 크리스', element: 'iron', weapon: 'mg', burst: 3, guess: 'none' }, 'ko', 'cinderella-crystal-wave', false],
   ['11-03 「나이트」(철갑 AR III) — 맞는 이름이 없어 고르지 않는다',
     { name: '나이트', element: 'iron', weapon: 'ar', burst: 3, guess: 'none' }, 'ko', 'none', false],
+  ['11-07 「루드밀라 : 윈터 오너」를 「릴터 윈너」로(두 글자 다름) — 무기까지 맞는 후보 3명 안이라 확인 필요로 찾는다',
+    { name: '릴터 윈너', element: 'water', weapon: 'mg', burst: 3, guess: 'none' }, 'ko', 'ludmilla-winter-owner', false],
   ['R 등급 이름 조각은 아무와도 안 맞는다',
     { name: '프로덕트 23', element: 'wind', weapon: 'ar', burst: 2 }, 'ko', 'none', false],
   ['아직 DB에 없는 「라푼젤 : 생추어리」의 끝 조각은 아무와도 안 맞는다',
