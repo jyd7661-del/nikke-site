@@ -921,6 +921,19 @@ for (const t of teams) {
   if (off.path === 'real') problems.push('[실사용 5/5 우선] 규칙을 꺼도 실사용이 이긴다 — 시험 로스터를 다시 고를 것');
 }
 
+// 4/5 채우기의 20초 주기 관문(2026-11-07, 유저: "대체 한명은 어떻게 정해지는데? 레드후드는 쿨타임 40초 아니야?").
+// 캠페인 기록 「마스트 / 홍련 : 흑영 / 아니스 : 스타 / 리버렐리오 / 크라운」에서 스타가 없을 때, 티어만 보면 레드 후드(S, 1버스트 40초)가 들어가
+// 풀버스트가 40초에 돈다. 관문을 켜면 D : 킬러 와이프(A, 20초)가 들어간다. 역테스트: `__NIKKE_PARTIAL_CYCLE_OFF`면 레드 후드여야 한다.
+{
+  const r = ['Mast: Romantic Maid', 'Scarlet: Black Shadow', 'Liberalio', 'Crown', 'Red Hood', 'D: Killer Wife', 'Tia'].map((n) => byTitle.get(n));
+  const on = engine.findRealUsageTeamMatch(r, 'campaign', {});
+  globalThis.__NIKKE_PARTIAL_CYCLE_OFF = true;
+  const off = engine.findRealUsageTeamMatch(r, 'campaign', {});
+  delete globalThis.__NIKKE_PARTIAL_CYCLE_OFF;
+  if (on?.partial?.filler !== 'D: Killer Wife') problems.push(`[4/5 주기] 스타 자리에 D : 킬러 와이프가 아니라 ${on?.partial?.filler}가 들어갔다`);
+  if (off?.partial?.filler !== 'Red Hood') problems.push('[4/5 주기] 관문을 꺼도 레드 후드가 안 들어간다 — 시험 로스터를 다시 고를 것');
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

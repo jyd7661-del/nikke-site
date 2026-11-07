@@ -2533,7 +2533,12 @@ export function findRealUsageTeamMatch(ownedCharacters, mode = 'campaign', opts 
         if (scored.soloBurst3 && !globalThis.__NIKKE_PARTIAL_STAGE_OFF) return;
         const v = scored.tierTotal + (scored.campPairBonus || 0);
         const pv = pick ? pick.scored.tierTotal + (pick.scored.campPairBonus || 0) : 0;
-        if (!pick || v > pv || (v === pv && String(c.id) < String(pick.filler.id))) pick = { members, scored, filler: c };
+        // 2026-11-07 **20초 주기 관문을 채우기에도** — 유저: "대체 한명은 어떻게 정해지는데? 레드후드는 쿨타임 40초 아니야?"
+        //   11-06 👎(보유 89명, 아니스 : 스타 없음): 실사용 1위 기록의 스타(1버스트 20초) 자리에 레드 후드(40초)를 넣어
+        //   1버스트가 40초 둘(라피 : 레드 후드 · 레드 후드)이 됐다. 폴백 정렬(recommendTeams)·빈 자리 아키타입(fallbackBeatsFlexArchetype)은
+        //   이미 slowCycle을 먼저 보는데 4/5 채우기만 티어 합만 봤다. 관문이지 점수가 아니다. `__NIKKE_PARTIAL_CYCLE_OFF`면 옛 동작.
+        const gate = globalThis.__NIKKE_PARTIAL_CYCLE_OFF ? 0 : (pick ? Number(!!pick.scored.slowCycle) - Number(!!scored.slowCycle) : 1);
+        if (!pick || gate > 0 || (gate === 0 && (v > pv || (v === pv && String(c.id) < String(pick.filler.id))))) pick = { members, scored, filler: c };
       });
       if (!pick) return;
       if (!best || rank > best.rank) best = { entry: e, rank, members: pick.members, scored: pick.scored, partial: { missing: gone, filler: pick.filler } };
