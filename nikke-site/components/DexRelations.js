@@ -55,10 +55,9 @@ export default function DexRelations({ self, partners }) {
     cond.dmgKind && t('dex_cond_dmg')(cond.dmgKind),
   ].filter(Boolean).join(' · ');
 
-  const whereText = (b) => (b.kind === 'raid' ? `${t('mode_bossing')}(${elementLabel(b.key, lang)})`
-    : b.kind === 'tower' ? `${t('mode_tribe_tower')}(${t(`tower_${b.key}`)})` : t('mode_campaign'));
-
-  if (!partners.list.length) return null;
+  // 11-07 유저: "같이 쓰이기만했다는 문구는 필요없는 말이잖아" — 스킬 해설(그 언어)이나 스킬 연결(↳)이 있는 니케만 보인다.
+  const shown = partners.list.filter((x) => x.note?.[lang] || x.links.length);
+  if (!shown.length && !partners.gives.length) return null;
   // 2026-11-05: 「함께 쓰면 좋은 니케」와 「스킬로 이어지는 니케」를 한 칸으로(유저 "한 칸으로 합치기"). 니케마다 같이 쓰인 수 + 스킬 연결.
   return (
     <section className="mb-8">
@@ -73,7 +72,7 @@ export default function DexRelations({ self, partners }) {
         </ul>
         </div>
       )}
-      <MoreList items={partners.list} show={8}>
+      <MoreList items={shown} show={8}>
         {(list) => (
           <ul className="space-y-2.5 text-sm">
             {list.map((x) => (
@@ -88,15 +87,8 @@ export default function DexRelations({ self, partners }) {
                   <Chip m={x} lang={lang} />
                   {x.cls && <span className="text-slate-500 text-xs">{t('dex_role')(x.burst, classLabel(x.cls, lang))}</span>}
                 </div>
-                {/* 목록에 든 이유(11-06 유저 "목록에 있는 이유를 같이 서술해줘") — 전부 데이터에서 센 값 */}
-                <p className="text-xs text-slate-400">
-                  {/* 11-06 유저: 「우연보다 N배」는 보는 사람에게 도움이 안 된다 → 스킬로 본 이점(짝 해설). 해설이 없거나 그 언어가 없으면 어디서 같이 쓰였는지만 */}
-                  {x.note?.[lang]
-                    ? x.note[lang]
-                    : x.together
-                      ? t('dex_reason_where')(x.together.by.map((b) => whereText(b)).join(' · '))
-                      : t('dex_reason_skill_only')}
-                </p>
+                {/* 목록에 든 이유 = 짝 해설(스킬로 본 이점, data/partnerNotes.json). 해설이 없으면 아래 스킬 연결(↳) 줄이 이유다 */}
+                {x.note?.[lang] && <p className="text-xs text-slate-400">{x.note[lang]}</p>}
                 {x.links.map((l, j) => (
                   <p key={j} className="text-xs text-slate-500">
                     {l.dir === 'give'
