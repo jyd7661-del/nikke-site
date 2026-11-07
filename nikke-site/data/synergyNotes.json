@@ -261,7 +261,10 @@
       "name_en": "Elysion Tower recommended team",
       "name_ja": "エリシオンタワーおすすめ編成",
       "note_en": "An auto-battle-focused team that adds Treasure Helm's healing and Anchor's stored-HP buff on top of wide-area damage (Rapi and Vesti).",
-      "note_ja": "広範囲火力（ラピ／ベスティー）に宝ものヘルムの回復とアンカーのHP保存バフを加えた、自動戦闘特化の編成。"
+      "note_ja": "広範囲火力（ラピ／ベスティー）に宝ものヘルムの回復とアンカーのHP保存バフを加えた、自動戦闘特化の編成。",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "missilis-tower",
@@ -1163,7 +1166,10 @@
       "name_en": "Artillery vs Moth",
       "name_ja": "Artillery vs Moth（砲撃対モス）",
       "note_en": "[Source: prydwen.gg Team Database] A high investment, high reward team. Snow White needs highest final ATK than the rest of the team to make sure she gets Miranda (Treasure)'s Critical Rate buff. Make sure every Snow White nuke hits the core and 2 parts. Substitutions: Zwei (Treasure) may be replaced by Miranda (Treasure). Maxwell may be replaced with Rapi: Red Hood or Cinderella: Crystal Wave if and only if Snow White still manages to get Miranda (Treasure)'s S2 Critical Rate buff. (Element: Iron)",
-      "note_ja": "［出典：prydwen.gg Team Database］高投資・高リターンの編成。スノーホワイトは宝ものミランダのクリティカル確率バフを確実に受けるため、チームの中で最終攻撃力が最も高い必要がある。スノーホワイトのニュークは毎回コアと2つのパーツに当てること。差し替え：宝ものツバイは宝ものミランダに置き換え可能。マクスウェルは、スノーホワイトが宝ものミランダのS2クリティカル確率バフを受けられる場合に限り、ラピ：レッドフードまたはシンデレラ：クリスタルウェーブに置き換え可能。（属性：鉄甲）"
+      "note_ja": "［出典：prydwen.gg Team Database］高投資・高リターンの編成。スノーホワイトは宝ものミランダのクリティカル確率バフを確実に受けるため、チームの中で最終攻撃力が最も高い必要がある。スノーホワイトのニュークは毎回コアと2つのパーツに当てること。差し替え：宝ものツバイは宝ものミランダに置き換え可能。マクスウェルは、スノーホワイトが宝ものミランダのS2クリティカル確率バフを受けられる場合に限り、ラピ：レッドフードまたはシンデレラ：クリスタルウェーブに置き換え可能。（属性：鉄甲）",
+      "requiresTreasure": [
+        "Zwei"
+      ]
     },
     {
       "id": "pw-battle-without-your-king",
@@ -1755,7 +1761,10 @@
       "name_en": "Alternate Best UR Team - Electric",
       "name_ja": "Alternate Best UR Team - Electric（ユニオンレイド代替最良編成・電撃）",
       "note_en": "[Source: prydwen.gg Team Database] If you have Isabel and Arcana built. Substitutions: FloraTreasure may be replaced by Crown. Consequently, in a multi-team approach, the next Team's Burst 2 also changes according to their subsistutes. (Element: Electric)",
-      "note_ja": "［出典：prydwen.gg Team Database］イサベルとアルカナを育てている場合の編成。差し替え：宝ものフローラはクラウンに置き換え可能。その結果、複数編成で挑む場合は次の編成のバーストIIもその代替に合わせて変わる。（属性：電撃）"
+      "note_ja": "［出典：prydwen.gg Team Database］イサベルとアルカナを育てている場合の編成。差し替え：宝ものフローラはクラウンに置き換え可能。その結果、複数編成で挑む場合は次の編成のバーストIIもその代替に合わせて変わる。（属性：電撃）",
+      "requiresTreasure": [
+        "Flora"
+      ]
     },
     {
       "id": "pw-old-meta-or-saving-anis-star",
@@ -1874,7 +1883,10 @@
       "name_en": "Main Team Rapi V2",
       "name_ja": "Main Team Rapi V2（主力編成・ラピ型 V2）",
       "note_en": "[Source: prydwen.gg Team Database] - Substitutions: Helm-treasure may be replaced by an invested Alice, Privaty, Maid Mast, a DPS like Summer Cinderella or Snow White: Heavy Arms, or another damage buffer. (Element: Fire)",
-      "note_ja": "［出典：prydwen.gg Team Database］-　差し替え：宝ものヘルムは、育てたアリス、プリバティ、メイドマスト、サマーシンデレラやスノーホワイト：ヘビーアームズのようなアタッカー、あるいは別のダメージバッファーに置き換え可能。（属性：灼熱）"
+      "note_ja": "［出典：prydwen.gg Team Database］-　差し替え：宝ものヘルムは、育てたアリス、プリバティ、メイドマスト、サマーシンデレラやスノーホワイト：ヘビーアームズのようなアタッカー、あるいは別のダメージバッファーに置き換え可能。（属性：灼熱）",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-main-team-rapiless",
@@ -1891,7 +1903,10 @@
       "name_en": "Main Team Rapiless",
       "name_ja": "Main Team Rapiless（主力編成・ラピなし）",
       "note_en": "[Source: prydwen.gg Team Database] - Substitutions: Anis may be replaced by Siren for a bit less damage, or with Moran if the damage requirement is not high. Helm-treasure may be replaced by an invested Alice, Privaty, Maid Mast, a DPS like Summer Cinderella or Snow White: Heavy Arms, or another damage buffer. (Element: Fire)",
-      "note_ja": "［出典：prydwen.gg Team Database］-　差し替え：アニスは、ダメージが少し落ちてよければセイレーンに、要求ダメージが高くなければモランに置き換え可能。宝ものヘルムは、育てたアリス、プリバティ、メイドマスト、サマーシンデレラやスノーホワイト：ヘビーアームズのようなアタッカー、あるいは別のダメージバッファーに置き換え可能。（属性：灼熱）"
+      "note_ja": "［出典：prydwen.gg Team Database］-　差し替え：アニスは、ダメージが少し落ちてよければセイレーンに、要求ダメージが高くなければモランに置き換え可能。宝ものヘルムは、育てたアリス、プリバティ、メイドマスト、サマーシンデレラやスノーホワイト：ヘビーアームズのようなアタッカー、あるいは別のダメージバッファーに置き換え可能。（属性：灼熱）",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-double-fire-1",
@@ -1928,7 +1943,10 @@
       "name_en": "Double Fire 2",
       "name_ja": "Double Fire 2（灼熱ダブルヒット 2）",
       "note_en": "[Source: prydwen.gg Team Database] It is ideal to mock with different subsitutions to find what is best for your account. Your investments can help guide you to what would be the best option for a double hit. Substitutions: Helm-treasure may be replaced by an invested Alice, Rei Ayanami, Maid Mast, a DPS like Summer Cinderella or Snow White: Heavy Arms, or another damage buffer. (Element: Fire)",
-      "note_ja": "［出典：prydwen.gg Team Database］自分のアカウントに最適な形を見つけるため、いろいろな差し替えを試してみるのが理想的だ。手持ちの育成状況が、ダブルヒットに最良の選択肢を教えてくれる。差し替え：宝ものヘルムは、育てたアリス、綾波レイ、メイドマスト、サマーシンデレラやスノーホワイト：ヘビーアームズのようなアタッカー、あるいは別のダメージバッファーに置き換え可能。（属性：灼熱）"
+      "note_ja": "［出典：prydwen.gg Team Database］自分のアカウントに最適な形を見つけるため、いろいろな差し替えを試してみるのが理想的だ。手持ちの育成状況が、ダブルヒットに最良の選択肢を教えてくれる。差し替え：宝ものヘルムは、育てたアリス、綾波レイ、メイドマスト、サマーシンデレラやスノーホワイト：ヘビーアームズのようなアタッカー、あるいは別のダメージバッファーに置き換え可能。（属性：灼熱）",
+      "requiresTreasure": [
+        "Helm"
+      ]
     },
     {
       "id": "pw-triple-fire-v1-1",
@@ -2055,7 +2073,10 @@
       "name_en": "Water Team 2 - Shotguns",
       "name_ja": "Water Team 2 - Shotguns（水冷編成2・ショットガン）",
       "note_en": "[Source: prydwen.gg Team Database] - Substitutions: SugarTreasure may be replaced with DrakeTreasure for a weaker team. ArcanaFM may be replaced with Crown or Nayuta. (Element: Water)",
-      "note_ja": "［出典：prydwen.gg Team Database］-　差し替え：宝ものシュガーは、編成は弱くなるが宝ものドレイクに置き換え可能。アルカナ：フォーチュンメイトはクラウンまたはナユタに置き換え可能。（属性：水冷）"
+      "note_ja": "［出典：prydwen.gg Team Database］-　差し替え：宝ものシュガーは、編成は弱くなるが宝ものドレイクに置き換え可能。アルカナ：フォーチュンメイトはクラウンまたはナユタに置き換え可能。（属性：水冷）",
+      "requiresTreasure": [
+        "Sugar"
+      ]
     },
     {
       "id": "pw-triple-hit-swha",
@@ -5491,7 +5512,10 @@
       "name_en": "Carnation",
       "name_ja": "Carnation（カーネーション）",
       "note_en": "[Source: prydwen.gg character page] One of the team ideas for Wind-weak Solo Raid. Substitutions: Moran can be swapped for Siren. Place Flora (Treasure) between Siren and AsukaW. (Element: Wind)",
-      "note_ja": "［出典：prydwen.gg character page］風圧弱点のソロレイド向けの編成案の一つ。差し替え：モランはサイレンと交換可能。（宝ものの）フローラはサイレンと式波・アスカ・ラングレー：WILLEの間に配置する。（属性：風圧）"
+      "note_ja": "［出典：prydwen.gg character page］風圧弱点のソロレイド向けの編成案の一つ。差し替え：モランはサイレンと交換可能。（宝ものの）フローラはサイレンと式波・アスカ・ラングレー：WILLEの間に配置する。（属性：風圧）",
+      "requiresTreasure": [
+        "Flora"
+      ]
     },
     {
       "id": "pwc-gladiolus",
@@ -5508,7 +5532,10 @@
       "name_en": "Gladiolus",
       "name_ja": "Gladiolus（グラジオラス）",
       "note_en": "[Source: prydwen.gg character page] Use Flora (Treasure) to instantly activate Crown's S2 and provide buff for TVesti.",
-      "note_ja": "［出典：prydwen.gg character page］（宝ものの）フローラでクラウンのスキル2を即座に発動させ、ベスティー：タクティカル・アップにバフを供給する。"
+      "note_ja": "［出典：prydwen.gg character page］（宝ものの）フローラでクラウンのスキル2を即座に発動させ、ベスティー：タクティカル・アップにバフを供給する。",
+      "requiresTreasure": [
+        "Flora"
+      ]
     },
     {
       "id": "pwc-grave-steals-mari-s-eva-friends",
@@ -6918,7 +6945,10 @@
       "name_en": "SG Team But With CDR",
       "name_ja": "SG Team But With CDR（クールタイム短縮つきショットガン編成）",
       "note_en": "[Source: prydwen.gg character page] In this team, we utilize extended Full Burst plus Milk (Treasure) to speed up SG team's rotation a bit. Milk, in the Off-Burst position, can buff the team's DPS periodically. Despite that, the acceleration is negligible and would instead cost damage due to losing 1 DPS/semi-DPS. However, since SG team is consistently outputting DPS, Milk's ATK buff is very relevant for them. Not only that, but she can also provide the option of Bursting with her once for healing the team if needed. Not the best of teams, but definitely a strong idea.",
-      "note_ja": "［出典：prydwen.gg character page］この編成では、延長されたフルバーストと（宝ものの）ミルクを利用して、ショットガン編成のローテーションを少し速める。バースト外の位置に置いたミルクは、定期的に編成の火力をバフできる。とはいえ加速幅はごくわずかで、アタッカー（または準アタッカー）を1人失う分、むしろダメージを損ねてしまう。ただしショットガン編成は絶えず火力を出し続けるので、ミルクの攻撃力バフは彼女たちにとって非常に有意義だ。それだけでなく、必要なら一度だけ彼女にバーストさせて編成を回復するという選択肢も生まれる。最良の編成とは言えないが、着想としては間違いなく強い。"
+      "note_ja": "［出典：prydwen.gg character page］この編成では、延長されたフルバーストと（宝ものの）ミルクを利用して、ショットガン編成のローテーションを少し速める。バースト外の位置に置いたミルクは、定期的に編成の火力をバフできる。とはいえ加速幅はごくわずかで、アタッカー（または準アタッカー）を1人失う分、むしろダメージを損ねてしまう。ただしショットガン編成は絶えず火力を出し続けるので、ミルクの攻撃力バフは彼女たちにとって非常に有意義だ。それだけでなく、必要なら一度だけ彼女にバーストさせて編成を回復するという選択肢も生まれる。最良の編成とは言えないが、着想としては間違いなく強い。",
+      "requiresTreasure": [
+        "Milk"
+      ]
     },
     {
       "id": "pwc-heal-more-stall-longer",

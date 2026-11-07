@@ -191,6 +191,7 @@ const dict = {
     burst_order_caption: '왼쪽부터 버스트를 쓰는 순서입니다. 파티 배치 자리(전열 1·3·5 / 후열 2·4)와는 다릅니다 — 자리 조건이 있는 니케는 아래 근거에 적힙니다.',
     dex_tier_base: '기본',
     dex_tier_treasure: '애장품 장착',
+    dex_tier_no_treasure: '애장품 평가 없음 · 기본 티어',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
     dex_filter_label: '도감 필터',
     dex_filter_count: (n) => `${n}명`,
@@ -565,6 +566,7 @@ const dict = {
     burst_order_caption: 'Left to right is the order they use their bursts — not the party slot layout (front 1/3/5, back 2/4). Slot requirements, if any, are noted in the reasoning below.',
     dex_tier_base: 'Base',
     dex_tier_treasure: 'With Treasure',
+    dex_tier_no_treasure: 'no Treasure rating · base tier',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
     dex_filter_label: 'Character filter',
     dex_filter_count: (n) => `${n} shown`,
@@ -938,6 +940,7 @@ const dict = {
     burst_order_caption: '左からバーストを使う順番です。パーティの配置枠（前列1・3・5／後列2・4）とは別物です。枠の条件があるニケは下の根拠に書かれます。',
     dex_tier_base: '通常',
     dex_tier_treasure: '愛用品装着',
+    dex_tier_no_treasure: '宝もの評価なし・基本ティア',
     // ── 도감(/nikke) 라벨 — 2026-08-24 추가 ──
     dex_filter_label: '図鑑フィルター',
     dex_filter_count: (n) => `${n}体`,

@@ -949,6 +949,25 @@ for (const t of teams) {
   if (off?.partial?.filler !== 'Red Hood') problems.push(`[1버 쿨감] 관문을 꺼도 레드 후드가 안 들어간다(${off?.partial?.filler}) — 시험 로스터를 다시 고를 것`);
 }
 
+// 아키타입 설명이 멤버의 애장품을 전제하는데 requiresTreasure가 빠진 것(2026-11-07 유저: "나 플로라 애장품 없는데 왜 이 조합이 추천되지?").
+// prydwen 「Gladiolus」(PvP) 설명은 "Use Flora (Treasure) …"인데 표시가 없어 애장품 없는 사람의 PvP 3팀에 나왔다 — 같은 누락 10개를 고쳤다.
+// 「X (Treasure) may be replaced by …」도 기본 구성이 애장품 X라는 뜻이라 전제로 센다. 판정은 애장품이 있는 니케(treasureEffects)만.
+// 역테스트: Gladiolus의 requiresTreasure를 지우면 이 검사가 잡는다.
+{
+  const syn = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'synergyNotes.json'), 'utf8'));
+  const tIds = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'treasureEffects.json'), 'utf8')).characters.map((t) => t.characterId));
+  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  for (const a of syn.archetypes || []) {
+    const note = `${a.note_en || ''} ${a.note || ''}`;
+    for (const m of a.members || []) {
+      const c = byTitle.get(m);
+      if (!c || !tIds.has(c.id) || (a.requiresTreasure || []).includes(m)) continue;
+      const sh = esc(m.split(':')[0].trim());
+      if (new RegExp(`(${sh}\\s*\\(Treasure\\)|${sh}\\s*-?Treasure|${sh}Tr\\b|Treasure ${sh}\\b)`, 'i').test(note)) problems.push(`[아키타입 애장품] ${a.id}: 설명이 ${m}의 애장품을 전제하는데 requiresTreasure에 없다`);
+    }
+  }
+}
+
 const line = '─'.repeat(88);
 console.log(line);
 console.log(`등록된 실사용 조합으로 우리 규칙 검증 — ${teams.length}건`);

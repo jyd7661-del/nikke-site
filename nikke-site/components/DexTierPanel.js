@@ -32,11 +32,12 @@ import { useLanguage } from '@/components/LanguageProvider';
 //    **함수를 props로 넘길 수 없다** — next build가 "Functions cannot be passed directly to
 //    Client Components"로 실패한다(2026-08-15에 그렇게 만들었다가 잡혔다).
 //    모양은 그 페이지의 TierBadge와 같게 유지한다.
-function TierBadge({ label, tier }) {
+function TierBadge({ label, tier, sub }) {
   return (
     <div className="flex-1 min-w-0 rounded-lg bg-slate-800/60 px-2 py-2 text-center">
       <div className="text-xs text-slate-500">{label}</div>
       <div className="text-xl font-extrabold text-nikke-accent">{tier || '—'}</div>
+      {sub && <div className="text-[10px] text-slate-500 leading-tight">{sub}</div>}
     </div>
   );
 }
@@ -77,10 +78,13 @@ export default function DexTierPanel({ tiers, treasureTiers, treasureTiersNote }
         </div>
       )}
 
+      {/* 2026-11-07 유저: "플로라는 pvp티어가 없네?" — 애장품 평가에 그 모드가 없으면(플로라 PvP) 기본 티어를 보이고 밝힌다.
+          엔진(lib/synergyEngine.js effectiveTier)도 같은 대체를 한다 — 화면만 「—」로 비어 보였다. */}
       <div className="flex gap-2 sm:gap-3">
-        <TierBadge label={t('mode_campaign')} tier={shown.story} />
-        <TierBadge label={t('mode_bossing')} tier={shown.bossing} />
-        <TierBadge label={t('mode_pvp')} tier={shown.pvp} />
+        {[['story', 'mode_campaign'], ['bossing', 'mode_bossing'], ['pvp', 'mode_pvp']].map(([k, lk]) => {
+          const fallback = showTreasure && treasureTiers && !treasureTiers[k] && (tiers || {})[k];
+          return <TierBadge key={k} label={t(lk)} tier={fallback ? tiers[k] : shown[k]} sub={fallback ? t('dex_tier_no_treasure') : null} />;
+        })}
       </div>
 
       {hasTreasure && showTreasure && treasureTiersNote && (

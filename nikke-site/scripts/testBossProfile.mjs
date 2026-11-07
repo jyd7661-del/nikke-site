@@ -160,14 +160,15 @@ for (const [el, e] of Object.entries(expect)) {
     // ⚠️ 처음엔 위 두 조합만 넣었는데 **findExactTeamMatch는 둘 다 매칭되지 않아** 그 경로가 한 번도
     //    검사되지 않았다. 역테스트로 그 경로의 필드를 지워도 통과해서 알았다.
     // (레드 후드가 든 아키타입은 `ambiguousBurst`라 완전일치 후보에서 걸러진다 — 처음 고른 조합이 그래서 안 맞았다)
-    { label: 'Iron 아키타입(크라운 있음)', el: 'Iron', ts: ['Crown', 'Zwei', 'Snow White', 'Maxwell', 'Helm: Aquamarine'], needExact: true },
+    // 2026-11-07: 이 조합(pw-artillery-vs-moth)은 설명이 「Zwei (Treasure)」를 전제해 requiresTreasure: Zwei가 붙었다 → 애장품 츠바이를 가진 판으로 잰다
+    { label: 'Iron 아키타입(크라운 있음)', el: 'Iron', ts: ['Crown', 'Zwei', 'Snow White', 'Maxwell', 'Helm: Aquamarine'], needExact: true, treasure: ['Zwei'] },
   ];
   let checkedPaths = 0;
   for (const cs of cases) {
     const owned = pick(cs.ts);
     if (owned.some((c) => !c)) { problems.push(`⑥ 검사용 조합 캐릭터를 못 찾음: ${cs.label}`); continue; }
     for (const lang of ['ko', 'en', 'ja']) {
-      const opts = { bossElement: cs.el, lang };
+      const opts = { bossElement: cs.el, lang, ...(cs.treasure ? { treasureIds: new Set(pick(cs.treasure).map((c) => c.id)) } : {}) };
       const paths = [
         ['scoreTeam', engine.scoreTeam(owned, 'bossing', opts)],
         ['findRealUsageTeamMatch', engine.findRealUsageTeamMatch(owned, 'bossing', opts)],
